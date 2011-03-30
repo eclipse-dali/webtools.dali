@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.properties;
 import static org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi.createInstallLibraryPanel;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -67,9 +68,11 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.internal.platform.JpaPlatformDescriptionImpl;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupDescription;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionAdapter;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
@@ -102,6 +105,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
@@ -375,9 +379,61 @@ public class JpaProjectPropertiesPage
 	}
 	
 	@Override
+	protected LibraryInstallDelegate createLibraryInstallDelegate(IFacetedProject project, IProjectFacetVersion fv) {
+		Map<String, Object> enablementVariables = new HashMap<String, Object>();
+		
+		//TODO Ask Paul about these empty enablement variables - trying to reproduce Helios functionality
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, ""); //$NON-NLS-1$
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, new JpaPlatformDescription() {
+			
+			public boolean supportsJpaFacetVersion(IProjectFacetVersion jpaFacetVersion) {
+				return false;
+			}
+			
+			public boolean isDefault() {
+				return false;
+			}
+			
+			public String getPluginId() {
+				return null;
+			}
+			
+			public String getLabel() {
+				return null;
+			}
+			
+			public String getId() {
+				return null;
+			}
+			
+			public JpaPlatformGroupDescription getGroup() {
+				return null;
+			}
+			
+			public String getFactoryClassName() {
+				return null;
+			}
+		});
+		
+		LibraryInstallDelegate lid = new LibraryInstallDelegate(project, fv, enablementVariables);
+		lid.addListener(buildLibraryProviderListener());
+		return lid;
+	}
+
+	@Override
 	protected void adjustLibraryProviders() {
 		LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
+		
 		if (lid != null) {
+			JpaPlatformDescription jpaPlatform = 
+					JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform(this.platformIdModel.getValue());
+			String jpaPlatformId = (jpaPlatform == null) ? "" : jpaPlatform.getId();
+			
+			lid.setEnablementContextVariable(
+					JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, jpaPlatformId);
+			lid.setEnablementContextVariable(
+					JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, jpaPlatform);
+			
 			List<JpaLibraryProviderInstallOperationConfig> jpaConfigs 
 					= new ArrayList<JpaLibraryProviderInstallOperationConfig>();
 			// add the currently selected one first
@@ -395,7 +451,7 @@ public class JpaProjectPropertiesPage
 				}
 			}
 			for (JpaLibraryProviderInstallOperationConfig jpaConfig : jpaConfigs) {
-				jpaConfig.setJpaPlatform(JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform(this.platformIdModel.getValue()));
+				jpaConfig.setJpaPlatform(jpaPlatform);
 			}
 		}
 	}
@@ -743,6 +799,10 @@ public class JpaProjectPropertiesPage
 		// user is unable to unset the platform, so no validation necessary
 		
 		/* library provider */
+		IStatus lpStatus = validateLibraryProvider();
+		if (lpStatus != null){
+			statuses.get(Integer.valueOf(lpStatus.getSeverity())).add(lpStatus);
+		}
 		super.performValidation(statuses);
 		
 		/* connection */
@@ -790,6 +850,22 @@ public class JpaProjectPropertiesPage
 				)));
 			}
 		}
+	}
+	
+	private IStatus validateLibraryProvider() {
+        LibraryInstallDelegate libInstallDelegate = getLibraryInstallDelegate();
+
+        if( libInstallDelegate != null ) {        
+			Map<String, Object> enablementVariables = new HashMap<String, Object>();
+			enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, this.platformIdModel.getValue());
+			enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, this.jpaProjectModel.getValue().getJpaPlatform().getDescription());
+			
+			if (! libInstallDelegate.getLibraryProvider().isEnabledFor(
+					getFacetedProject(), getProjectFacetVersion(), enablementVariables)) {
+				return buildErrorStatus(JptCoreMessages.VALIDATE_LIBRARY_PROVIDER_INVALID);
+			}
+        }
+		return null;
 	}
 	
 	

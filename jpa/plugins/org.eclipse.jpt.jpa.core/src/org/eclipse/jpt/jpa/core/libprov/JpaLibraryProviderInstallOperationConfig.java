@@ -16,6 +16,13 @@ import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 public interface JpaLibraryProviderInstallOperationConfig 
 		extends JptLibraryProviderInstallOperationConfig {
 	
+	/** enablement expression for jpa platform id (String) */
+	public static final String JPA_PLATFORM_ENABLEMENT_EXP = "jpaPlatform"; //$NON-NLS-1$
+	
+	/** enablement expression for jpa platform description (JpaPlatformDescription) */
+	public static final String JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP = "jpaPlatformDescription";  //$NON-NLS-1$ 
+	
+	/** property of all jpa library provider install operation configs */
 	public static final String PROP_JPA_PLATFORM = "JPA_PLATFORM"; //$NON-NLS-1$
 	
 	JpaPlatformDescription getJpaPlatform();

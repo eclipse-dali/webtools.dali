@@ -96,12 +96,7 @@ public abstract class JptProjectPropertiesPage
 	
 	// ********** LibraryFacetPropertyPage implementation **********
 	
-	@Override
-	protected LibraryInstallDelegate createLibraryInstallDelegate(IFacetedProject project, IProjectFacetVersion fv) {
-		LibraryInstallDelegate lid = new LibraryInstallDelegate(project, fv, null);
-		lid.addListener(buildLibraryProviderListener());
-		return lid;
-	}
+
 	
 	protected IPropertyChangeListener buildLibraryProviderListener() {
 		return new IPropertyChangeListener() {

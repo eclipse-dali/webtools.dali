@@ -49,6 +49,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
@@ -111,6 +112,13 @@ public class JaxbProjectPropertiesPage
 	@Override
 	public IProjectFacetVersion getProjectFacetVersion() {
 		return this.getFacetedProject().getInstalledVersion(JaxbFacet.FACET);
+	}
+	
+	@Override
+	protected LibraryInstallDelegate createLibraryInstallDelegate(IFacetedProject project, IProjectFacetVersion fv) {
+		LibraryInstallDelegate lid = new LibraryInstallDelegate(project, fv);
+		lid.addListener(buildLibraryProviderListener());
+		return lid;
 	}
 	
 	@Override

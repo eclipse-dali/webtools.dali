@@ -12,7 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.facet;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -233,7 +235,16 @@ public abstract class JpaFacetDataModelProvider
 		if (pfv == null) {
 			return null;
 		}
-		LibraryInstallDelegate lp = new LibraryInstallDelegate(fpjwc, pfv);
+		
+		Map<String, Object> customEnablementVariables = new HashMap<String, Object>();
+		JpaPlatformDescription jpaPlatform = getPlatform();
+		String jpaPlatformId = (jpaPlatform == null) ? "" : jpaPlatform.getId();
+		customEnablementVariables.put(
+					JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, jpaPlatformId);
+		customEnablementVariables.put(
+					JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, jpaPlatform);
+		
+		LibraryInstallDelegate lp = new LibraryInstallDelegate(fpjwc, pfv, customEnablementVariables);
 		lp.addListener(buildLibraryProviderListener());
 		return lp;
 	}
@@ -387,7 +398,16 @@ public abstract class JpaFacetDataModelProvider
 	
 	protected void adjustLibraryProviders() {
 		LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
+		
 		if (lid != null) {
+			JpaPlatformDescription jpaPlatform = getPlatform();
+			String jpaPlatformId = (jpaPlatform == null) ? "" : jpaPlatform.getId();
+			
+			lid.setEnablementContextVariable(
+					JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, jpaPlatformId);
+			lid.setEnablementContextVariable(
+					JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, jpaPlatform);
+			
 			List<JpaLibraryProviderInstallOperationConfig> jpaConfigs 
 					= new ArrayList<JpaLibraryProviderInstallOperationConfig>();
 			// add the currently selected one first

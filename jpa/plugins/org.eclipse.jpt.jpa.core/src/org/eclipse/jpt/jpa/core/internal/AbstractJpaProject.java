@@ -11,8 +11,10 @@ package org.eclipse.jpt.jpa.core.internal;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
@@ -77,6 +79,7 @@ import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JavaResourcePersistentType2_0;
+import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackage;
@@ -1414,10 +1417,14 @@ public abstract class AbstractJpaProject
 	}
 
 	protected void validateLibraryProvider_(List<IMessage> messages) throws CoreException {
+		Map<String, Object> enablementVariables = new HashMap<String, Object>();
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, getJpaPlatform().getId());
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, getJpaPlatform().getDescription());
+		
 		ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(getProject(), JpaFacet.FACET);
 		IFacetedProject facetedProject = ProjectFacetsManager.create(getProject());
 		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JpaFacet.FACET);
-		if ( ! libraryProvider.isEnabledFor(facetedProject, facetVersion)) {
+		if ( ! libraryProvider.isEnabledFor(facetedProject, facetVersion, enablementVariables)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

@@ -9,12 +9,17 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.facet;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectBase;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -32,7 +37,10 @@ public class RuntimeChangedListener
 		}
 		IProjectFacetVersion pfv = fpb.getProjectFacetVersion(JpaFacet.FACET);
 		if (pfv != null) {
-			LibraryInstallDelegate lp = new LibraryInstallDelegate(fpb, pfv);
+			Map<String, Object> enablementVariables = new HashMap<String, Object>();
+			enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, getJpaPlatformId(fpb.getProject()));
+			enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, getJpaPlatformDescription(fpb.getProject()));
+			LibraryInstallDelegate lp = new LibraryInstallDelegate(fpb, pfv, enablementVariables);
 			try {
 				lp.execute(new NullProgressMonitor());
 			}
@@ -46,4 +54,10 @@ public class RuntimeChangedListener
 		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(project);
 		return (jpaProject == null) ? null : jpaProject.getJpaPlatform().getId();
 	}
+	
+	protected JpaPlatformDescription getJpaPlatformDescription(IProject project) {
+		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(project);
+		return (jpaProject == null) ? null : jpaProject.getJpaPlatform().getDescription();
+	}
+	
 }
