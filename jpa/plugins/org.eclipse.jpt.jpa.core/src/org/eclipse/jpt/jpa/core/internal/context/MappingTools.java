@@ -130,12 +130,13 @@ public final class MappingTools {
 
 	/**
 	 * Return the join column's default name;
-	 * which is typically
+	 * which is typically<pre>
 	 *     [attribute name]_[referenced column name]
+	 * </pre>
 	 * But, if we don't have an attribute name (e.g. in a unidirectional
-	 * OneToMany or ManyToMany) is
+	 * one-to-many or many-to-many) is<pre>
 	 *     [target entity name]_[referenced column name]
-	 *
+	 * </pre>
 	 * @see #buildJoinTableDefaultName(ReadOnlyRelationship)
 	 */
 	public static String buildJoinColumnDefaultName(ReadOnlyJoinColumn joinColumn, ReadOnlyJoinColumn.Owner owner) {
@@ -150,19 +151,27 @@ public final class MappingTools {
 			}
 			prefix = targetEntity.getName();
 		}
-		// not sure which of these is correct...
-		// (the spec implies that the referenced column is always the
-		// primary key column of the target entity)
+		// It's not clear which of these is correct....
+		// The spec implies that the referenced column is always the
+		// *primary key* column of the target entity; i.e. the primary key as
+		// defined on the *database* (or, possibly, the primary key as defined
+		// by the target entity's Id mapping?), not the name of the referenced
+		// column irrespective of whether it is the primary key on the target
+		// entity's table. But this seems like it would be wrong; since the
+		// referenced column need not be a primary key and we don't always have
+		// access to the database.
+		//
 		// Column targetColumn = joinColumn.getTargetPrimaryKeyDbColumn();
 		String targetColumnName = joinColumn.getReferencedColumnName();
 		if (targetColumnName == null) {
 			return null;
 		}
 		String name = prefix + '_' + targetColumnName;
-		// not sure which of these is correct...
-		// converting the name to an identifier will result in the identifier
+		// Again, it's not clear which of these is correct....
+		// Converting the name to an identifier will result in the identifier
 		// being delimited nearly every time (at least on non-Sybase/MS
-		// databases); but that probably is not the intent of the spec...
+		// databases); but that probably is not the intent of the spec....
+		//
 		// return targetColumn.getDatabase().convertNameToIdentifier(name);
 		return name;
 	}
