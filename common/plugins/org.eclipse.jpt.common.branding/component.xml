@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component  xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="org.eclipse.jpt.common.branding">
+<description url=""></description>
+<component-depends unrestricted="true"></component-depends>
+<plugin id="org.eclipse.jpt.common.branding" fragment="false"/>
+<plugin id="org.eclipse.jpt.common.utility" fragment="false"/>
+<plugin id="org.eclipse.jpt.common.core" fragment="false"/>
+<plugin id="org.eclipse.jpt.common.ui" fragment="false"/>
+</component>

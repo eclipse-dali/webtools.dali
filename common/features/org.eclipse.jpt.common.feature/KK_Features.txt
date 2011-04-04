@@ -1,0 +1,17 @@
+org.eclipse.jpt_sdk.assembly.feature
+org.eclipse.jpt.assembly.feature
+org.eclipse.jpt.dbws.eclipselink.feature
+
+org.eclipse.jpt.jaxb.eclipselink.feature
+org.eclipse.jpt.jaxb.feature
+org.eclipse.jpt.jaxb.tests.feature
+
+org.eclipse.jpt.jpa.eclipselink.feature
+org.eclipse.jpt.jpa.eclipselink.tests.feature
+
+org.eclipse.jpt.jpa.feature
+org.eclipse.jpt.jpa.tests.feature
+
+org.eclipse.jpt.jpadiagrameditor.feature
+org.eclipse.jpt.jpadiagrameditor.tests.feature
+org.eclipse.jpt.tests.assembly.feature
