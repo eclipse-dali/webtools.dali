@@ -24,6 +24,10 @@
    </url>
 
    <includes
+         id="org.eclipse.jpt.common.tests.feature"
+         version="0.0.0"/>
+
+   <includes
          id="org.eclipse.jpt.jpa.tests.feature"
          version="0.0.0"/>
 

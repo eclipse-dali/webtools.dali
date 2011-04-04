@@ -21,31 +21,11 @@
    </license>
 
    <requires>
+      <import feature="org.eclipse.jpt.common.feature" version="1.0.0"/>
       <import feature="org.eclipse.datatools.enablement.feature" version="1.8.0"/>
       <import feature="org.eclipse.datatools.sqldevtools.feature" version="1.8.0"/>
       <import feature="org.eclipse.datatools.connectivity.feature" version="1.8.0"/>
    </requires>
-
-   <plugin
-         id="org.eclipse.jpt.common.utility"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jpt.common.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jpt.common.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.jpt.jpa.core"

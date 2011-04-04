@@ -26,6 +26,14 @@
    </url>
 
    <includes
+         id="org.eclipse.jpt.common_sdk.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.jpt.common.eclipselink_sdk.feature"
+         version="0.0.0"/>
+
+   <includes
          id="org.eclipse.jpt.jpa_sdk.feature"
          version="0.0.0"/>
 

@@ -21,8 +21,8 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.jpt.jaxb.feature" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jpt.common.eclipselink.core" version="1.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.jpt.jaxb.feature" version="1.0.0"/>
+      <import feature="org.eclipse.jpt.common.eclipselink.feature" version="1.0.0"/>
    </requires>
 
 	<plugin
