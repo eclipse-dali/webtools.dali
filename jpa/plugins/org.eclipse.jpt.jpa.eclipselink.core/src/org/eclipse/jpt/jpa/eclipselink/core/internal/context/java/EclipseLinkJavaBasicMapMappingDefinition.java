@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,13 +16,13 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBasicCollectionAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBasicMapAnnotation;
 
-public class JavaEclipseLinkBasicCollectionMappingDefinition
+public class EclipseLinkJavaBasicMapMappingDefinition
 	implements JavaAttributeMappingDefinition
 {
 	// singleton
-	private static final JavaAttributeMappingDefinition INSTANCE = new JavaEclipseLinkBasicCollectionMappingDefinition();
+	private static final JavaAttributeMappingDefinition INSTANCE = new EclipseLinkJavaBasicMapMappingDefinition();
 
 	/**
 	 * Return the singleton.
@@ -35,16 +35,16 @@ public class JavaEclipseLinkBasicCollectionMappingDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaEclipseLinkBasicCollectionMappingDefinition() {
+	private EclipseLinkJavaBasicMapMappingDefinition() {
 		super();
 	}
 
 	public String getKey() {
-		return EclipseLinkMappingKeys.BASIC_COLLECTION_ATTRIBUTE_MAPPING_KEY;
+		return EclipseLinkMappingKeys.BASIC_MAP_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	public String getAnnotationName() {
-		return EclipseLinkBasicCollectionAnnotation.ANNOTATION_NAME;
+		return EclipseLinkBasicMapAnnotation.ANNOTATION_NAME;
 	}
 
 	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
@@ -56,7 +56,7 @@ public class JavaEclipseLinkBasicCollectionMappingDefinition
 	}
 
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
-		return ((EclipseLinkJpaFactory) factory).buildJavaEclipseLinkBasicCollectionMapping(persistentAttribute);
+		return ((EclipseLinkJpaFactory) factory).buildJavaEclipseLinkBasicMapMapping(persistentAttribute);
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public interface JavaAttributeMappingDefinition
 	 * <p>
 	 * <strong>NB:</strong> A mapping is not necessarily "specified" if its
 	 * annotation is present
-	 * (see {@link org.eclipse.jpt.jpa.core.internal.jpa2.context.java.AbstractJavaIdMappingDefinition2_0#isSpecified(JavaPersistentAttribute)})
+	 * (see {@link org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0#isSpecified(JavaPersistentAttribute)})
 	 */
 	boolean isSpecified(JavaPersistentAttribute persistentAttribute);
 

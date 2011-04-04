@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,47 +9,43 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
-import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.VersionAnnotation;
 
-public abstract class AbstractJavaVersionMappingDefinition
+/**
+ * Simplify delegation to another definition.
+ * A subclass need only implement {@link #getDelegate()} and override the
+ * appropriate method(s).
+ */
+public abstract class JavaAttributeMappingDefinitionWrapper
 	implements JavaAttributeMappingDefinition
 {
-	protected AbstractJavaVersionMappingDefinition() {
+	protected JavaAttributeMappingDefinitionWrapper() {
 		super();
 	}
 
+	protected abstract JavaAttributeMappingDefinition getDelegate();
+
 	public String getKey() {
-		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
+		return this.getDelegate().getKey();
 	}
 
 	public String getAnnotationName() {
-		return VersionAnnotation.ANNOTATION_NAME;
+		return this.getDelegate().getAnnotationName();
 	}
 
 	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
-		return persistentAttribute.getResourcePersistentAttribute().getAnnotation(this.getAnnotationName()) != null;
+		return this.getDelegate().isSpecified(persistentAttribute);
 	}
 
 	public Iterable<String> getSupportingAnnotationNames() {
-		return SUPPORTING_ANNOTATION_NAMES;
+		return this.getDelegate().getSupportingAnnotationNames();
 	}
 
-	protected static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
-		ColumnAnnotation.ANNOTATION_NAME,
-		TemporalAnnotation.ANNOTATION_NAME,
-	};
-	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
-
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
-		return factory.buildJavaVersionMapping(persistentAttribute);
+		return this.getDelegate().buildMapping(persistentAttribute, factory);
 	}
 
 	@Override

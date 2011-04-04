@@ -7,23 +7,23 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
+package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.DefaultJavaAttributeMappingDefinitionWrapper;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedMappingDefinition;
-import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AssociationOverridesAnnotation;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaBasicMappingDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 
-public class JavaEmbeddedMappingDefinition2_0
+public class EclipseLinkJavaBasicMappingDefinition
 	extends DefaultJavaAttributeMappingDefinitionWrapper
 {
-	private static final DefaultJavaAttributeMappingDefinition DELEGATE = JavaEmbeddedMappingDefinition.instance();
+	private static final DefaultJavaAttributeMappingDefinition DELEGATE = JavaBasicMappingDefinition.instance();
 
 	// singleton
-	private static final DefaultJavaAttributeMappingDefinition INSTANCE = new JavaEmbeddedMappingDefinition2_0();
+	private static final DefaultJavaAttributeMappingDefinition INSTANCE = new EclipseLinkJavaBasicMappingDefinition();
 
 	/**
 	 * Return the singleton.
@@ -36,7 +36,7 @@ public class JavaEmbeddedMappingDefinition2_0
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaEmbeddedMappingDefinition2_0() {
+	private EclipseLinkJavaBasicMappingDefinition() {
 		super();
 	}
 
@@ -50,15 +50,16 @@ public class JavaEmbeddedMappingDefinition2_0
 		return COMBINED_SUPPORTING_ANNOTATION_NAMES;
 	}
 
-	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
-		AssociationOverrideAnnotation.ANNOTATION_NAME,
-		AssociationOverridesAnnotation.ANNOTATION_NAME,
+	private static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
+		EclipseLinkMutableAnnotation.ANNOTATION_NAME,
+		EclipseLinkConvertAnnotation.ANNOTATION_NAME,
 	};
-	public static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
+	// 'public' because the EclipseLink Id and Version mappings also support these annotations
+	public static final Iterable<String> ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	@SuppressWarnings("unchecked")
 	private static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = new CompositeIterable<String>(
 		DELEGATE.getSupportingAnnotationNames(),
-		SUPPORTING_ANNOTATION_NAMES_2_0
+		ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES
 	);
 }

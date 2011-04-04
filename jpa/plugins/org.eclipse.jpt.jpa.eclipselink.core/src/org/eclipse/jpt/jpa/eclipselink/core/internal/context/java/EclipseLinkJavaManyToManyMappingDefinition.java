@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToOneMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaManyToManyMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 
-public class JavaEclipseLinkManyToOneMappingDefinition
-	extends AbstractJavaManyToOneMappingDefinition
+public class EclipseLinkJavaManyToManyMappingDefinition
+	extends JavaAttributeMappingDefinitionWrapper
 {
+	private static final JavaAttributeMappingDefinition DELEGATE = JavaManyToManyMappingDefinition.instance();
+
 	// singleton
-	private static final JavaAttributeMappingDefinition INSTANCE = new JavaEclipseLinkManyToOneMappingDefinition();
+	private static final JavaAttributeMappingDefinition INSTANCE = new EclipseLinkJavaManyToManyMappingDefinition();
 
 	/**
 	 * Return the singleton.
@@ -32,8 +35,13 @@ public class JavaEclipseLinkManyToOneMappingDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaEclipseLinkManyToOneMappingDefinition() {
+	private EclipseLinkJavaManyToManyMappingDefinition() {
 		super();
+	}
+
+	@Override
+	protected JavaAttributeMappingDefinition getDelegate() {
+		return DELEGATE;
 	}
 
 	@Override
@@ -44,10 +52,11 @@ public class JavaEclipseLinkManyToOneMappingDefinition
 	public static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 		EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME
 	};
+	public static final Iterable<String> ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
-	protected static final String[] COMBINED_SUPPORTING_ANNOTATION_NAMES_ARRAY = ArrayTools.concatenate(
-		SUPPORTING_ANNOTATION_NAMES_ARRAY,
-		ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY
+	@SuppressWarnings("unchecked")
+	private static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = new CompositeIterable<String>(
+		DELEGATE.getSupportingAnnotationNames(),
+		ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES
 	);
-	protected static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(COMBINED_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 }

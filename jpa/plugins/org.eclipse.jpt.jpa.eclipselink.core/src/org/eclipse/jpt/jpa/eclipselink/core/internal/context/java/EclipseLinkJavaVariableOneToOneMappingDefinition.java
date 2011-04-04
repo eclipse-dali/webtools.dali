@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,31 +7,44 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.context.java;
+package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
-import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkVariableOneToOneAnnotation;
 
-public abstract class AbstractJavaEmbeddedMappingDefinition
+public class EclipseLinkJavaVariableOneToOneMappingDefinition
 	implements DefaultJavaAttributeMappingDefinition
 {
-	protected AbstractJavaEmbeddedMappingDefinition() {
+	// singleton
+	private static final DefaultJavaAttributeMappingDefinition INSTANCE = new EclipseLinkJavaVariableOneToOneMappingDefinition();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static DefaultJavaAttributeMappingDefinition instance() {
+		return INSTANCE;
+	}
+
+
+	/**
+	 * Enforce singleton usage
+	 */
+	private EclipseLinkJavaVariableOneToOneMappingDefinition() {
 		super();
 	}
 
 	public String getKey() {
-		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
+		return EclipseLinkMappingKeys.VARIABLE_ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	public String getAnnotationName() {
-		return EmbeddedAnnotation.ANNOTATION_NAME;
+		return EclipseLinkVariableOneToOneAnnotation.ANNOTATION_NAME;
 	}
 
 	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
@@ -39,21 +52,15 @@ public abstract class AbstractJavaEmbeddedMappingDefinition
 	}
 
 	public Iterable<String> getSupportingAnnotationNames() {
-		return SUPPORTING_ANNOTATION_NAMES;
+		return EmptyIterable.instance();
 	}
 
-	protected static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
-		AttributeOverrideAnnotation.ANNOTATION_NAME,
-		AttributeOverridesAnnotation.ANNOTATION_NAME,
-	};
-	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
-
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
-		return factory.buildJavaEmbeddedMapping(persistentAttribute);
+		return ((EclipseLinkJpaFactory) factory).buildJavaEclipseLinkVariableOneToOneMapping(persistentAttribute);
 	}
 
 	public boolean isDefault(JavaPersistentAttribute persistentAttribute) {
-		return persistentAttribute.getEmbeddable() != null;
+		return ((JavaEclipseLinkPersistentAttribute) persistentAttribute).typeIsValidForVariableOneToOne();
 	}
 
 	@Override

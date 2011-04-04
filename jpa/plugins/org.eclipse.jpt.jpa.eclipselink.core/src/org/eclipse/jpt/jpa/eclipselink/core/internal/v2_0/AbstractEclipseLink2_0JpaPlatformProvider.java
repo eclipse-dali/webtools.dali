@@ -35,22 +35,22 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedMappingDe
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkOrmResourceModelProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVersionMappingDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMappingDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMappingDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMappingDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVariableOneToOneMappingDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmXml1_1Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v1_2.context.orm.EclipseLinkOrmXml1_2Definition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkElementCollectionMappingDefinition2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkIdMappingDefinition2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkManyToManyMappingDefinition2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkManyToOneMappingDefinition2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkOneToManyMappingDefinition2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkOneToOneMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaElementCollectionMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaIdMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaManyToManyMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaManyToOneMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaOneToManyMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaOneToOneMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.orm.EclipseLinkOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.persistence.EclipseLink2_0PersistenceXmlDefinition;
 
@@ -130,10 +130,10 @@ public abstract class AbstractEclipseLink2_0JpaPlatformProvider
 	// NB: no change from EclipseLink 1.2 to 2.0
 	protected static final DefaultJavaAttributeMappingDefinition[] DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new DefaultJavaAttributeMappingDefinition[] {
 		JavaEmbeddedMappingDefinition2_0.instance(),
-		JavaEclipseLinkOneToManyMappingDefinition2_0.instance(),
-		JavaEclipseLinkOneToOneMappingDefinition2_0.instance(),
-		JavaEclipseLinkVariableOneToOneMappingDefinition.instance(),
-		JavaEclipseLinkBasicMappingDefinition.instance()
+		EclipseLinkJavaOneToManyMappingDefinition2_0.instance(),
+		EclipseLinkJavaOneToOneMappingDefinition2_0.instance(),
+		EclipseLinkJavaVariableOneToOneMappingDefinition.instance(),
+		EclipseLinkJavaBasicMappingDefinition.instance()
 	};
 
 	@Override
@@ -144,20 +144,20 @@ public abstract class AbstractEclipseLink2_0JpaPlatformProvider
 	// order matches that used by EclipseLink
 	protected static final JavaAttributeMappingDefinition[] SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new JavaAttributeMappingDefinition[] {
 		JavaTransientMappingDefinition.instance(),
-		JavaEclipseLinkBasicCollectionMappingDefinition.instance(),
-		JavaEclipseLinkBasicMapMappingDefinition.instance(),
-		JavaEclipseLinkElementCollectionMappingDefinition2_0.instance(),
-		JavaEclipseLinkIdMappingDefinition2_0.instance(),
-		JavaEclipseLinkVersionMappingDefinition.instance(),
-		JavaEclipseLinkBasicMappingDefinition.instance(),
+		EclipseLinkJavaBasicCollectionMappingDefinition.instance(),
+		EclipseLinkJavaBasicMapMappingDefinition.instance(),
+		EclipseLinkJavaElementCollectionMappingDefinition2_0.instance(),
+		EclipseLinkJavaIdMappingDefinition2_0.instance(),
+		EclipseLinkJavaVersionMappingDefinition.instance(),
+		EclipseLinkJavaBasicMappingDefinition.instance(),
 		JavaEmbeddedMappingDefinition2_0.instance(),
 		JavaEmbeddedIdMappingDefinition.instance(),
-		JavaEclipseLinkTransformationMappingDefinition.instance(),
-		JavaEclipseLinkManyToManyMappingDefinition2_0.instance(),
-		JavaEclipseLinkManyToOneMappingDefinition2_0.instance(),
-		JavaEclipseLinkOneToManyMappingDefinition2_0.instance(),
-		JavaEclipseLinkOneToOneMappingDefinition2_0.instance(),
-		JavaEclipseLinkVariableOneToOneMappingDefinition.instance()
+		EclipseLinkJavaTransformationMappingDefinition.instance(),
+		EclipseLinkJavaManyToManyMappingDefinition2_0.instance(),
+		EclipseLinkJavaManyToOneMappingDefinition2_0.instance(),
+		EclipseLinkJavaOneToManyMappingDefinition2_0.instance(),
+		EclipseLinkJavaOneToOneMappingDefinition2_0.instance(),
+		EclipseLinkJavaVariableOneToOneMappingDefinition.instance()
 	};
 
 

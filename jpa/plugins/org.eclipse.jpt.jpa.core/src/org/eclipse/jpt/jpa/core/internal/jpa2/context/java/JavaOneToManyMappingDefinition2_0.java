@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaOneToManyMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaOneToManyMappingDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
@@ -24,8 +25,10 @@ import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
 
 public class JavaOneToManyMappingDefinition2_0
-	extends AbstractJavaOneToManyMappingDefinition
+	extends JavaAttributeMappingDefinitionWrapper
 {
+	private static final JavaAttributeMappingDefinition DELEGATE = JavaOneToManyMappingDefinition.instance();
+
 	// singleton
 	private static final JavaAttributeMappingDefinition INSTANCE = new JavaOneToManyMappingDefinition2_0();
 
@@ -45,11 +48,16 @@ public class JavaOneToManyMappingDefinition2_0
 	}
 
 	@Override
+	protected JavaAttributeMappingDefinition getDelegate() {
+		return DELEGATE;
+	}
+
+	@Override
 	public Iterable<String> getSupportingAnnotationNames() {
 		return COMBINED_SUPPORTING_ANNOTATION_NAMES;
 	}
 
-	public static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
+	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
 		AttributeOverrideAnnotation.ANNOTATION_NAME,
 		AttributeOverridesAnnotation.ANNOTATION_NAME,
 		MapKeyClass2_0Annotation.ANNOTATION_NAME,
@@ -60,10 +68,11 @@ public class JavaOneToManyMappingDefinition2_0
 		MapKeyTemporal2_0Annotation.ANNOTATION_NAME,
 		OrderColumn2_0Annotation.ANNOTATION_NAME
 	};
+	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
 
-	protected static final String[] COMBINED_SUPPORTING_ANNOTATION_NAMES_ARRAY = ArrayTools.concatenate(
-		SUPPORTING_ANNOTATION_NAMES_ARRAY,
-		SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0
+	@SuppressWarnings("unchecked")
+	private static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = new CompositeIterable<String>(
+		DELEGATE.getSupportingAnnotationNames(),
+		SUPPORTING_ANNOTATION_NAMES_2_0
 	);
-	protected static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(COMBINED_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 }

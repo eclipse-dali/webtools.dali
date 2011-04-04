@@ -53,7 +53,7 @@ public class JavaMappedSuperclassDefinition
 		return SUPPORTING_ANNOTATION_NAMES;
 	}
 
-	protected static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
+	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 			IdClassAnnotation.ANNOTATION_NAME,
 			JPA.EXCLUDE_DEFAULT_LISTENERS,
 			JPA.EXCLUDE_SUPERCLASS_LISTENERS,
@@ -66,7 +66,7 @@ public class JavaMappedSuperclassDefinition
 			JPA.POST_UPDATE,
 			JPA.POST_LOAD
 	};
-	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
+	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	public JavaMappedSuperclass buildMapping(JavaPersistentType persistentType, Annotation mappingAnnotation, JpaFactory factory) {
 		return factory.buildJavaMappedSuperclass(persistentType, (MappedSuperclassAnnotation) mappingAnnotation);

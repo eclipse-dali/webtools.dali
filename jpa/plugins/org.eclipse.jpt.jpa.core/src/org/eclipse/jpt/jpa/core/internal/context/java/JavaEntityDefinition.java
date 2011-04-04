@@ -71,7 +71,7 @@ public class JavaEntityDefinition
 		return SUPPORTING_ANNOTATION_NAMES;
 	}
 
-	protected static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
+	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 			TableAnnotation.ANNOTATION_NAME,
 			SecondaryTableAnnotation.ANNOTATION_NAME,
 			SecondaryTablesAnnotation.ANNOTATION_NAME,
@@ -103,7 +103,7 @@ public class JavaEntityDefinition
 			AssociationOverrideAnnotation.ANNOTATION_NAME,
 			AssociationOverridesAnnotation.ANNOTATION_NAME
 	};
-	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
+	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	public JavaEntity buildMapping(JavaPersistentType persistentType, Annotation mappingAnnotation, JpaFactory factory) {
 		return factory.buildJavaEntity(persistentType, (EntityAnnotation) mappingAnnotation);

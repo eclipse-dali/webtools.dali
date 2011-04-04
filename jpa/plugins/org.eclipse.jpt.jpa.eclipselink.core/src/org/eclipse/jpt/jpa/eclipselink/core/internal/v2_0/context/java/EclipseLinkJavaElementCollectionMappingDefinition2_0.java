@@ -7,23 +7,22 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
+package org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaManyToOneMappingDefinition;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 
-public class JavaManyToOneMappingDefinition2_0
+public class EclipseLinkJavaElementCollectionMappingDefinition2_0
 	extends JavaAttributeMappingDefinitionWrapper
 {
-	private static final JavaAttributeMappingDefinition DELEGATE = JavaManyToOneMappingDefinition.instance();
+	private static final JavaAttributeMappingDefinition DELEGATE = JavaElementCollectionMappingDefinition2_0.instance();
 
 	// singleton
-	private static final JavaAttributeMappingDefinition INSTANCE = new JavaManyToOneMappingDefinition2_0();
+	private static final JavaAttributeMappingDefinition INSTANCE = new EclipseLinkJavaElementCollectionMappingDefinition2_0();
 
 	/**
 	 * Return the singleton.
@@ -36,7 +35,7 @@ public class JavaManyToOneMappingDefinition2_0
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaManyToOneMappingDefinition2_0() {
+	private EclipseLinkJavaElementCollectionMappingDefinition2_0() {
 		super();
 	}
 
@@ -50,15 +49,14 @@ public class JavaManyToOneMappingDefinition2_0
 		return COMBINED_SUPPORTING_ANNOTATION_NAMES;
 	}
 
-	public static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
-		IdAnnotation.ANNOTATION_NAME,
-		MapsId2_0Annotation.ANNOTATION_NAME
+	private static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
+		EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME
 	};
-	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
+	private static final Iterable<String> ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	@SuppressWarnings("unchecked")
 	private static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = new CompositeIterable<String>(
 		DELEGATE.getSupportingAnnotationNames(),
-		SUPPORTING_ANNOTATION_NAMES_2_0
+		ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES
 	);
 }
