@@ -5,6 +5,7 @@ Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jaxb.core.tests;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Localization: plugin
+Dali-Comment: jdk 1.6 has the javax.xml.bind annotations
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Activator: org.eclipse.jpt.jaxb.core.tests.JptJaxbCoreTestsPlugin
 Bundle-ActivationPolicy: lazy
