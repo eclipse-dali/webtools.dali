@@ -38,6 +38,9 @@
 	</build>
 	
 	<repositories>
+		<snapshots>
+	   		<enabled>true</enabled>
+		</snapshots>
 		<repository>
 			<id>indigo</id>
 			<url>http://download.eclipse.org/releases/staging/</url>
