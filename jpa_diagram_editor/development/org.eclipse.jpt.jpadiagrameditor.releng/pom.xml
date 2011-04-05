@@ -4,7 +4,7 @@
 	
 	<groupId>org.eclipse.jpt.jpadiagrameditor</groupId>
 	<artifactId>org.eclipse.jpt.jpadiagrameditor_parent</artifactId>
-	<version>0.8.0</version>
+	<version>0.8.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<properties>
@@ -13,7 +13,7 @@
 	
 	<modules>
 		<module>../../plugins/org.eclipse.jpt.jpadiagrameditor.ui</module>
-		<module>../../tests/org.eclipse.jpt.jpadiagrameditor.tests</module>
+		<!-- module>../../tests/org.eclipse.jpt.jpadiagrameditor.tests</module -->
 		<module>../../features/org.eclipse.jpt.jpadiagrameditor.feature</module>
 		<module>../org.eclipse.jpt.jpadiagrameditor.repository</module>
 	</modules>
