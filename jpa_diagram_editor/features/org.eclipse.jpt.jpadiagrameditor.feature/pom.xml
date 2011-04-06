@@ -9,7 +9,8 @@
 		<relativePath>../../development/org.eclipse.jpt.jpadiagrameditor.releng/pom.xml</relativePath>
 	</parent>
 	
-	<artifactId>org.eclipse.jpt.jpadiagrameditor.ui</artifactId>
-	<packaging>eclipse-plugin</packaging>
-	<name>JPA Diagram Editor Plug-in</name>	
+	<artifactId>org.eclipse.jpt.jpadiagrameditor.feature</artifactId>
+	<packaging>eclipse-feature</packaging>
+	<name>JPA Diagram Editor Feature</name>
+	
 </project>
