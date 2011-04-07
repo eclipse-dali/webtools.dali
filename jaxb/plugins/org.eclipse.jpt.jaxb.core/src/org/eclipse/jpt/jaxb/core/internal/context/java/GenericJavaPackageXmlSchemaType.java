@@ -32,6 +32,6 @@ public class GenericJavaPackageXmlSchemaType
 
 	@Override
 	protected JaxbPackage getJaxbPackage() {
-		return getJaxbPackageInfo().getParent();
+		return getJaxbPackageInfo().getJaxbPackage();
 	}
 }

@@ -60,12 +60,16 @@ public class GenericJavaPackageInfo
 		this.xmlSchemaTypeContainer = new XmlSchemaTypeContainer();
 		this.xmlJavaTypeAdapterContainer = new XmlJavaTypeAdapterContainer();
 	}
-
+	
 	@Override
 	public JaxbPackage getParent() {
 		return (JaxbPackage) super.getParent();
 	}
-
+	
+	public JaxbPackage getJaxbPackage() {
+		return getParent();
+	}
+	
 
 	// **************** AbstractJaxbNode impl *********************************
 	
@@ -316,7 +320,9 @@ public class GenericJavaPackageInfo
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-
+		
+		this.xmlSchema.validate(messages, reporter, astRoot);
+		
 		for (XmlJavaTypeAdapter adapter : getXmlJavaTypeAdapters()) {
 			adapter.validate(messages, reporter, astRoot);
 		}

@@ -32,19 +32,20 @@ public interface JaxbPackageInfo
 		extends JavaContextNode, XmlAccessTypeHolder, XmlAccessOrderHolder {
 	
 	JavaResourcePackage getResourcePackage();
-
-	JaxbPackage getParent();
-
+	
+	JaxbPackage getJaxbPackage();
+	
+	
 	// ********** xml schema **********
-
+	
 	/**
 	 * Return the XML schema for this package info, this will not be null.
 	 */
 	XmlSchema getXmlSchema();
-
-
+	
+	
 	// ********** xml schema types **********
-
+	
 	ListIterable<XmlSchemaType> getXmlSchemaTypes();
 	int getXmlSchemaTypesSize();
 	XmlSchemaType addXmlSchemaType(int index);
