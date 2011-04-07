@@ -9,13 +9,40 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 
 
 public class XsdSimpleTypeDefinition
-		extends XsdTypeDefinition {
+		extends XsdTypeDefinition<XSDSimpleTypeDefinition> {
 	
 	XsdSimpleTypeDefinition(XSDSimpleTypeDefinition xsdSimpleTypeDefinition) {
 		super(xsdSimpleTypeDefinition);
+	}
+	
+	
+	@Override
+	public XsdAttributeUse getAttribute(String namespace, String name) {
+		// simple types have no attributes
+		return null;
+	}
+	
+	@Override
+	public Iterable<String> getAttributeNameProposals(String namespace, Filter<String> filter) {
+		// simple types have no attributes
+		return EmptyIterable.instance();
+	}
+	
+	@Override
+	public XsdElementDeclaration getElement(String namespace, String name) {
+		// simple types have no elements
+		return null;
+	}
+	
+	@Override
+	public Iterable<String> getElementNameProposals(String namespace, Filter<String> filter) {
+		// simple types have no elements
+		return EmptyIterable.instance();
 	}
 }

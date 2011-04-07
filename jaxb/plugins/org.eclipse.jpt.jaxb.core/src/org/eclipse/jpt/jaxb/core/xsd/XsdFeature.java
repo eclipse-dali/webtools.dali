@@ -9,19 +9,22 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.xsd.XSDFeature;
 
 
-public class XsdAdapter
-		extends AdapterImpl {
+public abstract class XsdFeature<A extends XSDFeature>
+		extends XsdComponent<A> {
 	
-	protected XsdAdapter() {
-		super();
+	protected XsdFeature(A xsdFeature) {
+		super(xsdFeature);
 	}
 	
 	
-	@Override
-	public boolean isAdapterForType(Object type) {
-		return type == XsdUtil.adapterFactory;
+	public A getXSDFeature() {
+		return getXSDComponent();
+	}
+	
+	public String getName() {
+		return getXSDFeature().getName();
 	}
 }

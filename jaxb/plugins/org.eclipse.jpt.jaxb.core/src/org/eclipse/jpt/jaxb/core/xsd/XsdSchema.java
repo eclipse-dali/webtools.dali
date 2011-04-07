@@ -22,20 +22,19 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDUtil;
 
 public class XsdSchema
-		extends XsdAdapter {
-	
-	protected final XSDSchema xsdSchema;
-	
-	
+		extends XsdComponent<XSDSchema> {
 	
 	XsdSchema(XSDSchema xsdSchema) {
-		super();
-		this.xsdSchema = xsdSchema;
+		super(xsdSchema);
 	}
 	
 	
+	public XSDSchema getXSDSchema() {
+		return getXSDComponent();
+	}
+	
 	public Iterable<String> getNamespaces() {
-		return new SnapshotCloneIterable(this.xsdSchema.getQNamePrefixToNamespaceMap().values());
+		return new SnapshotCloneIterable(getXSDSchema().getQNamePrefixToNamespaceMap().values());
 	}
 	
 	public Iterable<XsdTypeDefinition> getAllTypeDefinitions() {
@@ -99,11 +98,11 @@ public class XsdSchema
 	}
 	
 	protected Iterable<XSDTypeDefinition> getDeclaredXSDTypeDefinitions() {
-		return new SnapshotCloneIterable(this.xsdSchema.getTypeDefinitions());
+		return new SnapshotCloneIterable(getXSDSchema().getTypeDefinitions());
 	}
 	
 	protected Iterable<XSDTypeDefinition> getBuiltInXSDTypeDefinitions() {
-		return new SnapshotCloneIterable(this.xsdSchema.getSchemaForSchema().getTypeDefinitions());
+		return new SnapshotCloneIterable(getXSDSchema().getSchemaForSchema().getTypeDefinitions());
 	}
 	
 	protected Iterable<XSDTypeDefinition> getXSDTypeDefinitions(final String namespace) {
@@ -167,7 +166,7 @@ public class XsdSchema
 	}
 	
 	protected Iterable<XSDElementDeclaration> getXSDElementDeclarations() {
-		return new SnapshotCloneIterable(this.xsdSchema.getElementDeclarations());
+		return new SnapshotCloneIterable(getXSDSchema().getElementDeclarations());
 	}
 
 	public Iterable<String> getNamespaceProposals(Filter<String> filter) {

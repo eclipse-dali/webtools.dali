@@ -9,24 +9,28 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
-import org.eclipse.xsd.XSDElementDeclaration;
-import org.eclipse.xsd.XSDTypeDefinition;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.xsd.XSDConcreteComponent;
 
 
-public class XsdElementDeclaration
-		extends XsdFeature<XSDElementDeclaration> {
+public class XsdComponent<A extends XSDConcreteComponent>
+		extends AdapterImpl {
 	
-	XsdElementDeclaration(XSDElementDeclaration xsdElementDeclaration) {
-		super(xsdElementDeclaration);
+	protected final A xsdComponent;
+	
+	
+	protected XsdComponent(A xsdComponent) {
+		super();
+		this.xsdComponent = xsdComponent;
 	}
 	
 	
-	public XSDElementDeclaration getXSDElementDeclaration() {
-		return getXSDFeature();
+	public A getXSDComponent() {
+		return this.xsdComponent;
 	}
 	
-	public XsdTypeDefinition getType() {
-		XSDTypeDefinition xsdType = getXSDElementDeclaration().getTypeDefinition();
-		return (xsdType == null) ? null : (XsdTypeDefinition) XsdUtil.getAdapter(xsdType);
+	@Override
+	public boolean isAdapterForType(Object type) {
+		return type == XsdUtil.adapterFactory;
 	}
 }

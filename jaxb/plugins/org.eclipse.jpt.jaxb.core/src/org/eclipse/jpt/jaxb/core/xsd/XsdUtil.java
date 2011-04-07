@@ -27,8 +27,14 @@ import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.catalog.provisional.ICatalog;
 import org.eclipse.wst.xsd.contentmodel.internal.util.XSDSchemaLocatorAdapterFactory;
+import org.eclipse.xsd.XSDAttributeDeclaration;
+import org.eclipse.xsd.XSDAttributeGroupDefinition;
+import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDModelGroup;
+import org.eclipse.xsd.XSDModelGroupDefinition;
+import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSchemaContent;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
@@ -164,8 +170,18 @@ public class XsdUtil {
 				}
 				
 				@Override
-				public Object caseXSDSimpleTypeDefinition(XSDSimpleTypeDefinition object) {
-					return new XsdSimpleTypeDefinition(object);
+				public Object caseXSDAttributeDeclaration(XSDAttributeDeclaration object) {
+					return new XsdAttributeDeclaration(object);
+				}
+				
+				@Override
+				public Object caseXSDAttributeGroupDefinition(XSDAttributeGroupDefinition object) {
+					return new XsdAttributeGroupDefinition(object);
+				}
+				
+				@Override
+				public Object caseXSDAttributeUse(XSDAttributeUse object) {
+					return new XsdAttributeUse(object);
 				}
 				
 				@Override
@@ -176,6 +192,26 @@ public class XsdUtil {
 				@Override
 				public Object caseXSDElementDeclaration(XSDElementDeclaration object) {
 					return new XsdElementDeclaration(object);
+				}
+				
+				@Override
+				public Object caseXSDModelGroup(XSDModelGroup object) {
+					return new XsdModelGroup(object);
+				}
+				
+				@Override
+				public Object caseXSDModelGroupDefinition(XSDModelGroupDefinition object) {
+					return new XsdModelGroupDefinition(object);
+				}
+				
+				@Override
+				public Object caseXSDParticle(XSDParticle object) {
+					return new XsdParticle(object);
+				}
+				
+				@Override
+				public Object caseXSDSimpleTypeDefinition(XSDSimpleTypeDefinition object) {
+					return new XsdSimpleTypeDefinition(object);
 				}
 			};
 			

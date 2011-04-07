@@ -9,22 +9,27 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
+import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 
-public abstract class XsdTypeDefinition
-		extends XsdAdapter {
+public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
+		extends XsdComponent<A> {
 	
-	protected final XSDTypeDefinition xsdTypeDefinition;
-	
-	
-	protected XsdTypeDefinition(XSDTypeDefinition xsdTypeDefinition) {
-		super();
-		this.xsdTypeDefinition = xsdTypeDefinition;
+	protected XsdTypeDefinition(A xsdTypeDefinition) {
+		super(xsdTypeDefinition);
 	}
 	
 	
 	public String getName() {
-		return this.xsdTypeDefinition.getName();
+		return getXSDComponent().getName();
 	}
+	
+	public abstract XsdAttributeUse getAttribute(String namespace, String name);
+	
+	public abstract Iterable<String> getAttributeNameProposals(String namespace, Filter<String> filter);
+	
+	public abstract XsdElementDeclaration getElement(String namespace, String name);
+	
+	public abstract Iterable<String> getElementNameProposals(String namespace, Filter<String> filter);
 }
