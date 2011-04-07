@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
+import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
@@ -103,6 +104,14 @@ public class GenericPackage
 	
 	public String getNamespace() {
 		return (getPackageInfo() == null) ? "" : getPackageInfo().getXmlSchema().getNamespace();
+	}
+	
+	public XmlNsForm getAttributeFormDefault() {
+		return (getPackageInfo() == null) ? XmlNsForm.UNSET : getPackageInfo().getXmlSchema().getAttributeFormDefault();
+	}
+	
+	public XmlNsForm getElementFormDefault() {
+		return (getPackageInfo() == null) ? XmlNsForm.UNSET : getPackageInfo().getXmlSchema().getElementFormDefault();
 	}
 	
 	public XsdSchema getXsdSchema() {

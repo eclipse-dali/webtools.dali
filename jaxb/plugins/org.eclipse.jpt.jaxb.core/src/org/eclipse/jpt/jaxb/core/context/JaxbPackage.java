@@ -47,6 +47,16 @@ public interface JaxbPackage
 	String getNamespace();
 	
 	/**
+	 * Return the attribute form default associated with this package
+	 */
+	XmlNsForm getAttributeFormDefault();
+	
+	/**
+	 * Return the element form default associated with this package
+	 */
+	XmlNsForm getElementFormDefault();
+	
+	/**
 	 * Return whether this package has no useful information.
 	 * Useful information includes:
 	 * 	- annotated package-info.java
