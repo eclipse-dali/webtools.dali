@@ -47,6 +47,12 @@ public interface JaxbContainmentAnnotation
 	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	/**
+	 * Return whether the specified position touches the 'name' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean nameTouches(int pos, CompilationUnit astRoot);
+
+	/**
 	 * Corresponds to the 'namespace' element of the XmlAttribute annotation.
 	 * Return null if the element does not exist in Java.
 	 */
@@ -64,6 +70,12 @@ public interface JaxbContainmentAnnotation
 	 * does not exist return the {@link TextRange} for the XmlAttribute annotation.
 	 */
 	TextRange getNamespaceTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return whether the specified position touches the 'namespace' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean namespaceTouches(int pos, CompilationUnit astRoot);
 
 	/**
 	 * Corresponds to the 'required' element of the XmlAttribute annotation.
