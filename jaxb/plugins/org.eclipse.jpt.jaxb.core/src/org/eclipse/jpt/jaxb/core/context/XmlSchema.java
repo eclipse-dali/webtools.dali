@@ -55,26 +55,54 @@ public interface XmlSchema
 	void setLocation(String location);
 		String LOCATION_PROPERTY = "location"; //$NON-NLS-1$
 		String DEFAULT_LOCATION = "##generate"; //$NON-NLS-1$
-
-
+	
+	
+	// **************** attribute form default ********************************
+	
 	/**
-	 * Corresponds to the XmlSchema annotation 'attributeFormDefault' element
+	 * Return the specified attribute form default or XmlNsForm.UNSET (default value)
 	 */
 	XmlNsForm getAttributeFormDefault();
-	void setAttributeFormDefault(XmlNsForm newAttributeFormDefault);
-		String ATTRIBUTE_FROM_DEFAULT_PROPERTY = "atributeFormDefault"; //$NON-NLS-1$
-		XmlNsForm DEFAULT_ATTRIBUTE_FORM_DEFAULT = XmlNsForm.UNSET;
-
-
+	
 	/**
-	 * Corresponds to the XmlSchema annotation 'elementFormDefault' element
+	 * Return the specified attribute form default, null if it is not specified
+	 */
+	XmlNsForm getSpecifiedAttributeFormDefault();
+	
+	/**
+	 * Set the attribute form default, null to unspecify
+	 */
+	void setSpecifiedAttributeFormDefault(XmlNsForm attributeFormDefault);
+	
+	/**
+	 * String constant associated with changes to the specified attribute form default
+	 */
+	String SPECIFIED_ATTRIBUTE_FORM_DEFAULT_PROPERTY = "attributeFormDefault"; //$NON-NLS-1$
+	
+	
+	// **************** element form default ********************************
+	
+	/**
+	 * Return the specified element form default or XmlNsForm.UNSET (default value)
 	 */
 	XmlNsForm getElementFormDefault();
-	void setElementFormDefault(XmlNsForm newElementFormDefault);
-		String ELEMENT_FROM_DEFAULT_PROPERTY = "elementFormDefault"; //$NON-NLS-1$
-		XmlNsForm DEFAULT_ELEMENT_FORM_DEFAULT = XmlNsForm.UNSET;
-
-
+	
+	/**
+	 * Return the specified element form default, null if it is not specified
+	 */
+	XmlNsForm getSpecifiedElementFormDefault();
+	
+	/**
+	 * Set the element form default, null to unspecify
+	 */
+	void setSpecifiedElementFormDefault(XmlNsForm elementFormDefault);
+	
+	/**
+	 * String constant associated with changes to the specified attribute form default
+	 */
+	String SPECIFIED_ELEMENT_FORM_DEFAULT_PROPERTY = "elementFormDefault"; //$NON-NLS-1$
+	
+	
 	// ********** xml namespace prefixes **********
 
 	ListIterable<XmlNs> getXmlNsPrefixes();

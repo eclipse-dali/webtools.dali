@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
@@ -17,13 +18,20 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.eclipse.xsd.XSDForm;
 
 public class GenericJavaXmlSchema
 		extends AbstractJavaContextNode
@@ -33,9 +41,9 @@ public class GenericJavaXmlSchema
 	
 	protected String location;
 	
-	protected XmlNsForm attributeFormDefault;
+	protected XmlNsForm specifiedAttributeFormDefault;
 	
-	protected XmlNsForm elementFormDefault;
+	protected XmlNsForm specifiedElementFormDefault;
 	
 	protected final XmlNsPrefixContainer xmlNsPrefixContainer;
 	
@@ -44,8 +52,8 @@ public class GenericJavaXmlSchema
 		super(parent);
 		this.specifiedNamespace = this.getResourceNamespace();
 		this.location = this.getResourceLocation();
-		this.attributeFormDefault = this.getResourceAttributeFormDefault();
-		this.elementFormDefault = this.getResourceElementFormDefault();
+		this.specifiedAttributeFormDefault = getResourceAttributeFormDefault();
+		this.specifiedElementFormDefault = getResourceElementFormDefault();
 		this.xmlNsPrefixContainer = new XmlNsPrefixContainer();
 	}
 	
@@ -57,8 +65,8 @@ public class GenericJavaXmlSchema
 		super.synchronizeWithResourceModel();
 		this.setSpecifiedNamespace_(this.getResourceNamespace());
 		this.setLocation_(this.getResourceLocation());
-		this.setAttributeFormDefault_(this.getResourceAttributeFormDefault());
-		this.setElementFormDefault_(this.getResourceElementFormDefault());
+		this.setSpecifiedAttributeFormDefault_(getResourceAttributeFormDefault());
+		this.setSpecifiedElementFormDefault_(getResourceElementFormDefault());
 		this.syncXmlNsPrefixes();
 	}
 	
@@ -71,6 +79,10 @@ public class GenericJavaXmlSchema
 	@Override
 	public JaxbPackageInfo getParent() {
 		return (JaxbPackageInfo) super.getParent();
+	}
+	
+	public JaxbPackage getJaxbPackage() {
+		return getParent().getJaxbPackage();
 	}
 	
 	protected JavaResourcePackage getResourcePackage() {
@@ -135,18 +147,22 @@ public class GenericJavaXmlSchema
 	// ********** attribute form default **********
 	
 	public XmlNsForm getAttributeFormDefault() {
-		return this.attributeFormDefault;
+		return (this.specifiedAttributeFormDefault == null) ? XmlNsForm.UNSET : this.specifiedAttributeFormDefault;
 	}
 	
-	public void setAttributeFormDefault(XmlNsForm xmlNsForm) {
-		this.getXmlSchemaAnnotation().setAttributeFormDefault(XmlNsForm.toJavaResourceModel(xmlNsForm));
-		this.setAttributeFormDefault_(xmlNsForm);
+	public XmlNsForm getSpecifiedAttributeFormDefault() {
+		return this.specifiedAttributeFormDefault;
 	}
 	
-	protected void setAttributeFormDefault_(XmlNsForm xmlNsForm) {
-		XmlNsForm old = this.attributeFormDefault;
-		this.attributeFormDefault = xmlNsForm;
-		this.firePropertyChanged(ATTRIBUTE_FROM_DEFAULT_PROPERTY, old, xmlNsForm);
+	public void setSpecifiedAttributeFormDefault(XmlNsForm attributeFormDefault) {
+		getXmlSchemaAnnotation().setAttributeFormDefault(XmlNsForm.toJavaResourceModel(attributeFormDefault));
+		setSpecifiedAttributeFormDefault_(attributeFormDefault);
+	}
+	
+	protected void setSpecifiedAttributeFormDefault_(XmlNsForm attributeFormDefault) {
+		XmlNsForm old = this.specifiedAttributeFormDefault;
+		this.specifiedAttributeFormDefault = attributeFormDefault;
+		firePropertyChanged(SPECIFIED_ATTRIBUTE_FORM_DEFAULT_PROPERTY, old, attributeFormDefault);
 	}
 	
 	protected XmlNsForm getResourceAttributeFormDefault() {
@@ -157,18 +173,22 @@ public class GenericJavaXmlSchema
 	// ********** element form default **********
 	
 	public XmlNsForm getElementFormDefault() {
-		return this.elementFormDefault;
+		return (this.specifiedElementFormDefault == null) ? XmlNsForm.UNSET : this.specifiedElementFormDefault;
 	}
 	
-	public void setElementFormDefault(XmlNsForm xmlNsForm) {
-		this.getXmlSchemaAnnotation().setElementFormDefault(XmlNsForm.toJavaResourceModel(xmlNsForm));
-		this.setElementFormDefault_(xmlNsForm);
+	public XmlNsForm getSpecifiedElementFormDefault() {
+		return this.specifiedElementFormDefault;
 	}
 	
-	protected void setElementFormDefault_(XmlNsForm xmlNsForm) {
-		XmlNsForm old = this.elementFormDefault;
-		this.elementFormDefault = xmlNsForm;
-		this.firePropertyChanged(ELEMENT_FROM_DEFAULT_PROPERTY, old, xmlNsForm);
+	public void setSpecifiedElementFormDefault(XmlNsForm elementFormDefault) {
+		getXmlSchemaAnnotation().setElementFormDefault(XmlNsForm.toJavaResourceModel(elementFormDefault));
+		setSpecifiedElementFormDefault_(elementFormDefault);
+	}
+	
+	protected void setSpecifiedElementFormDefault_(XmlNsForm elementFormDefault) {
+		XmlNsForm old = this.specifiedElementFormDefault;
+		this.specifiedElementFormDefault = elementFormDefault;
+		firePropertyChanged(SPECIFIED_ELEMENT_FORM_DEFAULT_PROPERTY, old, elementFormDefault);
 	}
 	
 	protected XmlNsForm getResourceElementFormDefault() {
@@ -255,6 +275,38 @@ public class GenericJavaXmlSchema
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return getXmlSchemaAnnotation().getTextRange(astRoot);
+	}
+	
+	
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		XsdSchema schema = getJaxbPackage().getXsdSchema();
+		if (schema != null) {
+			if (formConflicts(getAttributeFormDefault(), schema.getXSDComponent().getAttributeFormDefault())) {
+				messages.add(
+				DefaultValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JaxbValidationMessages.XML_SCHEMA__MISMATCHED_ATTRIBUTE_FORM_DEFAULT,
+					this,
+					getXmlSchemaAnnotation().getAttributeFormDefaultTextRange(astRoot)));
+			}
+			
+			if (formConflicts(getElementFormDefault(), schema.getXSDComponent().getElementFormDefault())) {
+				messages.add(
+				DefaultValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JaxbValidationMessages.XML_SCHEMA__MISMATCHED_ELEMENT_FORM_DEFAULT,
+					this,
+					getXmlSchemaAnnotation().getElementFormDefaultTextRange(astRoot)));
+			}
+		}
+	}
+	
+	protected boolean formConflicts(XmlNsForm form, XSDForm xsdForm) {
+		return (form == XmlNsForm.QUALIFIED) ^ (xsdForm == XSDForm.QUALIFIED_LITERAL);
 	}
 	
 	

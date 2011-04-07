@@ -173,27 +173,28 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
-	
-		assertNull(contextXmlSchema.getAttributeFormDefault());
 		
-		contextXmlSchema.setAttributeFormDefault(XmlNsForm.QUALIFIED);
+		assertNull(contextXmlSchema.getSpecifiedAttributeFormDefault());
+		assertEquals(XmlNsForm.UNSET, contextXmlSchema.getAttributeFormDefault());
+		
+		contextXmlSchema.setSpecifiedAttributeFormDefault(XmlNsForm.QUALIFIED);
 		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm.QUALIFIED, schemaAnnotation.getAttributeFormDefault());
 		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getAttributeFormDefault());
 		
-		contextXmlSchema.setAttributeFormDefault(XmlNsForm.UNQUALIFIED);
+		contextXmlSchema.setSpecifiedAttributeFormDefault(XmlNsForm.UNQUALIFIED);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm.UNQUALIFIED, schemaAnnotation.getAttributeFormDefault());
 		assertEquals(XmlNsForm.UNQUALIFIED, contextXmlSchema.getAttributeFormDefault());
 		
 		 //set another annotation so the context model is not blown away by removing the XmlSchema annotation
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
-		contextXmlSchema.setAttributeFormDefault(null);
+		contextXmlSchema.setSpecifiedAttributeFormDefault(null);
 		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
 		assertNull(schemaAnnotation.getAttributeFormDefault());
-		assertNull(contextXmlSchema.getAttributeFormDefault());
-
+		assertNull(contextXmlSchema.getSpecifiedAttributeFormDefault());
+		
 		//set attribute form default again, this time starting with no XmlSchema annotation
-		contextXmlSchema.setAttributeFormDefault(XmlNsForm.QUALIFIED);
+		contextXmlSchema.setSpecifiedAttributeFormDefault(XmlNsForm.QUALIFIED);
 		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm.QUALIFIED, schemaAnnotation.getAttributeFormDefault());
 		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getAttributeFormDefault());
@@ -204,8 +205,9 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
-
-		assertNull(contextXmlSchema.getAttributeFormDefault());
+		
+		assertNull(contextXmlSchema.getSpecifiedAttributeFormDefault());
+		assertEquals(XmlNsForm.UNSET, contextXmlSchema.getAttributeFormDefault());
 		
 		//set the attribute form default value to QUALIFIED
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
@@ -217,9 +219,9 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 					JAXB.XML_NS_FORM__QUALIFIED);
 			}
 		});
-
+		
+		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getSpecifiedAttributeFormDefault());
 		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getAttributeFormDefault());
-
 		
 		//set the attribute form default value to UNQUALIFIED
 		annotatedElement.edit(new Member.Editor() {
@@ -231,16 +233,18 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 			}
 		});
 
+		assertEquals(XmlNsForm.UNQUALIFIED, contextXmlSchema.getSpecifiedAttributeFormDefault());
 		assertEquals(XmlNsForm.UNQUALIFIED, contextXmlSchema.getAttributeFormDefault());
-
+		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				GenericJavaXmlSchemaTests.this.removeXmlSchemaAnnotation(declaration);
 			}
 		});
-
+		
 		contextXmlSchema = contextPackageInfo.getXmlSchema();
-		assertNull(contextXmlSchema.getAttributeFormDefault());
+		assertNull(contextXmlSchema.getSpecifiedAttributeFormDefault());
+		assertEquals(XmlNsForm.UNSET, contextXmlSchema.getAttributeFormDefault());
 	}
 	
 	public void testModifyElementFormDefault() throws Exception {
@@ -248,27 +252,28 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
-	
-		assertNull(contextXmlSchema.getElementFormDefault());
 		
-		contextXmlSchema.setElementFormDefault(XmlNsForm.QUALIFIED);
+		assertNull(contextXmlSchema.getSpecifiedElementFormDefault());
+		assertEquals(XmlNsForm.UNSET, contextXmlSchema.getElementFormDefault());
+		
+		contextXmlSchema.setSpecifiedElementFormDefault(XmlNsForm.QUALIFIED);
 		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm.QUALIFIED, schemaAnnotation.getElementFormDefault());
 		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getElementFormDefault());
 		
-		contextXmlSchema.setElementFormDefault(XmlNsForm.UNQUALIFIED);
+		contextXmlSchema.setSpecifiedElementFormDefault(XmlNsForm.UNQUALIFIED);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm.UNQUALIFIED, schemaAnnotation.getElementFormDefault());
 		assertEquals(XmlNsForm.UNQUALIFIED, contextXmlSchema.getElementFormDefault());
 		
 		 //set another annotation so the context model is not blown away by removing the XmlSchema annotation
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
-		contextXmlSchema.setElementFormDefault(null);
+		contextXmlSchema.setSpecifiedElementFormDefault(null);
 		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
 		assertNull(schemaAnnotation.getElementFormDefault());
-		assertNull(contextXmlSchema.getElementFormDefault());
-
+		assertNull(contextXmlSchema.getSpecifiedElementFormDefault());
+		
 		//set element form default again, this time starting with no XmlSchema annotation
-		contextXmlSchema.setElementFormDefault(XmlNsForm.QUALIFIED);
+		contextXmlSchema.setSpecifiedElementFormDefault(XmlNsForm.QUALIFIED);
 		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm.QUALIFIED, schemaAnnotation.getElementFormDefault());
 		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getElementFormDefault());
@@ -280,7 +285,8 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		assertNull(contextXmlSchema.getElementFormDefault());
+		assertNull(contextXmlSchema.getSpecifiedElementFormDefault());
+		assertEquals(XmlNsForm.UNSET, contextXmlSchema.getElementFormDefault());
 		
 		//set the element form default value to QUALIFIED
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
@@ -292,9 +298,9 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 					JAXB.XML_NS_FORM__QUALIFIED);
 			}
 		});
-
+		
+		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getSpecifiedElementFormDefault());
 		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getElementFormDefault());
-
 		
 		//set the element form default value to UNQUALIFIED
 		annotatedElement.edit(new Member.Editor() {
@@ -305,19 +311,21 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 					JAXB.XML_NS_FORM__UNQUALIFIED);
 			}
 		});
-
+		
+		assertEquals(XmlNsForm.UNQUALIFIED, contextXmlSchema.getSpecifiedElementFormDefault());
 		assertEquals(XmlNsForm.UNQUALIFIED, contextXmlSchema.getElementFormDefault());
-
+		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				GenericJavaXmlSchemaTests.this.removeXmlSchemaAnnotation(declaration);
 			}
 		});
-
+		
 		contextXmlSchema = contextPackageInfo.getXmlSchema();
-		assertNull(contextXmlSchema.getElementFormDefault());
+		assertNull(contextXmlSchema.getSpecifiedElementFormDefault());
+		assertEquals(XmlNsForm.UNSET, contextXmlSchema.getElementFormDefault());
 	}
-
+	
 	public void testGetXmlNsPrefixes() throws Exception {
 		this.createPackageInfoWithXmlSchema();
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
