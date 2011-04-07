@@ -11,8 +11,10 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContainmentMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -23,6 +25,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlList;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JaxbContainmentAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
@@ -31,6 +34,9 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdComponent;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -158,12 +164,11 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 	//************ XmlAttribute.namespace ***************
 
 	public String getNamespace() {
-		return getSpecifiedNamespace() == null ? getDefaultNamespace() : getSpecifiedNamespace();
+		return StringTools.stringIsEmpty(getSpecifiedNamespace()) ? // namespace="" is actually interpreted as unspecified by JAXB tools
+				getDefaultNamespace() : getSpecifiedNamespace();
 	}
 
-	public String getDefaultNamespace() {
-		return getPersistentAttribute().getParent().getNamespace();
-	}
+	public abstract String getDefaultNamespace();
 
 	public String getSpecifiedNamespace() {
 		return this.specifiedNamespace;
@@ -558,8 +563,13 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.xmlAttachmentRef = xmlAttachmentRef;
 		firePropertyChanged(XML_ATTACHMENT_REF_PROPERTY, oldXmlAttachmentRef, xmlAttachmentRef);
 	}
-
-
+	
+	
+	// **************** misc **************************************************
+	
+	public abstract XsdComponent getXsdComponent();
+	
+	
 	// **************** content assist **************
 
 	@Override
@@ -567,6 +577,14 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
+		}
+		
+		if (namespaceTouches(pos, astRoot)) {
+			return getNamespaceProposals(filter);
+		}
+		
+		if (nameTouches(pos, astRoot)) {
+			return getNameProposals(filter);
 		}
 		
 		if (this.xmlSchemaType != null) {
@@ -578,12 +596,44 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		
 		return EmptyIterable.instance();
 	}
+	
+	protected boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		A annotation = getMappingAnnotation();
+		return (annotation == null) ? false : annotation.namespaceTouches(pos, astRoot);
+	}
+	
+	protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
+		XsdSchema schema = getJaxbPackage().getXsdSchema();
+		if (schema == null) {
+			return EmptyIterable.instance();
+		}
+		return schema.getNamespaceProposals(filter);
+	}
+	
+	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
+		A annotation = getMappingAnnotation();
+		return (annotation == null) ? false : annotation.nameTouches(pos, astRoot);
+	}
+	
+	protected Iterable<String> getNameProposals(Filter<String> filter) {
+		XsdTypeDefinition type = getPersistentClass().getXsdTypeDefinition();
+		if (type == null) {
+			return EmptyIterable.instance();
+		}
+		return getNameProposals(type, getNamespace(), filter);
+	}
+	
+	protected abstract Iterable<String> getNameProposals(XsdTypeDefinition type, String namespace, Filter<String> filter);
+	
 
 	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		
+		validateNameAndNamespace(messages, reporter, astRoot);
+		
 		this.xmlAdaptable.validate(messages, reporter, astRoot);
 		if (this.xmlSchemaType != null) {
 			this.xmlSchemaType.validate(messages, reporter, astRoot);
@@ -600,5 +650,55 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		if (this.xmlAttachmentRef != null) {
 			this.xmlAttachmentRef.validate(messages, reporter, astRoot);
 		}
+	}
+	
+	protected void validateNameAndNamespace(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		// 1. name may not be absent (may not be specified as "")
+		// 2. namespace:name must exist within enclosing type, if that can be resolved
+		
+		String name = getName();
+		String namespace = getNamespace();
+		if (StringTools.stringIsEmpty(name)) {
+			messages.add(
+				DefaultValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					getMissingNameMessage(),
+					this,
+					getNameTextRange(astRoot)));
+		}
+		else {
+			XsdTypeDefinition type = getPersistentClass().getXsdTypeDefinition();
+			
+			if (type != null) {
+				XsdComponent xsdComponent = getXsdComponent();
+				if (xsdComponent == null) {
+					messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						getUnresolvedComponentMessage(),
+						new String[] {name, namespace},
+						this,
+						getValidationTextRange(astRoot)));
+				}
+			}
+		}
+	}
+	
+	protected abstract String getMissingNameMessage();
+	
+	protected abstract String getUnresolvedComponentMessage();
+	
+	protected TextRange getNamespaceTextRange(CompilationUnit astRoot) {
+		A annotation = getMappingAnnotation();
+		return (annotation == null) ? null : getTextRange(annotation.getNamespaceTextRange(astRoot), astRoot);
+	}
+	
+	protected TextRange getNameTextRange(CompilationUnit astRoot) {
+		A annotation = getMappingAnnotation();
+		return (annotation == null) ? null : getTextRange(annotation.getNameTextRange(astRoot), astRoot);
+	}
+	
+	protected TextRange getTextRange(TextRange textRange, CompilationUnit astRoot) {
+		return (textRange != null) ? textRange : getParent().getValidationTextRange(astRoot);
 	}
 }

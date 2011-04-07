@@ -11,12 +11,17 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
+import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdComponent;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -219,5 +224,42 @@ public class GenericJavaXmlElementMapping
 		if (this.getXmlElementWrapper() != null) {
 			this.getXmlElementWrapper().validate(messages, reporter, astRoot);
 		}
+	}
+	
+	
+	// **************** misc **************************************************
+	
+	@Override
+	public String getDefaultNamespace() {
+		return (getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
+				getPersistentClass().getNamespace()
+				: "";
+	}
+	
+	@Override
+	public XsdComponent getXsdComponent() {
+		XsdTypeDefinition xsdType = getPersistentClass().getXsdTypeDefinition();
+		return (xsdType == null) ? null : xsdType.getElement(getNamespace(), getName());
+	}
+	
+	
+	// **************** content assist ****************************************
+	
+	@Override
+	protected Iterable<String> getNameProposals(XsdTypeDefinition type, String namespace, Filter<String> filter) {
+		return type.getElementNameProposals(namespace, filter);
+	}
+	
+	
+	// **************** validation ********************************************
+	
+	@Override
+	protected String getMissingNameMessage() {
+		return JaxbValidationMessages.XML_ELEMENT__MISSING_NAME;
+	}
+	
+	@Override
+	protected String getUnresolvedComponentMessage() {
+		return JaxbValidationMessages.XML_ELEMENT__UNRESOLVED_ELEMENT;
 	}
 }
