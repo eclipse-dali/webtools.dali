@@ -144,18 +144,16 @@
 					value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
 			</possibleChildren>
 			
-			<!--
 			<actionProvider
-				class="org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorActionProvider"
-				id="org.eclipse.jpt.jpa.ui.jpaActionProvider">
+				class="org.eclipse.jpt.jaxb.ui.internal.navigator.JaxbNavigatorActionProvider"
+				id="org.eclipse.jpt.jaxb.ui.jaxbActionProvider">
 				<enablement>
 					<and>
 						<instanceof
-							value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
+							value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
 					</and>
 				</enablement>
 			</actionProvider>
-			-->
 			
 			<!--
 			<commonSorter
