@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009  Oracle. 
+ *  Copyright (c) 2008, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -30,8 +30,9 @@ import org.eclipse.ui.actions.BaseSelectionListenerAction;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 
-public class OpenJpaResourceAction extends BaseSelectionListenerAction
-{
+public class OpenJpaResourceAction
+		extends BaseSelectionListenerAction {
+	
 	private JpaContextNode selectedNode;
 	
 	

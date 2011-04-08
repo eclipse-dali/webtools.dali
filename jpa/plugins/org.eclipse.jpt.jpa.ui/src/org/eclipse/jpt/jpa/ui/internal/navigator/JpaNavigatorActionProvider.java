@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -20,18 +20,23 @@ import org.eclipse.ui.navigator.ICommonActionConstants;
 import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 import org.eclipse.ui.navigator.ICommonMenuConstants;
 
-public class JpaNavigatorActionProvider extends CommonActionProvider
-{
+public class JpaNavigatorActionProvider
+		extends CommonActionProvider {
+	
 	private OpenJpaResourceAction openAction;
+	
 	
 	public JpaNavigatorActionProvider() {
 		super();
 	}
 	
+	
+	@Override
 	public void init(ICommonActionExtensionSite aConfig) {
 		openAction = new OpenJpaResourceAction();
 	}
 	
+	@Override
 	public void setContext(ActionContext aContext) {
 		if (aContext != null && aContext.getSelection() instanceof IStructuredSelection) {
 			IStructuredSelection selection = (IStructuredSelection) aContext.getSelection();
@@ -41,12 +46,14 @@ public class JpaNavigatorActionProvider extends CommonActionProvider
 		super.setContext(aContext);
 	}
 	
+	@Override
 	public void fillActionBars(IActionBars theActionBars) {
 		if (openAction.isEnabled()) {
 			theActionBars.setGlobalActionHandler(ICommonActionConstants.OPEN, openAction);
 		}
 	}
 	
+	@Override
 	public void fillContextMenu(IMenuManager aMenu) {
 		if (getContext() == null || getContext().getSelection().isEmpty()) {
 			return;
