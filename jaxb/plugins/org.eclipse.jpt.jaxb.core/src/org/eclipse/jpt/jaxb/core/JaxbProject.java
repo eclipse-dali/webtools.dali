@@ -27,6 +27,7 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
+import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -204,12 +205,32 @@ public interface JaxbProject
 	JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind);
 	
 	
-	// **************** jaxb.index resources *****************************************
+	// **************** jaxb.index resources **********************************
 	
 	/**
 	 * Return all jaxb.index resource models within the project
 	 */
 	Iterable<JaxbIndexResource> getJaxbIndexResources();
+	
+	/**
+	 * Return the first jaxb.index resource model (could be multiple if there are multiple locations
+	 * for a given package) with the given package name
+	 */
+	JaxbIndexResource getJaxbIndexResource(String packageName);
+	
+	
+	// **************** jaxb.properties resources *****************************
+	
+	/**
+	 * Return all jaxb.properties resource models within the project
+	 */
+	Iterable<JaxbPropertiesResource> getJaxbPropertiesResources();
+	
+	/**
+	 * Return the first jaxb.properties resource model (could be multiple if there are multiple locations
+	 * for a given package) with the given package name
+	 */
+	JaxbPropertiesResource getJaxbPropertiesResource(String packageName);
 	
 	
 	// **************** context model *****************************************

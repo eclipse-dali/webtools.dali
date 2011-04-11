@@ -121,6 +121,16 @@ public class JptJaxbCorePlugin
 	 */
 	public static final JptResourceType JAXB_INDEX_RESOURCE_TYPE = new JptResourceType(JAXB_INDEX_CONTENT_TYPE);
 	
+	/**
+	 * The content type for jaxb.properties files
+	 */
+	public static final IContentType JAXB_PROPERTIES_CONTENT_TYPE = getJaxbContentType("jaxbProperties");
+	
+	/**
+	 * The resource type for jaxb.properties files
+	 */
+	public static final JptResourceType JAXB_PROPERTIES_RESOURCE_TYPE = new JptResourceType(JAXB_PROPERTIES_CONTENT_TYPE);
+	
 	private static IContentType getJaxbContentType(String contentType) {
 		return getContentType(CONTENT_PREFIX_ + contentType);
 	}

@@ -54,6 +54,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDe
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlValueAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.jaxbindex.JaxbIndexResourceModelProvider;
+import org.eclipse.jpt.jaxb.core.internal.resource.jaxbprops.JaxbPropertiesResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
@@ -123,7 +124,8 @@ public abstract class AbstractJaxb_2_1_PlatformDefinition
 		return new JaxbResourceModelProvider[] {
 			JavaResourceModelProvider.instance(),
 			JavaPackageInfoResourceModelProvider.instance(),
-			JaxbIndexResourceModelProvider.instance()};
+			JaxbIndexResourceModelProvider.instance(),
+			JaxbPropertiesResourceModelProvider.instance()};
 	}
 	
 	

@@ -77,6 +77,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
+import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
@@ -899,7 +900,7 @@ public abstract class AbstractJaxbProject
 //	}
 	
 	
-	// **************** jaxb.index resources *****************************************
+	// **************** jaxb.index resources **********************************
 	
 	public Iterable<JaxbIndexResource> getJaxbIndexResources() {
 		return new TransformationIterable<JaxbFile, JaxbIndexResource>(getJaxbFiles(JptJaxbCorePlugin.JAXB_INDEX_CONTENT_TYPE)) {
@@ -908,6 +909,36 @@ public abstract class AbstractJaxbProject
 				return (JaxbIndexResource) o.getResourceModel();
 			}
 		};
+	}
+	
+	public JaxbIndexResource getJaxbIndexResource(String packageName) {
+		for (JaxbIndexResource jir : getJaxbIndexResources()) {
+			if (packageName.equals(jir.getPackageName())) {
+				return jir;
+			}
+		}
+		return null;
+	}
+	
+	
+	// **************** jaxb.properties resources *****************************
+	
+	public Iterable<JaxbPropertiesResource> getJaxbPropertiesResources() {
+		return new TransformationIterable<JaxbFile, JaxbPropertiesResource>(getJaxbFiles(JptJaxbCorePlugin.JAXB_PROPERTIES_CONTENT_TYPE)) {
+			@Override
+			protected JaxbPropertiesResource transform(JaxbFile o) {
+				return (JaxbPropertiesResource) o.getResourceModel();
+			}
+		};
+	}
+	
+	public JaxbPropertiesResource getJaxbPropertiesResource(String packageName) {
+		for (JaxbPropertiesResource jpr : getJaxbPropertiesResources()) {
+			if (packageName.equals(jpr.getPackageName())) {
+				return jpr;
+			}
+		}
+		return null;
 	}
 	
 	

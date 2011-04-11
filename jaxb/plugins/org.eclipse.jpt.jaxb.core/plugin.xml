@@ -32,6 +32,13 @@
 			priority="high"
 			file-names="jaxb.index"/>
 		
+		<content-type
+			id="org.eclipse.jpt.jaxb.core.content.jaxbProperties"
+			name="%JAXB_PROPERTIES_CONTENT"
+			base-type="org.eclipse.jdt.core.javaProperties"
+			priority="high"
+			file-names="jaxb.properties"/>
+		
 	</extension>
 	
 	<extension 
@@ -301,6 +308,7 @@
 				<rules>
 					<contentType id="org.eclipse.jdt.core.javaSource" exactMatch="false"/>
 					<contentType id="org.eclipse.jpt.core.content.javaPackageInfo" exactMatch="false"/>
+					<contentType id="org.eclipse.jpt.jaxb.core.content.jaxbProperties" exactMatch="false"/>
 				</rules>
 			</include>
 		</validator>
