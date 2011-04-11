@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2;
 
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
-import org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_Factory;
 import org.eclipse.jpt.jaxb.core.internal.jaxb22.AbstractJaxb_2_2_PlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1.ELJaxb_2_1_Factory;
 
 
 public class ELJaxb_2_2_PlatformDefinition
@@ -41,6 +41,6 @@ public class ELJaxb_2_2_PlatformDefinition
 	}
 	
 	public JaxbFactory getFactory() {
-		return GenericJaxb_2_1_Factory.instance();
+		return ELJaxb_2_1_Factory.instance();
 	}
 }
