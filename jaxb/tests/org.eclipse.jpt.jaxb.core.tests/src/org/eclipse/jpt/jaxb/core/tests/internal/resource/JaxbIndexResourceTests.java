@@ -48,7 +48,6 @@ public class JaxbIndexResourceTests
 		jaxbIndex.setContents(inputStream(classNames), true, false, null);
 	}
 	
-	
 	private InputStream inputStream(String... classNames) {
 		StringBuffer sb = new StringBuffer();
 		for (String className : classNames) {
