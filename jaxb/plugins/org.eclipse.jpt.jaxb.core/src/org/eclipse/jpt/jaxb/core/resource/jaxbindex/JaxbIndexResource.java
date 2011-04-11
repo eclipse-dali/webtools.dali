@@ -15,5 +15,7 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 public interface JaxbIndexResource
 		extends JptResourceModel {
 	
+	String getPackageName();
+	
 	Iterable<String> getFullyQualifiedClassNames();
 }

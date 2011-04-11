@@ -37,9 +37,11 @@ public class JaxbIndexResourceImpl
 			new ListenerList<JptResourceModelListener>(JptResourceModelListener.class);
 	
 	
-	protected final List<String> classNames = new Vector<String>();
-	
 	protected IFile file;
+	
+	protected String packageName;
+	
+	protected final List<String> classNames = new Vector<String>();
 	
 	
 	public JaxbIndexResourceImpl(IFile file) {
@@ -48,9 +50,18 @@ public class JaxbIndexResourceImpl
 			throw new IllegalArgumentException("file cannot be null");
 		}
 		this.file = file;
+		this.packageName = buildPackageName();
 		buildClassNames();
 	}
 	
+	
+	protected String buildPackageName() {
+		IJavaElement javaElement = JavaCore.create(this.file.getParent());
+		if (javaElement != null && javaElement.getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
+			return ((IPackageFragment) javaElement).getElementName();
+		}
+		return null;
+	}
 	
 	private void buildClassNames() {
 		InputStream stream = null;
@@ -87,6 +98,10 @@ public class JaxbIndexResourceImpl
 		}
 	}
 	
+	public String getPackageName() {
+		return this.packageName;
+	}
+	
 	public Iterable<String> getFullyQualifiedClassNames() {
 		String packageName = getPackageName();
 		final String packagePrefix = StringTools.stringIsEmpty(packageName) ? "" : packageName + ".";
@@ -97,14 +112,6 @@ public class JaxbIndexResourceImpl
 				return packagePrefix + shortClassName;
 			}
 		};
-	}
-	
-	protected String getPackageName() {
-		IJavaElement javaElement = JavaCore.create(this.file.getParent());
-		if (javaElement != null && javaElement.getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
-			return ((IPackageFragment) javaElement).getElementName();
-		}
-		return null;
 	}
 	
 	void update() {
