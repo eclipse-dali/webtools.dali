@@ -22,6 +22,7 @@ public class JaxbCoreResourceModelTests extends TestCase
 		TestSuite suite = new TestSuite(JaxbCoreResourceModelTests.class.getName());
 
 		suite.addTestSuite(JaxbIndexResourceTests.class);
+		suite.addTestSuite(JaxbPropertiesResourceTests.class);
 		suite.addTest(JaxbJavaResourceModelTests.suite());
 		return suite;
 	}
