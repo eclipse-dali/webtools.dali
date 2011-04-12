@@ -8,6 +8,5 @@ Bundle-ClassPath: lib/persistence.jar
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.jpt.jpa.eclipselink.core;bundle-version="[2.0.0,3.0.0)"
-Export-Package: javax.persistence,
- javax.persistence.spi,
- org.eclipse.jpt.jpa.eclipselink.core.ddlgen
+Import-Package: javax.persistence
+Export-Package: org.eclipse.jpt.jpa.eclipselink.core.ddlgen
