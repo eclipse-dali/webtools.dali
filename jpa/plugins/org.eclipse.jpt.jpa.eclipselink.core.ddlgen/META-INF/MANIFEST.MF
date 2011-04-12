@@ -4,7 +4,6 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jpa.eclipselink.core.ddlgen;singleton:=true
 Bundle-Version: 2.0.0.qualifier
-Bundle-ClassPath: lib/persistence.jar
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.jpt.jpa.eclipselink.core;bundle-version="[2.0.0,3.0.0)"
