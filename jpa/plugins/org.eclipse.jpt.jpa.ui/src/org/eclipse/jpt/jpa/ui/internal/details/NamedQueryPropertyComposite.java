@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,10 +15,11 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlContentProposalProvider;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Here the layout of this pane:
+ * Here's the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
  * |        ------------------------------------------------------------------ |
@@ -40,11 +41,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see NamedQueriesComposite - The parent container
  * @see QueryHintsComposite
  *
- * @version 2.0
- * @since 2.0
+ * @version 2.3
+ * @since 2.3
  */
-public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T>
-{
+public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
+
 	/**
 	 * Creates a new <code>NamedQueryPropertyComposite</code>.
 	 *
@@ -57,6 +58,24 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T>
 	                                   Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
+	}
+
+	protected WritablePropertyValueModel<String> buildNameTextHolder() {
+		return new PropertyAspectAdapter<NamedQuery, String>(
+				getSubjectHolder(), Query.NAME_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getName();
+			}
+
+			@Override
+			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
+				this.subject.setName(value);
+			}
+		};
 	}
 
 	protected WritablePropertyValueModel<String> buildQueryHolder() {
@@ -73,47 +92,49 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T>
 		};
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-		
+
+		// Name widgets
 		addLabeledText(
-			container, 
-			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel, 
+			container,
+			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel,
 			buildNameTextHolder());
 
+		JpaJpqlContentProposalProvider provider = new JpaJpqlContentProposalProvider(
+			container,
+			getSubjectHolder(),
+			buildQueryHolder()
+		);
+
 		// Query text area
-		addLabeledMultiLineText(
+		Composite queryWidgets = this.addLabeledComposite(
 			container,
 			JptUiDetailsMessages.NamedQueryPropertyComposite_query,
-			buildQueryHolder(),
+			provider.getStyledText()
+		);
+
+		// Install the content assist icon at the top left of the StyledText.
+		// Note: For some reason, this needs to be done after the StyledText
+		//       is added to the labeled composite
+		provider.installControlDecoration();
+
+		adjustMultiLineTextLayout(
+			queryWidgets,
 			4,
-			null
+			provider.getStyledText(),
+			provider.getStyledText().getLineHeight()
 		);
 
 		// Query Hints pane
-		container = addTitledGroup(
+		container = this.addTitledGroup(
 			addSubPane(container, 5),
 			JptUiDetailsMessages.NamedQueryPropertyComposite_queryHintsGroupBox
 		);
 
 		new QueryHintsComposite(this, container);
-	}
-		
-	protected WritablePropertyValueModel<String> buildNameTextHolder() {
-		return new PropertyAspectAdapter<NamedQuery, String>(
-				getSubjectHolder(), Query.NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getName();
-			}
-		
-			@Override
-			protected void setValue_(String value) {
-				if (value.length() == 0) {
-					value = null;
-				}
-				this.subject.setName(value);
-			}
-		};
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,16 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
+import org.eclipse.jpt.jpa.core.internal.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * JPA 2.0
@@ -87,4 +92,17 @@ public class GenericJavaNamedQuery2_0
 		return LockModeType2_0.NONE;
 	}
 
+
+	// ********** validation **********
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+
+		JpaJpqlQueryHelper helper = new JpaJpqlQueryHelper();
+		helper.validate(this, this.getQuery(), this.getQueryAnnotation().getQueryTextRange(astRoot), 1, messages);
+	}
 }

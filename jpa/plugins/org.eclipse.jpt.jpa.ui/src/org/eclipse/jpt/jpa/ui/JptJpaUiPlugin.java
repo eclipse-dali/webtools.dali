@@ -54,6 +54,17 @@ public class JptJpaUiPlugin
 	private static final Object FOCUS_DATA = new Object();
 
 
+	// ********** Preference keys **********
+
+	/**
+	 * The preference key used to retrieve the case used for JPQL identifiers.
+	 */
+	public static final String JPQL_IDENTIFIER_CASE_PREF_KEY = PLUGIN_ID + ".jpqlIdentifier.case";
+	public static final String JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE = "lowercase";
+	public static final String JPQL_IDENTIFIER_UPPERCASE_PREF_VALUE = "uppercase";
+	public static final String JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE_PREF_KEY = PLUGIN_ID + ".jpqlIdentifier.matchFirstCharacterCase";
+
+
 	// ********** singleton **********
 
 	private static JptJpaUiPlugin INSTANCE;
@@ -117,9 +128,9 @@ public class JptJpaUiPlugin
 	 * Return an image for the specified <code>.gif<code>
 	 * file in the icons folder.
 	 */
-	//TODO we are using the ImageRegistry here and storing all our icons for the life of the plugin, 
-	//which means until the workspace is closed.  This is better than before where we constantly 
-	//created new images. Bug 306437 is about cleaning this up and using Local Resource Managers 
+	//TODO we are using the ImageRegistry here and storing all our icons for the life of the plugin,
+	//which means until the workspace is closed.  This is better than before where we constantly
+	//created new images. Bug 306437 is about cleaning this up and using Local Resource Managers
 	//on our views so that closing the JPA perspective would mean our icons are disposed.
 	public static Image getImage(String key) {
 		ImageRegistry imageRegistry = instance().getImageRegistry();

@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
-import org.eclipse.jpt.jpa.ui.internal.details.NamedQueryPropertyComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.QueriesComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
@@ -34,9 +33,8 @@ public class Queries2_0Composite
 		super(parentPane, subjectHolder, parent);
 	}
 	
-	
 	@Override
-	protected NamedQueryPropertyComposite<NamedQuery2_0> buildNamedQueryPropertyComposite(PageBook pageBook) {
+	protected Pane<NamedQuery2_0> buildNamedQueryPropertyComposite(PageBook pageBook) {
 		return new NamedQueryProperty2_0Composite(
 			this,
 			this.buildNamedQuery2_0Holder(),

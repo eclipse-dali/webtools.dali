@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -19,9 +19,9 @@ public class JptUiValidationPreferenceMessages {
 	public static String PROJECT_INVALID_CONNECTION;
 	public static String PROJECT_INACTIVE_CONNECTION;
 	public static String PROJECT_NO_PERSISTENCE_XML;
-	
+
 	public static String XML_VERSION_NOT_LATEST;
-	
+
 	public static String PROJECT_MULTIPLE_PERSISTENCE_XML;
 	public static String PERSISTENCE_NO_PERSISTENCE_UNIT;
 	public static String PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS;
@@ -82,13 +82,13 @@ public class JptUiValidationPreferenceMessages {
 	public static String ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED;
 	public static String ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE;
 	public static String ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED;
-	
+
 	public static String DATABASE_CATEGORY;
 	public static String TABLE_CATEGORY;
 	public static String COLUMN_CATEGORY;
 	public static String OVERRIDES_CATEGORY;
 	public static String IMPLIED_ATTRIBUTE_LEVEL_CATEGORY;
-	
+
 	public static String TABLE_UNRESOLVED_CATALOG;
 	public static String TABLE_UNRESOLVED_SCHEMA;
 	public static String TABLE_UNRESOLVED_NAME;
@@ -125,12 +125,12 @@ public class JptUiValidationPreferenceMessages {
 	public static String VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	public static String MAP_KEY_COLUMN_TABLE_NOT_VALID;
 	public static String VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID;
-	
+
 	public static String COLLECTION_TABLE_UNRESOLVED_CATALOG;
 	public static String COLLECTION_TABLE_UNRESOLVED_SCHEMA;
 	public static String COLLECTION_TABLE_UNRESOLVED_NAME;
 	public static String ORDER_COLUMN_UNRESOLVED_NAME;
-	
+
 	public static String VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG;
 	public static String VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA;
 	public static String VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME;
@@ -170,7 +170,7 @@ public class JptUiValidationPreferenceMessages {
 	public static String VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	public static String VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_TABLE_NOT_VALID;
 	public static String VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID;
-	
+
 	public static String VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG;
 	public static String VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA;
 	public static String VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME;
@@ -205,6 +205,7 @@ public class JptUiValidationPreferenceMessages {
 	public static String ID_MAPPING_UNRESOLVED_GENERATOR_NAME;
 	public static String GENERATED_VALUE_UNRESOLVED_GENERATOR;
 	public static String QUERY_DUPLICATE_NAME;
+	public static String JPQL_QUERY_VALIDATION;
 
 	private static final String BUNDLE_NAME = "jpt_ui_validation_preferences"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiValidationPreferenceMessages.class;
@@ -215,6 +216,4 @@ public class JptUiValidationPreferenceMessages {
 	private JptUiValidationPreferenceMessages() {
 		throw new UnsupportedOperationException();
 	}
-
-
 }

@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
@@ -27,11 +28,12 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlNamedQuery_2_0;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Named Query</b></em>'.
- * 
+ *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -503,11 +505,31 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery, XmlNa
 		result.append(')');
 		return result.toString();
 	}
-	
+
 	public TextRange getNameTextRange() {
 		return getAttributeTextRange(JPA.NAME);
 	}
-	
+
+	public TextRange getQueryTextRange() {
+		// <named-query>
+		IDOMNode node = getElementNode(JPA.QUERY);
+		if (node != null) {
+			// The query element has text
+			if (node.hasChildNodes()) {
+				return buildTextRange((IDOMNode) node.getFirstChild());
+			}
+			// The query element does not have text
+			TextRange textRange = buildTextRange(node);
+			return new SimpleTextRange(
+				node.getEndStructuredDocumentRegion().getStartOffset(),
+				0,
+				textRange.getLineNumber()
+			);
+		}
+
+		return this.getValidationTextRange();
+	}
+
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
@@ -527,15 +549,15 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery, XmlNa
 	protected static Translator buildNameTranslator() {
 		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlQuery_Name(), Translator.DOM_ATTRIBUTE);
 	}
-	
+
 	protected static Translator buildDescriptionTranslator() {
 		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlQuery_2_0_Description());
 	}
-	
+
 	protected static Translator buildQueryTranslator() {
 		return new Translator(JPA.QUERY, OrmPackage.eINSTANCE.getXmlQuery_Query());
 	}
-	
+
 	protected static Translator buildLockModeTranslator() {
 		return new Translator(JPA2_0.NAMED_QUERY__LOCK_MODE, OrmV2_0Package.eINSTANCE.getXmlNamedQuery_2_0_LockMode());
 	}

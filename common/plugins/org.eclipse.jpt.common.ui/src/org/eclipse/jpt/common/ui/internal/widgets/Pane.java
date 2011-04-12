@@ -149,14 +149,14 @@ public abstract class Pane<T extends Model>
 	 * {@link #enableWidgets(boolean)} is called.
 	 */
 	private ArrayList<Control> managedWidgets;
-	
+
 	/**
 	 * The collection of <code>Pane</code>s that are displayed in this pane,
 	 * which will have their enablement state updated when
 	 * {@link #enableWidgets(boolean)} is called.
 	 */
 	private ArrayList<Pane<?>> managedSubPanes;
-	
+
 	/**
 	 * This enabled model is used to store the pane's base enablement state.
 	 * If API is called to set the pane enabled, this model gets updated.  If the pane is thereby
@@ -164,25 +164,25 @@ public abstract class Pane<T extends Model>
 	 * enabled.
 	 * @see #getCombinedEnabledModel()
 	 */
-	private final WritablePropertyValueModel<Boolean> baseEnabledModel 
+	private final WritablePropertyValueModel<Boolean> baseEnabledModel
 			= new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
-	
+
 	/**
 	 * This enabled model is used to define the pane's enablement as controlled by other widgets,
 	 * tests, etc. (for example a radio button)
-	 * If this model is changed, and the pane is thereby fully enabled (base enabled model is also 
+	 * If this model is changed, and the pane is thereby fully enabled (base enabled model is also
 	 * in agreement) the pane's widgets are set enabled.
 	 * @see #getCombinedEnabledModel()
 	 */
 	private PropertyValueModel<Boolean> controllerEnabledModel;
-	
+
 	/**
 	 * The "and" combination of {@link #baseEnabledModel} and {@link #controllerEnabledModel}
 	 */
 	private PropertyValueModel<Boolean> combinedEnabledModel;
-	
+
 	private PropertyChangeListener combinedEnabledModelListener;
-	
+
 	/**
 	 * Creates a new <code>Pane</code>.
 	 *
@@ -194,7 +194,7 @@ public abstract class Pane<T extends Model>
 	protected Pane(
 			Pane<? extends T> parentPane,
 	        Composite parent) {
-		
+
 		this(parentPane, parent, true);
 	}
 
@@ -214,7 +214,7 @@ public abstract class Pane<T extends Model>
 			Pane<? extends T> parentPane,
 	        Composite parent,
 	        boolean automaticallyAlignWidgets) {
-		
+
 		this(
 			parentPane,
 			parentPane.getSubjectHolder(),
@@ -239,7 +239,7 @@ public abstract class Pane<T extends Model>
 	        Composite parent,
 	        boolean automaticallyAlignWidgets,
 	        boolean parentManagePane) {
-		
+
 		this(
 			parentPane,
 			parentPane.getSubjectHolder(),
@@ -261,16 +261,16 @@ public abstract class Pane<T extends Model>
 			Pane<?> parentPane,
 	        PropertyValueModel<? extends T> subjectHolder,
 	        Composite parent) {
-		
+
 		this(parentPane, subjectHolder, parent, true);
 	}
-	
+
 	protected Pane(
 			Pane<?> parentPane,
 	        PropertyValueModel<? extends T> subjectHolder,
 	        Composite parent,
 	        PropertyValueModel<Boolean> enabledModel) {
-		
+
 		this(parentPane, subjectHolder, parent, true, enabledModel);
 	}
 
@@ -292,20 +292,20 @@ public abstract class Pane<T extends Model>
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent,
 			boolean automaticallyAlignWidgets) {
-		
+
 		this(parentPane, subjectHolder, parent, automaticallyAlignWidgets, true);
 	}
-	
+
 	protected Pane(
 			Pane<?> parentPane,
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent,
 			boolean automaticallyAlignWidgets,
 			PropertyValueModel<Boolean> enabledModel) {
-		
+
 		this(parentPane, subjectHolder, parent, automaticallyAlignWidgets, true, enabledModel);
 	}
-	
+
 	/**
 	 * Creates a new <code>Pane</code>.
 	 *
@@ -325,26 +325,26 @@ public abstract class Pane<T extends Model>
 			Pane<?> parentPane,
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent,
-			boolean automaticallyAlignWidgets, 
+			boolean automaticallyAlignWidgets,
 			boolean parentManagePane) {
-		
+
 		this(subjectHolder, parent, parentPane.getWidgetFactory());
 		this.initialize(parentPane, automaticallyAlignWidgets, parentManagePane);
 	}
-	
+
 	protected Pane(
 			Pane<?> parentPane,
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent,
-			boolean automaticallyAlignWidgets, 
+			boolean automaticallyAlignWidgets,
 			boolean parentManagePane,
 			PropertyValueModel<Boolean> enabledModel) {
-		
+
 		this(subjectHolder, parent, parentPane.getWidgetFactory());
 		this.initialize(parentPane, automaticallyAlignWidgets, parentManagePane);
 		this.initializeEnabledModel(enabledModel);
 	}
-	
+
 	/**
 	 * Creates a new <code>Pane</code>.
 	 *
@@ -358,7 +358,7 @@ public abstract class Pane<T extends Model>
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		
+
 		super();
 		this.initialize(subjectHolder, widgetFactory);
 		this.container = this.addContainer(parent);
@@ -375,7 +375,7 @@ public abstract class Pane<T extends Model>
 	private void initialize(
 			PropertyValueModel<? extends T> subjectHolder,
 	        WidgetFactory widgetFactory) {
-		
+
 		Assert.isNotNull(subjectHolder, "The subject holder cannot be null");
 
 		this.subjectHolder         = (PropertyValueModel<T>) subjectHolder;
@@ -387,7 +387,7 @@ public abstract class Pane<T extends Model>
 		this.rightControlAligner   = new ControlAligner();
 		this.subjectChangeListener = this.buildSubjectChangeListener();
 		this.aspectChangeListener  = this.buildAspectChangeListener();
-		
+
 		this.initialize();
 	}
 
@@ -411,16 +411,16 @@ public abstract class Pane<T extends Model>
 			Pane<?> parentPane,
 			boolean automaticallyAlignWidgets,
 	        boolean parentManagePane) {
-		
+
 		// Register this pane with the parent pane, it will call the methods
 		// automatically (engageListeners(), disengageListeners(), populate(),
 		// dispose(), etc)
 		parentPane.registerSubPane(this);
-		
+
 		if (parentManagePane) {
 			parentPane.manageSubPane(this);
 		}
-		
+
 		// Align the left and right controls with the controls from the parent
 		// pane
 		if (automaticallyAlignWidgets) {
@@ -428,21 +428,21 @@ public abstract class Pane<T extends Model>
 			parentPane.addAlignRight(this);
 		}
 	}
-	
+
 	private void initializeEnabledModel(PropertyValueModel<Boolean> enabledModel) {
 		this.controllerEnabledModel = enabledModel;
-		this.combinedEnabledModel = 
+		this.combinedEnabledModel =
 				CompositeBooleanPropertyValueModel.and(this.baseEnabledModel, this.controllerEnabledModel);
 		this.combinedEnabledModelListener = buildCombinedEnabledModelListener();
 		this.combinedEnabledModel.addPropertyChangeListener(
 				PropertyValueModel.VALUE, this.combinedEnabledModelListener);
 		enableWidgets_(getCombinedEnablement());
 	}
-	
+
 	private PropertyChangeListener buildCombinedEnabledModelListener() {
 		return new SWTPropertyChangeListenerWrapper(buildControllerEnabledModelListener_());
 	}
-	
+
 	private PropertyChangeListener buildControllerEnabledModelListener_() {
 		return new PropertyChangeListener() {
 			@SuppressWarnings("unchecked")
@@ -451,7 +451,7 @@ public abstract class Pane<T extends Model>
 			}
 		};
 	}
-	
+
 	/**
 	 * Initializes the layout of this pane.
 	 *
@@ -467,7 +467,7 @@ public abstract class Pane<T extends Model>
 		}
 		this.managedWidgets.add(control);
 	}
-	
+
 	private void manageSubPane(Pane<?> subPane) {
 		if (this.managedSubPanes.contains(subPane)) {
 			throw new IllegalStateException();
@@ -585,10 +585,10 @@ public abstract class Pane<T extends Model>
 
 		return this.addButton(container, text, null, buttonAction);
 	}
-	
+
 	/**
-	 * Creates a new unmanaged <code>Button</code> widget.  Unmanaged means 
-	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * Creates a new unmanaged <code>Button</code> widget.  Unmanaged means
+	 * that this Pane will not handle the enabling/disabling of this widget.
 	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param parent The parent container
@@ -626,10 +626,10 @@ public abstract class Pane<T extends Model>
 
 		return button;
 	}
-	
+
 	/**
-	 * Creates a new unmanaged <code>Button</code> widget.  Unmanaged means 
-	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * Creates a new unmanaged <code>Button</code> widget.  Unmanaged means
+	 * that this Pane will not handle the enabling/disabling of this widget.
 	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param parent The parent container
@@ -697,7 +697,7 @@ public abstract class Pane<T extends Model>
 	        String buttonText,
 	        WritablePropertyValueModel<Boolean> booleanHolder,
 	        String helpId) {
-		
+
 		return this.addToggleButton(
 			parent,
 			buttonText,
@@ -705,19 +705,19 @@ public abstract class Pane<T extends Model>
 			helpId,
 			SWT.CHECK);
 	}
-	
+
 	protected final Button addCheckBox(
 			Composite parent,
 			String buttonText,
 			WritablePropertyValueModel<Boolean> booleanHolder,
 			String helpId,
 			PropertyValueModel<Boolean> enabledModel) {
-		
+
 		Button button = this.addUnmanagedToggleButton(parent, buttonText, booleanHolder, helpId, SWT.CHECK);
 		this.controlEnabledState(enabledModel, button);
 		return button;
 	}
-	
+
 	/**
 	 * Creates a new <code>Section</code> that can be collapsed. A sub-pane is
 	 * automatically added as its client and is the returned <code>Composite</code>.
@@ -731,13 +731,13 @@ public abstract class Pane<T extends Model>
 	protected final Composite addCollapsibleSection(
 			Composite container,
 	        String sectionText) {
-		
+
 		return this.addCollapsibleSection(
 				container,
 				sectionText,
 				new SimplePropertyValueModel<Boolean>(Boolean.FALSE));
 	}
-	
+
 	/**
 	 * Creates a new <code>Section</code> that can be collapsed. A sub-pane is
 	 * automatically added as its client and is the returned <code>Composite</code>.
@@ -778,10 +778,10 @@ public abstract class Pane<T extends Model>
 	                                          String sectionText,
 	                                          int type,
 	                                          PropertyValueModel<Boolean> expandedStateHolder) {
-		
+
 		return addCollapsibleSection(container, sectionText, null, type, expandedStateHolder);
 	}
-	
+
 	/**
 	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
 	 * its client and is the returned <code>Composite</code>.
@@ -847,7 +847,7 @@ public abstract class Pane<T extends Model>
 			expandedStateHolder
 		);
 	}
-	
+
 	/**
 	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
 	 * its client and is the returned <code>Composite</code>.
@@ -991,7 +991,7 @@ public abstract class Pane<T extends Model>
 			WritablePropertyValueModel<V> selectedItemHolder,
 			StringConverter<V> stringConverter,
 			PropertyValueModel<Boolean> enabledModel) {
-		
+
 		Combo combo = this.addUnmanagedCombo(container, listHolder, selectedItemHolder, stringConverter);
 		this.controlEnabledState(enabledModel, combo);
 		return combo;
@@ -1029,28 +1029,28 @@ public abstract class Pane<T extends Model>
 	protected Composite addContainer(Composite parent) {
 		return this.addSubPane(parent);
 	}
-	
+
 	protected final <V> Combo addEditableCombo(
 			Composite container,
 			ListValueModel<V> listHolder,
 			WritablePropertyValueModel<V> selectedItemHolder,
 			StringConverter<V> stringConverter,
 			PropertyValueModel<Boolean> enabledModel) {
-		
+
 		Combo combo = this.addUnmanagedEditableCombo(container, listHolder, selectedItemHolder, stringConverter);
 		this.controlEnabledState(enabledModel, combo);
 		return combo;
 	}
-	
+
 	protected final Combo addEditableCombo(
 			Composite container) {
-		
+
 		Combo combo = this.widgetFactory.createEditableCombo(container);
 		combo.setLayoutData(getFieldGridData());
 		this.manageWidget(combo);
 		return combo;
 	}
-	
+
 	/**
 	 * Creates a new editable <code>Combo</code>.
 	 *
@@ -1159,7 +1159,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Label addLabel(Composite container,
 	                                 String labelText) {
-		
+
 		Label label = addUnmanagedLabel(container, labelText);
 		manageWidget(label);
 		return label;
@@ -1176,8 +1176,8 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Creates a new unmanaged <code>Label</code> widget.  Unmanaged means 
-	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * Creates a new unmanaged <code>Label</code> widget.  Unmanaged means
+	 * that this Pane will not handle the enabling/disabling of this widget.
 	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param parent The parent container
@@ -1201,7 +1201,7 @@ public abstract class Pane<T extends Model>
 	 * @param selectedItemHolder The holder of the selected item
 	 * @param rightControl The control shown to the right of the main widget
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The container of the label and the given center control
 	 *
 	 * @category Layout
@@ -1241,7 +1241,7 @@ public abstract class Pane<T extends Model>
 	 * @param listHolder The <code>ListValueHolder</code>
 	 * @param selectedItemHolder The holder of the selected item
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The container of the label and the given center control
 	 *
 	 * @category Layout
@@ -1273,7 +1273,7 @@ public abstract class Pane<T extends Model>
 	 * @param centerControl The main widget
 	 * @param rightControl The control shown to the right of the main widget
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The container of the label and the given center control
 	 *
 	 * @category Layout
@@ -1330,7 +1330,7 @@ public abstract class Pane<T extends Model>
 
 		return container;
 	}
-	
+
 	/**
 	 * Creates a new container that will have the given center control labeled
 	 * with the given label.
@@ -1366,7 +1366,7 @@ public abstract class Pane<T extends Model>
 	 * @param labelText The text to label the main composite
 	 * @param centerPane The main widget
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The container of the label and the given center control
 	 *
 	 * @category Layout
@@ -1418,7 +1418,7 @@ public abstract class Pane<T extends Model>
 	 * @param centerControl The main widget
 	 * @param rightControl The control shown to the right of the main widget
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The container of the label and the given center control
 	 *
 	 * @category Layout
@@ -1446,7 +1446,7 @@ public abstract class Pane<T extends Model>
 	 * @param labelText The text to label the main composite
 	 * @param centerControl The main widget
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The container of the label and the given center control
 	 *
 	 * @category Layout
@@ -1475,7 +1475,7 @@ public abstract class Pane<T extends Model>
 	 * @param centerControl The main widget
 	 * @param rightControl The control shown to the right of the main widget
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The newly created <code>CCombo</code>
 	 *
 	 * @category Layout
@@ -1509,7 +1509,7 @@ public abstract class Pane<T extends Model>
 	 * @param comboListener The listener that will be notified when the selection
 	 * changes
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The newly created <code>CCombo</code>
 	 *
 	 * @category Layout
@@ -1539,7 +1539,7 @@ public abstract class Pane<T extends Model>
 	 * into human readable strings
 	 * @param rightControl The control shown to the right of the main widget
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The newly created <code>CCombo</code>
 	 *
 	 * @category Layout
@@ -1581,7 +1581,7 @@ public abstract class Pane<T extends Model>
 	 * @param labelProvider The provider responsible to convert the combo's items
 	 * into human readable strings
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The newly created <code>CCombo</code>
 	 *
 	 * @category Layout
@@ -1601,7 +1601,7 @@ public abstract class Pane<T extends Model>
 			helpId
 		);
 	}
-	
+
 	/**
 	 * Creates a new container that will have an editable combo labeled with the
 	 * given text.
@@ -1645,7 +1645,7 @@ public abstract class Pane<T extends Model>
 	 * into a string representation
 	 * @param rightControl The control shown to the right of the main widget
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The newly created <code>Combo</code>
 	 *
 	 * @category Layout
@@ -1687,7 +1687,7 @@ public abstract class Pane<T extends Model>
 	 * @param stringConverter The converter responsible to transform each item
 	 * into a string representation
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * composite
 	 * @return The newly created <code>Combo</code>
 	 *
 	 * @category Layout
@@ -1884,7 +1884,7 @@ public abstract class Pane<T extends Model>
 
 	/**
 	 * Creates a new managed spinner. Managed means that this Pane will
-	 * handle enabling/disabling of this widget if a PaneEnabler is used.  
+	 * handle enabling/disabling of this widget if a PaneEnabler is used.
 	 *
 	 * @param parent The parent container
 	 * @param numberHolder The holder of the integer value
@@ -1945,10 +1945,10 @@ public abstract class Pane<T extends Model>
 
 		return spinner;
 	}
-	
+
 	/**
 	 * Creates a new managed DateTime of type SWT.TIME.  Managed means that this Pane will
-	 * handle enabling/disabling of this widget if a PaneEnabler is used.  
+	 * handle enabling/disabling of this widget if a PaneEnabler is used.
 	 *
 	 * @param parent The parent container
 	 * @param hoursHolder The holder of the hours integer value
@@ -1964,7 +1964,7 @@ public abstract class Pane<T extends Model>
 											WritablePropertyValueModel<Integer> minutesHolder,
 											WritablePropertyValueModel<Integer> secondsHolder,
 											String helpId) {
-		
+
 		DateTime dateTime = this.addUnmanagedDateTime(parent, hoursHolder, minutesHolder, secondsHolder, helpId);
 		this.manageWidget(dateTime);
 
@@ -2003,11 +2003,11 @@ public abstract class Pane<T extends Model>
 											WritablePropertyValueModel<Integer> minutesHolder,
 											WritablePropertyValueModel<Integer> secondsHolder,
 											String helpId) {
-		
+
 		DateTime dateTime = this.widgetFactory.createDateTime(parent, SWT.TIME);
-		
+
 		DateTimeModelAdapter.adapt(hoursHolder, minutesHolder, secondsHolder, dateTime);
-	
+
 		if (helpId != null) {
 			getHelpSystem().setHelp(dateTime, helpId);
 		}
@@ -2043,7 +2043,7 @@ public abstract class Pane<T extends Model>
 		return combo;
 	}
 
-	
+
 	/**
 	 * Creates a new editable <code>Combo</code>.
 	 *
@@ -2109,7 +2109,7 @@ public abstract class Pane<T extends Model>
 		return text;
 	}
 	/**
-	 * 
+	 *
 	 * Creates a new container that will have a text field as the center control
 	 * labeled with the given label.
 	 *
@@ -2233,12 +2233,12 @@ public abstract class Pane<T extends Model>
 
 		return list;
 	}
-	
+
 	/**
 	 * Creates a new unmanaged list and notify the given selection holder when the
 	 * selection changes. If the selection count is different than one than the
-	 * holder will receive <code>null</code>. 
-	 * Unmanaged means that this Pane will not handle the enabling/disabling of this widget.  
+	 * holder will receive <code>null</code>.
+	 * Unmanaged means that this Pane will not handle the enabling/disabling of this widget.
 	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param container The parent container
@@ -2298,7 +2298,7 @@ public abstract class Pane<T extends Model>
 
 		return text;
 	}
-	
+
 	/**
 	 * Creates a new <code>Text</code> widget that has multiple lines.
 	 *
@@ -2310,14 +2310,11 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final Text addMultiLineText(Composite container,
-	                                        int lineCount,
-	                                        String helpId) {
+	                                      int lineCount,
+	                                      String helpId) {
 
 		Text text = this.addMultiLineText(container);
-		
-		GridData gridData   = getFieldGridData();
-		gridData.heightHint = text.getLineHeight() * lineCount;
-		text.setLayoutData(gridData);
+		adjustMultiLineTextLayout(container, lineCount, text, text.getLineHeight());
 
 		if (helpId != null) {
 			getHelpSystem().setHelp(text, helpId);
@@ -2363,6 +2360,33 @@ public abstract class Pane<T extends Model>
 		return text;
 	}
 
+	/**
+	 * Adjusts the layout of the given container so that the text control has the correct amount of
+	 * lines by default.
+	 */
+	protected final void adjustMultiLineTextLayout(Composite container,
+	                                               int lineCount,
+	                                               Control text,
+	                                               int lineHeight) {
+
+		int textHeight = text.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
+
+		// Specify the number of lines the text area should display
+		GridData gridData = (GridData) text.getLayoutData();
+		if (gridData == null) {
+			gridData = this.getFieldGridData();
+			text.setLayoutData(gridData);
+		}
+		gridData.heightHint = lineHeight * lineCount;
+
+		// Move the label to the top of its cell
+		Control label = container.getChildren()[0];
+		int labelHeight = label.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
+
+		gridData = (GridData) label.getLayoutData();
+		gridData.verticalAlignment = SWT.TOP;
+		gridData.verticalIndent   += (Math.abs(textHeight - labelHeight) / 2);
+	}
 	/**
 	 * Creates a new <code>PageBook</code> and set the proper layout and layout
 	 * data.
@@ -2425,7 +2449,7 @@ public abstract class Pane<T extends Model>
 
 		return text;
 	}
-	
+
 	/**
 	 * Creates a new <code>Text</code> widget.
 	 *
@@ -2608,7 +2632,7 @@ public abstract class Pane<T extends Model>
 		section.setText(sectionText);
 		section.marginWidth  = 0;
 		section.marginHeight = 0;
-		
+
 		if (description != null) {
 			section.setDescription(description);
 		}
@@ -2869,7 +2893,7 @@ public abstract class Pane<T extends Model>
 			helpId
 		);
 	}
-	
+
 	/**
 	 * Creates a new unmanaged table.  Unmanaged means that this Pane will
 	 * not handle the enabling/disabling of this widget.  The owning object will handle
@@ -2904,10 +2928,10 @@ public abstract class Pane<T extends Model>
 		this.manageWidget(text);
 		return text;
 	}
-	
+
 	/**
-	 * Creates a new unmanaged <code>Text</code> widget.  Unmanaged means 
-	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * Creates a new unmanaged <code>Text</code> widget.  Unmanaged means
+	 * that this Pane will not handle the enabling/disabling of this widget.
 	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param container The parent container
@@ -2940,10 +2964,10 @@ public abstract class Pane<T extends Model>
 
 		return text;
 	}
-	
+
 	/**
-	 * Creates a new unmanaged <code>Text</code> widget.  Unmanaged means 
-	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * Creates a new unmanaged <code>Text</code> widget.  Unmanaged means
+	 * that this Pane will not handle the enabling/disabling of this widget.
 	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param container The parent container
@@ -2959,10 +2983,10 @@ public abstract class Pane<T extends Model>
 		if (helpId != null) {
 			getHelpSystem().setHelp(text, helpId);
 		}
-		
+
 		return text;
 	}
-	
+
 	/**
 	 * Creates a new <code>Text</code> widget.
 	 *
@@ -2997,7 +3021,7 @@ public abstract class Pane<T extends Model>
 
 		return text;
 	}
-	
+
 	protected final Text addText(
 			Composite container,
 			WritablePropertyValueModel<String> textHolder,
@@ -3010,8 +3034,8 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Creates a new unmanaged <code>Text</code> widget.  Unmanaged means 
-	 * that this Pane will not handle the enabling/disabling of this widget.  
+	 * Creates a new unmanaged <code>Text</code> widget.  Unmanaged means
+	 * that this Pane will not handle the enabling/disabling of this widget.
 	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
 	 *
 	 * @param container The parent container
@@ -3060,7 +3084,7 @@ public abstract class Pane<T extends Model>
 
 		return addTitledGroup(container, title, 1, helpId);
 	}
-	
+
 	/**
 	 * Creates a new container with a titled border.
 	 *
@@ -3077,7 +3101,7 @@ public abstract class Pane<T extends Model>
 	                                      String helpId) {
 
 		Group group = this.widgetFactory.createGroup(container, title);
-		//manageWidget(group); TODO unsure if I want to manage groups, 
+		//manageWidget(group); TODO unsure if I want to manage groups,
 		//also should probably rename this addUnmanagedTitledPane
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -3098,9 +3122,9 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Creates a new unmanaged new toggle button (radio button or check box).  
-	 * Unmanaged means  that this Pane will not handle the enabling/disabling 
-	 * of this widget. The owning object will handle it with its own PaneEnabler 
+	 * Creates a new unmanaged new toggle button (radio button or check box).
+	 * Unmanaged means  that this Pane will not handle the enabling/disabling
+	 * of this widget. The owning object will handle it with its own PaneEnabler
 	 * or ControlEnabler.
 	 *
 	 * @param parent The parent container
@@ -3117,9 +3141,9 @@ public abstract class Pane<T extends Model>
 	        WritablePropertyValueModel<Boolean> booleanHolder,
 	        String helpId,
 	        int toggleButtonType) {
-		
+
 		Button button;
-		
+
 		if (toggleButtonType == SWT.PUSH) {
 			button = this.widgetFactory.createPushButton(parent, buttonText);
 		}
@@ -3132,17 +3156,17 @@ public abstract class Pane<T extends Model>
 		else {
 			button = this.widgetFactory.createButton(parent, buttonText);
 		}
-		
+
 		button.setLayoutData(new GridData());
 		SWTTools.bind(booleanHolder, button);
-		
+
 		if (helpId != null) {
 			getHelpSystem().setHelp(button, helpId);
 		}
-		
+
 		return button;
 	}
-	
+
 	/**
 	 * Creates a new toggle button (radio button or check box) using the given
 	 * information.
@@ -3161,12 +3185,12 @@ public abstract class Pane<T extends Model>
 	        WritablePropertyValueModel<Boolean> booleanHolder,
 	        String helpId,
 	        int toggleButtonType) {
-		
+
 		Button button = addUnmanagedToggleButton(
-				parent, 
-				buttonText, 
-				booleanHolder, 
-				helpId, 
+				parent,
+				buttonText,
+				booleanHolder,
+				helpId,
 				toggleButtonType);
 		this.manageWidget(button);
 		return button;
@@ -3254,7 +3278,7 @@ public abstract class Pane<T extends Model>
 	protected void doPopulate() {
 		this.log(Tracing.UI_LAYOUT, "   ->doPopulate()");
 	}
-	
+
 	private void controlEnabledState(PropertyValueModel<Boolean> booleanModel, Control... controls) {
 		this.controlEnabledState_(this.wrapEnabledModel(booleanModel), controls);
 	}
@@ -3266,28 +3290,28 @@ public abstract class Pane<T extends Model>
 	private PropertyValueModel<Boolean> wrapEnabledModel(PropertyValueModel<Boolean> booleanModel) {
 		return new TransformationPropertyValueModel<Boolean, Boolean>(booleanModel, NonNullBooleanTransformer.FALSE);
 	}
-	
+
 	private void controlEnabledState_(PropertyValueModel<Boolean> booleanModel, Control... controls) {
 		SWTTools.controlEnabledState(this.andEnabledModel(booleanModel), controls);
 	}
-	
+
 	private PropertyValueModel<Boolean> getCombinedEnabledModel() {
 		return (this.combinedEnabledModel != null) ? this.combinedEnabledModel : this.baseEnabledModel;
 	}
-	
+
 	private boolean getCombinedEnablement() {
 		Boolean enabled = getCombinedEnabledModel().getValue();
 		return (enabled == null) ? true : enabled.booleanValue();
 	}
-	
+
 	private PropertyValueModel<Boolean> andEnabledModel(PropertyValueModel<Boolean> booleanModel) {
 		return CompositeBooleanPropertyValueModel.and(getCombinedEnabledModel(), booleanModel);
 	}
-	
+
 	protected void controllerEnablementChanged() {
 		enableWidgets_(getCombinedEnablement());
 	}
-	
+
 	/**
 	 * Changes the enablement state of the widgets of this pane.
 	 *
@@ -3300,23 +3324,23 @@ public abstract class Pane<T extends Model>
 		this.baseEnabledModel.setValue(Boolean.valueOf(enabled));
 		enableWidgets_(getCombinedEnablement());
 	}
-	
+
 	private void enableWidgets_(boolean enabled) {
 		if (! this.container.isDisposed()) {
 			for (Control control : this.managedWidgets) {
 				control.setEnabled(enabled);
 			}
-			
+
 			for (Pane<?> subPane : this.managedSubPanes) {
 				subPane.enableWidgets(enabled);
 			}
 		}
 	}
-	
+
 	private void engageSubjectHolder() {
 		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 	}
-	
+
 	/**
 	 * engage the specified subject
 	 */
@@ -3698,18 +3722,18 @@ public abstract class Pane<T extends Model>
 			}
 		}
 	}
-	
+
 	public void dispose() {
 		this.log(Tracing.UI_LAYOUT, "dispose()");
 
 		// Dispose this pane
 		this.disengageListeners(getSubject());
 		this.disengageSubjectHolder();
-		
+
 		if (this.combinedEnabledModel != null && this.combinedEnabledModelListener != null) {
 			this.combinedEnabledModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.combinedEnabledModelListener);
 		}
-		
+
 		this.leftControlAligner.dispose();
 		this.rightControlAligner.dispose();
 

@@ -17,8 +17,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
@@ -75,7 +75,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 {
 	private AddRemoveListPane<QueryContainer> listPane;
 	NamedNativeQueryPropertyComposite namedNativeQueryPane;
-	NamedQueryPropertyComposite<? extends NamedQuery> namedQueryPane;
+	Pane<? extends NamedQuery> namedQueryPane;
 	private WritablePropertyValueModel<Query> queryHolder;
 
 
@@ -295,7 +295,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 		installPaneSwitcher(pageBook);
 	}
 	
-	protected NamedQueryPropertyComposite<? extends NamedQuery> buildNamedQueryPropertyComposite(PageBook pageBook) {
+	protected Pane<? extends NamedQuery> buildNamedQueryPropertyComposite(PageBook pageBook) {
 		return new NamedQueryPropertyComposite<NamedQuery>(
 			this,
 			this.buildNamedQueryHolder(),

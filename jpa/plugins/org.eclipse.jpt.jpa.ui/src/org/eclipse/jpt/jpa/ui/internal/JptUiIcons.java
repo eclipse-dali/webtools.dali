@@ -124,4 +124,13 @@ public class JptUiIcons
 	public static final String TRANSIENT = "full/obj16/transient";
 	
 	public static final String NULL_ATTRIBUTE_MAPPING = "full/obj16/null-attribute-mapping";
+
+
+	// **************** Content Assist icons **********************************
+
+	public static final String JPQL_FUNCTION = "full/obj16/jpql.function";
+
+	public static final String JPQL_IDENTIFIER = "full/obj16/jpql.identifier";
+
+	public static final String JPQL_VARIABLE = "full/obj16/jpql.variable";
 }

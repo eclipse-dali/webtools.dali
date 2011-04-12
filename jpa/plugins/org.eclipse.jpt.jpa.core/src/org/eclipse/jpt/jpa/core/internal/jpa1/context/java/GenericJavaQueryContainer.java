@@ -308,10 +308,10 @@ public class GenericJavaQueryContainer
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.validateQueries(messages, astRoot);
+		this.validateQueries(messages, reporter, astRoot);
 	}
 
-	protected void validateQueries(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateQueries(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		for (Iterator<JavaQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
 			JavaQuery localQuery = localQueries.next();
 			String name = localQuery.getName();
@@ -353,6 +353,9 @@ public class GenericJavaQueryContainer
 								localQuery.getNameTextRange(astRoot)
 						)
 				);
+			}
+			else {
+				localQuery.validate(messages, reporter, astRoot);
 			}
 		}
 	}

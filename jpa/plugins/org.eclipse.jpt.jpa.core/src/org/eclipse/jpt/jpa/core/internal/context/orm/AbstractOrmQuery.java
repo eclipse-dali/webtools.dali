@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.Vector;
-
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQueryHint;
+import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 
 /**
  * <code>orm.xml</code> query
@@ -47,18 +48,17 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		super(parent);
 		this.xmlQuery = xmlQuery;
 		this.name = xmlQuery.getName();
-		this.query = xmlQuery.getQuery();
+		this.query = getUnescapeQuery();
 		this.initializeHints();
 	}
-
 
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() { 
+	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setName_(this.xmlQuery.getName());
-		this.setQuery_(this.xmlQuery.getQuery());
+		this.setQuery_(this.getUnescapeQuery());
 		this.syncHints();
 	}
 
@@ -96,13 +96,28 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	public void setQuery(String query) {
 		this.setQuery_(query);
-		this.xmlQuery.setQuery(query);
+		this.xmlQuery.setQuery(this.convertToEscapeQuery(query));
 	}
 
 	protected void setQuery_(String query) {
 		String old = this.query;
 		this.query = query;
 		this.firePropertyChanged(QUERY_PROPERTY, old, query);
+	}
+
+	protected String getUnescapeQuery() {
+		String query = this.xmlQuery.getQuery();
+		if (StringTools.stringIsNotEmpty(query)) {
+			query = ExpressionTools.unescape(query, new int[1]);
+		}
+		return query;
+	}
+
+	protected String convertToEscapeQuery(String query) {
+		if (StringTools.stringIsNotEmpty(query)) {
+			query = ExpressionTools.escape(query, new int[1]);
+		}
+		return query;
 	}
 
 
@@ -231,9 +246,12 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		return this.xmlQuery.getNameTextRange();
 	}
 
+	public TextRange getQueryTextRange() {
+		return this.xmlQuery.getQueryTextRange();
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-
 }

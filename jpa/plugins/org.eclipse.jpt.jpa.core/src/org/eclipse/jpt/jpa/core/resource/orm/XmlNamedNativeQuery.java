@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -29,7 +29,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Named Native Query</b></em>'.
- * 
+ *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -538,11 +538,15 @@ public class XmlNamedNativeQuery extends AbstractJpaEObject implements XmlQuery
 		result.append(')');
 		return result.toString();
 	}
-	
+
 	public TextRange getNameTextRange() {
 		return getAttributeTextRange(JPA.NAME);
 	}
-	
+
+	public TextRange getQueryTextRange() {
+		return getAttributeTextRange(JPA.QUERY);
+	}
+
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
@@ -563,23 +567,23 @@ public class XmlNamedNativeQuery extends AbstractJpaEObject implements XmlQuery
 	protected static Translator buildNameTranslator() {
 		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlQuery_Name(), Translator.DOM_ATTRIBUTE);
 	}
-	
+
 	protected static Translator buildResultClassTranslator() {
 		return new Translator(JPA.RESULT_CLASS, OrmPackage.eINSTANCE.getXmlNamedNativeQuery_ResultClass(), Translator.DOM_ATTRIBUTE);
 	}
-	
+
 	protected static Translator buildResultSetMappingTranslator() {
 		return new Translator(JPA.RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlNamedNativeQuery_ResultSetMapping(), Translator.DOM_ATTRIBUTE);
 	}
-	
+
 	protected static Translator buildDescriptionTranslator() {
 		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlQuery_2_0_Description());
 	}
-	
+
 	protected static Translator buildQueryTranslator() {
 		return new Translator(JPA.QUERY, OrmPackage.eINSTANCE.getXmlQuery_Query());
 	}
-	
+
 	protected static Translator buildHintTranslator() {
 		return XmlQueryHint.buildTranslator(JPA.HINT, OrmPackage.eINSTANCE.getXmlQuery_Hints());
 	}

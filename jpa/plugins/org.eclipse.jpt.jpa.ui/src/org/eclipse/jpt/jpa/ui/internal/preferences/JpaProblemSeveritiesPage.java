@@ -73,13 +73,13 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	/**
 	 * Default severity levels are stored here,  ERROR is the default default so only need
-	 * to include WARNING, INFO, IGNORE in this Map. These will be displayed if neither the project 
+	 * to include WARNING, INFO, IGNORE in this Map. These will be displayed if neither the project
 	 * or workspace preference applies.
 	 * <br> key is the preferenceKey which is also the validation message key @see JpaValidationMessages.
 	 * <br> value is a severity level - @see JpaValidationPreferences#ERROR WARNING INFO IGNORE
 	 */
 	private Map<String, String> defaultSeverities;
-	
+
 	/**
 	 * The list of <code>Combo</code>s is cached in order to perform a revert of
 	 * the properties.
@@ -335,7 +335,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	private void addAttributeLevelCategory(Composite parent) {
 
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.ATTRIBUTE_LEVEL_CATEGORY);
-		
+
 		addLabeledCombo(
 			parent, JptUiValidationPreferenceMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME,
 			JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME);
@@ -395,7 +395,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 			JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED);
 
 		parent = addSubExpandableSection(parent, JptUiValidationPreferenceMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
-		
+
 		addLabeledCombo(
 			parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
 			JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY);
@@ -410,7 +410,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 			JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
 		addLabeledCombo(
 			parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
-			JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED);	
+			JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED);
 	}
 
 	private void addDatabaseCategory(Composite parent) {
@@ -423,9 +423,9 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	}
 
 	private void addTableCategory(Composite parent) {
-		
+
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.TABLE_CATEGORY);
-		
+
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TABLE_UNRESOLVED_CATALOG,                                            					JpaValidationMessages.TABLE_UNRESOLVED_CATALOG);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TABLE_UNRESOLVED_SCHEMA,                                             					JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TABLE_UNRESOLVED_NAME,                                               					JpaValidationMessages.TABLE_UNRESOLVED_NAME);
@@ -452,10 +452,10 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA,                                 JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME,                                   JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME);
 	}
-	
-	private void addColumnCategory(Composite parent) {	
+
+	private void addColumnCategory(Composite parent) {
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.COLUMN_CATEGORY);
-		
+
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLUMN_TABLE_NOT_VALID,                                      							JpaValidationMessages.COLUMN_TABLE_NOT_VALID);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLUMN_UNRESOLVED_TABLE,                                             					JpaValidationMessages.COLUMN_UNRESOLVED_TABLE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.COLUMN_UNRESOLVED_NAME,                                              					JpaValidationMessages.COLUMN_UNRESOLVED_NAME);
@@ -503,7 +503,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_TABLE_NOT_VALID, 													JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_TABLE_NOT_VALID);
 	}
 
-	private void addOverridesCategory(Composite parent) {	
+	private void addOverridesCategory(Composite parent) {
 
 		parent = addExpandableSection(parent, JptUiValidationPreferenceMessages.OVERRIDES_CATEGORY);
 
@@ -529,7 +529,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS, 				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS, JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
 
-		
+
 		parent = addSubExpandableSection(parent, JptUiValidationPreferenceMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
 
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_INVALID_NAME,                  									JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_INVALID_NAME);
@@ -591,12 +591,13 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME, JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.GENERATED_VALUE_UNRESOLVED_GENERATOR, JpaValidationMessages.GENERATED_VALUE_UNRESOLVED_GENERATOR);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.QUERY_DUPLICATE_NAME,                 JpaValidationMessages.QUERY_DUPLICATE_NAME);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.JPQL_QUERY_VALIDATION,                JpaValidationMessages.JPQL_QUERY_VALIDATION);
 	}
-	
+
 	private Composite addExpandableSection(Composite parent, String text) {
 		return addExpandableSection(parent, text, new GridData(GridData.FILL, GridData.FILL, true, false));
 	}
-	
+
 	private Composite addSubExpandableSection(Composite parent, String text) {
 		return addExpandableSection(parent, text, new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1));
 	}
@@ -714,7 +715,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		String preference = this.defaultSeverities.get(preferenceKey);
 		return preference == null ? JpaValidationPreferences.ERROR : preference;
 	}
-	
+
 	protected int convertPreferenceValueToComboIndex(String preferenceValue) {
 		if (JpaValidationPreferences.ERROR.equals(preferenceValue)) {
 			return ERROR_INDEX;
@@ -778,7 +779,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 			revertToDefault();
 		}
 	}
-	
+
 	@Override
 	protected void enableProjectSpecificSettings(boolean useProjectSpecificSettings) {
 		super.enableProjectSpecificSettings(useProjectSpecificSettings);
@@ -787,9 +788,9 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 			//      "otherwise the 'enable project specific settings' checkbox is being pressed")
 			return;
 		}
-		
+
 		this.hasProjectSpecificPreferences = Boolean.valueOf(useProjectSpecificSettings);
-		
+
 		//set all specified workspace preferences in the project preferences
 		if (useProjectSpecificSettings){
 			this.overrideWorkspacePreferences();
@@ -812,7 +813,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 				preference = getDefaultPreferenceValue(preferenceKey);
 			}
 			combo.select(convertPreferenceValueToComboIndex(preference));
-			//UI will show the defaults from the workspace, but set all preferences 
+			//UI will show the defaults from the workspace, but set all preferences
 			//to null so they will be deleted from project preferences
 			this.severityLevels.put(preferenceKey, null);
 		}
@@ -833,7 +834,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 			}
 		}
 	}
-	
+
 	// ********** OK/Revert/Apply behavior **********
 
 	@Override
@@ -858,7 +859,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		}
 		catch (InterruptedException ex) {
 			return false;
-		} 
+		}
 		catch (InvocationTargetException ex) {
 			throw new RuntimeException(ex.getTargetException());
 		}

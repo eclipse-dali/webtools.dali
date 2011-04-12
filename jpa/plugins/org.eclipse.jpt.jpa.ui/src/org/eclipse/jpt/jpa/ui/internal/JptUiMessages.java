@@ -92,6 +92,8 @@ public class JptUiMessages {
 	public static String JpaFacetWizardPage_title;
 	public static String JpaFacetWizardPage_userLibsLink;
 	public static String JpaFacetWizardPage_userServerLibLabel;
+	public static String JpaJpqlJavaCompletionProposalComputer_Error;
+	public static String JpaJpqlSseCompletionProposalComputer_Error;
 	public static String JpaLibraryProviderInstallPanel_includeLibraries;
 	public static String JpaMakePersistentWizardPage_title;
 	public static String JpaMakePersistentWizardPage_message;
@@ -110,6 +112,7 @@ public class JptUiMessages {
 	public static String JpaStructureView_linkWithEditorTooltip;
 	public static String JpaStructureView_structureNotAvailable;
 	public static String JpaStructureView_numItemsSelected;
+	public static String JpqlContentProposalProvider_Description;
 	public static String MappingFileWizard_title;
 	public static String MappingFileWizardPage_newFile_title;
 	public static String MappingFileWizardPage_newFile_desc;
@@ -132,7 +135,12 @@ public class JptUiMessages {
 	public static String OverwriteConfirmerDialog_title;
 	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
 	public static String EntitiesGenerator_jobName;
-	public static String JpaPreferencesPage_Description;
+	public static String JpaPreferencesPage_description;
+	public static String JpaPreferencesPage_jpqlEditor;
+	public static String JpaPreferencesPage_jpqlEditor_description;
+	public static String JpaPreferencesPage_jpqlEditor_lowerCaseRadioButton;
+	public static String JpaPreferencesPage_jpqlEditor_matchFirstCharacterCaseRadioButton;
+	public static String JpaPreferencesPage_jpqlEditor_upperCaseRadioButton;
 	public static String JpaProblemSeveritiesPage_Description;
 	public static String JpaProblemSeveritiesPage_Error;
 	public static String JpaProblemSeveritiesPage_Ignore;
@@ -140,7 +148,7 @@ public class JptUiMessages {
 	public static String JpaProblemSeveritiesPage_Warning;
 	public static String SelectJpaOrmMappingFileDialog_newButton;
 
-	
+
 	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiMessages.class;
 	static {
@@ -150,5 +158,4 @@ public class JptUiMessages {
 	private JptUiMessages() {
 		throw new UnsupportedOperationException();
 	}
-
 }

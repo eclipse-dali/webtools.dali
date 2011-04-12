@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -300,10 +299,10 @@ public class GenericOrmQueryContainer
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateQueries(messages);
+		this.validateQueries(messages, reporter);
 	}
 
-	protected void validateQueries(List<IMessage> messages) {
+	protected void validateQueries(List<IMessage> messages, IReporter reporter) {
 		for (OrmQuery localQuery : this.getQueries()) {
 			String name = localQuery.getName();
 			if (StringTools.stringIsEmpty(name)){
@@ -344,6 +343,9 @@ public class GenericOrmQueryContainer
 								localQuery.getNameTextRange()
 						)
 				);
+			}
+			else {
+				localQuery.validate(messages, reporter);
 			}
 		}
 	}
