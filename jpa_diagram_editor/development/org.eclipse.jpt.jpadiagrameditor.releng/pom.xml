@@ -45,7 +45,7 @@
 		</repository>	
 		<repository>
 			<id>indigo_WTP_M6</id>
-			<url>http://build.eclipse.org/webtools/committers/wtp-R3.3.0-I/20110405014410/I-3.3.0-20110405014410/repository/</url>
+			<url>http://build.eclipse.org/webtools/committers/wtp-R3.3.0-I/20110414020027/I-3.3.0-20110414020027/repository/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
