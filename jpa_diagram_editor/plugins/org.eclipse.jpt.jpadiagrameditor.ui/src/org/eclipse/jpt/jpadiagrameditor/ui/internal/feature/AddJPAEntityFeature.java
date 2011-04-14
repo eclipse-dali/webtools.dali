@@ -416,7 +416,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		String headerTextString = JPAEditorUtil.getText(addedWrapper);
 		ICompilationUnit cu = getFeatureProvider().getCompilationUnit(addedWrapper);
 		JPAEditorUtil.becomeWorkingCopy(cu);
-		headerTextString = JPAEditorUtil.cutFromLastDot(headerTextString); 
+		headerTextString = JPAEditorUtil.returnSimpleName(headerTextString); 
 		try {
 			if (cu.hasUnsavedChanges()) {
 				headerTextString = "* " + headerTextString;		//$NON-NLS-1$

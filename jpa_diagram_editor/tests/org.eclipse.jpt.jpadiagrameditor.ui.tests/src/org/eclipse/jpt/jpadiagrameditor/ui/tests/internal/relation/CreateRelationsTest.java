@@ -69,7 +69,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-@SuppressWarnings({ "unused", "restriction" })
+@SuppressWarnings({ "unused" })
 public class CreateRelationsTest {
 
 	private IJPAEditorFeatureProvider featureProvider;

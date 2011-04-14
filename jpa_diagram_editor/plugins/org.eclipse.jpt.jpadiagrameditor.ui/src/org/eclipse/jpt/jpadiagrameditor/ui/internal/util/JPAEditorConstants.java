@@ -25,6 +25,10 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 
 public class JPAEditorConstants {
 	
+	public static Hashtable<String, String> PRIMITIVE_TO_WRAPPER = new Hashtable<String,String>();
+	
+	public static HashSet<String> WRAPPER_SIMPLE_NAMES = new HashSet<String>();
+		
 	public static Hashtable<String, String> ANNOTATION_NAME_TO_KEY = new Hashtable<String, String>();
 	public static Set<String> CARDINALITY_LABELS = new HashSet<String>();
 	
@@ -141,6 +145,25 @@ public class JPAEditorConstants {
 		CARDINALITY_LABELS.add(CARDINALITY_ZERO_ONE);
 		CARDINALITY_LABELS.add(CARDINALITY_ONE);
 		CARDINALITY_LABELS.add(CARDINALITY_ZERO_N);
+		
+		PRIMITIVE_TO_WRAPPER.put("int", Integer.class.getName());		//$NON-NLS-1$
+		PRIMITIVE_TO_WRAPPER.put("long", Long.class.getName());			//$NON-NLS-1$
+		PRIMITIVE_TO_WRAPPER.put("double", Double.class.getName());		//$NON-NLS-1$
+		PRIMITIVE_TO_WRAPPER.put("float", Float.class.getName() );		//$NON-NLS-1$
+		PRIMITIVE_TO_WRAPPER.put("boolean", Boolean.class.getName());	//$NON-NLS-1$
+		PRIMITIVE_TO_WRAPPER.put("char", Character.class.getName());	//$NON-NLS-1$
+		PRIMITIVE_TO_WRAPPER.put("byte", Byte.class.getName());			//$NON-NLS-1$
+		PRIMITIVE_TO_WRAPPER.put("short", Short.class.getName());		//$NON-NLS-1$
+		
+		WRAPPER_SIMPLE_NAMES.add("Integer");		//$NON-NLS-1$
+		WRAPPER_SIMPLE_NAMES.add("Long");			//$NON-NLS-1$
+		WRAPPER_SIMPLE_NAMES.add("Double");			//$NON-NLS-1$
+		WRAPPER_SIMPLE_NAMES.add("Float");			//$NON-NLS-1$
+		WRAPPER_SIMPLE_NAMES.add("Boolean");		//$NON-NLS-1$
+		WRAPPER_SIMPLE_NAMES.add("Character");		//$NON-NLS-1$
+		WRAPPER_SIMPLE_NAMES.add("Byte");			//$NON-NLS-1$
+		WRAPPER_SIMPLE_NAMES.add("Short");			//$NON-NLS-1$
+		WRAPPER_SIMPLE_NAMES.add("String");			//$NON-NLS-1$
 	}
 	
 	public final static String[] PRIMITIVE_TYPES_AND_WRAPPERS = {"int", 						//$NON-NLS-1$

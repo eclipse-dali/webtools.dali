@@ -40,7 +40,7 @@ public class CreateOneToOneUniDirRelationFeature extends CreateOneToOneRelationF
 		JavaPersistentType owner = (JavaPersistentType)(getBusinessObjectForPictogramElement(source));
 		JavaPersistentType inverse = (JavaPersistentType)(getBusinessObjectForPictogramElement(target));
 		
-		String name = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(inverse));
+		String name = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
 		String nameWithNonCapitalLetter = name;
 		if (JpaArtifactFactory.instance().isMethodAnnotated(owner))
 			nameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(name);

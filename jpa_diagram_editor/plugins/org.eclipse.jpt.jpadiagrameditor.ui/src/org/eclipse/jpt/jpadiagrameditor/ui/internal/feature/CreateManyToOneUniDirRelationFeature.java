@@ -38,7 +38,7 @@ public class CreateManyToOneUniDirRelationFeature extends
 		JavaPersistentType owner = (JavaPersistentType)(getBusinessObjectForPictogramElement(source));
 		JavaPersistentType inverse = (JavaPersistentType)(getBusinessObjectForPictogramElement(target));
 		
-		String attributeName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(inverse));
+		String attributeName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
 		String nameWithNonCapitalLetter = attributeName;
 		if (JpaArtifactFactory.instance().isMethodAnnotated(owner))
 			nameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(attributeName);

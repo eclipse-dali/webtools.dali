@@ -54,6 +54,7 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -80,8 +81,8 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorImageCreator.RelEndDir;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants.ShapeType;
 import org.eclipse.swt.graphics.Point;
@@ -98,6 +99,7 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 public class JPAEditorUtil {
 	
+
 	private static IPeServiceUtil peUtil = null;
 		
 	public static String capitalizeFirstLetter(String s) {
@@ -156,7 +158,7 @@ public class JPAEditorUtil {
     	return at.getName();
     }
     
-    public static String cutFromLastDot(String s) {
+    public static String returnSimpleName(String s) {
     	return s.substring(s.lastIndexOf('.') + 1);
     }
     
@@ -227,10 +229,10 @@ public class JPAEditorUtil {
     public static String createCommaSeparatedListOfSimpleTypeNames(String[] strings) {
     	if ((strings == null) || (strings.length == 0))
     		return null;
-    	StringBuilder res = new StringBuilder(JPAEditorUtil.cutFromLastDot(strings[0]));
+    	StringBuilder res = new StringBuilder(JPAEditorUtil.returnSimpleName(strings[0]));
     	for (int i = 1; i < strings.length; i++) {
     		res.append(", ");									//$NON-NLS-1$
-    		res.append(JPAEditorUtil.cutFromLastDot(strings[i]));
+    		res.append(JPAEditorUtil.returnSimpleName(strings[i]));
     	}
     	return res.toString();
     }     
@@ -238,10 +240,10 @@ public class JPAEditorUtil {
     public static String createCommaSeparatedListOfSimpleTypeNames(ListIterator<String> strIt) {
     	if ((strIt == null) || !strIt.hasNext()) 
     		return null;
-    	StringBuilder res = new StringBuilder(JPAEditorUtil.cutFromLastDot(strIt.next()));    	
+    	StringBuilder res = new StringBuilder(JPAEditorUtil.returnSimpleName(strIt.next()));    	
 	    while (strIt.hasNext()) {
 	    	res.append(", ");									//$NON-NLS-1$
-	    	res.append(JPAEditorUtil.cutFromLastDot(strIt.next()));
+	    	res.append(JPAEditorUtil.returnSimpleName(strIt.next()));
 	    }
     	return res.toString();    	
     }     
@@ -259,7 +261,7 @@ public class JPAEditorUtil {
     
     
     public static String getText(JavaPersistentType jpt) {
-    	return cutFromLastDot(JpaArtifactFactory.instance().getEntityName(jpt));
+    	return JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt));
     }
     
     public static String getTooltipText(JavaPersistentType jpt) {
@@ -445,10 +447,34 @@ public class JPAEditorUtil {
 				continue;
 			try {
 				cu.createImport(typeFQN, null, npm);
-			} catch (JavaModelException e) {
-				//$NON-NLS-1$
-			}
+			} catch (JavaModelException e) {}
 		}
+	}
+	
+	public static String createImport(ICompilationUnit cu, String typeFQN) {
+		if (typeFQN.startsWith("java.lang.") || !typeFQN.contains(".")) 		//$NON-NLS-1$	//$NON-NLS-2$
+			return returnSimpleName(typeFQN);			
+		
+		NullProgressMonitor npm = new NullProgressMonitor();
+		String simpleName = returnSimpleName(typeFQN);
+		IImportDeclaration[] ids = new IImportDeclaration[0];
+		try {
+			ids = cu.getImports();
+		} catch (JavaModelException e) {}		
+		for (IImportDeclaration id : ids) {
+			String impName = id.getElementName(); 
+			if (impName.endsWith("*"))						//$NON-NLS-1$
+				continue;
+			if (impName.endsWith("." + simpleName))			//$NON-NLS-1$
+				return typeFQN;
+			if (JPAEditorConstants.WRAPPER_SIMPLE_NAMES.contains(simpleName))
+				return typeFQN;
+		}
+		try {
+			cu.createImport(typeFQN, null, npm);
+			return returnSimpleName(typeFQN);
+		} catch (JavaModelException e) {}
+		return typeFQN;
 	}
 
 	public static Image createAttributeIcon(Rectangle iconRect, Set<String> annotations) {
@@ -964,7 +990,7 @@ public class JPAEditorUtil {
 		IProject project = jpt.getJpaProject().getProject();
 		Properties props = JPADiagramPropertyPage.loadProperties(project);
 	    String tableNamePrefix = JPADiagramPropertyPage.getDefaultTablePrefixName(project, props);
-	    String shortEntityName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(jpt)); 
+	    String shortEntityName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt)); 
 	    if (tableNamePrefix.length() == 0)
 	    	return shortEntityName;
 		return tableNamePrefix + shortEntityName.toUpperCase(Locale.ENGLISH);
@@ -1027,7 +1053,7 @@ public class JPAEditorUtil {
     		name = NAME + i;
     		if ((!fp.hasObjectWithName(name)) &&
     				!JPAProjectEntityNames.contains(name.toLowerCase(Locale.ENGLISH)) && 
-    				!JPAProjectEntitySimpleNames.contains(JPAEditorUtil.cutFromLastDot(name).toLowerCase(Locale.ENGLISH)) &&
+    				!JPAProjectEntitySimpleNames.contains(JPAEditorUtil.returnSimpleName(name).toLowerCase(Locale.ENGLISH)) &&
     				!isJavaFileInProject(jpaProject.getProject(), name, pack)) 
     			break;
     	}
@@ -1047,7 +1073,7 @@ public class JPAEditorUtil {
 			name = NAME + i;
 			if ((!fp.hasObjectWithName(name)) && !JPAProjectEntityNames.contains(name
 					.toLowerCase(Locale.ENGLISH)) && !JPAProjectEntitySimpleNames.contains(JPAEditorUtil
-					.cutFromLastDot(name).toLowerCase(Locale.ENGLISH))
+					.returnSimpleName(name).toLowerCase(Locale.ENGLISH))
 					&& !isJavaFileInProject(jpaProject.getProject(), name, pack))
 				break;
 		}
@@ -1336,7 +1362,7 @@ public class JPAEditorUtil {
 		Iterator<ClassRef> li = pu.classRefs();			
 		while(li.hasNext()) {
 			ClassRef cf = li.next();
-			names.add(JPAEditorUtil.cutFromLastDot(cf.getClassName()).toLowerCase(Locale.ENGLISH));
+			names.add(JPAEditorUtil.returnSimpleName(cf.getClassName()).toLowerCase(Locale.ENGLISH));
 		}
 		return names;
 	}		
@@ -1377,6 +1403,10 @@ public class JPAEditorUtil {
 			}
 		}
 		return false;
+	}
+	
+	static public String getPrimitiveWrapper(String primitive) {
+		return JPAEditorConstants.PRIMITIVE_TO_WRAPPER.get(primitive);
 	}
 	
 }

@@ -1383,7 +1383,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	
 	private void updateJPTName(JavaPersistentType jpt) {
 		String entName = JpaArtifactFactory.instance().getEntityName(jpt);
-		entName = JPAEditorUtil.cutFromLastDot(entName);
+		entName = JPAEditorUtil.returnSimpleName(entName);
 		ContainerShape entShape = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(jpt);
 		JPAEditorUtil.setJPTNameInShape(entShape, entName);
 	}

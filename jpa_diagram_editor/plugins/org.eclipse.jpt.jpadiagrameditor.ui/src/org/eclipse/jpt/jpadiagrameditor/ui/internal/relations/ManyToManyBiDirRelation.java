@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -65,8 +66,8 @@ public class ManyToManyBiDirRelation extends ManyToManyRelation implements Bidir
 	}	
 	
 	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
-		String inverseAttributeName = JPAEditorUtil.cutFromLastDot(inverse.getName());
-		String actInverseAttributeName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(inverse));
+		String inverseAttributeName = JPAEditorUtil.returnSimpleName(inverse.getName());
+		String actInverseAttributeName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
 		
 		String nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(inverseAttributeName);
 		String actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actInverseAttributeName);
@@ -79,14 +80,15 @@ public class ManyToManyBiDirRelation extends ManyToManyRelation implements Bidir
 		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, actNameWithNonCapitalLetter); 
 		
 		ownerAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, owner, inverse, 
+																				JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject()) ? JpaArtifactFactory.instance().getIdType(inverse) : null,
 																				   nameWithNonCapitalLetter, 
 																				   actNameWithNonCapitalLetter, 
 																				   true,
 																				   ownerCU,
 																				   inverseCU);
 		
-		String ownerAttributeName = JPAEditorUtil.cutFromLastDot(owner.getName());
-		String actOwnerAttributeName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(owner));
+		String ownerAttributeName = JPAEditorUtil.returnSimpleName(owner.getName());
+		String actOwnerAttributeName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(owner));
 		nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(ownerAttributeName);
 		actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actOwnerAttributeName);				
 		
@@ -98,6 +100,7 @@ public class ManyToManyBiDirRelation extends ManyToManyRelation implements Bidir
 		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(inverse, actNameWithNonCapitalLetter); 
 		
 		inverseAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, inverse, owner, 
+																			   JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject()) ? JpaArtifactFactory.instance().getIdType(owner) : null,
 																			   nameWithNonCapitalLetter, 
 																			   actNameWithNonCapitalLetter, 
 																			   true, 

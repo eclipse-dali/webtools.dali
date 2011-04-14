@@ -72,6 +72,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 	private Button btnCollectionType;
 	private Button btnListType;
 	private Button btnSetType;
+	private Button btnMapType;
 	private Button checkOneToManyOldStyle;
 
 	private boolean propsModified = false;
@@ -89,6 +90,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
     public static final String COLLECTION_TYPE = "java.util.Collection"; //$NON-NLS-1$
     public static final String LIST_TYPE = "java.util.List"; //$NON-NLS-1$
     public static final String SET_TYPE = "java.util.Set"; //$NON-NLS-1$
+    public static final String MAP_TYPE = "java.util.Map"; //$NON-NLS-1$
 
 	
 	private IPreferenceStore store = JPADiagramEditorPlugin.getDefault().getPreferenceStore();
@@ -243,6 +245,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		createCollectionTypeButton(composite, gd, defaultCollectionType);
 		createListTypeButton(composite, gd, defaultCollectionType);
 		createSetTypeButton(composite, gd, defaultCollectionType);
+		createMapTypeButton(composite, gd, defaultCollectionType);
 
 	}
 	
@@ -307,6 +310,20 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		});
 	}
 	
+	private void createMapTypeButton(Composite composite, GridData gd, String defaultCollectionType) {
+		btnMapType = new Button(groupCollectionType, SWT.RADIO | SWT.FLAT);
+		btnMapType.setText(MAP_TYPE);
+		gd = new GridData();
+		btnMapType.setLayoutData(gd);
+		btnMapType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_MAP_TYPE));
+		btnMapType.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				propsModified = true;
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {}			
+		});
+	}	
+	
 	private void createFieldAccessButton(Composite composite, GridData gd, String defaultAccessType) {
 		btnFieldBasedAccess = new Button(groupAccessType, SWT.RADIO | SWT.FLAT);
 		btnFieldBasedAccess.setText(JPAEditorMessages.JPAEditorPreferencesPage_entityFieldBasedAccessButtonLabel);
@@ -351,6 +368,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		btnCollectionType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_COLLECTION_TYPE));
 		btnListType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_LIST_TYPE));		
 		btnSetType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_SET_TYPE));
+		btnMapType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_MAP_TYPE));
 	    boolean defaultOneToManyOldStyle = store.getBoolean(JPAEditorPreferenceInitializer.PROPERTY_ONE_TO_MANY_OLD_STYLE);
 	    if (!isJPA10Project)
 	    	checkOneToManyOldStyle.setSelection(defaultOneToManyOldStyle);		
@@ -446,6 +464,8 @@ public class JPADiagramPropertyPage extends PropertyPage {
 			return JPAEditorPreferenceInitializer.PROPERTY_VAL_LIST_TYPE;
 		else if (btnSetType.getSelection())
 			return JPAEditorPreferenceInitializer.PROPERTY_VAL_SET_TYPE;
+		else if (btnMapType.getSelection())
+			return JPAEditorPreferenceInitializer.PROPERTY_VAL_MAP_TYPE;
 		return null;
 	}
 	
@@ -551,6 +571,11 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		return isSetType(project, props);
 	}
 	
+	public static boolean isMapType(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return isMapType(project, props);
+	}	
+	
 	public static boolean shouldOneToManyUnidirBeOldStyle(IProject project) {
 		Properties props = JPADiagramPropertyPage.loadProperties(project);
 		return shouldOneToManyUnidirBeOldStyle(project, props);
@@ -593,6 +618,11 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		String accessType = props.getProperty(PROP_COLLECTION_TYPE.getLocalName());
 		return accessType.equals("set");	//$NON-NLS-1$;
 	}
+	
+	public static boolean isMapType(IProject project, Properties props) {
+		String accessType = props.getProperty(PROP_COLLECTION_TYPE.getLocalName());
+		return accessType.equals("map");	//$NON-NLS-1$;
+	}	
 	
 	public static boolean shouldOneToManyUnidirBeOldStyle(IProject project, Properties props) {
 		return Boolean.parseBoolean(props.getProperty(PROP_ONE_TO_MANY_OLD_STYLE.getLocalName()));

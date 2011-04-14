@@ -65,7 +65,7 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 	    Shape sh = (Shape)context.getPictogramElement();
 	    ContainerShape csh = sh.getContainer();
 	    JavaPersistentType jpt = (JavaPersistentType)getBusinessObjectForPictogramElement(csh);
-	    return JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(jpt));
+	    return JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt));
 	}
 	
 	@Override

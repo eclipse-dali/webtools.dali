@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -57,8 +58,8 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements Bidire
 	}
 
 	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
-		String name = JPAEditorUtil.cutFromLastDot(inverse.getName());
-		String actName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(inverse));
+		String name = JPAEditorUtil.returnSimpleName(inverse.getName());
+		String actName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
 		String nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);
 		String actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actName);
 		
@@ -75,8 +76,8 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements Bidire
 																			 ownerCU,
 																			 inverseCU);
 		
-		name = JPAEditorUtil.cutFromLastDot(owner.getName());
-		actName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(owner));	
+		name = JPAEditorUtil.returnSimpleName(owner.getName());
+		actName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(owner));	
 		nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);
 		actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actName);				
 		
@@ -88,6 +89,7 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements Bidire
 		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(inverse, actNameWithNonCapitalLetter); 
 		
 		inverseAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, inverse, owner, 
+																			   JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject()) ? JpaArtifactFactory.instance().getIdType(owner) : null,
 																			   nameWithNonCapitalLetter, actNameWithNonCapitalLetter, 
 																			   true, 
 																			   inverseCU,

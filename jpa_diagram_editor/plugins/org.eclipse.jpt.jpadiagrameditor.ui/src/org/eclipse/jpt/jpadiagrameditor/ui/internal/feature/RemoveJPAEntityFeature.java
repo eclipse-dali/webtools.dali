@@ -107,7 +107,7 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
     		return;
     	JavaPersistentType jpt = (JavaPersistentType)bo;
 		if (JPAEditorUtil.isEntityOpenElsewhere(jpt, true)) {
-			String shortEntName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(jpt));
+			String shortEntName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt));
 			String message = NLS.bind(JPAEditorMessages.RemoveJPAEntityFeature_discardWarningMsg, shortEntName);
 			MessageDialog dialog = new MessageDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 					JPAEditorMessages.JPASolver_closeEditors, null, message,

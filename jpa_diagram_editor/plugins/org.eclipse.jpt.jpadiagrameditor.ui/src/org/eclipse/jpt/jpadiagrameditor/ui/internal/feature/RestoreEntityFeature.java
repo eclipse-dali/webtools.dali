@@ -43,7 +43,7 @@ public class RestoreEntityFeature extends AbstractCustomFeature {
 		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().getBusinessObjectForPictogramElement(context.getPictogramElements()[0]);
 		if (JPAEditorUtil.isEntityOpenElsewhere(jpt, true)) {
 			String shortEntName = JPAEditorUtil
-					.cutFromLastDot(JpaArtifactFactory.instance()
+					.returnSimpleName(JpaArtifactFactory.instance()
 							.getEntityName(jpt));
 			String message = NLS.bind(
 					JPAEditorMessages.JPASolver_closeWarningMsg, shortEntName);

@@ -59,7 +59,7 @@ public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
 		JavaPersistentAttribute jpa = (JavaPersistentAttribute)bo;
 		String typeName = JPAEditorUtil.getAttributeTypeNameWithGenerics(jpa);
 		String msg = MessageFormat.format(JPAEditorMessages.SelectTypeDialog_chooseAttributeTypeDialogText, 
-				jpa.getName(), JPAEditorUtil.cutFromLastDot(((PersistentType)jpa.getParent()).getName()));		
+				jpa.getName(), JPAEditorUtil.returnSimpleName(((PersistentType)jpa.getParent()).getName()));		
 		SelectTypeDialog d = new SelectTypeDialog(msg, typeName);
 		if (d.open() != IDialogConstants.OK_ID)
 			return;

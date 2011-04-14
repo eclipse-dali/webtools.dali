@@ -42,6 +42,7 @@ public class JPAEditorPreferenceInitializer extends
 	public static final String PROPERTY_VAL_COLLECTION_TYPE 	= "collection";			//$NON-NLS-1$
 	public static final String PROPERTY_VAL_LIST_TYPE 			= "list";			//$NON-NLS-1$
 	public static final String PROPERTY_VAL_SET_TYPE 			= "set";			//$NON-NLS-1$
+	public static final String PROPERTY_VAL_MAP_TYPE 			= "map";			//$NON-NLS-1$
 
 	
 	

@@ -139,7 +139,7 @@ public class EntityChangeListener extends Thread {
 						} else {	
 							
 							ICompilationUnit cu = featureProvider.getCompilationUnit(jpt);
-							String entName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(jpt)); 
+							String entName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt)); 
 							try {
 								final String newHeader = (cu.hasUnsavedChanges() ? "* " : "") + entName;	//$NON-NLS-1$ //$NON-NLS-2$
 								Display.getDefault().asyncExec(new Runnable() {

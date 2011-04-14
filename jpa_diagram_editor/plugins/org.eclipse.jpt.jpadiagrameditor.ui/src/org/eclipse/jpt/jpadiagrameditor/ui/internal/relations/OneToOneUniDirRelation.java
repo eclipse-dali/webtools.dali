@@ -46,8 +46,8 @@ public class OneToOneUniDirRelation extends OneToOneRelation implements Unidirec
 	}
 
 	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
-		String name = JPAEditorUtil.cutFromLastDot(inverse.getName());
-		String actName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(inverse));
+		String name = JPAEditorUtil.returnSimpleName(inverse.getName());
+		String actName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
 		
 		String nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);
 		String actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actName);

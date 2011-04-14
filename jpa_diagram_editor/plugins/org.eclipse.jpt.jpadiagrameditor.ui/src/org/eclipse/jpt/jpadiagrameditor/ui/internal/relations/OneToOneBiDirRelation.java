@@ -57,8 +57,8 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements Bidirecti
 	}
 
 	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
-		String name = JPAEditorUtil.cutFromLastDot(inverse.getName());
-		String actName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(inverse));
+		String name = JPAEditorUtil.returnSimpleName(inverse.getName());
+		String actName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
 
 		String nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);
 		String actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actName);
@@ -76,8 +76,8 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements Bidirecti
 																			 ownerCU,
 																			 inverseCU);
 		
-		name = JPAEditorUtil.cutFromLastDot(owner.getName());
-		actName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(owner));
+		name = JPAEditorUtil.returnSimpleName(owner.getName());
+		actName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(owner));
 		nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);
 		actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actName);		
 		

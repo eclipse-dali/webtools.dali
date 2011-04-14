@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -47,8 +48,8 @@ public class ManyToManyUniDirRelation extends ManyToManyRelation implements Unid
 	
 	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU,
 								ICompilationUnit inverseCU) {
-		String name = JPAEditorUtil.cutFromLastDot(inverse.getName());
-		String actName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(inverse));
+		String name = JPAEditorUtil.returnSimpleName(inverse.getName());
+		String actName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
 		
 		String nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);
 		String actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actName);
@@ -61,6 +62,7 @@ public class ManyToManyUniDirRelation extends ManyToManyRelation implements Unid
 		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, actNameWithNonCapitalLetter); 
 		
 		ownerAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, owner, inverse, 
+																				JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject()) ? JpaArtifactFactory.instance().getIdType(inverse) : null,
 																				   nameWithNonCapitalLetter, 
 																				   actNameWithNonCapitalLetter,
 																				   true,

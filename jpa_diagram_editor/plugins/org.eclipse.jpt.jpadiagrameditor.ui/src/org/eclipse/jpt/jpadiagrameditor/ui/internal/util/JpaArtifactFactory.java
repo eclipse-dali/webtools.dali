@@ -75,6 +75,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedIdAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
@@ -122,7 +123,7 @@ public class JpaArtifactFactory {
 	private static final String COLLECTION_TYPE = "java.util.Collection"; //$NON-NLS-1$
 	private static final String LIST_TYPE = "java.util.List"; //$NON-NLS-1$
 	private static final String SET_TYPE = "java.util.Set"; //$NON-NLS-1$
-
+	private static final String MAP_TYPE = "java.util.Map"; //$NON-NLS-1$
 
 	synchronized public static JpaArtifactFactory instance() {
 		return INSTANCE;
@@ -572,13 +573,21 @@ public class JpaArtifactFactory {
 	}
 	
 	public JavaPersistentAttribute addAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType jpt, 
-			JavaPersistentType attributeType, String attributeName,
+			JavaPersistentType attributeType,  String attributeName,
 			String actName, boolean isCollection, ICompilationUnit cu1,
 			ICompilationUnit cu2) {
+		
+		return addAttribute(fp, jpt, attributeType, null, attributeName,
+				actName, isCollection, cu1, cu2);
+	}
+	
+	public JavaPersistentAttribute addAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType jpt, 
+												JavaPersistentType attributeType, String mapKeyType, String attributeName,
+												String actName, boolean isCollection, ICompilationUnit cu1,
+												ICompilationUnit cu2) {
 		IType type = null;
 		try {
-			cu1.createImport(cu2.getType(attributeType.getName())
-					.getElementName(), null, new NullProgressMonitor());
+			JPAEditorUtil.createImport(cu1, cu2.getType(attributeType.getName()).getElementName());
 			type = cu1.findPrimaryType();	
 			refreshEntityModel(fp, jpt);
 			if (doesAttributeExist(jpt, actName)) {
@@ -589,48 +598,57 @@ public class JpaArtifactFactory {
 				IProject project = jpt.getJpaProject().getProject();
 				Properties props = fp.loadProperties(project);
 
-				if(JPADiagramPropertyPage.isCollectionType(project, props)){
+				if (JPADiagramPropertyPage.isCollectionType(project, props)) {
 					createContentType(attributeType, actName, cu1, type, COLLECTION_TYPE);
 					type.createMethod(genGetterWithAppropriateType(attributeName,
-							returnSimpleName(attributeType.getName()), 
+							JPAEditorUtil.returnSimpleName(attributeType.getName()), 
 							actName, COLLECTION_TYPE), null, false,
 							new NullProgressMonitor());
 					type.createMethod(genSetterWithAppropriateType(attributeName,
-							returnSimpleName(attributeType.getName()), 
+							JPAEditorUtil.returnSimpleName(attributeType.getName()), 
 							actName, COLLECTION_TYPE), null, false,
 							new NullProgressMonitor());
-				} else if(JPADiagramPropertyPage.isListType(project, props)){
+				} else if (JPADiagramPropertyPage.isListType(project, props)) {
 					createContentType(attributeType, actName, cu1, type, LIST_TYPE);
 					type.createMethod(genGetterWithAppropriateType(attributeName,
-							returnSimpleName(attributeType.getName()), 
+							JPAEditorUtil.returnSimpleName(attributeType.getName()), 
 							actName, LIST_TYPE), null, false,
 							new NullProgressMonitor());
 					type.createMethod(genSetterWithAppropriateType(attributeName,
-							returnSimpleName(attributeType.getName()), 
+							JPAEditorUtil.returnSimpleName(attributeType.getName()), 
 							actName, LIST_TYPE), null, false,
 							new NullProgressMonitor());
-				} else {
+				} else if (JPADiagramPropertyPage.isSetType(project, props)) {
 					createContentType(attributeType, actName, cu1, type, SET_TYPE);
 					type.createMethod(genGetterWithAppropriateType(attributeName,
-							returnSimpleName(attributeType.getName()), 
+							JPAEditorUtil.returnSimpleName(attributeType.getName()), 
 							actName, SET_TYPE), null, false,
 							new NullProgressMonitor());
 					type.createMethod(genSetterWithAppropriateType(attributeName,
-							returnSimpleName(attributeType.getName()), 
+							JPAEditorUtil.returnSimpleName(attributeType.getName()), 
 							actName, SET_TYPE), null, false,
 							new NullProgressMonitor());
-
+				} else {
+					mapKeyType = createContentType(mapKeyType, attributeType, actName, cu1, type, MAP_TYPE);
+					type.createMethod(genGetterWithAppropriateType(attributeName, mapKeyType,
+							JPAEditorUtil.returnSimpleName(attributeType.getName()), 
+							actName, MAP_TYPE), null, false,
+							new NullProgressMonitor());
+					type.createMethod(genSetterWithAppropriateType(attributeName, mapKeyType,
+							JPAEditorUtil.returnSimpleName(attributeType.getName()), 
+							actName, MAP_TYPE), null, false,
+							new NullProgressMonitor());
 				}
 			} else {
 				type
 						.createField(
-								"  private " + returnSimpleName(attributeType.getName()) + " " + JPAEditorUtil.decapitalizeFirstLetter(actName) + ";", null, false, new NullProgressMonitor()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+								"  private " + JPAEditorUtil.returnSimpleName(attributeType.getName()) + " " + JPAEditorUtil.decapitalizeFirstLetter(actName) + ";", null, false, new NullProgressMonitor()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				type.createMethod(genGetterContents(attributeName,
-						returnSimpleName(attributeType.getName()), null,
+						JPAEditorUtil.returnSimpleName(attributeType.getName()), null,
 						actName, null, isCollection), null, false,
 						new NullProgressMonitor());
 				type.createMethod(genSetterContents(attributeName,
-						returnSimpleName(attributeType.getName()), null,
+						JPAEditorUtil.returnSimpleName(attributeType.getName()), null,
 						actName, isCollection), null, false,
 						new NullProgressMonitor());
 			}
@@ -647,10 +665,12 @@ public class JpaArtifactFactory {
 	}
 
 	public String getApropriateImplementedCollectionType(String collectionType){
-		if(collectionType.equals(COLLECTION_TYPE) || collectionType.equals(LIST_TYPE)){
+		if (collectionType.equals(COLLECTION_TYPE) || collectionType.equals(LIST_TYPE)) {
 			return "java.util.ArrayList"; //$NON-NLS-1$
-		} else if(collectionType.equals(SET_TYPE)){
+		} else if(collectionType.equals(SET_TYPE)) {
 			return "java.util.HashSet"; //$NON-NLS-1$
+		} else if(collectionType.equals(MAP_TYPE)) {
+			return "java.util.HashMap"; //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -658,15 +678,27 @@ public class JpaArtifactFactory {
 	private void createContentType(JavaPersistentType attributeType,
 			String actName, ICompilationUnit cu1, IType type, String collectionType)
 			throws JavaModelException {
-		cu1.createImport(
-						collectionType, null, new NullProgressMonitor()); //$NON-NLS-1$
-		cu1.createImport(
-				getApropriateImplementedCollectionType(collectionType), null, new NullProgressMonitor()); //$NON-NLS-1$
+		createContentType(null, attributeType,
+				actName, cu1, type, collectionType);
+	}
+	
+	private String createContentType(String mapKeyType, JavaPersistentType attributeType,
+			String actName, ICompilationUnit cu1, IType type, String collectionType)
+			throws JavaModelException {
+		
+		if (mapKeyType != null) {
+			mapKeyType = JPAEditorUtil.createImport(cu1, mapKeyType); 
+		}
+		JPAEditorUtil.createImport(cu1, collectionType);
+		JPAEditorUtil.createImport(cu1, getApropriateImplementedCollectionType(collectionType)); 
 		type.createField(
-				"  private " + JPAEditorUtil.cutFromLastDot(collectionType) + "<"  //$NON-NLS-1$ //$NON-NLS-2$
-				+ returnSimpleName(attributeType.getName()) + "> " + JPAEditorUtil.decapitalizeFirstLetter(actName) +  //$NON-NLS-1$
-				" = new " + JPAEditorUtil.cutFromLastDot(getApropriateImplementedCollectionType(collectionType)) + "<"  //$NON-NLS-1$ //$NON-NLS-2$
-				+ returnSimpleName(attributeType.getName()) + ">();", null, false, new NullProgressMonitor()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				"  private " + JPAEditorUtil.returnSimpleName(collectionType) + "<" +//$NON-NLS-1$ //$NON-NLS-2$
+				((mapKeyType != null) ? (mapKeyType + ", ") : "") +			//$NON-NLS-1$ //$NON-NLS-2$
+				JPAEditorUtil.returnSimpleName(attributeType.getName()) + "> " + JPAEditorUtil.decapitalizeFirstLetter(actName) +  //$NON-NLS-1$
+				" = new " + JPAEditorUtil.returnSimpleName(getApropriateImplementedCollectionType(collectionType)) + "<" + //$NON-NLS-1$ //$NON-NLS-2$
+				((mapKeyType != null) ? (mapKeyType + ", ") : "") +		//$NON-NLS-1$ //$NON-NLS-2$
+				JPAEditorUtil.returnSimpleName(attributeType.getName()) + ">();", null, false, new NullProgressMonitor()); //$NON-NLS-1$ 
+		return mapKeyType;
 	}
 	
 	public void refreshEntityModel(IFeatureProvider fp, JavaPersistentType jpt) {
@@ -692,7 +724,7 @@ public class JpaArtifactFactory {
 		if(ob instanceof JavaPersistentType){
 			JavaPersistentType jpt = (JavaPersistentType) ob;
 			ICompilationUnit cu = fp.getCompilationUnit(jpt);
-				IType type = cu.getType(JPAEditorUtil.cutFromLastDot(jpt.getName()));
+				IType type = cu.getType(JPAEditorUtil.returnSimpleName(jpt.getName()));
 			IField field = type.getField(attrTxt);
 			int cnt = 0;
 			while ((cnt < 20) && !field.exists()) {
@@ -729,7 +761,7 @@ public class JpaArtifactFactory {
 		if(ob instanceof JavaPersistentType){
 		JavaPersistentType jpt = (JavaPersistentType) ob;
 		ICompilationUnit cu = fp.getCompilationUnit(jpt);
-			IType type = cu.getType(JPAEditorUtil.cutFromLastDot(jpt.getName()));
+			IType type = cu.getType(JPAEditorUtil.returnSimpleName(jpt.getName()));
 			String attrNameWithCapitalLetter = attrTxt.substring(0, 1)
 					.toUpperCase(Locale.ENGLISH)
 					+ attrTxt.substring(1);
@@ -845,17 +877,17 @@ public class JpaArtifactFactory {
 		
 		boolean shouldAddImport = true;
 		IImportDeclaration[] importDeclarations = cu.getImports();
-		String attrShortTypeName = JPAEditorUtil.cutFromLastDot(attrTypeName);
+		String attrShortTypeName = JPAEditorUtil.returnSimpleName(attrTypeName);
 		for(IImportDeclaration importDecl : importDeclarations){
 			String importedDeclarationFQN = importDecl.getElementName();
-			String importedDeclarationShortName = JPAEditorUtil.cutFromLastDot(importedDeclarationFQN);
+			String importedDeclarationShortName = JPAEditorUtil.returnSimpleName(importedDeclarationFQN);
 			if(attrShortTypeName.equals(importedDeclarationShortName) && !attrTypeName.equals(importedDeclarationFQN))
 				shouldAddImport = false;
 		}
 		
 		if(shouldAddImport){
 			JPAEditorUtil.createImports(cu, attrTypeName);
-		    attrTypeName = JPAEditorUtil.cutFromLastDot(attrTypeName);
+		    attrTypeName = JPAEditorUtil.returnSimpleName(attrTypeName);
 		}
 		if ((attrTypes != null) && (attrTypes.length > 0)) {
 			JPAEditorUtil.createImports(cu, attrTypes);
@@ -1077,7 +1109,7 @@ public class JpaArtifactFactory {
 		HashSet<String> res = new HashSet<String>();
 		Iterator<Annotation> it = jrpt.annotations();
 		while (it.hasNext())
-			res.add(JPAEditorUtil.cutFromLastDot(it.next().getAnnotationName()));
+			res.add(JPAEditorUtil.returnSimpleName(it.next().getAnnotationName()));
 		/*
 		it = jrpt.supportingAnnotations();
 		while (it.hasNext()) 
@@ -1186,7 +1218,7 @@ public class JpaArtifactFactory {
 		IRelation res = null;
 		Annotation[] ans = getAnnotations(persistentAttribite);
 		for (Annotation an : ans) {
-			String annotationName = JPAEditorUtil.cutFromLastDot(an.getAnnotationName());
+			String annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName());
 			if (JPAEditorConstants.RELATION_ANNOTATIONS.contains(annotationName)) {
 				String relTypeName = getRelTypeName((RelationshipMappingAnnotation)an, jrpa);
 				JavaPersistentType relJPT = (JavaPersistentType)fp.getBusinessObjectForKey(relTypeName);
@@ -1214,7 +1246,7 @@ public class JpaArtifactFactory {
 				JavaResourcePersistentAttribute jrpa = at.getResourcePersistentAttribute();
 				Annotation[] ans = this.getAnnotations(at);
 				for (Annotation an : ans) {
-					String annotationName = JPAEditorUtil.cutFromLastDot(an.getAnnotationName());
+					String annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName());
 					if (JPAEditorConstants.RELATION_ANNOTATIONS.contains(annotationName)) {
 						String relTypeName = getRelTypeName((RelationshipMappingAnnotation)an, jrpa);
 						if (!relTypeName.equals(jpt2.getName()))
@@ -1431,7 +1463,7 @@ public class JpaArtifactFactory {
 			Annotation[] ans = getAnnotations(at);			
 			String annotationName = null;
 			for (Annotation an : ans) {
-				annotationName = JPAEditorUtil.cutFromLastDot(an.getAnnotationName()); 
+				annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName()); 
 				if (JPAEditorConstants.RELATION_ANNOTATIONS.contains(annotationName)) {
 					String relTypeName = getRelTypeName((RelationshipMappingAnnotation)an, at.getResourcePersistentAttribute());
 					if (!relTypeName.equals(jpt.getName()))
@@ -1775,7 +1807,7 @@ public class JpaArtifactFactory {
 			JavaResourcePersistentAttribute relJRPA = relEntAt.getResourcePersistentAttribute();
 			Annotation[] ans = this.getAnnotations(relEntAt);
 			for (Annotation an : ans) {
-				String annotationName = JPAEditorUtil.cutFromLastDot(an.getAnnotationName());
+				String annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName());
 				if (JPAEditorConstants.RELATION_ANNOTATIONS.contains(annotationName)) {
 					String relTypeName = getRelTypeName((RelationshipMappingAnnotation)an, relJRPA);					
 					if (!relTypeName.equals(jpt.getName())) 
@@ -1842,7 +1874,7 @@ public class JpaArtifactFactory {
 		
 		if (isNonOwner(at) || !JPAEditorUtil.getCompilationUnit((JavaPersistentType) at.getParent()).exists())
 			return null;
-		String annotationName = JPAEditorUtil.cutFromLastDot(an.getAnnotationName());
+		String annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName());
 		UnidirectionalRelation res = null;
 		String attrName = at.getName();
 		if (annotationName.equals(JPAEditorConstants.ANNOTATION_ONE_TO_ONE)) {
@@ -1883,8 +1915,8 @@ public class JpaArtifactFactory {
 			JavaPersistentType relJPT, JavaPersistentAttribute relAt,
 			Annotation relAn, IJPAEditorFeatureProvider fp) {
 		JpaArtifactFactory.instance().refreshEntityModel(null, (JavaPersistentType)relAt.getParent());
-		String annotationName = JPAEditorUtil.cutFromLastDot(an.getAnnotationName());
-		String relAnnotationName = JPAEditorUtil.cutFromLastDot(relAn.getAnnotationName());
+		String annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName());
+		String relAnnotationName = JPAEditorUtil.returnSimpleName(relAn.getAnnotationName());
 		if (!annotationNamesMatch(annotationName, relAnnotationName)) 
 			return null;
 		if (annotationName.equals(JPAEditorConstants.ANNOTATION_ONE_TO_MANY)) 
@@ -1985,14 +2017,14 @@ public class JpaArtifactFactory {
 		if (isCollection) {
 			contents += "    public Collection<"+ attrType + "> get" + attrNameWithCapitalA + "() {\n" +  	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
 					"        return "	//$NON-NLS-1$
-					+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";\n" + //$NON-NLS-1$ //$NON-NLS-2$
-			  "    }\n";  																//$NON-NLS-1$			
+					+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";\n" + //$NON-NLS-1$ 
+			  "    }\n";  //$NON-NLS-1$			
 		} else {
 			contents += "    public "+ attrType + //$NON-NLS-1$
 							((attrTypeElementNames == null)?"":("<" + JPAEditorUtil.createCommaSeparatedListOfSimpleTypeNames(attrTypeElementNames) + ">")) + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							(attrType.equals("boolean") ? " is" : " get") + attrNameWithCapitalA + "() {\n" +  	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
 					"        return "	//$NON-NLS-1$
-					+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";\n" + //$NON-NLS-1$ //$NON-NLS-2$
+					+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";\n" + //$NON-NLS-1$ 
 			  "    }\n";  																//$NON-NLS-1$			
 		}
 		return contents;
@@ -2005,11 +2037,12 @@ public class JpaArtifactFactory {
 				+ actName.substring(1);
 		String contents = ""; //$NON-NLS-1$
 		if (isCollection) {
-			contents = "    public void set" + attrNameWithCapitalA + "(Collection<" + attrType + "> param) {\n" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$  
+			contents = "    public void set" + attrNameWithCapitalA + "(Collection<" + attrType + "> param) " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"{\n" + //$NON-NLS-1$ 
 					"        this."	//$NON-NLS-1$
 					+ JPAEditorUtil.decapitalizeFirstLetter(actName)
-					+ " = param;\n" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						  "    }\n";  																					//$NON-NLS-1$
+					+ " = param;\n" + //$NON-NLS-1$ 
+						  "    }\n";  	//$NON-NLS-1$
 		} else {
 			contents = "    public void set" + attrNameWithCapitalA + "(" + attrType + //$NON-NLS-1$ //$NON-NLS-2$
 								((attrTypeElementNames == null)?"":("<" + JPAEditorUtil.createCommaSeparatedListOfSimpleTypeNames(attrTypeElementNames) + ">")) + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -2017,39 +2050,58 @@ public class JpaArtifactFactory {
 					+ 
 					"        this."	//$NON-NLS-1$
 					+ JPAEditorUtil.decapitalizeFirstLetter(actName)
-					+ " = param;\n" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			  "    }\n";  																					//$NON-NLS-1$			
+					+ " = param;\n" + //$NON-NLS-1$ 
+			  "    }\n";  			//$NON-NLS-1$			
 		}
 		return contents;
 	}
 	
 	private String genGetterWithAppropriateType(String attrName, String attrType,
 			String actName, String type) {
-
-		String attrNameWithCapitalA = actName.substring(0, 1).toUpperCase(
-				Locale.ENGLISH)
-				+ actName.substring(1);
-		String contents = "    public " + JPAEditorUtil.cutFromLastDot(type) + "<" + attrType + "> get" + attrNameWithCapitalA + "() {\n" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
-				"        return " //$NON-NLS-1$
-				+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";\n" + //$NON-NLS-1$ //$NON-NLS-2$
-				"    }\n"; //$NON-NLS-1$			
-		return contents;
+		return genGetterWithAppropriateType(attrName, null, attrType,
+				actName, type);
 	}
 
-	private String genSetterWithAppropriateType(String attrName, String attrType,
+	
+	private String genGetterWithAppropriateType(String attrName, String mapKeyType, String attrType,
 			String actName, String type) {
 
 		String attrNameWithCapitalA = actName.substring(0, 1).toUpperCase(
 				Locale.ENGLISH)
 				+ actName.substring(1);
-		String contents = "    public void set" + attrNameWithCapitalA + "(" + JPAEditorUtil.cutFromLastDot(type) + "<" + attrType + "> param) {\n" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$  
-				"        this." //$NON-NLS-1$
+		String contents = "    public " + JPAEditorUtil.returnSimpleName(type) + 		//$NON-NLS-1$
+				"<" + ((mapKeyType != null) ? (mapKeyType + ", ") : "")  +  attrType + "> " +	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				"get" + attrNameWithCapitalA + "() {\n" + 	//$NON-NLS-1$ //$NON-NLS-2$
+				"        return " 	//$NON-NLS-1$
+				+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";\n" + 		//$NON-NLS-1$
+				"    }\n"; 	//$NON-NLS-1$
+		return contents;
+	}
+
+	private String genSetterWithAppropriateType(String attrName, String attrType,
+			String actName, String type) {
+		return genSetterWithAppropriateType(attrName, null, attrType,
+				actName, type);
+	}
+	
+	private String genSetterWithAppropriateType(String attrName, String mapKeyType, String attrType,
+			String actName, String type) {
+
+		String attrNameWithCapitalA = actName.substring(0, 1).toUpperCase(
+				Locale.ENGLISH)
+				+ actName.substring(1);
+		String contents = "    public void set" + attrNameWithCapitalA + 			//$NON-NLS-1$
+				"(" + JPAEditorUtil.returnSimpleName(type) + 						//$NON-NLS-1$
+				"<" + ((mapKeyType != null) ? (mapKeyType + ", ") : "") + attrType + "> param) " +	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				"{\n" +   	//$NON-NLS-1$
+				"        this." 	//$NON-NLS-1$
 				+ JPAEditorUtil.decapitalizeFirstLetter(actName)
-				+ " = param;\n" + //$NON-NLS-1$ 
-				"    }\n"; //$NON-NLS-1$
+				+ " = param;\n" + 	//$NON-NLS-1$
+				"    }\n"; 			//$NON-NLS-1$
 		return contents;
 	}
 	
+	/*
 	private String returnSimpleName(String input) {
 		String name = input;
 		if (name.lastIndexOf('.') != -1) {
@@ -2057,6 +2109,7 @@ public class JpaArtifactFactory {
 		}
 		return name;
 	}
+	*/
 	
 	private JavaPersistentAttribute getAttributeFromEntity(
 			JavaPersistentType jpt, String attributeName) {
@@ -2144,12 +2197,12 @@ public class JpaArtifactFactory {
 		TableAnnotation tan = (TableAnnotation)jrpt.getAnnotation("javax.persistence.Table"); //$NON-NLS-1$
 		String tableName = null;
 		if (tan == null){
-			tableName = JPAEditorUtil.cutFromLastDot(jpt.getName());
+			tableName = JPAEditorUtil.returnSimpleName(jpt.getName());
 		} else {
 			tableName = tan.getName();		
 		}		
 		if (tableName == null)
-			tableName = JPAEditorUtil.cutFromLastDot(jpt.getName());
+			tableName = JPAEditorUtil.returnSimpleName(jpt.getName());
 		return tableName;
 	}
 	
@@ -2242,7 +2295,8 @@ public class JpaArtifactFactory {
 			JavaResourcePersistentAttribute jrpa) {
 		String relTypeName = null;
 		try {
-			relTypeName = jrpa.getTypeTypeArgumentName(0);
+			boolean isMap = jrpa.getTypeName().equals("java.util.Map");	//$NON-NLS-1$
+			relTypeName = jrpa.getTypeTypeArgumentName(isMap ? 1 : 0);
 		} catch (Exception e) {}
 		if (relTypeName == null) 
 			relTypeName = an.getTargetEntity();												
@@ -2253,6 +2307,18 @@ public class JpaArtifactFactory {
 		
 	public JpaProject getJpaProject(IProject project) throws CoreException {
 		return JptJpaCorePlugin.getJpaProject(project);
+	}
+	
+	public String getIdType(JavaPersistentType jpt) {
+		IdClassAnnotation an = (IdClassAnnotation)jpt.getResourcePersistentType().getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		if (an != null)
+			return an.getFullyQualifiedClassName();
+		JavaPersistentAttribute[] ids = getIds(jpt);
+		if (ids.length == 0)
+			return null;
+		String type = ids[0].getTypeName();
+		String wrapper = JPAEditorUtil.getPrimitiveWrapper(type);
+		return (wrapper != null) ? wrapper : type;
 	}
 	
 	public JavaPersistentAttribute[] getIds(JavaPersistentType jpt) {

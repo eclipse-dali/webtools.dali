@@ -58,7 +58,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("restriction")
 public class CreateRelationsInFieldAnnotatedEntitiesTest {
 
 	private IJPAEditorFeatureProvider featureProvider;

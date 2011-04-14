@@ -48,6 +48,7 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 	private static final String 	COLLECTIION_TYPE = "java.util.Collection"; //$NON-NLS-1$
 	private static final String 	LIST_TYPE = "java.util.List"; //$NON-NLS-1$
 	private static final String 	SET_TYPE = "java.util.Set"; //$NON-NLS-1$
+	private static final String 	MAP_TYPE = "java.util.Map"; //$NON-NLS-1$
 	
 	private StringFieldEditor 		fDefaultDiagramFolderField;
 	private StringFieldEditor 		fDefaultEntityPackageField;
@@ -101,7 +102,8 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 			    new String[][] {
 					{COLLECTIION_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_COLLECTION_TYPE},
 					{LIST_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_LIST_TYPE},		
-					{SET_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_SET_TYPE}},
+					{SET_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_SET_TYPE},
+					{MAP_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_MAP_TYPE}},
 					parent, true);
 		defaultCollectionTypeChooser.setPreferenceStore(getPreferenceStore());
 		defaultCollectionTypeChooser.getRadioBoxControl(parent).setToolTipText(JPAEditorMessages.JPAEditorPreferencesPage_DefaultCollectionTypeSectionDescription);

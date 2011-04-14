@@ -111,24 +111,24 @@ public class JPAEditorUtilTest {
 	}
 	
 	@Test
-	public void testCutFromLastDot() {
+	public void testReturnSimpleName() {
 		String s = "";
-		String res = JPAEditorUtil.cutFromLastDot(s);
+		String res = JPAEditorUtil.returnSimpleName(s);
 		assertEquals(s, res);
 		s = "jdhksajhdk";
-		res = JPAEditorUtil.cutFromLastDot(s);
+		res = JPAEditorUtil.returnSimpleName(s);
 		assertEquals(s, res);		
 		s = "jdhksajhdk.";
-		res = JPAEditorUtil.cutFromLastDot(s);
+		res = JPAEditorUtil.returnSimpleName(s);
 		assertEquals("", res);
 		s = ".jdhksajhdk";
-		res = JPAEditorUtil.cutFromLastDot(s);
+		res = JPAEditorUtil.returnSimpleName(s);
 		assertEquals("jdhksajhdk", res);
 		s = "jdhks.ajhdk";
-		res = JPAEditorUtil.cutFromLastDot(s);
+		res = JPAEditorUtil.returnSimpleName(s);
 		assertEquals("ajhdk", res);
 		s = "dss.dsdsd.jd.hks.ajhdk";
-		res = JPAEditorUtil.cutFromLastDot(s);
+		res = JPAEditorUtil.returnSimpleName(s);
 		assertEquals("ajhdk", res);
 	}
 	

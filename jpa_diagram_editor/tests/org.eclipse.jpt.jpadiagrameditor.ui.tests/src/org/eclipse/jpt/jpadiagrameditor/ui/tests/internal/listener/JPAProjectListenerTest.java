@@ -50,7 +50,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-@SuppressWarnings("restriction")
 public class JPAProjectListenerTest {
 	private IJPAEditorFeatureProvider featureProvider;
 	final String TEST_PROJECT = "Test";
