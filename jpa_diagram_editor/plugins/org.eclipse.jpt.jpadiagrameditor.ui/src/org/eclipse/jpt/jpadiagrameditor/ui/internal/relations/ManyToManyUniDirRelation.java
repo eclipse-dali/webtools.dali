@@ -60,15 +60,15 @@ public class ManyToManyUniDirRelation extends ManyToManyRelation implements Unid
 		}
 		nameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, nameWithNonCapitalLetter); 
 		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, actNameWithNonCapitalLetter); 
-		
+		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
 		ownerAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, owner, inverse, 
-																				JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject()) ? JpaArtifactFactory.instance().getIdType(inverse) : null,
+																				isMap ? JpaArtifactFactory.instance().getIdType(inverse) : null,
 																				   nameWithNonCapitalLetter, 
 																				   actNameWithNonCapitalLetter,
 																				   true,
 																				   ownerCU,
 																				   inverseCU);
-		JpaArtifactFactory.instance().addManyToManyUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute);
+		JpaArtifactFactory.instance().addManyToManyUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute, isMap);
 		
 	} 
 	

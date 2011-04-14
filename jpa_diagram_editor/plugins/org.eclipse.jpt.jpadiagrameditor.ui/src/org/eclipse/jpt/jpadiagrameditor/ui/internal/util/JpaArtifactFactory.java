@@ -82,6 +82,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
@@ -172,33 +173,33 @@ public class JpaArtifactFactory {
 	}
 	
 	public void addOneToManyUnidirectionalRelation(IFeatureProvider fp, JavaPersistentType jpt, 
-												   JavaPersistentAttribute attribute) {
+												   JavaPersistentAttribute attribute, boolean isMap) {
 		
 		addOneToManyRelation(fp, jpt, attribute, null, null,
-				JPAEditorConstants.RELATION_TYPE_UNIDIRECTIONAL);
+				JPAEditorConstants.RELATION_TYPE_UNIDIRECTIONAL, isMap);
 	}
 	
 	public void addOneToManyBidirectionalRelation(IFeatureProvider fp, JavaPersistentType jpt1, 
 			JavaPersistentAttribute attribute1, JavaPersistentType jpt2,
-												  JavaPersistentAttribute attribute2) {
+												  JavaPersistentAttribute attribute2, boolean isMap) {
 		
 		addOneToManyRelation(fp, jpt1, attribute1, jpt2, attribute2,
-				JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL);
+				JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL, isMap);
 	}
 	
 	public void addManyToOneBidirectionalRelation(IFeatureProvider fp, JavaPersistentType jpt1, 
 			JavaPersistentAttribute attribute1, JavaPersistentType jpt2,
-												  JavaPersistentAttribute attribute2) {
+												  JavaPersistentAttribute attribute2, boolean isMap) {
 		
 		addManyToOneRelation(fp, jpt1, attribute1, jpt2, attribute2,
-				JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL);
+				JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL, isMap);
 	}
 	
 	
 	public void addOneToManyRelation(IFeatureProvider fp, JavaPersistentType singleSideJPT, 
 									 JavaPersistentAttribute singleSideAttibute, 
 									 JavaPersistentType manySideJPT, 
-			JavaPersistentAttribute manySideAttribute, int direction) {
+			JavaPersistentAttribute manySideAttribute, int direction, boolean isMap) {
 		
 		//if(singleSideJPT.getAttributeNamed(singleSideAttibute.getName()) == null){
 			   refreshEntityModel(fp, singleSideJPT);
@@ -231,6 +232,8 @@ public class JpaArtifactFactory {
 			annotation.setMappedBy(manySideAttribute.getName());						
 			
 		}
+		if (isMap)
+			singleSideAttibute.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		if (direction == JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL) {
 			if(manySideJPT.getAttributeNamed(manySideAttribute.getName()) == null){
 				   refreshEntityModel(fp, manySideJPT);
@@ -341,14 +344,14 @@ public class JpaArtifactFactory {
 												   JavaPersistentAttribute attribute) {
 		
 		addManyToOneRelation(fp, jpt, attribute, null, null,
-				JPAEditorConstants.RELATION_TYPE_UNIDIRECTIONAL);
+				JPAEditorConstants.RELATION_TYPE_UNIDIRECTIONAL, false);
 	}
 	
 	public void addManyToOneRelation(IFeatureProvider fp, JavaPersistentType manySideJPT, 
 									 JavaPersistentAttribute manySideAttribute, 
 									 JavaPersistentType singleSideJPT, 
 									 JavaPersistentAttribute singleSideAttibute, 
-									 int direction) {
+									 int direction, boolean isMap) {
 		
 		refreshEntityModel(fp, manySideJPT);
 		
@@ -366,27 +369,29 @@ public class JpaArtifactFactory {
 		if (a == null) 
 			return;
 		a.setMappedBy(manySideAttribute.getName());
+		if (isMap)
+			singleSideAttibute.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 	
 	public void addManyToManyBidirectionalRelation(IFeatureProvider fp, JavaPersistentType jpt1, 
 			JavaPersistentAttribute attribute1, JavaPersistentType jpt2,
-												   JavaPersistentAttribute attribute2) {
+												   JavaPersistentAttribute attribute2, boolean isMap) {
 		
 		addManyToManyRelation(fp, jpt1, attribute1, jpt2, attribute2,
-				JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL);
+				JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL, isMap);
 	}
 	
 	public void addManyToManyUnidirectionalRelation(IFeatureProvider fp, JavaPersistentType annotatedJPT,
-													JavaPersistentAttribute annotatedAttribute) {
+													JavaPersistentAttribute annotatedAttribute, boolean isMap) {
 		
 		addManyToManyRelation(fp, annotatedJPT, annotatedAttribute, null, null,
-				JPAEditorConstants.RELATION_TYPE_UNIDIRECTIONAL);
+				JPAEditorConstants.RELATION_TYPE_UNIDIRECTIONAL, isMap);
 	}
 	
 	public void addManyToManyRelation(IFeatureProvider fp, JavaPersistentType ownerSideJPT, 
 									  JavaPersistentAttribute ownerSideAttribute, 
 									  JavaPersistentType inverseSideJPT, 
-			JavaPersistentAttribute inverseSideAttibute, int direction) {
+			JavaPersistentAttribute inverseSideAttibute, int direction, boolean isMap) {
 		
 		if(ownerSideJPT.getAttributeNamed(ownerSideAttribute.getName()) == null){
 			   refreshEntityModel(fp, ownerSideJPT);
@@ -396,6 +401,9 @@ public class JpaArtifactFactory {
 				.resolveAttribute(ownerSideAttribute.getName());
 		resolvedOwnerSideAttribute
 				.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		if (isMap)
+			resolvedOwnerSideAttribute.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		
 		if (direction == JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL) {
 			JpaArtifactFactory.instance().refreshEntityModel(null, inverseSideJPT);
 			/*
@@ -422,7 +430,9 @@ public class JpaArtifactFactory {
 			}
 			if (a == null)
 				return;
-			a.setMappedBy(ownerSideAttribute.getName());						
+			a.setMappedBy(ownerSideAttribute.getName());	
+			if (isMap)
+				resolvedInverseSideAttribute.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		}		
 		
 	}
@@ -661,7 +671,8 @@ public class JpaArtifactFactory {
 			   refreshEntityModel(fp, jpt);
 		}
 		
-		return getAttributeFromEntity(jpt, actName);		
+		JavaPersistentAttribute res =  getAttributeFromEntity(jpt, actName);
+		return res;
 	}
 
 	public String getApropriateImplementedCollectionType(String collectionType){

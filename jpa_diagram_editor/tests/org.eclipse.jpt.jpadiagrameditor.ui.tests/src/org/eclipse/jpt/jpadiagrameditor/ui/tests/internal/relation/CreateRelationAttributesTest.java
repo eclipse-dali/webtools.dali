@@ -307,7 +307,7 @@ public class CreateRelationAttributesTest {
 				createCompilationUnitFrom((IFile)t2.getResource()));		
 		assertNotNull(attr);
 			
-		JpaArtifactFactory.instance().addOneToManyUnidirectionalRelation(featureProvider, (JavaPersistentType)t1, attr);
+		JpaArtifactFactory.instance().addOneToManyUnidirectionalRelation(featureProvider, (JavaPersistentType)t1, attr, false);
 		
 		PersistentType pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
 		while (pt == null) {
@@ -368,7 +368,7 @@ public class CreateRelationAttributesTest {
 				createCompilationUnitFrom((IFile)singleSidePersistentType.getResource()));		
 		assertNotNull(manySideAttribute);
 		
-		JpaArtifactFactory.instance().addOneToManyBidirectionalRelation(featureProvider, (JavaPersistentType)singleSidePersistentType, singleSideAttribute, (JavaPersistentType)manySidePersistentType, manySideAttribute);
+		JpaArtifactFactory.instance().addOneToManyBidirectionalRelation(featureProvider, (JavaPersistentType)singleSidePersistentType, singleSideAttribute, (JavaPersistentType)manySidePersistentType, manySideAttribute, false);
 		
 		// In one-to-many bidirectional relation many side is ALWAYS owner
 		PersistentType inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getQualifiedName());
@@ -528,7 +528,7 @@ public class CreateRelationAttributesTest {
 				createCompilationUnitFrom((IFile)ownerSidePersistentType.getResource()));		
 		assertNotNull(inverseSideAttributes);
 		
-		JpaArtifactFactory.instance().addManyToManyBidirectionalRelation(featureProvider, (JavaPersistentType)ownerSidePersistentType, ownerSideAttribute, (JavaPersistentType)inverseSidePersistentType, inverseSideAttributes);
+		JpaArtifactFactory.instance().addManyToManyBidirectionalRelation(featureProvider, (JavaPersistentType)ownerSidePersistentType, ownerSideAttribute, (JavaPersistentType)inverseSidePersistentType, inverseSideAttributes, false);
 		
 		PersistentType ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
 		while (ownerPersistentType == null) {
@@ -596,7 +596,7 @@ public class CreateRelationAttributesTest {
 					createCompilationUnitFrom((IFile)referencedPersistentType.getResource()));		
 		assertNotNull(annotatedSideAttribute);
 		
-		JpaArtifactFactory.instance().addManyToManyUnidirectionalRelation(featureProvider, (JavaPersistentType)annotatedPersistentType, annotatedSideAttribute);
+		JpaArtifactFactory.instance().addManyToManyUnidirectionalRelation(featureProvider, (JavaPersistentType)annotatedPersistentType, annotatedSideAttribute, false);
 		
 		PersistentType persistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
 		while (persistentType == null) {

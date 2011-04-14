@@ -60,14 +60,14 @@ public class OneToManyUniDirRelation extends OneToManyRelation implements Unidir
 		}
 		nameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, nameWithNonCapitalLetter); 
 		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, actNameWithNonCapitalLetter); 
-		
+		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
 		ownerAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, owner, inverse, 
-																			 JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject()) ? JpaArtifactFactory.instance().getIdType(inverse) : null,
+																			 isMap ? JpaArtifactFactory.instance().getIdType(inverse) : null,
 																			 nameWithNonCapitalLetter, 
 																			 actNameWithNonCapitalLetter, true, 
 																			 ownerCU,
 																			 inverseCU);
-		JpaArtifactFactory.instance().addOneToManyUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute);
+		JpaArtifactFactory.instance().addOneToManyUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute, isMap);
 	} 
 	
 	public RelDir getRelDir() {

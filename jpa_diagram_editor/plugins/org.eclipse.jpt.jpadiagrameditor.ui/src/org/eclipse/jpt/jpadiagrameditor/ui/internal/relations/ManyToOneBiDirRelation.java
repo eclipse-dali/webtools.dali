@@ -87,15 +87,15 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements Bidire
 		}
 		nameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(inverse, nameWithNonCapitalLetter);
 		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(inverse, actNameWithNonCapitalLetter); 
-		
+		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
 		inverseAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, inverse, owner, 
-																			   JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject()) ? JpaArtifactFactory.instance().getIdType(owner) : null,
+																			   isMap ? JpaArtifactFactory.instance().getIdType(owner) : null,
 																			   nameWithNonCapitalLetter, actNameWithNonCapitalLetter, 
 																			   true, 
 																			   inverseCU,
 																			   ownerCU);
 		
-		JpaArtifactFactory.instance().addManyToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute);		
+		JpaArtifactFactory.instance().addManyToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute, isMap);		
 	} 	
 		
 	public RelDir getRelDir() {
