@@ -15,10 +15,14 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -424,6 +428,10 @@ public class EclipseLinkPersistenceUnit
 			this.validateDefaultCachingProperty(this.getCacheTypeDefaultProperty(), messages);
 			this.validateDefaultCachingProperty(this.getCacheSizeDefaultProperty(), messages);
 			this.validateDefaultCachingProperty(this.getFlushClearCacheProperty(), messages);
+			this.validateLoggerProperty(this.getLoggerProperty(), messages);
+			this.validateExceptionHandlerProperty(this.getExceptionHandlerProperty(), messages);
+			this.validatePerformanceProfilerProperty(this.getPerformanceProfilerProperty(), messages);
+			this.validateSessionCustomizerProperty(this.getSessionCustomizerProperties(), messages);
 		}
 	}
 
@@ -443,6 +451,212 @@ public class EclipseLinkPersistenceUnit
 			}
 		}
 	}
+	
+	protected void validateLoggerProperty(Property loggerProperty, List<IMessage> messages) {
+		if ((loggerProperty == null) || (loggerProperty.getValue() == null) ) {
+			return;
+		}
+
+		if (ArrayTools.contains(Logging.RESERVED_LOGGER_NAMES, loggerProperty.getValue())) {
+			return;
+		}
+
+		IJavaProject javaProject = getJpaProject().getJavaProject();
+		if (StringTools.stringIsEmpty(loggerProperty.getValue())) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.SESSION_LOGGER_CLASS_NOT_SPECIFIED,
+							new String[] {},
+							this.getPersistenceUnit(),
+							loggerProperty.getValidationTextRange()
+					)
+			);
+		} else if (JDTTools.findType(javaProject, loggerProperty.getValue()) == null) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.SESSION_LOGGER_CLASS_NOT_EXIST,
+							new String[] {loggerProperty.getValue()},
+							this.getPersistenceUnit(),
+							loggerProperty.getValidationTextRange()
+					)
+			);
+		} else if (!JDTTools.typeNamedImplementsInterfaceNamed(
+				javaProject, loggerProperty.getValue(), Logging.ECLIPSELINK_LOGGER_CLASS_NAME)
+		) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.SESSION_LOGGER_CLASS_IMPLEMENTS_SESSION_LOG,
+							new String[] {loggerProperty.getValue()},
+							this.getPersistenceUnit(),
+							loggerProperty.getValidationTextRange()
+					)
+			);
+		}
+	}
+
+	private void validateExceptionHandlerProperty(Property handlerProperty, List<IMessage> messages) {
+		if ((handlerProperty == null) || (handlerProperty.getValue() == null) ) {
+			return;
+		}
+
+		IJavaProject javaProject = getJpaProject().getJavaProject();
+		if (StringTools.stringIsEmpty(handlerProperty.getValue())) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_SPECIFIED,
+							new String[] {},
+							this.getPersistenceUnit(),
+							handlerProperty.getValidationTextRange()
+					)
+			);
+		} else if (JDTTools.findType(javaProject, handlerProperty.getValue()) == null) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_EXIST,
+							new String[] {handlerProperty.getValue()},
+							this.getPersistenceUnit(),
+							handlerProperty.getValidationTextRange()
+					)
+			);
+		} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, handlerProperty.getValue())) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_VALID,
+							new String[] {handlerProperty.getValue()},
+							this.getPersistenceUnit(),
+							handlerProperty.getValidationTextRange()
+					)
+			);
+		} else if (!JDTTools.typeNamedImplementsInterfaceNamed(
+				javaProject, handlerProperty.getValue(), Customization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME)
+		) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.EXCEPTION_HANDLER_CLASS_IMPLEMENTS_EXCEPTION_HANDLER,
+							new String[] {handlerProperty.getValue()},
+							this.getPersistenceUnit(),
+							handlerProperty.getValidationTextRange()
+					)
+			);
+		}
+	}
+
+	private void validatePerformanceProfilerProperty(Property profilerProperty, List<IMessage> messages) {
+
+		if ((profilerProperty == null) || (profilerProperty.getValue() == null) ) {
+			return;
+		}
+
+		if (ArrayTools.contains(Customization.RESERVED_PROFILER_NAMES, profilerProperty.getValue())) {
+			return;
+		}
+
+		IJavaProject javaProject = getJpaProject().getJavaProject();
+		if (StringTools.stringIsEmpty(profilerProperty.getValue())) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.SESSION_PROFILER_CLASS_NOT_SPECIFIED,
+							new String[] {},
+							this.getPersistenceUnit(),
+							profilerProperty.getValidationTextRange()
+					)
+			);
+		} else if (JDTTools.findType(javaProject, profilerProperty.getValue()) == null) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.SESSION_PROFILER_CLASS_NOT_EXIST,
+							new String[] {profilerProperty.getValue()},
+							this.getPersistenceUnit(),
+							profilerProperty.getValidationTextRange()
+					)
+			);
+		} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, profilerProperty.getValue())){
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.SESSION_PROFILER_CLASS_NOT_VALID,
+							new String[] {profilerProperty.getValue()},
+							this.getPersistenceUnit(),
+							profilerProperty.getValidationTextRange()
+					)
+			);
+		} else if (!JDTTools.typeNamedImplementsInterfaceNamed(
+				javaProject, profilerProperty.getValue(), Customization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME)
+		) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.SESSION_PROFILER_CLASS_IMPLEMENTS_SESSIONP_ROFILER,
+							new String[] {profilerProperty.getValue()},
+							this.getPersistenceUnit(),
+							profilerProperty.getValidationTextRange()
+					)
+			);
+		}
+	}
+
+	private void validateSessionCustomizerProperty(	Iterable<Property> properties, List<IMessage> messages) {
+		for (Property property : properties) {
+			if (property.getValue() == null) {
+				return;
+			}
+
+			IJavaProject javaProject = getJpaProject().getJavaProject();
+				if (StringTools.stringIsEmpty(property.getValue())) {
+					messages.add(
+							DefaultEclipseLinkJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									EclipseLinkJpaValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_SPECIFIED,
+									new String[] {},
+									this.getPersistenceUnit(),
+									property.getValidationTextRange()
+							)
+					);
+				} else if (JDTTools.findType(javaProject, property.getValue()) == null) {
+					messages.add(
+							DefaultEclipseLinkJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									EclipseLinkJpaValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_EXIST,
+									new String[] {property.getValue()},
+									this.getPersistenceUnit(),
+									property.getValidationTextRange()
+							)
+					);
+				} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, property.getValue())){
+					messages.add(
+							DefaultEclipseLinkJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									EclipseLinkJpaValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_VALID,
+									new String[] {property.getValue()},
+									this.getPersistenceUnit(),
+									property.getValidationTextRange()
+							)
+					);
+				} else if (!JDTTools.typeNamedImplementsInterfaceNamed(
+						javaProject, property.getValue(), Customization.ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME)
+				) {
+					messages.add(
+							DefaultEclipseLinkJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									EclipseLinkJpaValidationMessages.SESSION_CUSTOMIZER_CLASS_IMPLEMENTS_SESSION_CUSTOMIZER,
+									new String[] {property.getValue()},
+									this.getPersistenceUnit(),
+									property.getValidationTextRange()
+							)
+					);
+				}
+		}
+	}
+	
 
 	protected ArrayList<Property> getLegacyDescriptorCustomizerProperties() {
 		ArrayList<Property> result = new ArrayList<Property>();
@@ -512,6 +726,24 @@ public class EclipseLinkPersistenceUnit
 	   };
 	}
 
+	private Property getLoggerProperty() {
+		return this.getProperty(Logging.ECLIPSELINK_LOGGER);
+	}
+	
+	private Property getExceptionHandlerProperty() {
+		return this.getProperty(Customization.ECLIPSELINK_EXCEPTION_HANDLER);
+	}
+
+	private Property getPerformanceProfilerProperty() {
+		return this.getProperty(Customization.ECLIPSELINK_PROFILER);
+	}
+
+	/**
+	 * Returns all Session Customizer Properties.
+	 */
+	private Iterable<Property> getSessionCustomizerProperties() {
+		return CollectionTools.iterable(this.propertiesWithNamePrefix(Customization.ECLIPSELINK_SESSION_CUSTOMIZER));
+	}
 
 	// ********** refactoring **********
 

@@ -9,12 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import java.util.List;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
@@ -24,6 +30,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCustomizerHolder;
 
@@ -228,6 +236,59 @@ public class OrmEclipseLinkCustomizer
 
 	// ********** validation **********
 
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateCustomizerClass(messages, reporter);
+	}
+
+	protected void validateCustomizerClass(List<IMessage> messages, IReporter reporter) {
+		IJavaProject javaProject = getPersistenceUnit().getJpaProject().getJavaProject();
+		if (this.getCustomizerClass() != null) {
+			if (StringTools.stringIsEmpty(this.getCustomizerClass())) {
+				messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_SPECIFIED,
+								new String[] {},
+								this,
+								this.getParent().getValidationTextRange()
+						)
+				);
+			} else if (JDTTools.findType(javaProject, this.getCustomizerClass()) == null) {
+				messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_EXIST,
+								new String[] { this.getCustomizerClass()},
+								this,
+								this.getParent().getValidationTextRange()
+						)
+				);
+			} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, this.getCustomizerClass())) {
+				messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
+								new String[] {this.getCustomizerClass()},
+								this,
+								this.getParent().getValidationTextRange()
+						)
+				);
+			} else if (!JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.getCustomizerClass(), ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
+				messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
+								new String[] {this.getCustomizerClass()},
+								this,
+								this.getParent().getValidationTextRange()
+						)
+				);
+			} 
+		}
+	}
+	
 	public TextRange getValidationTextRange() {
 		XmlClassReference xmlClassRef = this.getXmlCustomizerClassRef();
 		return (xmlClassRef == null) ? null : xmlClassRef.getClassNameTextRange();

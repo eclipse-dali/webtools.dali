@@ -74,5 +74,6 @@ public interface Logging extends PersistenceUnitProperties
 		static final String ECLIPSELINK_LOGGER = "eclipselink.logging.logger"; //$NON-NLS-1$
 		static final String DEFAULT_LOGGER = 
 			AbstractPersistenceUnitProperties.getPropertyStringValueOf(Logger.default_logger);
+		static final String[] RESERVED_LOGGER_NAMES = {Logger.DEFAULT_LOGGER, Logger.JAVA_LOGGER, Logger.SERVER_LOGGER};
 		String ECLIPSELINK_LOGGER_CLASS_NAME = "org.eclipse.persistence.logging.SessionLog"; //$NON-NLS-1$
 }

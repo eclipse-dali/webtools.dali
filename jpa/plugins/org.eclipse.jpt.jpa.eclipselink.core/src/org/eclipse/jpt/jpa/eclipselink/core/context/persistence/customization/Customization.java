@@ -93,6 +93,7 @@ public interface Customization extends PersistenceUnitProperties
 		static final String SESSION_CUSTOMIZER_PROPERTY = "sessionCustomizer"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_SESSION_CUSTOMIZER = "eclipselink.session.customizer"; //$NON-NLS-1$
+		String ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME = "org.eclipse.persistence.config.SessionCustomizer"; //$NON-NLS-1$
 
 	ListIterator<Entity> entities();
 	Iterator<String> entityNames();
@@ -111,6 +112,7 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_PROFILER = "eclipselink.profiler"; //$NON-NLS-1$
 		static final String DEFAULT_PROFILER = 
 			AbstractPersistenceUnitProperties.getPropertyStringValueOf(Profiler.no_profiler);
+		static final String[] RESERVED_PROFILER_NAMES = {Profiler.NO_PROFILER, Profiler.PERFORMANCE_PROFILER, Profiler.QUERY_MONITOR};
 		String ECLIPSELINK_SESSION_PROFILER_CLASS_NAME = "org.eclipse.persistence.sessions.SessionProfiler"; //$NON-NLS-1$
 		
 	Boolean getDefaultValidationOnly();
@@ -128,7 +130,6 @@ public interface Customization extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_EXCEPTION_HANDLER = "eclipselink.exception-handler"; //$NON-NLS-1$
 		static final String DEFAULT_EXCEPTION_HANDLER = null;	// no default
-
 		String ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME = "org.eclipse.persistence.exceptions.ExceptionHandler"; //$NON-NLS-1$
 
 	Boolean getDefaultValidateSchema();

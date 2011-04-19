@@ -10,7 +10,9 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
@@ -159,21 +161,34 @@ public class JavaEclipseLinkCustomizer
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.validateConverterClass(messages, astRoot);
+		this.validateCustomizerClass(messages, reporter, astRoot);
 	}
 
-	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateCustomizerClass(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		IJavaProject javaProject = getPersistenceUnit().getJpaProject().getJavaProject();
 		EclipseLinkCustomizerAnnotation annotation = this.getCustomizerAnnotation();
-		if ((annotation != null) && ! annotation.customizerClassImplementsInterface(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME, astRoot)) {
-			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
-					new String[] {this.getCustomizerClass()},
-					this,
-					this.getCustomizerClassTextRange(astRoot)
-				)
-			);
+		if (annotation != null && annotation.getValue() != null) {
+			if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, this.getFullyQualifiedCustomizerClass())) {
+				messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
+								new String[] {this.getFullyQualifiedCustomizerClass()},
+								this,
+								this.getCustomizerClassTextRange(astRoot)
+						)
+				);
+			} else if (!annotation.customizerClassImplementsInterface(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME, astRoot)) {
+				messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
+								new String[] {this.getFullyQualifiedCustomizerClass()},
+								this,
+								this.getCustomizerClassTextRange(astRoot)
+						)
+				);
+			} 
 		}
 	}
 

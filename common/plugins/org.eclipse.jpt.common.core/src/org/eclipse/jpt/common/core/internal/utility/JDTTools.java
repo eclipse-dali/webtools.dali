@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
@@ -273,4 +274,21 @@ public final class JDTTools {
 		java.sql.Time.class.getName(),
 		java.sql.Timestamp.class.getName(),
 	};
+	
+	public static boolean classHasPublicZeroArgConstructor(IJavaProject javaProject, String className) {
+		if (javaProject != null && className != null) {
+			IType type = findType(javaProject, className);
+			try {
+				for (IMethod method : type.getMethods()) {
+					if ((method.isConstructor()) && (method.getNumberOfParameters() == 0)
+							&& (method.getFlags() == 1)) {
+						return true;
+					}
+				}
+			} catch (JavaModelException ex) {
+				JptCommonCorePlugin.log(ex);
+			}
+		}
+		return false;
+	}
 }
