@@ -675,17 +675,6 @@ public class JpaArtifactFactory {
 		return res;
 	}
 
-	public String getApropriateImplementedCollectionType(String collectionType){
-		if (collectionType.equals(COLLECTION_TYPE) || collectionType.equals(LIST_TYPE)) {
-			return "java.util.ArrayList"; //$NON-NLS-1$
-		} else if(collectionType.equals(SET_TYPE)) {
-			return "java.util.HashSet"; //$NON-NLS-1$
-		} else if(collectionType.equals(MAP_TYPE)) {
-			return "java.util.HashMap"; //$NON-NLS-1$
-		}
-		return null;
-	}
-	
 	private void createContentType(JavaPersistentType attributeType,
 			String actName, ICompilationUnit cu1, IType type, String collectionType)
 			throws JavaModelException {
@@ -701,14 +690,11 @@ public class JpaArtifactFactory {
 			mapKeyType = JPAEditorUtil.createImport(cu1, mapKeyType); 
 		}
 		JPAEditorUtil.createImport(cu1, collectionType);
-		JPAEditorUtil.createImport(cu1, getApropriateImplementedCollectionType(collectionType)); 
 		type.createField(
 				"  private " + JPAEditorUtil.returnSimpleName(collectionType) + "<" +//$NON-NLS-1$ //$NON-NLS-2$
 				((mapKeyType != null) ? (mapKeyType + ", ") : "") +			//$NON-NLS-1$ //$NON-NLS-2$
 				JPAEditorUtil.returnSimpleName(attributeType.getName()) + "> " + JPAEditorUtil.decapitalizeFirstLetter(actName) +  //$NON-NLS-1$
-				" = new " + JPAEditorUtil.returnSimpleName(getApropriateImplementedCollectionType(collectionType)) + "<" + //$NON-NLS-1$ //$NON-NLS-2$
-				((mapKeyType != null) ? (mapKeyType + ", ") : "") +		//$NON-NLS-1$ //$NON-NLS-2$
-				JPAEditorUtil.returnSimpleName(attributeType.getName()) + ">();", null, false, new NullProgressMonitor()); //$NON-NLS-1$ 
+				";", null, false, new NullProgressMonitor()); //$NON-NLS-1$ 
 		return mapKeyType;
 	}
 	
