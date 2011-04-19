@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2010 Oracle. All rights reserved.
+* Copyright (c) 2008, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,7 @@ public interface SchemaGeneration extends PersistenceUnitProperties
 		static final String CREATE_FILE_NAME_PROPERTY = "createFileName"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_CREATE_FILE_NAME = "eclipselink.create-ddl-jdbc-file-name"; //$NON-NLS-1$
-		static final String DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME = "createDDL.jdbc"; //$NON-NLS-1$
+		static final String DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME = "createDDL.sql"; //$NON-NLS-1$
 	
 	String getDefaultDropFileName();
 	String getDropFileName();
@@ -46,7 +46,7 @@ public interface SchemaGeneration extends PersistenceUnitProperties
 		static final String DROP_FILE_NAME_PROPERTY = "dropFileName"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_DROP_FILE_NAME = "eclipselink.drop-ddl-jdbc-file-name"; //$NON-NLS-1$
-		static final String DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME = "dropDDL.jdbc"; //$NON-NLS-1$
+		static final String DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME = "dropDDL.sql"; //$NON-NLS-1$
 		
 	String getDefaultApplicationLocation();
 	String getApplicationLocation();

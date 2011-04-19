@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2010 Oracle. All rights reserved.
+* Copyright (c) 2007, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen;
 
 import java.util.Iterator;
+
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -26,6 +27,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenerator;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -59,28 +61,30 @@ public class EclipseLinkDDLGeneratorUi
 	// ********** behavior **********
 	
 	protected void generate() {
-		
+
 		PersistenceUnit persistenceUnit = this.getPersistenceUnits().next(); // Take the first persistenceUnit
 		String puName = persistenceUnit.getName();
-		if( ! this.displayGeneratingDDLWarning()) {
-			return;
-		}
-		
+
 		GenerateDDLWizard wizard = new GenerateDDLWizard(this.project);
-		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
-		dialog.create();
+		WizardDialog wizardDialog = new WizardDialog(this.getCurrentShell(), wizard);
+		wizardDialog.create();
 		if(wizard.getPageCount() > 0) {
-			int returnCode = dialog.open();
+			int returnCode = wizardDialog.open();
 			if (returnCode == Window.CANCEL) {
 				return;
 			}
 		}
-		WorkspaceJob job = this.buildGenerateDDLJob(puName, this.project);
+		OutputMode outputMode = wizard.getOutputMode();
+
+		if( ! this.displayGeneratingDDLWarning()) {
+			return;
+		}
+		WorkspaceJob job = this.buildGenerateDDLJob(puName, this.project, outputMode);
 		job.schedule();
 	}
 	
-	protected WorkspaceJob buildGenerateDDLJob(String puName, JpaProject project) {
-		return new GenerateDDLJob(puName, project);
+	protected WorkspaceJob buildGenerateDDLJob(String puName, JpaProject project, OutputMode outputMode) {
+		return new GenerateDDLJob(puName, project, outputMode);
 	}
 	
 	private Shell getCurrentShell() {
@@ -117,18 +121,20 @@ public class EclipseLinkDDLGeneratorUi
 	protected static class GenerateDDLJob extends WorkspaceJob {
 		private final String puName;
 		private final JpaProject project;
+		private final OutputMode outputMode;
 
-		public GenerateDDLJob(String puName, JpaProject project) {
+		public GenerateDDLJob(String puName, JpaProject project, OutputMode outputMode) {
 			super(EclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_JOB);
 			this.puName = puName;
 			this.project = project;
+			this.outputMode = outputMode;
 		}
 
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 			SubMonitor sm = SubMonitor.convert(monitor, EclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_TASK, 1);
 			try {
-				this.ddlGeneratorGenerate(this.puName, this.project, sm.newChild(1));
+				this.ddlGeneratorGenerate(this.puName, this.project, this.outputMode, sm.newChild(1));
 			} 
 			catch (OperationCanceledException e) {
 				return Status.CANCEL_STATUS;
@@ -139,8 +145,8 @@ public class EclipseLinkDDLGeneratorUi
 			return Status.OK_STATUS;
 		}
 
-		protected void ddlGeneratorGenerate(String puName, JpaProject project, IProgressMonitor monitor) {
-			EclipseLinkDDLGenerator.generate(puName, project, monitor);
+		protected void ddlGeneratorGenerate(String puName, JpaProject project, OutputMode outputMode, IProgressMonitor monitor) {
+			EclipseLinkDDLGenerator.generate(puName, project, outputMode, monitor);
 		}
 
 		protected void logException(RuntimeException re) {
@@ -162,7 +168,7 @@ public class EclipseLinkDDLGeneratorUi
 			});
 		}
 
-		private Shell getShell() {
+		protected Shell getShell() {
 			Display display = Display.getCurrent();
 			Shell shell = (display == null) ? null : display.getActiveShell();
 			if (shell == null && display != null) {
@@ -173,4 +179,5 @@ public class EclipseLinkDDLGeneratorUi
 			return shell;
 		}
 	}
+
 }

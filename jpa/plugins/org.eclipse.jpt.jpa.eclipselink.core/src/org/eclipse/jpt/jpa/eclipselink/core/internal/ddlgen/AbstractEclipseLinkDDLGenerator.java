@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
@@ -36,6 +37,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
@@ -64,15 +66,17 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	public static final String FALSE = "false";	  //$NON-NLS-1$
 	public static final String NONE = "NONE";	  //$NON-NLS-1$
 
-	private String puName;
-	private JpaProject jpaProject;
+	private final String puName;
+	private final JpaProject jpaProject;
+	private final OutputMode outputMode;
 
 	// ********** constructors **********
 
-	protected AbstractEclipseLinkDDLGenerator(String puName, JpaProject jpaProject) {
+	protected AbstractEclipseLinkDDLGenerator(String puName, JpaProject jpaProject, OutputMode outputMode) {
 		super(JavaCore.create(jpaProject.getProject()));
 		this.puName = puName;
 		this.jpaProject = jpaProject;
+		this.outputMode = outputMode;
 	}
 
 	// ********** overrides **********
@@ -209,6 +213,19 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	protected void putProperty(Properties properties, String key, String value) {
 		properties.put(key, (value == null) ? "" : value);	  //$NON-NLS-1$
 	}
+
+	/**
+	 * Returns the Property string value of the given property value.
+	 */
+	protected String getPropertyStringValueOf(Object value) {
+		if (value == null) {
+			return null;
+		}
+		if (value.getClass().isEnum()) {
+			return (String) ReflectionTools.getStaticFieldValue(value.getClass(), value.toString().toUpperCase(Locale.ENGLISH));
+		}
+		return value.toString();
+	}
 	
 	protected void buildAllProperties(Properties properties) {
 		this.buildConnectionProperties(properties);
@@ -229,11 +246,19 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	
 	private void buildDDLModeProperties(Properties properties) {
 		this.putProperty(properties,  
+			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
+			this.getPropertyStringValueOf(this.outputMode));
+		
+		this.putProperty(properties,  
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
 			DdlGenerationType.DROP_AND_CREATE_TABLES);
+
 		this.putProperty(properties,  
-			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
-			OutputMode.DATABASE);
+			SchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME,
+			SchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME);
+		this.putProperty(properties,  
+			SchemaGeneration.ECLIPSELINK_DROP_FILE_NAME,
+			SchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME);
 	}
 	
 	private void buildConnectionPoolingProperties(Properties properties) {

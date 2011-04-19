@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2010 Oracle. All rights reserved.
+* Copyright (c) 2008, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.connection.Connection;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.schema.generation.OutputMode;
 
 /**
  *  EclipseLinkDLLGenerator launches the EclipseLink DDL generator in a separate VM.
@@ -30,15 +31,15 @@ public class EclipseLinkDDLGenerator extends AbstractEclipseLinkDDLGenerator
 
 	// ********** constructors **********
 	
-	public static void generate(String puName, JpaProject project, IProgressMonitor monitor) {
+	public static void generate(String puName, JpaProject project, OutputMode outputMode, IProgressMonitor monitor) {
 		if (puName == null || puName.length() == 0 || project == null) {
 			throw new NullPointerException();
 		}
-		new EclipseLinkDDLGenerator(puName, project).generate(monitor);
+		new EclipseLinkDDLGenerator(puName, project, outputMode).generate(monitor);
 	}
 
-	private EclipseLinkDDLGenerator(String puName, JpaProject jpaProject) {
-		super(puName, jpaProject);
+	private EclipseLinkDDLGenerator(String puName, JpaProject jpaProject, OutputMode outputMode) {
+		super(puName, jpaProject, outputMode);
 	}
 
 	@Override

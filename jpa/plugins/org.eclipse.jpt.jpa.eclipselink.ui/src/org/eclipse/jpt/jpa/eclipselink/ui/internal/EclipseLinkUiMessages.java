@@ -367,6 +367,11 @@ public class EclipseLinkUiMessages {
 	public static String EclipseLinkDDLGeneratorUi_error;
 	public static String ECLIPSELINK_GENERATE_TABLES_JOB;
 	public static String ECLIPSELINK_GENERATE_TABLES_TASK;
+	
+	public static String GenerationOutputModeWizardPage_title;
+	public static String GenerationOutputModeWizardPage_desc;
+	public static String GenerationOutputModeWizardPage_generationOutputMode;
+
 
 	private static final String BUNDLE_NAME = "eclipselink_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = EclipseLinkUiMessages.class;
