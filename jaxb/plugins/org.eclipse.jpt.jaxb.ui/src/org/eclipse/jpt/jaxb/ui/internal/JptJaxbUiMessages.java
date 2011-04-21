@@ -62,10 +62,13 @@ public class JptJaxbUiMessages {
 	public static String SchemaWizardPage_xmlCatalogTableTitle; 
 	public static String SchemaWizardPage_xmlCatalogKeyColumn; 
 	public static String SchemaWizardPage_xmlCatalogUriColumn; 
-	
+
 	public static String SchemaWizardPage_errorUriCannotBeLocated;
-	
-	
+
+	public static String SelectFileOrXMLCatalogIdPanel_fileFromWorkspace;
+	public static String SelectFileOrXMLCatalogIdPanel_xmlCatalogEntry;
+	public static String SelectFileOrXMLCatalogIdPanel_importButton;
+
 	public static String ClassesGeneratorWizardPage_title;
 	public static String ClassesGeneratorWizardPage_desc;
 	

@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
+import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -58,13 +59,13 @@ public class SelectFileOrXMLCatalogIdPanel extends Composite implements Selectio
 
 		radioButton = new Button[2];
 		radioButton[0] = new Button(this, SWT.RADIO);
-		radioButton[0].setText("Select file from Workspace");
+		radioButton[0].setText(JptJaxbUiMessages.SelectFileOrXMLCatalogIdPanel_fileFromWorkspace);
 		radioButton[0].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		radioButton[0].setSelection(true);
 		radioButton[0].addSelectionListener(this);
 
 		radioButton[1] = new Button(this, SWT.RADIO);
-		radioButton[1].setText("Select XML Catalog entry");
+		radioButton[1].setText(JptJaxbUiMessages.SelectFileOrXMLCatalogIdPanel_xmlCatalogEntry);
 		radioButton[1].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		radioButton[1].addSelectionListener(this);
 
@@ -169,17 +170,23 @@ public class SelectFileOrXMLCatalogIdPanel extends Composite implements Selectio
 			super(selection, true);
 			// String[] ext = {".dtd"};
 			// addFilterExtensions(ext);
-			control = createControl(parent);
-			control.setLayoutData(new GridData(GridData.FILL_BOTH));
+			this.control = this.createControl(parent);
+			this.overrideImportButtonText();
+
+			this.control.setLayoutData(new GridData(GridData.FILL_BOTH));
 			SelectFilePanel.this.setListener(this);
 		}
 
 		public Control getControl() {
-			return control;
+			return this.control;
 		}
 
 		public void setControlComplete(boolean isComplete) {
 			updateCompletionStateChange();
+		}
+
+		private void overrideImportButtonText() {
+		    this.importButton.setText(JptJaxbUiMessages.SelectFileOrXMLCatalogIdPanel_importButton);
 		}
 	}
 }
