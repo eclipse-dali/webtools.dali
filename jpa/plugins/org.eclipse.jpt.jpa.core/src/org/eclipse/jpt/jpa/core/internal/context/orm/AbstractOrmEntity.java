@@ -42,8 +42,8 @@ import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation.Supported;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -57,6 +57,7 @@ import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
@@ -72,7 +73,6 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -1849,9 +1849,9 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 				);
 			}
 			return;
-		}
-		if (this.isSingleTableDescendant()) {
-			if (this.resourceTableIsSpecified()) {
+		}		
+		if (getDataSource().connectionProfileIsActive() && this.isSingleTableDescendant()) {
+			if (this.resourceTableIsSpecified() && !tableNameEqualsRootTable()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -1865,6 +1865,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return;
 		}
 		this.table.validate(messages, reporter);
+	}
+
+	private boolean tableNameEqualsRootTable() {
+		org.eclipse.jpt.jpa.db.Table table = this.table.getDbTable();
+		org.eclipse.jpt.jpa.db.Table parentTable = this.getRootEntity().getTable().getDbTable();
+		return table == parentTable;
 	}
 
 	protected void validateInheritance(List<IMessage> messages, IReporter reporter) {

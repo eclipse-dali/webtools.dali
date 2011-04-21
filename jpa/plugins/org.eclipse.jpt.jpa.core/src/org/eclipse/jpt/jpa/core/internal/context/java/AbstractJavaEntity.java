@@ -35,8 +35,8 @@ import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation.Supported;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -50,6 +50,7 @@ import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
@@ -63,7 +64,6 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseJoinColumn;
@@ -1405,8 +1405,8 @@ public abstract class AbstractJavaEntity
 			}
 			return;
 		}
-		if (this.isSingleTableDescendant()) {
-			if (this.table.isSpecifiedInResource()) {
+		if (getDataSource().connectionProfileIsActive() && this.isSingleTableDescendant()) {
+			if (this.table.isSpecifiedInResource() && !tableEqualsRootTable()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -1420,6 +1420,12 @@ public abstract class AbstractJavaEntity
 			return;
 		}
 		this.table.validate(messages, reporter, astRoot);
+	}
+	
+	private boolean tableEqualsRootTable() {
+		org.eclipse.jpt.jpa.db.Table table = this.table.getDbTable();
+		org.eclipse.jpt.jpa.db.Table parentTable = this.getRootEntity().getTable().getDbTable();
+		return table == parentTable;
 	}
 
 	protected void validateInheritance(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
