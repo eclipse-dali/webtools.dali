@@ -85,7 +85,6 @@ public abstract class AbstractJavaOverrideContainer<
 	protected AbstractJavaOverrideContainer(JavaJpaContextNode parent, O owner) {
 		super(parent);
 		this.owner = owner;
-		this.initializeSpecifiedOverrides();
 	}
 
 
@@ -94,14 +93,14 @@ public abstract class AbstractJavaOverrideContainer<
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.syncSpecifiedOverrides();
+		this.synchronizeNodesWithResourceModel(this.getSpecifiedOverrides());
 		// the virtual overrides do not need a sync
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedOverrides());
+		this.updateSpecifiedOverrides();
 		this.updateVirtualOverrides();
 	}
 
@@ -306,16 +305,10 @@ public abstract class AbstractJavaOverrideContainer<
 		this.getResourcePersistentMember().moveAnnotation(targetAnnotationIndex, sourceAnnotationIndex, this.getOverrideContainerAnnotationName());
 	}
 
-	protected void initializeSpecifiedOverrides() {
-		for (A annotation : this.getRelevantOverrideAnnotations()) {
-			this.specifiedOverrides.add(this.buildSpecifiedOverride(annotation));
-		}
-	}
-
 	protected abstract S buildSpecifiedOverride(A overrideAnnotation);
 
-	protected void syncSpecifiedOverrides() {
-		ContextContainerTools.synchronizeWithResourceModel(this.specifiedOverrideContainerAdapter);
+	protected void updateSpecifiedOverrides() {
+		ContextContainerTools.update(this.specifiedOverrideContainerAdapter);
 	}
 
 	protected Iterable<A> getRelevantOverrideAnnotations() {

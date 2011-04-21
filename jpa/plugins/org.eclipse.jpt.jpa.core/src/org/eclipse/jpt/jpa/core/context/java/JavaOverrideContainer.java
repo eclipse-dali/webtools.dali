@@ -76,7 +76,7 @@ public interface JavaOverrideContainer
 		 * that may be prepended to the override name.
 		 * Return <code>null</code> if no prefix is supported.
 		 * <p>
-		 * JPA 2.0 supports the prefixes <code>"map"</code> and <code>"key"</code>.
+		 * JPA 2.0 supports the prefixes <code>"value"</code> and <code>"key"</code>.
 		 */
 		String getPossiblePrefix();
 
@@ -89,7 +89,7 @@ public interface JavaOverrideContainer
 		 * value. Return whether the specified override name, which may have a
 		 * prefix, is relevant to the override container.
 		 * <p>
-		 * JPA 2.0 supports the prefixes <code>"map"</code> and <code>"key"</code>.
+		 * JPA 2.0 supports the prefixes <code>"value"</code> and <code>"key"</code>.
 		 */
 		boolean isRelevant(String overrideName);
 	}
