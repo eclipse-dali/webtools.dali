@@ -48,7 +48,11 @@ public class PlatformTools {
 	 */
 	public static IFile getFile(IPath fullFilePath) {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		return root.getFileForLocation(root.getLocation().append(fullFilePath));
+		// changed to handle non-workspace projects
+		String projectName = fullFilePath.segment(0).toString();
+		IPath projectRelativePath = fullFilePath.removeFirstSegments(1);
+		IProject project = root.getProject(projectName);
+		return project.getFile(projectRelativePath);
 	}
 	
 	/**

@@ -29,15 +29,17 @@ import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 /**
  *  SchemaWizardPage
  */
-public class SchemaWizardPage extends WizardPage {
+public class SchemaWizardPage
+		extends WizardPage {
+	
+	protected static final String[] browseXSDFilterExtensions = {".xsd"}; //$NON-NLS-1$
 	
 	private final IStructuredSelection initialSelection;
 	private IProject targetProject;
 	
 	protected SelectFileOrXMLCatalogIdPanel selectSourcePanel;
-
-	protected static final String[] browseXSDFilterExtensions = {".xsd"}; //$NON-NLS-1$
-
+	
+	
 	// ********** static method **********
 	
     public static IFile getSourceSchemaFromSelection(IStructuredSelection selection) {
@@ -52,7 +54,8 @@ public class SchemaWizardPage extends WizardPage {
 		}
 		return null;
     }
-
+    
+    
 	// ********** constructor **********
     
 	SchemaWizardPage(IStructuredSelection selection) {
@@ -60,6 +63,7 @@ public class SchemaWizardPage extends WizardPage {
 		
 		this.initialSelection = selection;
 	}
+	
 	
 	// ********** IDialogPage implementation  **********
 	
@@ -69,7 +73,7 @@ public class SchemaWizardPage extends WizardPage {
 		composite.setLayout(new GridLayout());
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		this.setControl(composite);
-
+		
 		this.selectSourcePanel = new SelectFileOrXMLCatalogIdPanel(composite, this.initialSelection);
 		this.selectSourcePanel.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
@@ -79,15 +83,16 @@ public class SchemaWizardPage extends WizardPage {
 			}
 		};
 		this.selectSourcePanel.setListener(listener);
+		
 		Dialog.applyDialogFont(parent);
 	}
-
+	
     @Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if(visible) {
-
-	    	if(this.getSourceSchema() != null) {
+			
+			if(this.getSourceSchema() != null) {
 	    		this.selectSourcePanel.setSingleFileViewDefaultSelection(new StructuredSelection(this.getSourceSchema()));
 	    	}
 	    	else {
@@ -109,37 +114,40 @@ public class SchemaWizardPage extends WizardPage {
 		this.selectSourcePanel.setVisibleHelper(visible);
 	}
     
+    
 	// ********** IWizardPage implementation  **********
     
     @Override
 	public boolean isPageComplete() {
-
+    	
 		return this.schemaOrUriSelected() && (this.getErrorMessage() == null);
 	}
-
+    
+    
 	// ********** intra-wizard methods **********
 	
 	public IFile getSourceSchema() {
 		return this.selectSourcePanel.getFile();
 	}
-
+	
 	public String getSourceURI() {
 		String uri = this.selectSourcePanel.getXMLCatalogURI();
-		if(uri == null) {
+		if (uri == null) {
 			IFile file = this.selectSourcePanel.getFile();
-			if(file != null) {
+			if (file != null) {
 				uri = URIHelper.getPlatformURI(file);
 			}
 		}
 		return uri;
 	}
-
+	
 	public String getXMLCatalogId() {
 		return this.selectSourcePanel.getXMLCatalogId();
 	}
-
+	
+	
 	// ********** internal methods **********
-
+	
 	private void updateTargetProject() {
     	IWizardPage previousPage = this.getPreviousPage();
     	
@@ -166,11 +174,11 @@ public class SchemaWizardPage extends WizardPage {
 		}
 		return null;
     }
-
+    
 	private boolean schemaOrUriSelected() {
 		return ((this.getSourceSchema() != null) || (this.getSourceURI() != null));
 	}
-
+	
 	private String computeErrorMessage() {
 		String errorMessage = null;
 		String uri = this.getSourceURI();
@@ -181,7 +189,7 @@ public class SchemaWizardPage extends WizardPage {
 		}
 		return errorMessage;
 	}
-
+	
 	private void selectFileOrXMLCatalogIdPanelChanged() {
 		String errorMessage = this.computeErrorMessage();
 		this.setErrorMessage(errorMessage);

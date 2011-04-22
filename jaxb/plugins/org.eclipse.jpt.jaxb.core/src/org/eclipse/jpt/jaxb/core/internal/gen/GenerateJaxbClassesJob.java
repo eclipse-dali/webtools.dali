@@ -26,7 +26,7 @@ import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
  */
 public class GenerateJaxbClassesJob extends WorkspaceJob {
 	private final IJavaProject javaProject;
-	private final String schemaPathOrUri;
+	private final String absoluteLocalXsdUri;
 	private final String outputDir;
 	private final String targetPackage;
 	private final String catalog;
@@ -39,7 +39,7 @@ public class GenerateJaxbClassesJob extends WorkspaceJob {
 	
 	public GenerateJaxbClassesJob(
 		IJavaProject javaProject, 
-		String schemaPathOrUri, 
+		String absoluteLocalXsdUri, 
 		String outputDir,
 		String targetPackage, 
 		String catalog, 
@@ -49,17 +49,17 @@ public class GenerateJaxbClassesJob extends WorkspaceJob {
 		ClassesGeneratorExtensionOptions generatorExtensionOptions) {
 		
 		super(JptJaxbCoreMessages.ClassesGenerator_generatingClasses);
-		if(javaProject == null) {
+		if (javaProject == null) {
 			throw new RuntimeException("Project is null");		//$NON-NLS-1$
 		}
-		else if(StringTools.stringIsEmpty(schemaPathOrUri)) {
+		else if (StringTools.stringIsEmpty(absoluteLocalXsdUri)) {
 			throw new RuntimeException("Schema cannot be empty");	//$NON-NLS-1$
 		}
 		else if(StringTools.stringIsEmpty(outputDir)) {
 				throw new RuntimeException("Output directory cannot be empty");	//$NON-NLS-1$
 		}
 		this.javaProject = javaProject;
-		this.schemaPathOrUri = schemaPathOrUri;
+		this.absoluteLocalXsdUri = absoluteLocalXsdUri;
 		this.outputDir = outputDir;
 		this.targetPackage = targetPackage;
 		this.catalog = catalog;
@@ -75,7 +75,7 @@ public class GenerateJaxbClassesJob extends WorkspaceJob {
 		SubMonitor sm = SubMonitor.convert(monitor, JptJaxbCoreMessages.ClassesGenerator_generatingClassesTask, 1);
 		try {
 			this.classesGeneratorGenerate(this.javaProject, 
-				this.schemaPathOrUri, 
+				this.absoluteLocalXsdUri, 
 				this.outputDir, 
 				this.targetPackage, 
 				this.catalog, 
@@ -96,7 +96,7 @@ public class GenerateJaxbClassesJob extends WorkspaceJob {
 }
 
 	private void classesGeneratorGenerate(IJavaProject javaProject, 
-		String schemaPathOrUri, 
+		String absoluteLocalXsdUri, 
 		String outputDir, 
 		String targetPackage, 
 		String catalog, 
@@ -107,7 +107,7 @@ public class GenerateJaxbClassesJob extends WorkspaceJob {
 		IProgressMonitor monitor) {
 
 		ClassesGenerator.generate(javaProject, 
-			schemaPathOrUri, 
+			absoluteLocalXsdUri, 
 			outputDir, 
 			targetPackage, 
 			catalog, 

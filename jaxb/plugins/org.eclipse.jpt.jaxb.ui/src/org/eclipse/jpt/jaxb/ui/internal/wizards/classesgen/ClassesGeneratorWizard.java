@@ -16,7 +16,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.emf.common.CommonPlugin;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -40,7 +41,7 @@ import org.eclipse.ui.IWorkbenchWizard;
 public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 
 	private IJavaProject javaProject;
-	private String schemaPathOrUri;
+	private URI absoluteLocalXsdUri;  // the URI must be absolutely defined in the local file system
 	protected IStructuredSelection selection;
 	
 	private String destinationFolder;
@@ -48,6 +49,7 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	private String catalog;
 	private boolean usesMoxy;
 	private String[] bindingsFileNames;
+	
 	private ClassesGeneratorOptions generatorOptions;
 	private ClassesGeneratorExtensionOptions generatorExtensionOptions;
 
@@ -66,10 +68,10 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		this.performsGeneration = true;
 	}
 	
-	public ClassesGeneratorWizard(IJavaProject javaProject, String xsdSchemaPath) {
+	public ClassesGeneratorWizard(IJavaProject javaProject, URI absoluteLocalXsdUri) {
 		super();
 		this.javaProject = javaProject;
-		this.schemaPathOrUri = xsdSchemaPath;
+		this.absoluteLocalXsdUri = absoluteLocalXsdUri;
 
 		this.performsGeneration = false;
 	}
@@ -101,12 +103,12 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 
 			// SchemaWizardPage
 			IFile schemaSelected = SchemaWizardPage.getSourceSchemaFromSelection(this.selection);
-			if(schemaSelected == null) {
+			if (schemaSelected == null) {
 				this.schemaWizardPage = new SchemaWizardPage(this.selection);
 				this.addPage(this.schemaWizardPage);
 			}
 			else {
-				this.schemaPathOrUri = this.makeRelativeToProjectPath(schemaSelected.getFullPath());
+				this.absoluteLocalXsdUri = URI.createFileURI(schemaSelected.getLocation().toString());
 			}
 		}
 		this.settingsPage = this.buildClassesGeneratorPage();
@@ -117,13 +119,20 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		this.addPage(this.optionsPage);
 		this.addPage(this.extensionOptionsPage);
 	}
+
+    @Override
+	public boolean canFinish() {
+    	return this.settingsPage.isPageComplete() 
+    			&& this.optionsPage.isPageComplete() 
+    			&& this.extensionOptionsPage.isPageComplete();
+    }
 	
 	@Override
 	public boolean performFinish() {
 		
 		WizardPage currentPage = (WizardPage)getContainer().getCurrentPage();
-		if(currentPage != null) {
-			if( ! currentPage.isPageComplete()) {
+		if (currentPage != null) {
+			if (! currentPage.isPageComplete()) {
 				return false;
 			}
 			this.retrieveGeneratorSettings();
@@ -134,21 +143,14 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 			this.createFolderIfNotExist(folder);
 		}
 
-		if(this.performsGeneration) {
-			if(this.displayOverridingClassesWarning(this.generatorOptions)) {
-				this.generateJaxbClasses();
+		if (this.performsGeneration) {
+			if (displayOverridingClassesWarning(this.generatorOptions)) {
+				generateJaxbClasses();
 			}
 		}
 
 		return true;
 	}
-
-    @Override
-	public boolean canFinish() {
-    	return (this.settingsPage.isPageComplete() &&
-    				this.optionsPage.isPageComplete() &&
-    					this.extensionOptionsPage.isPageComplete());
-    }
     
 	// ********** intra-wizard methods **********
     
@@ -159,23 +161,20 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
     	return this.javaProject;
     }
 
-	public String getSchemaPathOrUri() {
-		if(this.schemaWizardPage != null) {
+	public URI getAbsoluteLocalXsdUri() {
+		if (this.schemaWizardPage != null) {
 			IFile schemaFile = this.schemaWizardPage.getSourceSchema();
 			if(schemaFile != null) {
-				return this.makeRelativeToProjectPath(schemaFile.getFullPath());
+				return URI.createFileURI(schemaFile.getLocation().toString());
 			}
 			else {
-				return this.schemaWizardPage.getSourceURI();
+				URI uri = CommonPlugin.asLocalURI(URI.createURI(this.schemaWizardPage.getSourceURI()));
+				return uri;
 			}
 		}
-		return this.schemaPathOrUri;
+		return this.absoluteLocalXsdUri;
 	}
-
-	private String makeRelativeToProjectPath(IPath path) {
-		IPath relativePath = path.makeRelativeTo(this.getJavaProject().getProject().getFullPath());
-		return relativePath.toOSString();
-	}
+	
 
 	// ********** public methods **********
     
@@ -208,8 +207,8 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	}
 	
 	// ********** internal methods **********
-
-    public IJavaProject getJavaProjectFromSelection(IStructuredSelection selection) {
+    
+	public IJavaProject getJavaProjectFromSelection(IStructuredSelection selection) {
     	if(selection == null) {
     		return null;
     	}
@@ -226,6 +225,18 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		}
 		return null;
     }
+	
+    private ClassesGeneratorWizardPage buildClassesGeneratorPage() {
+		return new ClassesGeneratorWizardPage();
+	}
+	
+	private ClassesGeneratorOptionsWizardPage buildClassesGeneratorOptionsPage() {
+		return new ClassesGeneratorOptionsWizardPage();
+	}
+	
+	private ClassesGeneratorExtensionOptionsWizardPage buildExtensionOptionsPage() {
+		return new ClassesGeneratorExtensionOptionsWizardPage();
+	}
     
     public IJavaProject getJavaProjectFrom(IProject project) {
     	return (IJavaProject)((IJavaElement)((IAdaptable)project).getAdapter(IJavaElement.class));
@@ -250,29 +261,6 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 			return false;
 		}
 		return true;
-	}
-	
-	private void generateJaxbClasses() {
-		try {
-			WorkspaceJob job = new GenerateJaxbClassesJob(
-				this.getJavaProject(), 
-				this.getSchemaPathOrUri(), 
-				this.destinationFolder, 
-				this.targetPackage, 
-				this.catalog, 
-				this.usesMoxy,
-				this.bindingsFileNames,
-				this.generatorOptions,
-				this.generatorExtensionOptions);
-			job.schedule();
-		}
-		catch(RuntimeException re) {
-			JptJaxbUiPlugin.log(re);
-			
-			String msg = re.getMessage();
-			String message = (msg == null) ? re.toString() : msg;
-			this.logError(message);
-		}
 	}
 
 	private void retrieveGeneratorSettings() {
@@ -314,19 +302,6 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		this.generatorExtensionOptions.setClasspath(this.extensionOptionsPage.getClasspath());
 		this.generatorExtensionOptions.setAdditionalArgs(this.extensionOptionsPage.getAdditionalArgs());
 	}
-
-	private ClassesGeneratorWizardPage buildClassesGeneratorPage() {
-
-		return new ClassesGeneratorWizardPage();
-	}
-	
-	private ClassesGeneratorOptionsWizardPage buildClassesGeneratorOptionsPage() {
-		return new ClassesGeneratorOptionsWizardPage();
-	}
-	
-	private ClassesGeneratorExtensionOptionsWizardPage buildExtensionOptionsPage() {
-		return new ClassesGeneratorExtensionOptionsWizardPage();
-	}
 	
 	private void createFolderIfNotExist(IFolder folder) {
 		if( folder.exists()) {
@@ -341,6 +316,30 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 			this.logError(NLS.bind(
 				JptJaxbUiMessages.ClassesGeneratorWizard_couldNotCreate, 
 				folder.getProjectRelativePath().toOSString()));
+		}
+	}
+	
+	private void generateJaxbClasses() {
+		try {
+			WorkspaceJob job = 
+					new GenerateJaxbClassesJob(
+						this.getJavaProject(),
+						this.getAbsoluteLocalXsdUri().toString(),
+						this.destinationFolder,
+						this.targetPackage,
+						this.catalog,
+						this.usesMoxy,
+						this.bindingsFileNames,
+						this.generatorOptions,
+						this.generatorExtensionOptions);
+			job.schedule();
+		}
+		catch(RuntimeException re) {
+			JptJaxbUiPlugin.log(re);
+			
+			String msg = re.getMessage();
+			String message = (msg == null) ? re.toString() : msg;
+			this.logError(message);
 		}
 	}
 	

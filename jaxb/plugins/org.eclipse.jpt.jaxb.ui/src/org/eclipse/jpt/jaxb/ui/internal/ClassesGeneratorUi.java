@@ -11,13 +11,12 @@ package org.eclipse.jpt.jaxb.ui.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.GenerateJaxbClassesJob;
@@ -30,8 +29,9 @@ import org.eclipse.swt.widgets.Shell;
  *  ClassesGeneratorUi
  */
 public class ClassesGeneratorUi {
+	
 	private final IJavaProject javaProject;
-	private final String schemaPathOrUri;
+	private final URI absoluteLocalXsdUri;
 
 	// ********** static methods **********
 	
@@ -40,19 +40,19 @@ public class ClassesGeneratorUi {
 		if (javaProject == null) {
 			throw new NullPointerException();
 		}
-		IPath xmlSchema = xsdFile.getProjectRelativePath();
+		URI xsdUri = URI.createURI(xsdFile.getLocation().toString());
 		
-		new ClassesGeneratorUi(javaProject, xmlSchema.toOSString()).generate();
+		new ClassesGeneratorUi(javaProject, xsdUri).generate();
 	}
 
 	// ********** constructors **********
-	private ClassesGeneratorUi(IJavaProject javaProject, String schemaPathOrUri) {
+	private ClassesGeneratorUi(IJavaProject javaProject, URI absoluteLocalXsdUri) {
 		super();
-		if(javaProject == null || StringTools.stringIsEmpty(schemaPathOrUri)) {
+		if (javaProject == null) {
 			throw new NullPointerException();
 		}
 		this.javaProject = javaProject;
-		this.schemaPathOrUri = schemaPathOrUri;
+		this.absoluteLocalXsdUri = absoluteLocalXsdUri;
 	}
 
 	// ********** generate **********
@@ -60,7 +60,7 @@ public class ClassesGeneratorUi {
 	 * prompt the user with a wizard
 	 */
 	protected void generate() {
-		ClassesGeneratorWizard wizard = new ClassesGeneratorWizard(this.javaProject, this.schemaPathOrUri);
+		ClassesGeneratorWizard wizard = new ClassesGeneratorWizard(this.javaProject, this.absoluteLocalXsdUri);
 		wizard.setWindowTitle(JptJaxbUiMessages.ClassesGeneratorWizard_title);
 		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
 		dialog.create();
@@ -95,7 +95,7 @@ public class ClassesGeneratorUi {
 		try {
 			WorkspaceJob job = new GenerateJaxbClassesJob(
 				this.javaProject, 
-				this.schemaPathOrUri, 
+				this.absoluteLocalXsdUri.toString(), 
 				outputDir, 
 				targetPackage, 
 				catalog, 

@@ -136,7 +136,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, HELP_CONTEXT_ID);
 		
 		this.settingsGroup = new SettingsGroup(composite);
-
+		
 		this.usesMoxyCheckBox = this.buildUsesMoxyCheckBox(composite);
 		
 		Dialog.applyDialogFont(parent);
@@ -147,7 +147,8 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 
 		Button checkBox = new Button(parent, SWT.CHECK);
 		GridData gridData = new GridData();
-		gridData.verticalIndent = 10;
+		gridData.horizontalIndent = 5;
+		gridData.verticalIndent = 5;
 		checkBox.setLayoutData(gridData);
 		checkBox.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_usesMoxyImplementation);
 		checkBox.setSelection(this.usesMoxy());
@@ -285,8 +286,8 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			this.usesMoxyCheckBox.setVisible(this.jptEclipseLinkBundleExists() && ! this.moxyIsOnClasspath());
 			this.validateProjectClasspath();
 
-			String schemaPathOrUri = ((ClassesGeneratorWizard)this.getWizard()).getSchemaPathOrUri();
-			this.setTitle(NLS.bind(JptJaxbUiMessages.ClassesGeneratorWizardPage_title, schemaPathOrUri));
+			String schemaName = ((ClassesGeneratorWizard) getWizard()).getAbsoluteLocalXsdUri().lastSegment();
+			this.setTitle(NLS.bind(JptJaxbUiMessages.ClassesGeneratorWizardPage_title, schemaName));
 		}
 	}
     
