@@ -137,6 +137,26 @@ public abstract class JaxbFacetPage
 		super.transferStateToConfig();
 	}
 	
+	@Override
+	protected void validatePage() {
+		// done to prevent "orphan" pages from validating
+		if (getWizard() == null) {
+			return;
+		}
+		
+		super.validatePage();
+	}
+	
+	@Override
+	protected void validatePage(boolean showMessage) {
+		// done to prevent "orphan" pages from validating
+		if (getWizard() == null) {
+			return;
+		}
+		
+		super.validatePage(showMessage);
+	}
+	
 	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
 	}
