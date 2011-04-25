@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.libval;
 import java.io.File;
 import java.io.IOException;
 import java.util.zip.ZipFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaProject;
@@ -47,12 +48,14 @@ public class JaxbLibValUtil {
 		
 		IVMInstall vm = JavaRuntime.getDefaultVMInstall();
 		
-		try {
-			IJavaProject javaProject = JavaCore.create(config.getFacetedProject().getProject());
-			vm = JavaRuntime.getVMInstall(javaProject);
-		}
-		catch (CoreException ce) {
-			// do nothing, just use the default install
+		IJavaProject javaProject = JavaCore.create(config.getFacetedProject().getProject());
+		if (javaProject != null) {	
+			try {
+				vm = JavaRuntime.getVMInstall(javaProject);
+			}
+			catch (CoreException ce) {
+				// do nothing, just use the default install
+			}
 		}
 		
 		if (vm != null) {
