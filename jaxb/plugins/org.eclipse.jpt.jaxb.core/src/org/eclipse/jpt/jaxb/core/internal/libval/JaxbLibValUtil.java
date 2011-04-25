@@ -12,7 +12,9 @@ package org.eclipse.jpt.jaxb.core.internal.libval;
 import java.io.File;
 import java.io.IOException;
 import java.util.zip.ZipFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
@@ -44,6 +46,15 @@ public class JaxbLibValUtil {
 		}
 		
 		IVMInstall vm = JavaRuntime.getDefaultVMInstall();
+		
+		try {
+			IJavaProject javaProject = JavaCore.create(config.getFacetedProject().getProject());
+			vm = JavaRuntime.getVMInstall(javaProject);
+		}
+		catch (CoreException ce) {
+			// do nothing, just use the default install
+		}
+		
 		if (vm != null) {
 			return findJreJaxbVersion(vm);
 		}
