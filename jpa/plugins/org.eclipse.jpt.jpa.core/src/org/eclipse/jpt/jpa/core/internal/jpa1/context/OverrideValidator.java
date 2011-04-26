@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -68,7 +69,38 @@ public abstract class OverrideValidator
 	}
 
 	public boolean validate(List<IMessage> messages, IReporter reporter) {
-		return this.validateName(messages);
+		if (!this.validateType(messages)) {
+			return this.validateName(messages);
+		}
+		return true;
+	}
+
+	protected boolean validateType(List<IMessage> messages) {
+		if (this.container.getOverridableTypeMapping() == null) {
+			messages.add(this.buildUnresolvedOverrideTypeMessage());
+			return true;
+		}
+		return false;
+	}
+
+	protected IMessage buildUnresolvedOverrideTypeMessage() {
+		if (this.override.isVirtual()) {
+			return DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_TYPE,
+					new String[] {this.override.getName()},
+					this.override,
+					this.textRangeResolver.getNameTextRange()
+			); 
+		}
+
+		return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_TYPE,
+				new String[] {this.override.getName()},
+				this.override,
+				this.textRangeResolver.getNameTextRange()
+		); 
 	}
 
 	protected boolean validateName(List<IMessage> messages) {
