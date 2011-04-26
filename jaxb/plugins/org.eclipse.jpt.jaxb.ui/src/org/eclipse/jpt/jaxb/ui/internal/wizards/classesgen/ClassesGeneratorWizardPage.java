@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -46,6 +47,7 @@ import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGenerator;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
@@ -75,6 +77,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.jpa.eclipselink.ui";   //$NON-NLS-1$
 	static public String XML_FILTER = "*.xml";   //$NON-NLS-1$
 	static public String BINDINGS_FILE_FILTER = "*.xjb;*.xml;*.xbd";   //$NON-NLS-1$
+	static public String ECLIPSELINK_PLATFORM_PREFIX = "eclipselink";   //$NON-NLS-1$
 
 	public static final String HELP_CONTEXT_ID = "org.eclipse.jpt.ui.configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
 
@@ -123,7 +126,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		return this.usesMoxy;
 	}
 	
-	protected void setUsesMoxy(boolean usesMoxy){
+	private void setUsesMoxy(boolean usesMoxy){
 		this.usesMoxy = usesMoxy;
 	}
 
@@ -136,7 +139,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, HELP_CONTEXT_ID);
 		
 		this.settingsGroup = new SettingsGroup(composite);
-		
+
 		this.usesMoxyCheckBox = this.buildUsesMoxyCheckBox(composite);
 		
 		Dialog.applyDialogFont(parent);
@@ -183,10 +186,10 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		//as the JAXB gen uses an org.example.schemaName package by default) and will clear the classpath warnings when necessary
 		setMessage(null);
 		
-		if ( ! this.genericJaxbIsOnClasspath()) {
+		if( ! this.genericJaxbIsOnClasspath()) {
 			this.displayWarning(JptJaxbUiMessages.ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable);
 		}
-		else if (this.usesMoxy() && ! this.moxyIsOnClasspath()) {
+		else if(this.usesMoxy() && ! this.moxyIsOnClasspath()) {
 			//this message is being truncated by the wizard width in some cases
 			this.displayWarning(JptJaxbUiMessages.ClassesGeneratorWizardPage_moxyLibrariesNotAvailable);
 		}
@@ -232,6 +235,15 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			throw new RuntimeException(e);
 		}
 	}
+
+	private boolean projectPlatformIsJaxb() {
+		return JptJaxbCorePlugin.getJaxbProject(this.getJavaProject().getProject()) != null;
+	}
+
+	private boolean projectJaxbPlatformIsEclipseLink() {
+		String jaxbPlatformId = JptJaxbCorePlugin.getJaxbPlatformId(this.getJavaProject().getProject());
+		return jaxbPlatformId.startsWith(ECLIPSELINK_PLATFORM_PREFIX);
+	}
 	
 	// ********** overrides **********
 
@@ -239,7 +251,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	protected IStatus packageChanged() {
 		IStatus status = super.packageChanged(); 
 		IPackageFragment packageFragment = getPackageFragment();
-		if (!status.matches(IStatus.ERROR)) {
+		if(!status.matches(IStatus.ERROR)) {
 			this.targetPackage = packageFragment.getElementName();
 		}
 		return status;
@@ -258,14 +270,16 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	@Override
 	protected void handleFieldChanged(String fieldName) {
 		super.handleFieldChanged(fieldName);
-		if (this.fContainerStatus.matches(IStatus.ERROR)) {
-			updateStatus(fContainerStatus);
-		}else if( ! this.fPackageStatus.matches(IStatus.OK) ) {
-			updateStatus(fPackageStatus);
-		} else {
-			updateStatus(Status.OK_STATUS);
+		if(this.fContainerStatus.matches(IStatus.ERROR)) {
+			this.updateStatus(fContainerStatus);
 		}
-		validateProjectClasspath();
+		else if( ! this.fPackageStatus.matches(IStatus.OK) ) {
+			this.updateStatus(fPackageStatus);
+		} 
+		else {
+			this.updateStatus(Status.OK_STATUS);
+		}
+		this.validateProjectClasspath();
 	}
 	
 	/**
@@ -278,12 +292,18 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		if(visible) {
 			this.initContainerPage(((ClassesGeneratorWizard)this.getWizard()).getJavaProject());
 
-			// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
-			this.usesMoxy = (this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath()); 
-	
-			// checkbox is visible only if jpt.eclipselink.ui plugin is available
-			// and EclipseLink MOXy is not on the classpath
-			this.usesMoxyCheckBox.setVisible(this.jptEclipseLinkBundleExists() && ! this.moxyIsOnClasspath());
+			if(this.projectPlatformIsJaxb()) {
+				this.setUsesMoxy(this.projectJaxbPlatformIsEclipseLink());
+				this.usesMoxyCheckBox.setVisible(false);
+			}
+			else {
+				// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
+				this.setUsesMoxy((this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath())); 
+		
+				// checkbox is visible only if jpt.eclipselink.ui plugin is available
+				// and EclipseLink MOXy is not on the classpath
+				this.usesMoxyCheckBox.setVisible(this.jptEclipseLinkBundleExists() && ! this.moxyIsOnClasspath());
+			}
 			this.validateProjectClasspath();
 
 			String schemaName = ((ClassesGeneratorWizard) getWizard()).getAbsoluteLocalXsdUri().lastSegment();
@@ -303,15 +323,17 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			@Override
 			public boolean isSelectedValid(Object element) {
 				try {
-					if (element instanceof IJavaProject) {
+					if(element instanceof IJavaProject) {
 						IJavaProject jproject= (IJavaProject)element;
 						IPath path= jproject.getProject().getFullPath();
 						return (jproject.findPackageFragmentRoot(path) != null);
-					} else if (element instanceof IPackageFragmentRoot) {
+					} 
+					else if(element instanceof IPackageFragmentRoot) {
 						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
 					}
 					return true;
-				} catch (JavaModelException e) {
+				} 
+				catch (JavaModelException e) {
 					JptJaxbUiPlugin.log(e); // just log, no UI in validation
 				}
 				return false;
@@ -322,10 +344,11 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		ViewerFilter filter= new TypedViewerFilter(acceptedClasses) {
 			@Override
 			public boolean select(Viewer viewer, Object parent, Object element) {
-				if (element instanceof IPackageFragmentRoot) {
+				if(element instanceof IPackageFragmentRoot) {
 					try {
 						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
-					} catch (JavaModelException e) {
+					} 
+					catch (JavaModelException e) {
 						JptJaxbUiPlugin.log(e.getStatus()); // just log, no UI in validation
 						return false;
 					}
@@ -349,12 +372,13 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		dialog.setInitialSelection(getPackageFragmentRoot());
 		dialog.setHelpAvailable(false);
 
-		if (dialog.open() == Window.OK) {
+		if(dialog.open() == Window.OK) {
 			Object element= dialog.getFirstResult();
-			if (element instanceof IJavaProject) {
+			if(element instanceof IJavaProject) {
 				IJavaProject jproject= (IJavaProject)element;
 				return jproject.getPackageFragmentRoot(jproject.getProject());
-			} else if (element instanceof IPackageFragmentRoot) {
+			}
+			else if(element instanceof IPackageFragmentRoot) {
 				return (IPackageFragmentRoot)element;
 			}
 			return null;
