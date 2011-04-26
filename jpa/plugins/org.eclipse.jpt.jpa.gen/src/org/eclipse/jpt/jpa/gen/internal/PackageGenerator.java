@@ -261,10 +261,12 @@ public class PackageGenerator {
 			if (isDomainClass) {
 				updateExistingDomainClass(table.getQualifiedClassName(), javaFile, fileContent);
 			} else {
-				javaFile.setContents(new ByteArrayInputStream(fileContent.getBytes()), true, true, monitor);
+				byte[] content = fileContent.getBytes(javaFile.getCharset());
+				javaFile.setContents(new ByteArrayInputStream(content), true, true, monitor);
 			}
 		} else {
-			createFile(javaFile, new ByteArrayInputStream(fileContent.getBytes()));
+			byte[] content = fileContent.getBytes(javaFile.getCharset());
+			createFile(javaFile, new ByteArrayInputStream(content));
 		}		
 	}
 	
