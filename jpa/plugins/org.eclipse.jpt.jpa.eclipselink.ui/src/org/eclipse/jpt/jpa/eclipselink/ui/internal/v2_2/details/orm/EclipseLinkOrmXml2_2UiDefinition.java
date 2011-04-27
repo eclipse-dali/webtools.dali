@@ -58,7 +58,7 @@ public class EclipseLinkOrmXml2_2UiDefinition extends AbstractOrmXmlResourceUiDe
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkOrmXml2_2UiDefinition() {
+	protected EclipseLinkOrmXml2_2UiDefinition() {
 		super();
 	}
 	

@@ -97,6 +97,35 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 					"org.eclipse.persistence.antlr", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[2.1, 3.0)")}); //$NON-NLS-1$
 		}
+		else if (EclipseLinkPlatform.VERSION_2_2.equals(platform)) {
+			bundleVersionRanges.put(
+					"org.eclipse.persistence.core", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.2, 3.0)")}); //$NON-NLS-1$
+			bundleVersionRanges.put(
+					"org.eclipse.persistence.jpa", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.2, 3.0)")}); //$NON-NLS-1$
+			bundleVersionRanges.put(
+					"org.eclipse.persistence.asm", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.2, 3.0)")}); //$NON-NLS-1$
+			bundleVersionRanges.put(
+					"org.eclipse.persistence.antlr", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.2, 3.0)")}); //$NON-NLS-1$
+		}
+		else if (EclipseLinkPlatform.VERSION_2_3.equals(platform)) {
+			bundleVersionRanges.put(
+					"org.eclipse.persistence.core", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.3, 3.0)")}); //$NON-NLS-1$
+			bundleVersionRanges.put(
+					"org.eclipse.persistence.jpa", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.3, 3.0)")}); //$NON-NLS-1$
+			bundleVersionRanges.put(
+					"org.eclipse.persistence.asm", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.3, 3.0)")}); //$NON-NLS-1$
+			bundleVersionRanges.put(
+					"org.eclipse.persistence.antlr", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.3, 3.0)")}); //$NON-NLS-1$
+		}
+		
 		return validate(jpaConfig, bundleVersionRanges);
 	}
 }

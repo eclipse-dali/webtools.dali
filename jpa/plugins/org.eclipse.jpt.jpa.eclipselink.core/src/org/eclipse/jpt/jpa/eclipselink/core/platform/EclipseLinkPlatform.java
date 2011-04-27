@@ -36,6 +36,13 @@ public class EclipseLinkPlatform {
 	public static final JpaPlatformDescription VERSION_2_1
 			= JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform("eclipselink2_1"); //$NON-NLS-1$
 	
+	public static final JpaPlatformDescription VERSION_2_2
+			= JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform("eclipselink2_2"); //$NON-NLS-1$
+	
+	public static final JpaPlatformDescription VERSION_2_3
+			= JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform("eclipselink2_3"); //$NON-NLS-1$
+	
+	
 	/**
 	 * Not for instantiation
 	 */
