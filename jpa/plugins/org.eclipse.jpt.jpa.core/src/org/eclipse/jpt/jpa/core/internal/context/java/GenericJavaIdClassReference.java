@@ -9,14 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Java ID class reference
@@ -183,8 +189,11 @@ public class GenericJavaIdClassReference
 	}
 
 	protected JavaResourcePersistentType resolveResourceIdClass() {
-		return (this.fullyQualifiedIdClassName == null) ?
-				null : this.getJpaProject().getJavaResourcePersistentType(this.fullyQualifiedIdClassName);
+		if (this.fullyQualifiedIdClassName == null) {
+			return null;
+		} 
+		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.fullyQualifiedIdClassName);
+		return (jrpt == null) ? null : (jrpt.isMapped() ? null : jrpt);
 	}
 
 	protected JavaPersistentType buildIdClass(JavaResourcePersistentType resourceClass) {
@@ -230,6 +239,29 @@ public class GenericJavaIdClassReference
 
 	// ********** validation **********
 
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.validateIdClass(messages, reporter, astRoot);
+	}
+	
+	protected void validateIdClass(List<IMessage> messages, IReporter reporter,	CompilationUnit astRoot) {
+		if (this.isSpecified()) {
+			JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.getFullyQualifiedIdClassName());
+			if ((jrpt != null) && (jrpt.isMapped())) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_VALID,
+								new String[] {jrpt.getName()}, 
+								this,
+								this.getValidationTextRange(astRoot)
+						)
+				);
+			} 
+		}
+	}
+	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		IdClassAnnotation annotation = this.getIdClassAnnotation();
 		return (annotation == null) ?

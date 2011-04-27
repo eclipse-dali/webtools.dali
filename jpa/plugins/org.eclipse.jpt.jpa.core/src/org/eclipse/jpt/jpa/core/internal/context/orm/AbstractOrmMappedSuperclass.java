@@ -190,6 +190,7 @@ public abstract class AbstractOrmMappedSuperclass<X extends XmlMappedSuperclass>
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validatePrimaryKey(messages, reporter);
+		this.idClassReference.validate(messages, reporter);
 	}
 
 	@Override

@@ -74,6 +74,9 @@ public class JptUiValidationPreferenceMessages {
 	public static String TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH; //3.0 M7
 	public static String TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY;	//3.0 M7
 	public static String TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE;	//3.0 M7
+	public static String TYPE_MAPPING_ID_CLASS_NAME_EMPTY; //3.0 M7
+	public static String TYPE_MAPPING_ID_CLASS_NOT_EXIST; //3.0 M7
+	public static String TYPE_MAPPING_ID_CLASS_NOT_VALID; //3.0 M7
 	public static String TYPE_MAPPING_ID_CLASS_REDEFINED;	//3.0 M7
 	public static String TYPE_MAPPING_ID_CLASS_REQUIRED;	//3.0 M7
 	public static String TYPE_MAPPING_ID_CLASS_WITH_MAPS_ID;	//3.0 M7
@@ -269,6 +272,7 @@ public class JptUiValidationPreferenceMessages {
 	
 	private static final String BUNDLE_NAME = "jpt_ui_validation_preferences"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiValidationPreferenceMessages.class;
+
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
 	}

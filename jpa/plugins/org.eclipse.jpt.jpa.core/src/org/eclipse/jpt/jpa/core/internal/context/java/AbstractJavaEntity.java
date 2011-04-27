@@ -1329,6 +1329,7 @@ public abstract class AbstractJavaEntity
 		this.associationOverrideContainer.validate(messages, reporter, astRoot);
 		this.validateEntityName(messages, reporter, astRoot);
 		this.validateDuplicateEntityNames(messages, reporter, astRoot);
+		this.idClassReference.validate(messages, reporter, astRoot);
 	}
 
 	@Override

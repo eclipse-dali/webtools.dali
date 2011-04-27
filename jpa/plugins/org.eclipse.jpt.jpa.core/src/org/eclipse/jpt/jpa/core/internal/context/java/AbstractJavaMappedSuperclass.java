@@ -89,6 +89,7 @@ public abstract class AbstractJavaMappedSuperclass
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		this.validatePrimaryKey(messages, reporter, astRoot);
+		this.idClassReference.validate(messages, reporter, astRoot);
 	}
 
 	@Override

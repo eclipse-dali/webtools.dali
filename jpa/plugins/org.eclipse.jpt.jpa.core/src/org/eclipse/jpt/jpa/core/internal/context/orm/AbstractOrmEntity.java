@@ -1782,6 +1782,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.queryContainer.validate(messages, reporter);
 		this.validateEntityName(messages,  reporter);
 		this.validateDuplicateEntityNames(messages, reporter);
+		this.idClassReference.validate(messages, reporter);
 	}
 
 	protected void validateEntityName(List<IMessage> messages, IReporter reporter) {

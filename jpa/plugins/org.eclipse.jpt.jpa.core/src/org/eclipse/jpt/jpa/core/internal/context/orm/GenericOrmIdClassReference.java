@@ -10,9 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
+
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -23,6 +27,8 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
@@ -221,7 +227,11 @@ public class GenericOrmIdClassReference
 	// our name if it is taken from the Java ID class reference...
 	protected JavaResourcePersistentType resolveJavaResourceIdClass() {
 		String idClassName = this.getIdClassName();
-		return (idClassName == null) ? null : this.getEntityMappings().resolveJavaResourcePersistentType(idClassName);
+		if (idClassName == null) {
+			return null;
+		}
+		JavaResourcePersistentType jrpt = this.getEntityMappings().resolveJavaResourcePersistentType(idClassName);
+		return (jrpt == null) ? null : (jrpt.isMapped() ? null : jrpt);
 	}
 
 	protected JavaPersistentType buildIdClass(JavaResourcePersistentType resourceIdClass) {
@@ -312,6 +322,45 @@ public class GenericOrmIdClassReference
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		// most validation is done "holistically" from the type mapping level
+		this.validateIdClass(messages, reporter);
+	}
+	
+	protected void validateIdClass(List<IMessage> messages, IReporter reporter) {
+		IJavaProject javaProject = getJpaProject().getJavaProject();
+		if (this.isSpecified()) {
+			JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(this.getIdClassName());
+			if ((jrpt != null) && (jrpt.isMapped())) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_VALID,
+								new String[] {jrpt.getName()}, 
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			} else if (StringTools.stringIsEmpty(this.getIdClassName())) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY,
+								new String[] {}, 
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			} else if (JDTTools.findType(javaProject, this.getIdClassName()) == null) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,
+								new String[] { this.getIdClassName()},
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			}
+		}
 	}
 
 	public TextRange getValidationTextRange() {
