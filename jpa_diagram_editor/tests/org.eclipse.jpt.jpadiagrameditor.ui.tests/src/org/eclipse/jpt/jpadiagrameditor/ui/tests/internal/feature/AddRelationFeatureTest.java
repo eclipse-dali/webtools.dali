@@ -198,7 +198,7 @@ public class AddRelationFeatureTest {
 
 	@SuppressWarnings("unused")
 	private void expectTextConnectionDecorator(String text, double location) {
-		expect(imageCreator.createCardinalityConnectionDecorator(isA(Connection.class), eq(text), eq(location))).andReturn(
+		expect(imageCreator.createCardinalityConnectionDecorator(diagram, isA(Connection.class), eq(text), eq(location))).andReturn(
 				null);
 	}
 

@@ -217,7 +217,7 @@ public class AddRelationFeature extends AbstractAddFeature {
 			if (a != null) {
 				optional = a.getOptional();
 				isOptional = (optional == null) ? true : optional.booleanValue();
-				imageCreator.createCardinalityConnectionDecorator(c, isOptional ? JPAEditorConstants.CARDINALITY_ZERO_ONE : JPAEditorConstants.CARDINALITY_ONE, 0.0);				
+				imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, isOptional ? JPAEditorConstants.CARDINALITY_ZERO_ONE : JPAEditorConstants.CARDINALITY_ONE, 0.0);				
 			}
 		}
 		JpaArtifactFactory.instance().refreshEntityModel(null, rel.getOwner());
@@ -229,25 +229,25 @@ public class AddRelationFeature extends AbstractAddFeature {
 			return;
 		optional = a.getOptional();
 		isOptional = (optional == null) ? true : optional.booleanValue();		
-		imageCreator.createCardinalityConnectionDecorator(c, isOptional ? JPAEditorConstants.CARDINALITY_ZERO_ONE : JPAEditorConstants.CARDINALITY_ONE, 1.0);									 
-		imageCreator.createCardinalityConnectionDecorator(c, rel.getOwnerAttributeName(), 0.0);				
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, isOptional ? JPAEditorConstants.CARDINALITY_ZERO_ONE : JPAEditorConstants.CARDINALITY_ONE, 1.0);									 
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getOwnerAttributeName(), 0.0);				
 		if (!UNI.equals(direction)) {
 			JpaArtifactFactory.instance().refreshEntityModel(null, rel.getInverse());
-			imageCreator.createCardinalityConnectionDecorator(c, rel.getInverseAttributeName(), 1.0);				
+			imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getInverseAttributeName(), 1.0);				
 		}
 	}
         
 	private void addOneToManyTextDecorator(FreeFormConnection c, IRelation rel) {
 		JpaArtifactFactory.instance().refreshEntityModel(null, rel.getOwner());
-		imageCreator.createCardinalityConnectionDecorator(c, JPAEditorConstants.CARDINALITY_ZERO_ONE, 0.0);
-		imageCreator.createCardinalityConnectionDecorator(c, JPAEditorConstants.CARDINALITY_ZERO_N, 1.0);	
-		imageCreator.createCardinalityConnectionDecorator(c, rel.getOwnerAttributeName(), 0.0);						
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, JPAEditorConstants.CARDINALITY_ZERO_ONE, 0.0);
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, JPAEditorConstants.CARDINALITY_ZERO_N, 1.0);	
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getOwnerAttributeName(), 0.0);						
 	}
                 
 	private void addManyToOneTextDecorator(FreeFormConnection c, RelDir direction, IRelation rel) {
 		JpaArtifactFactory.instance().refreshEntityModel(null, rel.getOwner());
-		imageCreator.createCardinalityConnectionDecorator(c, JPAEditorConstants.CARDINALITY_ZERO_N, 0.0);
-		imageCreator.createCardinalityConnectionDecorator(c, rel.getOwnerAttributeName(), 0.0);				
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, JPAEditorConstants.CARDINALITY_ZERO_N, 0.0);
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getOwnerAttributeName(), 0.0);				
 		JavaPersistentAttribute owner = rel.getOwner().getAttributeNamed(rel.getOwnerAttributeName());
 		JavaAttributeMapping mapping = owner.getMapping();
 		ManyToOneAnnotation a = (ManyToOneAnnotation)mapping.getMappingAnnotation();
@@ -255,23 +255,23 @@ public class AddRelationFeature extends AbstractAddFeature {
 			return;
 		Boolean optional = a.getOptional();
 		boolean isOptional = (optional == null) ? true : optional.booleanValue();		
-		imageCreator.createCardinalityConnectionDecorator(c, isOptional ?
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, isOptional ?
 																	JPAEditorConstants.CARDINALITY_ZERO_ONE :
 																	JPAEditorConstants.CARDINALITY_ONE, 1.0);
 		if (!UNI.equals(direction)) {
 			JpaArtifactFactory.instance().refreshEntityModel(null, rel.getInverse());
-			imageCreator.createCardinalityConnectionDecorator(c, rel.getInverseAttributeName(), 1.0);
+			imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getInverseAttributeName(), 1.0);
 		}
     }
     
 	private void addManyToManyTextDecorator(FreeFormConnection c, RelDir direction, IRelation rel) {
 		JpaArtifactFactory.instance().refreshEntityModel(null, rel.getOwner());
-		imageCreator.createCardinalityConnectionDecorator(c, JPAEditorConstants.CARDINALITY_ZERO_N, 0.0);		
-		imageCreator.createCardinalityConnectionDecorator(c, JPAEditorConstants.CARDINALITY_ZERO_N, 1.0);	
-		imageCreator.createCardinalityConnectionDecorator(c, rel.getOwnerAttributeName(), 0.0);
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, JPAEditorConstants.CARDINALITY_ZERO_N, 0.0);		
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, JPAEditorConstants.CARDINALITY_ZERO_N, 1.0);	
+		imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getOwnerAttributeName(), 0.0);
 		if (!UNI.equals(direction)) {
 			JpaArtifactFactory.instance().refreshEntityModel(null, rel.getInverse());
-			imageCreator.createCardinalityConnectionDecorator(c, rel.getInverseAttributeName(), 1.0);	
+			imageCreator.createCardinalityConnectionDecorator(getDiagram(), c, rel.getInverseAttributeName(), 1.0);	
 		}
     }
 

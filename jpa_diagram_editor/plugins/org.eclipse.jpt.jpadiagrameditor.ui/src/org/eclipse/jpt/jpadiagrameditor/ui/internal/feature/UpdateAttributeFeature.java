@@ -92,7 +92,7 @@ public class UpdateAttributeFeature extends AbstractCustomFeature {
 	}
 
 	public static Text addText(IFeatureProvider fp, Rectangle textRectangle, String txt) {
-		Text text = Graphiti.getGaService().createDefaultText(textRectangle, txt);
+		Text text = Graphiti.getGaService().createDefaultText(fp.getDiagramTypeProvider().getDiagram(), textRectangle, txt);
 		Color color = Graphiti.getGaService().manageColor(fp.getDiagramTypeProvider().getDiagram(),
 				JPAEditorConstants.ENTITY_TEXT_FOREGROUND);
 		text.setForeground(color);

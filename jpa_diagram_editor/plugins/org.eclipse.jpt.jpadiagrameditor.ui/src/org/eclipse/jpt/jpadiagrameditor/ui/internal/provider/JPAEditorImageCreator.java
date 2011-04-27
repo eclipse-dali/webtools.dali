@@ -37,6 +37,7 @@ public class JPAEditorImageCreator implements IJPAEditorImageCreator {
 		return polyline;
 	}
 
+	/*
 	public ConnectionDecorator createTextConnectionDecorator(Connection connection, String text, double location) {
 		ConnectionDecorator textDecorator = Graphiti.getPeService().createConnectionDecorator(connection, true, 0.5, true);
 		Text txt = Graphiti.getGaService().createDefaultText(textDecorator);
@@ -46,10 +47,11 @@ public class JPAEditorImageCreator implements IJPAEditorImageCreator {
 		Graphiti.getGaService().setLocation(txt, 5, -20);
 		return textDecorator;
 	}
+	*/
 	
-	public ConnectionDecorator createCardinalityConnectionDecorator(Connection c, String text, double location) {
+	public ConnectionDecorator createCardinalityConnectionDecorator(Diagram d, Connection c, String text, double location) {
 		ConnectionDecorator textDecorator = Graphiti.getPeService().createConnectionDecorator(c, true, location, true);
-		Text txt = Graphiti.getGaService().createDefaultText(textDecorator);
+		Text txt = Graphiti.getGaService().createDefaultText(d, textDecorator);
 		txt.setLineWidth(JPAEditorConstants.CONNECTION_LINE_WIDTH);
 		txt.setValue(text);
 		Graphiti.getGaService().manageColor(c.getParent(), IColorConstant.BLACK);

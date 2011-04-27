@@ -425,7 +425,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			System.err.println("Cannot check compilation unit for unsaved changes");	//$NON-NLS-1$
 			e.printStackTrace();			 
 		}
-		Text headerTextObj = Graphiti.getGaService().createDefaultText(headerRect,
+		Text headerTextObj = Graphiti.getGaService().createDefaultText(getDiagram(), headerRect,
 				headerTextString);
 		headerTextObj
 				.setForeground(manageColor(JPAEditorConstants.ENTITY_TEXT_FOREGROUND));
