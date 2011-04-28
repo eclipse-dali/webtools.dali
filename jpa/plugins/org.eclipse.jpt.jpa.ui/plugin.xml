@@ -106,15 +106,6 @@
 	             id="org.eclipse.jpt.jpa.core.content.mappingFile">
 	       </contentType>
 	    </proposalComputer>
-	    <proposalComputer
-	          activate="true"
-	          categoryId="org.eclipse.wst.xml.ui.proposalCategory.xmlTags"
-	          class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer"
-	          id="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer">
-	       <contentType
-	             id="org.eclipse.jpt.jpa.eclipselink.core.content.orm">
-	       </contentType>
-	    </proposalComputer>
 	 </extension>	
 
 
