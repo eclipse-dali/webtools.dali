@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -82,15 +82,15 @@ public class SynchronizedBoolean
 		}
 	}
 
-	public boolean is(boolean v) {
+	public boolean is(boolean b) {
 		synchronized (this.mutex) {
-			return this.value == v;
+			return this.value == b;
 		}
 	}
 
-	public boolean isNot(boolean v) {
+	public boolean isNot(boolean b) {
 		synchronized (this.mutex) {
-			return this.value != v;
+			return this.value != b;
 		}
 	}
 
@@ -108,43 +108,79 @@ public class SynchronizedBoolean
 
 	/**
 	 * If the value changes, all waiting threads are notified.
+	 * Return the <em>old</em> value.
 	 */
 	public boolean setValue(boolean value) {
 		synchronized (this.mutex) {
-			return this.setValue_(value);
+			return (value == this.value) ? value : ! this.setChangedValue_(value);
+		}
+	}
+
+	/**
+	 * Pre-condition: synchronized; new value is different
+	 * <br>
+	 * Return the <em>new</em> value.
+	 */
+	private boolean setChangedValue_(boolean v) {
+		this.value = v;
+		this.mutex.notifyAll();
+		return v;
+	}
+
+	/**
+	 * If the value changes, all waiting threads are notified.
+	 * Return the new value.
+	 */
+	public boolean flip() {
+		synchronized (this.mutex) {
+			return this.setChangedValue_( ! this.value);
+		}
+	}
+
+	/**
+	 * Set the value to <code>value & b</code> and return the new value.
+	 * If the value changes, all waiting threads are notified.
+	 */
+	public boolean and(boolean b) {
+		synchronized (this.mutex) {
+			return this.setValue_(this.value & b);
+		}
+	}
+
+	/**
+	 * Set the value to <code>value | b</code> and return the new value.
+	 * If the value changes, all waiting threads are notified.
+	 */
+	public boolean or(boolean b) {
+		synchronized (this.mutex) {
+			return this.setValue_(this.value | b);
+		}
+	}
+
+	/**
+	 * Set the value to <code>value ^ b</code> and return the new value.
+	 * If the value changes, all waiting threads are notified.
+	 */
+	public boolean xor(boolean b) {
+		synchronized (this.mutex) {
+			return this.setValue_(this.value ^ b);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
+	 * <br>
+	 * Return the <em>new</em> value.
 	 */
 	private boolean setValue_(boolean v) {
 		return (v == this.value) ? v : this.setChangedValue_(v);
 	}
 
 	/**
-	 * Pre-condition: synchronized and new value is different
-	 */
-	private boolean setChangedValue_(boolean v) {
-		this.value = v;
-		this.mutex.notifyAll();
-		return ! v;
-	}
-
-	/**
 	 * If the value changes, all waiting threads are notified.
 	 */
-	public boolean flip() {
-		synchronized (this.mutex) {
-			return ! this.setChangedValue_( ! this.value);
-		}
-	}
-
-	/**
-	 * If the value changes, all waiting threads are notified.
-	 */
-	public boolean setNot(boolean v) {
-		return this.setValue( ! v);
+	public boolean setNot(boolean b) {
+		return this.setValue( ! b);
 	}
 
 	/**
@@ -159,6 +195,49 @@ public class SynchronizedBoolean
 	 */
 	public boolean setFalse() {
 		return this.setValue(false);
+	}
+
+	/**
+	 * Set the value to the specified new value if it is currently the specified
+	 * expected value. If the value changes, all waiting threads are notified.
+	 * Return whether the commit was successful.
+	 */
+	public boolean commit(boolean expectedValue, boolean newValue) {
+		synchronized (this.mutex) {
+			boolean success = (this.value == expectedValue);
+			if (success) {
+				this.setValue_(newValue);
+			}
+			return success;
+		}
+	}
+
+	/**
+	 * Atomically swap the value of this synchronized boolean with the value of
+	 * the specified synchronized boolean. Make assumptions about the value of
+	 * <em>identity hash code</em> to avoid deadlock when two synchronized
+	 * booleans swap values with each other simultaneously.
+	 * If either value changes, the corresponding waiting threads are notified.
+	 * Return the new value.
+	 */
+	public boolean swap(SynchronizedBoolean other) {
+		if (other == this) {
+			return this.getValue();
+		}
+		boolean thisFirst = System.identityHashCode(this) < System.identityHashCode(other);
+		SynchronizedBoolean first = thisFirst ? this : other;
+		SynchronizedBoolean second = thisFirst ? other : this;
+		synchronized (first.mutex) {
+			synchronized (second.mutex) {
+				boolean thisValue = this.value;
+				boolean otherValue = other.value;
+				if (thisValue == otherValue) {
+					return thisValue;  // nothing changes
+				}
+				other.setChangedValue_(thisValue);
+				return this.setChangedValue_(otherValue);
+			}
+		}
 	}
 
 	/**
@@ -177,17 +256,17 @@ public class SynchronizedBoolean
 	 * to the specified value. If the <code>boolean</code> value is already the
 	 * specified value, return immediately.
 	 */
-	public void waitUntilValueIs(boolean v) throws InterruptedException {
+	public void waitUntilValueIs(boolean b) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIs_(v);
+			this.waitUntilValueIs_(b);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private void waitUntilValueIs_(boolean v) throws InterruptedException {
-		while (this.value != v) {
+	private void waitUntilValueIs_(boolean b) throws InterruptedException {
+		while (this.value != b) {
 			this.mutex.wait();
 		}
 	}
@@ -198,8 +277,8 @@ public class SynchronizedBoolean
 	 * If the <code>boolean</code> value is already the NOT of the specified
 	 * value, return immediately.
 	 */
-	public void waitUntilValueIsNot(boolean v) throws InterruptedException {
-		this.waitUntilValueIs( ! v);
+	public void waitUntilValueIsNot(boolean b) throws InterruptedException {
+		this.waitUntilValueIs( ! b);
 	}
 
 	/**
@@ -229,10 +308,10 @@ public class SynchronizedBoolean
 	 * <em>not</em> the specified value, set the value to the specified value
 	 * immediately.
 	 */
-	public void waitToSetValue(boolean v) throws InterruptedException {
+	public void waitToSetValue(boolean b) throws InterruptedException {
 		synchronized (this.mutex) {
-			this.waitUntilValueIs_( ! v);
-			this.setChangedValue_(v);
+			this.waitUntilValueIs_( ! b);
+			this.setChangedValue_(b);
 		}
 	}
 
@@ -271,28 +350,28 @@ public class SynchronizedBoolean
 	 * return <code>true</code> immediately.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitUntilValueIs(boolean v, long timeout) throws InterruptedException {
+	public boolean waitUntilValueIs(boolean b, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			return this.waitUntilValueIs_(v, timeout);
+			return this.waitUntilValueIs_(b, timeout);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private boolean waitUntilValueIs_(boolean v, long timeout) throws InterruptedException {
+	private boolean waitUntilValueIs_(boolean b, long timeout) throws InterruptedException {
 		if (timeout == 0L) {
-			this.waitUntilValueIs_(v);	// wait indefinitely until notified
+			this.waitUntilValueIs_(b);	// wait indefinitely until notified
 			return true;	// if it ever comes back, the condition was met
 		}
 
 		long stop = System.currentTimeMillis() + timeout;
 		long remaining = timeout;
-		while ((this.value != v) && (remaining > 0L)) {
+		while ((this.value != b) && (remaining > 0L)) {
 			this.mutex.wait(remaining);
 			remaining = stop - System.currentTimeMillis();
 		}
-		return (this.value == v);
+		return (this.value == b);
 	}
 
 	/**
@@ -305,8 +384,8 @@ public class SynchronizedBoolean
 	 * value, return immediately.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public void waitUntilValueIsNot(boolean v, long timeout) throws InterruptedException {
-		this.waitUntilValueIs( ! v, timeout);
+	public void waitUntilValueIsNot(boolean b, long timeout) throws InterruptedException {
+		this.waitUntilValueIs( ! b, timeout);
 	}
 
 	/**
@@ -350,11 +429,11 @@ public class SynchronizedBoolean
 	 * immediately and return <code>true</code>.
 	 * If the time-out is zero, wait indefinitely.
 	 */
-	public boolean waitToSetValue(boolean v, long timeout) throws InterruptedException {
+	public boolean waitToSetValue(boolean b, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
-			boolean success = this.waitUntilValueIs_( ! v, timeout);
+			boolean success = this.waitUntilValueIs_( ! b, timeout);
 			if (success) {
-				this.setChangedValue_(v);
+				this.setChangedValue_(b);
 			}
 			return success;
 		}

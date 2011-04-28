@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -72,6 +72,72 @@ public class SynchronizedBooleanTests
 		assertFalse(this.sb.flip());
 	}
 
+	public void testFalseAndTrue() throws Exception {
+		assertFalse(this.sb.and(true));
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testTrueAndTrue() throws Exception {
+		this.sb.setValue(true);
+		assertTrue(this.sb.and(true));
+		assertTrue(this.sb.getValue());
+	}
+
+	public void testFalseAndFalse() throws Exception {
+		assertFalse(this.sb.and(false));
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testTrueAndFalse() throws Exception {
+		this.sb.setValue(true);
+		assertFalse(this.sb.and(false));
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testFalseOrTrue() throws Exception {
+		assertTrue(this.sb.or(true));
+		assertTrue(this.sb.getValue());
+	}
+
+	public void testTrueOrTrue() throws Exception {
+		this.sb.setValue(true);
+		assertTrue(this.sb.or(true));
+		assertTrue(this.sb.getValue());
+	}
+
+	public void testFalseOrFalse() throws Exception {
+		assertFalse(this.sb.or(false));
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testTrueOrFalse() throws Exception {
+		this.sb.setValue(true);
+		assertTrue(this.sb.or(false));
+		assertTrue(this.sb.getValue());
+	}
+
+	public void testFalseXorTrue() throws Exception {
+		assertTrue(this.sb.xor(true));
+		assertTrue(this.sb.getValue());
+	}
+
+	public void testTrueXorTrue() throws Exception {
+		this.sb.setValue(true);
+		assertFalse(this.sb.xor(true));
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testFalseXorFalse() throws Exception {
+		assertFalse(this.sb.xor(false));
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testTrueXorFalse() throws Exception {
+		this.sb.setValue(true);
+		assertTrue(this.sb.xor(false));
+		assertTrue(this.sb.getValue());
+	}
+
 	public void testSetNotTrue() throws Exception {
 		this.sb.setNot(true);
 		assertFalse(this.sb.getValue());
@@ -98,6 +164,45 @@ public class SynchronizedBooleanTests
 		assertTrue(this.sb.getValue());
 		assertTrue(this.sb.isTrue());
 		assertFalse(this.sb.isFalse());
+	}
+
+	public void testCommitFalseSuccess() throws Exception {
+		assertTrue(this.sb.commit(false, false));
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testCommitTrueSuccess() throws Exception {
+		assertTrue(this.sb.commit(false, true));
+		assertTrue(this.sb.getValue());
+	}
+
+	public void testCommitFalseFailure() throws Exception {
+		assertFalse(this.sb.commit(true, false));
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testCommitTrueFailure() throws Exception {
+		assertFalse(this.sb.commit(true, true));
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testSwapSame() throws Exception {
+		assertFalse(this.sb.swap(this.sb));
+		assertFalse(this.sb.getValue());
+	}
+
+	public void testSwapSameValue() throws Exception {
+		SynchronizedBoolean sb2 = new SynchronizedBoolean();
+		assertFalse(this.sb.swap(sb2));
+		assertFalse(this.sb.getValue());
+		assertFalse(sb2.getValue());
+	}
+
+	public void testSwapDifferentValue() throws Exception {
+		SynchronizedBoolean sb2 = new SynchronizedBoolean(true);
+		assertTrue(this.sb.swap(sb2));
+		assertTrue(this.sb.getValue());
+		assertFalse(sb2.getValue());
 	}
 
 	public void testGetMutexThis() throws Exception {
