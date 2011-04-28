@@ -554,6 +554,10 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		// Prevent undoing the actual query that was set
 		if (e.getNewValue() != null) {
 			sourceViewer.getUndoManager().reset();
+			validate();
+		}
+		else {
+			annotationModel.removeAllAnnotations();
 		}
 	}
 
