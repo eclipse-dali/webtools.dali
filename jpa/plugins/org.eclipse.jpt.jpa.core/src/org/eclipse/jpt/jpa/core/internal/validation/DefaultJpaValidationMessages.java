@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,7 +49,7 @@ public class DefaultJpaValidationMessages {
 			//log an exception and then continue without setting location information
 			//At least the user will still get the validation message and will
 			//be able to see other validation messages with valid textRanges
-			JptJpaCorePlugin.log(new IllegalArgumentException("Null text range for message ID: " + messageId)); //$NON-NLS-1$
+			JptJpaCorePlugin.log(new NullPointerException("Null text range for message ID: " + messageId)); //$NON-NLS-1$
 		}
 		else {
 			message.setLineNo(textRange.getLineNumber());

@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
@@ -82,6 +81,11 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 
 	// ********** misc **********
 
+	@Override
+	public XmlContextNode getParent() {
+		return (XmlContextNode) super.getParent();
+	}
+
 	public X getXmlConverter() {
 		return this.xmlConverter;
 	}
@@ -102,17 +106,12 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 
 	// ********** refactoring **********
 
-	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return EmptyIterable.instance();
-	}
+	public abstract Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
 
-	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return EmptyIterable.instance();
-	}
+	public abstract Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
 
-	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return EmptyIterable.instance();
-	}
+	public abstract Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
+
 
 	// ********** validation **********
 
@@ -123,8 +122,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	}
 
 	protected void validateConverterNames(List<IMessage> messages){
-			String name = this.getName();
-			if (StringTools.stringIsEmpty(name)) {
+			if (StringTools.stringIsEmpty(this.name)) {
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY, 
@@ -136,17 +134,17 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 			} else {
 				List<String> reportedNames = new ArrayList<String>();
 				for (ListIterator<EclipseLinkConverter> globalConverters = this.getPersistenceUnit().allConverters(); globalConverters.hasNext(); ) {
-					if ( this.duplicates(globalConverters.next()) && !reportedNames.contains(name)	){
+					if ( this.duplicates(globalConverters.next()) && !reportedNames.contains(this.name)	){
 						messages.add(
 							DefaultEclipseLinkJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
 									EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
-									new String[] {name},
+									new String[] {this.name},
 									this,
 									this.getNameTextRange()
 							)
 						);
-						reportedNames.add(name);
+						reportedNames.add(this.name);
 					}
 				}
 			}
@@ -170,11 +168,12 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.xmlConverter.getValidationTextRange();
+		TextRange textRange = this.xmlConverter.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
 	public TextRange getNameTextRange() {
-		return this.xmlConverter.getNameTextRange();
+		return this.getValidationTextRange(this.xmlConverter.getNameTextRange());
 	}
 
 	// ********** adapter **********

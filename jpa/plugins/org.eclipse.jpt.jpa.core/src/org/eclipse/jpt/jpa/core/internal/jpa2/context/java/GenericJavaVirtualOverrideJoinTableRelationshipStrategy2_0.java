@@ -116,6 +116,6 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return null;
+		return this.getRelationship().getValidationTextRange(astRoot);
 	}
 }

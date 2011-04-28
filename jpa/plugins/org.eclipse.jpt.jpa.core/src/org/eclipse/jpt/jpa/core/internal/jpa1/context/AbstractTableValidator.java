@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
@@ -53,8 +52,8 @@ public abstract class AbstractTableValidator
 		return this.textRangeResolver;
 	}
 
-	protected boolean isPersistentAttributeVirtual() {
-		return this.persistentAttribute != null && this.persistentAttribute.isVirtual();
+	protected boolean attributeIsVirtual() {
+		return (this.persistentAttribute != null) && this.persistentAttribute.isVirtual();
 	}
 
 	protected String getPersistentAttributeName() {
@@ -62,10 +61,8 @@ public abstract class AbstractTableValidator
 	}
 
 	public boolean validate(List<IMessage> messages, IReporter reporter) {
-		if (this.validatesAgainstDatabase()) {
-			return this.validateAgainstDatabase(messages);
-		}
-		return false;
+		return this.validatesAgainstDatabase() &&
+			 	this.validateAgainstDatabase(messages);
 	}
 
 	protected boolean validatesAgainstDatabase() {
@@ -74,18 +71,18 @@ public abstract class AbstractTableValidator
 
 	protected boolean validateAgainstDatabase(List<IMessage> messages) {
 		if ( ! this.table.catalogIsResolved()) {
-			messages.add(buildUnresolvedCatalogMessage());
+			messages.add(this.buildUnresolvedCatalogMessage());
 			return false;
 		}
 
 		if ( ! this.table.schemaIsResolved()) {
-			messages.add(buildUnresolvedSchemaMessage());
+			messages.add(this.buildUnresolvedSchemaMessage());
 			return false;
 		}
 
 		if ( ! this.table.isResolved()) {
 			if (this.table.getName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
-				messages.add(buildUnresolvedNameMessage());
+				messages.add(this.buildUnresolvedNameMessage());
 			}
 			return false;
 		}
@@ -93,10 +90,9 @@ public abstract class AbstractTableValidator
 	}
 
 	protected IMessage buildUnresolvedCatalogMessage() {
-		if (isPersistentAttributeVirtual()) {
-			return this.buildVirtualAttributeUnresolvedCatalogMessage();
-		}
-		return this.buildUnresolvedCatalogMessage(this.getUnresolvedCatalogMessage());
+		return this.attributeIsVirtual() ?
+				this.buildVirtualAttributeUnresolvedCatalogMessage() :
+				this.buildUnresolvedCatalogMessage(this.getUnresolvedCatalogMessage());
 	}
 
 	protected abstract String getUnresolvedCatalogMessage();
@@ -105,8 +101,8 @@ public abstract class AbstractTableValidator
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
 			message,
-			new String[] {this.table.getCatalog(), this.table.getName()}, 
-			this.table, 
+			new String[] {this.table.getCatalog(), this.table.getName()},
+			this.table,
 			this.textRangeResolver.getCatalogTextRange()
 		);
 	}
@@ -116,7 +112,7 @@ public abstract class AbstractTableValidator
 			IMessage.HIGH_SEVERITY,
 			this.getVirtualAttributeUnresolvedCatalogMessage(),
 			new String[] {this.getPersistentAttributeName(), this.table.getCatalog(), this.table.getName()},
-			this.table, 
+			this.table,
 			this.textRangeResolver.getCatalogTextRange()
 		);
 	}
@@ -124,10 +120,9 @@ public abstract class AbstractTableValidator
 	protected abstract String getVirtualAttributeUnresolvedCatalogMessage();
 
 	protected IMessage buildUnresolvedSchemaMessage() {
-		if (isPersistentAttributeVirtual()) {
-			return this.buildVirtualAttributeUnresolvedSchemaMessage();
-		}
-		return this.buildUnresolvedSchemaMessage(this.getUnresolvedSchemaMessage());
+		return this.attributeIsVirtual() ?
+				this.buildVirtualAttributeUnresolvedSchemaMessage() :
+				this.buildUnresolvedSchemaMessage(this.getUnresolvedSchemaMessage());
 	}
 
 	protected abstract String getUnresolvedSchemaMessage();
@@ -136,8 +131,8 @@ public abstract class AbstractTableValidator
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
 			message,
-			new String[] {this.table.getSchema(), this.table.getName()}, 
-			this.table, 
+			new String[] {this.table.getSchema(), this.table.getName()},
+			this.table,
 			this.textRangeResolver.getSchemaTextRange()
 		);
 	}
@@ -147,7 +142,7 @@ public abstract class AbstractTableValidator
 			IMessage.HIGH_SEVERITY,
 			this.getVirtualAttributeUnresolvedSchemaMessage(),
 			new String[] {this.getPersistentAttributeName(), this.table.getSchema(), this.table.getName()},
-			this.table, 
+			this.table,
 			this.textRangeResolver.getSchemaTextRange()
 		);
 	}
@@ -155,10 +150,9 @@ public abstract class AbstractTableValidator
 	protected abstract String getVirtualAttributeUnresolvedSchemaMessage();
 
 	protected IMessage buildUnresolvedNameMessage() {
-		if (isPersistentAttributeVirtual()) {
-			return this.buildVirtualAttributeUnresolvedNameMessage();
-		}
-		return this.buildUnresolvedNameMessage(this.getUnresolvedNameMessage());
+		return this.attributeIsVirtual() ?
+				this.buildVirtualAttributeUnresolvedNameMessage() :
+				this.buildUnresolvedNameMessage(this.getUnresolvedNameMessage());
 	}
 
 	protected abstract String getUnresolvedNameMessage();
@@ -167,8 +161,8 @@ public abstract class AbstractTableValidator
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
 			message,
-			new String[] {this.table.getName()}, 
-			this.table, 
+			new String[] {this.table.getName()},
+			this.table,
 			this.textRangeResolver.getNameTextRange()
 		);
 	}
@@ -178,7 +172,7 @@ public abstract class AbstractTableValidator
 			IMessage.HIGH_SEVERITY,
 			this.getVirtualAttributeUnresolvedNameMessage(),
 			new String[] {this.getPersistentAttributeName(), this.table.getName()},
-			this.table, 
+			this.table,
 			this.textRangeResolver.getNameTextRange()
 		);
 	}

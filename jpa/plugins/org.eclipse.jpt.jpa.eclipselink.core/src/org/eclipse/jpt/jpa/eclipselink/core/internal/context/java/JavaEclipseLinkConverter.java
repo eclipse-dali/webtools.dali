@@ -78,6 +78,11 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 
 	// ********** misc **********
 
+	@Override
+	public JavaJpaContextNode getParent() {
+		return (JavaJpaContextNode) super.getParent();
+	}
+
 	public A getConverterAnnotation() {
 		return this.converterAnnotation;
 	}
@@ -113,7 +118,8 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.converterAnnotation.getTextRange(astRoot);
+		TextRange textRange = this.converterAnnotation.getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 
@@ -217,7 +223,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot){
-		return getConverterAnnotation().getNameTextRange(astRoot);
+		return this.getValidationTextRange(this.getConverterAnnotation().getNameTextRange(astRoot), astRoot);
 	}
 	
 	@Override
@@ -227,8 +233,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	}
 
 	protected void validateConverterNames(List<IMessage> messages, CompilationUnit astRoot){
-		String name = this.getName();
-		if (StringTools.stringIsEmpty(name)) {
+		if (StringTools.stringIsEmpty(this.name)) {
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY, 
@@ -240,16 +245,16 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 		} else {
 			List<String> reportedNames = new ArrayList<String>();
 			for (ListIterator<EclipseLinkConverter> globalConverters = this.getPersistenceUnit	().allConverters(); globalConverters.hasNext(); ) {
-				if ( this.duplicates( globalConverters.next())  && !reportedNames.contains(name)){
+				if ( this.duplicates( globalConverters.next())  && !reportedNames.contains(this.name)){
 					messages.add(
 							DefaultEclipseLinkJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
 									EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
-									new String[] {name},
+									new String[] {this.name},
 									this,
 									this.getNameTextRange(astRoot)
 							));
-					reportedNames.add(name);
+					reportedNames.add(this.name);
 				}
 			}
 		}

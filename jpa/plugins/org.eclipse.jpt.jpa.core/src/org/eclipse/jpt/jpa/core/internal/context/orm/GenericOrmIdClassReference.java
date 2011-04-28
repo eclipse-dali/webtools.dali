@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -364,9 +364,12 @@ public class GenericOrmIdClassReference
 	}
 
 	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getXmlValidationTextRange();
+		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange();
+	}
+
+	protected TextRange getXmlValidationTextRange() {
 		XmlClassReference xmlIdClassRef = this.getXmlIdClassRef();
-		return (xmlIdClassRef == null) ?
-				this.getTypeMapping().getValidationTextRange() :
-				xmlIdClassRef.getClassNameTextRange();
+		return (xmlIdClassRef == null) ? null : xmlIdClassRef.getClassNameTextRange();
 	}
 }

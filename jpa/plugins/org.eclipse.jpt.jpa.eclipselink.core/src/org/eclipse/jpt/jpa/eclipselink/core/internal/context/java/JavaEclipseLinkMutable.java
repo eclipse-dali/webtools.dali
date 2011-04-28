@@ -163,7 +163,12 @@ public class JavaEclipseLinkMutable
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		EclipseLinkMutableAnnotation mutableAnnotation = this.getMutableAnnotation();
-		return (mutableAnnotation == null) ? null : mutableAnnotation.getTextRange(astRoot);
+		TextRange textRange = this.getAnnotationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getAttributeMapping().getValidationTextRange(astRoot);
+	}
+
+	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
+		EclipseLinkMutableAnnotation annotation = this.getMutableAnnotation();
+		return (annotation == null) ? null : annotation.getTextRange(astRoot);
 	}
 }

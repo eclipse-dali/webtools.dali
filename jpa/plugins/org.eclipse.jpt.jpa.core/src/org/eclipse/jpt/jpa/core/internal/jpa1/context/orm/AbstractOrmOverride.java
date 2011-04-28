@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -126,13 +126,17 @@ public abstract class AbstractOrmOverride<C extends OrmOverrideContainer, X exte
 		return new OrmOverrideTextRangeResolver(this);
 	}
 
+	/**
+	 * @see AbstractOrmOverrideContainer#getValidationTextRange()
+	 */
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlOverride.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		// skip the container since it really doesn't have a text range
+		// (also, this prevents a stack overflow)
+		return (textRange != null) ? textRange : this.getContainer().getParent().getValidationTextRange();
 	}
 
 	public TextRange getNameTextRange() {
-		TextRange textRange = this.xmlOverride.getNameTextRange();
-		return (textRange != null) ? textRange : this.getValidationTextRange();
+		return this.getValidationTextRange(this.xmlOverride.getNameTextRange());
 	}
 }

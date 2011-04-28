@@ -49,9 +49,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
@@ -92,7 +89,6 @@ import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
@@ -855,39 +851,6 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 
-	// ********** Java override lookups **********
-
-	protected JavaAttributeOverride getSpecifiedJavaValueAttributeOverrideNamed(String attributeName) {
-		JavaElementCollectionMapping2_0 javaMapping = this.getJavaElementCollectionMapping();
-		return (javaMapping == null) ? null :
-			javaMapping.getValueAttributeOverrideContainer().getSpecifiedOverrideNamed(attributeName);
-	}
-
-	protected JavaAssociationOverride getSpecifiedJavaValueAssociationOverrideNamed(String attributeName) {
-		JavaElementCollectionMapping2_0 javaMapping = this.getJavaElementCollectionMapping();
-		return (javaMapping == null) ? null :
-			javaMapping.getValueAssociationOverrideContainer().getSpecifiedOverrideNamed(attributeName);
-	}
-
-	protected JavaAttributeOverride getSpecifiedJavaMapKeyAttributeOverrideNamed(String attributeName) {
-		JavaElementCollectionMapping2_0 javaMapping = this.getJavaElementCollectionMapping();
-		return (javaMapping == null) ? null :
-			javaMapping.getMapKeyAttributeOverrideContainer().getSpecifiedOverrideNamed(attributeName);
-	}
-
-	protected JavaElementCollectionMapping2_0 getJavaElementCollectionMapping() {
-		AttributeMapping javaAttributeMapping = this.getJavaAttributeMapping();
-		return (javaAttributeMapping instanceof JavaElementCollectionMapping2_0) ?
-			(JavaElementCollectionMapping2_0) javaAttributeMapping :
-			null;
-	}
-
-	protected JavaAttributeMapping getJavaAttributeMapping() {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
-		return (javaAttribute == null) ? null : javaAttribute.getMapping();
-	}
-
-
 	// ********** misc **********
 
 	@Override
@@ -1217,121 +1180,69 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void validateTargetClass(List<IMessage> messages) {
-		String targetClass = getTargetClass();
-		IJavaProject javaProject = getJpaProject().getJavaProject();
+		String targetClass = this.getTargetClass();
 		if (StringTools.stringIsEmpty(targetClass)) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
-						new String[] {this.name},
-						this,
-						this.getValidationTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
-						EMPTY_STRING_ARRAY,
-						this,
-						this.getValidationTextRange()
-					)
-				);
-			}
-		} else if (!targetClassExists(javaProject)) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
-						new String[] {this.name},
-						this,
-						this.getTargetClassTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
-						new String[] {this.name},
-						this,
-						this.getTargetClassTextRange()
-					)
-				);
-			}
-		} else {
-			if (!JDTTools.typeIsBasic(javaProject, targetClass) && getResolvedTargetEmbeddable() == null) {
-				if (this.isVirtual()) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-							new String[] {this.name, this.getTargetClass()},
-							this,
-							this.getTargetClassTextRange()
-						)
-					);
-				} else {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-							new String[] {this.getTargetClass(), this.name},
-							this,
-							this.getTargetClassTextRange()
-						)
-					);
-				}
-			}
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getValidationTextRange()
+				)
+			);
+			return;
+		}
+
+		IJavaProject javaProject = this.getJpaProject().getJavaProject();
+		if (JDTTools.findType(javaProject, targetClass) == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
+					new String[] {this.name},
+					this,
+					this.getTargetClassTextRange()
+				)
+			);
+			return;
+		}
+
+		if ( ! JDTTools.typeIsBasic(javaProject, targetClass) && (this.getResolvedTargetEmbeddable() == null)) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
+					new String[] {this.getTargetClass(), this.name},
+					this,
+					this.getTargetClassTextRange()
+				)
+			);
 		}
 	}
-	
-	private boolean targetClassExists(IJavaProject javaProject) {
-		String targetClass = getTargetClass();
-		if (!StringTools.stringIsEmpty(targetClass)) 
-		{
-			if (JDTTools.findType(javaProject, targetClass) != null) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
+
 	protected TextRange getTargetClassTextRange() {
-		return this.xmlAttributeMapping.getTargetClassTextRange();
+		return this.getValidationTextRange(this.xmlAttributeMapping.getTargetClassTextRange());
 	}
 
 	protected void validateMapKeyClass(List<IMessage> messages) {
 		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && ! javaAttribute.getJpaContainerDefinition().isMap()) {
-			return;
+			this.validateMapKeyClass_(messages);
 		}
+	}
+
+	protected void validateMapKeyClass_(List<IMessage> messages) {
 		if (this.getMapKeyClass() == null) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
-						new String[] {this.name},
-						this,
-						this.getValidationTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
-						EMPTY_STRING_ARRAY,
-						this,
-						this.getValidationTextRange()
-					)
-				);
-			}
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getValidationTextRange()
+				)
+			);
 		}
 	}
 
@@ -1418,10 +1329,6 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 		protected String getMappingName() {
 			return AbstractOrmElementCollectionMapping2_0.this.getName();
-		}
-
-		protected boolean mappingIsVirtual() {
-			return AbstractOrmElementCollectionMapping2_0.this.isVirtual();
 		}
 
 		protected OrmCollectionTable2_0 getCollectionTable() {
@@ -1518,12 +1425,6 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		}
 
 		public Relationship resolveOverriddenRelationship(String attributeName) {
-			if (this.mappingIsVirtual() && ! this.getTypeMapping().isMetadataComplete()) {
-				JavaAssociationOverride override = AbstractOrmElementCollectionMapping2_0.this.getSpecifiedJavaValueAssociationOverrideNamed(attributeName);
-				if (override != null) {
-					return override.getRelationship();
-				}
-			}
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 
@@ -1569,12 +1470,6 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		}
 
 		public Column resolveOverriddenColumn(String attributeName) {
-			if (this.mappingIsVirtual() && ! this.getTypeMapping().isMetadataComplete()) {
-				JavaAttributeOverride override = AbstractOrmElementCollectionMapping2_0.this.getSpecifiedJavaValueAttributeOverrideNamed(attributeName);
-				if (override != null) {
-					return override.getColumn();
-				}
-			}
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
@@ -1608,12 +1503,6 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		}
 
 		public Column resolveOverriddenColumn(String attributeName) {
-			if (this.mappingIsVirtual() && ! this.getTypeMapping().isMetadataComplete()) {
-				JavaAttributeOverride override = AbstractOrmElementCollectionMapping2_0.this.getSpecifiedJavaMapKeyAttributeOverrideNamed(attributeName);
-				if (override != null) {
-					return override.getColumn();
-				}
-			}
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 

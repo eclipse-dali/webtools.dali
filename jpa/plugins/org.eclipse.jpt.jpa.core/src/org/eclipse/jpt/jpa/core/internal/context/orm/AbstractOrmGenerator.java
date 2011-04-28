@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -156,13 +156,12 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 	// ********** text ranges **********
 
 	public TextRange getValidationTextRange() {
-		TextRange validationTextRange = this.xmlGenerator.getValidationTextRange();
-		return (validationTextRange != null) ? validationTextRange : this.getParent().getValidationTextRange();
+		TextRange textRange = this.xmlGenerator.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
 	public TextRange getNameTextRange() {
-		TextRange nameTextRange = this.xmlGenerator.getNameTextRange();
-		return (nameTextRange != null) ? nameTextRange : this.getValidationTextRange();
+		return this.getValidationTextRange(this.xmlGenerator.getNameTextRange());
 	}
 
 
@@ -199,13 +198,13 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 
 	// ********** misc **********
 
-	public X getXmlGenerator() {
-		return this.xmlGenerator;
-	}
-
 	@Override
 	public XmlContextNode getParent() {
 		return (XmlContextNode) super.getParent();
+	}
+
+	public X getXmlGenerator() {
+		return this.xmlGenerator;
 	}
 
 	public boolean overrides(Generator other) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 public interface JavaPersistentAttribute
 	extends PersistentAttribute, JavaJpaContextNode
 {
-	// ********** mapping **********
+	// ********** covariant overrides **********
 
 	JavaAttributeMapping getMapping();
 
@@ -41,12 +41,13 @@ public interface JavaPersistentAttribute
 	// ********** misc **********
 
 	/**
-	 * Return the "resource" persistent attribute.
+	 * Return the corresponding <em>resource</em> persistent attribute.
 	 */
 	JavaResourcePersistentAttribute getResourcePersistentAttribute();
 
 	/**
-	 * Return whether the attribute contains the given offset into the text file.
+	 * Return whether the attribute contains the given offset into its Java
+	 * source code file.
 	 */
 	boolean contains(int offset, CompilationUnit astRoot);
 
@@ -67,12 +68,14 @@ public interface JavaPersistentAttribute
 	boolean isProperty();
 
 	/**
-	 * Return whether the attribute is 'public', which is problematic for fields.
+	 * Return whether the attribute is <code>public</code>,
+	 * which is problematic for fields.
 	 */
 	boolean isPublic();
 
 	/**
-	 * Return whether the attribute is 'final', which is problematic.
+	 * Return whether the attribute is <code>final</code>,
+	 * which is problematic.
 	 */
 	boolean isFinal();
 

@@ -17,7 +17,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -55,7 +54,7 @@ public class NullOrmJoinTableRelationshipStrategy
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return null;
+		return this.getRelationship().getValidationTextRange();
 	}
 
 	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
@@ -63,10 +62,6 @@ public class NullOrmJoinTableRelationshipStrategy
 	}
 
 	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		throw new UnsupportedOperationException();
-	}
-
-	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
 		throw new UnsupportedOperationException();
 	}
 

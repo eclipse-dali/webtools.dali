@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -43,9 +45,16 @@ public abstract class AbstractJavaConverter
 		return this.getResourcePersistentAttribute().getAnnotation(this.getAnnotationName());
 	}
 
+	protected abstract String getAnnotationName();
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.getAnnotationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getAttributeMapping().getValidationTextRange(astRoot);
+	}
+
+	protected abstract TextRange getAnnotationTextRange(CompilationUnit astRoot);
+
 	public void dispose() {
 		// NOP
 	}
-
-	protected abstract String getAnnotationName();
 }

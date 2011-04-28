@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -75,7 +75,7 @@ public class GenericPersistenceUnitProperty
 		String old = this.name;
 		this.name = name;
 		if (this.firePropertyChanged(NAME_PROPERTY, old, name)) {
-			this.getParent().propertyNameChanged(old, name, this.value);
+			this.getPersistenceUnit().propertyNameChanged(old, name, this.value);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class GenericPersistenceUnitProperty
 		String old = this.value;
 		this.value = value;
 		if (this.firePropertyChanged(VALUE_PROPERTY, old, value)) {
-			this.getParent().propertyValueChanged(this.name, value);
+			this.getPersistenceUnit().propertyValueChanged(this.name, value);
 		}
 	}
 
@@ -115,7 +115,8 @@ public class GenericPersistenceUnitProperty
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return this.xmlProperty.getValidationTextRange();
+		TextRange textRange = this.xmlProperty.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getPersistenceUnit().getValidationTextRange();
 	}
 
 

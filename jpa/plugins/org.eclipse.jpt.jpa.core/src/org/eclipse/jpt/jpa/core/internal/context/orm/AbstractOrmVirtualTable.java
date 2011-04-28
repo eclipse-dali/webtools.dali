@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,10 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualTable;
+import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -43,7 +43,7 @@ public abstract class AbstractOrmVirtualTable<T extends Table>
 	protected final UniqueConstraintContainerAdapter uniqueConstraintContainerAdapter = new UniqueConstraintContainerAdapter();
 
 
-	protected AbstractOrmVirtualTable(JpaContextNode parent) {
+	protected AbstractOrmVirtualTable(XmlContextNode parent) {
 		super(parent);
 	}
 
@@ -297,11 +297,16 @@ public abstract class AbstractOrmVirtualTable<T extends Table>
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return null;
+		return this.getParent().getValidationTextRange();
 	}
 
 
 	// ********** misc **********
+
+	@Override
+	public XmlContextNode getParent() {
+		return (XmlContextNode) super.getParent();
+	}
 
 	@Override
 	public void toString(StringBuilder sb) {

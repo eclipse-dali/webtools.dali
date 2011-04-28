@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -85,11 +85,21 @@ public class GenericOrmQueryHint
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return this.xmlQueryHint.getValidationTextRange();
+		TextRange textRange = this.xmlQueryHint.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getQuery().getValidationTextRange();
 	}
 
 
-	// ********** miscelleneous **********
+	// ********** misc **********
+
+	@Override
+	public OrmQuery getParent() {
+		return (OrmQuery) super.getParent();
+	}
+
+	protected OrmQuery getQuery() {
+		return this.getParent();
+	}
 
 	public XmlQueryHint getXmlQueryHint() {
 		return this.xmlQueryHint;
@@ -99,5 +109,4 @@ public class GenericOrmQueryHint
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-
 }

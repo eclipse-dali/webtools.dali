@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -204,6 +204,11 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	// ********** misc **********
 
+	@Override
+	public JavaJpaContextNode getParent() {
+		return (JavaJpaContextNode) super.getParent();
+	}
+
 	public A getQueryAnnotation() {
 		return this.queryAnnotation;
 	}
@@ -217,11 +222,12 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.queryAnnotation.getTextRange(astRoot);
+		TextRange textRange = this.queryAnnotation.getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.queryAnnotation.getNameTextRange(astRoot);
+		return this.getValidationTextRange(this.queryAnnotation.getNameTextRange(astRoot), astRoot);
 	}
 
 	@Override

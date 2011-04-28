@@ -280,7 +280,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	}
 
 	public TextRange getValidationTextRange() {
-		return null;
+		return this.getRelationship().getValidationTextRange();
 	}
 
 	protected String getAttributeName() {

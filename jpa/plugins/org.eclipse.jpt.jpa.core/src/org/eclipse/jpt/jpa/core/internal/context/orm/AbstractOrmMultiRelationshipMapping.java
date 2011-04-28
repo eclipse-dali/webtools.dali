@@ -719,10 +719,6 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getName();
 		}
 
-		protected boolean mappingIsVirtual() {
-			return AbstractOrmMultiRelationshipMapping.this.isVirtual();
-		}
-
 		protected OrmPersistentAttribute getPersistentAttribute() {
 			return AbstractOrmMultiRelationshipMapping.this.getPersistentAttribute();
 		}
@@ -785,12 +781,6 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		}
 
 		public Column resolveOverriddenColumn(String attributeName) {
-			if (this.mappingIsVirtual() && ! this.getTypeMapping().isMetadataComplete()) {
-				JavaAttributeOverride javaOverride = this.getSpecifiedJavaAttributeOverrideNamed(attributeName);
-				if (javaOverride != null) {
-					return javaOverride.getColumn();
-				}
-			}
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 

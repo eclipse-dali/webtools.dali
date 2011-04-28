@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -452,18 +452,18 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 
-		// [JPA 2.0] if the column is specified, or if the id is not mapped by a relationship,
-		// then the column is validated.
-		// (In JPA 1.0, the column will always be validated, since the id is never mapped by a
-		//  relationship)
-		if (this.isColumnSpecified() || ! this.isMappedByRelationship()) {
+		// JPA 2.0: If the column is specified or if the ID is not mapped by a relationship,
+		// the column is validated.
+		// JPA 1.0: The column is always be validated, since the ID is never mapped by a
+		// relationship.
+		if (this.isColumnSpecified() || ! this.mappedByRelationship) {
 			this.column.validate(messages, reporter);
 		}
 
-		// [JPA 2.0] if the column is specified and the id is mapped by a relationship,
-		// then that is an error
-		// (In JPA 1.0, this will never be the case, since the id is never mapped by a relationship)
-		if (this.isColumnSpecified() && this.isMappedByRelationship()) {
+		// JPA 2.0: If the column is specified and the ID is mapped by a relationship,
+		// we have an error.
+		// JPA 1.0: The ID cannot be mapped by a relationship.
+		if (this.isColumnSpecified() && this.mappedByRelationship) {
 			messages.add(this.buildMappedByRelationshipAndColumnSpecifiedMessage());
 		}
 
@@ -497,9 +497,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	}
 
 	protected String getAttributeDescriptionTemplate() {
-		return this.getPersistentAttribute().isVirtual() ?
-				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
-				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
+		return JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
 	}
 
 	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {

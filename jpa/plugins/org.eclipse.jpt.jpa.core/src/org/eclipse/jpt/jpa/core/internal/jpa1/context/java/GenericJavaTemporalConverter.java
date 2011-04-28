@@ -99,10 +99,10 @@ public class GenericJavaTemporalConverter
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.validateAttributeTypeWithTemporal(messages, reporter, astRoot);
+		this.validateAttributeTypeWithTemporal(messages, astRoot);
 	}
 
-	protected void validateAttributeTypeWithTemporal(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateAttributeTypeWithTemporal(List<IMessage> messages, CompilationUnit astRoot) {
 		if (this.getAttributeMapping().getKey() == MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY) {
 			String typeName = ((AbstractJavaElementCollectionMapping2_0) this.getAttributeMapping()).getFullyQualifiedTargetClass();
 			if (!ArrayTools.contains(TEMPORAL_MAPPING_SUPPORTED_TYPES, typeName)) {
@@ -133,7 +133,8 @@ public class GenericJavaTemporalConverter
 		}
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	@Override
+	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
 		return this.temporalAnnotation.getTextRange(astRoot);
 	}
 }

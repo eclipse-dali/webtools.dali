@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
  * <li>join column
  * </ul>
  * <strong>NB:</strong> all state is sync'ed/updated in {@link #update()}
- * because <em>all</em> of its derived from the context model (i.e. none of it
+ * because <em>all</em> of it is derived from the context model (i.e. none of it
  * is derived from the resource model).
  */
 public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColumn.Owner, C extends NamedColumn>
@@ -119,14 +119,15 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColu
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return null;  // not sure this column is validated...
+		return this.getParent().getValidationTextRange(astRoot);
 	}
 
 
 	// ********** misc **********
 
-	public boolean isVirtual() {
-		return true;
+	@Override
+	public JavaJpaContextNode getParent() {
+		return (JavaJpaContextNode) super.getParent();
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -260,11 +260,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected IMessage buildMessage(String msgID, String[] parms) {
-		PersistentAttribute attribute = this.getPersistentAttribute();
-		String attributeDescription = attribute.isVirtual() ?
-				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
-				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
-		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
+		String attributeDescription = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, this.getPersistentAttribute().getName());
 		parms = ArrayTools.add(parms, 0, attributeDescription);
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,

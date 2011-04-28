@@ -295,6 +295,10 @@ public abstract class AbstractPersistenceUnit
 		return (Persistence) super.getParent();
 	}
 
+	protected Persistence getPersistence() {
+		return this.getParent();
+	}
+
 	@Override
 	public PersistenceUnit getPersistenceUnit() {
 		return this;
@@ -1709,7 +1713,7 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected void validateProperties(List<IMessage> messages, IReporter reporter) {
+	protected void validateProperties(@SuppressWarnings("unused") List<IMessage> messages, @SuppressWarnings("unused") IReporter reporter) {
 		// do nothing by default
 	}
 
@@ -1718,7 +1722,8 @@ public abstract class AbstractPersistenceUnit
 	}
 	
 	public TextRange getValidationTextRange() {
-		return this.xmlPersistenceUnit.getValidationTextRange();
+		TextRange textRange = this.xmlPersistenceUnit.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getPersistence().getValidationTextRange();
 	}
 
 	// ********** refactoring **********

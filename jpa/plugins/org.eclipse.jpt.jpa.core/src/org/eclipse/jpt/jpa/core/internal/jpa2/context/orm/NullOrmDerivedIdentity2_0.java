@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -85,8 +85,13 @@ public class NullOrmDerivedIdentity2_0
 
 	// ********** misc **********
 
+	@Override
+	public OrmSingleRelationshipMapping2_0 getParent() {
+		return (OrmSingleRelationshipMapping2_0) super.getParent();
+	}
+
 	public OrmSingleRelationshipMapping2_0 getMapping() {
-		return (OrmSingleRelationshipMapping2_0) this.getParent();
+		return this.getParent();
 	}
 
 	public void initializeFrom(OrmDerivedIdentity2_0 oldDerivedIdentity) {
@@ -94,6 +99,6 @@ public class NullOrmDerivedIdentity2_0
 	}
 
 	public TextRange getValidationTextRange() {
-		return null;
+		return this.getMapping().getValidationTextRange();
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -36,6 +37,8 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * <em>virtual</em> <code>orm.xml</code> persistent attribute
@@ -50,22 +53,24 @@ public class VirtualOrmPersistentAttribute
 	 * This is an "annotated" Java persistent attribute whose state is
 	 * determined by its annotations (just like a "normal" Java attribute).
 	 * Its parent is an <code>orm.xml</code> persistent type. This is necessary
-	 * because the Java attribute's context is the <code>orm.xml</code> type
-	 * (e.g. the Java attribute's default table is the table set in the
+	 * because the Java attribute's <em>context</em> is the <code>orm.xml</code>
+	 * type (e.g. the Java attribute's default table is the table set in the
 	 * <code>orm.xml</code> type, not the Java type).
+	 * The {@link #originalJavaAttributeListener} keeps this attribute in sync
+	 * with any changes made via the Java context model.
 	 */
 	protected final JavaPersistentAttribute annotatedJavaAttribute;
 
 	/**
 	 * This is the "original" Java persistent attribute corresponding to
-	 * {@link #javaResourceAttribute} from the Java context
-	 * model. If it is found (it can be <code>null</code> if the
-	 * <code>orm.xml</code> access type differs from the Java's), we need to
-	 * listen to it for changes so we can
-	 * refresh our "local" Java attributes (since the Java resource model does
-	 * not fire change events, and trigger a <em>sync</em>, when it is modified
-	 * by the Java context model - if there is no Java context attribute, the
-	 * Java resource model can only be modified via source code editing).
+	 * {@link #javaResourceAttribute} from the Java context model.
+	 * If it is found (it can be <code>null</code> if the <code>orm.xml</code>
+	 * access type differs from the Java access type), we need to listen to it
+	 * for changes so we can refresh our "local" Java attributes (since the
+	 * Java resource model does not fire change events, and trigger a
+	 * <em>sync</em>, when it is modified by the Java context model - if there
+	 * is no Java context attribute, the Java resource model can only be
+	 * modified via source code editing and we will <em>sync</em> appropriately).
 	 */
 	protected JavaPersistentAttribute originalJavaAttribute;
 	protected StateChangeListener originalJavaAttributeListener;
@@ -76,6 +81,8 @@ public class VirtualOrmPersistentAttribute
 	 * has been tagged <em>metadata complete</em>). Like
 	 * {@link #annotatedJavaAttribute}, its parent is an
 	 * <code>orm.xml</code> persistent type.
+	 * The {@link #originalJavaAttributeListener} keeps this attribute in sync
+	 * with any changes made via the Java context model.
 	 */
 	protected JavaPersistentAttribute unannotatedJavaAttribute;
 
@@ -257,7 +264,7 @@ public class VirtualOrmPersistentAttribute
 	}
 
 
-	// ********** specified/virtual **********
+	// ********** specified/default **********
 
 	public boolean isVirtual() {
 		return true;
@@ -305,6 +312,13 @@ public class VirtualOrmPersistentAttribute
 
 
 	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		// the Java attribute should not need an AST for validation from here
+		this.getJavaPersistentAttribute().validate(messages, reporter, null);
+	}
 
 	public TextRange getValidationTextRange() {
 		return this.getOwningTypeMapping().getAttributesTextRange();
@@ -466,10 +480,12 @@ public class VirtualOrmPersistentAttribute
 		}
 
 		public TextRange getTextRange(CompilationUnit astRoot) {
+			// should never be null
 			return this.member.getTextRange(astRoot);
 		}
 
 		public TextRange getNameTextRange(CompilationUnit astRoot) {
+			// should never be null
 			return this.member.getNameTextRange(astRoot);
 		}
 

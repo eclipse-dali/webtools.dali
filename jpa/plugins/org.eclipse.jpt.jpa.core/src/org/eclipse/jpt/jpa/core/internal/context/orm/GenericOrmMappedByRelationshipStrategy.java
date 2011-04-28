@@ -153,11 +153,6 @@ public class GenericOrmMappedByRelationshipStrategy
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange() {
-		TextRange mappedByTextRange = this.getXmlMappedByMapping().getMappedByTextRange();
-		return (mappedByTextRange != null) ? mappedByTextRange : this.getRelationship().getValidationTextRange();
-	}
-
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
@@ -207,10 +202,7 @@ public class GenericOrmMappedByRelationshipStrategy
 
 	protected IMessage buildMessage(String msgID, String[] parms) {
 		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
-		String attributeDescription = attribute.isVirtual() ?
-				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
-				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
-		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
+		String attributeDescription = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
 		parms = ArrayTools.add(parms, 0, attributeDescription);
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -219,5 +211,10 @@ public class GenericOrmMappedByRelationshipStrategy
 				this,
 				this.getValidationTextRange()
 			);
+	}
+
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getXmlMappedByMapping().getMappedByTextRange();
+		return (textRange != null) ? textRange : this.getRelationship().getValidationTextRange();
 	}
 }

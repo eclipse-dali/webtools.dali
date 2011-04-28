@@ -1327,8 +1327,8 @@ public abstract class AbstractJavaEntity
 		this.queryContainer.validate(messages, reporter, astRoot);
 		this.attributeOverrideContainer.validate(messages, reporter, astRoot);
 		this.associationOverrideContainer.validate(messages, reporter, astRoot);
-		this.validateEntityName(messages, reporter, astRoot);
-		this.validateDuplicateEntityNames(messages, reporter, astRoot);
+		this.validateEntityName(messages, astRoot);
+		this.validateDuplicateEntityNames(messages, astRoot);
 		this.idClassReference.validate(messages, reporter, astRoot);
 	}
 
@@ -1337,8 +1337,7 @@ public abstract class AbstractJavaEntity
 		return super.validatesAgainstDatabase() && ! this.isAbstractTablePerClass();
 	}
 
-	protected void validateEntityName(List<IMessage> messages,
-			IReporter reporter, CompilationUnit astRoot) {
+	protected void validateEntityName(List<IMessage> messages, CompilationUnit astRoot) {
 		if (StringTools.stringIsEmpty(this.getName())){
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -1352,8 +1351,7 @@ public abstract class AbstractJavaEntity
 		}
 	}
 
-	protected void validateDuplicateEntityNames(List<IMessage> messages,
-			IReporter reporter, CompilationUnit astRoot) {
+	protected void validateDuplicateEntityNames(List<IMessage> messages, CompilationUnit astRoot) {
 		HashBag<String>  javaEntityNamesExclOverridden = new HashBag<String>();
 		CollectionTools.addAll(javaEntityNamesExclOverridden, this.getPersistenceUnit().javaEntityNamesExclOverridden());
 		HashBag<String>  ormEntityNames = new HashBag<String>();
@@ -1406,8 +1404,8 @@ public abstract class AbstractJavaEntity
 			}
 			return;
 		}
-		if (getDataSource().connectionProfileIsActive() && this.isSingleTableDescendant()) {
-			if (this.table.isSpecifiedInResource() && !tableEqualsRootTable()) {
+		if (this.isSingleTableDescendant() && this.getDataSource().connectionProfileIsActive()) {
+			if (this.specifiedTableDoesNotMatchRootTable()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -1422,11 +1420,14 @@ public abstract class AbstractJavaEntity
 		}
 		this.table.validate(messages, reporter, astRoot);
 	}
-	
-	private boolean tableEqualsRootTable() {
-		org.eclipse.jpt.jpa.db.Table table = this.table.getDbTable();
-		org.eclipse.jpt.jpa.db.Table parentTable = this.getRootEntity().getTable().getDbTable();
-		return table == parentTable;
+
+	/**
+	 * Return whether the entity specifies a table and it is a different table
+	 * than the root entity's table.
+	 */
+	protected boolean specifiedTableDoesNotMatchRootTable() {
+		return this.table.isSpecifiedInResource() &&
+			(this.table.getDbTable() != this.getRootEntity().getTable().getDbTable());
 	}
 
 	protected void validateInheritance(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -1524,15 +1525,15 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected TextRange getDiscriminatorValueTextRange(CompilationUnit astRoot) {
-		return this.getDiscriminatorValueAnnotation().getTextRange(astRoot);
+		return this.getValidationTextRange(this.getDiscriminatorValueAnnotation().getTextRange(astRoot), astRoot);
 	}
 
 	protected TextRange getDiscriminatorColumnTextRange(CompilationUnit astRoot) {
-		return this.discriminatorColumn.getValidationTextRange(astRoot);
+		return this.getValidationTextRange(this.discriminatorColumn.getValidationTextRange(astRoot), astRoot);
 	}
 
 	protected TextRange getInheritanceStrategyTextRange(CompilationUnit astRoot) {
-		return this.getInheritanceAnnotation().getStrategyTextRange(astRoot);
+		return this.getValidationTextRange(this.getInheritanceAnnotation().getStrategyTextRange(astRoot), astRoot);
 	}
 
 

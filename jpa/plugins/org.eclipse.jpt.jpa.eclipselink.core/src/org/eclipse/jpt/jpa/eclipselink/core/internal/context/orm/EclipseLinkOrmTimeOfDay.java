@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -123,6 +123,15 @@ public class EclipseLinkOrmTimeOfDay
 
 	// ********** misc **********
 
+	@Override
+	public OrmEclipseLinkCaching getParent() {
+		return (OrmEclipseLinkCaching) super.getParent();
+	}
+
+	protected OrmEclipseLinkCaching getCaching() {
+		return this.getParent();
+	}
+
 	public XmlTimeOfDay getXmlTimeOfDay() {
 		return this.xmlTimeOfDay;
 	}
@@ -131,6 +140,7 @@ public class EclipseLinkOrmTimeOfDay
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return this.xmlTimeOfDay.getValidationTextRange();
+		TextRange textRange = this.xmlTimeOfDay.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getCaching().getValidationTextRange();
 	}
 }

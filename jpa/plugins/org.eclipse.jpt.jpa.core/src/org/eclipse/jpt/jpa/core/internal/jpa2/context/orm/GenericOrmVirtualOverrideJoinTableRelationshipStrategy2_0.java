@@ -115,6 +115,6 @@ public class GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return null;
+		return this.getRelationship().getValidationTextRange();
 	}
 }

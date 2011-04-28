@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
@@ -48,12 +49,12 @@ public abstract class AbstractJavaJpaContextNode
 	/**
 	 * This method is called if the database is connected, allowing us to
 	 * get candidates from the various database tables etc.
-	 * This method should NOT be cascaded to "child" objects; it should
+	 * This method should <em>not</em> be cascaded to "child" objects; it should
 	 * only return candidates for the current object. The cascading is
-	 * handled by #javaCompletionProposals(int, Filter, CompilationUnit).
+	 * handled by {@link #javaCompletionProposals(int, Filter, CompilationUnit)}.
 	 */
 	@SuppressWarnings("unused")
-	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+	protected Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		return null;
 	}
 	
@@ -69,4 +70,11 @@ public abstract class AbstractJavaJpaContextNode
 		}
 	}
 
+	/**
+	 * Return the specified text range if it is not <code>null</code>; if it is
+	 * <code>null</code>, return the node's validation text range.
+	 */
+	protected TextRange getValidationTextRange(TextRange textRange, CompilationUnit astRoot) {
+		return (textRange != null) ? textRange : this.getValidationTextRange(astRoot);
+	}
 }

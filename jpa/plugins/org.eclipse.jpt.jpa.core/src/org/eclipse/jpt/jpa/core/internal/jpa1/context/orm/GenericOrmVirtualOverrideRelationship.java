@@ -164,6 +164,6 @@ public class GenericOrmVirtualOverrideRelationship
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return null;
+		return this.getAssociationOverride().getValidationTextRange();
 	}
 }

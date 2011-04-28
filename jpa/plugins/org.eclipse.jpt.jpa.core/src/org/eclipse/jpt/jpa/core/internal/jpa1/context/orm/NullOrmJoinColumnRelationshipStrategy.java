@@ -96,7 +96,7 @@ public class NullOrmJoinColumnRelationshipStrategy
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return null;
+		return this.getRelationship().getValidationTextRange();
 	}
 
 	public String getColumnTableNotValidDescription() {

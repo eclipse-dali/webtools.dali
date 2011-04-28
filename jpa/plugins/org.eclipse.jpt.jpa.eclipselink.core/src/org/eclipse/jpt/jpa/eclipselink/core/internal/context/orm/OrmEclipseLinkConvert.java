@@ -300,7 +300,8 @@ public class OrmEclipseLinkConvert
 		);	
 	}
 	
-	public TextRange getValidationTextRange() {
+	@Override
+	protected TextRange getXmlValidationTextRange() {
 		return this.getXmlConvertibleMapping().getConvertTextRange();
 	}
 

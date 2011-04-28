@@ -57,6 +57,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	extends AbstractOrmXmlContextNode
 	implements OrmTypeMapping
 {
+	// never null
 	protected final X xmlTypeMapping;
 
 	protected String class_;
@@ -393,15 +394,15 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public TextRange getClassTextRange() {
-		return this.xmlTypeMapping.getClassTextRange();
+		return this.getValidationTextRange(this.xmlTypeMapping.getClassTextRange());
 	}
 
 	public TextRange getAttributesTextRange() {
-		return this.xmlTypeMapping.getAttributesTextRange();
+		return this.getValidationTextRange(this.xmlTypeMapping.getAttributesTextRange());
 	}
 
 	public TextRange getNameTextRange() {
-		return this.xmlTypeMapping.getNameTextRange();
+		return this.getValidationTextRange(this.xmlTypeMapping.getNameTextRange());
 	}
 	
 	public boolean containsOffset(int textOffset) {
@@ -492,6 +493,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.xmlTypeMapping.getValidationTextRange();
+		TextRange textRange = this.xmlTypeMapping.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getPersistentType().getValidationTextRange();
 	}
 }

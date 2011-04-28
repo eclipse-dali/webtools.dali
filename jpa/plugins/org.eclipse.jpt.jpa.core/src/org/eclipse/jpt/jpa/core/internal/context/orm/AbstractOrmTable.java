@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -465,7 +465,8 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getTextRange(this.getXmlTableValidationTextRange());
+		TextRange textRange = this.getXmlTableValidationTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
 	protected TextRange getXmlTableValidationTextRange() {
@@ -474,7 +475,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	}
 
 	public TextRange getNameTextRange() {
-		return this.getTextRange(this.getXmlTableNameTextRange());
+		return this.getValidationTextRange(this.getXmlTableNameTextRange());
 	}
 
 	protected TextRange getXmlTableNameTextRange() {
@@ -483,7 +484,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	}
 
 	public TextRange getSchemaTextRange() {
-		return this.getTextRange(this.getXmlTableSchemaTextRange());
+		return this.getValidationTextRange(this.getXmlTableSchemaTextRange());
 	}
 
 	protected TextRange getXmlTableSchemaTextRange() {
@@ -492,16 +493,12 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	}
 
 	public TextRange getCatalogTextRange() {
-		return this.getTextRange(this.getXmlTableCatalogTextRange());
+		return this.getValidationTextRange(this.getXmlTableCatalogTextRange());
 	}
 
 	protected TextRange getXmlTableCatalogTextRange() {
 		X xmlTable = this.getXmlTable();
 		return (xmlTable == null) ? null : xmlTable.getCatalogTextRange();
-	}
-
-	protected TextRange getTextRange(TextRange textRange) {
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
 

@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -34,6 +36,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.orm.VirtualOrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -528,31 +531,20 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public String getPrimaryKeyColumnName() {
-		return this.getMapping().getPrimaryKeyColumnName();
+		return this.mapping.getPrimaryKeyColumnName();
 	}
 
 	public String getTypeName() {
 		return this.resourcePersistentAttribute.getTypeName();
 	}
 
-	/**
-	 * Java attributes always correspond to attributes in the source code.
-	 */
-	public boolean isVirtual() {
-		return false;
-	}
-
 	public boolean contains(int offset, CompilationUnit astRoot) {
-		TextRange fullTextRange = this.getFullTextRange(astRoot);
+		TextRange fullTextRange = this.resourcePersistentAttribute.getTextRange(astRoot);
 		// 'fullTextRange' will be null if the attribute no longer exists in the java;
 		// the context model can be out of synch with the resource model
 		// when a selection event occurs before the context model has a
 		// chance to synch with the resource model via the update thread
 		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
-	}
-
-	protected TextRange getFullTextRange(CompilationUnit astRoot) {
-		return this.resourcePersistentAttribute.getTextRange(astRoot);
 	}
 
 	public Embeddable getEmbeddable() {
@@ -585,16 +577,16 @@ public abstract class AbstractJavaPersistentAttribute
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getSelectionTextRange(astRoot);
+		return this.isVirtual() ?
+				this.getOwningPersistentType().getValidationTextRange() :
+				this.getSelectionTextRange(astRoot);
 	}
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-
 		this.validateAttribute(messages, reporter, astRoot);
-
-		this.getMapping().validate(messages, reporter, astRoot);
+		this.mapping.validate(messages, reporter, astRoot);
 	}
 
 	protected void validateAttribute(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -607,6 +599,24 @@ public abstract class AbstractJavaPersistentAttribute
 		return new JavaPersistentAttributeTextRangeResolver(this, astRoot);
 	}
 
+	/**
+	 * If the attribute's owning type is an <code>orm.xml</code> persistent
+	 * type, the attribute must be one of the type's default attributes.
+	 * (Actually, the Java attribute is held by a <em>virtual</em>
+	 * <code>orm.xml</code> attribute
+	 * (see {@link VirtualOrmPersistentAttribute})
+	 * that is held by the <code>orm.xml</code> type.
+	 * The <em>virtual</em> attribute returns the Java attribute's mapping
+	 * as its own.)
+	 */
+	public boolean isVirtual() {
+		return this.declaringPersistentTypeIs(JptJpaCorePlugin.ORM_XML_CONTENT_TYPE);
+	}
+
+	protected boolean declaringPersistentTypeIs(IContentType contentType) {
+		return this.getOwningPersistentType().getResourceType().getContentType().equals(contentType);
+	}
+
 
 	// ********** Java completion proposals **********
 
@@ -616,7 +626,7 @@ public abstract class AbstractJavaPersistentAttribute
 		if (result != null) {
 			return result;
 		}
-		return this.getMapping().javaCompletionProposals(pos, filter, astRoot);
+		return this.mapping.javaCompletionProposals(pos, filter, astRoot);
 	}
 
 
@@ -627,7 +637,7 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public String getMetamodelContainerFieldMapKeyTypeName() {
-		return this.getJpaContainerDefinition().getMetamodelContainerFieldMapKeyTypeName((CollectionMapping) this.getMapping());
+		return this.getJpaContainerDefinition().getMetamodelContainerFieldMapKeyTypeName((CollectionMapping) this.mapping);
 	}
 
 	public String getMetamodelTypeName() {

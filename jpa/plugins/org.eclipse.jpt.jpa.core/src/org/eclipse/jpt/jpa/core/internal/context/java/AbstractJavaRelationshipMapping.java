@@ -313,35 +313,51 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	protected void validateTargetEntity(List<IMessage> messages, CompilationUnit astRoot) {
 		if (this.getTargetEntity() == null) {
+			String msg = this.getPersistentAttribute().isVirtual() ?
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED :
+						JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED;
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED,
+					msg,
 					new String[] {this.getName()},
 					this,
 					this.getValidationTextRange(astRoot)
 				)
 			);
+			return;
 		}
-		else if (this.getResolvedTargetEntity() == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-					new String[] {this.getTargetEntity(), this.getName()},
-					this,
-					this.getTargetEntityTextRange(astRoot)
-				)
-			);
+		if (this.getResolvedTargetEntity() == null) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
+						new String[] {this.getName(), this.getTargetEntity()},
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			} else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
+						new String[] {this.getTargetEntity(), this.getName()},
+						this,
+						this.getTargetEntityTextRange(astRoot)
+					)
+				);
+			}
 		}
 	}
 
 	protected TextRange getTargetEntityTextRange(CompilationUnit astRoot) {
-		A annotation = this.getMappingAnnotation();
-		return (annotation == null) ? null : this.getTextRange(annotation.getTargetEntityTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getAnnotationTargetEntityTextRange(astRoot), astRoot);
 	}
 
-	protected TextRange getTextRange(TextRange textRange, CompilationUnit astRoot) {
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	protected TextRange getAnnotationTargetEntityTextRange(CompilationUnit astRoot) {
+		A annotation = this.getMappingAnnotation();
+		return (annotation == null) ? null : annotation.getTargetEntityTextRange(astRoot);
 	}
 }

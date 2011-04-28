@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -367,7 +367,15 @@ public class GenericJavaQueryContainer
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.owner.getResourceAnnotatedElement().getTextRange(astRoot);
+		TextRange textRange = this.owner.getResourceAnnotatedElement().getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
+
+	// ********** misc **********
+
+	@Override
+	public JavaJpaContextNode getParent() {
+		return (JavaJpaContextNode) super.getParent();
+	}
 }

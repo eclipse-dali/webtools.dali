@@ -1159,51 +1159,67 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected void validateTargetClass(List<IMessage> messages, CompilationUnit astRoot) {
-		String targetClass = getFullyQualifiedTargetClass();
-		IJavaProject javaProject = getJpaProject().getJavaProject();
+		String targetClass = this.getFullyQualifiedTargetClass();
 		if (StringTools.stringIsEmpty(targetClass)) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
-					EMPTY_STRING_ARRAY,
-					this,
-					this.getValidationTextRange(astRoot)
-				)
-			);
-		} else if(targetClassExists(javaProject)) {
-			if (!JDTTools.typeIsBasic(javaProject, targetClass) && getResolvedTargetEmbeddable() == null) {
+			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-						new String[] {targetClass}, 
-						this, 
-						this.getTargetClassTextRange(astRoot)
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
+						new String[] {this.getName()},
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			} else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
+						EMPTY_STRING_ARRAY,
+						this,
+						this.getValidationTextRange(astRoot)
 					)
 				);
 			}
+			return;
 		}
-	}
 
-	private boolean targetClassExists(IJavaProject javaProject) {
-		String targetClass = getFullyQualifiedTargetClass();
-		if (!StringTools.stringIsEmpty(targetClass)) 
-		{
-			if (JDTTools.findType(javaProject, targetClass) != null) {
-				return true;
+		IJavaProject javaProject = this.getJpaProject().getJavaProject();
+		if (JDTTools.findType(javaProject, targetClass) != null) {
+			if ( ! JDTTools.typeIsBasic(javaProject, targetClass) && (this.getResolvedTargetEmbeddable() == null)) {
+				if (this.getPersistentAttribute().isVirtual()) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
+							new String[] {this.getName(), this.getTargetClass()},
+							this,
+							this.getTargetClassTextRange(astRoot)
+						)
+					);
+				} else {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
+							new String[] {this.getTargetClass(), this.getName()},
+							this,
+							this.getTargetClassTextRange(astRoot)
+						)
+					);
+				}
 			}
 		}
-		return false;
 	}
 
 	protected TextRange getTargetClassTextRange(CompilationUnit astRoot) {
-		ElementCollection2_0Annotation annotation = this.getMappingAnnotation();
-		return (annotation == null) ? null : this.getTextRange(annotation.getTargetClassTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getAnnotationTargetClassTextRange(astRoot), astRoot);
 	}
 
-	protected TextRange getTextRange(TextRange textRange, CompilationUnit astRoot) {
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	protected TextRange getAnnotationTargetClassTextRange(CompilationUnit astRoot) {
+		ElementCollection2_0Annotation annotation = this.getMappingAnnotation();
+		return (annotation == null) ? null : annotation.getTargetClassTextRange(astRoot);
 	}
 
 	protected void validateMapKeyClass(List<IMessage> messages, CompilationUnit astRoot) {
@@ -1214,15 +1230,27 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected void validateMapKeyClass_(List<IMessage> messages, CompilationUnit astRoot) {
 		if (this.getMapKeyClass() == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
-					EMPTY_STRING_ARRAY,
-					this,
-					this.getValidationTextRange(astRoot)
-				)
-			);
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
+						new String[] {this.getName()},
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			} else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
+						EMPTY_STRING_ARRAY,
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			}
 		}
 	}
 
@@ -1409,18 +1437,6 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) columnOwner, (JoinColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
-
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
-		}
-
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
-		}
-
-		public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
-		}
 	}
 
 
@@ -1443,7 +1459,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
 			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
-		
+
 		@Override
 		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new AttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new CollectionTableTableDescriptionProvider());
@@ -1476,19 +1492,16 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) columnOwner, (JoinColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
 
-		@Override
 		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a join table is not supported"); //$NON-NLS-1$
 		}
 
-		@Override
 		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a join table is not supported"); //$NON-NLS-1$
 		}
 
-		@Override
 		public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a join table is not supported"); //$NON-NLS-1$
 		}
 	}
 
@@ -1535,7 +1548,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
 			return new MapKeyAttributeOverrideValidator((AttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
-		
+
 		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new MapKeyAttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}

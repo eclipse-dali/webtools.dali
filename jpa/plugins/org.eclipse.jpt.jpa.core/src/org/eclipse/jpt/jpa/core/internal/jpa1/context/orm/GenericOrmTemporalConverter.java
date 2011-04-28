@@ -94,10 +94,10 @@ public class GenericOrmTemporalConverter
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateAttributeTypeWithTemporal(messages, reporter);
+		this.validateAttributeTypeWithTemporal(messages);
 	}
 	
-	protected void validateAttributeTypeWithTemporal(List<IMessage> messages, IReporter reporter) {
+	protected void validateAttributeTypeWithTemporal(List<IMessage> messages) {
 		if (this.getAttributeMapping().getKey() == MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY) {
 			@SuppressWarnings("rawtypes")
 			String typeName = ((AbstractOrmElementCollectionMapping2_0) this.getAttributeMapping()).getTargetClass();
@@ -129,7 +129,8 @@ public class GenericOrmTemporalConverter
 		}
 	}
 
-	public TextRange getValidationTextRange() {
+	@Override
+	protected TextRange getXmlValidationTextRange() {
 		return this.getXmlConvertibleMapping().getTemporalTextRange();
 	}
 

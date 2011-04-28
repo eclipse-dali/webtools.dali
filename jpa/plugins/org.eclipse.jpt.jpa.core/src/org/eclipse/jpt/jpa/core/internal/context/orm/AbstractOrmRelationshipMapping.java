@@ -356,50 +356,32 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	protected void validateTargetEntity(List<IMessage> messages) {
 		if (this.getTargetEntity() == null) {
-			String msg = this.isVirtual() ?
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED :
-						JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED;
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					msg,
+					JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED,
 					new String[] {this.name},
 					this,
 					this.getValidationTextRange()
 				)
 			);
+			return;
 		}
-		else if (this.getResolvedTargetEntity() == null) {
-			if (this.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
-						new String[] {this.name, this.getTargetEntity()},
-						this,
-						this.getValidationTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-						new String[] {this.getTargetEntity(), this.name},
-						this,
-						this.getTargetEntityTextRange()
-					)
-				);
-			}
+		if (this.getResolvedTargetEntity() == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
+					new String[] {this.getTargetEntity(), this.name},
+					this,
+					this.getTargetEntityTextRange()
+				)
+			);
 		}
-	}
-
-	protected TextRange getTextRange(TextRange textRange) {
-		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange();
 	}
 
 	protected TextRange getTargetEntityTextRange() {
-		return this.getTextRange(this.xmlAttributeMapping.getTargetEntityTextRange());
+		return this.getValidationTextRange(this.xmlAttributeMapping.getTargetEntityTextRange());
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -86,11 +86,21 @@ public class GenericJavaQueryHint
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.queryHintAnnotation.getTextRange(astRoot);
+		TextRange textRange = this.queryHintAnnotation.getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getQuery().getValidationTextRange(astRoot);
 	}
 
 
-	// ********** miscelleneous **********
+	// ********** misc **********
+
+	@Override
+	public JavaQuery getParent() {
+		return (JavaQuery) super.getParent();
+	}
+
+	protected JavaQuery getQuery() {
+		return this.getParent();
+	}
 
 	public QueryHintAnnotation getQueryHintAnnotation() {
 		return this.queryHintAnnotation;
@@ -100,5 +110,4 @@ public class GenericJavaQueryHint
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-
 }

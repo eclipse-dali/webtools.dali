@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context;
 
 import java.util.List;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
@@ -34,5 +35,13 @@ public abstract class AbstractXmlContextNode
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
 		}
+	}
+
+	/**
+	 * Return the specified text range if it is not <code>null</code>; if it is
+	 * <code>null</code>, return the node's validation text range.
+	 */
+	protected TextRange getValidationTextRange(TextRange textRange) {
+		return (textRange != null) ? textRange : this.getValidationTextRange();
 	}
 }

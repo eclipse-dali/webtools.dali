@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -447,7 +447,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	 * name, schema, catalog
 	 */
 	@Override
-	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+	protected Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.connectedJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
@@ -532,23 +532,20 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getTableAnnotation().getTextRange(astRoot), astRoot);
+		TextRange textRange = this.getTableAnnotation().getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getTableAnnotation().getNameTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getTableAnnotation().getNameTextRange(astRoot), astRoot);
 	}
 
 	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getTableAnnotation().getSchemaTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getTableAnnotation().getSchemaTextRange(astRoot), astRoot);
 	}
 
 	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getTableAnnotation().getCatalogTextRange(astRoot), astRoot);
-	}
-
-	protected TextRange getTextRange(TextRange textRange, CompilationUnit astRoot) {
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+		return this.getValidationTextRange(this.getTableAnnotation().getCatalogTextRange(astRoot), astRoot);
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -136,10 +136,13 @@ public abstract class SourceAnnotation<A extends AnnotatedElement>
 
 	/**
 	 * Return the text range corresponding to the annotation.
-	 * If the annotation is missing, return null.
+	 * If the annotation is missing, return <code>null</code>.
 	 */
 	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getAstAnnotation(astRoot));
+		// the AST is null for virtual Java attributes
+		// TODO remove the AST null check once we start storing text ranges
+		// in the resource model
+		return (astRoot == null) ? null : this.getTextRange(this.getAstAnnotation(astRoot));
 	}
 
 	/**
@@ -177,10 +180,13 @@ public abstract class SourceAnnotation<A extends AnnotatedElement>
 
 	/**
 	 * Return the text range corresponding to the specified element.
-	 * If the element is missing, return null.
+	 * If the element is missing, return <code>null</code>.
 	 */
 	protected TextRange getAnnotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
-		return this.getTextRange(this.getAnnotationElementExpression(adapter, astRoot));
+		// the AST is null for virtual Java attributes
+		// TODO remove the AST null check once we start storing text ranges
+		// in the resource model
+		return (astRoot == null) ? null : this.getTextRange(this.getAnnotationElementExpression(adapter, astRoot));
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualNamedColumn;
+import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 
 /**
  * <code>orm.xml</code> virtual<ul>
@@ -36,7 +36,7 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 	protected String columnDefinition;
 
 
-	protected AbstractOrmVirtualNamedColumn(JpaContextNode parent, O owner) {
+	protected AbstractOrmVirtualNamedColumn(XmlContextNode parent, O owner) {
 		super(parent);
 		this.owner = owner;
 	}
@@ -118,14 +118,15 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return null;  // not sure this column is validated...
+		return this.getParent().getValidationTextRange();
 	}
 
 
 	// ********** misc **********
 
-	public boolean isVirtual() {
-		return true;
+	@Override
+	public XmlContextNode getParent() {
+		return (XmlContextNode) super.getParent();
 	}
 
 	@Override

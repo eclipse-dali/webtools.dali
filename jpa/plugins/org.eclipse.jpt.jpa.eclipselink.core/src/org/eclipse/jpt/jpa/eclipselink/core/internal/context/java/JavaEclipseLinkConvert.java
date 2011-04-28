@@ -322,7 +322,8 @@ public class JavaEclipseLinkConvert
 		);	
 	}
 	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	@Override
+	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
 		return this.convertAnnotation.getTextRange(astRoot);
 	}
 

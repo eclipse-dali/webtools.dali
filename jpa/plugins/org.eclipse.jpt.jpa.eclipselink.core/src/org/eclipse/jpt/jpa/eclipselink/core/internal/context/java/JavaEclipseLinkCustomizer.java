@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -161,10 +161,10 @@ public class JavaEclipseLinkCustomizer
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.validateCustomizerClass(messages, reporter, astRoot);
+		this.validateCustomizerClass(messages, astRoot);
 	}
 
-	protected void validateCustomizerClass(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateCustomizerClass(List<IMessage> messages,CompilationUnit astRoot) {
 		IJavaProject javaProject = getPersistenceUnit().getJpaProject().getJavaProject();
 		EclipseLinkCustomizerAnnotation annotation = this.getCustomizerAnnotation();
 		if (annotation != null && annotation.getValue() != null) {
@@ -193,10 +193,11 @@ public class JavaEclipseLinkCustomizer
 	}
 
 	protected TextRange getCustomizerClassTextRange(CompilationUnit astRoot) {
-		return this.getCustomizerAnnotation().getValueTextRange(astRoot);
+		return this.getValidationTextRange(this.getCustomizerAnnotation().getValueTextRange(astRoot), astRoot);
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getCustomizerAnnotation().getTextRange(astRoot);
+		TextRange textRange = this.getCustomizerAnnotation().getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange(astRoot);
 	}
 }

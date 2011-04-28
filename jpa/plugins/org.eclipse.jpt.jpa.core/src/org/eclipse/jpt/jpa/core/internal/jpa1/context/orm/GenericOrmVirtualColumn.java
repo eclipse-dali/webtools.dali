@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.Column;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualBaseColumn;
 
@@ -31,7 +31,7 @@ public class GenericOrmVirtualColumn
 	protected int defaultScale;
 
 
-	public GenericOrmVirtualColumn(JpaContextNode parent, OrmVirtualColumn.Owner owner) {
+	public GenericOrmVirtualColumn(XmlContextNode parent, OrmVirtualColumn.Owner owner) {
 		super(parent, owner);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -389,8 +389,8 @@ public abstract class AbstractJavaIdMapping
 		return this.getTypeMapping().allAssociatedTableNames();
 	}
 
-	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator((BaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 
 
@@ -434,25 +434,19 @@ public abstract class AbstractJavaIdMapping
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 
-		// [JPA 2.0] if the column is specified, or if the id is not mapped by a relationship,
-		// then the column is validated.
-		// (In JPA 1.0, the column will always be validated, since the id is never mapped by a
-		//  relationship)
+		// JPA 2.0: If the column is specified or if the ID is not mapped by a relationship,
+		// the column is validated.
+		// JPA 1.0: The column is always be validated, since the ID is never mapped by a
+		// relationship.
 		if (this.columnIsSpecified() || ! this.mappedByRelationship) {
 			this.column.validate(messages, reporter, astRoot);
 		}
 
-		// [JPA 2.0] if the column is specified and the id is mapped by a relationship,
-		// then that is an error
-		// (In JPA 1.0, this will never be the case, since the id is never mapped by a relationship)
+		// JPA 2.0: If the column is specified and the ID is mapped by a relationship,
+		// we have an error.
+		// JPA 1.0: The ID cannot be mapped by a relationship.
 		if (this.columnIsSpecified() && this.mappedByRelationship) {
-			messages.add(
-				this.buildMessage(
-					JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
-					EMPTY_STRING_ARRAY,
-					this.column.getValidationTextRange(astRoot)
-				)
-			);
+			messages.add(this.buildMappedByRelationshipAndColumnSpecifiedMessage(astRoot));
 		}
 
 		this.generatorContainer.validate(messages, reporter, astRoot);
@@ -462,15 +456,31 @@ public abstract class AbstractJavaIdMapping
 		this.converter.validate(messages, reporter, astRoot);
 	}
 
+	protected IMessage buildMappedByRelationshipAndColumnSpecifiedMessage(CompilationUnit astRoot) {
+		return this.buildMessage(
+				JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
+				EMPTY_STRING_ARRAY,
+				this.column.getValidationTextRange(astRoot)
+			);
+	}
+
 	protected IMessage buildMessage(String msgID, String[] parms, TextRange textRange) {
-		String attributeDescription = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, this.getPersistentAttribute().getName());
-		parms = ArrayTools.add(parms, 0, attributeDescription);
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				msgID,
-				parms,
+				ArrayTools.add(parms, 0, this.buildAttributeDescription()),
 				this,
 				textRange
 			);
+	}
+
+	protected String buildAttributeDescription() {
+		return NLS.bind(this.getAttributeDescriptionTemplate(), this.getPersistentAttribute().getName());
+	}
+
+	protected String getAttributeDescriptionTemplate() {
+		return this.getPersistentAttribute().isVirtual() ?
+				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
+				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -128,8 +128,7 @@ public class GenericJavaJoinColumn
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getColumnAnnotation().getReferencedColumnNameTextRange(astRoot);
-		return (textRange != null) ? textRange : this.owner.getValidationTextRange(astRoot);
+		return this.getValidationTextRange(this.getColumnAnnotation().getReferencedColumnNameTextRange(astRoot), astRoot);
 	}
 	
 
@@ -174,7 +173,7 @@ public class GenericJavaJoinColumn
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+	protected Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.connectedJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;

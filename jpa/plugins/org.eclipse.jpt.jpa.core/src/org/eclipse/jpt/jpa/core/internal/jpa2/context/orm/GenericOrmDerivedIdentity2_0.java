@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,9 +26,9 @@ public class GenericOrmDerivedIdentity2_0
 {
 	protected DerivedIdentityStrategy2_0 strategy;
 
-	protected OrmIdDerivedIdentityStrategy2_0 idStrategy;
+	protected final OrmIdDerivedIdentityStrategy2_0 idStrategy;
 
-	protected OrmMapsIdDerivedIdentityStrategy2_0 mapsIdStrategy;
+	protected final OrmMapsIdDerivedIdentityStrategy2_0 mapsIdStrategy;
 
 
 	public GenericOrmDerivedIdentity2_0(OrmSingleRelationshipMapping2_0 parent) {

@@ -24,6 +24,7 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
@@ -31,8 +32,6 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
@@ -52,7 +51,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideValidat
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
@@ -177,10 +175,6 @@ public class GenericOrmEmbeddedMapping
 		return 80;
 	}
 
-	protected JavaEmbeddedMapping2_0 getJavaEmbeddedMapping2_0() {
-		return (JavaEmbeddedMapping2_0) this.getJavaEmbeddedMapping();
-	}
-
 	public void initializeOn(OrmAttributeMapping newMapping) {
 		newMapping.initializeFromOrmEmbeddedMapping(this);
 	}
@@ -191,11 +185,6 @@ public class GenericOrmEmbeddedMapping
 
 	public void removeXmlAttributeMappingFrom(Attributes xmlAttributes) {
 		xmlAttributes.getEmbeddeds().remove(this.xmlAttributeMapping);
-	}
-
-	protected JavaAssociationOverride getSpecifiedJavaAssociationOverrideNamed(String attributeName) {
-		JavaEmbeddedMapping2_0 javaMapping = this.getJavaEmbeddedMapping2_0();
-		return (javaMapping == null) ? null : javaMapping.getAssociationOverrideContainer().getSpecifiedOverrideNamed(attributeName);
 	}
 
 	@Override

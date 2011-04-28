@@ -122,6 +122,11 @@ public class OrmEclipseLinkMutable
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getXmlValidationTextRange();
+		return (textRange != null) ? textRange : this.getAttributeMapping().getValidationTextRange();
+	}
+
+	protected TextRange getXmlValidationTextRange() {
 		return this.getXmlMutable().getMutableTextRange();
 	}
 }

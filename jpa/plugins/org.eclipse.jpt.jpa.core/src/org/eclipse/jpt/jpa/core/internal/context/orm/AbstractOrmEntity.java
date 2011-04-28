@@ -1780,12 +1780,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.associationOverrideContainer.validate(messages, reporter);
 		this.generatorContainer.validate(messages, reporter);
 		this.queryContainer.validate(messages, reporter);
-		this.validateEntityName(messages,  reporter);
-		this.validateDuplicateEntityNames(messages, reporter);
+		this.validateEntityName(messages);
+		this.validateDuplicateEntityNames(messages);
 		this.idClassReference.validate(messages, reporter);
 	}
 
-	protected void validateEntityName(List<IMessage> messages, IReporter reporter) {
+	protected void validateEntityName(List<IMessage> messages) {
 		if (StringTools.stringIsEmpty(this.getName())){
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -1799,8 +1799,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		}
 	}
 
-	protected void validateDuplicateEntityNames(List<IMessage> messages,
-			IReporter reporter) {
+	protected void validateDuplicateEntityNames(List<IMessage> messages) {
 		HashBag<String>  javaEntityNamesExclOverridden = new HashBag<String>();
 		CollectionTools.addAll(javaEntityNamesExclOverridden, this.getPersistenceUnit().javaEntityNamesExclOverridden());
 		Map<String, Set<String>> map =this.getPersistenceUnit().mapEntityNameToClassNames();
@@ -1851,8 +1850,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			}
 			return;
 		}		
-		if (getDataSource().connectionProfileIsActive() && this.isSingleTableDescendant()) {
-			if (this.resourceTableIsSpecified() && !tableNameEqualsRootTable()) {
+		if (this.isSingleTableDescendant() && this.getDataSource().connectionProfileIsActive()) {
+			if (this.specifiedTableDoesNotMatchRootTable()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -1868,10 +1867,13 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.table.validate(messages, reporter);
 	}
 
-	private boolean tableNameEqualsRootTable() {
-		org.eclipse.jpt.jpa.db.Table table = this.table.getDbTable();
-		org.eclipse.jpt.jpa.db.Table parentTable = this.getRootEntity().getTable().getDbTable();
-		return table == parentTable;
+	/**
+	 * Return whether the entity specifies a table and it is a different table
+	 * than the root entity's table.
+	 */
+	protected boolean specifiedTableDoesNotMatchRootTable() {
+		return this.table.isSpecifiedInResource() &&
+			(this.table.getDbTable() != this.getRootEntity().getTable().getDbTable());
 	}
 
 	protected void validateInheritance(List<IMessage> messages, IReporter reporter) {
@@ -1970,15 +1972,15 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected TextRange getDiscriminatorValueTextRange() {
-		return this.xmlTypeMapping.getDiscriminatorValueTextRange();
+		return this.getValidationTextRange(this.xmlTypeMapping.getDiscriminatorValueTextRange());
 	}
 
 	protected TextRange getDiscriminatorColumnTextRange() {
-		return this.xmlTypeMapping.getDiscriminatorColumn().getValidationTextRange();
+		return this.getValidationTextRange(this.xmlTypeMapping.getDiscriminatorColumn().getValidationTextRange());
 	}
 
 	protected TextRange getInheritanceStrategyTextRange() {
-		return this.xmlTypeMapping.getInheritanceStrategyTextRange();
+		return this.getValidationTextRange(this.xmlTypeMapping.getInheritanceStrategyTextRange());
 	}
 
 

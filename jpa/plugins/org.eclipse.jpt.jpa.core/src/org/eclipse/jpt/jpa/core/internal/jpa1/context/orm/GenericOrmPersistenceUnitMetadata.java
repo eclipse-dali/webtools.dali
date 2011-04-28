@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -171,8 +171,12 @@ public class GenericOrmPersistenceUnitMetadata
 		return (EntityMappings) super.getParent();
 	}
 
+	protected EntityMappings getEntityMappings() {
+		return this.getParent();
+	}
+
 	public XmlEntityMappings getXmlEntityMappings() {
-		return this.getParent().getXmlEntityMappings();
+		return this.getEntityMappings().getXmlEntityMappings();
 	}
 
 	public boolean resourceExists() {
@@ -183,9 +187,12 @@ public class GenericOrmPersistenceUnitMetadata
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getXmlTextRange();
+		return (textRange != null) ? textRange : this.getEntityMappings().getValidationTextRange();
+	}
+
+	protected TextRange getXmlTextRange() {
 		XmlPersistenceUnitMetadata xmlMetadata = this.getXmlPersistenceUnitMetadata();
-		return (xmlMetadata != null) ?
-				xmlMetadata.getValidationTextRange() :
-				this.getXmlEntityMappings().getValidationTextRange();
+		return (xmlMetadata == null) ? null : xmlMetadata.getValidationTextRange();
 	}
 }

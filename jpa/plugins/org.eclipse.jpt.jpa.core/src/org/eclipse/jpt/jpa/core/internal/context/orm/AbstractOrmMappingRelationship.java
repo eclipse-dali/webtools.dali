@@ -120,7 +120,7 @@ public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMa
 	}
 
 	public boolean isVirtual() {
-		return this.getMapping().getPersistentAttribute().isVirtual();
+		return false;
 	}
 
 	public boolean isTargetForeignKey() {

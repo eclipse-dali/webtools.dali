@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 		this.secondaryTable = secondaryTable;
 	}
 
-	protected boolean isSecondaryTableVirtual() {
+	protected boolean secondaryTableIsVirtual() {
 		return this.secondaryTable.isVirtual();
 	}
 
@@ -40,7 +40,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 
 	@Override
 	public IMessage buildUnresolvedNameMessage() {
-		return this.isSecondaryTableVirtual() ?
+		return this.secondaryTableIsVirtual() ?
 				this.buildVirtualSecondaryTableUnresolvedNameMessage() :
 				super.buildUnresolvedNameMessage();
 	}
@@ -66,7 +66,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 
 	@Override
 	public IMessage buildUnresolvedReferencedColumnNameMessage() {
-		return this.isSecondaryTableVirtual() ?
+		return this.secondaryTableIsVirtual() ?
 				this.buildVirtualSecondaryTableUnresolvedReferencedColumnNameMessage() :
 				super.buildUnresolvedReferencedColumnNameMessage();
 	}
@@ -92,7 +92,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 
 	@Override
 	public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
-		return this.isSecondaryTableVirtual() ?
+		return this.secondaryTableIsVirtual() ?
 				this.buildVirtualSecondaryTableUnspecifiedNameMultipleJoinColumnsMessage() :
 				super.buildUnspecifiedNameMultipleJoinColumnsMessage();
 	}
@@ -114,7 +114,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 
 	@Override
 	public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		return this.isSecondaryTableVirtual() ?
+		return this.secondaryTableIsVirtual() ?
 				this.buildVirtualSecondaryTableUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() :
 				super.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
 	}

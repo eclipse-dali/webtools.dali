@@ -130,7 +130,7 @@ public class JavaEclipseLinkStructConverter
 	}
 	
 	protected TextRange getConverterClassTextRange(CompilationUnit astRoot) {
-		return this.converterAnnotation.getConverterTextRange(astRoot);
+		return this.getValidationTextRange(this.converterAnnotation.getConverterTextRange(astRoot), astRoot);
 	}
 
 	// ********** adapter **********

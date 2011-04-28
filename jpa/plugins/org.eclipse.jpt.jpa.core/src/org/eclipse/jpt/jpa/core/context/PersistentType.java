@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -159,17 +160,24 @@ public interface PersistentType
 	 */
 	void validate(List<IMessage> messages, IReporter reporter);
 
+	/**
+	 * Return the text range to be used with any validation messages related
+	 * to the persistent type.
+	 */
+	TextRange getValidationTextRange();
+
 
 	// ********** misc **********
 
 	/**
 	 * Return whether the persistent type applies to the
-	 * specified type name qualified with '.'.
+	 * specified type name qualified with <code>'.'</code>.
 	 */
 	boolean isFor(String typeName);
 
 	/**
-	 * Return true if persistent type resolves to a java class in the given package fragment
+	 * Return whether the persistent type resolves to a Java class in the
+	 * specified package fragment.
 	 */
 	boolean isIn(IPackageFragment packageFragment);
 
@@ -196,7 +204,7 @@ public interface PersistentType
 	{
 		/**
 		 * Return the access type that overrides the client persistent type's
-		 * access type; <code>null</code> if there is no such access override
+		 * access type; <code>null</code> if there is no such access override.
 		 */
 		AccessType getOverridePersistentTypeAccess();
 

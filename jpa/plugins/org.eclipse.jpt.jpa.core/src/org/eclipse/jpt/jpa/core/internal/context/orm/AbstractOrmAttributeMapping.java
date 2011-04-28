@@ -64,6 +64,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	extends AbstractOrmXmlContextNode
 	implements OrmAttributeMapping, AttributeMapping2_0
 {
+	// never null
 	protected final X xmlAttributeMapping;
 
 	protected String name;
@@ -196,12 +197,6 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return this.getPersistentAttribute().getJavaPersistentAttribute();
 	}
 
-	// TODO remove this method - it will always return false...
-	// subclass member classes like this method
-	public boolean isVirtual() {
-		return false;
-	}
-
 	protected EntityMappings getEntityMappings() {
 		return this.getPersistentAttribute().getOwningPersistentType().getParent();
 	}
@@ -247,11 +242,13 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 	public TextRange getValidationTextRange() {
+		// this should never be null; also, the persistent attribute delegates
+		// to here, so don't delegate back to it (or we will get a stack overflow)
 		return this.xmlAttributeMapping.getValidationTextRange();
 	}
 
 	public TextRange getNameTextRange() {
-		return this.xmlAttributeMapping.getNameTextRange();
+		return this.getValidationTextRange(this.xmlAttributeMapping.getNameTextRange());
 	}
 
 	@Override

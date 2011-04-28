@@ -102,14 +102,6 @@ public class JavaEclipseLinkConversionValue
 		return this.conversionValueAnnotation;
 	}
 
-	protected TextRange getDataValueTextRange(CompilationUnit astRoot) {
-		return this.conversionValueAnnotation.getDataValueTextRange(astRoot);
-	}
-
-	protected TextRange getObjectValueTextRange(CompilationUnit astRoot) {
-		return this.conversionValueAnnotation.getObjectValueTextRange(astRoot);
-	}
-
 
 	// ********** validation **********
 
@@ -134,7 +126,16 @@ public class JavaEclipseLinkConversionValue
 		}
 	}
 
+	protected TextRange getDataValueTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(this.conversionValueAnnotation.getDataValueTextRange(astRoot), astRoot);
+	}
+
+	protected TextRange getObjectValueTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(this.conversionValueAnnotation.getObjectValueTextRange(astRoot), astRoot);
+	}
+
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.conversionValueAnnotation.getTextRange(astRoot);
+		TextRange textRange = this.conversionValueAnnotation.getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getObjectTypeConverter().getValidationTextRange(astRoot);
 	}
 }

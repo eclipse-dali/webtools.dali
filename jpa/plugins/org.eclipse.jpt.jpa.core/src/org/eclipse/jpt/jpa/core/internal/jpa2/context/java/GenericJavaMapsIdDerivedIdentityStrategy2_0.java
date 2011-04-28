@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,6 +28,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -344,7 +345,11 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected IMessage buildMessage(String msgID, String[] parms, CompilationUnit astRoot) {
-		String attributeDescription = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, this.getPersistentAttribute().getName());
+		PersistentAttribute attribute = this.getPersistentAttribute();
+		String attributeDescription = attribute.isVirtual() ?
+				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
+				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
+		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
 		parms = ArrayTools.add(parms, 0, attributeDescription);
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -356,6 +361,11 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.getAnnotationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getDerivedIdentity().getValidationTextRange(astRoot);
+	}
+
+	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
 		return this.getAnnotation().getTextRange(astRoot);
 	}
 }

@@ -192,11 +192,6 @@ public class GenericJavaMappedByRelationshipStrategy
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		OwnableRelationshipMappingAnnotation annotation = this.getMappingAnnotation();
-		return (annotation == null) ? null : annotation.getMappedByTextRange(astRoot);
-	}
-
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
@@ -249,7 +244,10 @@ public class GenericJavaMappedByRelationshipStrategy
 
 	protected IMessage buildMessage(String msgID, String[] parms, CompilationUnit astRoot) {
 		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
-		String attributeDescription = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
+		String attributeDescription = attribute.isVirtual() ?
+				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
+				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
+		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
 		parms = ArrayTools.add(parms, 0, attributeDescription);
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -258,5 +256,15 @@ public class GenericJavaMappedByRelationshipStrategy
 				this,
 				this.getValidationTextRange(astRoot)
 			);
+	}
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.getAnnotationMappedByTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getRelationship().getValidationTextRange(astRoot);
+	}
+
+	protected TextRange getAnnotationMappedByTextRange(CompilationUnit astRoot) {
+		OwnableRelationshipMappingAnnotation annotation = this.getMappingAnnotation();
+		return (annotation == null) ? null : annotation.getMappedByTextRange(astRoot);
 	}
 }

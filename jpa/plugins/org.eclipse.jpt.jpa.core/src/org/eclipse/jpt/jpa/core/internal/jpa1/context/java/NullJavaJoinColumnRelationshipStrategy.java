@@ -157,7 +157,7 @@ public class NullJavaJoinColumnRelationshipStrategy
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return null;
+		return this.getRelationship().getValidationTextRange(astRoot);
 	}
 
 	public String getColumnTableNotValidDescription() {

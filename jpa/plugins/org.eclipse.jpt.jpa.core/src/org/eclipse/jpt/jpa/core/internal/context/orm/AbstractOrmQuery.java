@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,7 +48,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		super(parent);
 		this.xmlQuery = xmlQuery;
 		this.name = xmlQuery.getName();
-		this.query = getUnescapeQuery();
+		this.query = this.getUnescapedQuery();
 		this.initializeHints();
 	}
 
@@ -58,7 +58,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setName_(this.xmlQuery.getName());
-		this.setQuery_(this.getUnescapeQuery());
+		this.setQuery_(this.getUnescapedQuery());
 		this.syncHints();
 	}
 
@@ -105,19 +105,20 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		this.firePropertyChanged(QUERY_PROPERTY, old, query);
 	}
 
-	protected String getUnescapeQuery() {
-		String query = this.xmlQuery.getQuery();
-		if (StringTools.stringIsNotEmpty(query)) {
-			query = ExpressionTools.unescape(query, new int[1]);
+	protected String getUnescapedQuery() {
+		String queryString = this.xmlQuery.getQuery();
+		if (StringTools.stringIsNotEmpty(queryString)) {
+			queryString = ExpressionTools.unescape(queryString, new int[1]);
 		}
-		return query;
+		return queryString;
 	}
 
-	protected String convertToEscapeQuery(String query) {
-		if (StringTools.stringIsNotEmpty(query)) {
-			query = ExpressionTools.escape(query, new int[1]);
+	// TODO bjv add method to ExpressionTools?
+	protected String convertToEscapeQuery(String queryString) {
+		if (StringTools.stringIsNotEmpty(queryString)) {
+			queryString = ExpressionTools.escape(queryString, new int[1]);
 		}
-		return query;
+		return queryString;
 	}
 
 
@@ -226,6 +227,11 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	// ********** misc **********
 
+	@Override
+	public XmlContextNode getParent() {
+		return (XmlContextNode) super.getParent();
+	}
+
 	public X getXmlQuery() {
 		return this.xmlQuery;
 	}
@@ -239,15 +245,16 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.xmlQuery.getValidationTextRange();
+		TextRange textRange = this.xmlQuery.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
 	public TextRange getNameTextRange() {
-		return this.xmlQuery.getNameTextRange();
+		return this.getValidationTextRange(this.xmlQuery.getNameTextRange());
 	}
 
 	public TextRange getQueryTextRange() {
-		return this.xmlQuery.getQueryTextRange();
+		return this.getValidationTextRange(this.xmlQuery.getQueryTextRange());
 	}
 
 	@Override

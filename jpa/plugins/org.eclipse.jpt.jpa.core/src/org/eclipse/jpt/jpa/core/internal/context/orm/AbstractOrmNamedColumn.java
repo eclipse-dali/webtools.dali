@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011s Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedColumn;
@@ -232,7 +233,8 @@ public abstract class AbstractOrmNamedColumn<X extends AbstractXmlNamedColumn, O
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getTextRange(this.getXmlColumnTextRange());
+		TextRange textRange = this.getXmlColumnTextRange();
+		return (textRange != null) ? textRange : this.owner.getValidationTextRange();
 	}
 
 	protected TextRange getXmlColumnTextRange() {
@@ -241,16 +243,12 @@ public abstract class AbstractOrmNamedColumn<X extends AbstractXmlNamedColumn, O
 	}
 
 	public TextRange getNameTextRange() {
-		return this.getTextRange(this.getXmlColumnNameTextRange());
+		return this.getValidationTextRange(this.getXmlColumnNameTextRange());
 	}
 
 	protected TextRange getXmlColumnNameTextRange() {
 		X xmlColumn = this.getXmlColumn();
 		return (xmlColumn == null) ? null : xmlColumn.getNameTextRange();
-	}
-
-	protected TextRange getTextRange(TextRange textRange) {
-		return (textRange != null) ? textRange : this.owner.getValidationTextRange();
 	}
 
 
@@ -261,6 +259,9 @@ public abstract class AbstractOrmNamedColumn<X extends AbstractXmlNamedColumn, O
 		return (XmlContextNode) super.getParent();
 	}
 
+	/**
+	 * This is used by the subclasses that implement {@link BaseJoinColumn}.
+	 */
 	public boolean isVirtual() {
 		return false;
 	}

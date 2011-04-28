@@ -46,7 +46,7 @@ public class NullJavaJoinTableRelationshipStrategy
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
+		return this.getRelationship().getValidationTextRange(astRoot);
 	}
 
 

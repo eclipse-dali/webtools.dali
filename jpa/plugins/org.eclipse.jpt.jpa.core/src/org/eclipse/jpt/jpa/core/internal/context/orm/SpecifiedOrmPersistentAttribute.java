@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -53,14 +53,19 @@ public abstract class SpecifiedOrmPersistentAttribute
 	/**
 	 * This will point to one of the following:<ul>
 	 * <li>an existing Java attribute (taken from the appropriate Java type)
-	 * <li>{@link #cachedJavaPersistentAttribute} if there is no such Java attribute
-	 *     (i.e. the Java type's acces type is different)
+	 * <li>{@link #cachedJavaPersistentAttribute} if there is no such Java
+	 *     attribute (i.e. the Java type's access type is different or it is
+	 *     inherited from a non-persistent superclass)
 	 * <li><code>null</code> if there is no matching Java resource attribute
 	 * </ul>
 	 * @see #buildJavaPersistentAttribute()
 	 */
 	protected JavaPersistentAttribute javaPersistentAttribute;
 
+	/**
+	 * If present, this Java attribute's parent is the <code>orm.xml</code>
+	 * type.
+	 */
 	protected JavaPersistentAttribute cachedJavaPersistentAttribute;
 
 	protected AccessType defaultAccess;
@@ -175,7 +180,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 		if (name == null) {
 			return null;
 		}
-		JavaPersistentType javaType = this.getOwningJavaPersistentType();
+		JavaPersistentType javaType = this.getOwningPersistentTypeJavaType();
 		if (javaType == null) {
 			return null;
 		}
@@ -197,7 +202,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 	protected JavaPersistentAttribute getCachedJavaAttribute() {
-		JavaResourcePersistentType javaResourceType = this.getOwningJavaPersistentType().getResourcePersistentType();
+		JavaResourcePersistentType javaResourceType = this.getOwningPersistentTypeJavaType().getResourcePersistentType();
 		JavaResourcePersistentAttribute javaResourceAttribute = this.getJavaResourceAttribute(javaResourceType);
 		if (javaResourceAttribute == null) {
 			// nothing in the resource inheritance hierarchy matches our name *and* access type
@@ -212,6 +217,13 @@ public abstract class SpecifiedOrmPersistentAttribute
 		return this.cachedJavaPersistentAttribute;
 	}
 
+	/**
+	 * Search the specified Java resource type for the resource attribute
+	 * corresponding to this <code>orm.xml</code> attribute (i.e. the Java
+	 * resource attribute with the same name). If the specified Java resource
+	 * type does not have a corresponding attribute, search up its inheritance
+	 * hierarchy.
+	 */
 	protected JavaResourcePersistentAttribute getJavaResourceAttribute(JavaResourcePersistentType javaResourceType) {
 		for (JavaResourcePersistentAttribute javaResourceAttribute : this.getJavaResourceAttributes(javaResourceType)) {
 			if (javaResourceAttribute.getName().equals(this.getName())) {
@@ -275,7 +287,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 
-	// ********** specified/virtual **********
+	// ********** specified/default **********
 
 	public boolean isVirtual() {
 		return false;
@@ -407,7 +419,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 		return this.getParent();
 	}
 
-	protected JavaPersistentType getOwningJavaPersistentType() {
+	protected JavaPersistentType getOwningPersistentTypeJavaType() {
 		return this.getOwningPersistentType().getJavaPersistentType();
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,9 +18,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.text.edits.ReplaceEdit;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
@@ -34,6 +31,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValida
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCustomizerHolder;
+import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkCustomizer
 	extends AbstractOrmXmlContextNode
@@ -189,12 +189,12 @@ public class OrmEclipseLinkCustomizer
 	protected EntityMappings getEntityMappings() {
 		return (EntityMappings) this.getMappingFileRoot();
 	}
-	
+
 	protected boolean isFor(String typeName) {
 		JavaResourcePersistentType customizerType = this.getResourceCustomizerPersistentType();
 		return (customizerType != null) && customizerType.getQualifiedName().equals(typeName);
 	}
-	
+
 	protected boolean isIn(IPackageFragment packageFragment) {
 		JavaResourcePersistentType customizerType = this.getResourceCustomizerPersistentType();
 		return (customizerType != null) && customizerType.isIn(packageFragment);
@@ -239,11 +239,11 @@ public class OrmEclipseLinkCustomizer
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateCustomizerClass(messages, reporter);
+		this.validateCustomizerClass(messages);
 	}
 
-	protected void validateCustomizerClass(List<IMessage> messages, IReporter reporter) {
-		IJavaProject javaProject = getPersistenceUnit().getJpaProject().getJavaProject();
+	protected void validateCustomizerClass(List<IMessage> messages) {
+		IJavaProject javaProject = this.getPersistenceUnit().getJpaProject().getJavaProject();
 		if (this.getCustomizerClass() != null) {
 			if (StringTools.stringIsEmpty(this.getCustomizerClass())) {
 				messages.add(
@@ -252,7 +252,7 @@ public class OrmEclipseLinkCustomizer
 								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_SPECIFIED,
 								new String[] {},
 								this,
-								this.getParent().getValidationTextRange()
+								this.getTypeMapping().getValidationTextRange()
 						)
 				);
 			} else if (JDTTools.findType(javaProject, this.getCustomizerClass()) == null) {
@@ -262,7 +262,7 @@ public class OrmEclipseLinkCustomizer
 								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_EXIST,
 								new String[] { this.getCustomizerClass()},
 								this,
-								this.getParent().getValidationTextRange()
+								this.getTypeMapping().getValidationTextRange()
 						)
 				);
 			} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, this.getCustomizerClass())) {
@@ -272,7 +272,7 @@ public class OrmEclipseLinkCustomizer
 								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
 								new String[] {this.getCustomizerClass()},
 								this,
-								this.getParent().getValidationTextRange()
+								this.getTypeMapping().getValidationTextRange()
 						)
 				);
 			} else if (!JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.getCustomizerClass(), ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
@@ -282,14 +282,19 @@ public class OrmEclipseLinkCustomizer
 								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
 								new String[] {this.getCustomizerClass()},
 								this,
-								this.getParent().getValidationTextRange()
+								this.getTypeMapping().getValidationTextRange()
 						)
 				);
-			} 
+			}
 		}
 	}
-	
+
 	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getXmlValidationTextRange();
+		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange();
+	}
+
+	protected TextRange getXmlValidationTextRange() {
 		XmlClassReference xmlClassRef = this.getXmlCustomizerClassRef();
 		return (xmlClassRef == null) ? null : xmlClassRef.getClassNameTextRange();
 	}

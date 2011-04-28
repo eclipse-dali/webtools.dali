@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -566,10 +566,13 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.getValidationAnnotationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.owner.getValidationTextRange(astRoot);
+	}
+
+	protected TextRange getValidationAnnotationTextRange(CompilationUnit astRoot) {
 		Annotation annotation = this.getValidationAnnotation();
-		return (annotation != null) ?
-				annotation.getTextRange(astRoot) :
-				this.owner.getValidationTextRange(astRoot);
+		return (annotation == null) ? null : annotation.getTextRange(astRoot);
 	}
 
 	protected Annotation getValidationAnnotation() {

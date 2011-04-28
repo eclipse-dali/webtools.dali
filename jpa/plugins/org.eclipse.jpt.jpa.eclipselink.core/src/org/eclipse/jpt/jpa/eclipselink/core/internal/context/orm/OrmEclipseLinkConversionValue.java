@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -101,14 +101,6 @@ public class OrmEclipseLinkConversionValue
 		return this.xmlConversionValue;
 	}
 
-	protected TextRange getDataValueTextRange() {
-		return this.xmlConversionValue.getDataValueTextRange();
-	}
-
-	protected TextRange getObjectValueTextRange() {
-		return this.xmlConversionValue.getObjectValueTextRange();
-	}
-
 
 	// ********** validation **********
 
@@ -133,7 +125,16 @@ public class OrmEclipseLinkConversionValue
 		}
 	}
 
+	protected TextRange getDataValueTextRange() {
+		return this.getValidationTextRange(this.xmlConversionValue.getDataValueTextRange());
+	}
+
+	protected TextRange getObjectValueTextRange() {
+		return this.getValidationTextRange(this.xmlConversionValue.getObjectValueTextRange());
+	}
+
 	public TextRange getValidationTextRange() {
-		return this.xmlConversionValue.getValidationTextRange();
+		TextRange textRange = this.xmlConversionValue.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getObjectTypeConverter().getValidationTextRange();
 	}
 }

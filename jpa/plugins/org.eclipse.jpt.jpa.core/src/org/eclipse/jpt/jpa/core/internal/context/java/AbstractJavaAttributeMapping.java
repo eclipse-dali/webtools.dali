@@ -181,6 +181,10 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		return this.getTypeMapping().resolveDbTable(tableName);
 	}
 
+	protected JavaPersistentAttribute getJavaPersistentAttribute() {
+		return this.getPersistentAttribute().getJavaPersistentAttribute();
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
@@ -309,7 +313,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.getMappingAnnotationTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange(astRoot);
 	}
 
 	protected TextRange getMappingAnnotationTextRange(CompilationUnit astRoot) {

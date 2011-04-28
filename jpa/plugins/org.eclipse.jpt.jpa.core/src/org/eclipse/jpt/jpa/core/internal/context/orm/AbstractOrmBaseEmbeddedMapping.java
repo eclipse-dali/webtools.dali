@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,9 +26,6 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEmbeddedMapping;
@@ -177,22 +174,6 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 		this.attributeOverrideContainer.initializeFrom(oldMapping.getAttributeOverrideContainer());
 	}
 
-	protected JavaAttributeOverride getSpecifiedJavaAttributeOverrideNamed(String attributeName) {
-		JavaBaseEmbeddedMapping javaMapping = this.getJavaEmbeddedMapping();
-		return (javaMapping == null) ? null : javaMapping.getAttributeOverrideContainer().getSpecifiedOverrideNamed(attributeName);
-	}
-
-	protected JavaBaseEmbeddedMapping getJavaEmbeddedMapping() {
-		JavaAttributeMapping javaMapping = this.getJavaAttributeMapping();
-		return ((javaMapping != null) && this.valuesAreEqual(javaMapping.getKey(), this.getKey())) ?
-				(JavaBaseEmbeddedMapping) javaMapping : null;
-	}
-
-	protected JavaAttributeMapping getJavaAttributeMapping() {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
-		return (javaAttribute == null) ? null : javaAttribute.getMapping();
-	}
-
 	@Override
 	public Column resolveOverriddenColumn(String attributeName) {
 		return this.isJpa2_0Compatible() ? this.resolveOverriddenColumn_(attributeName) : null;
@@ -280,12 +261,6 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 		}
 
 		public Column resolveOverriddenColumn(String attributeName) {
-			if (this.mappingIsVirtual() && ! this.getTypeMapping().isMetadataComplete()) {
-				JavaAttributeOverride javaOverride = AbstractOrmBaseEmbeddedMapping.this.getSpecifiedJavaAttributeOverrideNamed(attributeName);
-				if (javaOverride != null) {
-					return javaOverride.getColumn();
-				}
-			}
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
@@ -319,10 +294,6 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 
 		protected OrmPersistentAttribute getPersistentAttribute() {
 			return AbstractOrmBaseEmbeddedMapping.this.getPersistentAttribute();
-		}
-
-		protected boolean mappingIsVirtual() {
-			return AbstractOrmBaseEmbeddedMapping.this.isVirtual();
 		}
 	}
 }

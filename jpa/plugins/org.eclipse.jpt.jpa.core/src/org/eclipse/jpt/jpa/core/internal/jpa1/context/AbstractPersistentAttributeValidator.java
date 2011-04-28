@@ -1,20 +1,21 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -36,39 +37,43 @@ public abstract class AbstractPersistentAttributeValidator
 	}
 
 
-	public boolean validate(List<IMessage> messages, IReporter reporter) {
-		this.validateAttribute(messages);
+	public final boolean validate(List<IMessage> messages, IReporter reporter) {
+		if (this.persistentAttribute.getMappingKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+			this.validateMappedAttribute(messages);
+		}
 		return true;
 	}
 
-	protected abstract void validateAttribute(List<IMessage> messages);
+	protected abstract void validateMappedAttribute(List<IMessage> messages);
 
-	protected boolean isFieldAttribute() {
-		if (this.javaPersistentAttribute == null) {
-			return false;
-		}
-		return this.javaPersistentAttribute.isField();
+	protected boolean attributeIsField() {
+		return (this.javaPersistentAttribute != null) &&
+				this.javaPersistentAttribute.isField();
 	}
 
-	protected boolean isPropertyAttribute() {
-		if (this.javaPersistentAttribute == null) {
-			return false;
-		}
-		return this.javaPersistentAttribute.isProperty();
+	protected boolean attributeIsProperty() {
+		return (this.javaPersistentAttribute != null) &&
+				this.javaPersistentAttribute.isProperty();
 	}
 
-	protected boolean isFinalAttribute() {
-		if (this.javaPersistentAttribute == null) {
-			return false;
-		}
-		return this.javaPersistentAttribute.isFinal();
+	protected boolean attributeIsFinal() {
+		return (this.javaPersistentAttribute != null) &&
+				this.javaPersistentAttribute.isFinal();
 	}
 
-	protected boolean isPublicAttribute() {
-		if (this.javaPersistentAttribute == null) {
-			return false;
-		}
-		return this.javaPersistentAttribute.isPublic();
+	protected boolean attributeIsPublic() {
+		return (this.javaPersistentAttribute != null) &&
+				this.javaPersistentAttribute.isPublic();
 	}
 
+
+	protected IMessage buildAttributeMessage(String msgID) {
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			msgID,
+			new String[] {this.persistentAttribute.getName()},
+			this.persistentAttribute, 
+			this.textRangeResolver.getAttributeTextRange()
+		);
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -79,7 +79,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn, R extend
 	}
 
 	protected IMessage buildUnresolvedReferencedColumnNameMessage() {
-		return this.isPersistentAttributeVirtual() ?
+		return this.attributeIsVirtual() ?
 				this.buildVirtualAttributeUnresolvedReferencedColumnNameMessage() :
 				this.buildUnresolvedReferencedColumnNameMessage(this.getUnresolvedReferencedColumnNameMessage());
 	}
@@ -116,7 +116,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn, R extend
 	protected abstract String getVirtualAttributeUnresolvedReferencedColumnNameMessage();
 
 	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
-		return this.isPersistentAttributeVirtual() ?
+		return this.attributeIsVirtual() ?
 				this.buildVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() :
 				this.buildUnspecifiedNameMultipleJoinColumnsMessage(this.getUnspecifiedNameMultipleJoinColumnsMessage());
 	}
@@ -146,7 +146,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn, R extend
 	protected abstract String getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage();
 
 	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		return this.isPersistentAttributeVirtual() ?
+		return this.attributeIsVirtual() ?
 				this.buildVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() :
 				this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(this.getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
 	}

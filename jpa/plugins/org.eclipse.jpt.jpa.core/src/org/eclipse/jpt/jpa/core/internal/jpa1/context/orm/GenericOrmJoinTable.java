@@ -403,10 +403,6 @@ public class GenericOrmJoinTable
 			return GenericOrmJoinTable.this.getValidationTextRange();
 		}
 
-		protected boolean isPersistentAttributeVirtual() {
-			return this.getPersistentAttribute().isVirtual();
-		}
-
 		protected String getPersistentAttributeName() {
 			return this.getPersistentAttribute().getName();
 		}

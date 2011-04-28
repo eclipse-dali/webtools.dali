@@ -164,6 +164,6 @@ public class GenericJavaVirtualOverrideRelationship
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return null;
+		return this.getAssociationOverride().getValidationTextRange(astRoot);
 	}
 }

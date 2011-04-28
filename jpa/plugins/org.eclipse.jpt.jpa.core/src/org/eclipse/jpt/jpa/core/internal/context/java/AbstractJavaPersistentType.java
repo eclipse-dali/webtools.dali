@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -553,16 +553,12 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected boolean contains(int offset, CompilationUnit astRoot) {
-		TextRange fullTextRange = this.getFullTextRange(astRoot);
+		TextRange fullTextRange = this.resourcePersistentType.getTextRange(astRoot);
 		// 'fullTextRange' will be null if the type no longer exists in the java;
 		// the context model can be out of synch with the resource model
 		// when a selection event occurs before the context model has a
 		// chance to synch with the resource model via the update thread
 		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
-	}
-
-	protected TextRange getFullTextRange(CompilationUnit astRoot) {
-		return this.resourcePersistentType.getTextRange(astRoot);
 	}
 
 	public TextRange getSelectionTextRange() {
@@ -668,6 +664,10 @@ public abstract class AbstractJavaPersistentType
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.getSelectionTextRange(astRoot);
+	}
+
+	public TextRange getValidationTextRange() {
+		return this.getSelectionTextRange();
 	}
 
 
