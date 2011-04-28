@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -448,8 +448,8 @@ final class SourcePersistentType
 	// ********** misc **********
 
 	public boolean isMapped() {
-		for (Annotation each : this.getAnnotations()) {
-			if (this.annotationIsMappingAnnotation(each)) {
+		for (Annotation annotation : this.getAnnotations()) {
+			if (this.annotationIsMappingAnnotation(annotation)) {
 				return true;
 			}
 		}

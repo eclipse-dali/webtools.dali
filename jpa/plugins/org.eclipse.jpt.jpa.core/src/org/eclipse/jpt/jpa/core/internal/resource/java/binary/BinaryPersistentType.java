@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -346,16 +346,22 @@ final class BinaryPersistentType
 	// ********** misc **********
 	
 	public boolean isMapped() {
-		for (Annotation each : CollectionTools.iterable(annotations())) {
-			if (CollectionTools.contains(
-					getAnnotationProvider().typeMappingAnnotationNames(), 
-					each.getAnnotationName())) {
+		for (Annotation annotation : CollectionTools.iterable(annotations())) {
+			if (this.annotationIsMappingAnnotation(annotation)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
+	private boolean annotationIsMappingAnnotation(Annotation annotation) {
+		return CollectionTools.contains(this.mappingAnnotationNames(), annotation.getAnnotationName());
+	}
+
+	private Iterator<String> mappingAnnotationNames() {
+		return this.getAnnotationProvider().typeMappingAnnotationNames();
+	}
+
 	/**
 	 * check only persistable attributes
 	 */
