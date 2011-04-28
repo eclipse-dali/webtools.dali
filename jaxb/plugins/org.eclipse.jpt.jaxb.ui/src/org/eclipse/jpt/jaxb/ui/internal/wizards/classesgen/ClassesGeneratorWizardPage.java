@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -49,6 +48,8 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGenerator;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.osgi.util.NLS;
@@ -77,7 +78,8 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.jpa.eclipselink.ui";   //$NON-NLS-1$
 	static public String XML_FILTER = "*.xml";   //$NON-NLS-1$
 	static public String BINDINGS_FILE_FILTER = "*.xjb;*.xml;*.xbd";   //$NON-NLS-1$
-	static public String ECLIPSELINK_PLATFORM_PREFIX = "eclipselink";   //$NON-NLS-1$
+	static public JaxbPlatformGroupDescription ECLIPSELINK_PLATFORM_GROUP 
+			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatformGroup("eclipselink");   //$NON-NLS-1$
 
 	public static final String HELP_CONTEXT_ID = "org.eclipse.jpt.ui.configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
 
@@ -241,8 +243,9 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	}
 
 	private boolean projectJaxbPlatformIsEclipseLink() {
-		String jaxbPlatformId = JptJaxbCorePlugin.getJaxbPlatformId(this.getJavaProject().getProject());
-		return jaxbPlatformId.startsWith(ECLIPSELINK_PLATFORM_PREFIX);
+		JaxbPlatformDescription jaxbPlatform = JptJaxbCorePlugin.getJaxbPlatformDescription(this.getJavaProject().getProject());
+		JaxbPlatformGroupDescription jaxbPlatformGroup = (jaxbPlatform == null) ? null : jaxbPlatform.getGroup();
+		return jaxbPlatformGroup == ECLIPSELINK_PLATFORM_GROUP;
 	}
 	
 	// ********** overrides **********
