@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,9 +16,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -64,7 +64,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 	JoinColumnsEditor<T> joinColumnsEditor;
 
 	private AddRemoveListPane<T> listPane;
-	
+
 	/**
 	 * Creates a new <code>JoinColumnsComposite</code>.
 	 *
@@ -221,8 +221,8 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 
 	private ListValueModel<ReadOnlyJoinColumn> buildJoinColumnsListHolder() {
 		java.util.List<ListValueModel<ReadOnlyJoinColumn>> list = new ArrayList<ListValueModel<ReadOnlyJoinColumn>>();
-		list.add(buildSpecifiedJoinColumnsListHolder());
 		list.add(buildDefaultJoinColumnListHolder());
+		list.add(buildSpecifiedJoinColumnsListHolder());
 		return new CompositeListValueModel<ListValueModel<ReadOnlyJoinColumn>, ReadOnlyJoinColumn>(list);
 	}
 
@@ -266,15 +266,15 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 			}
 		};
 	}
-	
+
 	public void installJoinColumnsPaneEnabler(PropertyValueModel<Boolean> joinColumnsPaneEnablerHolder) {
 		new PaneEnabler(joinColumnsPaneEnablerHolder, this.listPane);
 	}
-	
+
 	public void setSelectedJoinColumn(JoinColumn joinColumn) {
 		this.listPane.setSelectedItem(joinColumn);
 	}
-	
+
 	/**
 	 * The editor is used to complete the behavior of this pane.
 	 */
@@ -284,43 +284,43 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		 * Add a join column to the given subject and return it
 		 */
 		void addJoinColumn(T subject);
-		
+
 		/**
 		 * Edit the given join column, the Edit button was pressed
 		 * while this join column was selected.
 		 */
 		void editJoinColumn(T subject, ReadOnlyJoinColumn joinColumn);
-		
+
 		/**
 		 * Return whether the subject has specified join columns
 		 */
 		boolean hasSpecifiedJoinColumns(T subject);
-		
+
 		/**
 		 * Return the spcified join columns from the given subject
 		 */
 		ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(T subject);
-		
+
 		/**
 		 * Return the number of specified join columns on the given subject
 		 */
 		int specifiedJoinColumnsSize(T subject);
-		
+
 		/**
 		 * Return the default join column from the given subject or null.
 		 */
 		ReadOnlyJoinColumn getDefaultJoinColumn(T subject);
-		
+
 		/**
 		 * Return the property name of the specified join columns list
 		 */
 		String getSpecifiedJoinColumnsListPropertyName();
-		
+
 		/**
 		 * Return the property name of the specified join columns list
 		 */
 		String getDefaultPropertyName();
-		
+
 		/**
 		 * Remove the join columns at the specified indices from the subject
 		 */
