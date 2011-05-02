@@ -74,6 +74,11 @@
          id="org.eclipse.persistence.jpa.jpql"
          version="1.0.0.qualifier"
          unpack="false"/>
+         
+	<plugin
+         id="org.eclipse.persistence.jpa.jpql.source"
+         version="1.0.0.qualifier"
+         unpack="false"/>
 
 	<!-- apache bundles -->
    <plugin
