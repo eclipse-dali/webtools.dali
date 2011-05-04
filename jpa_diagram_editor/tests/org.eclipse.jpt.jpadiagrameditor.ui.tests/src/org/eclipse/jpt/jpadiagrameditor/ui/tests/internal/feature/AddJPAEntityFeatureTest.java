@@ -67,7 +67,8 @@ public class AddJPAEntityFeatureTest {
 		EasyMock.expectLastCall().asStub();
 		c1.setBlue(EasyMock.anyInt());
 		EasyMock.expectLastCall().asStub();
-		
+		EList<Font> fonts = new BasicInternalEList<Font>(Font.class);
+		expect(d.getFonts()).andStubReturn(fonts);
 		replay(d, c, c1, idp, featureProvider);
 	}
 	
