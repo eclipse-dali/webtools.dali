@@ -328,14 +328,14 @@ public class JptJpaCorePlugin
 	 * @see JpaPreferenceInitializer
 	 */
 	public static IEclipsePreferences getDefaultPreferences() {
-		return getPreferences(new DefaultScope());
+		return getPreferences(DefaultScope.INSTANCE);
 	}
 
 	/**
 	 * Return the Dali preferences for the current workspace instance.
 	 */
 	public static IEclipsePreferences getWorkspacePreferences() {
-		return getPreferences(new InstanceScope());
+		return getPreferences(InstanceScope.INSTANCE);
 	}
 	
 	/**

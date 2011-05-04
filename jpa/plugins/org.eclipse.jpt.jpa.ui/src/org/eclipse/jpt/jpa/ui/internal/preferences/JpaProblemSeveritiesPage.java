@@ -764,11 +764,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	protected void revertToDefault() {
 		for (Combo combo : this.combos) {
 			String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
-			String preference = JpaValidationPreferences.getWorkspaceLevelProblemPreference(preferenceKey);
-			if (preference == null) {
-				preference = getDefaultPreferenceValue(preferenceKey);
-			}
-			combo.select(convertPreferenceValueToComboIndex(preference));
+			combo.select(convertPreferenceValueToComboIndex(getDefaultPreferenceValue(preferenceKey)));
 			//UI will show the defaults from the workspace, but set all preferences
 			//to null so they will be deleted from project preferences
 			this.severityLevels.put(preferenceKey, null);
