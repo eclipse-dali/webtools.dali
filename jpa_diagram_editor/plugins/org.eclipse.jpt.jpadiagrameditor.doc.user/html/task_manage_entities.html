@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<title>Managing entities</title>
+
+<!-- contents -->
+</head>
+<body>
+
+	<div class="sect1">
+		<!-- infolevel="all" infotype="General" -->
+		<h1>Managing entities</h1>
+		<td><p>You can perform the following operations on a
+				particular entity graphical model:</p>
+			<div>
+				<ul>
+					<li><p>Rename entities</p>
+						<p>
+							In terms of source code, this operation changes the
+							<tt title="Output">name</tt>
+							attribute of the
+							<tt title="Output">@Entity</tt>
+							annotation only.
+						</p>
+					</li>
+					<li><p>Add, rename, or remove attributes</p>
+						<div>
+							<p>
+								<b>Note:</b>
+							</p>
+							<p>
+								The Eclipse IDE automatically generates getter and setter
+								methods for new attributes. The default data type for new
+								attributes is
+								<tt title="Output">java.lang.String</tt>
+								.
+							</p>
+							<p>In terms of source code, renaming attributes changes the
+								field names of entities, together with the fields' getter and
+								setter methods.</p>
+							<p>Removing attributes removes them from the data model also.</p>
+							<div>End of the note.</div>
+						</div>
+					</li>
+					<li><p>Collapse or expand entities or attribute groups</p></li>
+					<li><p>Save or discard your changes</p></li>
+					<li><p>Save or discard your changes and remove the entity
+							from the diagram without removing it from the application data
+							model</p></li>
+					<li><p>Remove the entity from the diagram and delete it
+							from the application data model</p></li>
+				</ul>
+			</div>
+			<p>To perform the actions described above, follow the steps:</p>
+			<div>
+				<ol>
+					<li><p>Position the mouse cursor over the entity you want
+							to manage.</p>
+						<p>A button bar appears by the entity.</p>
+						<div>
+							<p>
+								<img src="../img/jpa_diagram_entity_operations.gif"
+									alt="This graphic is explained in the accompanying text."
+									title="This graphic is explained in the accompanying text." />
+							</p>
+							<br />
+						</div>
+					</li>
+					<li><p>Choose the relevant pushbutton. Each button has an
+							informative tooltip that describes the relevant operation.</p></li>
+					<li><p>
+							To rename an entity or an attribute, double-click the title of an
+							entity or the attribute, change the name, and choose
+							<kbd title="Keyboard button">ENTER</kbd>
+							.
+						</p></li>
+					<li><p>
+							To remove an attribute, click the attribute and choose
+							<kbd title="Keyboard button">DELETE</kbd>
+							or choose <i>Delete</i> in the context menu.
+						</p>
+						<p>
+							You can also remove an attribute by positioning the mouse cursor
+							over the attribute and choosing the <i>Delete Attribute</i>
+							pushbutton.
+						</p>
+						<div>
+							<p>
+								<img src="../img/jpa_diagram_delete_attribute.gif"
+									alt="This graphic is explained in the accompanying text."
+									title="This graphic is explained in the accompanying text." />
+							</p>
+							<p />
+						</div>
+					</li>
+				</ol>
+			</div>
+		</td>
+	</div>
+</body>
+</html>
+

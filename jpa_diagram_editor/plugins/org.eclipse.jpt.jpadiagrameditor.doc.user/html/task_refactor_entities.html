@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<title>Refactor, view, edit and remove entities and their
+	attributes</title>
+
+<!-- contents -->
+</head>
+<body>
+
+	<div class="sect1">
+		<!-- infolevel="all" infotype="General" -->
+		<h2>Refactoring entities and attribute types</h2>
+		<td><div>
+				<p>
+					<b>Caution:</b>
+				</p>
+				<div>
+					<ul>
+						<li><p>
+								If you rename or move an entity using a different approach (for
+								example, via the <i>Project Explorer</i>), the entity disappears
+								from the JPA diagram.
+							</p>
+						</li>
+						<li><p>When you refactor an attribute type, any existing
+								business logic within the attribute's access methods is deleted.</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<p>Using the JPA diagram editor, you can perform the following
+				refactoring operations:</p>
+			<div>
+				<ul>
+					<li><p>
+							Rename the entity class - in the context menu of the entity name,
+							choose <span><i>Refactor Entity Class</i> -&gt; <i>Rename</i>
+							</span>, then complete the wizard.
+						</p>
+					</li>
+					<li><p>
+							Move the entity to another source package - in the context menu
+							of the entity name, choose <span><i>Refactor Entity
+									Class</i> -&gt; <i>Move</i>
+							</span>, then complete the wizard.
+						</p>
+					</li>
+					<li><p>
+							Refactor an attribute type - in the context menu of an attribute,
+							choose <i>Refactor Attribute Type</i>, change the type, and
+							choose <i>OK</i>.
+						</p>
+					</li>
+				</ul>
+			</div></td>
+
+		<h2>Viewing and editing entities' source code</h2>
+		<td><p>To view and edit the source code of a particular
+				entity, double-click the title of the corresponding entity block on
+				the diagram.</p>
+			<p>The Eclipse IDE opens the entity class in the standard source
+				code editor.</p>
+			<p>When you apply changes to the source code, they are
+				automatically synchronized with the diagram.</p></td>
+
+		<h2>Removing all entities from the diagram</h2>
+		<td><div>
+				<p>
+					<b>Note:</b>
+				</p>
+				<p>This operation removes the entities from the JPA diagram
+					only, that is, they are not removed from the underlying application
+					data model.</p>
+			</div>
+			<div>
+				<ol>
+					<li><p>Click the JPA diagram with the secondary mouse
+							button.</p>
+					</li>
+					<li><p>
+							To save any unsaved changes to the application data model, and
+							remove all entities from the diagram, choose <span> <i>Remove
+									All Entities from Diagram</i> -&gt; <i>...and Save Changes</i>
+							</span>
+						</p>
+					</li>
+					<li><p>
+							To remove all entities from the diagram without saving any
+							unsaved changes to the data model, choose <span><i>Remove
+									All Entities from Diagram</i> -&gt; <i>...and Discard Changes</i>
+							</span>.
+						</p>
+					</li>
+				</ol>
+			</div></td>
+	</div>
+</body>
+</html>
+
