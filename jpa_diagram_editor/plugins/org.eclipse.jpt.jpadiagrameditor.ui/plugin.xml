@@ -36,7 +36,7 @@
           objectClass="org.eclipse.jpt.jpa.core.JpaNode">
           
 			<enablement>
-				<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa"/>
+				<test property="org.eclipse.jpt.jpadiagrameditor.ui.jpaProjectFacet" value="jpt.jpa"/>
 			</enablement>
        <menu
              id="org.eclipse.jpt.jpadiagrameditor.ui.openDiagramJpaMenu"
@@ -139,7 +139,7 @@
 <extension point="org.eclipse.core.expressions.propertyTesters">
     <propertyTester
       id="org.eclipse.jpt.jpadiagrameditor.ui.propertytester.JpaProjectFacetVersionPropertyTester"
-      type="org.eclipse.jpt.core.JpaNode"
+      type="org.eclipse.jpt.jpa.core.JpaNode"
       namespace="org.eclipse.jpt.jpadiagrameditor.ui"
       properties="jpaProjectFacet"
       class="org.eclipse.jpt.jpadiagrameditor.ui.internal.propertytester.JpaProjectFacetVersionPropertyTester">
