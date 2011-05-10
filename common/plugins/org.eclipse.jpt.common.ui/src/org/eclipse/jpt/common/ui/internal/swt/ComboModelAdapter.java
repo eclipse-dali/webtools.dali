@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt;
 
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
@@ -205,17 +204,7 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 			else {
 				this.selectedItem = null;
 			}
-
-			int selectedIndex = ArrayTools.indexOf(this.combo.getItems(), item);
-
-			// Select the item so combo.getSelectionIndex() does not return -1
-			if (selectedIndex > -1) {
-				this.combo.select(selectedIndex);
-			}
-			// In case some text is set even if there are no items
-			else {
-				this.combo.setText(item);
-			}
+			this.combo.setText(item);
 		}
 	}
 }
