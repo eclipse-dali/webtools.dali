@@ -106,11 +106,11 @@ public class JavaEclipseLinkStructConverter
 				)
 			);			
 		} 
-		else if (!converterClassImplementsInterface(javaProject, ECLIPSELINK_CONVERTER_CLASS_NAME)) {
+		else if (!converterClassImplementsInterface(javaProject, ECLIPSELINK_STRUCT_CONVERTER_CLASS_NAME)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER,
+					EclipseLinkJpaValidationMessages.STRUCT_CONVERTER_CLASS_IMPLEMENTS_STRUCT_CONVERTER,
 					new String[] {this.converterClass},
 					this,
 					getConverterClassTextRange(astRoot)
