@@ -11,6 +11,9 @@ package org.eclipse.jpt.jaxb.eclipselink.ui;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
@@ -54,6 +57,39 @@ public class JptJaxbEclipseLinkUiPlugin
 	
 	public static void log(Throwable throwable) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, throwable.getLocalizedMessage(), throwable));
+	}
+	
+	
+	// ********** Image API **********
+	
+	/**
+	 * This gets a .gif from the icons folder.
+	 */
+	public static ImageDescriptor getImageDescriptor(String key) {
+		if (! key.startsWith("icons/")) {
+			key = "icons/" + key;
+		}
+		if (! key.endsWith(".gif")) {
+			key = key + ".gif";
+		}
+		return imageDescriptorFromPlugin(PLUGIN_ID, key);
+	}
+
+	/**
+	 * This returns an image for a .gif from the icons folder
+	 */
+	//TODO we are using the ImageRegistry here and storing all our icons for the life of the plugin, 
+	//which means until the workspace is closed.  This is better than before where we constantly 
+	//created new images. Bug 306437 is about cleaning this up and using Local Resource Managers 
+	//on our views so that closing the JPA perspective would mean our icons are disposed.
+	public static Image getImage(String key) {
+		ImageRegistry imageRegistry = instance().getImageRegistry();
+		Image image = imageRegistry.get(key);
+		if (image == null) {
+			imageRegistry.put(key, getImageDescriptor(key));
+			image = imageRegistry.get(key);
+		}
+		return image;
 	}
 	
 	

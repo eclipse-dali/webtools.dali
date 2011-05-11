@@ -16,6 +16,7 @@ import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
@@ -30,56 +31,58 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 
 
 public class JavaXmlElementMappingDefinition
-	extends AbstractJavaAttributeMappingDefinition
-	implements DefaultJavaAttributeMappingDefinition
-{
+		extends AbstractJavaAttributeMappingDefinition
+		implements DefaultJavaAttributeMappingDefinition {
+	
 	// singleton
 	private static final JavaXmlElementMappingDefinition INSTANCE = 
-		new JavaXmlElementMappingDefinition();
-
+			new JavaXmlElementMappingDefinition();
+	
 	private static final String[] SUPPORTING_ANNOTATION_NAMES = 
-	{XmlIDAnnotation.ANNOTATION_NAME,
-	XmlIDREFAnnotation.ANNOTATION_NAME,
-	XmlListAnnotation.ANNOTATION_NAME,
-	XmlSchemaTypeAnnotation.ANNOTATION_NAME,
-	XmlAttachmentRefAnnotation.ANNOTATION_NAME,
-	XmlMimeTypeAnnotation.ANNOTATION_NAME,
-	XmlInlineBinaryDataAnnotation.ANNOTATION_NAME,
-	XmlElementWrapperAnnotation.ANNOTATION_NAME,
-	XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME};
-
+			{
+				JAXB.XML_ID,
+				JAXB.XML_IDREF,
+				JAXB.XML_LIST,
+				JAXB.XML_SCHEMA_TYPE,
+				JAXB.XML_ATTACHMENT_REF,
+				JAXB.XML_MIME_TYPE,
+				JAXB.XML_INLINE_BINARY_DATA,
+				JAXB.XML_ELEMENT_WRAPPER,
+				JAXB.XML_JAVA_TYPE_ADAPTER };
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static DefaultJavaAttributeMappingDefinition instance() {
 		return INSTANCE;
 	}
-
-
+	
+	
 	/**
 	 * Enforce singleton usage
 	 */
 	private JavaXmlElementMappingDefinition() {
 		super();
 	}
-
-
+	
+	
 	public String getKey() {
 		return MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY;
 	}
-
+	
 	public String getAnnotationName() {
-		return XmlElementAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_ELEMENT;
 	}
-
+	
 	public Iterable<String> getSupportingAnnotationNames() {
 		return new ArrayListIterable<String>(SUPPORTING_ANNOTATION_NAMES);
 	}
-
+	
 	public JaxbAttributeMapping buildMapping(JaxbPersistentAttribute parent, JaxbFactory factory) {
 		return factory.buildJavaXmlElementMapping(parent);
 	}
-
+	
 	/**
 	 * From the JAXB spec section 8.12.5.1 Default Mapping:
 	 * <p>
@@ -98,7 +101,7 @@ public class JavaXmlElementMappingDefinition
 	public boolean isDefault(JaxbPersistentAttribute persistentAttribute) {
 		JavaResourceAttribute resourceAttribute = persistentAttribute.getJavaResourceAttribute();
 		if (resourceAttribute.typeIsSubTypeOf(Collection.class.getName())) {
-			return resourceAttribute.getAnnotation(XmlListAnnotation.ANNOTATION_NAME) != null;
+			return resourceAttribute.getAnnotation(JAXB.XML_LIST) != null;
 		}
 		return true;
 	}

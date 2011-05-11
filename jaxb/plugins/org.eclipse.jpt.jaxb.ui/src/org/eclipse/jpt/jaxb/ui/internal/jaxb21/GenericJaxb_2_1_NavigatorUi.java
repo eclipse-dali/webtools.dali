@@ -28,7 +28,7 @@ public class GenericJaxb_2_1_NavigatorUi
 	}
 	
 	
-	private GenericJaxb_2_1_NavigatorUi() {
+	protected GenericJaxb_2_1_NavigatorUi() {
 		super();
 	}
 	

@@ -28,7 +28,12 @@ public interface MappingKeys {
 	String XML_ANY_ELEMENT_ATTRIBUTE_MAPPING_KEY = "xml-any-element";
 	String XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY = "xml-attribute";
 	String XML_ELEMENT_ATTRIBUTE_MAPPING_KEY = "xml-element";
+	String XML_ELEMENTS_ATTRIBUTE_MAPPING_KEY = "xml-elements";
+	String XML_ELEMENT_REF_ATTRIBUTE_MAPPING_KEY = "xml-element-ref";
+	String XML_ELEMENT_REFS_ATTRIBUTE_MAPPING_KEY = "xml-element-refs";
 	String XML_TRANSIENT_ATTRIBUTE_MAPPING_KEY = "xml-transient";
 	String XML_VALUE_ATTRIBUTE_MAPPING_KEY = "xml-value";
+	
+	/** mapping key for attribute mappings that are unrecognized */
 	String NULL_ATTRIBUTE_MAPPING_KEY = null;
 }

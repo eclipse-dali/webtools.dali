@@ -27,6 +27,8 @@ public class JaxbJavaResourceModelTests {
 		suite.addTestSuite(XmlElementAnnotationTests.class);
 		suite.addTestSuite(XmlElementDeclAnnotationTests.class);
 		suite.addTestSuite(XmlElementRefAnnotationTests.class);
+		suite.addTestSuite(XmlElementRefsAnnotationTests.class);
+		suite.addTestSuite(XmlElementsAnnotationTests.class);
 		suite.addTestSuite(XmlElementWrapperAnnotationTests.class);
 		suite.addTestSuite(XmlEnumAnnotationTests.class);
 		suite.addTestSuite(XmlEnumValueAnnotationTests.class);

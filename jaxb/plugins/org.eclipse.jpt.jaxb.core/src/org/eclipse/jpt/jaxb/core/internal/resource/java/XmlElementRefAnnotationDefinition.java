@@ -15,57 +15,50 @@ import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
+import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 
 /**
  * javax.xml.bind.annotation.XmlElementRef
  */
 public final class XmlElementRefAnnotationDefinition
-	implements NestableAnnotationDefinition
-{
+		implements AnnotationDefinition {
+	
 	// singleton
-	private static final NestableAnnotationDefinition INSTANCE = new XmlElementRefAnnotationDefinition();
-
+	private static final AnnotationDefinition INSTANCE = new XmlElementRefAnnotationDefinition();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
-	public static NestableAnnotationDefinition instance() {
+	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private XmlElementRefAnnotationDefinition() {
 		super();
 	}
-
-	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
-		return SourceXmlElementRefAnnotation.buildSourceXmlElementRefAnnotation((JavaResourceField) parent, (Attribute) annotatedElement, index);
+	
+	
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return SourceXmlElementRefAnnotation.buildSourceXmlElementRefAnnotation((JavaResourceAttribute) parent, (Attribute) annotatedElement);
 	}
-
+	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryXmlElementRefAnnotation(parent, jdtAnnotation);
 	}
 	
-	public String getNestableAnnotationName() {
+	public String getAnnotationName() {
 		return JAXB.XML_ELEMENT_REF;
 	}
-
-	public String getContainerAnnotationName() {
-		return JAXB.XML_ELEMENT_REFS;
-	}
-
-	public String getElementName() {
-		return JAXB.XML_ELEMENT_REFS__VALUE;
-	}
-
 }

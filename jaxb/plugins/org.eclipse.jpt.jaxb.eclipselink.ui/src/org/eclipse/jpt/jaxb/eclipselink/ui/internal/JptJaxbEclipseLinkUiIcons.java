@@ -7,14 +7,11 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.core.internal.jaxb22;
+package org.eclipse.jpt.jaxb.eclipselink.ui.internal;
 
-import org.eclipse.jpt.jaxb.core.internal.jaxb21.AbstractJaxb_2_1_PlatformDefinition;
 
-public abstract class AbstractJaxb_2_2_PlatformDefinition
-		extends AbstractJaxb_2_1_PlatformDefinition {
+public class JptJaxbEclipseLinkUiIcons {
 	
-	protected AbstractJaxb_2_2_PlatformDefinition() {
-		super();
-	}
+	public static final String XML_INVERSE_REFERENCE = "full/obj16/xml-inverse-reference";
+	public static final String XML_TRANSFORMATION = "full/obj16/xml-transformation";
 }

@@ -9,14 +9,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_3;
 
-import org.eclipse.jpt.jaxb.ui.internal.jaxb21.GenericJaxb_2_1_NavigatorUi;
+import org.eclipse.jpt.jaxb.eclipselink.ui.internal.ELJaxbNavigatorUi;
 import org.eclipse.jpt.jaxb.ui.navigator.JaxbNavigatorUi;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
+
 
 public class ELJaxb_2_3_PlatformUi
 		implements JaxbPlatformUi {
 	
 	public JaxbNavigatorUi getNavigatorUi() {
-		return GenericJaxb_2_1_NavigatorUi.instance();
+		return ELJaxbNavigatorUi.instance();
 	}
 }

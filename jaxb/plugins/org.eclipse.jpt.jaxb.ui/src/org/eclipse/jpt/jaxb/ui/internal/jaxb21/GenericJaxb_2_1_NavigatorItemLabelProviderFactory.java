@@ -37,7 +37,7 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 	}
 	
 	
-	private GenericJaxb_2_1_NavigatorItemLabelProviderFactory() {
+	protected GenericJaxb_2_1_NavigatorItemLabelProviderFactory() {
 		super();
 	}
 	

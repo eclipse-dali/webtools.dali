@@ -67,7 +67,7 @@ public final class SourceXmlAnyElementAnnotation
 		return buildAnnotationElementAdapter(daa, JAXB.XML_ANY_ELEMENT__VALUE, SimpleTypeStringExpressionConverter.instance());
 	}
 
-	private static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
+	private DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
 	}
 

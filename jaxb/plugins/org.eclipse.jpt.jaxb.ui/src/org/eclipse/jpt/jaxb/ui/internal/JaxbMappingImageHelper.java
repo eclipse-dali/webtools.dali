@@ -57,12 +57,22 @@ public class JaxbMappingImageHelper
 		else if (MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
 			return JptJaxbUiIcons.XML_ELEMENT;
 		}
+		else if (MappingKeys.XML_ELEMENT_REF_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiIcons.XML_ELEMENT_REF;
+		}
+		else if (MappingKeys.XML_ELEMENT_REFS_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiIcons.XML_ELEMENT_REFS;
+		}
+		else if (MappingKeys.XML_ELEMENTS_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiIcons.XML_ELEMENTS;
+		}
 		else if (MappingKeys.XML_TRANSIENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
 			return JptJaxbUiIcons.XML_TRANSIENT;
 		}
 		else if (MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
 			return JptJaxbUiIcons.XML_VALUE;
 		}
+		
 		//return the JAXB_CONTENT icon instead of null, might as well have an icon if one is not defined
 		return JptJaxbUiIcons.JAXB_CONTENT;
 	}

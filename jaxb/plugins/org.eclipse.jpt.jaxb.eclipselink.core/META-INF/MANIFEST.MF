@@ -22,7 +22,10 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="[3.7.100,4.0.0)",
 Export-Package: org.eclipse.jpt.jaxb.eclipselink.core,
  org.eclipse.jpt.jaxb.eclipselink.core.internal.context,
  org.eclipse.jpt.jaxb.eclipselink.core.internal.libval;x-internal:=true,
+ org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.binary,
+ org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source,
  org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3;x-internal:=true,
- org.eclipse.jpt.jaxb.eclipselink.core.internal.validation
+ org.eclipse.jpt.jaxb.eclipselink.core.internal.validation,
+ org.eclipse.jpt.jaxb.eclipselink.core.resource.java

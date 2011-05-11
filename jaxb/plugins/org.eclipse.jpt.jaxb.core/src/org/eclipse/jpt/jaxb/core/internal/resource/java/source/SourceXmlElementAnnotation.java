@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 
@@ -35,15 +35,16 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
  * javax.xml.bind.annotation.XmlElement
  */
 public final class SourceXmlElementAnnotation
-	extends SourceAnnotation<Attribute>
-	implements XmlElementAnnotation
-{
+		extends SourceAnnotation<Attribute>
+		implements XmlElementAnnotation {
+	
 	private static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-
+	
+	
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
-
+	
 	private final DeclarationAnnotationElementAdapter<String> namespaceDeclarationAdapter;
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
@@ -55,32 +56,47 @@ public final class SourceXmlElementAnnotation
 	private final DeclarationAnnotationElementAdapter<Boolean> requiredDeclarationAdapter;
 	private final AnnotationElementAdapter<Boolean> requiredAdapter;
 	private Boolean required;
-
+	
 	private final DeclarationAnnotationElementAdapter<String> defaultValueDeclarationAdapter;
 	private final AnnotationElementAdapter<String> defaultValueAdapter;
 	private String defaultValue;
-
+	
 	private final DeclarationAnnotationElementAdapter<String> typeDeclarationAdapter;
 	private final AnnotationElementAdapter<String> typeAdapter;
 	private String type;
 	private String fullyQualifiedTypeName;
-
-
-	// ********** constructors **********
-	public static SourceXmlElementAnnotation buildSourceXmlElementAnnotation(JavaResourceMember parent, Attribute attribute) {
-		return new SourceXmlElementAnnotation(
-			parent,
-			attribute,
-			DECLARATION_ANNOTATION_ADAPTER);
+	
+	
+	public static SourceXmlElementAnnotation buildSourceXmlElementAnnotation(
+			JavaResourceAttribute parent, 
+			Attribute attribute) {
+		
+		return new SourceXmlElementAnnotation(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}
-
-	public static SourceXmlElementAnnotation buildNestedSourceXmlElementAnnotation(JavaResourceNode parent, Attribute attribute, IndexedDeclarationAnnotationAdapter idaa) {
-		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(attribute, idaa);
-		return new SourceXmlElementAnnotation(parent, attribute, idaa, annotationAdapter);
+	
+	public static SourceXmlElementAnnotation buildNestedSourceXmlElementAnnotation(
+			JavaResourceNode parent, 
+			Attribute attribute, 
+			IndexedDeclarationAnnotationAdapter idaa) {
+		
+		return new SourceXmlElementAnnotation(parent, attribute, idaa);
 	}
-
-
-	private SourceXmlElementAnnotation(JavaResourceNode parent, Attribute attribute, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	
+	
+	private SourceXmlElementAnnotation(JavaResourceNode parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
+		this(parent, attribute, daa, new ElementAnnotationAdapter(attribute, daa));
+	}
+	
+	private SourceXmlElementAnnotation(JavaResourceNode parent, Attribute attribute, IndexedDeclarationAnnotationAdapter idaa) {
+		this(parent, attribute, idaa, new ElementIndexedAnnotationAdapter(attribute, idaa));
+	}
+	
+	private SourceXmlElementAnnotation(
+			JavaResourceNode parent, 
+			Attribute attribute, 
+			DeclarationAnnotationAdapter daa, 
+			AnnotationAdapter annotationAdapter) {
+		
 		super(parent, attribute, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
 		this.nameAdapter = this.buildAnnotationElementAdapter(this.nameDeclarationAdapter);
@@ -95,14 +111,7 @@ public final class SourceXmlElementAnnotation
 		this.typeDeclarationAdapter = this.buildTypeAdapter(daa);
 		this.typeAdapter = this.buildAnnotationElementAdapter(this.typeDeclarationAdapter);
 	}
-
-	private SourceXmlElementAnnotation(JavaResourceNode parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
-		this(parent, attribute, daa, new ElementAnnotationAdapter(attribute, daa));
-	}
-
-	private SourceXmlElementAnnotation(JavaResourceNode parent, Attribute attribute, IndexedDeclarationAnnotationAdapter idaa) {
-		this(parent, attribute, idaa, new ElementIndexedAnnotationAdapter(attribute, idaa));
-	}
+	
 	
 	private DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter daa) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_ELEMENT__NAME);
@@ -367,6 +376,4 @@ public final class SourceXmlElementAnnotation
 	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
 		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
-
-
 }

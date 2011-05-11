@@ -16,46 +16,49 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlElementA
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlElement
  */
 public final class XmlElementAnnotationDefinition
-	implements AnnotationDefinition
-{
+		implements AnnotationDefinition {
+	
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new XmlElementAnnotationDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private XmlElementAnnotationDefinition() {
 		super();
 	}
-
+	
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		return SourceXmlElementAnnotation.buildSourceXmlElementAnnotation((JavaResourceAttribute) parent, (Attribute) annotatedElement);
 	}
-
+	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryXmlElementAnnotation(parent, jdtAnnotation);
 	}
-
+	
 	public String getAnnotationName() {
-		return XmlElementAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_ELEMENT;
 	}
 }
