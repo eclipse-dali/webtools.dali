@@ -135,16 +135,14 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 		try {
 			this.getFeatureProvider().getJPAEditorUtil().createEntityInProject(targetProject, entityName, jpaPreferenceStore, isMappedSuperclassChild, mappedSuperclassName, mappedSuperclassPackage, hasPrimarykey);
 		} catch (Exception e1) {
-			System.err.println("Cannot create an entity in the project " + targetProject.getName());	//$NON-NLS-1$
-			e1.printStackTrace(); 
+			JPADiagramEditorPlugin.logError("Cannot create an entity in the project " + targetProject.getName(), e1);  //$NON-NLS-1$		 
 		}
 		
 		
 		try {
 			jpaProject.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (CoreException e1) {
-			System.err.println("Cannot refresh the project");	//$NON-NLS-1$
-			e1.printStackTrace(); 
+			JPADiagramEditorPlugin.logError("Cannot refresh the project", e1);  //$NON-NLS-1$		 
 		}
 		
 		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().getPersistence().persistenceUnits();		
@@ -156,8 +154,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
-				System.err.println("Thread sleep interrupted");	//$NON-NLS-1$
-				e.printStackTrace();	
+				JPADiagramEditorPlugin.logError("Thread sleep interrupted", e);  //$NON-NLS-1$		 
 			}
 			jpt = (JavaPersistentType)pu.getPersistentType(entityName);
 			cnt++;
@@ -170,9 +167,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 	        getFeatureProvider().getJPAEditorUtil().formatCode(cu, ws);			
 			return new Object[] { jpt };
 		} else {
-			System.err.println("The JPA entity " + entityName + " could not be created");	//$NON-NLS-1$ //$NON-NLS-2$
-			Exception e = new Exception();
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError("The JPA entity " + entityName + " could not be created", new Exception());  //$NON-NLS-1$	//$NON-NLS-2$	 
 		}		
 		return new Object[] {};
     }
@@ -202,7 +197,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError(e); 	     					
 		}
 		return false;
 	}

@@ -106,6 +106,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddRelationFeature;
@@ -992,8 +993,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 						});
 										
 					} catch (JavaModelException e) {
-						System.err.println("Cannot check compilation unit for unsaved changes");	//$NON-NLS-1$
-						e.printStackTrace();			 
+						JPADiagramEditorPlugin.logError("Cannot check compilation unit for unsaved changes", e); //$NON-NLS-1$				 
 					}	
 				}
 				
@@ -1445,7 +1445,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 												}
 											}
 										} catch (CoreException e) {
-											e.printStackTrace();
+											JPADiagramEditorPlugin.logError(e);
 										}
 								}
 							}

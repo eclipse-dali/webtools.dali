@@ -34,6 +34,7 @@ import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.swt.SWT;
@@ -73,8 +74,7 @@ public class SelectTypeDialog extends TitleAreaDialog {
 		try {
 			ks = KeyStroke.getInstance("Ctrl+Space");			//$NON-NLS-1$
 		} catch (ParseException e1) {
-			System.err.println("Can't create keystroke object");	//$NON-NLS-1$
-			e1.printStackTrace();
+			JPADiagramEditorPlugin.logError("Can't create keystroke object", e1); 	//$NON-NLS-1$
 		} 
 	}
 	
@@ -144,8 +144,7 @@ public class SelectTypeDialog extends TitleAreaDialog {
 					false, 
 					text.getText().trim());
 				} catch (JavaModelException e1) {
-					System.err.println("Can't create type selaction dialog instance");	//$NON-NLS-1$
-					e1.printStackTrace();
+					JPADiagramEditorPlugin.logError("Can't create type selaction dialog instance", e1); 	//$NON-NLS-1$
 				}
 				d.open();
 				Object[] res = d.getResult(); 

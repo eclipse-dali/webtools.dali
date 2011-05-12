@@ -73,8 +73,7 @@ public class JPAEditorMatchingStrategy implements IEditorMatchingStrategy {
 					return false;
 				}
 			} catch (CoreException e1) {
-				System.err.println("Cannot get session property DOUBLE_CLICK");	//$NON-NLS-1$
-				e1.printStackTrace();	
+				JPADiagramEditorPlugin.logError("Cannot get session property DOUBLE_CLICK", e1);  //$NON-NLS-1$		 							
 			}
 			JavaPersistentType inputJptType = null; 
 			

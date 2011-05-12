@@ -32,6 +32,7 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
@@ -79,8 +80,7 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 	public void preRemove(IRemoveContext context) {
 		final PictogramElement pe = context.getPictogramElement();
 		if (pe == null) {
-    		System.err.println("PictogramElement is null\n");		//$NON-NLS-1$
-			new Exception().printStackTrace();    		
+			JPADiagramEditorPlugin.logError("PictogramElement is null\n", new Exception());  //$NON-NLS-1$		 							
 			return;
 		}
 		IJPAEditorFeatureProvider fp = getFeatureProvider();
@@ -114,7 +114,7 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 		try{
 		graphicalRemoveAttribute(entityShape);
 		} catch (Exception e){
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError(e); 
 		}
 	}
 

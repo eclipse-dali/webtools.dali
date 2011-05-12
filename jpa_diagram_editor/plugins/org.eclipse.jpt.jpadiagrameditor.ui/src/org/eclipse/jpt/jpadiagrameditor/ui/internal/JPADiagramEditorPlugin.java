@@ -15,6 +15,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.internal.ui.dialogs.OptionalMessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
@@ -76,5 +78,41 @@ public class JPADiagramEditorPlugin extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+	
+	/**
+	 * Log the specified message.
+	 */
+	public static void logError(String msg) {
+        logError(msg, null);
+    }
+
+	/**
+	 * Log the specified exception or error.
+	 */
+	public static void logError(Throwable throwable) {
+		logError(throwable.getLocalizedMessage(), throwable);
+	}
+
+	/**
+	 * Log the specified message and exception or error.
+	 */
+	public static void logError(String msg, Throwable throwable) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, msg, throwable));
+	}
+	
+	/**
+	 * Log the specified status.
+	 */
+	public static void log(IStatus status) {
+		plugin.getLog().log(status);
+    }
+	
+	
+	/**
+	 * Log the specified message and exception or error.
+	 */
+	public static void logInfo(String msg) {
+		log(new Status(IStatus.INFO, PLUGIN_ID, IStatus.OK, msg, null));
 	}
 }

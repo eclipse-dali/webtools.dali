@@ -77,6 +77,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
@@ -282,8 +283,7 @@ public class JPAEditorUtil {
 		try {
 			proj = JpaArtifactFactory.instance().getJpaProject(jp.getProject());
 		} catch (CoreException e) {
-			System.err.println("Cannot obtain the JPA project.");	//$NON-NLS-1$
-			e.printStackTrace(); 
+			JPADiagramEditorPlugin.logError("Cannot obtain the JPA project.", e); //$NON-NLS-1$	
 		}
 		if (proj == null)
 			return null;
@@ -1166,8 +1166,7 @@ public class JPAEditorUtil {
 		try {
 			classpathEntries = javaProject.getRawClasspath();
 		} catch (JavaModelException e) {
-			System.err.println("Cannot obtain the classpath");	//$NON-NLS-1$
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError("Cannot obtain the classpath", e); //$NON-NLS-1$	
 			return false;
 		}		
 		for (IClasspathEntry classpathEntry : classpathEntries) {
@@ -1185,8 +1184,7 @@ public class JPAEditorUtil {
 		try {
 			folder = (IFolder) packageFragment.getCorrespondingResource();
 		} catch (JavaModelException e) {
-			System.err.println("Cannot obtain the folder");	//$NON-NLS-1$			
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError("Cannot obtain the folder", e); //$NON-NLS-1$	
 			return false;
 		}	
 		if (!folder.exists()) 
@@ -1251,8 +1249,7 @@ public class JPAEditorUtil {
 		try {
 			cu.becomeWorkingCopy(new NullProgressMonitor());
 		} catch (JavaModelException e) {
-			System.err.println("Can't discrad the working copy");	//$NON-NLS-1$
-			e.printStackTrace();	
+			JPADiagramEditorPlugin.logError("Can't discard the working copy", e); //$NON-NLS-1$		
 		}
 	}	
 	
@@ -1261,8 +1258,7 @@ public class JPAEditorUtil {
 			try {
 				cu.discardWorkingCopy();
 			} catch (JavaModelException e) {
-				System.err.println("Can't discard the working copy");	//$NON-NLS-1$
-				e.printStackTrace();	
+				JPADiagramEditorPlugin.logError("Can't discard the working copy", e); //$NON-NLS-1$		
 			}
 	}
 	
@@ -1271,8 +1267,7 @@ public class JPAEditorUtil {
 			try {
 				cu.discardWorkingCopy();
 			} catch (JavaModelException e) {
-				System.err.println("Can't discard the working copy");	//$NON-NLS-1$
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Can't discard the working copy", e); //$NON-NLS-1$		
 			}
 	}
 		
@@ -1391,8 +1386,7 @@ public class JPAEditorUtil {
 		try {
 			fproj = ProjectFacetsManager.create(project);
 		} catch (CoreException e) {
-			System.err.println("Could not create faceted project from " + project.getName());			 //$NON-NLS-1$	
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError("Could not create faceted project from " + project.getName(), e); //$NON-NLS-1$		
 		}
 		Set<IProjectFacetVersion> projFacets = fproj.getProjectFacets();
 		Iterator<IProjectFacetVersion> it = projFacets.iterator();

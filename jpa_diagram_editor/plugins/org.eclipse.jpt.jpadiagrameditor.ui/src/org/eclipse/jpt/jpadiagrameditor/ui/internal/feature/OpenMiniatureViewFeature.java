@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -38,8 +39,7 @@ public class OpenMiniatureViewFeature extends AbstractCustomFeature {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().
 					showView(JPAEditorConstants.ID_VIEW_MINIATURE);
 		} catch (PartInitException e) {
-			System.err.println("Can't open Miniature view");	//$NON-NLS-1$
-			e.printStackTrace();		
+			JPADiagramEditorPlugin.logError("Can't open Miniature view", e);  //$NON-NLS-1$		 			
 		}
 	}
 

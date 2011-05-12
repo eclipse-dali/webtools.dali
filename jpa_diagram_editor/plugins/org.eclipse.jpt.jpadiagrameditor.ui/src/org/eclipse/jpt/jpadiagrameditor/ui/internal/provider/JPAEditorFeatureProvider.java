@@ -71,6 +71,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddAllEntitiesFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddJPAEntityFeature;
@@ -510,8 +511,7 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 		    	solver.remove(solver.getKeyForBusinessObject(oldAt));
 		    	solver.addKeyBusinessObject(solver.getKeyForBusinessObject(newAt), newAt);
 		    	if (newAt == null) {
-		    		System.err.println("New attribute is null\n");	//$NON-NLS-1$
-		    		new Exception().printStackTrace();
+					JPADiagramEditorPlugin.logError("New attribute is null\n", new Exception()); //$NON-NLS-1$
 		    		return;
 		    	}
 		    	link(pe, newAt);

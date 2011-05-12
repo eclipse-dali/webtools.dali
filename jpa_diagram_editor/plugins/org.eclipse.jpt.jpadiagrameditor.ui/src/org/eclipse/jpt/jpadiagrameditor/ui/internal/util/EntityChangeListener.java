@@ -36,6 +36,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveAndSaveEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.swt.widgets.Display;
@@ -66,8 +67,7 @@ public class EntityChangeListener extends Thread {
 			try {
 				Thread.sleep(PAUSE_DURATION);
 			} catch (InterruptedException e) {
-				System.err.println("Thread sleep interruprted"); //$NON-NLS-1$
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Thread sleep interruprted", e); //$NON-NLS-1$				
 			}
 			Display.getDefault().asyncExec(taskClass);
 		}
@@ -149,8 +149,7 @@ public class EntityChangeListener extends Thread {
 								});
 												
 							} catch (JavaModelException e) {
-								System.err.println("Cannot check compilation unit for unsaved changes"); //$NON-NLS-1$
-								e.printStackTrace();
+								JPADiagramEditorPlugin.logError("Cannot check compilation unit for unsaved changes", e); //$NON-NLS-1$				
 							}								
 						}
 					}

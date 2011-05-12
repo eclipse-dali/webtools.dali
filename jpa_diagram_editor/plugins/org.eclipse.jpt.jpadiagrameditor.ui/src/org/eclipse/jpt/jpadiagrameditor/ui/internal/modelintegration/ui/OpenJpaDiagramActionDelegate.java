@@ -45,6 +45,7 @@ import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.CreateDiagramJob;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
@@ -127,8 +128,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 				//	ret.doSave(new NullProgressMonitor());
 			}
 		} catch (PartInitException e) {
-			System.err.println("Can't open JPA editor");	//$NON-NLS-1$
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError("Can't open JPA editor", e);  //$NON-NLS-1$		 							
 		}	
 		return (JPADiagramEditor)wrp.getObj();
 	}
@@ -184,8 +184,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 		
 
 	private void handleException(Exception e) {
-		System.err.println(ERROR_OPENING_DIAGRAM);
-		e.printStackTrace();
+		JPADiagramEditorPlugin.logError(ERROR_OPENING_DIAGRAM, e);;
 		IStatus status = new ErrStatus(IStatus.ERROR, JPADiagramEditor.ID, e.toString(), e);
 		ErrorDialog.openError(shell, JPAEditorMessages.OpenJpaDiagramActionDelegate_openJPADiagramErrorMsgTitle, 
 				ERROR_OPENING_DIAGRAM, status);

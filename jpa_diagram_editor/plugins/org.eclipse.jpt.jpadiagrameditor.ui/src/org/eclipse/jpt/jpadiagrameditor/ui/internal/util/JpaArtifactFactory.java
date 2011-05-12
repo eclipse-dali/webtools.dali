@@ -463,8 +463,7 @@ public class JpaArtifactFactory {
 			cu.delete(true, new NullProgressMonitor());
 			return true;			
 		} catch (JavaModelException e) {
-			System.err.println("Cannot delete the JPA entity class"); //$NON-NLS-1$
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError("Cannot delete the JPA entity class", e); //$NON-NLS-1$				
 			return false;
 		}
 	} 
@@ -482,8 +481,7 @@ public class JpaArtifactFactory {
 			try {
 				Thread.sleep(PAUSE_DURATION);
 			} catch (InterruptedException e) {
-				System.err.println("Sleep interrupted"); //$NON-NLS-1$
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Sleep interrupted", e); //$NON-NLS-1$				
 			}
 			cnt++;
 		}
@@ -663,8 +661,7 @@ public class JpaArtifactFactory {
 						new NullProgressMonitor());
 			}
 		} catch (JavaModelException e) {
-			System.err.println("Cannnot create a new attribute with name " + attributeName); //$NON-NLS-1$
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError("Cannnot create a new attribute with name " + attributeName, e); //$NON-NLS-1$				
 		}
 		
 		if(jpt.getAttributeNamed(attributeName) == null){
@@ -728,8 +725,7 @@ public class JpaArtifactFactory {
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
-					System.err.println("Sleep interrupted");	//$NON-NLS-1$
-					e.printStackTrace();
+					JPADiagramEditorPlugin.logError("Sleep interrupted", e); //$NON-NLS-1$				
 				}
 				field = type.getField(attrTxt);
 				cnt++;
@@ -741,10 +737,8 @@ public class JpaArtifactFactory {
 							|| field.getTypeSignature().endsWith("[]")) //$NON-NLS-1$
 						return true;
 				} catch (JavaModelException e) {
-						System.err.println(
-										JPAEditorMessages.JpaArtifactFactory_CanNotCheckReturnType +
-												" " + attrTxt + "\""); //$NON-NLS-1$	//$NON-NLS-2$
-						e.printStackTrace();
+					JPADiagramEditorPlugin.logError(JPAEditorMessages.JpaArtifactFactory_CanNotCheckReturnType +
+							" " + attrTxt + "\"", e); //$NON-NLS-1$		//$NON-NLS-2$		
 				}				
 			}
 		}
@@ -770,9 +764,8 @@ public class JpaArtifactFactory {
 					|| method.getReturnType().endsWith("[]")) //$NON-NLS-1$
 			  return true;
 		} catch (JavaModelException e) {
-			System.err.println(JPAEditorMessages.JpaArtifactFactory_CanNotCheckReturnType + 
-						" " + attrTxt + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError(JPAEditorMessages.JpaArtifactFactory_CanNotCheckReturnType + 
+					" " + attrTxt + "\"", e); //$NON-NLS-1$		//$NON-NLS-2$		
 		}
 		}
 		return false;
@@ -821,8 +814,7 @@ public class JpaArtifactFactory {
 					attrTypeElementNames, actName, annotations, isCollection,
 					isMethodAnnotated);
 		} catch (JavaModelException e) {
-			System.err.println("Cannot create a new attribute with name " + attrName); //$NON-NLS-1$
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError("Cannot create a new attribute with name " + attrName, e); //$NON-NLS-1$		
 		}
 		return attr;						
 	}
@@ -839,8 +831,7 @@ public class JpaArtifactFactory {
 			makeNewAttribute(fp, jpt, cu, attrName, attrTypeName, null, actName,
 					annotations, isCollection, isMethodAnnotated);
 		} catch (JavaModelException e) {
-			System.err.println("Cannot create a new attribute with name " + attrName); //$NON-NLS-1$
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError("Cannot create a new attribute with name " + attrName, e); //$NON-NLS-1$		
 		}
 		return attrName;				
 	}
@@ -920,7 +911,7 @@ public class JpaArtifactFactory {
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError(e);
 			}
 			jpa = jpt.getAttributeNamed(attrName);
 			cnt++;
@@ -961,7 +952,7 @@ public class JpaArtifactFactory {
 				if ((getAttributeMethod != null) && getAttributeMethod.exists());
 					typeSignature = getAttributeMethod.getReturnType();
 			} catch (JavaModelException e1) {
-				System.out.println("Cannot obtain the type of the getter with name " + methodName + "()");		//$NON-NLS-1$	//$NON-NLS-2$
+				JPADiagramEditorPlugin.logError("Cannot obtain the type of the getter with name " + methodName + "()", e1); 	//$NON-NLS-1$	//$NON-NLS-2$
 			}			
 		}
 		if (typeSignature == null)
@@ -978,7 +969,7 @@ public class JpaArtifactFactory {
 				if ((attributeField != null) && attributeField.exists()) 
 					attributeField.delete(true, new NullProgressMonitor());
 			} catch (JavaModelException e) {
-				System.out.println("Cannot remove the attribute field with name " + attributeName); //$NON-NLS-1$
+				JPADiagramEditorPlugin.logError("Cannot remove the attribute field with name " + attributeName, e); 	//$NON-NLS-1$	
 			} 
 			try {
 				methodName = getterPrefix + attrNameWithCapitalLetter; //$NON-NLS-1$
@@ -988,7 +979,7 @@ public class JpaArtifactFactory {
 						getAttributeMethod.delete(true, new NullProgressMonitor());
 				}
 			} catch (JavaModelException e) {
-				System.out.println("Cannot remove the attribute getter with name " + methodName + "()"); //$NON-NLS-1$ //$NON-NLS-2$
+				JPADiagramEditorPlugin.logError("Cannot remove the attribute getter with name " + methodName + "()", e); 	//$NON-NLS-1$	 //$NON-NLS-2$
 			} 	
 		} else {
 			try {
@@ -998,7 +989,7 @@ public class JpaArtifactFactory {
 					getAttributeMethod.delete(true, new NullProgressMonitor());
 				}
 			} catch (JavaModelException e) {
-				System.out.println("Cannot remove the attribute getter with name " + methodName + "()"); //$NON-NLS-1$ //$NON-NLS-2$
+				JPADiagramEditorPlugin.logError("Cannot remove the attribute getter with name " + methodName + "()", e); 	//$NON-NLS-1$	 //$NON-NLS-2$
 			} 	
 			try {
 				IField attributeField = javaType.getField(attributeName);
@@ -1008,7 +999,7 @@ public class JpaArtifactFactory {
 				if ((attributeField != null) && attributeField.exists())
 					attributeField.delete(true, new NullProgressMonitor());
 			} catch (JavaModelException e) {
-				System.out.println("Cannot remove the attribute field with name " + attributeName); //$NON-NLS-1$
+				JPADiagramEditorPlugin.logError("Cannot remove the attribute field with name " + attributeName, e); 	//$NON-NLS-1$	
 			} 			
 		}
 		try {
@@ -1018,7 +1009,7 @@ public class JpaArtifactFactory {
 			if ((setAttributeMethod != null) && setAttributeMethod.exists())
 				setAttributeMethod.delete(true, new NullProgressMonitor());
 		} catch (Exception e) {
-			System.out.println("Cannot remove the attribute setter with name " + methodName + "(...)"); //$NON-NLS-1$ //$NON-NLS-2$
+			JPADiagramEditorPlugin.logError("Cannot remove the attribute setter with name " + methodName + "(...)", e); //$NON-NLS-1$ //$NON-NLS-2$	
 		} 		
 		
 		refreshEntityModel(fp, jpt);
@@ -1029,8 +1020,7 @@ public class JpaArtifactFactory {
 			try {
 				Thread.sleep(PAUSE_DURATION);
 			} catch (InterruptedException e) {
-				System.err.println("Thread.sleep() interrupted"); //$NON-NLS-1$
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Thread.sleep() interrupted", e); //$NON-NLS-1$		
 			}	
 			at = jpt.getAttributeNamed(attributeName);			
 			c++;
@@ -1401,8 +1391,7 @@ public class JpaArtifactFactory {
 			try {
 				Thread.sleep(PAUSE_DURATION);
 			} catch (InterruptedException e) {
-				System.err.println("Sleep interrupted");						//$NON-NLS-1$
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Sleep interrupted", e); //$NON-NLS-1$		
 			}
 			jpt = (JavaPersistentType)pu.getPersistentType(name);
 			cnt++;
@@ -1493,8 +1482,7 @@ public class JpaArtifactFactory {
 			Shell sh = ww.getShell();
 			s.perform(sh, ww);
 		} catch (Exception e1) {
-			System.err.println("Cannot rename the type " + //$NON-NLS-1$
-					oldName);
+			JPADiagramEditorPlugin.logError("Cannot rename the type " + oldName, e1); //$NON-NLS-1$
 		}
 	}
 
@@ -1541,14 +1529,12 @@ public class JpaArtifactFactory {
 							.resolveAttribute(JPAEditorUtil
 									.revertFirstLetterCase(newName));
 			} catch (InterruptedException e) {
-				System.err.println("Thread.sleep() interrupted"); //$NON-NLS-1$
+				JPADiagramEditorPlugin.logError("Thread.sleep() interrupted", e); //$NON-NLS-1$
 				return null;
 			}
 		}
 		if (newAt == null) {
-			System.err.println("The attribute " + newName + " could not be resolved"); //$NON-NLS-1$	//$NON-NLS-2$
-			NullPointerException npe = new NullPointerException();
-			npe.printStackTrace();
+			JPADiagramEditorPlugin.logError("The attribute " + newName + " could not be resolved", new NullPointerException()); //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		fp.addRemoveIgnore(jpt, oldAt.getName());
 		try {
@@ -1625,27 +1611,19 @@ public class JpaArtifactFactory {
 			try {
 				typeSignature = getter.getReturnType();
 			} catch (JavaModelException e1) {
-				System.err.println("Cannot obtain type signature of the getter of the attribute " //$NON-NLS-1$ 
-								+ oldName);
-				e1.printStackTrace();
+				JPADiagramEditorPlugin.logError("Cannot obtain type signature of the getter of the attribute " + oldName, e1); //$NON-NLS-1$  
 				return;
 			}
 			if ((typeSignature == null) || 
 					(!"Z".equals(typeSignature) && !getterPrefix.equals("get"))) {		//$NON-NLS-1$ 	//$NON-NLS-2$ 
-				System.err.println("Cannot obtain type signature of the getter of the attribute " //$NON-NLS-1$ 
-								+ oldName);
-				NullPointerException npe = new NullPointerException();
-				npe.printStackTrace();
+				JPADiagramEditorPlugin.logError("Cannot obtain type signature of the getter of the attribute " + oldName, new NullPointerException()); //$NON-NLS-1$  
 				return;
 			}
 		} else {
 			try {
 				typeSignature = attributeField.getTypeSignature();
 			} catch (JavaModelException e) {
-				System.err.println (
-						"Cannot obtain type signature of the field of the attribute " //$NON-NLS-1$ 
-								+ oldName);
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Cannot obtain type signature of the field of the attribute " + oldName, e); //$NON-NLS-1$  
 				return;
 			}			
 		}
@@ -1686,18 +1664,12 @@ public class JpaArtifactFactory {
 				Shell sh = ww.getShell();
 				s.perform(sh, ww);
 			} catch (InterruptedException e) {
-				System.err.println("Cannot rename the field of the attribute " + //$NON-NLS-1$
-						oldName);
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Cannot rename the field of the attribute " + oldName, e); //$NON-NLS-1$  
 			} catch (InvocationTargetException e) {
-				System.err.println("Cannot rename the field of the attribute " + //$NON-NLS-1$
-						oldName);
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Cannot rename the field of the attribute " + oldName, e); //$NON-NLS-1$  
 			}
 		} catch (CoreException e1) {
-			System.err.println("Cannot rename the field of the attribute " + //$NON-NLS-1$
-					oldName);
-			e1.printStackTrace();
+			JPADiagramEditorPlugin.logError("Cannot rename the field of the attribute " + oldName, e1); //$NON-NLS-1$  
 		}
 	}
 
@@ -1709,8 +1681,7 @@ public class JpaArtifactFactory {
 		try {
 			getterType = getter.getReturnType();
 		} catch (JavaModelException e2) {
-			System.err.println("Can't obtain getter type");	//$NON-NLS-1$
-			e2.printStackTrace();
+			JPADiagramEditorPlugin.logError("Can't obtain getter type", e2); //$NON-NLS-1$  
 		}
 		String newGetterName = ("Z".equals(getterType) ? "is" : "get") +		//$NON-NLS-1$	//$NON-NLS-2$	//$NON-NLS-3$
 			JPAEditorUtil.capitalizeFirstLetter(newName);
@@ -1725,18 +1696,12 @@ public class JpaArtifactFactory {
 				Shell sh = ww.getShell();
 				s.perform(sh, ww);
 			} catch (InterruptedException e) {
-				System.err.println("Cannot rename the getter of the attribute " + //$NON-NLS-1$
-						oldName);
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Cannot rename the getter of the attribute " + oldName, e); //$NON-NLS-1$
 			} catch (InvocationTargetException e) {
-				System.err.println("Cannot rename the getter of the attribute " + //$NON-NLS-1$
-						oldName);
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Cannot rename the getter of the attribute " + oldName, e); //$NON-NLS-1$
 			}
 		} catch (CoreException e1) {
-			System.err.println("Cannot rename the getter of the attribute " + //$NON-NLS-1$
-					oldName);  
-			e1.printStackTrace();
+			JPADiagramEditorPlugin.logError("Cannot rename the getter of the attribute " + oldName, e1); //$NON-NLS-1$
 		}
 	}
 		
@@ -1757,18 +1722,12 @@ public class JpaArtifactFactory {
 				Shell sh = ww.getShell();
 				s.perform(sh, ww);
 			} catch (InterruptedException e) {
-				 System.err.println("Cannot rename the setter of the attribute " + //$NON-NLS-1$
-						oldName);
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Cannot rename the setter of the attribute " + oldName, e); //$NON-NLS-1$
 			} catch (InvocationTargetException e) {
-				System.err.println("Cannot rename the setter of the attribute " + //$NON-NLS-1$
-						oldName);
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Cannot rename the setter of the attribute " + oldName, e); //$NON-NLS-1$
 			}
 		} catch (CoreException e1) {
-			System.err.println("Cannot rename the setter of the attribute " + //$NON-NLS-1$
-					oldName);  
-			e1.printStackTrace();
+			JPADiagramEditorPlugin.logError("Cannot rename the setter of the attribute " + oldName, e1); //$NON-NLS-1$
 		}
 	}
 
@@ -2121,9 +2080,8 @@ public class JpaArtifactFactory {
 			try {
 				Thread.sleep(PAUSE_DURATION);
 			} catch (InterruptedException e) {
-				System.err.println("Cannot get the attribute " + //$NON-NLS-1$
-						attributeName + " from " + jpt.getName()); //$NON-NLS-1$
-				e.printStackTrace();
+				JPADiagramEditorPlugin.logError("Cannot get the attribute " + //$NON-NLS-1$
+						attributeName + " from " + jpt.getName(), e); //$NON-NLS-1$
 			}
 			at = jpt.getAttributeNamed(attributeName);
 			c++;

@@ -52,6 +52,7 @@ import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.AddEntityContext;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
@@ -249,8 +250,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 			try {
 				moved = s.tryAcquire(2, 4, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
-				System.err.println("Thread interrupted");	//$NON-NLS-1$
-				e.printStackTrace();					
+				JPADiagramEditorPlugin.logError("Thread interrupted", e);  //$NON-NLS-1$		 							
 			}
 		}
 

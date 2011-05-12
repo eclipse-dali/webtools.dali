@@ -73,9 +73,7 @@ public class CreateJPAEntityFromMappedSuperclassFeature extends
 					.createEntityFromMappedSuperclassInProject(targetProject,
 							mappedSuperclassName, jpaPreferenceStore);
 		} catch (Exception e1) {
-			System.err
-					.println("Cannot create an entity in the project " + targetProject.getName()); //$NON-NLS-1$ 
-			e1.printStackTrace();
+			JPADiagramEditorPlugin.logError("Cannot create an entity in the project " + targetProject.getName(), e1);  //$NON-NLS-1$		 
 		}
 		
 		CreateJPAEntityFeature createEntityFeature = new CreateJPAEntityFeature(

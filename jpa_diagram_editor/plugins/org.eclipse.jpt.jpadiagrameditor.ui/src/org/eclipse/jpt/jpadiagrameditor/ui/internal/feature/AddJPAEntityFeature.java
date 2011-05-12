@@ -49,6 +49,7 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IAddEntityContext;
@@ -182,7 +183,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			packageName = getMappedSuperclassPackageDeclaration(fp, jpt,
 					packageName);
 		} catch (JavaModelException e) {
-			e.printStackTrace();
+			JPADiagramEditorPlugin.logError(e); 	     					
 		}
 
 		boolean hasPrimaryKey = hasMappedSuperclassPrimaryKeyAttribute(jpt);
@@ -421,9 +422,8 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			if (cu.hasUnsavedChanges()) {
 				headerTextString = "* " + headerTextString;		//$NON-NLS-1$
 			}
-		} catch (JavaModelException e) {
-			System.err.println("Cannot check compilation unit for unsaved changes");	//$NON-NLS-1$
-			e.printStackTrace();			 
+		} catch (JavaModelException e) { 
+			JPADiagramEditorPlugin.logError("Cannot check compilation unit for unsaved changes", e);  //$NON-NLS-1$		 
 		}
 		Text headerTextObj = Graphiti.getGaService().createDefaultText(getDiagram(), headerRect,
 				headerTextString);

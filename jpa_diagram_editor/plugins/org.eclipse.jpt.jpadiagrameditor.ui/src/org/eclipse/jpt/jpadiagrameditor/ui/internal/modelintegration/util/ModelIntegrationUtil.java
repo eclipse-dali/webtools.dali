@@ -41,6 +41,7 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.editor.DiagramEditorFactory;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
 
@@ -117,8 +118,8 @@ public class ModelIntegrationUtil {
 				try {
 					resource.load(null);
 				} catch (IOException e) {
-					System.out.println("The diagram file does not exist. It will be created");	//$NON-NLS-1$
-					System.out.println(e.getLocalizedMessage());
+					JPADiagramEditorPlugin.logInfo("The diagram file does not exist. It will be created");
+					JPADiagramEditorPlugin.logInfo(e.getLocalizedMessage());
 				}
 			}
 		});
@@ -158,8 +159,7 @@ public class ModelIntegrationUtil {
 				try {
 					resource.save(Collections.EMPTY_MAP);
 				} catch (IOException e) {
-					System.err.println("Cannot create new diagram");	//$NON-NLS-1$
-					e.printStackTrace();
+					JPADiagramEditorPlugin.logError("Cannot create new diagram", e); //$NON-NLS-1$
 				}				
 			}
 		});	

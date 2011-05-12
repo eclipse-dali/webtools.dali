@@ -28,6 +28,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 
 public class JPACheckSum {
 	
@@ -39,8 +40,7 @@ public class JPACheckSum {
 			try {
 				md5 = MessageDigest.getInstance("MD5");	//$NON-NLS-1$
 			} catch (NoSuchAlgorithmException e) {
-				System.err.println("Couldn't create instance of MD5"); //$NON-NLS-1$
-				e.printStackTrace();	
+				JPADiagramEditorPlugin.logError("Couldn't create instance of MD5", e); //$NON-NLS-1$
 				return null;
 			}
 			instance = new JPACheckSum();
@@ -80,8 +80,7 @@ public class JPACheckSum {
 		try {
 			src = cu.getSource();
 		} catch (JavaModelException e) {
-			System.err.println("Can't get the source of the compilation unit");	//$NON-NLS-1$
-			e.printStackTrace();	
+			JPADiagramEditorPlugin.logError("Can't get the source of the compilation unit", e); //$NON-NLS-1$	
 			return null;
 		}
 		byte[] res = md5.digest(src.getBytes());

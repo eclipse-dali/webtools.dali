@@ -577,11 +577,9 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 				file.setSessionProperty(new QualifiedName(null, JPAEditorMatchingStrategy.DOUBLE_CLICK), "true");	//$NON-NLS-1$			
 				facade.getIDE().openEditor(file);
 			} catch (PartInitException e) {
-				System.err.println("Cannot open editor");	//$NON-NLS-1$
-				e.printStackTrace();				
+				JPADiagramEditorPlugin.logError("Cannot open editor", e); //$NON-NLS-1$				
 			} catch (CoreException e) {
-				System.err.println("Cannot open editor");	//$NON-NLS-1$
-				e.printStackTrace();				
+				JPADiagramEditorPlugin.logError("Cannot open editor", e); //$NON-NLS-1$								
 			}
 		}
 		if (bo instanceof JavaPersistentType) {
@@ -591,11 +589,9 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
 				file.setSessionProperty(new QualifiedName(null, JPAEditorMatchingStrategy.DOUBLE_CLICK), "true");	//$NON-NLS-1$
 				facade.getIDE().openEditor(file);
 			} catch (PartInitException e) {
-				System.err.println("Cannot open editor");	//$NON-NLS-1$
-				e.printStackTrace();				
+				JPADiagramEditorPlugin.logError("Cannot open editor", e); //$NON-NLS-1$							
 			} catch (CoreException e) {
-				System.err.println("Cannot open editor");	//$NON-NLS-1$
-				e.printStackTrace();				
+				JPADiagramEditorPlugin.logError("Cannot open editor", e); //$NON-NLS-1$				
 			}
 		}
 		if ((bo == null) && (pe.getGraphicsAlgorithm() instanceof Rectangle)) {

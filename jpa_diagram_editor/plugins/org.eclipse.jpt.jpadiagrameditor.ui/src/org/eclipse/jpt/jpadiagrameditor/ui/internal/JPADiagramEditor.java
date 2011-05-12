@@ -132,8 +132,7 @@ public class JPADiagramEditor extends DiagramEditor {
 							save = false;
 						}
 					} catch (JavaModelException e) {
-						System.err.println("Problem with compilation unit"); //$NON-NLS-1$
-						e.printStackTrace();
+						JPADiagramEditorPlugin.logError("Problem with compilation unit", e); //$NON-NLS-1$				 
 					}
 					GraphicsUpdater.updateHeader(sh, entName);
 				}
@@ -150,8 +149,7 @@ public class JPADiagramEditor extends DiagramEditor {
 		//IJPAEditorFeatureProvider fp = (IJPAEditorFeatureProvider)getFeatureProvider();
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(d);
 		if ((d == null) || (ted == null)) {
-			System.err.println((d == null) ? "Diagram is null" : "TransactionalEditingDomain is null");		//$NON-NLS-1$	//$NON-NLS-2$
-			new Exception().printStackTrace();    					
+			JPADiagramEditorPlugin.logError((d == null) ? "Diagram is null" : "TransactionalEditingDomain is null", new Exception()); //$NON-NLS-1$	 //$NON-NLS-2$	     					
 			return;
 		}
 		ted.getCommandStack().execute(new RecordingCommand(ted) {

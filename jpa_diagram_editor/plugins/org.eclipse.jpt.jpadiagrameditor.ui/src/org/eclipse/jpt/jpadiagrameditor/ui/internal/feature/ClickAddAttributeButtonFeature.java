@@ -23,6 +23,7 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -61,8 +62,7 @@ public class ClickAddAttributeButtonFeature extends AbstractCreateFeature {
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {
-					System.err.println("Thread sleep interrupted");	//$NON-NLS-1$ 
-					e.printStackTrace();
+					JPADiagramEditorPlugin.logError("Thread sleep interrupted", e);  //$NON-NLS-1$		 
 				}
 			}
 			cnt++;
