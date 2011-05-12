@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.core.internal.libval;
 import java.io.File;
 import java.io.IOException;
 import java.util.zip.ZipFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaProject;
@@ -26,6 +25,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
+import org.eclipse.jst.common.project.facet.core.JavaFacet;
 import org.eclipse.jst.common.project.facet.core.StandardJreRuntimeComponent;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
@@ -33,6 +33,27 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 
 
 public class JaxbLibValUtil {
+	
+	static IProjectFacetVersion getJavaVersion(JaxbLibraryProviderInstallOperationConfig config) {
+		return config.getFacetedProject().getProjectFacetVersion(JavaFacet.FACET);
+	}
+	
+	/** 
+	 * Return jaxb version determined by java facet version.
+	 * Assume highest update of java (i.e. java 1.6 maps to jaxb 2.1)
+	 */
+	static IProjectFacetVersion findJavaJaxbVersion(JaxbLibraryProviderInstallOperationConfig config) {
+		IProjectFacetVersion javaVersion = getJavaVersion(config);
+		
+		if (javaVersion == JavaFacet.VERSION_1_6) {
+			return JaxbFacet.VERSION_2_1;
+		}
+		else if (javaVersion == JavaFacet.VERSION_1_7) {
+			return JaxbFacet.VERSION_2_2;
+		}
+		
+		return null;
+	}
 	
 	static IProjectFacetVersion findJreJaxbVersion(JaxbLibraryProviderInstallOperationConfig config) {
 		IRuntime runtime = config.getFacetedProject().getPrimaryRuntime();
@@ -88,10 +109,10 @@ public class JaxbLibValUtil {
 		if (vm instanceof IVMInstall2) {
 			String javaVersion = ((IVMInstall2) vm).getJavaVersion();
 			if (javaVersion != null) {
+				// all other versions except 1.7 and 1.6 have no corresponding version (as of yet)
 				if (javaVersion.startsWith(JavaCore.VERSION_1_7)) {
 					return JaxbFacet.VERSION_2_2;
 				}
-				// all other versions except 1.6 have no corresponding version (as of yet)
 				// 1.6 must be further analyzed
 				if (! javaVersion.startsWith(JavaCore.VERSION_1_6)) {
 					return null;

@@ -254,6 +254,7 @@
 		<project-facet id="jpt.jaxb">
 			<label>%JAXB_FACET_LABEL</label>
 			<description>%JAXB_FACET_DESCRIPTION</description>
+			<default-version version="2.1"/>
 		</project-facet>
 		
 		<project-facet-version facet="jpt.jaxb" version="2.1">

@@ -23,7 +23,12 @@ public class JptJaxbCoreMessages {
 	public static String JaxbFacetConfig_validatePlatformDoesNotSupportFacetVersion;
 	
 	public static String JreLibraryValidator_invalidPlatform;
-	public static String JreLibraryValidator_invalidJreJaxbVersion;
+	public static String JreLibraryValidator_invalidJavaFacet;
+	public static String JreLibraryValidator_invalidJavaLibrary;
+	
+	public static String UserLibraryValidator_incompatibleJavaFacet;
+	public static String UserLibraryValidator_incompatibleJavaLibrary;
+	public static String UserLibraryValidator_noXjcClasses;
 	
 	public static String PREFERENCES_FLUSH_JOB_NAME;
 	

@@ -17,4 +17,18 @@ public class JaxbFacetInstallDataModelProvider
 	public JaxbFacetInstallDataModelProvider() {
 		super();
 	}
+	
+	
+	@Override
+	public boolean propertySet(String propertyName, Object propertyValue) {
+		boolean ok = super.propertySet(propertyName, propertyValue);
+		
+		if (propertyName.equals(FACET_VERSION)) {
+			if (! getPlatform().supportsJaxbFacetVersion(getProjectFacetVersion())) {
+				getDataModel().setProperty(PLATFORM, null);
+			}
+		}
+		
+		return ok;
+	}
 }

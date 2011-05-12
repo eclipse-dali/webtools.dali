@@ -40,10 +40,10 @@ public class ELJaxbUserLibraryValidator
 		if (ELJaxbPlatform.VERSION_2_1.equals(platform)) {
 			versionRanges.add(new VersionRange("[2.1, 3.0)")); //$NON-NLS-1$
 		}
-		if (ELJaxbPlatform.VERSION_2_2.equals(platform)) {
+		else if (ELJaxbPlatform.VERSION_2_2.equals(platform)) {
 			versionRanges.add(new VersionRange("[2.2, 3.0)")); //$NON-NLS-1$
 		}
-		if (ELJaxbPlatform.VERSION_2_3.equals(platform)) {
+		else if (ELJaxbPlatform.VERSION_2_3.equals(platform)) {
 			versionRanges.add(new VersionRange("[2.3, 3.0)")); //$NON-NLS-1$
 		}
 		
