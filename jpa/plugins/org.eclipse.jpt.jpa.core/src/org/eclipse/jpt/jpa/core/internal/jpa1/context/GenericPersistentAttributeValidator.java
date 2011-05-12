@@ -27,19 +27,26 @@ public class GenericPersistentAttributeValidator
 
 	@Override
 	protected void validateMappedAttribute(List<IMessage> messages) {
-		if (this.attributeIsField()) {
-			if (this.attributeIsFinal()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD));
-			}
-			if (this.attributeIsPublic()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD));
-			}
+		if (this.javaPersistentAttribute.isField()) {
+			this.validateMappedField(messages);
+		} else {
+			this.validateMappedProperty(messages);
 		}
-		else if (this.attributeIsProperty()) {
-			//TODO need to check both the getter and the setter
-			if (this.attributeIsFinal()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_GETTER));
-			}
+	}
+
+	protected void validateMappedField(List<IMessage> messages) {
+		if (this.javaPersistentAttribute.isFinal()) {
+			messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD));
+		}
+		if (this.javaPersistentAttribute.isPublic()) {
+			messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD));
+		}
+	}
+
+	protected void validateMappedProperty(List<IMessage> messages) {
+		//TODO need to check both the getter and the setter
+		if (this.javaPersistentAttribute.isFinal()) {
+			messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_GETTER));
 		}
 	}
 }

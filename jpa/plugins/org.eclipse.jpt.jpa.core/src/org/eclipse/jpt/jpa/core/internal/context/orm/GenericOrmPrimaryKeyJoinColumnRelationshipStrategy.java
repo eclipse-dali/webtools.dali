@@ -292,7 +292,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 			return this.getRelationshipMapping().getName();
 		}
 
-		public PersistentAttribute getPersistentAttribute() {
+		protected PersistentAttribute getPersistentAttribute() {
 			return this.getRelationshipMapping().getPersistentAttribute();
 		}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,6 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 public abstract class BinaryNode
 	extends AbstractJavaResourceNode
 {
-
 	// ********** construction **********
 	
 	protected BinaryNode(JavaResourceNode parent) {
@@ -48,7 +47,7 @@ public abstract class BinaryNode
 	}
 
 	public TextRange getTextRange(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -58,5 +57,4 @@ public abstract class BinaryNode
 	public void synchronizeWith(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
-
 }

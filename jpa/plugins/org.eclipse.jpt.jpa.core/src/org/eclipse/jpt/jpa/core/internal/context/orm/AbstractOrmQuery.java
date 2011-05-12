@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
+import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -22,10 +23,14 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQueryHint;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * <code>orm.xml</code> query
@@ -66,7 +71,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	public void update() {
 		super.update();
 		this.updateNodes(this.getHints());
-		this.getPersistenceUnit().addQuery(this);
 	}
 
 
@@ -225,6 +229,61 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateName(messages);
+		this.validateQuery(messages, reporter);
+	}
+
+	protected void validateName(List<IMessage> messages) {
+		if (StringTools.stringIsEmpty(this.name)) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.QUERY_NAME_UNDEFINED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getNameTextRange()
+				)
+			);
+		}
+	}
+
+	protected void validateQuery(List<IMessage> messages, IReporter reporter) {
+		if (StringTools.stringIsEmpty(this.query)){
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
+					new String[] {this.name},
+					this,
+					this.getNameTextRange()
+				)
+			);
+		} else {
+			this.validateQuery_(messages, reporter);
+		}
+	}
+
+	protected abstract void validateQuery_(List<IMessage> messages, IReporter reporter);
+
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.xmlQuery.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+	}
+
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange(this.xmlQuery.getNameTextRange());
+	}
+
+	public TextRange getQueryTextRange() {
+		return this.getValidationTextRange(this.xmlQuery.getQueryTextRange());
+	}
+
+
 	// ********** misc **********
 
 	@Override
@@ -242,19 +301,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	public boolean duplicates(Query other) {
 		return MappingTools.nodesAreDuplicates(this, other);
-	}
-
-	public TextRange getValidationTextRange() {
-		TextRange textRange = this.xmlQuery.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
-	}
-
-	public TextRange getNameTextRange() {
-		return this.getValidationTextRange(this.xmlQuery.getNameTextRange());
-	}
-
-	public TextRange getQueryTextRange() {
-		return this.getValidationTextRange(this.xmlQuery.getQueryTextRange());
 	}
 
 	@Override

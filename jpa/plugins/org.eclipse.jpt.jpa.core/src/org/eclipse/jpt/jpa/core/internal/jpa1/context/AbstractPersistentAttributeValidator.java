@@ -46,27 +46,6 @@ public abstract class AbstractPersistentAttributeValidator
 
 	protected abstract void validateMappedAttribute(List<IMessage> messages);
 
-	protected boolean attributeIsField() {
-		return (this.javaPersistentAttribute != null) &&
-				this.javaPersistentAttribute.isField();
-	}
-
-	protected boolean attributeIsProperty() {
-		return (this.javaPersistentAttribute != null) &&
-				this.javaPersistentAttribute.isProperty();
-	}
-
-	protected boolean attributeIsFinal() {
-		return (this.javaPersistentAttribute != null) &&
-				this.javaPersistentAttribute.isFinal();
-	}
-
-	protected boolean attributeIsPublic() {
-		return (this.javaPersistentAttribute != null) &&
-				this.javaPersistentAttribute.isPublic();
-	}
-
-
 	protected IMessage buildAttributeMessage(String msgID) {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,

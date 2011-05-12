@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.text.edits.DeleteEdit;
@@ -79,6 +78,7 @@ public interface MappingFileRef
 
 	/**
 	 * Return mapping file corresponding to the mapping file ref's file name.
+	 * This can be <code>null</code> if the file name is invalid.
 	 */
 	MappingFile getMappingFile();
 
@@ -108,12 +108,6 @@ public interface MappingFileRef
 	 * specified in, the <code>persistence.xml</code>.
 	 */
 	boolean isImplied();
-
-	/**
-	 * Return the persistent type, as listed in the mapping file,
-	 * with the specified name. Return null if it does not exists.
-	 */
-	PersistentType getPersistentType(String typeName);
 
 	/**
 	 * Return whether the specified text offset is within

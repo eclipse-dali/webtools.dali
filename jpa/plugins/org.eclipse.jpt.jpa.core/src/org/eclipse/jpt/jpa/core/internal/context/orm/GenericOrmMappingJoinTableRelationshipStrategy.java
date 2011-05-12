@@ -59,6 +59,6 @@ public class GenericOrmMappingJoinTableRelationshipStrategy
 	}
 
 	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
-		return new JoinTableValidator(getPersistentAttribute(), (JoinTable) table, textRangeResolver);
+		return new JoinTableValidator(this.getPersistentAttribute(), (JoinTable) table, textRangeResolver);
 	}
 }

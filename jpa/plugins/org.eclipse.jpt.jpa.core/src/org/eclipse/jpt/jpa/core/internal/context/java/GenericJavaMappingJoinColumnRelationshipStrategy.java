@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterators.SubIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterators.SuperIteratorWrapper;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -33,6 +34,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericJavaMappingJoinColumnRelationshipStrategy
@@ -58,10 +60,14 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 
 	@Override
 	protected Iterator<JoinColumnAnnotation> joinColumnAnnotations() {
-		return new SubIteratorWrapper<NestableAnnotation, JoinColumnAnnotation>(this.joinColumnAnnotations_());
+		return new SuperIteratorWrapper<JoinColumnAnnotation>(this.nestableJoinColumnAnnotations());
 	}
 
-	protected Iterator<NestableAnnotation> joinColumnAnnotations_() {
+	protected Iterator<NestableJoinColumnAnnotation> nestableJoinColumnAnnotations() {
+		return new SubIteratorWrapper<NestableAnnotation, NestableJoinColumnAnnotation>(this.nestableJoinColumnAnnotations_());
+	}
+
+	protected Iterator<NestableAnnotation> nestableJoinColumnAnnotations_() {
 		return this.getResourcePersistentAttribute().annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 	}
 
@@ -166,7 +172,7 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 			return GenericJavaMappingJoinColumnRelationshipStrategy.this.getRelationshipMapping().getName();
 		}
 
-		public PersistentAttribute getPersistentAttribute() {
+		protected PersistentAttribute getPersistentAttribute() {
 			return GenericJavaMappingJoinColumnRelationshipStrategy.this.getRelationshipMapping().getPersistentAttribute();
 		}
 
@@ -210,7 +216,7 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new JoinColumnValidator((JoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+			return new JoinColumnValidator(this.getPersistentAttribute(), (JoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 		}
 	}
 }

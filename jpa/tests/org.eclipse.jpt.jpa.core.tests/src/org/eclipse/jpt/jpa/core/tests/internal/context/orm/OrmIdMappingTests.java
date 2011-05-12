@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -481,20 +481,27 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		GeneratedValue generatedValue = idMapping.getGeneratedValue();
 		assertEquals("myTableGenerator", generatedValue.getSpecifiedGenerator());
 		assertEquals(GenerationType.TABLE, generatedValue.getSpecifiedStrategy());
-		
+
+// >>> I'm going to argue there is no such thing as a "virtual" generator,
+// since a Java generator is *not* overridden when its ID mapping (or entity)
+// is overridden in the orm.xml file - both the orm.xml ID mapping and the
+// Java mapping can define an "active" generator as long as they have different
+// names  ~bjv
 		TableGenerator tableGenerator = idMapping.getGeneratorContainer().getTableGenerator();
-		assertEquals("myTableGenerator", tableGenerator.getName());
-		assertEquals("myTable", tableGenerator.getSpecifiedTable());
-		assertEquals("myCatalog", tableGenerator.getSpecifiedCatalog());
-		assertEquals("mySchema", tableGenerator.getSpecifiedSchema());
-		assertEquals("myPkColumnName", tableGenerator.getSpecifiedPkColumnName());
-		assertEquals("myPkColumnValue", tableGenerator.getSpecifiedPkColumnValue());
-		assertEquals("myValueColumnName", tableGenerator.getSpecifiedValueColumnName());
-		assertEquals(Integer.valueOf(1), tableGenerator.getSpecifiedInitialValue());
-		assertEquals(Integer.valueOf(1), tableGenerator.getSpecifiedAllocationSize());
+		assertNull(tableGenerator);
+//		assertEquals("myTableGenerator", tableGenerator.getName());
+//		assertEquals("myTable", tableGenerator.getSpecifiedTable());
+//		assertEquals("myCatalog", tableGenerator.getSpecifiedCatalog());
+//		assertEquals("mySchema", tableGenerator.getSpecifiedSchema());
+//		assertEquals("myPkColumnName", tableGenerator.getSpecifiedPkColumnName());
+//		assertEquals("myPkColumnValue", tableGenerator.getSpecifiedPkColumnValue());
+//		assertEquals("myValueColumnName", tableGenerator.getSpecifiedValueColumnName());
+//		assertEquals(Integer.valueOf(1), tableGenerator.getSpecifiedInitialValue());
+//		assertEquals(Integer.valueOf(1), tableGenerator.getSpecifiedAllocationSize());
 
 		SequenceGenerator sequenceGenerator = idMapping.getGeneratorContainer().getSequenceGenerator();
-		assertEquals("mySequenceGenerator", sequenceGenerator.getName());
+		assertNull(sequenceGenerator);
+//		assertEquals("mySequenceGenerator", sequenceGenerator.getName());
 	}
 	
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {

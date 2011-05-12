@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,12 +15,9 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractTableValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 
-public class CollectionTableValidator extends AbstractTableValidator
+public class CollectionTableValidator
+	extends AbstractTableValidator
 {
-	public CollectionTableValidator(CollectionTable2_0 table, TableTextRangeResolver textRangeResolver) {
-		super(table, textRangeResolver);
-	}
-
 	public CollectionTableValidator(PersistentAttribute persistentAttribute, CollectionTable2_0 table, TableTextRangeResolver textRangeResolver) {
 		super(persistentAttribute, table, textRangeResolver);
 	}

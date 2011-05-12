@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -320,10 +320,10 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 		super.validate(messages, reporter);
 		this.column.validate(messages, reporter);
 		this.converter.validate(messages, reporter);
-		this.validateAttributeType(messages, reporter);
+		this.validateAttributeType(messages);
 	}
 
-	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
+	protected void validateAttributeType(List<IMessage> messages) {
 		if (!ArrayTools.contains(VERSION_MAPPING_SUPPORTED_TYPES, this.getPersistentAttribute().getTypeName())) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(

@@ -9,16 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Java sequence or table generator
@@ -62,7 +68,6 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 		super.update();
 		this.setDefaultInitialValue(this.buildDefaultInitialValue());
 		this.setDefaultAllocationSize(this.buildDefaultAllocationSize());
-		this.getPersistenceUnit().addGenerator(this);
 	}
 	
 
@@ -154,7 +159,24 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	}
 	
 
-	// ********** text ranges **********
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+
+		if (StringTools.stringIsEmpty(this.name)){
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.GENERATOR_NAME_UNDEFINED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getNameTextRange(astRoot)
+				)
+			);
+		}
+	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.generatorAnnotation.getTextRange(astRoot);
@@ -223,5 +245,4 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-
 }

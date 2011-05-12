@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,6 +24,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class OverrideValidator
 	implements JptValidator
 {
+	// this is null for overrides defined on entities
 	protected final PersistentAttribute persistentAttribute;
 
 	protected final Override_ override;
@@ -54,14 +55,6 @@ public abstract class OverrideValidator
 		this.container = container;
 		this.textRangeResolver = textRangeResolver;
 		this.overrideDescriptionProvider = overrideDescriptionProvider;
-	}
-
-	protected boolean persistentAttributeIsVirtual() {
-		return (this.persistentAttribute != null) && this.persistentAttribute.isVirtual();
-	}
-
-	protected String getPersistentAttributeName() {
-		return this.persistentAttribute.getName();
 	}
 
 	protected String getOverrideDescriptionMessage()  {
@@ -115,7 +108,7 @@ public abstract class OverrideValidator
 		if (this.override.isVirtual()) {
 			return this.buildVirtualUnresolvedNameMessage();
 		}
-		if (this.persistentAttributeIsVirtual()) {
+		if (this.overrideParentIsVirtualAttribute()) {
 			return this.buildVirtualAttributeUnresolvedNameMessage();
 		}
 		return this.buildUnresolvedNameMessage(this.getUnresolvedNameMessage());
@@ -158,7 +151,7 @@ public abstract class OverrideValidator
 				IMessage.HIGH_SEVERITY,
 				this.getVirtualAttributeUnresolvedNameMessage(),
 				new String[] {
-					this.getPersistentAttributeName(),
+					this.persistentAttribute.getName(),
 					this.override.getName(),
 					this.getOverrideDescriptionMessage(),
 					this.container.getOverridableTypeMapping().getName()
@@ -169,6 +162,11 @@ public abstract class OverrideValidator
 	}
 
 	protected abstract String getVirtualAttributeUnresolvedNameMessage();
+
+	protected boolean overrideParentIsVirtualAttribute() {
+		return (this.persistentAttribute != null) &&
+				this.persistentAttribute.isVirtual();
+	}
 
 	public interface OverrideDescriptionProvider {
 		String getOverrideDescriptionMessage();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,9 @@ package org.eclipse.jpt.jpa.core.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -54,12 +52,6 @@ public interface JarFile
 	 * Return the size of the JAR file's Java persistent types.
 	 */
 	int javaPersistentTypesSize();
-
-	/**
-	 * Return the persistent type with the specified name.
-	 * Return null if the persistent type is not found.
-	 */
-	PersistentType getPersistentType(String typeName);
 
 
 	// ********** validation **********

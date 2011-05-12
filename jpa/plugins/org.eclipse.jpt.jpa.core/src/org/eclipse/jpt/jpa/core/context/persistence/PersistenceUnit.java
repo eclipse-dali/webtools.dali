@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
@@ -24,7 +23,6 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
@@ -613,36 +611,44 @@ public interface PersistenceUnit
 	/**
 	 * String constant associated with changes to the persistence unit's
 	 * collection of "global" generators.
-	 * NB: There are no granular collection change notifications;
-	 * only a "collection changed" notification when the collection
-	 * is rebuilt at the finish of the persistence unit's "update".
 	 */
 	String GENERATORS_COLLECTION = "generators"; //$NON-NLS-1$
 
 	/**
-	 * Return the generators defined within the persistence unit's scope,
-	 * including generators with duplicate names.
+	 * Return the "active" generators defined within the persistence unit's scope,
+	 * including generators with duplicate names. "Active" generators are:<ul>
+	 * <li>any generator defined in mapping files
+	 * <li>any generator defined via Java annotations that is not "overridden"
+	 *     by a mapping file generator with the same name
+	 * </ul>
+	 * <strong>NB:</strong> A Java generator defined on a class or attribute
+	 * that is overridden in a mapping file is <em>not</em>, as a result,
+	 * itself overridden. A Java generator can only be overridden by a mapping
+	 * file generator with the same name.
+	 * <p>
+	 * <strong>NB:</strong> A Java generator defined on a class or attribute
+	 * whose corresponding mapping file mapping (or mapping file) is marked
+	 * "metadata complete" is ignored.
 	 */
+	// TODO bjv change to getGeneratorNames() etc.
 	Iterator<Generator> generators();
 
 	/**
-	 * Return the size of the list of generators defined within the persistence unit's scope,
-	 * including generators with duplicate names.
+	 * Return the number of "active" generators defined within the persistence
+	 * unit's scope.
+	 * @see #generators()
 	 */
 	int generatorsSize();
 
 	/**
 	 * Add the specified generator (that is defined elsewhere) to the
 	 * list of generators defined within the persistence unit's scope.
-	 * NB: This is to be called by every generator during "update".
-	 * This method does not directly generate a change notification.
-	 * The change notification is fired at the end of the persistence unit's
-	 * "update", once all the generators have added themselves.
 	 */
+	// TODO bjv remove
 	void addGenerator(Generator generator);
 
 	/**
-	 * Return the names of the generators defined in the persistence
+	 * Return the names of the "active" generators defined in the persistence
 	 * unit's scope, with duplicates removed.
 	 */
 	Iterable<String> getUniqueGeneratorNames();
@@ -653,31 +659,28 @@ public interface PersistenceUnit
 	/**
 	 * String constant associated with changes to the persistence unit's
 	 * collection of "global" queries.
-	 * NB: There are no granular collection change notifications;
-	 * only a "collection changed" notification when the collection is
-	 * rebuilt at the finish of the persistence unit's "update".
 	 */
 	String QUERIES_COLLECTION = "queries"; //$NON-NLS-1$
 
 	/**
-	 * Return the queries defined within the persistence unit's scope,
-	 * including queries with duplicate names.
+	 * Return the "active" queries defined within the persistence unit's scope,
+	 * including queries with duplicate names. These are very similar to
+	 * generators.
+	 * @see #generators()
 	 */
+	// TODO bjv change to getQueryNames() etc.
 	Iterator<Query> queries();
 
 	/**
-	 * Return the number of queries defined within the persistence unit's scope,
-	 * including queries with duplicate names.
+	 * Return the number of "active" queries defined within the persistence
+	 * unit's scope.
+	 * @see #queries()
 	 */
 	int queriesSize();
 
 	/**
 	 * Add the specified query (that is defined elsewhere) to the
 	 * list of queries defined within the persistence unit's scope.
-	 * NB: This is to be called by every query during "update".
-	 * This method does not directly generate a change notification.
-	 * The change notification is fired at the end of the persistence unit's
-	 * "update", once all the queries have added themselves.
 	 */
 	void addQuery(Query query);
 
@@ -689,12 +692,6 @@ public interface PersistenceUnit
 	 * persistence unit.
 	 */
 	XmlPersistenceUnit getXmlPersistenceUnit();
-
-	/**
-	 * Return the persistent type specified in the persistence unit with the
-	 * specified name.
-	 */
-	PersistentType getPersistentType(String typeName);
 
 	/**
 	 * Return whether the persistence unit specifies a persistent type with the
@@ -736,41 +733,51 @@ public interface PersistenceUnit
 	 * Return a map with entity names as the key and class names as the value.
 	 * Duplicate class names are eliminated.
 	 */
+	// TODO bjv
 	Map<String, Set<String>> mapEntityNameToClassNames();
 	
 	/**
 	 * Return the class names of all the mapped orm classes cross the persistent unit
 	 */
+	// TODO bjv probably should re-work, but also should use "mapping file" instead of
+	// "orm"...
 	Iterable<String> getOrmMappedClassNames();
 	
 	/**
 	 * Return all the entities defined in both the implied and specified mapping files
 	 * of a persistence unit
 	 */
+	// TODO bjv probably should re-work, but also should use "mapping file" instead of
+	// "orm"...
 	 Iterable<Entity> getOrmEntities();
 	
 	/**
 	 * Return the entity names of all the entities defined in both the implied and specified mapping files
 	 * of a persistence unit 
 	 */
+	// TODO bjv probably should re-work, but also should use "mapping file" instead of
+	// "orm"...
 	 Iterator<String> ormEntityNames();
 	 
 	/**
 	 * Return all the entities defined with both the implied and specified Java classes
 	 * of a persistence unit 
 	 */
+	 // TODO bjv remove
 	 Iterable<Entity> getJavaEntities();
 	
 	/**
 	 * Return the entity names of all the entities defined with both the implied and specified Java classes
 	 * of a persistence unit 
 	 */
+	 // TODO bjv remove
 	Iterator<String> javaEntityNames();
 	
 	/**
 	 * Return the entity names of entities only defined with mapped Java classes of a persistence unit.
 	 * The names of Java entities overridden by entities defined in the mapping files are excluded.
 	 */
+	// TODO bjv
 	Iterator<String> javaEntityNamesExclOverridden();
 	
 
@@ -848,5 +855,4 @@ public interface PersistenceUnit
 	 * sure the location does not violate the persistence.xml schema.
 	 */
 	int findInsertLocationForMappingFileRef();
-
 }

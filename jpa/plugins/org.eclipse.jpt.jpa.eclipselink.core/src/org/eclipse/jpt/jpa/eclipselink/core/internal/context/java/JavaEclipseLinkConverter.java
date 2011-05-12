@@ -238,7 +238,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY, 
 							EclipseLinkJpaValidationMessages.CONVERTER_NAME_UNDEFINED, 
-							new String[] {},
+							EMPTY_STRING_ARRAY,
 							this,
 							this.getNameTextRange(astRoot)
 							));

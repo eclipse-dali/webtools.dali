@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -364,15 +364,17 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 	}
 
 	public TextRange getTextRange(CompilationUnit astRoot) {
-		return this.fullTextRange(astRoot);
-	}
-
-	private TextRange fullTextRange(CompilationUnit astRoot) {
-		return this.buildTextRange(this.annotatedElement.getBodyDeclaration(astRoot));
+		// the AST is null for virtual Java attributes
+		// TODO remove the AST null check once we start storing text ranges
+		// in the resource model
+		return (astRoot == null) ? null : this.buildTextRange(this.annotatedElement.getBodyDeclaration(astRoot));
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.annotatedElement.getNameTextRange(astRoot);
+		// the AST is null for virtual Java attributes
+		// TODO remove the AST null check once we start storing text ranges
+		// in the resource model
+		return (astRoot == null) ? null : this.annotatedElement.getNameTextRange(astRoot);
 	}
 
 	private Annotation selectAnnotationNamed(Iterable<Annotation> list, String annotationName) {

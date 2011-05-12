@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -78,7 +78,7 @@ public class JavaEclipseLinkVersionMapping
 	}
 	
 	@Override
-	protected void validateAttributeType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateAttributeType(List<IMessage> messages, CompilationUnit astRoot) {
 		if (!ArrayTools.contains(VERSION_MAPPING_SUPPORTED_TYPES, this.getPersistentAttribute().getTypeName())) {
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(

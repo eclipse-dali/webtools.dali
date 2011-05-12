@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -40,7 +39,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @since 2.0
 */
 public interface EntityMappings
-	extends MappingFileRoot, PersistentType.Owner, PersistentTypeContainer
+	extends MappingFileRoot, PersistentType.Owner
 {
 	/**
 	 * Covariant override.
@@ -107,17 +106,13 @@ public interface EntityMappings
 	 * Covariant override.
 	 */
 	ListIterable<OrmPersistentType> getPersistentTypes();
+	OrmPersistentType getPersistentType(String className);
 	int getPersistentTypesSize();
 	OrmPersistentType addPersistentType(String mappingKey, String className);
 	void removePersistentType(int index);
 	void removePersistentType(OrmPersistentType persistentType);
 	//void movePersistentType(int targetIndex, int sourceIndex);
 	boolean containsPersistentType(String className);
-	/**
-	 * Return the persistent type listed in the mapping file
-	 * with the specified type name. Return null if none exists.
-	 */
-	OrmPersistentType getPersistentType(String className);
 		String PERSISTENT_TYPES_LIST = "persistentTypes"; //$NON-NLS-1$
 
 	ListIterable<OrmSequenceGenerator> getSequenceGenerators();

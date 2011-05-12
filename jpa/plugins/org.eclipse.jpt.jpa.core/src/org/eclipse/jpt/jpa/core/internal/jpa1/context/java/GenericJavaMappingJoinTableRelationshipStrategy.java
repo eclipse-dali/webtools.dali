@@ -12,9 +12,10 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
+import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -83,15 +84,19 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 		return this.getRelationship().getValidationTextRange(astRoot);
 	}
 
+	protected PersistentAttribute getPersistentAttribute() {
+		return this.getRelationshipMapping().getPersistentAttribute();
+	}
+
 	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
-		return new JoinTableValidator((JoinTable) table, textRangeResolver);
+		return new JoinTableValidator(this.getPersistentAttribute(), (JoinTable) table, textRangeResolver);
 	}
 
 	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return new JoinColumnValidator(column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		return new JoinColumnValidator(this.getPersistentAttribute(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 	}
 
 	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return new InverseJoinColumnValidator(column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		return new InverseJoinColumnValidator(this.getPersistentAttribute(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 	}
 }

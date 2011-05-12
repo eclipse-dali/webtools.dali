@@ -344,7 +344,7 @@ public class GenericOrmIdClassReference
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY,
-								new String[] {}, 
+								EMPTY_STRING_ARRAY, 
 								this,
 								this.getValidationTextRange()
 						)

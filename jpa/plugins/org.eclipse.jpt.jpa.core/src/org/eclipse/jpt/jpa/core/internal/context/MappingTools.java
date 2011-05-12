@@ -323,11 +323,23 @@ public final class MappingTools {
 	 * @see JpaNamedContextNode#duplicates(Object)
 	 */
 	public static <T extends JpaNamedContextNode<? super T>> boolean nodesAreDuplicates(T node1, T node2) {
-		return (node1 != node2) &&
-				! StringTools.stringIsEmpty(node1.getName()) &&
-				node1.getName().equals(node2.getName()) &&
+		return nodesArePotentalDuplicates_(node1, node2) &&
 				! node1.overrides(node2) &&
 				! node2.overrides(node1);
+	}
+
+	/**
+	 * Return whether the specified nodes<ul>
+	 * <li>are <em>not</em> the same node
+	 * <li>have the same non-empty name
+	 * <li>are in the same persistence unit
+	 * </ul>
+	 */
+	private static <T extends JpaNamedContextNode<? super T>> boolean nodesArePotentalDuplicates_(T node1, T node2) {
+		return (node1 != node2) &&
+				StringTools.stringIsNotEmpty(node1.getName()) &&
+				node1.getName().equals(node2.getName()) &&
+				(node1.getPersistenceUnit() == node2.getPersistenceUnit());
 	}
 
 	/**
@@ -337,11 +349,8 @@ public final class MappingTools {
 	 */
 	public static <T extends JpaNamedContextNode<? super T>> boolean nodeOverrides(T node1, T node2, Iterable<Class<? extends T>> precedenceTypeList) {
 		// this isn't ideal, but use it until adopters protest...
-		return (node1.getName() != null) &&
-				(node2.getName() != null) &&
-				node1.getName().equals(node2.getName()) &&
-				(node1.getPersistenceUnit() == node2.getPersistenceUnit()) &&
-				(calculatePrecedence(node1, precedenceTypeList) < calculatePrecedence(node2, precedenceTypeList));
+		return nodesArePotentalDuplicates_(node1, node2) &&
+				calculatePrecedence(node1, precedenceTypeList) < calculatePrecedence(node2, precedenceTypeList);
 	}
 
 	/**

@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
@@ -34,6 +33,8 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterators.SubIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterators.SuperIteratorWrapper;
 import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -115,6 +116,8 @@ import org.eclipse.jpt.jpa.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NestablePrimaryKeyJoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NestableSecondaryTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
@@ -508,12 +511,18 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected Iterable<SecondaryTableAnnotation> getSecondaryTableAnnotations() {
-		return new SubIterableWrapper<NestableAnnotation, SecondaryTableAnnotation>(
-				CollectionTools.iterable(this.secondaryTableAnnotations())
-			);
+		return CollectionTools.iterable(this.secondaryTableAnnotations());
 	}
 
-	protected Iterator<NestableAnnotation> secondaryTableAnnotations() {
+	protected Iterator<SecondaryTableAnnotation> secondaryTableAnnotations() {
+		return new SuperIteratorWrapper<SecondaryTableAnnotation>(this.nestableSecondaryTableAnnotations());
+	}
+
+	protected Iterator<NestableSecondaryTableAnnotation> nestableSecondaryTableAnnotations() {
+		return new SubIteratorWrapper<NestableAnnotation, NestableSecondaryTableAnnotation>(this.nestableSecondaryTableAnnotations_());
+	}
+
+	protected Iterator<NestableAnnotation> nestableSecondaryTableAnnotations_() {
 		return this.getResourceAnnotatedElement().annotations(SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 	}
 
@@ -645,12 +654,18 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected Iterable<PrimaryKeyJoinColumnAnnotation> getPrimaryKeyJoinColumnAnnotations() {
-		return new SubIterableWrapper<NestableAnnotation, PrimaryKeyJoinColumnAnnotation>(
-				CollectionTools.iterable(this.primaryKeyJoinColumnAnnotations())
-			);
+		return CollectionTools.iterable(this.primaryKeyJoinColumnAnnotations());
 	}
 
-	protected Iterator<NestableAnnotation> primaryKeyJoinColumnAnnotations() {
+	protected Iterator<PrimaryKeyJoinColumnAnnotation> primaryKeyJoinColumnAnnotations() {
+		return new SuperIteratorWrapper<PrimaryKeyJoinColumnAnnotation>(this.nestablePrimaryKeyJoinColumnAnnotations());
+	}
+
+	protected Iterator<NestablePrimaryKeyJoinColumnAnnotation> nestablePrimaryKeyJoinColumnAnnotations() {
+		return new SubIteratorWrapper<NestableAnnotation, NestablePrimaryKeyJoinColumnAnnotation>(this.nestablePrimaryKeyJoinColumnAnnotations_());
+	}
+
+	protected Iterator<NestableAnnotation> nestablePrimaryKeyJoinColumnAnnotations_() {
 		return this.getResourceAnnotatedElement().annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 	}
 

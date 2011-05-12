@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
@@ -18,7 +17,8 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class AssociationOverrideJoinTableValidator extends AbstractJoinTableValidator
+public class AssociationOverrideJoinTableValidator
+	extends AbstractJoinTableValidator
 {
 	private final AssociationOverride override;
 
@@ -41,17 +41,19 @@ public class AssociationOverrideJoinTableValidator extends AbstractJoinTableVali
 
 	@Override
 	protected IMessage buildUnresolvedNameMessage() {
-		if (this.override.isVirtual()) {
-			return this.buildVirtualOverrideUnresolvedNameMessage();
-		}
-		return super.buildUnresolvedNameMessage();
+		return this.override.isVirtual() ?
+				this.buildVirtualOverrideUnresolvedNameMessage() :
+				super.buildUnresolvedNameMessage();
 	}
 
 	protected IMessage buildVirtualOverrideUnresolvedNameMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
 			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME,
-			new String[] {this.override.getName(), this.getTable().getName()},
+			new String[] {
+				this.override.getName(),
+				this.getTable().getName()
+			},
 			this.getTable(), 
 			this.getTextRangeResolver().getNameTextRange()
 		);
@@ -59,17 +61,19 @@ public class AssociationOverrideJoinTableValidator extends AbstractJoinTableVali
 
 	@Override
 	protected IMessage buildUnresolvedCatalogMessage() {
-		if (this.override.isVirtual()) {
-			return this.buildVirtualOverrideUnresolvedCatalogMessage();
-		}
-		return super.buildUnresolvedCatalogMessage();
+		return this.override.isVirtual() ?
+				this.buildVirtualOverrideUnresolvedCatalogMessage() :
+				super.buildUnresolvedCatalogMessage();
 	}
 
 	protected IMessage buildVirtualOverrideUnresolvedCatalogMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
 			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG,
-			new String[] {this.override.getName(), this.getTable().getCatalog()},
+			new String[] {
+				this.override.getName(),
+				this.getTable().getCatalog()
+			},
 			this.getTable(), 
 			this.getTextRangeResolver().getCatalogTextRange()
 		);
@@ -77,17 +81,19 @@ public class AssociationOverrideJoinTableValidator extends AbstractJoinTableVali
 
 	@Override
 	protected IMessage buildUnresolvedSchemaMessage() {
-		if (this.override.isVirtual()) {
-			return this.buildVirtualOverrideUnresolvedSchemaMessage();
-		}
-		return super.buildUnresolvedSchemaMessage();
+		return this.override.isVirtual() ?
+				this.buildVirtualOverrideUnresolvedSchemaMessage() :
+				super.buildUnresolvedSchemaMessage();
 	}
 
 	protected IMessage buildVirtualOverrideUnresolvedSchemaMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
 			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA,
-			new String[] {this.override.getName(), this.getTable().getSchema()},
+			new String[] {
+				this.override.getName(),
+				this.getTable().getSchema()
+			},
 			this.getTable(), 
 			this.getTextRangeResolver().getSchemaTextRange()
 		);

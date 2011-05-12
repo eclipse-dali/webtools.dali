@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverridesAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAssociationOverrideAnnotation;
 
 /**
  * Java attribute override container
@@ -35,7 +36,7 @@ public class GenericJavaAssociationOverrideContainer
 			JavaReadOnlyAssociationOverride,
 			JavaAssociationOverride,
 			JavaVirtualAssociationOverride,
-			AssociationOverrideAnnotation
+			NestableAssociationOverrideAnnotation
 		>
 	implements JavaAssociationOverrideContainer
 {
@@ -52,12 +53,12 @@ public class GenericJavaAssociationOverrideContainer
 		return this.owner.resolveOverriddenRelationship(associationOverrideName);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, org.eclipse.jpt.jpa.core.context.JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return this.owner.buildJoinTableJoinColumnValidator(override, column, owner, textRangeResolver);
+	public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, org.eclipse.jpt.jpa.core.context.JoinColumn.Owner o, JoinColumnTextRangeResolver textRangeResolver) {
+		return this.owner.buildJoinTableJoinColumnValidator(override, column, o, textRangeResolver);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, org.eclipse.jpt.jpa.core.context.JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return this.owner.buildJoinTableInverseJoinColumnValidator(override, column, owner, textRangeResolver);
+	public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, org.eclipse.jpt.jpa.core.context.JoinColumn.Owner o, JoinColumnTextRangeResolver textRangeResolver) {
+		return this.owner.buildJoinTableInverseJoinColumnValidator(override, column, o, textRangeResolver);
 	}
 
 	public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
@@ -75,7 +76,7 @@ public class GenericJavaAssociationOverrideContainer
 	}
 
 	@Override
-	protected JavaAssociationOverride buildSpecifiedOverride(AssociationOverrideAnnotation overrideAnnotation) {
+	protected JavaAssociationOverride buildSpecifiedOverride(NestableAssociationOverrideAnnotation overrideAnnotation) {
 		return this.getJpaFactory().buildJavaAssociationOverride(this, overrideAnnotation);
 	}
 

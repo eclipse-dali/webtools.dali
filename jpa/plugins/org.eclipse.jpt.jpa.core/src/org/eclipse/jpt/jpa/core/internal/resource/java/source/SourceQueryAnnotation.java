@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -46,10 +46,12 @@ abstract class SourceQueryAnnotation
 	DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	AnnotationElementAdapter<String> nameAdapter;
 	String name;
+	TextRange nameTextRange;
 
 	DeclarationAnnotationElementAdapter<String> queryDeclarationAdapter;
 	AnnotationElementAdapter<String> queryAdapter;
 	String query;
+	TextRange queryTextRange;
 
 	final Vector<NestableQueryHintAnnotation> hints = new Vector<NestableQueryHintAnnotation>();
 	final HintsAnnotationContainer hintsContainer = new HintsAnnotationContainer();
@@ -65,13 +67,17 @@ abstract class SourceQueryAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.query = this.buildQuery(astRoot);
+		this.queryTextRange = this.buildQueryTextRange(astRoot);
 		AnnotationContainerTools.initialize(this.hintsContainer, astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.syncQuery(this.buildQuery(astRoot));
+		this.queryTextRange = this.buildQueryTextRange(astRoot);
 		AnnotationContainerTools.synchronize(this.hintsContainer, astRoot);
 	}
 
@@ -101,6 +107,10 @@ abstract class SourceQueryAnnotation
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.nameTextRange;
+	}
+
+	private TextRange buildNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
@@ -137,6 +147,10 @@ abstract class SourceQueryAnnotation
 	}
 
 	public TextRange getQueryTextRange(CompilationUnit astRoot) {
+		return this.queryTextRange;
+	}
+
+	private TextRange buildQueryTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.queryDeclarationAdapter, astRoot);
 	}
 
@@ -346,6 +360,5 @@ abstract class SourceQueryAnnotation
 		public String toString() {
 			return StringTools.buildToStringFor(this);
 		}
-
 	}
 }

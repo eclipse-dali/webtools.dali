@@ -9,20 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
@@ -200,58 +193,14 @@ public class GenericOrmGeneratorContainer
 
 	// ********** validation **********
 
+	/**
+	 * The generators are validated in the persistence unit.
+	 * @see org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit#validateGenerators(List, IReporter)
+	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateGenerators(messages);
-	}
-
-	protected void validateGenerators(List<IMessage> messages) {
-		for (OrmGenerator localGenerator : this.getGenerators()) {
-			String name = localGenerator.getName();
-			if (StringTools.stringIsEmpty(name)){
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.GENERATOR_NAME_UNDEFINED,
-							new String[] {},
-							localGenerator,
-							localGenerator.getNameTextRange()
-						)
-					);
-			} else {
-				List<String> reportedNames = new ArrayList<String>();
-				for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
-					if (localGenerator.duplicates(globalGenerators.next()) && !reportedNames.contains(name)) {
-						messages.add(
-								DefaultJpaValidationMessages.buildMessage(
-										IMessage.HIGH_SEVERITY,
-										JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-										new String[] {name},
-										localGenerator,
-										localGenerator.getNameTextRange()
-								)
-						);
-						reportedNames.add(name);
-					}
-				}
-			}
-		}
-	}
-
-	protected Iterable<OrmGenerator> getGenerators() {
-		ArrayList<OrmGenerator> generators = new ArrayList<OrmGenerator>();
-		this.addGeneratorsTo(generators);
-		return generators;
-	}
-
-	protected void addGeneratorsTo(ArrayList<OrmGenerator> generators) {
-		if (this.sequenceGenerator != null) {
-			generators.add(this.sequenceGenerator);
-		}
-		if (this.tableGenerator != null) {
-			generators.add(this.tableGenerator);
-		}
+		// generators are validated in the persistence unit
 	}
 
 	public TextRange getValidationTextRange() {

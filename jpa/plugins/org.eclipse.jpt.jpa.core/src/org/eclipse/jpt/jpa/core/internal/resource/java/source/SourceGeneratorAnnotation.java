@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,7 @@ abstract class SourceGeneratorAnnotation
 	final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	final AnnotationElementAdapter<String> nameAdapter;
 	String name;
+	TextRange nameTextRange;
 
 	final DeclarationAnnotationElementAdapter<Integer> initialValueDeclarationAdapter;
 	final AnnotationElementAdapter<Integer> initialValueAdapter;
@@ -62,12 +63,14 @@ abstract class SourceGeneratorAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.initialValue = this.buildInitialValue(astRoot);
 		this.allocationSize = this.buildAllocationSize(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.syncInitialValue(this.buildInitialValue(astRoot));
 		this.syncAllocationSize(this.buildAllocationSize(astRoot));
 	}
@@ -111,6 +114,10 @@ abstract class SourceGeneratorAnnotation
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.nameTextRange;
+	}
+
+	private TextRange buildNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
@@ -182,5 +189,4 @@ abstract class SourceGeneratorAnnotation
 	static DeclarationAnnotationElementAdapter<Integer> buildIntegerAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return new ConversionDeclarationAnnotationElementAdapter<Integer>(annotationAdapter, elementName, NumberIntegerExpressionConverter.instance());
 	}
-
 }

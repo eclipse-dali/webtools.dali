@@ -127,7 +127,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY, 
 							EclipseLinkJpaValidationMessages.CONVERTER_NAME_UNDEFINED, 
-							new String[] {},
+							EMPTY_STRING_ARRAY,
 							this,
 							this.getNameTextRange()
 					));

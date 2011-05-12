@@ -9,15 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * <code>orm.xml</code> sequence or table generator
@@ -61,7 +67,6 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 		super.update();
 		this.setDefaultInitialValue(this.buildDefaultInitialValue());
 		this.setDefaultAllocationSize(this.buildDefaultAllocationSize());
-		this.getPersistenceUnit().addGenerator(this);
 	}
 
 
@@ -153,7 +158,24 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 	}
 
 
-	// ********** text ranges **********
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+
+		if (StringTools.stringIsEmpty(this.name)){
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.GENERATOR_NAME_UNDEFINED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getNameTextRange()
+				)
+			);
+		}
+	}
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlGenerator.getValidationTextRange();

@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.BaseColumnTableValidator.TableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -79,7 +78,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn, R extend
 	}
 
 	protected IMessage buildUnresolvedReferencedColumnNameMessage() {
-		return this.attributeIsVirtual() ?
+		return this.columnParentIsVirtualAttribute() ?
 				this.buildVirtualAttributeUnresolvedReferencedColumnNameMessage() :
 				this.buildUnresolvedReferencedColumnNameMessage(this.getUnresolvedReferencedColumnNameMessage());
 	}
@@ -104,7 +103,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn, R extend
 				IMessage.HIGH_SEVERITY,
 				this.getVirtualAttributeUnresolvedReferencedColumnNameMessage(),
 				new String[] {
-					this.getPersistentAttributeName(),
+					this.persistentAttribute.getName(),
 					this.column.getReferencedColumnName(),
 					this.column.getReferencedColumnDbTable().getName()
 				},
@@ -116,7 +115,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn, R extend
 	protected abstract String getVirtualAttributeUnresolvedReferencedColumnNameMessage();
 
 	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
-		return this.attributeIsVirtual() ?
+		return this.columnParentIsVirtualAttribute() ?
 				this.buildVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() :
 				this.buildUnspecifiedNameMultipleJoinColumnsMessage(this.getUnspecifiedNameMultipleJoinColumnsMessage());
 	}
@@ -137,7 +136,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn, R extend
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				this.getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage(),
-				new String[] {this.getPersistentAttributeName()},
+				new String[] {this.persistentAttribute.getName()},
 				this.column,
 				this.textRangeResolver.getNameTextRange()
 			);
@@ -146,7 +145,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn, R extend
 	protected abstract String getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage();
 
 	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		return this.attributeIsVirtual() ?
+		return this.columnParentIsVirtualAttribute() ?
 				this.buildVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() :
 				this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(this.getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
 	}
@@ -167,7 +166,7 @@ public abstract class BaseJoinColumnValidator<C extends BaseJoinColumn, R extend
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				this.getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(),
-				new String[] {this.getPersistentAttributeName()},
+				new String[] {this.persistentAttribute.getName()},
 				this.column,
 				this.textRangeResolver.getReferencedColumnNameTextRange()
 			);

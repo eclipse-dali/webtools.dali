@@ -467,7 +467,7 @@ public class EclipseLinkPersistenceUnit
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							EclipseLinkJpaValidationMessages.SESSION_LOGGER_CLASS_NOT_SPECIFIED,
-							new String[] {},
+							EMPTY_STRING_ARRAY,
 							this.getPersistenceUnit(),
 							loggerProperty.getValidationTextRange()
 					)
@@ -508,7 +508,7 @@ public class EclipseLinkPersistenceUnit
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							EclipseLinkJpaValidationMessages.EXCEPTION_HANDLER_CLASS_NOT_SPECIFIED,
-							new String[] {},
+							EMPTY_STRING_ARRAY,
 							this.getPersistenceUnit(),
 							handlerProperty.getValidationTextRange()
 					)
@@ -564,7 +564,7 @@ public class EclipseLinkPersistenceUnit
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							EclipseLinkJpaValidationMessages.SESSION_PROFILER_CLASS_NOT_SPECIFIED,
-							new String[] {},
+							EMPTY_STRING_ARRAY,
 							this.getPersistenceUnit(),
 							profilerProperty.getValidationTextRange()
 					)
@@ -616,7 +616,7 @@ public class EclipseLinkPersistenceUnit
 							DefaultEclipseLinkJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
 									EclipseLinkJpaValidationMessages.SESSION_CUSTOMIZER_CLASS_NOT_SPECIFIED,
-									new String[] {},
+									EMPTY_STRING_ARRAY,
 									this.getPersistenceUnit(),
 									property.getValidationTextRange()
 							)

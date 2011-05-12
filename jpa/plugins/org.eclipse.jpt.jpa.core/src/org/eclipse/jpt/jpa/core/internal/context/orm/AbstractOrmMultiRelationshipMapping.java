@@ -715,10 +715,6 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 
-		protected String getMappingName() {
-			return AbstractOrmMultiRelationshipMapping.this.getName();
-		}
-
 		protected OrmPersistentAttribute getPersistentAttribute() {
 			return AbstractOrmMultiRelationshipMapping.this.getPersistentAttribute();
 		}
@@ -732,7 +728,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		implements OrmColumn.Owner
 	{
 		public String getDefaultColumnName() {
-			return this.getMappingName() + "_KEY"; //$NON-NLS-1$
+			return AbstractOrmMultiRelationshipMapping.this.getName() + "_KEY"; //$NON-NLS-1$
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {

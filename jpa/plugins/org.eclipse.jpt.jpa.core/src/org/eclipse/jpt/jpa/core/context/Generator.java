@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,13 @@ import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 
 /**
- * sequence and table generators
+ * Sequence and table generators.
+ * <p>
+ * Sequences can be defined on<ul>
+ * <li>Java and <code>orm.xml</code> entities
+ * <li>Java and <code>orm.xml</code> ID mappings
+ * <li><code>orm.xml</code> entity mappings elements
+ * </ul>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -33,8 +39,7 @@ public interface Generator
 	extends JpaNamedContextNode<Generator>
 {
 	/**
-	 * TODO use this precedence until adopters protest...
-	 * then move to JpaPlatform
+	 * TODO bjv remove!
 	 */
 	@SuppressWarnings("unchecked")
 	Iterable<Class<? extends Generator>> PRECEDENCE_TYPE_LIST = Arrays.asList(

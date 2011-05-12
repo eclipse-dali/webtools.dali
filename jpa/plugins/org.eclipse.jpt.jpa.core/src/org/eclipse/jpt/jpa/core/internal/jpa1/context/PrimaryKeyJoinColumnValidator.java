@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.BaseColumnTableValidator.NullTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -23,7 +22,7 @@ public abstract class PrimaryKeyJoinColumnValidator
 				BaseJoinColumn column,
 				BaseJoinColumn.Owner owner,
 				BaseJoinColumnTextRangeResolver textRangeResolver) {
-		super(column, owner, textRangeResolver, new NullTableDescriptionProvider());
+		super(column, owner, textRangeResolver, TableDescriptionProvider.Null.instance());
 	}
 
 	protected PrimaryKeyJoinColumnValidator(
@@ -31,7 +30,7 @@ public abstract class PrimaryKeyJoinColumnValidator
 				BaseJoinColumn column,
 				BaseJoinColumn.Owner owner,
 				BaseJoinColumnTextRangeResolver textRangeResolver) {
-		super(persistentAttribute, column, owner, textRangeResolver, new NullTableDescriptionProvider());
+		super(persistentAttribute, column, owner, textRangeResolver, TableDescriptionProvider.Null.instance());
 	}
 
 	@Override

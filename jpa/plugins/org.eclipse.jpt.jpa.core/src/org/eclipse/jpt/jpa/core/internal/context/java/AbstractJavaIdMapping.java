@@ -127,7 +127,7 @@ public abstract class AbstractJavaIdMapping
 		return this.generatorContainer;
 	}
 
-	private JavaGeneratorContainer buildGeneratorContainer() {
+	protected JavaGeneratorContainer buildGeneratorContainer() {
 		return this.getJpaFactory().buildJavaGeneratorContainer(this, this);
 	}
 
@@ -390,7 +390,7 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator((BaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+		return new NamedColumnValidator(this.getPersistentAttribute(), (BaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 
 

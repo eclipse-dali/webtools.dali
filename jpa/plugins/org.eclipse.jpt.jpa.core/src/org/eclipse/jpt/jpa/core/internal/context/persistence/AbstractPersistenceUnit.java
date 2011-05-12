@@ -20,7 +20,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
@@ -44,7 +43,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
@@ -52,15 +50,28 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.QueryContainer;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -192,18 +203,6 @@ public abstract class AbstractPersistenceUnit
 		this.initializeMetamodelFiles();
 	}
 
-	/**
-	 * These lists are just copies of what is distributed across the context
-	 * model; so, if they have (virtually) changed, the resulting update has
-	 * already been triggered. We don't need to trigger another one here.
-	 */
-	@Override
-	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
-		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
-		nonUpdateAspectNames.add(GENERATORS_COLLECTION);
-		nonUpdateAspectNames.add(QUERIES_COLLECTION);
-	}
-
 
 	// ********** synchronize/update **********
 
@@ -233,31 +232,9 @@ public abstract class AbstractPersistenceUnit
 		this.setSpecifiedValidationMode_(this.buildSpecifiedValidationMode());
 	}
 
-	// TODO bjv calculate generators and queries directly...
-	/**
-	 * The 'generators' and 'queries' collections are simply cleared out with
-	 * each "update" and completely rebuilt as the "update" cascades through
-	 * the persistence unit. When the persistence unit's "update" is
-	 * complete, the collections have been populated and we fire change events.
-	 * <p>
-	 * Note: Clearing and rebuilding 'generators' and 'queries' should work OK
-	 * since JPA project "synchronization" is single-threaded.
-	 * (Either the it takes place synchronously on a single thread or
-	 * asynchronously in jobs that are synchronized via scheduling rules.)
-	 * <p>
-	 * See calls to the following:<ul>
-	 * <li>{@link #addGenerator(Generator)}
-	 * <li>{@link #addQuery(Query)}
-	 * </ul>
-	 * [see bug 311093 before attempting to change how this works]
-	 */
 	@Override
 	public void update() {
 		super.update();
-
-		// see method comment above
-		this.generators.clear();
-		this.queries.clear();
 
 		this.setDefaultTransactionType(this.buildDefaultTransactionType());
 
@@ -279,12 +256,11 @@ public abstract class AbstractPersistenceUnit
 
 		this.updatePersistenceUnitMetadata();
 
+		this.setGenerators(this.buildGenerators());
+		this.setQueries(this.buildQueries());
+
 		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
 		this.setDefaultValidationMode(this.buildDefaultValidationMode());
-
-		// see method comment above
-		this.fireCollectionChanged(GENERATORS_COLLECTION, this.generators);
-		this.fireCollectionChanged(QUERIES_COLLECTION, this.queries);
 	}
 
 
@@ -478,7 +454,7 @@ public abstract class AbstractPersistenceUnit
 			}
 		};
 	}
-	
+
 	protected ListIterable<MappingFileRef> getMappingFileRefs() {
 		return (this.impliedMappingFileRef == null) ?
 				this.getSpecifiedMappingFileRefs() :
@@ -711,16 +687,16 @@ public abstract class AbstractPersistenceUnit
 	public int jarFileRefsSize() {
 		return this.jarFileRefs.size();
 	}
-	
-	protected Iterator<String> jarFileNames() {
-		return new TransformationIterator<JarFileRef, String>(this.jarFileRefs()) {
+
+	protected Iterable<String> getJarFileNames() {
+		return new TransformationIterable<JarFileRef, String>(this.getJarFileRefs()) {
 			@Override
 			protected String transform(JarFileRef jarFileRef) {
 				return jarFileRef.getFileName();
 			}
 		};
 	}
-	
+
 	public JarFileRef addJarFileRef(String fileName) {
 		return this.addJarFileRef(this.jarFileRefs.size(), fileName);
 	}
@@ -832,15 +808,18 @@ public abstract class AbstractPersistenceUnit
 		return this.specifiedClassRefs.size() + this.impliedClassRefs.size();
 	}
 
-	protected Iterator<String> classRefNames() {
-		return new TransformationIterator<ClassRef, String>(this.classRefs()) {
+	/**
+	 * Return the class ref names, both specified and implied.
+	 */
+	protected Iterable<String> getClassRefNames() {
+		return new TransformationIterable<ClassRef, String>(this.getClassRefs()) {
 			@Override
 			protected String transform(ClassRef classRef) {
 				return classRef.getClassName();
 			}
 		};
 	}
-	
+
 
 	// ********** specified class refs **********
 
@@ -1573,24 +1552,131 @@ public abstract class AbstractPersistenceUnit
 
 	public Iterable<String> getUniqueGeneratorNames() {
 		HashSet<String> names = new HashSet<String>(this.generators.size());
-		this.addNonNullGeneratorNamesTo(names);
+		this.addNonEmptyGeneratorNamesTo(names);
 		return names;
 	}
 
-	protected void addNonNullGeneratorNamesTo(Set<String> names) {
+	protected void addNonEmptyGeneratorNamesTo(Set<String> names) {
 		for (Generator generator : this.getGenerators()) {
 			String generatorName = generator.getName();
-			if (generatorName != null) {
+			if (StringTools.stringIsNotEmpty(generatorName)) {
 				names.add(generatorName);
 			}
 		}
+	}
+
+	protected void setGenerators(Iterable<Generator> generators) {
+		this.synchronizeCollection(generators, this.generators, GENERATORS_COLLECTION);
+	}
+
+	/**
+	 * We only hold "active" generators; i.e. the mapping file generators and
+	 * the Java generators that are not "overridden" by mapping file
+	 * generators (by generator name).
+	 */
+	protected Iterable<Generator> buildGenerators() {
+		ArrayList<Generator> generatorList = new ArrayList<Generator>();
+
+		this.addMappingFileGeneratorsTo(generatorList);
+
+		HashMap<String, ArrayList<Generator>> mappingFileGenerators = this.mapGeneratorsByName(this.getMappingFileGenerators());
+		HashMap<String, ArrayList<Generator>> javaGenerators = this.mapGeneratorsByName(this.getJavaGenerators());
+		for (Map.Entry<String, ArrayList<Generator>> javaGeneratorEntry : javaGenerators.entrySet()) {
+			if (mappingFileGenerators.get(javaGeneratorEntry.getKey()) == null) {
+				generatorList.addAll(javaGeneratorEntry.getValue());
+			}
+		}
+
+		return generatorList;
+	}
+
+	protected Iterable<Generator> getMappingFileGenerators() {
+		ArrayList<Generator> generatorList = new ArrayList<Generator>();
+		this.addMappingFileGeneratorsTo(generatorList);
+		return generatorList;
+	}
+
+	protected void addMappingFileGeneratorsTo(ArrayList<Generator> generatorList) {
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			MappingFile mappingFile = mappingFileRef.getMappingFile();
+			// TODO bjv - bogus cast - need to add API to MappingFileRef?
+			if (mappingFile instanceof OrmXml) {
+				EntityMappings entityMappings = ((OrmXml) mappingFile).getRoot();
+				if (entityMappings != null) {
+					CollectionTools.addAll(generatorList, entityMappings.getSequenceGenerators());
+					CollectionTools.addAll(generatorList, entityMappings.getTableGenerators());
+				}
+			}
+		}
+		this.addGeneratorsTo(this.getMappingFilePersistentTypes(), generatorList);
+	}
+
+	/**
+	 * Include "overridden" Java generators.
+	 */
+	protected Iterable<Generator> getJavaGenerators() {
+		ArrayList<Generator> generatorList = new ArrayList<Generator>();
+		this.addJavaGeneratorsTo(generatorList);
+		return generatorList;
+	}
+
+	/**
+	 * Include "overridden" Java generators.
+	 */
+	protected void addJavaGeneratorsTo(ArrayList<Generator> generatorList) {
+		this.addGeneratorsTo(this.getAllJavaPersistentTypesUnique(), generatorList);
+	}
+
+	// TODO bjv - bogus casts - need to delegate...
+	protected void addGeneratorsTo(Iterable<PersistentType> persistentTypes, ArrayList<Generator> generatorList) {
+		for (PersistentType persistentType : persistentTypes) {
+			TypeMapping typeMapping = persistentType.getMapping();
+			if (typeMapping instanceof Entity) {
+				this.addGeneratorsTo(((Entity) typeMapping).getGeneratorContainer(), generatorList);
+			}
+			for (ReadOnlyPersistentAttribute persistentAttribute : CollectionTools.iterable(persistentType.attributes())) {
+				AttributeMapping attributeMapping = persistentAttribute.getMapping();
+				if (attributeMapping instanceof IdMapping) {
+					this.addGeneratorsTo(((IdMapping) attributeMapping).getGeneratorContainer(), generatorList);
+				}
+			}
+		}
+	}
+
+	protected void addGeneratorsTo(GeneratorContainer generatorContainer, ArrayList<Generator> generatorList) {
+		Generator generator = generatorContainer.getSequenceGenerator();
+		if (generator != null) {
+			generatorList.add(generator);
+		}
+		generator = generatorContainer.getTableGenerator();
+		if (generator != null) {
+			generatorList.add(generator);
+		}
+	}
+
+	protected HashMap<String, ArrayList<Generator>> mapGeneratorsByName(Iterable<Generator> generatorList) {
+		HashMap<String, ArrayList<Generator>> map = new HashMap<String, ArrayList<Generator>>();
+		for (Generator generator : generatorList) {
+			String generatorName = generator.getName();
+			ArrayList<Generator> list = map.get(generatorName);
+			if (list == null) {
+				list = new ArrayList<Generator>();
+				map.put(generatorName, list);
+			}
+			list.add(generator);
+		}
+		return map;
 	}
 
 
 	// ********** queries **********
 
 	public Iterator<Query> queries() {
-		return new CloneIterator<Query>(this.queries);
+		return this.getQueries().iterator();
+	}
+
+	protected Iterable<Query> getQueries() {
+		return new LiveCloneIterable<Query>(this.queries);
 	}
 
 	public int queriesSize() {
@@ -1599,6 +1685,538 @@ public abstract class AbstractPersistenceUnit
 
 	public void addQuery(Query query) {
 		this.queries.add(query);
+	}
+
+	protected void setQueries(Iterable<Query> queries) {
+		this.synchronizeCollection(queries, this.queries, QUERIES_COLLECTION);
+	}
+
+	/**
+	 * We only hold "active" queries; i.e. the mapping file queries and
+	 * the Java queries that are not "overridden" by mapping file
+	 * queries (by query name).
+	 */
+	protected Iterable<Query> buildQueries() {
+		ArrayList<Query> queryList = new ArrayList<Query>();
+
+		this.addMappingFileQueriesTo(queryList);
+
+		HashMap<String, ArrayList<Query>> mappingFileQueries = this.mapQueriesByName(this.getMappingFileQueries());
+		HashMap<String, ArrayList<Query>> javaQueries = this.mapQueriesByName(this.getJavaQueries());
+		for (Map.Entry<String, ArrayList<Query>> javaQueryEntry : javaQueries.entrySet()) {
+			if (mappingFileQueries.get(javaQueryEntry.getKey()) == null) {
+				queryList.addAll(javaQueryEntry.getValue());
+			}
+		}
+
+		return queryList;
+	}
+
+	protected Iterable<Query> getMappingFileQueries() {
+		ArrayList<Query> queryList = new ArrayList<Query>();
+		this.addMappingFileQueriesTo(queryList);
+		return queryList;
+	}
+
+	protected void addMappingFileQueriesTo(ArrayList<Query> queryList) {
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			MappingFile mappingFile = mappingFileRef.getMappingFile();
+			// TODO bjv - bogus cast - need to add API to MappingFileRef?
+			if (mappingFile instanceof OrmXml) {
+				EntityMappings entityMappings = ((OrmXml) mappingFile).getRoot();
+				if (entityMappings != null) {
+					this.addQueriesTo(entityMappings.getQueryContainer(), queryList);
+				}
+			}
+		}
+		this.addMappingFileQueriesTo(this.getMappingFilePersistentTypes(), queryList);
+	}
+
+	// TODO bjv - bogus casts - need to delegate...
+	protected void addMappingFileQueriesTo(Iterable<PersistentType> persistentTypes, ArrayList<Query> queryList) {
+		for (PersistentType persistentType : persistentTypes) {
+			TypeMapping typeMapping = persistentType.getMapping();
+			if (typeMapping instanceof Entity) {
+				this.addQueriesTo(((Entity) typeMapping).getQueryContainer(), queryList);
+			}
+			// spec does not allow queries to be defined on mapped superclasses in orm.xml (huh?)
+		}
+	}
+
+	/**
+	 * Include "overridden" Java queries.
+	 */
+	protected Iterable<Query> getJavaQueries() {
+		ArrayList<Query> queryList = new ArrayList<Query>();
+		this.addJavaQueriesTo(queryList);
+		return queryList;
+	}
+
+	/**
+	 * Include "overridden" Java queries.
+	 */
+	protected void addJavaQueriesTo(ArrayList<Query> queryList) {
+		this.addJavaQueriesTo(this.getAllJavaPersistentTypesUnique(), queryList);
+	}
+
+	// TODO bjv - bogus casts - need to delegate...
+	protected void addJavaQueriesTo(Iterable<PersistentType> persistentTypes, ArrayList<Query> queryList) {
+		for (PersistentType persistentType : persistentTypes) {
+			TypeMapping typeMapping = persistentType.getMapping();
+			if (typeMapping instanceof Entity) {
+				this.addQueriesTo(((Entity) typeMapping).getQueryContainer(), queryList);
+			}
+// TODO not yet supported by Dali
+//			else if (typeMapping instanceof MappedSuperclass) {
+//				this.addQueriesTo(((MappedSuperclass) typeMapping).getQueryContainer(), queryList);
+//			}
+		}
+	}
+
+	protected void addQueriesTo(QueryContainer queryContainer, ArrayList<Query> queryList) {
+		CollectionTools.addAll(queryList, queryContainer.namedQueries());
+		CollectionTools.addAll(queryList, queryContainer.namedNativeQueries());
+	}
+
+	protected HashMap<String, ArrayList<Query>> mapQueriesByName(Iterable<Query> queryList) {
+		HashMap<String, ArrayList<Query>> map = new HashMap<String, ArrayList<Query>>();
+		for (Query query : queryList) {
+			String queryName = query.getName();
+			ArrayList<Query> list = map.get(queryName);
+			if (list == null) {
+				list = new ArrayList<Query>();
+				map.put(queryName, list);
+			}
+			list.add(query);
+		}
+		return map;
+	}
+
+
+	// ********** persistent types **********
+
+	@SuppressWarnings("unchecked")
+	public Iterable<PersistentType> getPersistentTypes() {
+		return new CompositeIterable<PersistentType>(
+				this.getMappingFilePersistentTypes(),
+				this.getJavaPersistentTypes()
+			);
+	}
+
+	protected Iterable<PersistentType> getMappingFilePersistentTypes() {
+		return new CompositeIterable<PersistentType>(this.getMappingFilePersistentTypeLists());
+	}
+
+	protected Iterable<Iterable<? extends PersistentType>> getMappingFilePersistentTypeLists() {
+		return new TransformationIterable<PersistentTypeContainer, Iterable<? extends PersistentType>>(
+					this.getMappingFileRefs(),
+					PersistentTypeContainer.TRANSFORMER
+				);
+	}
+
+	/**
+	 * Return the non-<code>null</code> mapping file Java persistent types;
+	 * i.e. the Java persistent types corresponding to the mapping file
+	 * persistent types that are not marked "metadata complete".
+	 * @see #getAllJavaPersistentTypesUnique()
+	 */
+	protected Iterable<PersistentType> getMappingFileJavaPersistentTypes() {
+		return new FilteringIterable<PersistentType>(
+					this.getMappingFileJavaPersistentTypes_(),
+					NotNullFilter.<PersistentType>instance()
+				);
+	}
+
+	/**
+	 * The returned list will contain a <code>null</code> for each mapping file
+	 * persistent type that does not correspond to an existing Java type or is
+	 * marked "metadata complete".
+	 * @see #getMappingFileJavaPersistentTypes()
+	 */
+	// TODO bjv remove - bogus cast to OrmPersistentType - probably need to add API to MappingFile
+	// getOverriddenPersistentTypes()?
+	protected Iterable<PersistentType> getMappingFileJavaPersistentTypes_() {
+		return new TransformationIterable<PersistentType, PersistentType>(this.getMappingFilePersistentTypes()) {
+			@Override
+			protected PersistentType transform(PersistentType mappingFilePersistentType) {
+				return (mappingFilePersistentType instanceof OrmPersistentType) ?
+						this.transform((OrmPersistentType) mappingFilePersistentType) :
+						null;
+			}
+			protected PersistentType transform(OrmPersistentType mappingFilePersistentType) {
+				return mappingFilePersistentType.getMapping().isMetadataComplete() ?
+						null :
+						mappingFilePersistentType.getJavaPersistentType();
+			}
+		};
+	}
+
+	/**
+	 * Return the persistence unit's Java persistent types, as specified by
+	 * the class refs (both specified and implied) and jar files.
+	 * There can be duplicate types, and any of them may be overridden by a
+	 * mapping file persistence type.
+	 * @see #getMappingFilePersistentTypes()
+	 */
+	@SuppressWarnings("unchecked")
+	protected Iterable<PersistentType> getJavaPersistentTypes() {
+		return new CompositeIterable<PersistentType>(
+				this.getClassRefPersistentTypes(),
+				this.getJarFilePersistentTypes()
+			);
+	}
+
+	/**
+	 * Return the non-<code>null</code> class ref persistent types,
+	 * both specified and implied.
+	 */
+	protected Iterable<PersistentType> getClassRefPersistentTypes() {
+		return new FilteringIterable<PersistentType>(
+					this.getClassRefPersistentTypes_(),
+					NotNullFilter.<PersistentType>instance()
+				);
+	}
+
+	/**
+	 * Both specified and implied. May contain <code>null</code>s.
+	 * @see #getClassRefPersistentTypes()
+	 */
+	protected Iterable<PersistentType> getClassRefPersistentTypes_() {
+		return new TransformationIterable<ClassRef, PersistentType>(this.getClassRefs()) {
+			@Override
+			protected PersistentType transform(ClassRef classRef) {
+				return classRef.getJavaPersistentType();
+			}
+		};
+	}
+
+	/**
+	 * We only get <em>annotated</em> types from jar files.
+	 */
+	protected Iterable<PersistentType> getJarFilePersistentTypes() {
+		return new CompositeIterable<PersistentType>(this.getJarFilePersistentTypeLists());
+	}
+
+	/**
+	 * We only get <em>annotated</em> types from jar files.
+	 */
+	protected Iterable<Iterable<? extends PersistentType>> getJarFilePersistentTypeLists() {
+		return new TransformationIterable<PersistentTypeContainer, Iterable<? extends PersistentType>>(
+				this.getJarFileRefs(),
+				PersistentTypeContainer.TRANSFORMER
+			);
+	}
+
+	public PersistentType getPersistentType(String typeName) {
+		if (typeName == null) {
+			return null;
+		}
+		// search order is significant(?)
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			PersistentType persistentType = mappingFileRef.getPersistentType(typeName);
+			if (persistentType != null) {
+				return persistentType;
+			}
+		}
+		for (ClassRef classRef : this.getClassRefs()) {
+			if (classRef.isFor(typeName)) {
+				return classRef.getJavaPersistentType();
+			}
+		}
+		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
+			PersistentType persistentType = jarFileRef.getPersistentType(typeName);
+			if (persistentType != null) {
+				return persistentType;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Ignore implied class refs and jar files.
+	 */
+	public boolean specifiesPersistentType(String typeName) {
+		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
+			if (classRef.isFor(typeName)) {
+				return true;
+			}
+		}
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			if (mappingFileRef.getPersistentType(typeName) != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Return a list of <em>all</em> the persistence unit's Java persistent
+	 * types (including those referenced by the mapping files that are not
+	 * marked "metadata complete") with those with duplicate names removed.
+	 * Although this may not always be true, assume persistent types with
+	 * the same name reference the same Java type. (<strong>NB:</strong>
+	 * It's possible that a Java class in a jar file has the same name as a
+	 * Java class in the project and they be different....)
+	 * <p>
+	 * This is really only useful for the calculation of generators and queries,
+	 * which can be defined in Java annotations but still be "active" even
+	 * though their corresponding Java types/attributes have been overridden in
+	 * a mapping file.
+	 * <p>
+	 * The order of precedence:<ul>
+	 * <li>mapping files
+	 * <li>persistence unit class refs
+	 * <li>jar files
+	 * </ul>
+	 */
+	protected Iterable<PersistentType> getAllJavaPersistentTypesUnique() {
+		// order is significant(?)
+		HashMap<String, PersistentType> map = new HashMap<String, PersistentType>();
+		this.addPersistentTypesTo(this.getJarFilePersistentTypes(), map);
+		this.addPersistentTypesTo(this.getClassRefPersistentTypes(), map);
+		this.addPersistentTypesTo(this.getMappingFileJavaPersistentTypes(), map);
+		return map.values();
+	}
+
+	/**
+	 * Add the specified persistent types to
+	 * the specified map keyed by persistent type name.
+	 */
+	protected void addPersistentTypesTo(Iterable<? extends PersistentType> persistentTypes, HashMap<String, PersistentType> persistentTypeMap) {
+		for (PersistentType pt : persistentTypes) {
+			String ptName = pt.getName();
+			if (ptName != null) {
+				persistentTypeMap.put(ptName, pt);
+			}
+		}
+	}
+
+
+	// ********** type mappings **********
+
+	public Entity getEntity(String typeName) {
+		TypeMapping typeMapping = this.getTypeMapping(typeName);
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
+	}
+
+	public Embeddable getEmbeddable(String typeName) {
+		TypeMapping typeMapping = this.getTypeMapping(typeName);
+		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
+	}
+
+	// TODO bjv - this should probably *not* return Java type mappings when PU is "metadata complete"...
+	protected TypeMapping getTypeMapping(String typeName) {
+		PersistentType persistentType = this.getPersistentType(typeName);
+		return (persistentType == null) ? null : persistentType.getMapping();
+	}
+
+	public Iterable<Entity> getEntities() {
+		return this.filterToEntities(this.getTypeMappings());
+	}
+
+	protected Iterable<Entity> filterToEntities(Iterable<TypeMapping> typeMappings) {
+		return new SubIterableWrapper<TypeMapping, Entity>(this.filterToEntities_(typeMappings));
+	}
+
+	protected Iterable<TypeMapping> filterToEntities_(Iterable<TypeMapping> typeMappings) {
+		return new FilteringIterable<TypeMapping>(typeMappings) {
+				@Override
+				protected boolean accept(TypeMapping typeMapping) {
+					return typeMapping instanceof Entity;
+				}
+			};
+	}
+
+	// TODO bjv - this should probably *not* return Java type mappings when PU is "metadata complete"...
+	protected Iterable<TypeMapping> getTypeMappings() {
+		return new TransformationIterable<PersistentType, TypeMapping>(this.getPersistentTypes()) {
+				@Override
+				protected TypeMapping transform(PersistentType persistentType) {
+					return persistentType.getMapping();  // the mapping should never be null
+				}
+			};
+	}
+
+
+	// ********** mapping file type mappings **********
+
+	/**
+	 * Return a map of the entities defined in the persistence unit's mapping files,
+	 * keyed by entity name. Since there can be (erroneously) duplicate entity
+	 * names, each entity name is mapped to a <em>list</em> of entities.
+	 */
+	protected HashMap<String, ArrayList<Entity>> mapMappingFileEntitiesByName() {
+		return this.mapTypeMappingsByName(this.getMappingFileEntities());
+	}
+
+	protected <M extends TypeMapping> HashMap<String, ArrayList<M>> mapTypeMappingsByName(Iterable<M> typeMappings) {
+		HashMap<String, ArrayList<M>> map = new HashMap<String, ArrayList<M>>();
+		for (M typeMapping : typeMappings) {
+			String typeMappingName = typeMapping.getName();
+			ArrayList<M> list = map.get(typeMappingName);
+			if (list == null) {
+				list = new ArrayList<M>();
+				map.put(typeMappingName, list);
+			}
+			list.add(typeMapping);
+		}
+		return map;
+	}
+
+	/**
+	 * Return all the entities defined in the persistence unit's mapping files
+	 * (i.e. excluding the Java entities).
+	 */
+	protected Iterable<Entity> getMappingFileEntities() {
+		return this.filterToEntities(this.getMappingFileTypeMappings());
+	}
+
+	/**
+	 * Return all the type mappings defined in the persistence unit's mapping
+	 * files (i.e. excluding the Java type mappings).
+	 */
+	protected Iterable<TypeMapping> getMappingFileTypeMappings() {
+		return new TransformationIterable<PersistentType, TypeMapping>(this.getMappingFilePersistentTypes()) {
+			@Override
+			protected TypeMapping transform(PersistentType persistentType) {
+				return persistentType.getMapping();
+			}
+		};
+	}
+
+	// TODO remove VVVVVVVVVVVVVVVVV
+	public Iterable<String> getOrmMappedClassNames() {
+		return new TransformationIterable<PersistentType, String>(this.getMappingFilePersistentTypes()) {
+			@Override
+			protected String transform(PersistentType persistentType) {
+				return persistentType.getName();
+			}
+		};
+	}
+
+	public Map<String, Set<String>> mapEntityNameToClassNames() {
+		HashMap<String, ArrayList<Entity>> mappingFileEntitiesByName = this.mapMappingFileEntitiesByName();
+		HashMap<String, Set<String>> map = new HashMap<String, Set<String>>(mappingFileEntitiesByName.size());
+		for (Map.Entry<String, ArrayList<Entity>> entry : mappingFileEntitiesByName.entrySet()) {
+			String entityName = entry.getKey();
+			ArrayList<Entity> entities = entry.getValue();
+			HashSet<String> entityClassNames = new HashSet<String>(entities.size());
+			for (Entity entity : entities) {
+				entityClassNames.add(entity.getPersistentType().getName());
+			}
+			map.put(entityName, entityClassNames);
+		}
+		return map;
+	}
+
+	public Iterator<String> ormEntityNames() {
+		return this.getMappingFileEntityNames().iterator();
+	}
+
+	protected Iterable<String> getMappingFileEntityNames() {
+		return new TransformationIterable<Entity, String>(this.getMappingFileEntities()) {
+			@Override
+			protected String transform(Entity entity) {
+				return entity.getName();
+			}
+		};
+	}
+
+	public Iterable<Entity> getOrmEntities() {
+		return this.getMappingFileEntities();
+	}
+	// remove ^^^^^^^^^^^^^^^^^
+
+
+	// ********** Java type mappings **********
+
+	// TODO remove VVVVVVVVVVVVVVVVV
+	/**
+	 * These may be overridden in the mapping files.
+	 * @see #getJavaPersistentTypes()
+	 */
+	public Iterable<Entity> getJavaEntities() {
+		return this.filterToEntities(this.getJavaTypeMappings());
+	}
+
+	/**
+	 * These may be overridden in the mapping files.
+	 * @see #getJavaPersistentTypes()
+	 */
+	protected Iterable<TypeMapping> getJavaTypeMappings() {
+		return new TransformationIterable<PersistentType, TypeMapping>(this.getJavaPersistentTypes()) {
+			@Override
+			protected TypeMapping transform(PersistentType persistentType) {
+				return persistentType.getMapping();
+			}
+		};
+	}
+
+	protected Iterator<String> javaEntityClassNames(){
+		return new TransformationIterator<Entity, String>(this.getJavaEntities()) {
+			@Override
+			protected String transform(Entity javaEntity) {
+				return javaEntity.getPersistentType().getName();
+			}
+		};
+	}
+
+	public Iterator<String> javaEntityNamesExclOverridden() {
+		HashSet<String> ormMappedClassNames = CollectionTools.set(this.getOrmMappedClassNames());
+		List<String> javaEntityNamesExclOverridden = new ArrayList<String>();
+		for (Iterator<String> javaEntityClassNames = this.javaEntityClassNames(); javaEntityClassNames.hasNext();){
+			String javaEntityClassName = javaEntityClassNames.next();
+			if (!ormMappedClassNames.contains(javaEntityClassName)) {
+				javaEntityNamesExclOverridden.add((this.getEntity(javaEntityClassName)).getName());
+			}
+		}
+		return javaEntityNamesExclOverridden.iterator();
+	}
+
+	public Iterator<String> javaEntityNames(){
+		return new TransformationIterator<Entity, String>(this.getJavaEntities()) {
+			@Override
+			protected String transform(Entity javaEntity) {
+				return javaEntity.getName();
+			}
+		};
+	}
+	// remove ^^^^^^^^^^^^^^^^^
+
+
+	// ********** misc **********
+
+	public XmlPersistenceUnit getXmlPersistenceUnit() {
+		return this.xmlPersistenceUnit;
+	}
+
+	public JpaStructureNode getStructureNode(int textOffset) {
+		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
+			if (jarFileRef.containsOffset(textOffset)) {
+				return jarFileRef;
+			}
+		}
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			if (mappingFileRef.containsOffset(textOffset)) {
+				return mappingFileRef;
+			}
+		}
+		for (ClassRef classRef : this.getClassRefs()) {
+			if (classRef.containsOffset(textOffset)) {
+				return classRef;
+			}
+		}
+		return this;
+	}
+
+	public boolean containsOffset(int textOffset) {
+		return (this.xmlPersistenceUnit != null) && this.xmlPersistenceUnit.containsOffset(textOffset);
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(this.name);
 	}
 
 
@@ -1611,6 +2229,8 @@ public abstract class AbstractPersistenceUnit
 		this.validateClassRefs(messages, reporter);
 		this.validateJarFileRefs(messages, reporter);
 		this.validateProperties(messages, reporter);
+		this.validateGenerators(messages, reporter);
+		this.validateQueries(messages, reporter);
 	}
 
 	protected void validateMappingFiles(List<IMessage> messages, IReporter reporter) {
@@ -1642,8 +2262,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForDuplicateMappingFiles(List<IMessage> messages) {
-		HashBag<String> fileNames = new HashBag<String>();
-		CollectionTools.addAll(fileNames, this.mappingFileRefNames());
+		HashBag<String> fileNames = CollectionTools.bag(this.mappingFileRefNames());
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			String fileName = mappingFileRef.getFileName();
 			if (fileNames.count(fileName) > 1) {
@@ -1662,23 +2281,21 @@ public abstract class AbstractPersistenceUnit
 
 	protected void validateClassRefs(List<IMessage> messages, IReporter reporter) {
 		this.checkForDuplicateClasses(messages);
-		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
-			stream.next().validate(messages, reporter);
+		for (ClassRef classRef : this.getClassRefs()) {
+			classRef.validate(messages, reporter);
 		}
 	}
 
 	protected void checkForDuplicateClasses(List<IMessage> messages) {
-		HashBag<String> javaClassNames = new HashBag<String>();
-		CollectionTools.addAll(javaClassNames, this.classRefNames());
-		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
-			ClassRef classRef = stream.next();
+		HashBag<String> javaClassNames = CollectionTools.bag(this.getClassRefNames());
+		for (ClassRef classRef : this.getClassRefs()) {
 			String javaClassName = classRef.getClassName();
 			if ((javaClassName != null)	&& (javaClassNames.count(javaClassName) > 1)) {
 					  messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
-								new String[] {javaClassName}, 
+								new String[] {javaClassName},
 								classRef,
 								classRef.getValidationTextRange()
 						)
@@ -1689,15 +2306,14 @@ public abstract class AbstractPersistenceUnit
 
 	protected void validateJarFileRefs(List<IMessage> messages, IReporter reporter) {
 		this.checkForDuplicateJarFileRefs(messages);
-		for (JarFileRef each : CollectionTools.iterable(this.jarFileRefs())) {
-			each.validate(messages, reporter);
+		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
+			jarFileRef.validate(messages, reporter);
 		}
 	}
 
 	protected void checkForDuplicateJarFileRefs(List<IMessage> messages) {
-		HashBag<String> jarFileNames = new HashBag<String>();
-		CollectionTools.addAll(jarFileNames, this.jarFileNames());
-		for (JarFileRef jarFileRef : CollectionTools.iterable(this.jarFileRefs())) {
+		HashBag<String> jarFileNames = CollectionTools.bag(this.getJarFileNames());
+		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
 			String jarFileName = jarFileRef.getFileName();
 			if ((jarFileName != null) && (jarFileNames.count(jarFileName) > 1)) {
 				messages.add(
@@ -1717,14 +2333,116 @@ public abstract class AbstractPersistenceUnit
 		// do nothing by default
 	}
 
+	/**
+	 * We validate generators here because Java persistent types that are
+	 * overridden in the <code>orm.xml</code> file are
+	 * not validated, but they may contain generators that are still "active"
+	 * and need to be validated
+	 * (i.e. a generator is <em>not</em> overridden when its entity or ID
+	 * mapping is overridden in the <code>orm.xml</code> file).
+	 * <p>
+	 * <strong>NB:</strong> <em>Any</em> <code>orm.xml</code> generator can
+	 * override <em>any</em> Java generator with the same name; they need not
+	 * be defined on the same entity or ID mapping. Just a bit inconsistent with
+	 * the typical "override" in JPA....
+	 */
+	protected void validateGenerators(List<IMessage> messages, IReporter reporter) {
+		this.checkForDuplicateGenerators(messages);
+		for (Generator generator : this.getGenerators()) {
+			this.validate(generator, messages, reporter);
+		}
+	}
+
+	protected void checkForDuplicateGenerators(List<IMessage> messages) {
+		HashMap<String, ArrayList<Generator>> generatorsByName = this.mapGeneratorsByName(this.getGenerators());
+		for (ArrayList<Generator> dups : generatorsByName.values()) {
+			if (dups.size() > 1) {
+				for (Generator dup : dups) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+							new String[] {dup.getName()},
+							dup,
+							this.extractNameTextRange(dup)
+						)
+					);
+				}
+			}
+		}
+	}
+
+	// TODO bjv isn't it obvious?
+	protected TextRange extractNameTextRange(Generator generator) {
+		return (generator instanceof OrmGenerator) ?
+				((OrmGenerator) generator).getNameTextRange() :
+				((JavaGenerator) generator).getNameTextRange(null);
+	}
+
+	// TODO bjv isn't it obvious?
+	protected void validate(Generator generator, List<IMessage> messages, IReporter reporter) {
+		if (generator instanceof OrmGenerator) {
+			((OrmGenerator) generator).validate(messages, reporter);
+		} else {
+			((JavaGenerator) generator).validate(messages, reporter, null);
+		}
+	}
+
+	/**
+	 * <strong>NB:</strong> We validate queries here.
+	 * @see #validateGenerators(List, IReporter)
+	 */
+	protected void validateQueries(List<IMessage> messages, IReporter reporter) {
+		this.checkForDuplicateQueries(messages);
+		for (Query query : this.getQueries()) {
+			this.validate(query, messages, reporter);
+		}
+	}
+
+	protected void checkForDuplicateQueries(List<IMessage> messages) {
+		HashMap<String, ArrayList<Query>> queriesByName = this.mapQueriesByName(this.getQueries());
+		for (ArrayList<Query> dups : queriesByName.values()) {
+			if (dups.size() > 1) {
+				for (Query dup : dups) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.QUERY_DUPLICATE_NAME,
+							new String[] {dup.getName()},
+							dup,
+							this.extractNameTextRange(dup)
+						)
+					);
+				}
+			}
+		}
+	}
+
+	// TODO bjv isn't it obvious?
+	protected TextRange extractNameTextRange(Query query) {
+		return (query instanceof OrmQuery) ?
+				((OrmQuery) query).getNameTextRange() :
+				((JavaQuery) query).getNameTextRange(null);
+	}
+
+	// TODO bjv isn't it obvious?
+	protected void validate(Query query, List<IMessage> messages, IReporter reporter) {
+		if (query instanceof OrmQuery) {
+			((OrmQuery) query).validate(messages, reporter);
+		} else {
+			((JavaQuery) query).validate(messages, reporter, null);
+		}
+	}
+
 	public boolean validatesAgainstDatabase() {
 		return this.connectionProfileIsActive();
 	}
-	
+
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlPersistenceUnit.getValidationTextRange();
 		return (textRange != null) ? textRange : this.getPersistence().getValidationTextRange();
 	}
+
 
 	// ********** refactoring **********
 
@@ -1873,303 +2591,6 @@ public abstract class AbstractPersistenceUnit
 		);
 	}
 
-	// ********** misc **********
-
-	public XmlPersistenceUnit getXmlPersistenceUnit() {
-		return this.xmlPersistenceUnit;
-	}
-
-	public JpaStructureNode getStructureNode(int textOffset) {
-		for (Iterator<JarFileRef> stream = this.jarFileRefs(); stream.hasNext(); ) {
-			JarFileRef jarFileRef = stream.next();
-			if (jarFileRef.containsOffset(textOffset)) {
-				return jarFileRef;
-			}
-		}
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			if (mappingFileRef.containsOffset(textOffset)) {
-				return mappingFileRef;
-			}
-		}
-		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
-			ClassRef classRef = stream.next();
-			if (classRef.containsOffset(textOffset)) {
-				return classRef;
-			}
-		}
-		return this;
-	}
-
-	// ------------------- all entities -----------------
-	public Iterable<Entity> getEntities() {
-		return new SubIterableWrapper<TypeMapping, Entity>(this.getEntities_());
-	}
-
-	protected Iterable<TypeMapping> getEntities_() {
-		return new FilteringIterable<TypeMapping>(this.getTypeMappings()) {
-				@Override
-				protected boolean accept(TypeMapping typeMapping) {
-					return typeMapping instanceof Entity;
-				}
-			};
-	}
-
-	protected Iterable<TypeMapping> getTypeMappings() {
-		return new TransformationIterable<PersistentType, TypeMapping>(this.getPersistentTypes()) {
-				@Override
-				protected TypeMapping transform(PersistentType persistentType) {
-					return persistentType.getMapping();  // the mapping should never be null
-				}
-			};
-	}
-
-	public Iterable<String> getOrmMappedClassNames() {
-		return new TransformationIterable<PersistentType, String>(this.getMappingFilePersistentTypes()) {
-			@Override
-			protected String transform(PersistentType persistentType) {
-				return persistentType.getName();
-			}
-		};
-	}
-
-	// ------------------ orm entities --------------------
-	public Map<String, Set<String>> mapEntityNameToClassNames() {
-		HashSet<String> classNames = new HashSet<String>();
-		Map<String, Set<String>> map = new HashMap<String, Set<String>>();
-		for (String entityName : this.getFilteredEntityNames()) {
-			CollectionTools.addAll(classNames, getFilteredOrmClassNames(entityName));
-			map.put(entityName, classNames);
-		}
-		return map;
-	}
-	
-	private Iterable<String> getFilteredOrmClassNames(String entityName){
-		List<String> classNames = new ArrayList<String>();
-		for (PersistentType persistentType: this.getFilteredOrmPersistentTypes()) {
-			if (StringTools.stringsAreEqual(persistentType.getMapping().getName(), entityName)) {
-				classNames.add(persistentType.getName());
-			}
-		}
-		return classNames;
-	}
-	
-	private Iterable<String> getFilteredEntityNames() {
-		return new TransformationIterable<PersistentType, String>(this.getFilteredOrmPersistentTypes()) {
-			@Override
-			protected String transform(PersistentType persistentType) {
-				return persistentType.getMapping().getName();
-			}
-		};
-	}
-	
-	private Iterable<PersistentType> getFilteredOrmPersistentTypes(){
-		List<PersistentType> filteredPersistentType = new ArrayList<PersistentType>();
-		HashBag<String> ormEntityNames = new HashBag<String>();
-		CollectionTools.addAll(ormEntityNames, this.ormEntityNames());
-		for (PersistentType persistentType : this.getOrmEntityPersistentTypes()) {
-			if (ormEntityNames.count(persistentType.getMapping().getName()) > 1) {
-				filteredPersistentType.add(persistentType);
-			}
-		}
-		return filteredPersistentType;
-	}
-
-	protected Iterator<String> ormEntityClassNames() {
-		return new TransformationIterator<PersistentType, String>(this.getOrmEntityPersistentTypes()) {
-			@Override
-			protected String transform(PersistentType persistentType) {
-				return persistentType.getName();
-			}
-		};
-	}
-	
-	public Iterator<String> ormEntityNames() {
-		return new TransformationIterator<PersistentType, String>(this.getOrmEntityPersistentTypes()) {
-			@Override
-			protected String transform(PersistentType persistentType) {
-				return persistentType.getMapping().getName();
-			}
-		};
-	}
-	
-	public Iterable<Entity> getOrmEntities(){
-		return new SubIterableWrapper<PersistentType, Entity>(this.getOrmEntityPersistentTypes());
-	}
-	
-	private Iterable<PersistentType> getOrmEntityPersistentTypes() {
-		return (this.getOrmPersistentTypes(org.eclipse.jpt.jpa.core.MappingKeys.ENTITY_TYPE_MAPPING_KEY));
-	}
-
-	protected Iterable<PersistentType> getOrmPersistentTypes(final String mappingKey) {
-		return new FilteringIterable<PersistentType>(this.getMappingFilePersistentTypes()) {
-			@Override
-			protected boolean accept(PersistentType persistentType) {
-				return persistentType.getMappingKey() == mappingKey;
-			}
-		};
-	}
-	
-	//--------------- java entities -----------------
-	protected Iterator<String> javaEntityClassNames(){
-		return new TransformationIterator<Entity, String>(this.getJavaEntities()) {
-			@Override
-			protected String transform(Entity javaEntity) {
-				return javaEntity.getPersistentType().getName();
-			}
-		};
-	}
-
-	public Iterator<String> javaEntityNamesExclOverridden() {
-		HashBag<String> ormMappedClassNames = new HashBag<String>();
-		CollectionTools.addAll(ormMappedClassNames, this.getOrmMappedClassNames());
-		List<String> javaEntityNamesExclOverridden = new ArrayList<String>();
-		for (Iterator<String> javaEntityClassNames = this.javaEntityClassNames(); javaEntityClassNames.hasNext();){
-			String javaEntityClassName = javaEntityClassNames.next();
-			if (!ormMappedClassNames.contains(javaEntityClassName)) {
-				javaEntityNamesExclOverridden.add((this.getEntity(javaEntityClassName)).getName());
-			}
-		}
-		return javaEntityNamesExclOverridden.iterator();
-	}
-
-	public Iterator<String> javaEntityNames(){
-		return new TransformationIterator<Entity, String>(this.getJavaEntities()) {
-			@Override
-			protected String transform(Entity javaEntity) {
-				return javaEntity.getName();
-			}
-		};
-	}
-
-	public Iterable<Entity> getJavaEntities(){
-		return new SubIterableWrapper<TypeMapping, Entity>(this.getJavaEntities_());
-	}
-	
-	protected Iterable<TypeMapping> getJavaEntities_(){
-		return new FilteringIterable<TypeMapping>(this.getJavaTypeMappings()){
-			@Override
-			protected boolean accept(TypeMapping typeMapping) {
-				return typeMapping instanceof Entity;
-			}
-		};
-	}
-	
-	private Iterable<? extends TypeMapping> getJavaTypeMappings() {
-		return new TransformationIterable<PersistentType, TypeMapping>(this.getNonNullClassPersistentTypes()) {
-			@Override
-			protected TypeMapping transform(PersistentType persistentType) {
-				return persistentType.getMapping();
-			}
-		};
-	}	
-	
-	@SuppressWarnings("unchecked")
-	public Iterable<PersistentType> getPersistentTypes() {
-		return new CompositeIterable<PersistentType>(
-				this.getMappingFilePersistentTypes(),
-				this.getNonNullClassPersistentTypes(),
-				this.getJarFilePersistentTypes()
-			);
-	}
-
-	protected Iterable<PersistentType> getMappingFilePersistentTypes() {
-		return new CompositeIterable<PersistentType>(this.getMappingFilePersistentTypeLists());
-	}
-
-	protected Iterable<Iterable<? extends PersistentType>> getMappingFilePersistentTypeLists() {
-		return new TransformationIterable<PersistentTypeContainer, Iterable<? extends PersistentType>>(
-				this.getMappingFileRefs(),
-				PersistentTypeContainer.TRANSFORMER
-			);
-	}
-
-	protected Iterable<PersistentType> getNonNullClassPersistentTypes() {
-		return new FilteringIterable<PersistentType>(this.getClassPersistentTypes(), NotNullFilter.<PersistentType>instance());
-	}
-
-	protected Iterable<PersistentType> getClassPersistentTypes() {
-		return new TransformationIterable<ClassRef, PersistentType>(this.getClassRefs()) {
-			@Override
-			protected PersistentType transform(ClassRef classRef) {
-				return classRef.getJavaPersistentType();
-			}
-		};
-	}
-
-	protected Iterable<PersistentType> getJarFilePersistentTypes() {
-		return new CompositeIterable<PersistentType>(this.getJarFilePersistentTypeLists());
-	}
-
-	protected Iterable<Iterable<? extends PersistentType>> getJarFilePersistentTypeLists() {
-		return new TransformationIterable<PersistentTypeContainer, Iterable<? extends PersistentType>>(
-				this.getJarFileRefs(),
-				PersistentTypeContainer.TRANSFORMER
-			);
-	}
-
-	public PersistentType getPersistentType(String typeName) {
-		if (typeName == null) {
-			return null;
-		}
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			PersistentType persistentType = mappingFileRef.getPersistentType(typeName);
-			if (persistentType != null) {
-				return persistentType;
-			}
-		}
-		for (ClassRef classRef : this.getClassRefs()) {
-			if (classRef.isFor(typeName)) {
-				return classRef.getJavaPersistentType();
-			}
-		}
-		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
-			PersistentType persistentType = jarFileRef.getPersistentType(typeName);
-			if (persistentType != null) {
-				return persistentType;
-			}
-		}
-		return null;
-	}
-
-	public boolean specifiesPersistentType(String className) {
-		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
-			if (classRef.isFor(className)) {
-				return true;
-			}
-		}
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			if (mappingFileRef.getPersistentType(className) != null) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public Entity getEntity(String typeName) {
-		TypeMapping typeMapping = this.getTypeMapping(typeName);
-		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
-	}
-
-	public Embeddable getEmbeddable(String typeName) {
-		TypeMapping typeMapping = this.getTypeMapping(typeName);
-		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
-	}
-
-	protected TypeMapping getTypeMapping(String typeName) {
-		PersistentType persistentType = this.getPersistentType(typeName);
-		return (persistentType == null) ? null : persistentType.getMapping();
-	}
-
-	public boolean containsOffset(int textOffset) {
-		return (this.xmlPersistenceUnit != null) && this.xmlPersistenceUnit.containsOffset(textOffset);
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(this.name);
-	}
-
 
 	// ********** metamodel **********
 	// put metamodel stuff here so it can be shared by Generic and EclipseLink implementations
@@ -2209,16 +2630,17 @@ public abstract class AbstractPersistenceUnit
 		// if we have persistent types with the same name in multiple locations,
 		// the last one we encounter wins (i.e. the classes in the orm.xml take
 		// precedence)
-		HashMap<String, PersistentType2_0> allPersistentTypes = new HashMap<String, PersistentType2_0>();
-		this.addPersistentTypesTo_(this.getJarFileRefs(), allPersistentTypes);
-		this.addPersistentTypesTo(this.getNonNullClassPersistentTypes(), allPersistentTypes);
-		this.addPersistentTypesTo_(this.getMappingFileRefs(), allPersistentTypes);
+		HashMap<String, PersistentType> allPersistentTypes = new HashMap<String, PersistentType>();
+		this.addPersistentTypesTo(this.getJarFilePersistentTypes(), allPersistentTypes);
+		this.addPersistentTypesTo(this.getClassRefPersistentTypes(), allPersistentTypes);
+		this.addPersistentTypesTo(this.getMappingFilePersistentTypes(), allPersistentTypes);
 
 		// build a list of the top-level types and a tree of their associated
 		// member types etc.
 		ArrayList<MetamodelSourceType> topLevelTypes = new ArrayList<MetamodelSourceType>(allPersistentTypes.size());
 		HashMap<String, Collection<MetamodelSourceType>> memberTypeTree = new HashMap<String, Collection<MetamodelSourceType>>();
-		for (PersistentType2_0 type : allPersistentTypes.values()) {
+		for (PersistentType type1_0 : allPersistentTypes.values()) {
+			PersistentType2_0 type = (PersistentType2_0) type1_0;
 			String declaringTypeName = type.getDeclaringTypeName();
 			MetamodelSourceType memberType = type;
 			while (true) {
@@ -2238,7 +2660,7 @@ public abstract class AbstractPersistenceUnit
 				// move out to the member type's declaring type
 				String memberTypeName = declaringTypeName;
 				// check for a context persistent type
-				memberType = allPersistentTypes.get(memberTypeName);
+				memberType = (PersistentType2_0) allPersistentTypes.get(memberTypeName);
 				if (memberType != null) {
 					break;  // stop - this will be processed in the outer 'for' loop
 				}
@@ -2306,20 +2728,6 @@ public abstract class AbstractPersistenceUnit
 		// now generate the metamodel classes
 		for (MetamodelSourceType topLevelType : topLevelTypes) {
 			topLevelType.synchronizeMetamodel(memberTypeTree);
-		}
-	}
-
-	protected void addPersistentTypesTo_(Iterable<? extends PersistentTypeContainer> ptContainers, HashMap<String, PersistentType2_0> persistentTypeMap) {
-		for (PersistentTypeContainer ptContainer : ptContainers) {
-			this.addPersistentTypesTo(ptContainer.getPersistentTypes(), persistentTypeMap);
-		}
-	}
-
-	protected void addPersistentTypesTo(Iterable<? extends PersistentType> persistentTypes, HashMap<String, PersistentType2_0> persistentTypeMap) {
-		for (PersistentType persistentType : persistentTypes) {
-			if (persistentType.getName() != null) {
-				persistentTypeMap.put(persistentType.getName(), (PersistentType2_0) persistentType);
-			}
 		}
 	}
 

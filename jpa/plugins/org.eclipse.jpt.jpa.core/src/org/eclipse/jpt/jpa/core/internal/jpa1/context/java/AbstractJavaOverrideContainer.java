@@ -67,7 +67,7 @@ public abstract class AbstractJavaOverrideContainer<
 			R extends JavaReadOnlyOverride,
 			S extends JavaOverride,
 			V extends JavaVirtualOverride,
-			A extends OverrideAnnotation
+			A extends OverrideAnnotation & NestableAnnotation
 		>
 	extends AbstractJavaJpaContextNode
 	implements JavaOverrideContainer

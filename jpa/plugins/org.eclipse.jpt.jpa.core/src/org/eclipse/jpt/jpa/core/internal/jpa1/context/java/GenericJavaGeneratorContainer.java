@@ -9,22 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -108,7 +103,7 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected JavaSequenceGenerator buildSequenceGenerator(SequenceGeneratorAnnotation sequenceGeneratorAnnotation) {
-		return this.getJpaFactory().buildJavaSequenceGenerator(this, sequenceGeneratorAnnotation);
+		return this.isVirtual() ? null : this.getJpaFactory().buildJavaSequenceGenerator(this, sequenceGeneratorAnnotation);
 	}
 
 	protected void syncSequenceGenerator() {
@@ -171,7 +166,7 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected JavaTableGenerator buildTableGenerator(TableGeneratorAnnotation tableGeneratorAnnotation) {
-		return this.getJpaFactory().buildJavaTableGenerator(this, tableGeneratorAnnotation);
+		return this.isVirtual() ? null : this.getJpaFactory().buildJavaTableGenerator(this, tableGeneratorAnnotation);
 	}
 
 	protected void syncTableGenerator() {
@@ -222,58 +217,14 @@ public class GenericJavaGeneratorContainer
 
 	// ********** validation **********
 
+	/**
+	 * The generators are validated in the persistence unit.
+	 * @see org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit#validateGenerators(List, IReporter)
+	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.validateGenerators(messages, astRoot);
-	}
-
-	protected void validateGenerators(List<IMessage> messages, CompilationUnit astRoot) {
-		for (JavaGenerator localGenerator : this.getGenerators()) {
-			String name = localGenerator.getName();
-			if (StringTools.stringIsEmpty(name)){
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.GENERATOR_NAME_UNDEFINED,
-							new String[] {},
-							localGenerator,
-							localGenerator.getNameTextRange(astRoot)
-						)
-					);
-			} else {
-				List<String> reportedNames = new ArrayList<String>();
-				for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
-					if (localGenerator.duplicates(globalGenerators.next()) && !reportedNames.contains(name)) {
-						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-								new String[] {name},
-								localGenerator,
-								localGenerator.getNameTextRange(astRoot)
-							)
-						);
-						reportedNames.add(name);
-					}
-				}
-			}
-		}
-	}
-
-	protected Iterable<JavaGenerator> getGenerators() {
-		ArrayList<JavaGenerator> generators = new ArrayList<JavaGenerator>();
-		this.addGeneratorsTo(generators);
-		return generators;
-	}
-
-	protected void addGeneratorsTo(ArrayList<JavaGenerator> generators) {
-		if (this.sequenceGenerator != null) {
-			generators.add(this.sequenceGenerator);
-		}
-		if (this.tableGenerator != null) {
-			generators.add(this.tableGenerator);
-		}
+		// generators are validated in the persistence unit
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -291,5 +242,20 @@ public class GenericJavaGeneratorContainer
 	@Override
 	public JavaJpaContextNode getParent() {
 		return (JavaJpaContextNode) super.getParent();
+	}
+
+	/**
+	 * Return whether the container is <em>virtual</em> and, as a result, does
+	 * not have either a sequence or table generator. As of JPA 2.0, this is
+	 * only true when the container's parent is a virtual ID mapping.
+	 */
+	// TODO bjv need to add API to JavaGeneratorContainer.Owner
+	protected boolean isVirtual() {
+		JavaJpaContextNode p = this.getParent();
+		if (p instanceof JavaIdMapping) {
+			JavaIdMapping idMapping = (JavaIdMapping) p;
+			return idMapping.getPersistentAttribute().isVirtual();
+		}
+		return false;
 	}
 }

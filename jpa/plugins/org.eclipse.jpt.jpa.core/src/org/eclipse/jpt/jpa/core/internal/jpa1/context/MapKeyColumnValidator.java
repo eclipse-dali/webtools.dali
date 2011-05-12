@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,20 +12,11 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.BaseColumnTableValidator.TableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
 public class MapKeyColumnValidator
 	extends AbstractNamedColumnValidator<BaseColumn, BaseColumnTextRangeResolver>
 {
-
-	public MapKeyColumnValidator(
-				BaseColumn column,
-				BaseColumnTextRangeResolver textRangeResolver,
-				TableDescriptionProvider provider) {
-		super(column, textRangeResolver, provider);
-	}
-
 	public MapKeyColumnValidator(
 				PersistentAttribute persistentAttribute,
 				BaseColumn column,
@@ -36,7 +27,7 @@ public class MapKeyColumnValidator
 
 	@Override
 	protected TableValidator buildTableValidator() {
-		return new MapKeyColumnTableValidator(this.persistentAttribute, this.column, this.textRangeResolver, this.tableDescriptionProvider);
+		return new TableValidator();
 	}
 
 	@Override
@@ -49,15 +40,11 @@ public class MapKeyColumnValidator
 		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_UNRESOLVED_NAME;
 	}
 
-	public static class MapKeyColumnTableValidator
+	protected class TableValidator
 		extends BaseColumnTableValidator
 	{
-		protected MapKeyColumnTableValidator(
-					PersistentAttribute persistentAttribute,
-					BaseColumn column,
-					BaseColumnTextRangeResolver textRangeResolver,
-					TableDescriptionProvider provider) {
-			super(persistentAttribute, column, textRangeResolver, provider);
+		protected TableValidator() {
+			super();
 		}
 
 		@Override

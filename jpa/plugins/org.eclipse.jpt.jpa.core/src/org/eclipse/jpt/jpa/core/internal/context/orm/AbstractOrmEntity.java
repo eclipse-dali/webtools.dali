@@ -1800,9 +1800,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected void validateDuplicateEntityNames(List<IMessage> messages) {
-		HashBag<String>  javaEntityNamesExclOverridden = new HashBag<String>();
-		CollectionTools.addAll(javaEntityNamesExclOverridden, this.getPersistenceUnit().javaEntityNamesExclOverridden());
-		Map<String, Set<String>> map =this.getPersistenceUnit().mapEntityNameToClassNames();
+		HashBag<String> javaEntityNamesExclOverridden = CollectionTools.bag(this.getPersistenceUnit().javaEntityNamesExclOverridden());
+		Map<String, Set<String>> map = this.getPersistenceUnit().mapEntityNameToClassNames();
 		Set<String> classNames = map.get(this.getName());
 		// Check whether or not this entity name has duplicates among the orm entities defined with different classes
 		if (((classNames  != null) && (classNames.size() > 1)) || 

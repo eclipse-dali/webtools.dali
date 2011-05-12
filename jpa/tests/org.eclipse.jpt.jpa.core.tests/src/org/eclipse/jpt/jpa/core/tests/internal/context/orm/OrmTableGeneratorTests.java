@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -577,21 +577,27 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		JavaTableGenerator javaTableGenerator = javaIdMapping.getGeneratorContainer().addTableGenerator();
 		javaTableGenerator.setName("TABLE_GENERATOR");
 		
+// >>> I'm going to argue there is no such thing as a "virtual" generator,
+// since a Java generator is *not* overridden when its ID mapping (or entity)
+// is overridden in the orm.xml file - both the orm.xml ID mapping and the
+// Java mapping can define an "active" generator as long as they have different
+// names  ~bjv
 		TableGenerator tableGenerator = virtualIdMapping.getGeneratorContainer().getTableGenerator();
-		Iterator<UniqueConstraint> uniqueConstraints = tableGenerator.getUniqueConstraints().iterator();
-		assertFalse(uniqueConstraints.hasNext());
-
+		assertNull(tableGenerator);
+//		Iterator<UniqueConstraint> uniqueConstraints = tableGenerator.getUniqueConstraints().iterator();
+//		assertFalse(uniqueConstraints.hasNext());
 		
 		javaTableGenerator.addUniqueConstraint().addColumnName("FOO");
 		javaTableGenerator.addUniqueConstraint().addColumnName("BAR");
 		javaTableGenerator.addUniqueConstraint().addColumnName("BAZ");
 
-		uniqueConstraints = tableGenerator.getUniqueConstraints().iterator();
-		assertTrue(uniqueConstraints.hasNext());
-		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
-		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
-		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
-		assertFalse(uniqueConstraints.hasNext());
+		assertNull(tableGenerator);
+//		uniqueConstraints = tableGenerator.getUniqueConstraints().iterator();
+//		assertTrue(uniqueConstraints.hasNext());
+//		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
+//		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+//		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+//		assertFalse(uniqueConstraints.hasNext());
 		
 		OrmIdMapping ormIdMapping = (OrmIdMapping) virtualAttribute.convertToSpecified().getMapping();
 	
@@ -600,5 +606,4 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		
 		assertEquals(0, ormTableGenerator2.getUniqueConstraintsSize());
 	}
-
 }

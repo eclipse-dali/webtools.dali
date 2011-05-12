@@ -10,10 +10,12 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -23,8 +25,12 @@ import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Java query
@@ -66,7 +72,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	public void update() {
 		super.update();
 		this.updateNodes(this.getHints());
-		this.getPersistenceUnit().addQuery(this);
 	}
 
 
@@ -202,6 +207,57 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	}
 
 
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.validateName(messages, astRoot);
+		this.validateQuery(messages, reporter, astRoot);
+	}
+
+	protected void validateName(List<IMessage> messages, CompilationUnit astRoot) {
+		if (StringTools.stringIsEmpty(this.name)) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.QUERY_NAME_UNDEFINED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getNameTextRange(astRoot)
+				)
+			);
+		}
+	}
+
+	protected void validateQuery(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (StringTools.stringIsEmpty(this.query)){
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
+					new String[] {this.name},
+					this,
+					this.getNameTextRange(astRoot)
+				)
+			);
+		} else {
+			this.validateQuery_(messages, reporter, astRoot);
+		}
+	}
+
+	protected abstract void validateQuery_(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot);
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.queryAnnotation.getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	}
+
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(this.queryAnnotation.getNameTextRange(astRoot), astRoot);
+	}
+
+
 	// ********** misc **********
 
 	@Override
@@ -219,15 +275,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	public boolean duplicates(Query other) {
 		return MappingTools.nodesAreDuplicates(this, other);
-	}
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.queryAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
-	}
-
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.queryAnnotation.getNameTextRange(astRoot), astRoot);
 	}
 
 	@Override

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -17,28 +16,25 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.common.utility.internal.iterators.SubIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterators.SuperIteratorWrapper;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
-import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueriesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueriesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NestableNamedNativeQueryAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NestableNamedQueryAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -143,12 +139,18 @@ public class GenericJavaQueryContainer
 	}
 
 	protected Iterable<NamedQueryAnnotation> getNamedQueryAnnotations() {
-		return new SubIterableWrapper<NestableAnnotation, NamedQueryAnnotation>(
-				CollectionTools.iterable(this.namedQueryAnnotations())
-			);
+		return CollectionTools.iterable(this.namedQueryAnnotations());
 	}
 
-	protected Iterator<NestableAnnotation> namedQueryAnnotations() {
+	protected Iterator<NamedQueryAnnotation> namedQueryAnnotations() {
+		return new SuperIteratorWrapper<NamedQueryAnnotation>(this.nestableNamedQueryAnnotations());
+	}
+
+	protected Iterator<NestableNamedQueryAnnotation> nestableNamedQueryAnnotations() {
+		return new SubIteratorWrapper<NestableAnnotation, NestableNamedQueryAnnotation>(this.nestableNamedQueryAnnotations_());
+	}
+
+	protected Iterator<NestableAnnotation> nestableNamedQueryAnnotations_() {
 		return this.owner.getResourceAnnotatedElement().annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 	}
 
@@ -253,12 +255,18 @@ public class GenericJavaQueryContainer
 	}
 
 	protected Iterable<NamedNativeQueryAnnotation> getNamedNativeQueryAnnotations() {
-		return new SubIterableWrapper<NestableAnnotation, NamedNativeQueryAnnotation>(
-				CollectionTools.iterable(this.namedNativeQueryAnnotations())
-			);
+		return CollectionTools.iterable(this.namedNativeQueryAnnotations());
 	}
 
-	protected Iterator<NestableAnnotation> namedNativeQueryAnnotations() {
+	protected Iterator<NamedNativeQueryAnnotation> namedNativeQueryAnnotations() {
+		return new SuperIteratorWrapper<NamedNativeQueryAnnotation>(this.nestableNamedNativeQueryAnnotations());
+	}
+
+	protected Iterator<NestableNamedNativeQueryAnnotation> nestableNamedNativeQueryAnnotations() {
+		return new SubIteratorWrapper<NestableAnnotation, NestableNamedNativeQueryAnnotation>(this.nestableNamedNativeQueryAnnotations_());
+	}
+
+	protected Iterator<NestableAnnotation> nestableNamedNativeQueryAnnotations_() {
 		return this.owner.getResourceAnnotatedElement().annotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 	}
 
@@ -305,65 +313,14 @@ public class GenericJavaQueryContainer
 
 	// ********** validation **********
 
+	/**
+	 * The queries are validated in the persistence unit.
+	 * @see org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit#validateQueries(List, IReporter)
+	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.validateQueries(messages, reporter, astRoot);
-	}
-
-	protected void validateQueries(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		for (Iterator<JavaQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
-			JavaQuery localQuery = localQueries.next();
-			String name = localQuery.getName();
-			if (StringTools.stringIsEmpty(name)){
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_NAME_UNDEFINED,
-							new String[] {},
-							localQuery,
-							localQuery.getNameTextRange(astRoot)
-						)
-					);
-			} else {
-				List<String> reportedNames = new ArrayList<String>();
-				for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
-					if (localQuery.duplicates(globalQueries.next()) && !reportedNames.contains(name)) {
-						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.QUERY_DUPLICATE_NAME,
-								new String[] {name},
-								localQuery,
-								localQuery.getNameTextRange(astRoot)
-							)
-						);
-						reportedNames.add(name);
-					}
-				}
-			}
-			String query = localQuery.getQuery();
-			if (StringTools.stringIsEmpty(query)){
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
-								new String[] {name},
-								localQuery,
-								localQuery.getNameTextRange(astRoot)
-						)
-				);
-			}
-			else {
-				localQuery.validate(messages, reporter, astRoot);
-			}
-		}
-	}
-
-
-	@SuppressWarnings("unchecked")
-	public Iterator<JavaQuery> queries() {
-		return new CompositeIterator<JavaQuery>(this.namedNativeQueries(), this.namedQueries());
+		// queries are validated in the persistence unit
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

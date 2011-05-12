@@ -39,8 +39,8 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
  * As an alternative to building a {@link Transformer},
  * a subclass of <code>TransformationListValueModelAdapter</code> can
  * either override {@link #transformItem_(Object)} or,
- * if something other than null should be returned when the wrapped item
- * is null, override {@link #transformItem(Object)}.
+ * if something other than <code>null</code> should be returned when the
+ * wrapped item is <code>null</code>, override {@link #transformItem(Object)}.
  * <p>
  * <strong>NB:</strong> Since we only listen to the wrapped list when we have
  * listeners ourselves and we can only stay in synch with the wrapped

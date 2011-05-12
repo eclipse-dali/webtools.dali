@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -244,8 +244,8 @@ public abstract class AbstractJavaVersionMapping
 		return this.getTypeMapping().allAssociatedTableNames();
 	}
 
-	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator(this.getPersistentAttribute(), (BaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 
 
@@ -275,10 +275,10 @@ public abstract class AbstractJavaVersionMapping
 		super.validate(messages, reporter, astRoot);
 		this.column.validate(messages, reporter, astRoot);
 		this.converter.validate(messages, reporter, astRoot);
-		this.validateAttributeType(messages, reporter, astRoot);
+		this.validateAttributeType(messages, astRoot);
 	}
 	
-	protected void validateAttributeType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateAttributeType(List<IMessage> messages, CompilationUnit astRoot) {
 		if (!ArrayTools.contains(VERSION_MAPPING_SUPPORTED_TYPES, this.getPersistentAttribute().getTypeName())) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(

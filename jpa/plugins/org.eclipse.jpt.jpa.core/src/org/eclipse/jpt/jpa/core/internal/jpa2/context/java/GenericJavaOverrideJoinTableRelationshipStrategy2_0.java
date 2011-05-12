@@ -89,14 +89,14 @@ public class GenericJavaOverrideJoinTableRelationshipStrategy2_0
 	}
 
 	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
-		return new AssociationOverrideJoinTableValidator(this.getRelationship().getAssociationOverride(), (JoinTable) table, textRangeResolver);
+		return new AssociationOverrideJoinTableValidator(this.getAssociationOverride(), (JoinTable) table, textRangeResolver);
 	}
 
 	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return new AssociationOverrideJoinColumnValidator(this.getRelationship().getAssociationOverride(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		return new AssociationOverrideJoinColumnValidator(this.getAssociationOverride(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 	}
 
 	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return new  AssociationOverrideInverseJoinColumnValidator(this.getRelationship().getAssociationOverride(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		return new  AssociationOverrideInverseJoinColumnValidator(this.getAssociationOverride(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 	}
 }

@@ -95,14 +95,9 @@ public class GenericJavaNamedQuery2_0
 
 	// ********** validation **********
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-
+	protected void validateQuery_(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		JpaJpqlQueryHelper helper = new JpaJpqlQueryHelper();
-		helper.validate(this, this.getQuery(), this.getQueryAnnotation().getQueryTextRange(astRoot), 1, messages);
+		helper.validate(this, this.query, this.getQueryAnnotation().getQueryTextRange(astRoot), 1, messages);
 	}
 }

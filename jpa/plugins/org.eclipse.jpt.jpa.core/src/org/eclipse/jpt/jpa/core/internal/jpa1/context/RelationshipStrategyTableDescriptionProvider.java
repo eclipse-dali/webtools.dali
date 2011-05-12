@@ -10,10 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.BaseColumnTableValidator.TableDescriptionProvider;
 
 public class RelationshipStrategyTableDescriptionProvider
-	implements TableDescriptionProvider
+	implements AbstractNamedColumnValidator.TableDescriptionProvider
 {
 	private final RelationshipStrategy relationshipStrategy;
 	
@@ -25,5 +24,4 @@ public class RelationshipStrategyTableDescriptionProvider
 	public String getColumnTableDescriptionMessage() {
 		return this.relationshipStrategy.getColumnTableNotValidDescription();
 	}
-
 }

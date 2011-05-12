@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.BaseColumnTableValidator.TableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -47,7 +46,7 @@ public class AssociationOverrideJoinColumnValidator
 
 	@Override
 	protected TableValidator buildTableValidator() {
-		return new AssociationOverrideJoinColumnTableValidator(this.persistentAttribute, this.column, this.textRangeResolver, this.tableDescriptionProvider);
+		return new TableValidator();
 	}
 
 	@Override
@@ -77,7 +76,7 @@ public class AssociationOverrideJoinColumnValidator
 				IMessage.HIGH_SEVERITY,
 				this.getVirtualAttributeUnresolvedNameMessage(),
 				new String[] {
-					this.getPersistentAttributeName(),
+					this.persistentAttribute.getName(),
 					this.override.getName(),
 					this.column.getName(),
 					this.column.getDbTable().getName()
@@ -119,7 +118,7 @@ public class AssociationOverrideJoinColumnValidator
 				IMessage.HIGH_SEVERITY,
 				this.getVirtualAttributeUnresolvedReferencedColumnNameMessage(),
 				new String[] {
-					this.getPersistentAttributeName(),
+					this.persistentAttribute.getName(),
 					this.override.getName(),
 					this.column.getReferencedColumnName(),
 					this.column.getReferencedColumnDbTable().getName()
@@ -157,7 +156,7 @@ public class AssociationOverrideJoinColumnValidator
 				IMessage.HIGH_SEVERITY,
 				this.getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage(),
 				new String[] {
-					this.getPersistentAttributeName(),
+					this.persistentAttribute.getName(),
 					this.override.getName()
 				},
 				this.column,
@@ -193,7 +192,7 @@ public class AssociationOverrideJoinColumnValidator
 				IMessage.HIGH_SEVERITY,
 				this.getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(),
 				new String[] {
-					this.getPersistentAttributeName(),
+					this.persistentAttribute.getName(),
 					this.override.getName()
 				},
 				this.column,
@@ -207,19 +206,15 @@ public class AssociationOverrideJoinColumnValidator
 	}
 
 
-	public class AssociationOverrideJoinColumnTableValidator
-		extends JoinColumnTableValidator
+	protected class TableValidator
+		extends JoinColumnValidator.TableValidator
 	{
-		protected AssociationOverrideJoinColumnTableValidator(
-				PersistentAttribute persistentAttribute,
-				JoinColumn column,
-				JoinColumnTextRangeResolver textRangeResolver,
-				TableDescriptionProvider provider) {
-			super(persistentAttribute, column, textRangeResolver, provider);
+		protected TableValidator() {
+			super();
 		}
 
 		@Override
-		public IMessage buildTableNotValidMessage() {
+		protected IMessage buildTableNotValidMessage() {
 			return AssociationOverrideJoinColumnValidator.this.override.isVirtual() ?
 					this.buildVirtualOverrideColumnTableNotValidMessage() :
 					super.buildTableNotValidMessage();
@@ -231,12 +226,12 @@ public class AssociationOverrideJoinColumnValidator
 					this.getVirtualOverrideColumnTableNotValidMessage(),
 					new String[] {
 						AssociationOverrideJoinColumnValidator.this.override.getName(),
-						this.column.getTable(),
-						this.column.getName(),
+						this.getColumn().getTable(),
+						this.getColumn().getName(),
 						this.getColumnTableDescriptionMessage()
 					},
-					this.column,
-					this.textRangeResolver.getTableTextRange()
+					this.getColumn(),
+					this.getTextRangeResolver().getTableTextRange()
 				);
 		}
 
@@ -250,14 +245,14 @@ public class AssociationOverrideJoinColumnValidator
 					IMessage.HIGH_SEVERITY,
 					this.getVirtualAttributeColumnTableNotValidMessage(),
 					new String[] {
-						this.getPersistentAttributeName(),
+						AssociationOverrideJoinColumnValidator.this.persistentAttribute.getName(),
 						AssociationOverrideJoinColumnValidator.this.override.getName(),
-						this.column.getTable(),
-						this.column.getName(),
+						this.getColumn().getTable(),
+						this.getColumn().getName(),
 						this.getColumnTableDescriptionMessage()
 					},
-					this.column,
-					this.textRangeResolver.getTableTextRange()
+					this.getColumn(),
+					this.getTextRangeResolver().getTableTextRange()
 				);
 		}
 

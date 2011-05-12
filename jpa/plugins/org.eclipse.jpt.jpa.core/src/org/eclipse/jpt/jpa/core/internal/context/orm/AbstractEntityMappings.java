@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.runtime.content.IContentType;
@@ -19,7 +17,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -31,11 +28,9 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -868,11 +863,15 @@ public abstract class AbstractEntityMappings
 
 	// ********** validation **********
 
+	/**
+	 * The generators are validated in the persistence unit.
+	 * @see org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit#validateGenerators(List, IReporter)
+	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validateVersion(messages);
-		this.validateGenerators(messages);
+		// generators are validated in the persistence unit
 		this.queryContainer.validate(messages, reporter);
 		for (OrmPersistentType  ormPersistentType : this.getPersistentTypes()) {
 			this.validatePersistentType(ormPersistentType, messages, reporter);
@@ -902,50 +901,6 @@ public abstract class AbstractEntityMappings
 	protected IContentType getContentType() {
 		return JptJpaCorePlugin.ORM_XML_CONTENT_TYPE;
 	}
-
-	protected void validateGenerators(List<IMessage> messages) {
-		for (OrmGenerator localGenerator : this.getGenerators()) {
-			String name = localGenerator.getName();
-			if (StringTools.stringIsEmpty(name)) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY, 
-								JpaValidationMessages.GENERATOR_NAME_UNDEFINED, 
-								new String[] {},
-								localGenerator,
-								localGenerator.getNameTextRange()
-						));
-			} else {
-				List<String> reportedNames = new ArrayList<String>();
-				for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
-					if (localGenerator.duplicates(globalGenerators.next()) && !reportedNames.contains(name)) {
-						messages.add(
-								DefaultJpaValidationMessages.buildMessage(
-										IMessage.HIGH_SEVERITY,
-										JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-										new String[] {localGenerator.getName()},
-										localGenerator,
-										localGenerator.getNameTextRange()
-								)
-						);
-						reportedNames.add(name);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Return all the generators, table and sequence.
-	 */
-	@SuppressWarnings("unchecked")
-	protected Iterable<OrmGenerator> getGenerators() {
-		return new CompositeIterable<OrmGenerator>(
-						this.getTableGenerators(),
-						this.getSequenceGenerators()
-				);
-	}
-
 
 	protected void validatePersistentType(OrmPersistentType persistentType, List<IMessage> messages, IReporter reporter) {
 		try {

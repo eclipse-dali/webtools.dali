@@ -110,7 +110,7 @@ public class GenericJavaTemporalConverter
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.PERSISTENT_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE,
-								new String[] {},
+								EMPTY_STRING_ARRAY,
 								this,
 								this.getValidationTextRange(astRoot)
 						)
@@ -123,7 +123,7 @@ public class GenericJavaTemporalConverter
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE,
-								new String[] {},
+								EMPTY_STRING_ARRAY,
 								this,
 								this.getValidationTextRange(astRoot)
 						)

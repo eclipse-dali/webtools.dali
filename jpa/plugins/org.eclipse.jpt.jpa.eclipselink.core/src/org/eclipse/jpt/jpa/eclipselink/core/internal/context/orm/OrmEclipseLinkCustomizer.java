@@ -250,7 +250,7 @@ public class OrmEclipseLinkCustomizer
 						DefaultEclipseLinkJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_SPECIFIED,
-								new String[] {},
+								EMPTY_STRING_ARRAY,
 								this,
 								this.getTypeMapping().getValidationTextRange()
 						)

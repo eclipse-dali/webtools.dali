@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.SubIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterators.SuperIteratorWrapper;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -40,6 +41,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.OneToOnePrimaryKeyJoinColu
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NestablePrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -197,10 +199,14 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	// ********** primary key join column annotations **********
 
 	protected Iterator<PrimaryKeyJoinColumnAnnotation> primaryKeyJoinColumnAnnotations() {
-		return new SubIteratorWrapper<NestableAnnotation, PrimaryKeyJoinColumnAnnotation>(this.primaryKeyJoinColumnAnnotations_());
+		return new SuperIteratorWrapper<PrimaryKeyJoinColumnAnnotation>(this.nestablePrimaryKeyJoinColumnAnnotations());
 	}
 
-	protected Iterator<NestableAnnotation> primaryKeyJoinColumnAnnotations_() {
+	protected Iterator<NestablePrimaryKeyJoinColumnAnnotation> nestablePrimaryKeyJoinColumnAnnotations() {
+		return new SubIteratorWrapper<NestableAnnotation, NestablePrimaryKeyJoinColumnAnnotation>(this.nestablePrimaryKeyJoinColumnAnnotations_());
+	}
+
+	protected Iterator<NestableAnnotation> nestablePrimaryKeyJoinColumnAnnotations_() {
 		return this.getResourcePersistentAttribute().annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 	}
 
@@ -330,7 +336,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 			return this.getRelationshipMapping().getName();
 		}
 
-		public PersistentAttribute getPersistentAttribute() {
+		protected PersistentAttribute getPersistentAttribute() {
 			return this.getRelationshipMapping().getPersistentAttribute();
 		}
 
@@ -375,7 +381,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new OneToOnePrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
+			return new OneToOnePrimaryKeyJoinColumnValidator(this.getPersistentAttribute(), (BaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
 		}
 
 		protected JavaRelationshipMapping getRelationshipMapping() {
