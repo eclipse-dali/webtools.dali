@@ -62,7 +62,7 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
         PictogramElement pe = context.getPictogramElement();
         Object businessObjectForPictogramElement = getBusinessObjectForPictogramElement(pe);
         if (businessObjectForPictogramElement != null) {
-            if (!getUserDecision()) {
+            if (!getUserDecision(context)) {
                 return;
             }
         }
