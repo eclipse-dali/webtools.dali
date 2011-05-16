@@ -181,16 +181,20 @@ public class JpaProjectCreationDataModelProvider
 	
 	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
-		if (EAR_PROJECT_NAME.equals(propertyName) || ADD_TO_EAR.equals(propertyName)) {
+		if (EAR_PROJECT_NAME.equals(propertyName) || ADD_TO_EAR.equals(propertyName) || FACET_RUNTIME.equals(propertyName) || MODULE_FACET_DATA_MODEL.equals(propertyName)) {
 			IDataModel moduleFacetDataModel = getModuleFacetDataModel();
 			if (moduleFacetDataModel != null){
-				if (EAR_PROJECT_NAME.equals(propertyName)) {
+				if (EAR_PROJECT_NAME.equals(propertyName) || MODULE_FACET_DATA_MODEL.equals(propertyName)) {
 					moduleFacetDataModel.setProperty(
-							IJ2EEModuleFacetInstallDataModelProperties.EAR_PROJECT_NAME, propertyValue);
+							IJ2EEModuleFacetInstallDataModelProperties.EAR_PROJECT_NAME, getEarProjectName());
 				}
-				else {
+				if (ADD_TO_EAR.equals(propertyName) || MODULE_FACET_DATA_MODEL.equals(propertyName)) {
 					moduleFacetDataModel.setProperty(
-							IJ2EEModuleFacetInstallDataModelProperties.ADD_TO_EAR, propertyValue);	
+							IJ2EEModuleFacetInstallDataModelProperties.ADD_TO_EAR, isAddToEar());
+				}
+				if (FACET_RUNTIME.equals(propertyName) || MODULE_FACET_DATA_MODEL.equals(propertyName)) {
+					moduleFacetDataModel.setProperty(
+							IJ2EEModuleFacetInstallDataModelProperties.FACET_RUNTIME, getFacetRuntime());
 				}
 			}
 			if (isAddToEar()) {
@@ -321,6 +325,10 @@ public class JpaProjectCreationDataModelProvider
 		return (IFacetedProjectWorkingCopy) this.model.getProperty(FACETED_PROJECT_WORKING_COPY);
 	}
 	
+	protected IRuntime getFacetRuntime() {
+		return (IRuntime) getProperty(FACET_RUNTIME);
+	}
+	
 	protected IDataModel getModuleFacetDataModel() {
 		return (IDataModel) getProperty(MODULE_FACET_DATA_MODEL);
 	}
@@ -331,6 +339,10 @@ public class JpaProjectCreationDataModelProvider
 	
 	protected boolean isAddToEar() {
 		return getBooleanProperty(ADD_TO_EAR);
+	}
+	
+	protected String getEarProjectName() {
+		return getStringProperty(EAR_PROJECT_NAME);
 	}
 	
 	protected IDataModel findModuleFacetDataModel() {
