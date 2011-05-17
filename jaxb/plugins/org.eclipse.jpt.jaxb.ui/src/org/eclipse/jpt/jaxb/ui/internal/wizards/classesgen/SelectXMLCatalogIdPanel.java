@@ -14,7 +14,6 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
