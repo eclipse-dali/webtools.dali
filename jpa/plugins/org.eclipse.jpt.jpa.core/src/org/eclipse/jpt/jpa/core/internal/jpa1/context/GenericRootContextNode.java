@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -55,6 +55,7 @@ public class GenericRootContextNode
 			throw new NullPointerException();
 		}
 		this.jpaProject = jpaProject;
+		this.persistenceXml = this.buildPersistenceXml();
 	}
 
 
@@ -85,17 +86,27 @@ public class GenericRootContextNode
 		this.firePropertyChanged(PERSISTENCE_XML_PROPERTY, old, persistenceXml);
 	}
 
+	protected PersistenceXml buildPersistenceXml() {
+		JpaXmlResource xmlResource = this.resolvePersistenceXmlResource();
+		return (xmlResource == null) ? null : this.buildPersistenceXml(xmlResource);
+	}
+
 	protected void syncPersistenceXml() {
-		if (this.persistenceXml != null) {
-			this.persistenceXml.synchronizeWithResourceModel();
-		}
+		this.syncPersistenceXml(true);
 	}
 
 	/**
-	 * Check whether the XML resource has either appeared or disappeared.
-	 * If it is still present, it will be the same instance.
+	 * We call this method from both {@link #syncPersistenceXml()} and
+	 * {@link #updatePersistenceXml()} because<ul>
+	 * <li>a <em>sync</em> will occur when the file is edited directly;
+	 *     and the user could modify something (e.g. the version number) that
+	 *     triggers the file being "resolved" or not;
+	 *     see {@link #resolvePersistenceXmlResource()}
+	 * <li>an <em>update</em> will occur whenever the entire file is added or
+	 *     removed
+	 * </ul>
 	 */
-	protected void updatePersistenceXml() {
+	protected void syncPersistenceXml(boolean sync) {
 		JpaXmlResource xmlResource = this.resolvePersistenceXmlResource();
 		if (xmlResource == null) {
 			if (this.persistenceXml != null) {
@@ -106,7 +117,11 @@ public class GenericRootContextNode
 			if (this.persistenceXml == null) {
 				this.setPersistenceXml(this.buildPersistenceXml(xmlResource));
 			} else {
-				this.persistenceXml.update();
+				if (sync) {
+					this.persistenceXml.synchronizeWithResourceModel();
+				} else {
+					this.persistenceXml.update();
+				}
 			}
 		}
 	}
@@ -131,8 +146,15 @@ public class GenericRootContextNode
 		return xmlResource;
 	}
 
+	/**
+	 * pre-condition: 'xmlResource' is not <code>null</code>
+	 */
 	protected PersistenceXml buildPersistenceXml(JpaXmlResource xmlResource) {
 		return this.getJpaFactory().buildPersistenceXml(this, xmlResource);
+	}
+
+	protected void updatePersistenceXml() {
+		this.syncPersistenceXml(false);
 	}
 
 

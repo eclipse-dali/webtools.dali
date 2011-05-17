@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -48,10 +49,16 @@ public class GenericOrmXml
 	protected final JpaXmlResource xmlResource;  // never null
 
 	/**
-	 * The resouce type will only change if the XML file's version changes
+	 * The resource type will only change if the XML file's version changes
 	 * (since, if the content type changes, we get garbage-collected).
 	 */
 	protected JptResourceType resourceType;
+
+	/**
+	 * Cache the <code>orm.xml</code> definition alongside the resource type.
+	 * (The definition is determined by the resource type.)
+	 */
+	protected OrmXmlDefinition definition;
 
 	/**
 	 * The root element of the <code>orm.xml</code> file.
@@ -64,6 +71,7 @@ public class GenericOrmXml
 		this.checkXmlResource(xmlResource);
 		this.xmlResource = xmlResource;
 		this.resourceType = xmlResource.getResourceType();
+		this.definition = this.buildDefinition();
 
 		XmlEntityMappings xmlEntityMappings = (XmlEntityMappings) xmlResource.getRootObject();
 		if (xmlEntityMappings != null) {
@@ -100,6 +108,7 @@ public class GenericOrmXml
 		}
 
 		this.resourceType = newResourceType;
+		this.definition = this.buildDefinition();
 
 		if (newXmlEntityMappings != null) {
 			if (this.root == null) {
@@ -119,6 +128,23 @@ public class GenericOrmXml
 			// this will happen redundantly - need to hold JpaFile?
 			this.registerRootStructureNode();
 		}
+	}
+
+
+	// ********** resource type/definition **********
+
+	@Override
+	public JptResourceType getResourceType() {
+		return this.resourceType;
+	}
+
+	@Override
+	public OrmXmlDefinition getMappingFileDefinition() {
+		return this.definition;
+	}
+
+	protected OrmXmlDefinition buildDefinition() {
+		return (OrmXmlDefinition) this.getJpaPlatform().getResourceDefinition(this.resourceType);
 	}
 
 
@@ -160,11 +186,6 @@ public class GenericOrmXml
 		return this.xmlResource.getFile();
 	}
 
-	@Override
-	public JptResourceType getResourceType() {
-		return this.resourceType;
-	}
-
 	protected JpaFile getJpaFile() {
 		return this.getJpaFile(this.xmlResource.getFile());
 	}
@@ -174,6 +195,7 @@ public class GenericOrmXml
 		IFile file = this.xmlResource.getFile();
 		return Tools.valuesAreEqual(member, file);
 	}
+
 
 	// ********** JpaStructureNode implementation **********
 

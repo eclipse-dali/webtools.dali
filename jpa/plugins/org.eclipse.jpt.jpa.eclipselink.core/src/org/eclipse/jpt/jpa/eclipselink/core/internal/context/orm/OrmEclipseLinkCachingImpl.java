@@ -621,7 +621,7 @@ public class OrmEclipseLinkCachingImpl
 	}
 
 	protected OrmCacheable2_0 buildCacheable() {
-		return this.isJpa2_0Compatible() ?
+		return this.isOrmXml2_0Compatible() ?
 				this.getContextNodeFactory2_0().buildOrmCacheable(this) :
 				new NullOrmCacheable2_0(this);
 	}

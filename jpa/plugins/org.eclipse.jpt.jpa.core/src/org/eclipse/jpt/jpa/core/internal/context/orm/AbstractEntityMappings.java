@@ -28,7 +28,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
@@ -164,12 +163,13 @@ public abstract class AbstractEntityMappings
 		return (OrmXml) super.getParent();
 	}
 
+	// TODO bjv add to interface
 	public OrmXml getOrmXml() {
 		return this.getParent();
 	}
 
 	@Override
-	public MappingFileRoot getMappingFileRoot() {
+	public EntityMappings getMappingFileRoot() {
 		return this;
 	}
 

@@ -56,7 +56,7 @@ public abstract class AbstractOrmOneToManyMapping<X extends XmlOneToMany>
 	}
 
 	protected OrmOrphanRemovable2_0 buildOrphanRemoval() {
-		return this.isJpa2_0Compatible() ?
+		return this.isOrmXml2_0Compatible() ?
 				this.getContextNodeFactory2_0().buildOrmOrphanRemoval(this) :
 				new NullOrmOrphanRemoval2_0(this);
 	}

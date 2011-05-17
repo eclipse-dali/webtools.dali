@@ -96,7 +96,7 @@ public class GenericOrmEmbeddedMapping
 	}
 
 	protected OrmAssociationOverrideContainer buildAssociationOverrideContainer() {
-		return this.isJpa2_0Compatible() ?
+		return this.isOrmXml2_0Compatible() ?
 				this.getContextNodeFactory2_0().buildOrmAssociationOverrideContainer(this, this.buildAssociationOverrideContainerOwner()) :
 				new GenericOrmAssociationOverrideContainer(this, null);
 	}

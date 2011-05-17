@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -100,7 +100,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<X extends AbstractXml
 	}
 
 	protected OrmDerivedIdentity2_0 buildDerivedIdentity() {
-		return this.isJpa2_0Compatible() ?
+		return this.isOrmXml2_0Compatible() ?
 				this.getContextNodeFactory2_0().buildOrmDerivedIdentity(this) :
 				new NullOrmDerivedIdentity2_0(this);
 	}

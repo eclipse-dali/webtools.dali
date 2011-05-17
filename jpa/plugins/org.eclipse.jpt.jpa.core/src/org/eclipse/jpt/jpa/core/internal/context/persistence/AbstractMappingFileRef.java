@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -112,12 +112,21 @@ public abstract class AbstractMappingFileRef
 	}
 
 	protected void syncMappingFile() {
-		if (this.mappingFile != null) {
-			this.mappingFile.synchronizeWithResourceModel();
-		}
+		this.syncMappingFile(true);
 	}
 
-	protected void updateMappingFile() {
+	/**
+	 * We call this method from both {@link #syncMappingFile()} and
+	 * {@link #updateMappingFile()} because<ul>
+	 * <li>a <em>sync</em> will occur when the file is edited directly;
+	 *     and the user could modify something (e.g. the version number) that
+	 *     triggers the file being "resolved" or not;
+	 *     see {@link #resolveMappingFileXmlResource()}
+	 * <li>an <em>update</em> will occur whenever the entire file is added or
+	 *     removed
+	 * </ul>
+	 */
+	protected void syncMappingFile(boolean sync) {
 		JpaXmlResource newXmlResource = this.resolveMappingFileXmlResource();
 		if (newXmlResource == null) {
 			if (this.mappingFile != null) {
@@ -129,7 +138,11 @@ public abstract class AbstractMappingFileRef
 				this.setMappingFile(this.buildMappingFile(newXmlResource));
 			} else {
 				if (this.mappingFile.getXmlResource() == newXmlResource) {
-					this.mappingFile.update();
+					if (sync) {
+						this.mappingFile.synchronizeWithResourceModel();
+					} else {
+						this.mappingFile.update();
+					}
 				} else {
 					// [seems like we should never get here; since if the file's
 					// content type changed, the JPA project would return null...  ~bjv]
@@ -170,10 +183,14 @@ public abstract class AbstractMappingFileRef
 	}
 
 	/**
-	 * pre-condition: 'resource' is not null
+	 * pre-condition: 'xmlResource' is not <code>null</code>
 	 */
-	protected MappingFile buildMappingFile(JpaXmlResource resource) {
-		return this.getJpaFactory().buildMappingFile(this, resource);
+	protected MappingFile buildMappingFile(JpaXmlResource xmlResource) {
+		return this.getJpaFactory().buildMappingFile(this, xmlResource);
+	}
+
+	protected void updateMappingFile() {
+		this.syncMappingFile(false);
 	}
 
 

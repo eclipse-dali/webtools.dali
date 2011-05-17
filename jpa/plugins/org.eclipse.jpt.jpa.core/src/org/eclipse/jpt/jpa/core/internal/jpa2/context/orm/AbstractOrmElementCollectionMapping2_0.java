@@ -332,6 +332,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmOrderable2_0 buildOrderable() {
+		// we wouldn't be here if we weren't orm.xml 2.0 compatible
 		return this.getContextNodeFactory2_0().buildOrmOrderable(this, this.buildOrderableOwner());
 	}
 
@@ -361,6 +362,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected OrmCollectionTable2_0 buildCollectionTable() {
+		// we wouldn't be here if we weren't orm.xml 2.0 compatible
 		return this.getContextNodeFactory2_0().buildOrmCollectionTable(this, this.buildCollectionTableOwner());
 	}
 

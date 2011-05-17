@@ -152,7 +152,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected OrmOrderable buildOrderable() {
-		return this.isJpa2_0Compatible() ?
+		return this.isOrmXml2_0Compatible() ?
 				this.getContextNodeFactory2_0().buildOrmOrderable(this, this.buildOrderableOwner()) :
 				this.getContextNodeFactory().buildOrmOrderable(this);
 	}
