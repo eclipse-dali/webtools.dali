@@ -2254,7 +2254,7 @@ public class JpaArtifactFactory {
 			relTypeName = jrpa.getTypeTypeArgumentName(isMap ? 1 : 0);
 		} catch (Exception e) {}
 		if (relTypeName == null) 
-			relTypeName = an.getTargetEntity();												
+			relTypeName = an.getFullyQualifiedTargetEntityClassName();												
 		if (relTypeName == null) 
 			relTypeName = JPAEditorUtil.getAttributeTypeName(jrpa);							
 		return relTypeName;
