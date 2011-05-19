@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -99,7 +98,7 @@ public class AbstractJaxbContextRoot
 			String className = registryResourceType.getQualifiedName();
 			totalTypes.add(className);
 			typesToScan.add(className);
-			this.types.put(registryResourceType.getName(), buildRegistry(registryResourceType));
+			addType_(buildRegistry(registryResourceType));
 		}
 		
 		// calculate initial set of persistent types (annotated with @XmlType or listed in jaxb.index files)
@@ -112,7 +111,7 @@ public class AbstractJaxbContextRoot
 				totalTypes.add(className);
 				typesToScan.add(className);
 				JaxbType.Kind jaxbTypeKind = calculateJaxbTypeKind(resourceType);
-				this.types.put(resourceType.getName(), buildType(jaxbTypeKind, resourceType));
+				addType_(buildType(jaxbTypeKind, resourceType));
 				resourceTypesToProcess.remove(resourceType);
 			}
 			
@@ -278,7 +277,10 @@ public class AbstractJaxbContextRoot
 	protected Set<String> calculatePackageNames(Set<String> typeNames) {
 		Set<String> packageNames = CollectionTools.<String>set();
 		for (String typeName : typeNames) {
-			packageNames.add(ClassName.getPackageName(typeName));
+			JaxbType jaxbType = this.types.get(typeName);
+			if (jaxbType != null) {
+				packageNames.add(jaxbType.getPackageName());
+			}
 		}
 		return packageNames;
 	}
@@ -461,11 +463,15 @@ public class AbstractJaxbContextRoot
 		return this.types.get(typeName);
 	}
 	
+	protected void addType_(JaxbType type) {
+		this.types.put(type.getFullyQualifiedName(), type);
+	}
+	
 	protected void addType(JaxbType type) {
 		if (this.types.containsKey(type.getFullyQualifiedName())) {
 			throw new IllegalArgumentException("Type with that name already exists."); //$NON-NLS-1$
 		}
-		this.types.put(type.getFullyQualifiedName(), type);
+		addType_(type);
 		fireItemAdded(TYPES_COLLECTION, type);
 	}
 	
