@@ -17,6 +17,9 @@ public class JptCommonEclipseLinkCoreMessages {
 	public static String EclipseLinkLibraryValidator_multipleEclipseLinkVersions;
 	public static String EclipseLinkLibraryValidator_improperEclipseLinkVersion;
 	
+	// TODO - move to jpt.jaxb.eclipselink.core when there are messages there
+	public static String ELJaxbUserLibraryValidator_noXjcClasses;
+	
 	
 	private static final String BUNDLE_NAME = "jpt_common_eclipselink_core"; //$NON-NLS-1$
 	

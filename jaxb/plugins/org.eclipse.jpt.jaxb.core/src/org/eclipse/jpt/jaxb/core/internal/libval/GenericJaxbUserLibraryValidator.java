@@ -88,19 +88,6 @@ public class GenericJaxbUserLibraryValidator
 			return new Status(IStatus.WARNING, JptJaxbCorePlugin.PLUGIN_ID, message);
 		}
 		
-		// finally look for xjc classes
-		
-		Set<String> classNames = new HashSet<String>();
-		
-		classNames.add("com.sun.tools.xjc.XJCFacade"); //$NON-NLS-1$
-		classNames.add("com.sun.xml.bind.Util"); //$NON-NLS-1$
-		
-		IStatus status = LibValUtil.validate(libraryPaths, classNames);
-		
-		if (! status.isOK()) {
-			return new Status(IStatus.WARNING, JptJaxbCorePlugin.PLUGIN_ID, JptJaxbCoreMessages.UserLibraryValidator_noXjcClasses);
-		}
-		
 		return Status.OK_STATUS;
 	}
 }

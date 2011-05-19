@@ -28,7 +28,6 @@ public class JptJaxbCoreMessages {
 	
 	public static String UserLibraryValidator_incompatibleJavaFacet;
 	public static String UserLibraryValidator_incompatibleJavaLibrary;
-	public static String UserLibraryValidator_noXjcClasses;
 	
 	public static String PREFERENCES_FLUSH_JOB_NAME;
 	

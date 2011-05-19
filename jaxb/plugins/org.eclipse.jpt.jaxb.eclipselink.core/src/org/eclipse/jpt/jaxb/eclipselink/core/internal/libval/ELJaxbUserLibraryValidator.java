@@ -11,10 +11,17 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.libval;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jpt.common.core.internal.libval.LibValUtil;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
+import org.eclipse.jpt.common.eclipselink.core.internal.JptCommonEclipseLinkCoreMessages;
 import org.eclipse.jpt.common.eclipselink.core.internal.libval.EclipseLinkLibValUtil;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.libprov.JaxbUserLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
@@ -47,6 +54,33 @@ public class ELJaxbUserLibraryValidator
 			versionRanges.add(new VersionRange("[2.3, 3.0)")); //$NON-NLS-1$
 		}
 		
-		return EclipseLinkLibValUtil.validate(jaxbConfig.resolve(), versionRanges);
+		IStatus status = EclipseLinkLibValUtil.validate(jaxbConfig.resolve(), versionRanges);
+		
+		if (! status.isOK()) {
+			return status;
+		}
+		
+		// finally look for xjc classes
+		
+		Set<String> classNames = new HashSet<String>();
+		
+		classNames.add("com.sun.tools.xjc.XJCFacade"); //$NON-NLS-1$
+		classNames.add("com.sun.xml.bind.Util"); //$NON-NLS-1$
+		
+		Iterable<IPath> libraryPaths = 
+				new TransformationIterable<IClasspathEntry, IPath>(jaxbConfig.resolve()) {
+					@Override
+					protected IPath transform(IClasspathEntry o) {
+						return o.getPath();
+					}
+				};
+		
+		status = LibValUtil.validate(libraryPaths, classNames);
+		
+		if (! status.isOK()) {
+			return new Status(IStatus.WARNING, JptJaxbCorePlugin.PLUGIN_ID, JptCommonEclipseLinkCoreMessages.ELJaxbUserLibraryValidator_noXjcClasses);
+		}
+		
+		return Status.OK_STATUS;
 	}
 }
