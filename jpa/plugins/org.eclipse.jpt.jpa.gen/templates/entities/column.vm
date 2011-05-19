@@ -20,7 +20,7 @@
 #set ($members = "")
 #if ( !$column.default || $customizer.generateDDLAnnotations )
 #if ( !${column.defaultname} )
-#append($members "name=$customizer.quote($column.name)" )
+#append($members "name=$customizer.convertToJavaStringLiteral($column.name)" )
 #end
 #if (!$column.insertable)
 #append(${members} "insertable=false")

@@ -54,25 +54,25 @@ public class ORMGenColumn
 	}
 	
 	protected String customized(String propName) {
-		return getCustomizer().getProperty(propName, mTable.getName(), getName());
+		return getCustomizer().getProperty(propName, mTable.getName(), getDbName());
 	}
 	
 	protected boolean customizedBoolean(String propName) {
-		return getCustomizer().getBooleanProperty(propName, mTable.getName(), getName());
+		return getCustomizer().getBooleanProperty(propName, mTable.getName(), getDbName());
 	}
 	
 	protected void setCustomized(String propName, String value) {
 		if (value != null && value.length() == 0) {
 			value = null;
 		}
-		getCustomizer().setProperty(propName, value, mTable.getName(), getName());
+		getCustomizer().setProperty(propName, value, mTable.getName(), getDbName());
 	}
 	
 	protected void setCustomizedBoolean(String propName, boolean value, boolean defaultValue) {
 		if (defaultValue == value) {
 			setCustomized(propName, null); //remove the property
 		} else {
-			getCustomizer().setBooleanProperty(propName, value, mTable.getName(), getName());
+			getCustomizer().setBooleanProperty(propName, value, mTable.getName(), getDbName());
 		}
 	}
 	
@@ -83,6 +83,10 @@ public class ORMGenColumn
 		String annotationName = this.mCustomizer.getDatabaseAnnotationNameBuilder().
 			buildColumnAnnotationName(mDbColumn.getName(), mDbColumn);
 		return annotationName != null ? annotationName : mDbColumn.getName();
+	}
+	
+	public String getDbName() {
+		return mDbColumn.getName();
 	}
 
 	public String getJoinColumnName(){
@@ -103,7 +107,7 @@ public class ORMGenColumn
 		String name = customized(PROPERTY_NAME);
 		if (name == null) {
 			//name = StringUtil.columnNameToVarName(getName());
-			name = EntityGenTools.convertToUniqueJavaStyleAttributeName(getName(), Collections.<String>emptySet());
+			name = EntityGenTools.convertToUniqueJavaStyleAttributeName(getDbName(), Collections.<String>emptySet());
 		}
 		return name;
 	}

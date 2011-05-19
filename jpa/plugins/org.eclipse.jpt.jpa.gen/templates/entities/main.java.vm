@@ -12,7 +12,7 @@ ${table.importStatements}
  */
 @Entity
 #if( !${table.defaultname} || $customizer.generateDDLAnnotations)
-@Table(name="${table.name}")
+@Table(name=$customizer.convertToJavaStringLiteral(${table.name}))
 #end
 public class ${table.className} ${table.generateExtendsImplements()} {
 	private static final long serialVersionUID = 1L;

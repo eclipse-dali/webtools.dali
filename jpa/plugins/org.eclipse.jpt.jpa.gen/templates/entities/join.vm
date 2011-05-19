@@ -3,9 +3,9 @@
 ##
 ##macro joinColumn uses $column, $referencedColumn
 #macro (joinColumn $column $referencedColumn)
-#set ($members = "name=$customizer.quote($column.joinColumnName)")
+#set ($members = "name=$customizer.convertToJavaStringLiteral($column.joinColumnName)")
 #if( !$referencedColumn.primaryKey || $referencedColumn.partOfCompositePrimaryKey )
-#set ($members = "$members, referencedColumnName=$customizer.quote($referencedColumn.name)")
+#set ($members = "$members, referencedColumnName=$customizer.convertToJavaStringLiteral($referencedColumn.name)")
 #end
 #if( $customizer.generateDDLAnnotations )
 #if ($column.unique && !$column.primaryKey)
@@ -25,7 +25,7 @@
 #if ($role.association.joinTable)
 #set ($joinTable = $role.association.joinTable)
 	@JoinTable(
-		name="${joinTable.joinTableAnnotationName}"
+		name=$customizer.convertToJavaStringLiteral(${joinTable.joinTableAnnotationName})
 		, joinColumns={
 #foreach ($column in $role.referrerColumns)
 #set ($referencedColumn = $role.getReferencedColumn(${column.name}))
@@ -39,7 +39,8 @@
 			}
 		, inverseJoinColumns={
 #foreach ($column in $role.referencedColumns)
-#set ($referencedColumn = $role.getReferrerColumn(${column.name}))
+#set ($referencedColumn = $role.getReferrerColumn(${column.name})
+)
 ##$referencedColumn is the column in the join table
 			#joinColumn($referencedColumn $column)
 #if ($velocityCount < $role.referencedColumns.size() )
@@ -53,9 +54,9 @@
 #if ($role.referrerColumns.size() == 1)
 #set ($column = $role.referrerColumns.get(0))
 #set ($referencedColumn = $role.getReferencedColumn(${column.name}))
-#set ($referencedTableName = $role.getReferencedTable().getName() )
-#set( $referencedTablePkName = $role.getReferencedTable().getPrimaryKeyColumn().name )
-#set( $computedJoinColumnName = "${role.propertyName}_${referencedTablePkName}" )
+#set ($referencedTableName = $customizer.convertToJavaStringLiteral($role.getReferencedTable().getName()) )
+#set( $referencedTablePkName = $customizer.convertToJavaStringLiteral($role.getReferencedTable().getPrimaryKeyColumn().name) )
+#set( $computedJoinColumnName = $customizer.convertToJavaStringLiteral("${role.propertyName}_${referencedTablePkName}") )
 #set( $isDefaultJoinColumnName =  $column.isDefaultJoinColumnName( ${role.propertyName}) )
 #if( ! $isDefaultJoinColumnName )
 	#joinColumn($column $referencedColumn)

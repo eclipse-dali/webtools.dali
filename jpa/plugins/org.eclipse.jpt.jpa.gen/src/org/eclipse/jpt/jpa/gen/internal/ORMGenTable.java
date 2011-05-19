@@ -65,18 +65,18 @@ public class ORMGenTable
 	}
 
 	protected String customized(String propName) {
-		return getCustomizer().getProperty(propName, getName(), null);
+		return getCustomizer().getProperty(propName, getTableName(), null);
 	}
 
 	protected boolean customizedBoolean(String propName) {
-		return getCustomizer().getBooleanProperty(propName, getName(), null);
+		return getCustomizer().getBooleanProperty(propName, getTableName(), null);
 	}
 
 	protected void setCustomized(String propName, String value) {
 		if (value != null && value.length() == 0) {
 			value = null;
 		}
-		getCustomizer().setProperty(propName, value, getName(), null);
+		getCustomizer().setProperty(propName, value, getTableName(), null);
 	}
 
 	protected void setCustomizedBoolean(String propName, boolean value, boolean defaultValue) {
@@ -84,7 +84,7 @@ public class ORMGenTable
 			setCustomized(propName, null); // remove the property
 		}
 		else {
-			getCustomizer().setBooleanProperty(propName, value, getName(), null);
+			getCustomizer().setBooleanProperty(propName, value, getTableName(), null);
 		}
 	}
 
@@ -95,10 +95,16 @@ public class ORMGenTable
 	/**
 	 * Returns the table name.
 	 */
+	public String getTableName() {
+		return mDbTable != null ? mDbTable.getName() : ORMGenCustomizer.ANY_TABLE;
+	}
+	
 	public String getName() {
-		if (mDbTable == null)
-			return ORMGenCustomizer.ANY_TABLE;
-		return mDbTable.getName();
+ 		if (mDbTable == null)
+ 			return ORMGenCustomizer.ANY_TABLE;
+		String tableName = getTableName();
+		String annotationName = this.mCustomizer.getDatabaseAnnotationNameBuilder().buildTableAnnotationName(tableName, mDbTable);
+		return annotationName != null ? annotationName : tableName;
 	}
 
 	public String getJoinTableAnnotationName() {
@@ -239,7 +245,7 @@ public class ORMGenTable
 		if (name == null) {
 			// name = StringUtil.tableNameToVarName(getName());
 			// name = StringUtil.initUpper(name);
-			name = EntityGenTools.convertToUniqueJavaStyleClassName(getName(), new ArrayList<String>());
+			name = EntityGenTools.convertToUniqueJavaStyleClassName(getTableName(), new ArrayList<String>());
 			name = StringUtil.singularise(name);
 		}
 		return name;
@@ -263,7 +269,7 @@ public class ORMGenTable
 	 *            Whether the name should be singular or plural.
 	 */
 	public String getVarName(boolean singular) {
-		String name = StringUtil.tableNameToVarName(getName());
+		String name = StringUtil.tableNameToVarName(getTableName());
 		if (singular) {
 			name = StringUtil.singularise(name);
 		}

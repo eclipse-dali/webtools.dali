@@ -25,6 +25,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
@@ -528,6 +529,9 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	}
 	public String quote(int i) {
 		return quote(String.valueOf(i));
+	}
+	public String convertToJavaStringLiteral(String s) {
+		return StringTools.convertToJavaStringLiteral(s);
 	}
 	/**
 	 * Appends an annotation member name and value to an existing annotation.
