@@ -430,6 +430,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	
 	public void renewAttributeJoiningStrategyPropertyListener(JavaPersistentAttribute jpa) {
 		AttributeJoiningStrategyPropertyChangeListener lsn = null;
+		if (attributeJoiningStrategyToPropListener == null) 
+			return;
 		WeakReference<AttributeJoiningStrategyPropertyChangeListener> ref = attributeJoiningStrategyToPropListener.remove(jpa);
 		if (ref != null)
 			lsn = ref.get();
@@ -1198,6 +1200,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			JavaPersistentAttribute jpa = (JavaPersistentAttribute)p;
 			renewAttributeJoiningStrategyPropertyListener(jpa);
 			if (!jpa.getParent().getParent().getResource().exists())
+				return;
+			if (featureProvider == null)
 				return;
 			PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(jpa.getParent());
 			final UpdateAttributeFeature ft = new UpdateAttributeFeature(featureProvider); 

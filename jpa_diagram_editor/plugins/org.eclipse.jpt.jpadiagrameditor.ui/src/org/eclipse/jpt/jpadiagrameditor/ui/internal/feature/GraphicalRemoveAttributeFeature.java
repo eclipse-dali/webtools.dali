@@ -53,6 +53,8 @@ class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 		if (pe == null) 
 			return;
 		TransactionalEditingDomain ted =  TransactionUtil.getEditingDomain(pe);
+		if (ted == null)
+			return;
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			protected void doExecute() {
 				Shape sh = (Shape) pe;

@@ -15,7 +15,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,10 +25,18 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.WeakHashMap;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileInfo;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.IFileSystem;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -39,9 +49,11 @@ import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.editor.DiagramEditorFactory;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
 
@@ -49,20 +61,70 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTyp
 public class ModelIntegrationUtil {
 
 	public static final String DIAGRAM_FILE_EXTENSION = "xmi"; 		//$NON-NLS-1$
+	public static final String DIAGRAM_XML_FILE_EXTENSION = "xml"; 		//$NON-NLS-1$
 	public static final String JPA_DIAGRAM_TYPE = "JPA Diagram"; 	//$NON-NLS-1$
 	public static final String DEFAULT_RES_FOLDER = "src";		//$NON-NLS-1$
 	private static WeakHashMap<Diagram, WeakReference<JpaProject>> diagramsToProjects = new WeakHashMap<Diagram, WeakReference<JpaProject>>();
 	private static WeakHashMap<Diagram, WeakReference<JPAEditorDiagramTypeProvider>> diagramsToProviders = new WeakHashMap<Diagram, WeakReference<JPAEditorDiagramTypeProvider>>();
 	private static HashMap<Diagram, Resource> diagramsToResources = new HashMap<Diagram, Resource>();
 
+	private static boolean xmiExists = false;
 	
 	public static IPath createDiagramPath(PersistenceUnit persistenceUnit) throws CoreException {
 	    IProject project = persistenceUnit.getJpaProject().getProject();
-	    IPath projectPath = project.getFullPath();
 	    String diagramName = persistenceUnit.getName();
-		IPath path = getDiagramsFolderPath(project).append(diagramName).addFileExtension(DIAGRAM_FILE_EXTENSION);
-		path = projectPath.append(path);
-	    return path;		
+		IPath newXMIFilePath = getDiagramsFolderPath(project).append(diagramName).addFileExtension(DIAGRAM_FILE_EXTENSION);	
+		IFileSystem fileSystem = EFS.getLocalFileSystem();
+		IFileStore newXMIFile = fileSystem.getStore(newXMIFilePath);
+        
+	    IPath folderPath = copyExistingXMIContentAndDeleteFile(project, diagramName, newXMIFile);
+	    if(folderPath != null){
+	    	IFile diagramXMLFile = ResourcesPlugin.getWorkspace().getRoot().getFile(folderPath.append(diagramName).addFileExtension(DIAGRAM_XML_FILE_EXTENSION));
+	    	String content = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"+ //$NON-NLS-1$
+		   			"<entities>\n"+ //$NON-NLS-1$
+		   			"</entities>\n"; //$NON-NLS-1$
+	    	if(diagramXMLFile == null || !diagramXMLFile.exists()){
+			   InputStream source = new ByteArrayInputStream(content.getBytes());
+			   diagramXMLFile.create(source, true, new NullProgressMonitor());
+		   } else
+				try {
+					if(diagramXMLFile.getContents().read() == -1){
+						   diagramXMLFile.setContents(new ByteArrayInputStream(content.getBytes()), true, false, new NullProgressMonitor());
+					}
+				} catch (IOException e) {
+					JPADiagramEditorPlugin.logError(JPAEditorMessages.ModelIntegrationUtil_CannotSetFileContentErrorMSG, e);
+				}
+	    }
+
+	    return newXMIFilePath;		
+	}
+
+	private static IPath copyExistingXMIContentAndDeleteFile(IProject project,
+			String diagramName, IFileStore newXMIFile) throws JavaModelException,	CoreException {
+		IPath folderPath = null;
+		IResource[] resources = project.members();
+	    for(IResource res : resources){
+	    	if(res instanceof IFolder){
+	    		folderPath = ((IFolder)res).getFullPath();
+	    		IFile existingXMIFile =((IFolder)res).getFile(diagramName + "." +DIAGRAM_FILE_EXTENSION); //$NON-NLS-1$
+	    		if(existingXMIFile != null && existingXMIFile.exists()){
+		    		IFileStore folder = EFS.getLocalFileSystem().getStore(existingXMIFile.getLocationURI());
+	    			folder.copy(newXMIFile, EFS.OVERWRITE, null);
+	    		    existingXMIFile.delete(true, new NullProgressMonitor());
+	    		    setXmiExists(true);
+	    		    return folderPath;
+	    		}
+	    	}
+	    }
+	    
+	    IPath projectPath = project.getFullPath();
+	    folderPath = projectPath.append(getDiagramsXMLFolderPath(project));
+	    IFileStore xmlFileStore = EFS.getLocalFileSystem().getStore(folderPath.append(diagramName).addFileExtension(DIAGRAM_XML_FILE_EXTENSION));
+	    IFileInfo info = xmlFileStore.fetchInfo();
+	    if(!info.exists() && info.isDirectory()){
+	    	xmlFileStore.mkdir(EFS.NONE, null);
+	    }
+	    return folderPath;
 	}
 	
 	public static Diagram createDiagram(PersistenceUnit persistenceUnit, 
@@ -104,11 +166,9 @@ public class ModelIntegrationUtil {
 		
 		TransactionalEditingDomain defaultTransEditDomain = DiagramEditorFactory.createResourceSetAndEditingDomain();
 		ResourceSet resourceSet = defaultTransEditDomain.getResourceSet();
-		IFile diagramFile = project.getFile(diagramFileName.removeFirstSegments(1));
-		IPath diagramFilePath = diagramFile.getFullPath();
 
-		String pathName = diagramFilePath.toString();
-		URI resourceURI = URI.createPlatformResourceURI(pathName, true);
+		String pathName = diagramFileName.toString();
+		URI resourceURI = URI.createFileURI(pathName);
 		final Resource resource = resourceSet.createResource(resourceURI);
 		//resource.setTrackingModification(false);
 			//(ResourceSetManager.getProjectForResourceSet(resourceSet));
@@ -176,9 +236,13 @@ public class ModelIntegrationUtil {
 		return project.getProjectRelativePath().append(DEFAULT_RES_FOLDER);		
 	}	
 	
-	public static IPath getDiagramsFolderPath(IProject project) {
+	public static IPath getDiagramsXMLFolderPath(IProject project) {
 		Properties props = JPADiagramPropertyPage.loadProperties(project);		
 		return new Path(JPADiagramPropertyPage.getDefaultFolder(project, props));
+	}
+	
+	public static IPath getDiagramsFolderPath(IProject project){
+		return JPADiagramEditorPlugin.getDefault().getStateLocation();
 	}
 	
 	public static void mapDiagramToProject(Diagram diagram, JpaProject project) {
@@ -222,7 +286,12 @@ public class ModelIntegrationUtil {
 	public static void mapDiagramToProvider(Diagram diagram, JPAEditorDiagramTypeProvider provider) {
 		diagramsToProviders.put(diagram, new WeakReference<JPAEditorDiagramTypeProvider>(provider));
 	}
-	
-	
-	
+
+	public static boolean isXmiExists() {
+		return xmiExists;
+	}
+
+	public static void setXmiExists(boolean xmiExists) {
+		ModelIntegrationUtil.xmiExists = xmiExists;
+	}
 }

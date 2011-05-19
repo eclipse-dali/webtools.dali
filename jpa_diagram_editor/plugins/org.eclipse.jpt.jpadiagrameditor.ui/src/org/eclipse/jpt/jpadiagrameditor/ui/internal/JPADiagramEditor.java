@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -57,6 +58,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelI
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorContextMenuProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.EntitiesCoordinatesXML;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPACheckSum;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
@@ -178,6 +180,12 @@ public class JPADiagramEditor extends DiagramEditor {
 				
 			}
 		});
+		
+		IProject project = ModelIntegrationUtil.getProjectByDiagram(d).getProject();
+		EntitiesCoordinatesXML xml = new EntitiesCoordinatesXML(project, d);
+		xml.store();
+		xml.close();
+		
 		super.doSave(monitor);
 	}
 
@@ -239,7 +247,7 @@ public class JPADiagramEditor extends DiagramEditor {
 	}
 
 	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {
+			throws PartInitException {		
 		IFile entityFile = (IFile) input.getAdapter(IFile.class);
 		
 		if (entityFile != null && entityFile.getFileExtension().equals("java")) { //$NON-NLS-1$
@@ -247,7 +255,7 @@ public class JPADiagramEditor extends DiagramEditor {
 		} else
 			super.init(site, input);
 	}
-
+	
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		super.selectionChanged(part, selection);

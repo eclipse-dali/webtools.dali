@@ -37,7 +37,6 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.context.impl.CustomContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
-import org.eclipse.graphiti.mm.algorithms.RoundedRectangle;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
@@ -58,6 +57,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddJPAEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.EntitiesCoordinatesXML;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPACheckSum;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPASolver;
@@ -168,7 +168,7 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 		PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(proj);
 		String diagramName = pu.getName();
 	    IPath path = ModelIntegrationUtil.getDiagramsFolderPath(project).append(diagramName).addFileExtension(ModelIntegrationUtil.DIAGRAM_FILE_EXTENSION);
-		final IFile f = project.getFile(path);
+		final IFile f = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 		boolean readOnly = (f != null) && f.exists() && f.isReadOnly();
 		if (readOnly) {
 			if (JPACheckSum.INSTANCE().isModelDifferentFromDiagram(diagram, proj) || hasToAdd) {
@@ -214,22 +214,21 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 		
 		removeConnections();
 		
-		final Hashtable<String, SizePosition> marks = new Hashtable<String, SizePosition>(); 
+		final Hashtable<String, SizePosition> marks = new Hashtable<String, SizePosition>(); 				
+		EntitiesCoordinatesXML xml = new EntitiesCoordinatesXML(project, getDiagram());
+		xml.load(marks);
+				
 		List<Shape> picts = diagram.getChildren();
-		if (picts.size() == 0)
-			return readOnly;
 		Iterator<Shape> it = picts.iterator();
 		HashSet<Shape> toDelete = new HashSet<Shape>();
 		// collecting data from the saved pictograms
 		while (it.hasNext()) {
 			Shape pict = it.next();
-			String name = Graphiti.getPeService().getPropertyValue(pict, JPAEditorConstants.PROP_ENTITY_CLASS_NAME); 
-			SizePosition rectSP = loadSizeAndPosition(pict);
-			marks.put(name, rectSP);
 			toDelete.add(pict);
 		}
-		final Iterator<Shape> iter = toDelete.iterator();
 		
+		final Iterator<Shape> iter = toDelete.iterator();
+				
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(diagram);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			protected void doExecute() {
@@ -272,17 +271,6 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 		return false;
 	}
 
-	private SizePosition loadSizeAndPosition(Shape pict) {
-		RoundedRectangle rect = (RoundedRectangle)pict.getGraphicsAlgorithm();
-		SizePosition rectSP = new SizePosition(rect.getWidth(), rect.getHeight(), 
-											   rect.getX(), rect.getY()); 
-		
-		rectSP.primaryCollapsed = JPAEditorConstants.TRUE_STRING.equals(Graphiti.getPeService().getPropertyValue(pict, JPAEditorConstants.PRIMARY_COLLAPSED));
-		rectSP.relationCollapsed = JPAEditorConstants.TRUE_STRING.equals(Graphiti.getPeService().getPropertyValue(pict, JPAEditorConstants.RELATION_COLLAPSED));
-		rectSP.basicCollapsed = JPAEditorConstants.TRUE_STRING.equals(Graphiti.getPeService().getPropertyValue(pict, JPAEditorConstants.BASIC_COLLAPSED));
-		return rectSP;
-	}
-    
 	private void removeConnections() {
 		Collection<org.eclipse.graphiti.mm.pictograms.Connection> cons = getDiagram().getConnections();
 		Iterator<org.eclipse.graphiti.mm.pictograms.Connection> consIt = cons.iterator();
@@ -317,5 +305,4 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 		setFeatureProvider(null);
 		isDisposed = true;
 	}
-        
 }

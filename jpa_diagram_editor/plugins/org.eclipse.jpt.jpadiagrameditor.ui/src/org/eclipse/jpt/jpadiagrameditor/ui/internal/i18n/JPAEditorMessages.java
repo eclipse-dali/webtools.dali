@@ -228,6 +228,22 @@ public class JPAEditorMessages extends NLS {
 	public static String BTN_OK;
 	public static String BTN_CANCEL;	
 	
+	public static String EntitiesCoordinatesXML_CannotCloseFileStreamErrorMSG;
+
+	public static String EntitiesCoordinatesXML_CannotCreateDOMFileErrorMSG;
+
+	public static String EntitiesCoordinatesXML_CannotFindFileErrorMSG;
+
+	public static String EntitiesCoordinatesXML_CannotObtainProjectErrorMSG;
+
+	public static String EntitiesCoordinatesXML_CannotParseFileErrorMSG;
+
+	public static String EntitiesCoordinatesXML_CannotReadFileErrorMSG;
+
+	public static String EntitiesCoordinatesXML_CannotRefrfreshFile;
+
+	public static String ModelIntegrationUtil_CannotSetFileContentErrorMSG;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JPAEditorMessages.class);

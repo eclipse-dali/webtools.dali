@@ -202,5 +202,23 @@ public class JPAEditorConstants {
 	public static final String PROP_ENTITY_CHECKSUM = "diagram.checksum"; //$NON-NLS-1$
 	
 	public static final String JPA_SUPPORT_DIALOG_ID = "jpa_support_warning";	//$NON-NLS-1$
+	
+	public static final String ENTITY_XML_TAG = "entity"; //$NON-NLS-1$
+	
+	public static final String ENTITY_NAME_TAG = "entity-name"; //$NON-NLS-1$
+	
+	public static final String ENTITY_WIDTH_TAG = "entity-width"; //$NON-NLS-1$
+
+	public static final String ENTITY_HEIGHT_TAG = "entity-height"; //$NON-NLS-1$
+
+	public static final String ENTITY_X_COORDINATE_TAG = "entity-X-Coordinate"; //$NON-NLS-1$
+
+	public static final String ENTITY_Y_COORDINATE_TAG = "entity-Y-Coordinate"; //$NON-NLS-1$
+
+	public static final String ENTITY_PRIMARY_SECTION_STATE_TAG = "primary-collapsed"; //$NON-NLS-1$
+
+	public static final String ENTITY_RELATION_SECTION_STATE_TAG = "relation-collapsed"; //$NON-NLS-1$
+
+	public static final String ENTITY_BASIC_SECTION_STATE_TAG = "basic-collapsed"; //$NON-NLS-1$
 
 }
