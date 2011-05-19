@@ -11,7 +11,7 @@
 	<!-- Define F1   -->
 	<!-- =========== -->
 	<extension point="org.eclipse.help.contexts">
-		<contexts file="contexts.xml" plugin="org.eclipse.jpt.ui"/>
+		<contexts file="contexts.xml" plugin="org.eclipse.jpt.jpa.ui"/>
 	</extension>
 	<!-- ==================== -->
 	<!-- Define Keyword Index -->
