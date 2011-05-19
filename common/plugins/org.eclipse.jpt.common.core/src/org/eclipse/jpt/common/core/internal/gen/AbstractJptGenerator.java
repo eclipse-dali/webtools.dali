@@ -174,7 +174,7 @@ public abstract class AbstractJptGenerator
 
 	// ********** Setting Launch Configuration **********
 	
-	private void specifyJRE() {
+	protected void specifyJRE() {
 		String jreName = this.jre.getName(); 
 		String vmId = this.jre.getVMInstallType().getId();
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, jreName);

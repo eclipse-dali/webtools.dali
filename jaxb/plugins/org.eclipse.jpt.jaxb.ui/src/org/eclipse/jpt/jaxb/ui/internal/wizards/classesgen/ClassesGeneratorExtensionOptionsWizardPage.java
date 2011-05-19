@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,12 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jaxb.core.JaxbFacet;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -21,13 +26,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 /**
  *  ClassesGeneratorExtensionOptionsWizardPage
  */
 public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 {
-	
+	public static final String TARGET_OPTION = "-target "; //$NON-NLS-1$
+
 	private ExtensionOptionsComposite additionalArgsComposite;
 
 	// ********** constructor **********
@@ -73,7 +82,30 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 		return this.additionalArgsComposite.getAdditionalArgs();
 	}
 
-	// ********** AdditionalArgsComposite **********
+	// ********** private methods **********
+
+	private String getFacetVersion() {
+		IProjectFacetVersion projectFacetVersion = this.getProjectFacetVersion();
+		return (projectFacetVersion == null) ? null : projectFacetVersion.getVersionString();
+	}
+
+	private IProjectFacetVersion getProjectFacetVersion() {
+		IFacetedProject facetedProject = null;
+		try {
+			facetedProject = ProjectFacetsManager.create(this.getProject());
+		}
+		catch(CoreException e) {
+			JptJaxbUiPlugin.log(e);
+			return null;
+		}
+		return (facetedProject == null) ? null : facetedProject.getProjectFacetVersion(JaxbFacet.FACET);
+	}
+
+	private IProject getProject() {
+		return ((ClassesGeneratorWizard)this.getWizard()).getJavaProject().getProject();
+	}
+	
+	// ********** ExtensionOptionsComposite **********
 
 	class ExtensionOptionsComposite {
 
@@ -113,6 +145,9 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 			gridData.verticalIndent = 5;
 			additionalArgsLabel.setLayoutData(gridData);
 			this.additionalArgsText = this.buildAdditionalArgsText(composite);
+			if( ! StringTools.stringIsEmpty(getFacetVersion())) {
+				this.additionalArgsText.setText(TARGET_OPTION + getFacetVersion());
+			}
 		}
 		
 		// ********** UI components **********

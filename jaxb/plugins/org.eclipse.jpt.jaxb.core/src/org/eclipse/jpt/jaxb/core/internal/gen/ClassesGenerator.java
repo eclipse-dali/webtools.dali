@@ -9,6 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.gen;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +17,16 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -33,6 +38,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 {
 	public static final String LAUNCH_CONFIG_NAME = "JAXB Run Config";   //$NON-NLS-1$
 	public static final String JAXB_GENERIC_GEN_CLASS = "com.sun.tools.xjc.XJCFacade";   //$NON-NLS-1$
+	public static final String JAXB_GENERIC_GEN_JDK_CLASS = "com.sun.tools.internal.xjc.XJCFacade";   //$NON-NLS-1$
 	public static final String JAXB_ECLIPSELINK_GEN_CLASS = "org.eclipse.persistence.jaxb.xjc.MOXyXJC";   //$NON-NLS-1$
 	
 	private final String schemaPathOrUri;
@@ -43,6 +49,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 	private final ClassesGeneratorOptions generatorOptions;
 	private final ClassesGeneratorExtensionOptions generatorExtensionOptions;
 	private final String mainType;
+	private String toolsJarPath;
 
 	// ********** static methods **********
 	
@@ -57,6 +64,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 			ClassesGeneratorOptions generatorOptions,
 			ClassesGeneratorExtensionOptions generatorExtensionOptions,
 			IProgressMonitor monitor) {
+		
 		if (javaProject == null) {
 			throw new NullPointerException();
 		}
@@ -69,6 +77,64 @@ public class ClassesGenerator extends AbstractJptGenerator
 			bindingsFileNames,
 			generatorOptions, 
 			generatorExtensionOptions).generate(monitor);
+	}
+
+	/**
+	 * Test if the JDK Jaxb compiler is on the classpath.
+	 */
+	public static boolean genericJaxbJdkIsOnClasspath(IJavaProject javaProject) {
+		try {
+			IType genClass = javaProject.findType(JAXB_GENERIC_GEN_JDK_CLASS);
+			return (genClass != null);
+		}
+		catch (JavaModelException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Test if the non-JDK Jaxb compiler is on the classpath.
+	 */
+	public static boolean genericJaxbNonJdkIsOnClasspath(IJavaProject javaProject) {
+		try {
+			IType genClass = javaProject.findType(JAXB_GENERIC_GEN_CLASS);
+			return (genClass != null);
+		}
+		catch (JavaModelException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static IVMInstall getVMInstall(IJavaProject javaProject) throws CoreException {
+		return JavaRuntime.getVMInstall(javaProject);
+	}
+	
+	public static String getVMInstallLocation(IVMInstall vm) {
+			return vm.getInstallLocation().getAbsolutePath();
+	}
+	
+	public static String getVMInstallToolsJarAbsolutePath(IVMInstall vm) {
+		String vmInstallLocation = getVMInstallLocation(vm);
+		return vmInstallLocation + File.separator + "lib" + File.separator + "tools.jar";   //$NON-NLS-1$
+	}
+
+	public static String buildToolsJarPath(IJavaProject javaProject) {
+		try {
+			IVMInstall vm = getVMInstall(javaProject);
+			return getVMInstallToolsJarAbsolutePath(vm);
+		}
+		catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String findToolsJarPath(IJavaProject javaProject) {
+			String toolsAbsolutePath = buildToolsJarPath(javaProject);
+			return ((new File(toolsAbsolutePath)).exists()) ? toolsAbsolutePath : null;
+	}
+	
+	public static boolean toolsJarExists(IJavaProject javaProject) {
+		return (findToolsJarPath(javaProject) != null);
 	}
 
 	// ********** constructors **********
@@ -91,11 +157,12 @@ public class ClassesGenerator extends AbstractJptGenerator
 		this.bindingsFileNames = bindingsFileNames;
 		this.generatorOptions = generatorOptions;
 		this.generatorExtensionOptions = generatorExtensionOptions;
-		this.mainType = (usesMoxyGenerator) ? JAXB_ECLIPSELINK_GEN_CLASS : JAXB_GENERIC_GEN_CLASS;
+		
+		this.mainType = this.buildMainType(javaProject, usesMoxyGenerator);
 	}
 
 	// ********** overrides **********
-
+	
 	@Override
 	protected String getMainType() {
 		return this.mainType;
@@ -106,11 +173,16 @@ public class ClassesGenerator extends AbstractJptGenerator
 		return LAUNCH_CONFIG_NAME;
 	}
 
+	@Override
+	protected void specifyJRE() {
+		// do nothing
+	}
+
 	// ********** behavior **********
 
 	@Override
 	protected void preGenerate(IProgressMonitor monitor) {
-		//nothing to do yet...
+		// nothing to do yet...
 	}
 
 	@Override
@@ -122,6 +194,28 @@ public class ClassesGenerator extends AbstractJptGenerator
 		catch (CoreException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	// ********** private methods **********
+	
+	protected String buildMainType(IJavaProject javaProject, boolean usesMoxyGenerator) {
+		if(usesMoxyGenerator) {
+			return JAXB_ECLIPSELINK_GEN_CLASS;
+		}
+		else if(genericJaxbNonJdkIsOnClasspath(javaProject)) {
+			return JAXB_GENERIC_GEN_CLASS;
+		}
+		else if(genericJaxbJdkIsOnClasspath(javaProject)) {
+			return JAXB_GENERIC_GEN_JDK_CLASS;
+		}
+		this.toolsJarPath = findToolsJarPath(javaProject);
+		return JAXB_GENERIC_GEN_JDK_CLASS;
+	}
+
+	private IRuntimeClasspathEntry getToolsClasspathEntry() {
+		return (StringTools.stringIsEmpty(this.toolsJarPath)) ?
+			null :
+			getArchiveClasspathEntry(new Path(this.toolsJarPath));
 	}
 
 	// ********** Launch Configuration Setup **********
@@ -136,6 +230,11 @@ public class ClassesGenerator extends AbstractJptGenerator
 		// Containers classpath
 		for(IRuntimeClasspathEntry containerClasspathEntry: this.getContainersClasspathEntries()) {
 			classpath.add(containerClasspathEntry.getMemento());
+		}
+		// Tools classpath
+		IRuntimeClasspathEntry toolsClasspathEntry = this.getToolsClasspathEntry();
+		if(toolsClasspathEntry != null) {
+			classpath.add(toolsClasspathEntry.getMemento());
 		}
 		return classpath;
 	}
@@ -179,9 +278,6 @@ public class ClassesGenerator extends AbstractJptGenerator
 		}
 		if(this.generatorOptions.suppressesHeaderGen()) {
 			programArguments.append(" -no-header");	  //$NON-NLS-1$
-		}
-		if(this.generatorOptions.targetIs20()) {
-			programArguments.append(" -target 2.0");	  //$NON-NLS-1$
 		}
 		if(this.generatorOptions.isVerbose()) {
 			programArguments.append(" -verbose");	  //$NON-NLS-1$

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -103,10 +103,6 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 	
 	protected boolean suppressesHeaderGen() {
 		return this.options1Composite.suppressesHeaderGen();
-	}
-	
-	protected boolean getTarget() {
-		return this.options1Composite.targetIs20();
 	}
 	
 	protected boolean isVerbose() {
@@ -343,9 +339,6 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 		private boolean suppressesHeaderGen;
 		private final Button suppressesHeaderGenCheckBox;
 
-		private boolean target;
-		private final Button targetCheckBox;
-
 		private boolean isVerbose;
 		private final Button isVerboseCheckBox;
 
@@ -360,7 +353,6 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 			this.makesReadOnly = false;
 			this.suppressesPackageInfoGen = false;
 			this.suppressesHeaderGen = false;
-			this.target = false;
 			this.isVerbose = false;
 			this.isQuiet = false;
 
@@ -371,7 +363,6 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 			this.makesReadOnlyCheckBox = this.buildMakesReadOnlyCheckBox(composite, this.buildMakesReadOnlySelectionListener());
 			this.suppressesPackageInfoGenCheckBox = this.buildSuppressesPackageInfoGenCheckBox(composite, this.buildSuppressesPackageInfoGenSelectionListener());
 			this.suppressesHeaderGenCheckBox = this.buildSuppressesHeaderGenCheckBox(composite, this.buildSuppressesHeaderGenSelectionListener());
-			this.targetCheckBox = this.buildTargetCheckBox(composite, this.buildTargetSelectionListener());
 			this.isVerboseCheckBox = this.buildIsVerboseCheckBox(composite, this.buildIsVerboseSelectionListener());
 			this.isQuietCheckBox = this.buildIsQuietCheckBox(composite, this.buildIsQuietSelectionListener());
 		}
@@ -399,12 +390,6 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 		private Button buildSuppressesHeaderGenCheckBox(Composite parent, SelectionListener listener) {
 			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_suppressesHeaderGen, listener, 5);
 			checkBox.setSelection(this.suppressesHeaderGen());
-			return checkBox;
-		}
-		
-		private Button buildTargetCheckBox(Composite parent, SelectionListener listener) {
-			Button checkBox = buildCheckBox(parent, JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_target, listener, 5);
-			checkBox.setSelection(this.targetIs20());
 			return checkBox;
 		}
 	
@@ -469,19 +454,7 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 				}
 			};
 		}
-		
-		private SelectionListener buildTargetSelectionListener() {
-			return new SelectionListener() {
-				public void widgetDefaultSelected(SelectionEvent event) {
-					this.widgetSelected(event);
-				}
-				public void widgetSelected(SelectionEvent event) {
-					Options1Composite.this.setTargetIs20(
-						Options1Composite.this.targetCheckBox.getSelection());
-				}
-			};
-		}
-		
+
 		private SelectionListener buildIsVerboseSelectionListener() {
 			return new SelectionListener() {
 				public void widgetDefaultSelected(SelectionEvent event) {
@@ -538,14 +511,6 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 		
 		protected void setSuppressesHeaderGen(boolean suppressesHeaderGen){
 			this.suppressesHeaderGen = suppressesHeaderGen;
-		}
-		
-		protected boolean targetIs20() {
-			return this.target;
-		}
-		
-		protected void setTargetIs20(boolean targetIs20){
-			this.target = targetIs20;
 		}
 		
 		protected boolean isVerbose() {

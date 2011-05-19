@@ -12,6 +12,8 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -25,6 +27,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.wizards.TypedElementSelectionValidator;
 import org.eclipse.jdt.internal.ui.wizards.TypedViewerFilter;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.ui.JavaElementComparator;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.StandardJavaElementContentProvider;
@@ -191,7 +195,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		if( ! this.genericJaxbIsOnClasspath()) {
 			this.displayWarning(JptJaxbUiMessages.ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable);
 		}
-		else if(this.usesMoxy() && ! this.moxyIsOnClasspath()) {
+		else if(this.usesMoxy() && ! this.eclipseLinkMoxyIsOnClasspath()) {
 			//this message is being truncated by the wizard width in some cases
 			this.displayWarning(JptJaxbUiMessages.ClassesGeneratorWizardPage_moxyLibrariesNotAvailable);
 		}
@@ -205,23 +209,70 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 //			}
 //		}
 	}
-	
-	private void displayWarning(String message) {
-		this.setMessage(message, WARNING);
-	}
 
 	/**
 	 * Test if the Jaxb compiler is on the classpath.
 	 */
 	private boolean genericJaxbIsOnClasspath() {
-		try {
-			String className = ClassesGenerator.JAXB_GENERIC_GEN_CLASS;
-			IType genClass = this.getJavaProject().findType(className);
-			return (genClass != null);
-		} 
-		catch (JavaModelException e) {
-			throw new RuntimeException(e);
+		if(this.genericJaxbNonJdkIsOnClasspath()) {
+			return true;
 		}
+		else {
+			if(this.projectJre15OrLower()) {
+				return false;
+			}
+			else if(this.genericJaxbJdkIsOnClasspath()) {
+				return true;
+			}
+			else {
+				return this.toolsJarExists();
+			}
+		}
+	}
+
+	private boolean projectJre15OrLower() {
+		try {
+			IVMInstall vm = this.getVMInstall();
+			if(vm == null) {
+				return false;
+			}
+			if (vm instanceof IVMInstall2) {
+				String javaVersion = ((IVMInstall2) vm).getJavaVersion();
+				if(javaVersion != null) {
+					String versionString = javaVersion.substring(0, javaVersion.lastIndexOf('.'));
+					Float javaVersionNumber = Float.valueOf(versionString);
+					if( javaVersionNumber <= 1.5) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		catch (CoreException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Test if the JDK Jaxb compiler is on the classpath.
+	 */
+	private boolean genericJaxbJdkIsOnClasspath() {
+		return ClassesGenerator.genericJaxbJdkIsOnClasspath(this.getJavaProject());
+	}
+
+	/**
+	 * Test if the non-JDK Jaxb compiler is on the classpath.
+	 */
+	private boolean genericJaxbNonJdkIsOnClasspath() {
+		return ClassesGenerator.genericJaxbNonJdkIsOnClasspath(this.getJavaProject());
+	}
+	
+	private boolean toolsJarExists() {
+		return ClassesGenerator.toolsJarExists(this.getJavaProject());
+	}
+	
+	private IVMInstall getVMInstall() throws CoreException {
+		return ClassesGenerator.getVMInstall(this.getJavaProject());
 	}
 	
 	/**
@@ -229,13 +280,16 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	 */
 	private boolean moxyIsOnClasspath() {
 		try {
-			String className = ClassesGenerator.JAXB_ECLIPSELINK_GEN_CLASS;
-			IType genClass = this.getJavaProject().findType(className);
+			IType genClass = this.getJavaProject().findType(ClassesGenerator.JAXB_ECLIPSELINK_GEN_CLASS);
 			return (genClass != null);
 		} 
 		catch (JavaModelException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private boolean eclipseLinkMoxyIsOnClasspath() {
+		return (this.moxyIsOnClasspath() && this.genericJaxbNonJdkIsOnClasspath());
 	}
 
 	private boolean projectPlatformIsJaxb() {
@@ -246,6 +300,10 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		JaxbPlatformDescription jaxbPlatform = JptJaxbCorePlugin.getJaxbPlatformDescription(this.getJavaProject().getProject());
 		JaxbPlatformGroupDescription jaxbPlatformGroup = (jaxbPlatform == null) ? null : jaxbPlatform.getGroup();
 		return jaxbPlatformGroup == ECLIPSELINK_PLATFORM_GROUP;
+	}
+	
+	private void displayWarning(String message) {
+		this.setMessage(message, WARNING);
 	}
 	
 	// ********** overrides **********

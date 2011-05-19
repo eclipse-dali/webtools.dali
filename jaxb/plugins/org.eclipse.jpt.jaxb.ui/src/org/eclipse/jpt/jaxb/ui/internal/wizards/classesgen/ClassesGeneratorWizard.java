@@ -281,7 +281,6 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		this.generatorOptions.setMakesReadOnly(this.optionsPage.makesReadOnly());
 		this.generatorOptions.setSuppressesPackageInfoGen(this.optionsPage.suppressesPackageInfoGen());
 		this.generatorOptions.setSuppressesHeaderGen(this.optionsPage.suppressesHeaderGen());
-		this.generatorOptions.setTargetIs20(this.optionsPage.getTarget());
 		this.generatorOptions.setIsVerbose(this.optionsPage.isVerbose());
 		this.generatorOptions.setIsQuiet(this.optionsPage.isQuiet());
 		
