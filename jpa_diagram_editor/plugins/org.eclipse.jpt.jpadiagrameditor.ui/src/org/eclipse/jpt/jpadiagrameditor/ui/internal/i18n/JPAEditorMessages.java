@@ -70,7 +70,10 @@ public class JPAEditorMessages extends NLS {
 	public static String CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureDescription;
 	public static String CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName;
 	
+	public static String DeleteFeature_deleteConfirm;
+	
 	public static String DeleteJPAEntityFeature_deleteJPAEntityQuestion;
+	public static String DeleteJPAEntityFeature_deleteJPAEntitiesQuestion;
 	
 	public static String DeleteRelationFeature_deleteRelationQuestion;
 	

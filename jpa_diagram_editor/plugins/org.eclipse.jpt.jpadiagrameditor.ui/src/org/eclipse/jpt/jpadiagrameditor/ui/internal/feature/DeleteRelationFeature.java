@@ -21,6 +21,7 @@ import org.eclipse.graphiti.features.context.impl.DeleteContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -31,6 +32,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.UnidirectionalRela
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
+import org.eclipse.ui.PlatformUI;
 
 
 public class DeleteRelationFeature extends DefaultDeleteFeature{
@@ -125,5 +127,10 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}    
+	
+	protected boolean getUserDecision(IDeleteContext context) {
+		return MessageDialog.openQuestion(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				JPAEditorMessages.DeleteFeature_deleteConfirm, JPAEditorMessages.DeleteRelationFeature_deleteRelationQuestion);
+	}
 	
 }

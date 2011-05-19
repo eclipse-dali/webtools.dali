@@ -178,7 +178,7 @@ public class ModelIntegrationUtil {
 				try {
 					resource.load(null);
 				} catch (IOException e) {
-					JPADiagramEditorPlugin.logInfo("The diagram file does not exist. It will be created");
+					JPADiagramEditorPlugin.logInfo("The diagram file does not exist. It will be created");		//$NON-NLS-1$
 					JPADiagramEditorPlugin.logInfo(e.getLocalizedMessage());
 				}
 			}
