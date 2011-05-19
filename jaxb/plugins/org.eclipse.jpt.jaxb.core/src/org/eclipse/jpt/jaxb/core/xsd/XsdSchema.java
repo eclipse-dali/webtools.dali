@@ -85,7 +85,7 @@ public class XsdSchema
 	
 	public XsdTypeDefinition getTypeDefinition(String namespace, String name) {
 		for (XSDTypeDefinition typeDefinition : getXSDTypeDefinitions(namespace)) {
-			if (typeDefinition.getTargetNamespace().equals(namespace) && typeDefinition.getName().equals(name)) {
+			if (XsdUtil.namespaceEquals(typeDefinition, namespace) && typeDefinition.getName().equals(name)) {
 				return (XsdTypeDefinition) XsdUtil.getAdapter(typeDefinition);
 			}
 		}
@@ -112,7 +112,7 @@ public class XsdSchema
 		return new FilteringIterable<XSDTypeDefinition>(getDeclaredXSDTypeDefinitions()) {
 			@Override
 			protected boolean accept(XSDTypeDefinition o) {
-				return namespace.equals(o.getTargetNamespace());
+				return XsdUtil.namespaceEquals(o, namespace);
 			}
 		};
 	}
@@ -146,7 +146,7 @@ public class XsdSchema
 				new FilteringIterable<XSDElementDeclaration>(getXSDElementDeclarations()) {
 					@Override
 					protected boolean accept(XSDElementDeclaration o) {
-						return o.getTargetNamespace().equals(namespace);
+						return XsdUtil.namespaceEquals(o, namespace);
 					}
 				}) {
 			@Override
@@ -158,7 +158,7 @@ public class XsdSchema
 	
 	public XsdElementDeclaration getElementDeclaration(String namespace, String name) {
 		for (XSDElementDeclaration elementDeclaration : getXSDElementDeclarations()) {
-			if (elementDeclaration.getTargetNamespace().equals(namespace) && elementDeclaration.getName().equals(name)) {
+			if (XsdUtil.namespaceEquals(elementDeclaration, namespace) && elementDeclaration.getName().equals(name)) {
 				return (XsdElementDeclaration) XsdUtil.getAdapter(elementDeclaration);
 			}
 		}

@@ -56,9 +56,7 @@ public class XsdComplexTypeDefinition
 				new FilteringIterable<XSDAttributeUse>(getXSDComponent().getAttributeUses()) {
 					@Override
 					protected boolean accept(XSDAttributeUse attrUse) {
-						String otherNamespace = attrUse.getAttributeDeclaration().getTargetNamespace();
-						return StringTools.stringsAreEqual(namespace, otherNamespace)
-								|| (StringTools.stringIsEmpty(namespace) && (StringTools.stringIsEmpty(otherNamespace)));
+						return XsdUtil.namespaceEquals(attrUse.getAttributeDeclaration(), namespace);
 					}
 				}) {
 			@Override
@@ -96,9 +94,7 @@ public class XsdComplexTypeDefinition
 				new FilteringIterable<XSDElementDeclaration>(getXSDElementDeclarations()) {
 					@Override
 					protected boolean accept(XSDElementDeclaration element) {
-						String otherNamespace = element.getTargetNamespace();
-						return StringTools.stringsAreEqual(namespace, otherNamespace)
-								|| (StringTools.stringIsEmpty(namespace) && (StringTools.stringIsEmpty(otherNamespace)));
+						return XsdUtil.namespaceEquals(element, namespace);
 					}
 				}) {
 			@Override

@@ -34,6 +34,7 @@ import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDModelGroup;
 import org.eclipse.xsd.XSDModelGroupDefinition;
+import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSchemaContent;
@@ -50,6 +51,11 @@ import org.eclipse.xsd.util.XSDSwitch;
 public class XsdUtil {
 	
 	static final XsdAdapterFactoryImpl adapterFactory = new XsdAdapterFactoryImpl();
+	
+	public static boolean namespaceEquals(XSDNamedComponent comp, String namespace) {
+		String xsdNamespace = comp.getTargetNamespace();
+		return (xsdNamespace == null) ? StringTools.stringIsEmpty(namespace) : xsdNamespace.equals(namespace);
+	}
 	
 	public static String getResolvedUri(String namespace, String location) {
 		String resolvedUri = null;

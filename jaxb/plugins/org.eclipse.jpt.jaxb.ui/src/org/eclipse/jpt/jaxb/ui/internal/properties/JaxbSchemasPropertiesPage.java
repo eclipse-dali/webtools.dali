@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -83,7 +84,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
-import org.eclipse.wst.common.uriresolver.internal.URI;
 import org.eclipse.wst.xsd.contentmodel.internal.XSDImpl;
 import org.eclipse.xsd.XSDSchema;
 
@@ -557,6 +557,30 @@ public class JaxbSchemasPropertiesPage
 			extends AbstractModel
 			implements Comparable<Schema> {
 		
+		static String locationDisplayString(String location) {
+			if (location == null) {
+				return "";
+			}
+			
+			URI uri = URI.createURI(location);
+			if (uri.isPlatformResource()) {
+				return uri.toPlatformString(false);
+			}
+			
+			return location;
+		}
+		
+		static String namespaceDisplayString(String namespace) {
+			if ("".equals(namespace)) {
+				return JptJaxbUiMessages.SchemasPage_noNamespaceText;
+			}
+			else if (null == namespace) {
+				return "";
+			}
+			
+			return namespace;
+		}
+		
 		Schema(String namespace, String location) {
 			super();
 			this.namespace = namespace;
@@ -581,8 +605,16 @@ public class JaxbSchemasPropertiesPage
 			firePropertyChanged(NAMESPACE_PROPERTY, old, namespace);
 		}
 		
+		String namespaceDisplayString() {
+			return namespaceDisplayString(this.namespace);
+		}
+		
 		String getLocation() {
 			return this.location;
+		}
+		
+		String locationDisplayString() {
+			return locationDisplayString(getLocation());
 		}
 		
 		void setLocation(String location) {
@@ -658,9 +690,9 @@ public class JaxbSchemasPropertiesPage
 		public String getColumnText(Object element, int columnIndex) {
 			switch (columnIndex) {
 				case SchemaColumnAdapter.NAMESPACE_COLUMN :
-					return ((Schema) element).getNamespace();
+					return ((Schema) element).namespaceDisplayString();
 				case SchemaColumnAdapter.LOCATION_COLUMN :
-					return ((Schema) element).getLocation();
+					return ((Schema) element).locationDisplayString();
 				default :
 					return null;
 			}
@@ -696,8 +728,8 @@ public class JaxbSchemasPropertiesPage
 			this.mode = (this.currentSchema == null) ? Mode.ADD : Mode.EDIT;
 			if (this.mode == Mode.ADD) {
 				this.defaultMessage = JptJaxbUiMessages.SchemasPage_addSchemaMessage;
-				this.location.setValue("");
-				this.namespace.setValue("");
+				this.location.setValue(null);
+				this.namespace.setValue(null);
 			}
 			else {
 				this.defaultMessage = JptJaxbUiMessages.SchemasPage_editSchemaMessage;
@@ -739,14 +771,14 @@ public class JaxbSchemasPropertiesPage
 			locationLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 			
 			final Text locationText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-			locationText.setText(this.location.getValue());
+			locationText.setText(locationDisplayString());
 			locationText.setEditable(false);
 			locationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 			this.location.addPropertyChangeListener(
 					PropertyValueModel.VALUE,
 					new PropertyChangeListener() {
 						public void propertyChanged(PropertyChangeEvent event) {
-							locationText.setText((String) event.getNewValue());
+							locationText.setText(locationDisplayString());
 						}
 					});
 			
@@ -769,23 +801,28 @@ public class JaxbSchemasPropertiesPage
 			namespaceLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 			
 			final Text namespaceText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-			namespaceText.setText(this.namespace.getValue());
+			namespaceText.setText(namespaceDisplayString());
 			namespaceText.setEditable(false);
 			namespaceText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 			this.namespace.addPropertyChangeListener(
 					PropertyValueModel.VALUE,
 					new PropertyChangeListener() {
 						public void propertyChanged(PropertyChangeEvent event) {
-							String newValue = (String) event.getNewValue();
-							String display = (StringTools.stringIsEmpty(newValue)) ? 
-									JptJaxbUiMessages.SchemasPage_noNamespaceText : newValue;
-							namespaceText.setText(display);
+							namespaceText.setText(namespaceDisplayString());
 						}
 					});
 			
 			Dialog.applyDialogFont(dialogArea);
 			
 			return dialogArea;
+		}
+		
+		@Override
+		public void create() {
+			super.create();
+			
+			// disable ok button until user does something and then validation takes over
+			getButton(IDialogConstants.OK_ID).setEnabled(false);
 		}
 		
 		@Override
@@ -807,7 +844,12 @@ public class JaxbSchemasPropertiesPage
 			String resolvedUri = XsdUtil.getResolvedUri(null, location);
 			
 			XSDSchema schema = XSDImpl.buildXSDModel(resolvedUri);
-			String newNamespace = (schema == null) ? null : schema.getTargetNamespace();
+			String newNamespace = 
+					(schema == null) ? 
+							null 
+							: ((schema.getTargetNamespace()) == null ? 
+									""
+									: schema.getTargetNamespace());
 			this.namespace.setValue(newNamespace);
 			this.resolvedSchema = schema;
 			
@@ -818,8 +860,16 @@ public class JaxbSchemasPropertiesPage
 			return this.namespace.getValue();
 		}
 		
+		protected String namespaceDisplayString() {
+			return Schema.namespaceDisplayString(getNamespace());
+		}
+		
 		public String getLocation() {
 			return this.location.getValue();
+		}
+		
+		protected String locationDisplayString() {
+			return Schema.locationDisplayString(getLocation());
 		}
 		
 		private void validate() {
@@ -896,7 +946,7 @@ public class JaxbSchemasPropertiesPage
 		protected void okPressed() {
 			IFile file = this.locationPanel.getFile();
 			if (file != null) {
-				this.location = URI.createPlatformResourceURI(file.getFullPath().toString()).toString();
+				this.location = URI.createPlatformResourceURI(file.getFullPath().toString(), false).toString();
 			}
 			else {
 				this.location = this.locationPanel.getXMLCatalogId();
