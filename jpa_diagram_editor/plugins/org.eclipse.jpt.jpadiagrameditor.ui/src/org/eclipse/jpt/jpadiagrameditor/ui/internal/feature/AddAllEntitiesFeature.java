@@ -39,6 +39,7 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 
@@ -166,6 +167,11 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 	private class IndexAndLowerEdge {
 		int index;
 		int lowerEdge;
+	}
+	
+	@Override
+	public String getName() {
+		return JPAEditorMessages.JPAEditorToolBehaviorProvider_showAllTheEntities;
 	}
 	
 }

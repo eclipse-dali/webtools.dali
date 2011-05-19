@@ -66,5 +66,10 @@ public class RestoreEntityFeature extends AbstractCustomFeature {
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}	
+	
+	@Override
+	public String getName() {
+		return JPAEditorMessages.JPAEditorToolBehaviorProvider_discardChangesMenuItem;
+	}
 
 }

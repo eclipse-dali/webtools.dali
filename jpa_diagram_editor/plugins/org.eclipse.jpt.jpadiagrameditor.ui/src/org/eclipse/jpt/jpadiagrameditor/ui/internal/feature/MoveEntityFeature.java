@@ -19,6 +19,7 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.internal.ui.refactoring.reorg.ReorgMoveAction;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 
@@ -35,5 +36,12 @@ public class MoveEntityFeature extends RefactorEntityFeature {
 		ReorgMoveAction action = new ReorgMoveAction(ws);
 		execute(context, action, cu);
 	}
+	
+	
+	@Override
+	public String getName() {
+		return JPAEditorMessages.MoveEntityFeature_ContextMenuOperationDescription;
+	}
+	
 		
 }

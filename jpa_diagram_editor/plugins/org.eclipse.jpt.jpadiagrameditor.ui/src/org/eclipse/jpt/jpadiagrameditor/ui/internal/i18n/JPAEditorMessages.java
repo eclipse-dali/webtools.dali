@@ -87,6 +87,8 @@ public class JPAEditorMessages extends NLS {
 	public static String DirectEditJPAEntityFeature_lineBreaksNotAllowedMsg;
 	public static String DirectEditJPAEntityFeature_scpacesNotAllowedMsg;
 	public static String DirectEditJPAEntityFeature_invalidSymbolsMsg;
+
+	public static String DiscardAndRemoveAllEntitiesFeature_ContextMenuOperationDescription;
 	
 	public static String JpaArtifactFactory_CanNotCheckReturnType;
 
@@ -200,6 +202,8 @@ public class JPAEditorMessages extends NLS {
 	public static String OpenJpaDiagramActionDelegate_noPersistenceUnitMsg; 
 
 	
+	public static String SaveAndRemoveAllEntitiesFeature_ContextMenuOperationDescription;
+
 	public static String SelectTypeDialog_chooseAttributeTypeDialogText;
 	public static String SelectTypeDialog_browseBtnTxt;
 	public static String SelectTypeDialog_browseBtnDesc;

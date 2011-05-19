@@ -30,6 +30,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -73,6 +74,11 @@ public class CollapseAllEntitiesFeature extends AbstractCustomFeature implements
 	@Override
 	public boolean isAvailable(IContext context) {
 		return true;
+	}
+	
+	@Override
+	public String getName() {
+		return JPAEditorMessages.JPAEditorToolBehaviorProvider_collapseAllEntitiesMenuItem;
 	}
 	
 }

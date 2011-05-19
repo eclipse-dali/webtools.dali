@@ -56,4 +56,9 @@ public class SaveAndRemoveAllEntitiesFeature extends RemoveAllEntitiesFeature {
 		}
 		super.execute(context);
 	}	
+	
+	@Override
+	public String getName() {
+		return JPAEditorMessages.SaveAndRemoveAllEntitiesFeature_ContextMenuOperationDescription;
+	}
 }

@@ -55,5 +55,11 @@ public class DiscardAndRemoveAllEntitiesFeature extends RemoveAllEntitiesFeature
 		}
 		super.execute(context);
 	}		
+	
+	@Override
+	public String getName() {
+		return JPAEditorMessages.DiscardAndRemoveAllEntitiesFeature_ContextMenuOperationDescription;
+		
+	}
 
 }

@@ -91,5 +91,10 @@ public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}
 	
+	@Override
+	public String getName() {
+		return JPAEditorMessages.RefactorAttributeTypeFeature_ContextMenuOperationDescription;
+	}
+	
 
 }

@@ -19,6 +19,7 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.ui.actions.RenameAction;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
@@ -37,6 +38,11 @@ public class RenameEntityFeature extends RefactorEntityFeature {
 		RenameAction action = new RenameAction(ws);
 		ats = JpaArtifactFactory.instance().getRelatedAttributes(jpt);
 		execute(context, action, cu);		
+	}
+	
+	@Override
+	public String getName() {
+		return JPAEditorMessages.RenameEntityFeature_ContextMenuOperationDescription;
 	}
 	
 }
