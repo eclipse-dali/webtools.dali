@@ -367,7 +367,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			}
 			this.validateProjectClasspath();
 
-			String schemaName = ((ClassesGeneratorWizard) getWizard()).getAbsoluteLocalXsdUri().lastSegment();
+			String schemaName = ((ClassesGeneratorWizard) getWizard()).getLocalSchemaUri().lastSegment();
 			this.setTitle(NLS.bind(JptJaxbUiMessages.ClassesGeneratorWizardPage_title, schemaName));
 		}
 	}

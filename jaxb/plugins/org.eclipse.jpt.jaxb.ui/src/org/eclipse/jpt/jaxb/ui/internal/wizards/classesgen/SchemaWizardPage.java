@@ -12,6 +12,8 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.emf.common.CommonPlugin;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -92,8 +94,8 @@ public class SchemaWizardPage
 		super.setVisible(visible);
 		if(visible) {
 			
-			if(this.getSourceSchema() != null) {
-	    		this.selectSourcePanel.setSingleFileViewDefaultSelection(new StructuredSelection(this.getSourceSchema()));
+			if(this.getSchemaFile() != null) {
+	    		this.selectSourcePanel.setSingleFileViewDefaultSelection(new StructuredSelection(this.getSchemaFile()));
 	    	}
 	    	else {
 	    		this.updateTargetProject();
@@ -120,29 +122,44 @@ public class SchemaWizardPage
     @Override
 	public boolean isPageComplete() {
     	
-		return this.schemaOrUriSelected() && (this.getErrorMessage() == null);
+		return this.fileOrXmlCatalogEntrySelected() && (this.getErrorMessage() == null);
 	}
     
     
 	// ********** intra-wizard methods **********
 	
-	public IFile getSourceSchema() {
+    /* return the file, if a file is selected */
+	public IFile getSchemaFile() {
 		return this.selectSourcePanel.getFile();
 	}
 	
-	public String getSourceURI() {
-		String uri = this.selectSourcePanel.getXMLCatalogURI();
-		if (uri == null) {
-			IFile file = this.selectSourcePanel.getFile();
-			if (file != null) {
-				uri = URIHelper.getPlatformURI(file);
-			}
-		}
-		return uri;
-	}
-	
+	/* return xml catalog id, if a catalog entry is selected */
 	public String getXMLCatalogId() {
 		return this.selectSourcePanel.getXMLCatalogId();
+	}
+	
+	/* return identifier of schema location, whether using file or xml catalog */
+	public String getSchemaLocation() {
+		IFile file = this.selectSourcePanel.getFile();
+		if (file != null) {
+			return URI.createPlatformResourceURI(file.getFullPath().toString(), false).toString();
+		}
+		return this.selectSourcePanel.getXMLCatalogId();
+	}
+	
+	/* return local uri of schema, whether using file or xml catalog */
+	public URI getLocalSchemaURI() {
+		IFile file = this.selectSourcePanel.getFile();
+		if (file != null) {
+			return URI.createFileURI(file.getLocation().toString());
+		}
+		
+		String uri = this.selectSourcePanel.getXMLCatalogURI();
+		if (uri != null) {
+			return CommonPlugin.asLocalURI(URI.createURI(uri));
+		}
+		
+		return null;
 	}
 	
 	
@@ -175,15 +192,15 @@ public class SchemaWizardPage
 		return null;
     }
     
-	private boolean schemaOrUriSelected() {
-		return ((this.getSourceSchema() != null) || (this.getSourceURI() != null));
+	private boolean fileOrXmlCatalogEntrySelected() {
+		return this.getSchemaFile() != null || this.getXMLCatalogId() != null;
 	}
 	
 	private String computeErrorMessage() {
 		String errorMessage = null;
-		String uri = this.getSourceURI();
-		if(uri != null) {
-			if( ! URIHelper.isReadableURI(uri, false)) {
+		URI uri = this.getLocalSchemaURI();
+		if (uri != null) {
+			if (! URIHelper.isReadableURI(uri.toString(), false)) {
 				errorMessage = JptJaxbUiMessages.SchemaWizardPage_errorUriCannotBeLocated;
 			}
 		}

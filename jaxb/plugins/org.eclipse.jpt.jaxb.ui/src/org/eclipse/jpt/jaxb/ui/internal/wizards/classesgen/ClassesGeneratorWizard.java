@@ -9,6 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -16,7 +18,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -25,23 +26,31 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.ui.internal.wizards.JavaProjectWizardPage;
+import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.GenerateJaxbClassesJob;
+import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
+import org.eclipse.wst.xsd.contentmodel.internal.XSDImpl;
+import org.eclipse.xsd.XSDSchema;
 
 /**
  *  ClassesGeneratorWizard
  */
-public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
-
+public class ClassesGeneratorWizard
+		extends Wizard
+		implements IWorkbenchWizard {
+	
 	private IJavaProject javaProject;
-	private URI absoluteLocalXsdUri;  // the URI must be absolutely defined in the local file system
+	private IFile preselectedXsdFile;
 	protected IStructuredSelection selection;
 	
 	private String destinationFolder;
@@ -52,7 +61,7 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	
 	private ClassesGeneratorOptions generatorOptions;
 	private ClassesGeneratorExtensionOptions generatorExtensionOptions;
-
+	
 	private JavaProjectWizardPage projectWizardPage;
 	private SchemaWizardPage schemaWizardPage;
 	
@@ -60,7 +69,8 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	private ClassesGeneratorOptionsWizardPage optionsPage;
 	private ClassesGeneratorExtensionOptionsWizardPage extensionOptionsPage;
 	private boolean performsGeneration;
-
+	
+	
 	// ********** constructor **********
 	
 	public ClassesGeneratorWizard() {
@@ -68,16 +78,16 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		this.performsGeneration = true;
 	}
 	
-	public ClassesGeneratorWizard(IJavaProject javaProject, URI absoluteLocalXsdUri) {
+	public ClassesGeneratorWizard(IJavaProject javaProject, IFile xsdFile) {
 		super();
 		this.javaProject = javaProject;
-		this.absoluteLocalXsdUri = absoluteLocalXsdUri;
-
+		this.preselectedXsdFile = xsdFile;
 		this.performsGeneration = false;
 	}
-
+	
+	
 	// ********** IWorkbenchWizard implementation  **********
-
+	
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;
 		
@@ -85,14 +95,15 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		this.setDefaultPageImageDescriptor(JptJaxbUiPlugin.getImageDescriptor(JptJaxbUiIcons.CLASSES_GEN_WIZ_BANNER));
 		this.setNeedsProgressMonitor(true);
 	}
-
+	
+	
 	// ********** IWizard implementation  **********
 	
 	@Override
 	public void addPages() {
 		super.addPages();
-
-		if(this.selection != null) {
+		
+		if (this.selection != null) {
 			this.javaProject = this.getJavaProjectFromSelection(this.selection);
 			
 			this.projectWizardPage = new JavaProjectWizardPage(this.javaProject);
@@ -100,17 +111,18 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 			this.projectWizardPage.setDescription(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_desc);
 			this.projectWizardPage.setDestinationLabel(JptJaxbUiMessages.JavaProjectWizardPage_destinationProject);
 			this.addPage(this.projectWizardPage);
-
+			
 			// SchemaWizardPage
-			IFile schemaSelected = SchemaWizardPage.getSourceSchemaFromSelection(this.selection);
-			if (schemaSelected == null) {
+			if (this.preselectedXsdFile == null) {
+				this.preselectedXsdFile = SchemaWizardPage.getSourceSchemaFromSelection(this.selection);
+			}
+			
+			if (this.preselectedXsdFile == null) {
 				this.schemaWizardPage = new SchemaWizardPage(this.selection);
 				this.addPage(this.schemaWizardPage);
 			}
-			else {
-				this.absoluteLocalXsdUri = URI.createFileURI(schemaSelected.getLocation().toString());
-			}
 		}
+		
 		this.settingsPage = this.buildClassesGeneratorPage();
 		this.optionsPage = this.buildClassesGeneratorOptionsPage();
 		this.extensionOptionsPage = this.buildExtensionOptionsPage();
@@ -146,6 +158,7 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		if (this.performsGeneration) {
 			if (displayOverridingClassesWarning(this.generatorOptions)) {
 				generateJaxbClasses();
+				addSchemaToLibrary();
 			}
 		}
 
@@ -160,19 +173,32 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		}
     	return this.javaProject;
     }
-
-	public URI getAbsoluteLocalXsdUri() {
-		if (this.schemaWizardPage != null) {
-			IFile schemaFile = this.schemaWizardPage.getSourceSchema();
-			if(schemaFile != null) {
-				return URI.createFileURI(schemaFile.getLocation().toString());
-			}
-			else {
-				URI uri = CommonPlugin.asLocalURI(URI.createURI(this.schemaWizardPage.getSourceURI()));
-				return uri;
-			}
+	
+	/* may be null */
+	private JaxbProject getJaxbProject() {
+		return JptJaxbCorePlugin.getJaxbProject(getJavaProject().getProject());
+	}
+	
+	/* return the physical location of the schema */
+	public URI getLocalSchemaUri() {
+		if (this.preselectedXsdFile != null) {
+			return URI.createFileURI(this.preselectedXsdFile.getLocation().toString());
 		}
-		return this.absoluteLocalXsdUri;
+		else if (this.schemaWizardPage != null) {
+			return this.schemaWizardPage.getLocalSchemaURI();
+		}
+		return null;
+	}
+	
+	/* return the uri or file platform resource uri used for schema resolution */
+	public String getSchemaLocation() {
+		if (this.preselectedXsdFile != null) {
+			return URI.createPlatformResourceURI(this.preselectedXsdFile.getFullPath().toString(), false).toString();
+		}
+		else if (this.schemaWizardPage != null) {
+			return this.schemaWizardPage.getSchemaLocation();
+		}
+		return null;
 	}
 	
 
@@ -323,7 +349,7 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 			WorkspaceJob job = 
 					new GenerateJaxbClassesJob(
 						this.getJavaProject(),
-						this.getAbsoluteLocalXsdUri().toString(),
+						this.getLocalSchemaUri().toString(),
 						this.destinationFolder,
 						this.targetPackage,
 						this.catalog,
@@ -339,6 +365,29 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 			String msg = re.getMessage();
 			String message = (msg == null) ? re.toString() : msg;
 			this.logError(message);
+		}
+	}
+	
+	private void addSchemaToLibrary() {
+		JaxbProject jaxbProject = getJaxbProject();
+		
+		if (jaxbProject == null) {
+			return;
+		}
+		
+		String schemaLocation = getSchemaLocation();
+		String resolvedUri = XsdUtil.getResolvedUri(null, schemaLocation);
+		XSDSchema schema = XSDImpl.buildXSDModel(resolvedUri);
+		if (schema != null) {
+			String schemaNamespace = 
+				((schema.getTargetNamespace()) == null ? 
+						""
+						: schema.getTargetNamespace());
+			
+			SchemaLibrary schemaLib = jaxbProject.getSchemaLibrary();
+			Map<String, String> schemas = new HashMap<String, String>(schemaLib.getSchemaLocations());
+			schemas.put(schemaNamespace, schemaLocation);
+			schemaLib.setSchemaLocations(schemas);
 		}
 	}
 	
