@@ -230,10 +230,16 @@ public class JPAEditorMessages extends NLS {
 	public static String JPASolver_closeWarningMsg;
 	public static String JPASolver_closeEditors;
 	
+	public static String RefactorAttributeTypeFeature_ContextMenuOperationDescription;
+	
 	public static String RemoveJPAEntityFeature_discardWarningMsg;
 	
+	public static String RenameEntityFeature_ContextMenuOperationDescription;
+	 
 	public static String BTN_OK;
 	public static String BTN_CANCEL;	
+	
+	public static String MoveEntityFeature_ContextMenuOperationDescription; 
 	
 	public static String EntitiesCoordinatesXML_CannotCloseFileStreamErrorMSG;
 
