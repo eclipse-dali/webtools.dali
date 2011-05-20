@@ -29,6 +29,7 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.filesystem.IFileSystem;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -79,6 +80,13 @@ public class ModelIntegrationUtil {
         
 	    IPath folderPath = copyExistingXMIContentAndDeleteFile(project, diagramName, newXMIFile);
 	    if(folderPath != null){
+		    IPath path = new Path(folderPath.segment(0));
+		    for (int i = 1; i < folderPath.segmentCount(); i++) {
+		    	path = path.append(folderPath.segment(i));
+			    IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+			    if (!folder.exists())
+			    	folder.create(true, true, null);
+		    }	    	
 	    	IFile diagramXMLFile = ResourcesPlugin.getWorkspace().getRoot().getFile(folderPath.append(diagramName).addFileExtension(DIAGRAM_XML_FILE_EXTENSION));
 	    	String content = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"+ //$NON-NLS-1$
 		   			"<entities>\n"+ //$NON-NLS-1$
@@ -98,15 +106,15 @@ public class ModelIntegrationUtil {
 
 	    return newXMIFilePath;		
 	}
-
-	private static IPath copyExistingXMIContentAndDeleteFile(IProject project,
-			String diagramName, IFileStore newXMIFile) throws JavaModelException,	CoreException {
+	
+	private static IPath copyExistingXMIContent(IContainer container,
+			String xmiFileName, IFileStore newXMIFile) throws JavaModelException,	CoreException {
 		IPath folderPath = null;
-		IResource[] resources = project.members();
+		IResource[] resources = container.members();
 	    for(IResource res : resources){
-	    	if(res instanceof IFolder){
+	    	if(res instanceof IFolder) {
 	    		folderPath = ((IFolder)res).getFullPath();
-	    		IFile existingXMIFile =((IFolder)res).getFile(diagramName + "." +DIAGRAM_FILE_EXTENSION); //$NON-NLS-1$
+				IFile existingXMIFile =((IFolder)res).getFile(xmiFileName); //$NON-NLS-1$
 	    		if(existingXMIFile != null && existingXMIFile.exists()){
 		    		IFileStore folder = EFS.getLocalFileSystem().getStore(existingXMIFile.getLocationURI());
 	    			folder.copy(newXMIFile, EFS.OVERWRITE, null);
@@ -115,13 +123,24 @@ public class ModelIntegrationUtil {
 	    		    return folderPath;
 	    		}
 	    	}
-	    }
-	    
+	    	if(res instanceof IContainer) 
+	    		copyExistingXMIContent((IContainer)res,
+	    				xmiFileName, newXMIFile);
+	    }		
+		return null;
+	}
+
+	private static IPath copyExistingXMIContentAndDeleteFile(IProject project,
+			String diagramName, IFileStore newXMIFile) throws JavaModelException,	CoreException {
+		String xmiFileName = diagramName + "." + DIAGRAM_FILE_EXTENSION;		//$NON-NLS-1$
+		IPath folderPath = copyExistingXMIContent(project, xmiFileName, newXMIFile);
+		if (folderPath != null)
+			return folderPath;
 	    IPath projectPath = project.getFullPath();
 	    folderPath = projectPath.append(getDiagramsXMLFolderPath(project));
 	    IFileStore xmlFileStore = EFS.getLocalFileSystem().getStore(folderPath.append(diagramName).addFileExtension(DIAGRAM_XML_FILE_EXTENSION));
 	    IFileInfo info = xmlFileStore.fetchInfo();
-	    if(!info.exists() && info.isDirectory()){
+	    if(!info.exists()){
 	    	xmlFileStore.mkdir(EFS.NONE, null);
 	    }
 	    return folderPath;
