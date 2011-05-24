@@ -19,6 +19,7 @@ public interface JaxbValidationMessages {
 	
 	String NO_JAXB_PROJECT = "NO_JAXB_PROJECT"; 
 	String PROJECT_INVALID_LIBRARY_PROVIDER = "PROJECT_INVALID_LIBRARY_PROVIDER";
+	String PROJECT_UNRESOLVED_SCHEMA = "PROJECT_UNRESOLVED_SCHEMA";
 	
 	
 	// validation on package

@@ -110,30 +110,34 @@ public class XsdUtil {
 	public static XSDSchema buildXSDModel(String uriString) {
 		XSDSchema xsdSchema = null;
 		
-		try {
-			// if XML Schema for Schema is requested, get it through schema model 
-			if (uriString.endsWith("2001/XMLSchema.xsd")) {
-				xsdSchema = XSDSchemaImpl.getSchemaForSchema(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001);			
-			}
-			else { 	
-				ResourceSet resourceSet = new ResourceSetImpl();
-				resourceSet.getAdapterFactories().add(new XSDSchemaLocatorAdapterFactory());
-				
-				URI uri = URI.createURI(uriString);   
-				
-				// CS : bug 113537 ensure we perform physical resolution before opening a stream for the resource
-				String physicalLocation = URIResolverPlugin.createResolver().resolvePhysicalLocation("", "", uriString);       
+		// if XML Schema for Schema is requested, get it through schema model 
+		if (uriString.endsWith("2001/XMLSchema.xsd")) {
+			xsdSchema = XSDSchemaImpl.getSchemaForSchema(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001);			
+		}
+		else { 	
+			ResourceSet resourceSet = new ResourceSetImpl();
+			resourceSet.getAdapterFactories().add(new XSDSchemaLocatorAdapterFactory());
+			
+			URI uri = URI.createURI(uriString);   
+			
+			// CS : bug 113537 ensure we perform physical resolution before opening a stream for the resource
+			String physicalLocation = URIResolverPlugin.createResolver().resolvePhysicalLocation("", "", uriString);
+			XSDResourceImpl resource = null;
+			try {
 				InputStream inputStream = resourceSet.getURIConverter().createInputStream(URI.createURI(physicalLocation));
-				XSDResourceImpl resource = (XSDResourceImpl)resourceSet.createResource(URI.createURI("*.xsd"));
+				resource = (XSDResourceImpl) resourceSet.createResource(URI.createURI("*.xsd"));
 				resource.setURI(uri);
-				resource.load(inputStream, null);         
-				xsdSchema = resource.getSchema();      
+				resource.load(inputStream, null);
 			}
-			handleImports(xsdSchema);
+			catch (IOException e) {
+				// schema does not exist or cannot be read
+				// swallow the exception, and return null
+				// there will be project validation to capture this error
+				return null;
+			}
+			xsdSchema = resource.getSchema();      
 		}
-		catch (Exception e) {
-			JptJaxbCorePlugin.log(e);
-		}
+		handleImports(xsdSchema);
 		return xsdSchema;
 	}
 	

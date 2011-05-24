@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -19,7 +20,10 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceImpl;
 
@@ -70,7 +74,7 @@ public class SchemaLibraryImpl
 	
 	protected XSDSchema addSchema(String namespace, String resolvedUri) {
 		XSDSchema schema = XsdUtil.buildXSDModel(resolvedUri);
-		XSDResourceImpl schemaResource = (XSDResourceImpl) schema.eResource();
+		XSDResourceImpl schemaResource = (schema == null) ? null : (XSDResourceImpl) schema.eResource();
 		if (schemaResource != null) {
 			schemaResource.eAdapters().add(this.schemaResourceAdapter);
 			this.schemaResources.put(namespace, schemaResource);
@@ -105,6 +109,19 @@ public class SchemaLibraryImpl
 		this.schemaLocations.clear();
 		JptJaxbCorePlugin.setSchemaLocationMap(this.project.getProject(), schemaLocations);
 		readProjectPreferences();
+	}
+	
+	public void validate(List<IMessage> messages) {
+		for (String namespace : this.schemaLocations.keySet()) {
+			if (getSchema(namespace) == null) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.PROJECT_UNRESOLVED_SCHEMA,
+								new String[] {this.schemaLocations.get(namespace)},
+								this.project));
+			}
+		}
 	}
 	
 	

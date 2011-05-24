@@ -1158,6 +1158,7 @@ public abstract class AbstractJaxbProject
 			throw new ValidationCancelledException();
 		}
 		validateLibraryProvider(messages);
+		validateSchemaLibrary(messages);
 		this.contextRoot.validate(messages, reporter);
 	}
 	
@@ -1182,6 +1183,10 @@ public abstract class AbstractJaxbProject
 			// fall through
 			JptJaxbCorePlugin.log(ce);
 		}
+	}
+	
+	protected void validateSchemaLibrary(List<IMessage> messages) {
+		this.schemaLibrary.validate(messages);
 	}
 	
 	
