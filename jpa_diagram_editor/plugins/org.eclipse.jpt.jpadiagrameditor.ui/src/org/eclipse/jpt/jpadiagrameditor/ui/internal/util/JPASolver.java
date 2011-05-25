@@ -113,6 +113,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.UpdateAttributeFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
@@ -173,7 +174,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	
 	public JPASolver(IEclipseFacade eclipseFacade, IJPAEditorUtil util) {
 		this.eclipseFacade = eclipseFacade;
-		eclipseFacade.getWorkspace().addResourceChangeListener(this, IResourceChangeEvent.POST_BUILD);
+		eclipseFacade.getWorkspace().addResourceChangeListener(this, IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE | IResourceChangeEvent.POST_BUILD);
 		keyToBO = new Hashtable<String, Object>();
 		projectToEntityListener = new WeakHashMap<JpaProject, WeakReference<CollectionChangeListener>>();
 		entityToPropListener = new WeakHashMap<JavaPersistentType, WeakReference<PropertyChangeListener>>();
@@ -221,7 +222,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		if (updateEditor) {
 			eclipseFacade.getDisplay().asyncExec(new Runnable() {
 				public void run() {
-					featureProvider.getDiagramTypeProvider().getDiagramEditor().refresh();
+					if(featureProvider != null)
+						featureProvider.getDiagramTypeProvider().getDiagramEditor().refresh();
 				}
 			});
 
@@ -1393,19 +1395,17 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}
 	
 	private void closeDiagramEditorIfProjectIsDeleted(IResourceChangeEvent event) {
-		IResourceDelta changedDelta = event.getDelta();
-		IResourceDelta[] deltas = changedDelta.getAffectedChildren();
-		for (IResourceDelta delta : deltas) {
-			final IResource resource = delta.getResource();
-			if (!resource.exists()) {
+		final IResource resource = event.getResource();
+		if (resource != null && !resource.exists() || event.getType() == IResourceChangeEvent.PRE_CLOSE || (event.getType() == IResourceChangeEvent.PRE_DELETE)) {
 			    if (resource instanceof IProject) {
 					final IDiagramTypeProvider provider = featureProvider.getDiagramTypeProvider();
 					if (provider instanceof JPAEditorDiagramTypeProvider) {
 						final JPADiagramEditor diagramBySelectedProject = ((JPAEditorDiagramTypeProvider) provider).getDiagramEditor();
+						final Diagram diagram = ((JPAEditorDiagramTypeProvider)provider).getDiagram();
 						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 									public void run() {
 										IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-										if (diagramBySelectedProject.getPartName().equals(resource.getName())) {
+										if ((ModelIntegrationUtil.getProjectByDiagram(diagram).getProject()).equals((IProject)resource)) {
 											page.closeEditor(diagramBySelectedProject, false);
 										}
 									}
@@ -1414,15 +1414,17 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 
 				}
 			}
-		}
 	}
 	
 	private void unregisterDeltedEntity(IResourceChangeEvent event) {
+		if((event.getType() == IResourceChangeEvent.PRE_CLOSE) || (event.getType() == IResourceChangeEvent.PRE_DELETE))
+			return;
+		
 		IResourceDelta changedDelta = event.getDelta();
 		IResourceDelta[] deltas = changedDelta.getAffectedChildren();
 		for (IResourceDelta delta : deltas) {
 			final IResource resource = delta.getResource();
-			if (resource.exists()) {
+			if (resource != null && resource.exists()) {
 				if (resource instanceof IProject) {
 					IProject project = (IProject) resource;
 					for (IResourceDelta deltaResource : delta.getAffectedChildren()) {

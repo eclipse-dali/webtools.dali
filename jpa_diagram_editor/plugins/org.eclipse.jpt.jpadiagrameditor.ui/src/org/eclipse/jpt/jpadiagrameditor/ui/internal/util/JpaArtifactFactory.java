@@ -109,6 +109,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToManyUniDirRel
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneBiDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneUniDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.UnidirectionalRelation;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 
@@ -442,16 +443,23 @@ public class JpaArtifactFactory {
 		fp.restoreEntity(jpt);
 	}    	
 	
-	public void forceSaveEntityClass(JavaPersistentType jpt,
-									 IJPAEditorFeatureProvider fp) {
-		ICompilationUnit cu = fp.getCompilationUnit(jpt);			
-		if (!cu.isWorkingCopy()) 
-			JPAEditorUtil.becomeWorkingCopy(cu);
-		try {
-			cu.commitWorkingCopy(true, new NullProgressMonitor());
-			cu.save(new NullProgressMonitor(), true);
-		} catch (JavaModelException e) {}
-	}    
+	public void forceSaveEntityClass(final JavaPersistentType jpt,
+			IJPAEditorFeatureProvider fp) {
+		final ICompilationUnit cu = fp.getCompilationUnit(jpt);
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				try {
+					if (!cu.isWorkingCopy())
+						JPAEditorUtil.becomeWorkingCopy(cu);
+					cu.commitWorkingCopy(true, new NullProgressMonitor());
+					cu.save(new NullProgressMonitor(), true);
+				} catch (JavaModelException e) {
+					if (cu.getResource().getProject().isAccessible())
+						JPADiagramEditorPlugin.logError("Cannot save entity '" + jpt.getName() + "'", e);	//$NON-NLS-1$		//$NON-NLS-2$		
+				}
+			}
+		});
+	}
 	
 	public boolean deleteEntityClass(JavaPersistentType jpt, 
 									 IJPAEditorFeatureProvider fp) {
