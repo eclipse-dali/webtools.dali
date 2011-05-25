@@ -69,7 +69,7 @@ public class JPASolverTest {
 	@Test
 	public void testResourceListenerRegistered() {
 		IWorkspace workspace = EasyMock.createMock(IWorkspace.class);
-		workspace.addResourceChangeListener(isA(IResourceChangeListener.class), eq(IResourceChangeEvent.POST_BUILD));
+		workspace.addResourceChangeListener(isA(IResourceChangeListener.class), eq(IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE | IResourceChangeEvent.POST_BUILD));
 		replay(workspace);
 		IEclipseFacade facade = EasyMock.createMock(IEclipseFacade.class);
 		expect(facade.getWorkspace()).andStubReturn(workspace);
