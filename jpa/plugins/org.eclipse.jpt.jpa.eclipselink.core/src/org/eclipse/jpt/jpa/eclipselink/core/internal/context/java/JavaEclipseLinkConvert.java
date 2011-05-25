@@ -135,9 +135,9 @@ public class JavaEclipseLinkConvert
 			}
 		} else {
 			if ((this.converter == null) || (this.converter.getType() != converterType)) {
-				JavaEclipseLinkConverter.Adapter converterAdapter = this.getConverterAdapter(converterType);
-				this.retainConverterAnnotation(converterAdapter);
-				this.setConverter_(converterAdapter.buildNewConverter(this.getResourcePersistentAttribute(), this));
+				JavaEclipseLinkConverter.Adapter adapter = this.getConverterAdapter(converterType);
+				this.retainConverterAnnotation(adapter);
+				this.setConverter_(buildConverter(adapter));
 			}
 		}
 	}
@@ -149,6 +149,12 @@ public class JavaEclipseLinkConvert
 	}
 
 	protected JavaEclipseLinkConverter<?> buildConverter() {
+		
+		// do not build a converter for a "virtual" attribute
+		if (getAttributeMapping().getPersistentAttribute().isVirtual()) {
+			return null;
+		}
+		
 		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
 		for (JavaEclipseLinkConverter.Adapter adapter : this.getConverterAdapters()) {
 			JavaEclipseLinkConverter<?> javaConverter = adapter.buildConverter(resourceAttribute, this);
@@ -158,7 +164,28 @@ public class JavaEclipseLinkConvert
 		}
 		return null;
 	}
-
+	
+	protected JavaEclipseLinkConverter<?> buildConverter(JavaEclipseLinkConverter.Adapter adapter) {
+		
+		// do not build a converter for a "virtual" attribute
+		if (getAttributeMapping().getPersistentAttribute().isVirtual()) {
+			return null;
+		}
+						
+		return adapter.buildNewConverter(this.getResourcePersistentAttribute(), this);
+	}
+	
+	protected JavaEclipseLinkConverter<?> buildConverter(
+			JavaEclipseLinkConverter.Adapter adapter, EclipseLinkNamedConverterAnnotation annotation) {
+		
+		// do not build a converter for a "virtual" attribute
+		if (getAttributeMapping().getPersistentAttribute().isVirtual()) {
+			return null;
+		}
+		
+		return adapter.buildConverter(annotation, this);
+	}
+	
 	/**
 	 * Clear all the converter annotations <em>except</em> for the annotation
 	 * corresponding to the specified adapter. If the specified adapter is
@@ -187,7 +214,7 @@ public class JavaEclipseLinkConvert
 					(this.converter.getConverterAnnotation() == annotation)) {
 				this.converter.synchronizeWithResourceModel();
 			} else {
-				this.setConverter_(adapter.buildConverter(annotation, this));
+				this.setConverter_(buildConverter(adapter, annotation));
 			}
 		}
 	}

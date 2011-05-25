@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
@@ -23,7 +24,6 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -610,11 +610,9 @@ public abstract class AbstractJavaPersistentAttribute
 	 * as its own.)
 	 */
 	public boolean isVirtual() {
-		return this.declaringPersistentTypeIs(JptJpaCorePlugin.ORM_XML_CONTENT_TYPE);
-	}
-
-	protected boolean declaringPersistentTypeIs(IContentType contentType) {
-		return this.getOwningPersistentType().getResourceType().getContentType().equals(contentType);
+		IContentType persistentTypeContentType = this.getOwningPersistentType().getResourceType().getContentType();
+		return ! persistentTypeContentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)
+				&& ! persistentTypeContentType.isKindOf(JptCommonCorePlugin.JAR_CONTENT_TYPE);
 	}
 
 
