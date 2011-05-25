@@ -15,9 +15,11 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
+import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
+import org.eclipse.wst.common.project.facet.core.VersionFormatException;
 
 /**
  * Use this abstract class for context nodes that are part of an
@@ -54,10 +56,14 @@ public abstract class AbstractOrmXmlContextNode
 		return this.getMappingFileDefinition().getResourceNodeFactory();
 	}
 
-	// TODO bjv need to add API to orm.xml/entity mappings interface...
+	// TODO bjv need to add API and delegate to orm.xml/entity mappings interface...
 	protected boolean isOrmXml2_0Compatible() {
 		String version = this.getMappingFileRoot().getVersion();
-		return (version != null) && version.equals("2.0"); //$NON-NLS-1$
+		try {
+			return (version != null) && SimpleVersion.JPA_VERSION_COMPARATOR.compare(version, "2.0") >= 0; //$NON-NLS-1$
+		} catch (VersionFormatException ex) {
+			return false;
+		}
 	}
 
 	/**
