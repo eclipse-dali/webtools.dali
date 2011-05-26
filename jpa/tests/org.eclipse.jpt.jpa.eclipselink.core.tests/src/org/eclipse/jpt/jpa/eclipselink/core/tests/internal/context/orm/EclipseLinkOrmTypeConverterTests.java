@@ -82,24 +82,23 @@ public class EclipseLinkOrmTypeConverterTests
 		converterResource.setDataType(null);
 		assertEquals(null, ormConverter.getDataType());
 		assertEquals(null, converterResource.getDataType());
-		
 				
 		//remove the specified persistent attribute, test virtual mapping	
 		ormPersistentAttribute.convertToVirtual();
-		
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		BasicMapping virtualBasicMapping = (BasicMapping) ormPersistentAttribute2.getMapping();
 		ormConverter = (EclipseLinkTypeConverter) ((EclipseLinkConvert) virtualBasicMapping.getConverter()).getConverter();
-		
 		EclipseLinkTypeConverter javaConverter = ((EclipseLinkTypeConverter) ((EclipseLinkConvert) javaBasicMapping.getConverter()).getConverter());
 		javaConverter.setDataType("bar");
-		assertEquals("bar", ormConverter.getDataType());
+		
+		assertNull(ormConverter);
 		assertEquals("bar", javaConverter.getDataType());
 		
 		//set metadata-complete, test virtual mapping	
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		virtualBasicMapping = (BasicMapping) ormPersistentAttribute2.getMapping();
+		
 		assertNull(virtualBasicMapping.getConverter().getType());
 		assertEquals("bar", javaConverter.getDataType());
 	}
@@ -151,23 +150,22 @@ public class EclipseLinkOrmTypeConverterTests
 		assertEquals(null, ormConverter.getObjectType());
 		assertEquals(null, converterResource.getObjectType());
 		
-				
 		//remove the specified persistent attribute, test virtual mapping	
 		ormPersistentAttribute.convertToVirtual();
-		
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		BasicMapping virtualBasicMapping = (BasicMapping) ormPersistentAttribute2.getMapping();
 		ormConverter = (EclipseLinkTypeConverter) ((EclipseLinkConvert) virtualBasicMapping.getConverter()).getConverter();
-		
 		EclipseLinkTypeConverter javaConverter = ((EclipseLinkTypeConverter) ((EclipseLinkConvert) javaBasicMapping.getConverter()).getConverter());
 		javaConverter.setObjectType("bar");
-		assertEquals("bar", ormConverter.getObjectType());
+		
+		assertNull(ormConverter);
 		assertEquals("bar", javaConverter.getObjectType());
 		
 		//set metadata-complete, test virtual mapping	
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		virtualBasicMapping = (BasicMapping) ormPersistentAttribute2.getMapping();
+		
 		assertNull(virtualBasicMapping.getConverter().getType());
 		assertEquals("bar", javaConverter.getObjectType());
 	}
@@ -219,25 +217,22 @@ public class EclipseLinkOrmTypeConverterTests
 		assertEquals(null, ormConverter.getName());
 		assertEquals(null, converterResource.getName());
 		
-
 		//remove the specified persistent attribute, test virtual mapping	
 		ormPersistentAttribute.convertToVirtual();
-		
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		BasicMapping virtualBasicMapping = (BasicMapping) ormPersistentAttribute2.getMapping();
 		EclipseLinkTypeConverter virtualConverter = (EclipseLinkTypeConverter) ((EclipseLinkConvert) virtualBasicMapping.getConverter()).getConverter();
-		
 		EclipseLinkTypeConverter javaConverter = ((EclipseLinkTypeConverter) ((EclipseLinkConvert) javaBasicMapping.getConverter()).getConverter());
 		javaConverter.setName("bar");
-		assertEquals("bar", virtualConverter.getName());
+		
+		assertNull(virtualConverter);
 		assertEquals("bar", javaConverter.getName());
 		
-		
 		//set metadata-complete, test virtual mapping
-		
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		ormPersistentAttribute2 = ormPersistentType.virtualAttributes().next();
 		virtualBasicMapping = (BasicMapping) ormPersistentAttribute2.getMapping();
+		
 		assertNull(virtualBasicMapping.getConverter().getType());
 		assertEquals("bar", javaConverter.getName());
 	}

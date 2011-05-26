@@ -89,10 +89,10 @@ public class EclipseLinkOrmConverterTests
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		BasicMapping virtualBasicMapping = (BasicMapping) ormPersistentAttribute2.getMapping();
 		EclipseLinkCustomConverter virtualConverter = (EclipseLinkCustomConverter) ((EclipseLinkConvert) virtualBasicMapping.getConverter()).getConverter();
-		
 		EclipseLinkCustomConverter javaConverter = ((EclipseLinkCustomConverter) ((EclipseLinkConvert) javaBasicMapping.getConverter()).getConverter());
 		javaConverter.setConverterClass("bar");
-		assertEquals("bar", virtualConverter.getConverterClass());
+		
+		assertNull(virtualConverter);
 		assertEquals("bar", javaConverter.getConverterClass());
 		
 		//set metadata-complete, test virtual mapping	
@@ -156,10 +156,10 @@ public class EclipseLinkOrmConverterTests
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
 		BasicMapping virtualBasicMapping = (BasicMapping) ormPersistentAttribute2.getMapping();
 		EclipseLinkCustomConverter virtualConverter = (EclipseLinkCustomConverter) ((EclipseLinkConvert) virtualBasicMapping.getConverter()).getConverter();
-		
 		EclipseLinkCustomConverter javaConverter = ((EclipseLinkCustomConverter) ((EclipseLinkConvert) javaBasicMapping.getConverter()).getConverter());
 		javaConverter.setName("bar");
-		assertEquals("bar", virtualConverter.getName());
+		
+		assertNull(virtualConverter);
 		assertEquals("bar", javaConverter.getName());
 		
 		//set metadata-complete, test virtual mapping	
