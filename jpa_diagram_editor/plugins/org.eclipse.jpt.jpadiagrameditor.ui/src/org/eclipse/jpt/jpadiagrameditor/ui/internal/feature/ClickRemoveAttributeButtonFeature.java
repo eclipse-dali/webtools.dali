@@ -78,7 +78,7 @@ public class ClickRemoveAttributeButtonFeature extends DefaultDeleteFeature {
 		String attrName = getAttrName(textShape);
 		this.attrName = attrName;
     	if (haveToAsk) {
-    		if (!getUserDecision()) {
+    		if (!getUserDecision(context)) {
     			return;
     		}
     	}    	
