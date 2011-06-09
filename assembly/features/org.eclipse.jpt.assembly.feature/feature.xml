@@ -25,11 +25,6 @@
       <discovery label="Web Tools Platform (WTP) Updates" url="http://download.eclipse.org/webtools/updates"/>
    </url>
 
-	<plugin
-         id="javax.persistence"
-         version="2.0.3.qualifier"
-         unpack="false"/>
-
    <includes
          id="org.eclipse.jpt.common.feature"
          version="0.0.0"/>
