@@ -26,11 +26,6 @@
    </requires>
 
 	<plugin
-         id="javax.persistence"
-         version="2.0.3.qualifier"
-         unpack="false"/>
-
-	<plugin
          id="org.eclipse.persistence.antlr"
          version="2.3.0.qualifier"
          unpack="false"/>
