@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenColumn;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
@@ -203,11 +204,11 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		this.detailPanelStatckLayout.topControl = tableGenDetatilGroup;
 		this.detailPanel.layout();		
 
-		String baseClass = table.getExtends();
-		if( baseClass!= null )
-			setSuperClass(baseClass, true);
+		String baseClass = StringTools.stringIsEmpty(table.getExtends()) ? "" : table.getExtends();
+		setSuperClass(baseClass, true);			
 		
-		setSuperInterfaces( table.getImplements(), true);
+		
+		setSuperInterfaces(table.getImplements(), true);
 		
 		detailPanel.getParent().layout();
 	}
@@ -240,11 +241,24 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		String baseClass = getSuperClass();
 		if(baseClass!=null && this.selectedTable!=null ){
 			String oldBaseClass = this.selectedTable.getExtends();
-			if( !oldBaseClass.equals(baseClass ))
+			if( !baseClass.equals(oldBaseClass))
 				this.selectedTable.setExtends(baseClass);
 		}
 		return status; 
-	}	
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jdt.ui.wizards.NewTypeWizardPage#superInterfacesChanged()
+	 */
+	@Override
+	protected IStatus superInterfacesChanged() {
+		IStatus status = super.superInterfacesChanged();
+		List<String> superInterfaces = getSuperInterfaces();
+		if (this.selectedTable != null) {
+			this.selectedTable.setImplements(superInterfaces);
+		}
+		return status;
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.jdt.ui.wizards.NewTypeWizardPage#addSuperInterface(java.lang.String)
