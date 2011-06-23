@@ -80,9 +80,17 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 		if (jdtAnnotationName != null) {
 			if (this.annotationIsValid(jdtAnnotationName)) {
 				if (this.selectAnnotationNamed(this.annotations, jdtAnnotationName) == null) { // ignore duplicates
-					Annotation annotation = this.buildAnnotation(jdtAnnotationName);
-					annotation.initialize((CompilationUnit) node.getRoot());
-					this.annotations.add(annotation);
+					// TODO - remove and replace with API post 3.0
+					try {
+						Annotation annotation = this.buildAnnotation(jdtAnnotationName);
+						annotation.initialize((CompilationUnit) node.getRoot());
+						this.annotations.add(annotation);
+					}
+					catch (ClassCastException cce) {
+						// an annotation has been placed on a java member to which it is not been targetted,
+						// and an exception has occurred in the annotation construction/initialization, 
+						// which is expecting only a certain subset of members
+					}
 				}
 			}
 			else if(this.annotationIsValidNestable(jdtAnnotationName)) {
@@ -283,9 +291,17 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 			annotation.synchronizeWith((CompilationUnit) node.getRoot());
 			annotationsToRemove.remove(annotation);
 		} else {
-			annotation = this.buildAnnotation(jdtAnnotationName);
-			annotation.initialize((CompilationUnit) node.getRoot());
-			this.addItemToCollection(annotation, this.annotations, ANNOTATIONS_COLLECTION);
+			// TODO - remove and replace with API post 3.0
+			try {
+				annotation = this.buildAnnotation(jdtAnnotationName);
+				annotation.initialize((CompilationUnit) node.getRoot());
+				this.addItemToCollection(annotation, this.annotations, ANNOTATIONS_COLLECTION);
+			}
+			catch (ClassCastException cce) {
+				// an annotation has been placed on a java member to which it is not been targetted,
+				// and an exception has occurred in the annotation construction/initialization, 
+				// which is expecting only a certain subset of members
+			}
 		}
 	}
 
