@@ -161,7 +161,7 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 
 			@Override
 			protected void setValue_(String value) {
-				if (value.length() == 0) {
+				if (value !=null && value.length() == 0) {
 					value = null;
 				}
 				this.subject.setSpecifiedGenerator(value);
