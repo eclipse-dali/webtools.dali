@@ -15,7 +15,6 @@ import org.eclipse.core.expressions.EvaluationResult;
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.XPointTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -79,7 +78,7 @@ public class ResourceLocatorConfig
 	
 	public ResourceLocator getResourceLocator() {
 		return XPointTools.instantiate(
-				JptCommonCorePlugin.PLUGIN_ID, ResourceLocatorManager.QUALIFIED_EXTENSION_POINT_ID, 
+				this.pluginId, ResourceLocatorManager.QUALIFIED_EXTENSION_POINT_ID, 
 				this.className, ResourceLocator.class);
 	}
 	
