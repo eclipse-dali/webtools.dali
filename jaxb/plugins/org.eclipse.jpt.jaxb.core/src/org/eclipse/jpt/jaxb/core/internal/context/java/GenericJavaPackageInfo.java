@@ -275,6 +275,9 @@ public class GenericJavaPackageInfo
 	//This doesn't actually work yet because of JDT bug (bugs.eclipse.org/326610)
 	@Override
 	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		
+		getJaxbProject().getSchemaLibrary().refreshSchema(getJaxbPackage().getNamespace());
+		
 		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;

@@ -15,6 +15,7 @@ import org.eclipse.xsd.XSDSchema;
 /**
  * Entry point for accessing project schema resources
  * 
+ * @noimplement
  * @version 3.0
  * @since 3.0
  *  
@@ -25,8 +26,6 @@ import org.eclipse.xsd.XSDSchema;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface SchemaLibrary {
-	
-	public XSDSchema getSchema(String namespace);
 	
 	/**
 	 * Return the project settings that indicate how schema keys are mapped to actual
@@ -39,4 +38,22 @@ public interface SchemaLibrary {
 	 * resolvable schemas.
 	 */
 	public void setSchemaLocations(Map<String, String> schemaLocations);
+	
+	/**
+	 * Return the XSDSchema identified by the given namespace, if it exists and is resolvable.
+	 * Return null otherwise.
+	 */
+	public XSDSchema getSchema(String namespace);
+	
+	/**
+	 * Refresh the schema with the given namespace, if it exists and is resolvable.
+	 * Do nothing otherwise.
+	 */
+	public void refreshSchema(String namespace);
+	
+	/**
+	 * Refresh all schemas within the library.
+	 */
+	public void refreshAllSchemas();
+	
 }

@@ -288,6 +288,9 @@ public abstract class AbstractJavaPersistentType
 	@Override
 	public Iterable<String> getJavaCompletionProposals(
 			int pos, Filter<String> filter, CompilationUnit astRoot) {
+		
+		getJaxbProject().getSchemaLibrary().refreshSchema(getJaxbPackage().getNamespace());
+		
 		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;

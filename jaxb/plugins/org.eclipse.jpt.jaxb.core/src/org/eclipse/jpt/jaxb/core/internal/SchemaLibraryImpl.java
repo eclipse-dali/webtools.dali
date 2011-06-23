@@ -111,6 +111,27 @@ public class SchemaLibraryImpl
 		readProjectPreferences();
 	}
 	
+	public void refreshSchema(String namespace) {
+		String resolvedUri = getResolvedUri(namespace);
+		if (resolvedUri == null) {
+			return;
+		}
+		
+		XSDResourceImpl schemaResource = this.schemaResources.get(namespace);
+		
+		if (schemaResource != null) {
+			removeSchemaResource(schemaResource);
+		}
+		
+		addSchema(namespace, resolvedUri);
+	}
+	
+	public void refreshAllSchemas() {
+		for (String namespace : this.schemaResources.keySet()) {
+			refreshSchema(namespace);
+		}
+	}
+	
 	public void validate(List<IMessage> messages) {
 		for (String namespace : this.schemaLocations.keySet()) {
 			if (getSchema(namespace) == null) {
