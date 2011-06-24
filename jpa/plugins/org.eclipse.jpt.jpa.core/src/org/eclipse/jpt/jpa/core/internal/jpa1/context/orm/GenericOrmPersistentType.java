@@ -267,8 +267,15 @@ public class GenericOrmPersistentType
 		}
 	}
 
+	/**
+	 * Don't use getName() to resolve the java resource persistent type.
+	 * getName() uses the JavaPersistentType for determining the name. 
+	 * Changed this to fix bug 339560
+	 * @see #updateJavaPersistentType()
+	 */
 	protected JavaResourcePersistentType resolveJavaResourcePersistentType() {
-		return this.getEntityMappings().resolveJavaResourcePersistentType(this.getName());
+		return this.getEntityMappings().resolveJavaResourcePersistentType(
+			this.convertMappingClassName(this.mapping.getClass_()));
 	}
 
 	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
