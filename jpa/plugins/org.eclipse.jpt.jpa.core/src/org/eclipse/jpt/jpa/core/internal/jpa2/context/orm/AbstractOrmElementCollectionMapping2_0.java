@@ -1310,7 +1310,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			OrmCollectionTable2_0 table = this.getCollectionTable();
-			return table.getName().equals(tableName) ? table.getDbTable() : null;
+			return Tools.valuesAreEqual(table.getName(), tableName) ? table.getDbTable() : null;
 		}
 
 		public Iterator<String> candidateTableNames() {
