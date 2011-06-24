@@ -209,7 +209,7 @@ public class ASTTools {
 	}
 
 	private static ITypeBinding findTypeInHierarchy(ITypeBinding typeBinding, String searchTypeName, HashSet<String> visited) {
-		String typeName = typeBinding.getQualifiedName();
+		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
 		if (visited.contains(typeName)) {
 			return null;
 		}
