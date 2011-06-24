@@ -21,8 +21,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IAdaptable;
@@ -43,6 +41,11 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.utility.Command;
+import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
+import org.eclipse.jpt.common.utility.internal.synchronizers.SynchronousSynchronizer;
+import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -356,7 +359,6 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	protected final IContainer createJavaSourceContainer() {
 		// Get the source folder name from the data model
 		String containerFullPath = model.getStringProperty(INewJavaClassDataModelProperties.SOURCE_FOLDER);
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IContainer container = PlatformTools.getContainer(new Path(containerFullPath));
 		// If container does not exist, create the folder with the specified path
 		if (! container.exists()) {
@@ -382,6 +384,10 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		
 	/**
 	 * Adds entity to ORM XML in separate job
+	 * 
+	 * Set the jpaProject synchronizers to synchronous so that the model
+	 * has a chance to fully update before we attempt to set things on it. (bug 348143)
+	 * 
 	 * @param model entity data model
 	 * @param project JPA project in which the entity will be created
 	 * @return
@@ -390,37 +396,47 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		Job job = new Job(EntityWizardMsg.ADD_ENTITY_TO_XML) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				final JpaXmlResource xmlResource = getOrmXmlResource(model, project);
-				EntityMappings entityMappings = (EntityMappings) JptJpaCorePlugin.getJpaProject(project).getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
-				OrmPersistentType persistentType = entityMappings.addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, model.getQualifiedJavaClassName());
-				Entity entity = (Entity) persistentType.getMapping();
-				if (model.isInheritanceSet()) {
-					entity.setSpecifiedInheritanceStrategy(getModelInheritanceType(model));
-				}
-				
-				if (model.isEntityNameSet()) {
-					entity.setSpecifiedName(model.getEntityName());
-				}
-				if (model.isTableNameSet()) {
-					entity.getTable().setSpecifiedName(model.getTableName());
-				}
-				if (model.isCompositePK()) {
-					entity.getIdClassReference().setSpecifiedIdClassName(model.getIdClassName());
-				}
-				for (String fieldName : model.getPKFields()) {
-					persistentType.getAttributeNamed(fieldName).convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-				}
-
-				persistentType.setSpecifiedAccess(getModelAccessType(model));
-				
+				JpaProject jpaProject = getJpaProject();
+				Synchronizer contextModelSynchronizer = jpaProject.getContextModelSynchronizer();
+				CallbackSynchronizer updateSynchronizer = jpaProject.getUpdateSynchronizer();
+				jpaProject.setContextModelSynchronizer(buildSynchronousContextModelSynchronizer());
+				jpaProject.setUpdateSynchronizer(buildSynchronousUpdateSynchronizer());
 				try {
-					xmlResource.saveIfNecessary();
-				}
-				catch (Exception e) {
-					JptJpaUiPlugin.log(e);
-				}
-				return Status.OK_STATUS;
-			}
+					final JpaXmlResource xmlResource = getOrmXmlResource(model, project);
+					EntityMappings entityMappings = (EntityMappings) JptJpaCorePlugin.getJpaProject(project).getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
+					OrmPersistentType persistentType = entityMappings.addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, model.getQualifiedJavaClassName());
+					Entity entity = (Entity) persistentType.getMapping();
+					if (model.isInheritanceSet()) {
+						entity.setSpecifiedInheritanceStrategy(getModelInheritanceType(model));
+					}
+
+					if (model.isEntityNameSet()) {
+						entity.setSpecifiedName(model.getEntityName());
+					}
+					if (model.isTableNameSet()) {
+						entity.getTable().setSpecifiedName(model.getTableName());
+					}
+					if (model.isCompositePK()) {
+						entity.getIdClassReference().setSpecifiedIdClassName(model.getIdClassName());
+					}
+					for (String fieldName : model.getPKFields()) {
+						persistentType.getAttributeNamed(fieldName).convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+					}
+
+					persistentType.setSpecifiedAccess(getModelAccessType(model));
+
+					try {
+						xmlResource.saveIfNecessary();
+					}
+					catch (Exception e) {
+						JptJpaUiPlugin.log(e);
+					}
+					return Status.OK_STATUS;
+		        } finally {
+					jpaProject.setContextModelSynchronizer(contextModelSynchronizer);
+					jpaProject.setUpdateSynchronizer(updateSynchronizer);       	
+		        }
+		    }
 		};
 		return job;
 	}
@@ -435,6 +451,9 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	/**
 	 * Adds mapped superclass to ORM XML in separate job
 	 * 
+	 * Set the jpaProject synchronizers to synchronous so that the model
+	 * has a chance to fully update before we attempt to set things on it. (bug 348143)
+	 * 
 	 * @param model entity data model
 	 * @param project JPA project in which the entity will be created
 	 * @return the created job
@@ -443,31 +462,74 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		Job job = new Job(EntityWizardMsg.ADD_MAPPED_SUPERCLASS_TO_XML) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				final JpaXmlResource xmlResource = getOrmXmlResource(model, project);
-				EntityMappings entityMappings = (EntityMappings) JptJpaCorePlugin.getJpaProject(project).getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
-				OrmPersistentType persistentType = entityMappings.addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, model.getQualifiedJavaClassName());
-				MappedSuperclass mappedSuperclass = (MappedSuperclass) persistentType.getMapping();
-				
-				if (model.isCompositePK()) {
-					mappedSuperclass.getIdClassReference().setSpecifiedIdClassName(model.getIdClassName());
-				}
-				
-				for (String fieldName : model.getPKFields()) {
-					persistentType.getAttributeNamed(fieldName).convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-				}
-
-				persistentType.setSpecifiedAccess(getModelAccessType(model));
-				
+				JpaProject jpaProject = getJpaProject();
+				Synchronizer contextModelSynchronizer = jpaProject.getContextModelSynchronizer();
+				CallbackSynchronizer updateSynchronizer = jpaProject.getUpdateSynchronizer();
+				jpaProject.setContextModelSynchronizer(buildSynchronousContextModelSynchronizer());
+				jpaProject.setUpdateSynchronizer(buildSynchronousUpdateSynchronizer());
 				try {
-					xmlResource.saveIfNecessary();
-				}
-				catch (Exception e) {
-					JptJpaUiPlugin.log(e);
-				}
-				return Status.OK_STATUS;
+					final JpaXmlResource xmlResource = getOrmXmlResource(model, project);
+					EntityMappings entityMappings = (EntityMappings) JptJpaCorePlugin.getJpaProject(project).getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
+					OrmPersistentType persistentType = entityMappings.addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, model.getQualifiedJavaClassName());
+					MappedSuperclass mappedSuperclass = (MappedSuperclass) persistentType.getMapping();
+
+					if (model.isCompositePK()) {
+						mappedSuperclass.getIdClassReference().setSpecifiedIdClassName(model.getIdClassName());
+					}
+
+					for (String fieldName : model.getPKFields()) {
+						persistentType.getAttributeNamed(fieldName).convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+					}
+
+					persistentType.setSpecifiedAccess(getModelAccessType(model));
+
+					try {
+						xmlResource.saveIfNecessary();
+					}
+					catch (Exception e) {
+						JptJpaUiPlugin.log(e);
+					}
+					return Status.OK_STATUS;
+		        } finally {
+					jpaProject.setContextModelSynchronizer(contextModelSynchronizer);
+					jpaProject.setUpdateSynchronizer(updateSynchronizer);       	
+		        }
 			}
 		};
 		return job;		
+	}
+
+	protected Synchronizer buildSynchronousContextModelSynchronizer() {
+		return new SynchronousSynchronizer(this.buildSynchronousContextModelSynchronizerCommand());
+	}
+
+	protected Command buildSynchronousContextModelSynchronizerCommand() {
+		return new SynchronousContextModelSynchronizerCommand();
+	}
+
+	protected class SynchronousContextModelSynchronizerCommand implements Command {
+		public void execute() {
+			getJpaProject().synchronizeContextModel(new NullProgressMonitor());
+		}
+	}
+
+	protected CallbackSynchronizer buildSynchronousUpdateSynchronizer() {
+		return new CallbackSynchronousSynchronizer(this.buildSynchronousUpdateSynchronizerCommand());
+	}
+
+	protected Command buildSynchronousUpdateSynchronizerCommand() {
+		return new SynchronousUpdateSynchronizerCommand();
+	}
+
+	protected class SynchronousUpdateSynchronizerCommand implements Command {
+		public void execute() {
+			getJpaProject().update(new NullProgressMonitor());
+		}
+	}
+
+	protected JpaProject getJpaProject() {
+        IProject project = getTargetProject();
+        return JptJpaCorePlugin.getJpaProject(project);
 	}
 	
 	protected AccessType getModelAccessType(CreateEntityTemplateModel model) {
