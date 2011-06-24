@@ -273,8 +273,8 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		if (getBooleanProperty(XML_SUPPORT)) {
 			String projectName = this.model.getStringProperty(PROJECT_NAME);
 			IProject project = ProjectUtilities.getProject(projectName);
-			if (project != null && ! StringTools.stringIsEmpty(xmlName)) {
-				JpaXmlResource ormXmlResource = getOrmXmlResource(xmlName);
+			if (project != null) {
+				JpaXmlResource ormXmlResource = StringTools.stringIsEmpty(xmlName) ? null : getOrmXmlResource(xmlName);
 				if (ormXmlResource == null) {
 					return new Status(
 							IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID,

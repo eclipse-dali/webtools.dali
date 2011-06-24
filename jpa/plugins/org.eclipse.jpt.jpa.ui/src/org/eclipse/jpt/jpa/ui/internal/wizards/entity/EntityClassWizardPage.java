@@ -15,7 +15,6 @@ import java.io.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
@@ -24,12 +23,12 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
@@ -38,7 +37,6 @@ import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.wizards.SelectJpaOrmMappingFileDialog;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
-import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileWizard;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEUIMessages;
 import org.eclipse.jst.j2ee.internal.wizard.NewJavaClassWizardPage;
@@ -52,7 +50,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
@@ -76,7 +74,7 @@ public class EntityClassWizardPage
 	private Button entityButton;
 	private Button mapedAsSuperclassButton;
 	private Button inheritanceButton;
-	private Link displayNameLink;
+	private Label displayNameLabel;
 	private Button xmlSupportButton;	
 	private boolean isFirstCheck = true;
 	private Text ormXmlName;
@@ -138,6 +136,11 @@ public class EntityClassWizardPage
 			}
 		});		
 		return composite;
+	}
+
+	protected JpaProject getTargetJpaProject() {
+		IProject project = getProject();
+		return project != null ? JptJpaCorePlugin.getJpaProject(project) : null;
 	}
 	
 	@Override
@@ -291,17 +294,9 @@ public class EntityClassWizardPage
 		composite.setLayout(new GridLayout(3, false));
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));	
 
-		this.displayNameLink = new Link(composite, SWT.LEFT);
-		this.displayNameLink.setText(label);
-		this.displayNameLink.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-		this.displayNameLink.addSelectionListener(
-			new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					openNewMappingFileWizard();
-				}
-			}
-		);
+		this.displayNameLabel = new Label(composite, SWT.LEFT);
+		this.displayNameLabel.setText(label);
+		this.displayNameLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
 		this.ormXmlName = new Text(composite, SWT.SINGLE | SWT.BORDER);
 		this.ormXmlName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -322,16 +317,6 @@ public class EntityClassWizardPage
 		this.synchHelper.synchText(this.ormXmlName, property, /*dependentControls*/null);
 		
 		enableMappingXMLChooseGroup(false);		
-	}
-
-	private void openNewMappingFileWizard() {
-		IProject project = getProject();
-		IPath path = MappingFileWizard.createNewMappingFile(new StructuredSelection(project), getMappingFileName());
-		if (path != null) {
-			this.model.setProperty(IEntityDataModelProperties.XML_NAME, path.toString());
-			//have to validate in case the file name did not actually change, but the xml file was created
-			validatePage();
-		}
 	}
 	
 	protected String getMappingFileName() {
@@ -367,7 +352,15 @@ public class EntityClassWizardPage
 			dialog.setInitialSelection(initialSelection);
 		}
 		if (dialog.open() == Window.OK) {
+			boolean noNameChange = false;
+			if (StringTools.stringsAreEqual(this.model.getStringProperty(IEntityDataModelProperties.XML_NAME), dialog.getChosenName())) {
+				noNameChange = true;
+			}
 			this.model.setProperty(IEntityDataModelProperties.XML_NAME, dialog.getChosenName());
+			if (noNameChange) {
+				//if the xml name has not changed, the wizard page will not be validated (bug 345293)
+				this.validatePage();
+			}
 		}		
 	}
 	
@@ -380,7 +373,7 @@ public class EntityClassWizardPage
 	}
 	
 	private void enableMappingXMLChooseGroup(boolean enabled) {
-		this.displayNameLink.setEnabled(enabled);
+		this.displayNameLabel.setEnabled(enabled);
 		this.ormXmlName.setEnabled(enabled);
 		this.browseButton.setEnabled(enabled);
 	}
