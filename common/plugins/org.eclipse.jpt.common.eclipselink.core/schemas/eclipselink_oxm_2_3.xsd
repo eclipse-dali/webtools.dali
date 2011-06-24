@@ -54,6 +54,7 @@
             <xs:attribute name="xml-mapping-metadata-complete" type="xs:boolean" default="false" />
             <xs:attribute name="package-name" type="xs:string" default="##default" />
             <xs:attribute name="xml-name-transformer" type="xs:string" />
+            <xs:attribute name="version" type="supported-versions" />
         </xs:complexType>
     </xs:element>
     <xs:element name="xml-registry">
@@ -80,7 +81,7 @@
             <xs:all>
                 <xs:element ref="xml-type" minOccurs="0"/>
                 <xs:element ref="xml-root-element" minOccurs="0"/>
-                <xs:element ref="xml-extensible" minOccurs="0"/>
+                <xs:element ref="xml-virtual-access-methods" minOccurs="0"/>
                 <xs:element ref="xml-see-also" minOccurs="0"/>
                 <xs:element ref="xml-java-type-adapter" minOccurs="0"/>
                 <xs:element ref="xml-class-extractor" minOccurs="0"/>
@@ -111,8 +112,8 @@
     </xs:complexType>
     <xs:element name="xml-access-methods" type="xml-access-methods" />
     <xs:complexType name="xml-access-methods">
-        <xs:attribute name="get-method" type="xs:string" use="required"/>
-        <xs:attribute name="set-method" type="xs:string" use="required"/>
+        <xs:attribute name="get-method" type="xs:string" />
+        <xs:attribute name="set-method" type="xs:string" />
     </xs:complexType>
     <xs:element name="xml-class-extractor" type="xml-class-extractor" />
     <xs:complexType name="xml-class-extractor">
@@ -159,6 +160,14 @@
             <xs:enumeration value="EMPTY_NODE" />
         </xs:restriction>
     </xs:simpleType>
+    <xs:simpleType name="supported-versions">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="2.0"/>
+            <xs:enumeration value="2.1"/>
+            <xs:enumeration value="2.2"/>
+            <xs:enumeration value="2.3"/>
+        </xs:restriction>
+    </xs:simpleType> 
 
     <!-- @Target(value=PACKAGE) -->
     <xs:element name="xml-schema">
@@ -256,12 +265,19 @@
             <xs:list itemType="xs:string" />
         </xs:simpleType>
     </xs:element>
-    <xs:element name="xml-extensible">
+    <xs:element name="xml-virtual-access-methods">
         <xs:complexType>
             <xs:attribute name="get-method" type="xs:string" default="get" />
             <xs:attribute name="set-method" type="xs:string" default="set" />
+            <xs:attribute name="schema" type="xml-virtual-access-methods-schema" default="NODES" />
         </xs:complexType>
     </xs:element>
+    <xs:simpleType name="xml-virtual-access-methods-schema">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NODES" />
+            <xs:enumeration value="ANY" />
+        </xs:restriction>
+    </xs:simpleType>
 
     <!-- @Target(value={FIELD})  -->
     <xs:element name="xml-enum-value">

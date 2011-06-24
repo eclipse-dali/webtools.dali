@@ -13,9 +13,10 @@
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAdditionalCriteria" eSuperTypes="#//v2_2/XmlAdditionalCriteria_2_2"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlArray" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping #//v2_3/XmlArray_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeMapping" abstract="true"
       interface="true" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlAttributeMapping #//XmlAccessMethodsHolder #//XmlPropertyContainer"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Attributes" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//Attributes">
+  <eClassifiers xsi:type="ecore:EClass" name="Attributes" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//Attributes #//v2_3/XmlAttributes_2_3">
     <eStructuralFeatures xsi:type="ecore:EReference" name="basicCollections" upperBound="-1"
         eType="#//XmlBasicCollection" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="basicMaps" upperBound="-1"
@@ -110,8 +111,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="customizer" eType="ecore:EClass ../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlClassReference"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlElementCollection #//v2_0/XmlElementCollection_2_0 #//v2_1/XmlElementCollection_2_1 #//v2_2/XmlElementCollection_2_2"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlEmbeddable #//v2_1/XmlEmbeddable_2_1 #//v2_2/XmlEmbeddable_2_2 #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlConvertersHolder #//XmlPropertyContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlElementCollection #//v2_0/XmlElementCollection_2_0 #//v2_1/XmlElementCollection_2_1 #//v2_2/XmlElementCollection_2_2 #//v2_3/XmlElementCollection_2_3"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlEmbeddable #//v2_1/XmlEmbeddable_2_1 #//v2_2/XmlEmbeddable_2_2 #//v2_3/XmlEmbeddable_2_3 #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlConvertersHolder #//XmlPropertyContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="copyPolicy" eType="#//XmlCopyPolicy"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="instantiationCopyPolicy"
@@ -123,7 +124,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlEmbedded #//v2_1/XmlEmbedded_2_1 #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlEmbeddedId #//v2_1/XmlEmbeddedId_2_1 #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlEntity #//v1_1/XmlEntity_1_1 #//v2_0/XmlEntity_2_0 #//v2_1/XmlEntity_2_1 #//v2_2/XmlEntity_2_2 #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlQueryContainer #//XmlPropertyContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlEntity #//v1_1/XmlEntity_1_1 #//v2_0/XmlEntity_2_0 #//v2_1/XmlEntity_2_1 #//v2_2/XmlEntity_2_2 #//v2_3/XmlEntity_2_3 #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlQueryContainer #//XmlPropertyContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="optimisticLocking" eType="#//XmlOptimisticLocking"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="copyPolicy" eType="#//XmlCopyPolicy"
@@ -135,7 +136,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultMappings"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlEntityMappings #//v2_1/XmlEntityMappings_2_1 #//v2_2/XmlEntityMappings_2_2 #//XmlConvertersHolder #//XmlQueryContainer"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlEntityMappings #//v2_1/XmlEntityMappings_2_1 #//v2_2/XmlEntityMappings_2_2 #//v2_3/XmlEntityMappings_2_3 #//XmlConvertersHolder #//XmlQueryContainer"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlFetchAttribute" eSuperTypes="#//v2_1/XmlFetchAttribute_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlFetchGroup" eSuperTypes="#//v2_1/XmlFetchGroup_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlHashPartitioning" eSuperTypes="#//v2_2/XmlHashPartitioning_2_2"/>
@@ -148,7 +149,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlJoinTable" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlJoinTable #//v2_2/XmlJoinTable_2_2"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlManyToMany #//v2_0/XmlManyToMany_2_0 #//v2_1/XmlManyToMany_2_1 #//v2_2/XmlManyToMany_2_2 #//XmlAttributeMapping #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlManyToOne #//v2_1/XmlManyToOne_2_1 #//v2_2/XmlManyToOne_2_2 #//XmlAttributeMapping #//XmlJoinFetch"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlMappedSuperclass #//v1_1/XmlMappedSuperclass_1_1 #//v2_0/XmlMappedSuperclass_2_0 #//v2_1/XmlMappedSuperclass_2_1 #//v2_2/XmlMappedSuperclass_2_2 #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlPropertyContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlMappedSuperclass #//v1_1/XmlMappedSuperclass_1_1 #//v2_0/XmlMappedSuperclass_2_0 #//v2_1/XmlMappedSuperclass_2_1 #//v2_2/XmlMappedSuperclass_2_2 #//v2_3/XmlMappedSuperclass_2_3 #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlPropertyContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="optimisticLocking" eType="#//XmlOptimisticLocking"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="copyPolicy" eType="#//XmlCopyPolicy"
@@ -160,12 +161,16 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultMappings"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMultitenant" eSuperTypes="#//v2_3/XmlMultitenant_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMutable" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mutable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedConverter">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedPlsqlStoredFunctionQuery" eSuperTypes="#//v2_3/XmlNamedPlsqlStoredFunctionQuery_2_3"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedPlsqlStoredProcedureQuery" eSuperTypes="#//v2_3/XmlNamedPlsqlStoredProcedureQuery_2_3"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredFunctionQuery" eSuperTypes="#//v2_3/XmlNamedStoredFunctionQuery_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredProcedureQuery">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultClass" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -196,12 +201,14 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOrderColumn" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlOrderColumn #//v2_0/XmlOrderColumn_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPartitioning" eSuperTypes="#//v2_2/XmlPartitioning_2_2"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlPersistenceUnitDefaults #//v2_1/XmlPersistenceUnitDefaults_2_1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlPersistenceUnitDefaults #//v2_1/XmlPersistenceUnitDefaults_2_1 #//v2_3/XmlPersistenceUnitDefaults_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitMetadata" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlPersistenceUnitMetadata">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultMappings"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPinnedPartitioning" eSuperTypes="#//v2_2/XmlPinnedPartitioning_2_2"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPlsqlRecord" eSuperTypes="#//v2_3/XmlPlsqlRecord_2_3"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPlsqlTable" eSuperTypes="#//v2_3/XmlPlsqlTable_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPrimaryKey" eSuperTypes="#//v1_1/XmlPrimaryKey_1_1 #//v2_1/XmlPrimaryKey_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPrivateOwned" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="privateOwned" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
@@ -238,11 +245,14 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="jdbcType" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="jdbcTypeName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlStruct" eSuperTypes="#//v2_3/XmlStruct_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlStructConverter" eSuperTypes="#//XmlNamedConverter">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="converter" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlStructure" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping #//v2_3/XmlStructure_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTable" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlTable #//v2_2/XmlTable_2_2"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTableGenerator" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlTableGenerator #//v2_2/XmlTableGenerator_2_2"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTenantDiscriminator" eSuperTypes="#//v2_3/XmlTenantDiscriminator_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTimeOfDay">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="hour" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="minute" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
@@ -646,6 +656,97 @@
     <eClassifiers xsi:type="ecore:EClass" name="XmlVersion_2_2" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//v2_2/XmlIndex_2_2"
           containment="true"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="v2_3" nsURI="jpt.eclipselink.orm.v2_3.xmi" nsPrefix="org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3">
+    <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="plsqlRecords" upperBound="-1"
+          eType="#//v2_3/XmlPlsqlRecord_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="plsqlTables" upperBound="-1"
+          eType="#//XmlPlsqlTable" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="struct" eType="#//v2_3/XmlStruct_2_3"
+          containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlEntity_2_3" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="multitenant" eType="#//v2_3/XmlMultitenant_2_3"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="namedStoredFunctionQueries"
+          upperBound="-1" eType="#//v2_3/XmlNamedStoredFunctionQuery_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="namedPlsqlStoredFunctionQueries"
+          upperBound="-1" eType="#//v2_3/XmlNamedPlsqlStoredFunctionQuery_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="namedPlsqlStoredProcedureQueries"
+          upperBound="-1" eType="#//v2_3/XmlNamedPlsqlStoredProcedureQuery_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="plsqlRecords" upperBound="-1"
+          eType="#//v2_3/XmlPlsqlRecord_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="plsqlTables" upperBound="-1"
+          eType="#//XmlPlsqlTable" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="struct" eType="#//v2_3/XmlStruct_2_3"
+          containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="tenantDiscriminators"
+          upperBound="-1" eType="#//v2_3/XmlTenantDiscriminator_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="namedStoredFunctionQueries"
+          upperBound="-1" eType="#//v2_3/XmlNamedStoredFunctionQuery_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="namedPlsqlStoredFunctionQueries"
+          upperBound="-1" eType="#//v2_3/XmlNamedPlsqlStoredFunctionQuery_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="namedPlsqlStoredProcedureQueries"
+          upperBound="-1" eType="#//v2_3/XmlNamedPlsqlStoredProcedureQuery_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="plsqlRecords" upperBound="-1"
+          eType="#//v2_3/XmlPlsqlRecord_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="plsqlTables" upperBound="-1"
+          eType="#//XmlPlsqlTable" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="multitenant" eType="#//v2_3/XmlMultitenant_2_3"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="namedStoredFunctionQueries"
+          upperBound="-1" eType="#//v2_3/XmlNamedStoredFunctionQuery_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="namedPlsqlStoredFunctionQueries"
+          upperBound="-1" eType="#//v2_3/XmlNamedPlsqlStoredFunctionQuery_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="namedPlsqlStoredProcedureQueries"
+          upperBound="-1" eType="#//v2_3/XmlNamedPlsqlStoredProcedureQuery_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="plsqlRecords" upperBound="-1"
+          eType="#//v2_3/XmlPlsqlRecord_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="plsqlTables" upperBound="-1"
+          eType="#//XmlPlsqlTable" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlMultitenant_2_3" abstract="true"
+        interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlNamedPlsqlStoredFunctionQuery_2_3"
+        abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlNamedPlsqlStoredProcedureQuery_2_3"
+        abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredFunctionQuery_2_3" abstract="true"
+        interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="tenantDiscriminators"
+          upperBound="-1" eType="#//v2_3/XmlTenantDiscriminator_2_3" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlPlsqlRecord_2_3" abstract="true"
+        interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlPlsqlTable_2_3" abstract="true"
+        interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlStruct_2_3" abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlTenantDiscriminator_2_3" abstract="true"
+        interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlAttributes_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="structures" upperBound="-1"
+          eType="#//v2_3/XmlStructure_2_3" containment="true" resolveProxies="false"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="arrays" upperBound="-1"
+          eType="#//v2_3/XmlArray_2_3" containment="true" resolveProxies="false"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlStructure_2_3" abstract="true"
+        interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlArray_2_3" abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="compositeMember" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

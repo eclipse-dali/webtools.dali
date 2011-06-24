@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlPersistenceUnitDefaults_2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPersistenceUnitDefaults_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -41,7 +49,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitDefaults implements XmlPersistenceUnitDefaults_2_1
+public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitDefaults implements XmlPersistenceUnitDefaults_2_1, XmlPersistenceUnitDefaults_2_3
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -52,6 +60,16 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 	 * @ordered
 	 */
 	protected XmlAccessMethods accessMethods;
+
+	/**
+	 * The cached value of the '{@link #getTenantDiscriminators() <em>Tenant Discriminators</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTenantDiscriminators()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlTenantDiscriminator_2_3> tenantDiscriminators;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -135,6 +153,29 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Tenant Discriminators</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Tenant Discriminators</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Tenant Discriminators</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPersistenceUnitDefaults_2_3_TenantDiscriminators()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlTenantDiscriminator_2_3> getTenantDiscriminators()
+	{
+		if (tenantDiscriminators == null)
+		{
+			tenantDiscriminators = new EObjectContainmentEList<XmlTenantDiscriminator_2_3>(XmlTenantDiscriminator_2_3.class, this, EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATORS);
+		}
+		return tenantDiscriminators;
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -146,6 +187,8 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 		{
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
+			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATORS:
+				return ((InternalEList<?>)getTenantDiscriminators()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -162,6 +205,8 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 		{
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS_METHODS:
 				return getAccessMethods();
+			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATORS:
+				return getTenantDiscriminators();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -171,6 +216,7 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
@@ -178,6 +224,10 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 		{
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATORS:
+				getTenantDiscriminators().clear();
+				getTenantDiscriminators().addAll((Collection<? extends XmlTenantDiscriminator_2_3>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -196,6 +246,9 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
+			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATORS:
+				getTenantDiscriminators().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -212,6 +265,8 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 		{
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS_METHODS:
 				return accessMethods != null;
+			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATORS:
+				return tenantDiscriminators != null && !tenantDiscriminators.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -236,6 +291,14 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 		{
 			switch (derivedFeatureID)
 			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlPersistenceUnitDefaults_2_3.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATORS: return EclipseLinkOrmV2_3Package.XML_PERSISTENCE_UNIT_DEFAULTS_23__TENANT_DISCRIMINATORS;
 				default: return -1;
 			}
 		}
@@ -265,6 +328,14 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlPersistenceUnitDefaults_2_3.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_3Package.XML_PERSISTENCE_UNIT_DEFAULTS_23__TENANT_DISCRIMINATORS: return EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATORS;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -284,6 +355,7 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 			buildAccessTranslator(),
 			buildAccessMethodsTranslator(),
 			buildCascadePersistTranslator(),
+			XmlTenantDiscriminator.buildTranslator(EclipseLink2_3.TENANT_DISCRIMINATOR, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlPersistenceUnitDefaults_2_3_TenantDiscriminators()),
 			buildEntityListenersTranslator()
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010 Oracle. 
+ *  Copyright (c) 2009, 2011 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -50,6 +50,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlReplicationPart
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlElementCollection_2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -71,7 +74,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection implements XmlElementCollection_2_0, XmlElementCollection_2_1, XmlElementCollection_2_2
+public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection implements XmlElementCollection_2_0, XmlElementCollection_2_1, XmlElementCollection_2_2, XmlElementCollection_2_3
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -408,6 +411,26 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @ordered
 	 */
 	protected boolean nonCacheable = NON_CACHEABLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getCompositeMember() <em>Composite Member</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCompositeMember()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String COMPOSITE_MEMBER_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCompositeMember() <em>Composite Member</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCompositeMember()
+	 * @generated
+	 * @ordered
+	 */
+	protected String compositeMember = COMPOSITE_MEMBER_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1657,6 +1680,41 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Composite Member</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Composite Member</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Composite Member</em>' attribute.
+	 * @see #setCompositeMember(String)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlElementCollection_2_3_CompositeMember()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getCompositeMember()
+	{
+		return compositeMember;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection#getCompositeMember <em>Composite Member</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Composite Member</em>' attribute.
+	 * @see #getCompositeMember()
+	 * @generated
+	 */
+	public void setCompositeMember(String newCompositeMember)
+	{
+		String oldCompositeMember = compositeMember;
+		compositeMember = newCompositeMember;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER, oldCompositeMember, compositeMember));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1774,6 +1832,8 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return getCascadeOnDelete();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__NON_CACHEABLE:
 				return isNonCacheable();
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER:
+				return getCompositeMember();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1876,6 +1936,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__NON_CACHEABLE:
 				setNonCacheable((Boolean)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER:
+				setCompositeMember((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1971,6 +2034,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__NON_CACHEABLE:
 				setNonCacheable(NON_CACHEABLE_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER:
+				setCompositeMember(COMPOSITE_MEMBER_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -2039,6 +2105,8 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return CASCADE_ON_DELETE_EDEFAULT == null ? cascadeOnDelete != null : !CASCADE_ON_DELETE_EDEFAULT.equals(cascadeOnDelete);
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__NON_CACHEABLE:
 				return nonCacheable != NON_CACHEABLE_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER:
+				return COMPOSITE_MEMBER_EDEFAULT == null ? compositeMember != null : !COMPOSITE_MEMBER_EDEFAULT.equals(compositeMember);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -2173,6 +2241,14 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			{
 				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CASCADE_ON_DELETE: return EclipseLinkOrmV2_2Package.XML_ELEMENT_COLLECTION_22__CASCADE_ON_DELETE;
 				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__NON_CACHEABLE: return EclipseLinkOrmV2_2Package.XML_ELEMENT_COLLECTION_22__NON_CACHEABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlElementCollection_2_3.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER: return EclipseLinkOrmV2_3Package.XML_ELEMENT_COLLECTION_23__COMPOSITE_MEMBER;
 				default: return -1;
 			}
 		}
@@ -2312,6 +2388,14 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlElementCollection_2_3.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_3Package.XML_ELEMENT_COLLECTION_23__COMPOSITE_MEMBER: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -2340,6 +2424,8 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		result.append(cascadeOnDelete);
 		result.append(", nonCacheable: ");
 		result.append(nonCacheable);
+		result.append(", compositeMember: ");
+		result.append(compositeMember);
 		result.append(')');
 		return result.toString();
 	}
@@ -2388,6 +2474,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			buildFetchTranslator(),
 			buildAccessTranslator(),
 			buildAttributeTypeTranslator(),
+			buildCompositeMemberTranslator(),
 			buildOrderByTranslator(),
 			buildOrderColumnTranslator(),		
 			buildMapKeyTranslator(),
@@ -2407,15 +2494,24 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),
 			XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_Converter()),
-			XmlConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter()),
-			XmlConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter()),
-			XmlConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter()),
+			XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter()),
+			XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter()),
+			XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter()),
 			XmlCollectionTable.buildTranslator(JPA2_0.COLLECTION_TABLE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_CollectionTable()),
 			buildCascadeOnDeleteTranslator(),
 			buildJoinFetchTranslator(),
 			buildBatchFetchTranslator(),
 			buildPropertyTranslator(),
-			buildAccessMethodsTranslator()
+			buildAccessMethodsTranslator(),
+			buildNoncacheableTranslator(),
+		    XmlPartitioning.buildTranslator(EclipseLink2_2.PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_Partitioning()),
+			XmlReplicationPartitioning.buildTranslator(EclipseLink2_2.REPLICATION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_ReplicationPartitioning()),
+			XmlRoundRobinPartitioning.buildTranslator(EclipseLink2_2.ROUND_ROBIN_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_RoundRobinPartitioning()),
+			XmlPinnedPartitioning.buildTranslator(EclipseLink2_2.PINNED_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_PinnedPartitioning()),
+			XmlRangePartitioning.buildTranslator(EclipseLink2_2.RANGE_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_RangePartitioning()),
+			XmlValuePartitioning.buildTranslator(EclipseLink2_2.VALUE_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_ValuePartitioning()),
+			XmlHashPartitioning.buildTranslator(EclipseLink2_2.HASH_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_HashPartitioning()),
+			XmlUnionPartitioning.buildTranslator(EclipseLink2_2.UNION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_UnionPartitioning()),
 		};
 	}
 	
@@ -2453,6 +2549,14 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 
 	protected static Translator buildCascadeOnDeleteTranslator() {
 		return CascadeType.buildTranslator(EclipseLink2_2.CASCADE_ON_DELETE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlElementCollection_2_2_CascadeOnDelete());
+	}
+	
+	protected static Translator buildNoncacheableTranslator() {
+		return new Translator(EclipseLink2_2.NONCACHEABLE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlElementCollection_2_2_NonCacheable());
+	}
+
+	protected static Translator buildCompositeMemberTranslator() {
+		return new Translator(EclipseLink2_3.COMPOSITE_MEMBER, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlElementCollection_2_3_CompositeMember(), Translator.DOM_ATTRIBUTE);
 	}
 
 }

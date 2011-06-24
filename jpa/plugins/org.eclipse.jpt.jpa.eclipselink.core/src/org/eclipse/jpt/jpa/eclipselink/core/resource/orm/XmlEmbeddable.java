@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddable_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlEmbeddable_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEmbeddable_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -64,7 +69,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable implements XmlEmbeddable_2_1, XmlEmbeddable_2_2, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConvertersHolder, XmlPropertyContainer
+public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable implements XmlEmbeddable_2_1, XmlEmbeddable_2_2, XmlEmbeddable_2_3, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConvertersHolder, XmlPropertyContainer
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -115,6 +120,36 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @ordered
 	 */
 	protected String parentClass = PARENT_CLASS_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getPlsqlRecords() <em>Plsql Records</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPlsqlRecords()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPlsqlRecord_2_3> plsqlRecords;
+
+	/**
+	 * The cached value of the '{@link #getPlsqlTables() <em>Plsql Tables</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPlsqlTables()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPlsqlTable> plsqlTables;
+
+	/**
+	 * The cached value of the '{@link #getStruct() <em>Struct</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStruct()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlStruct_2_3 struct;
 
 	/**
 	 * The cached value of the '{@link #getCustomizer() <em>Customizer</em>}' containment reference.
@@ -396,6 +431,112 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		parentClass = newParentClass;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS, oldParentClass, parentClass));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Plsql Records</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Plsql Records</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Plsql Records</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_2_3_PlsqlRecords()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlPlsqlRecord_2_3> getPlsqlRecords()
+	{
+		if (plsqlRecords == null)
+		{
+			plsqlRecords = new EObjectContainmentEList<XmlPlsqlRecord_2_3>(XmlPlsqlRecord_2_3.class, this, EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS);
+		}
+		return plsqlRecords;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Plsql Tables</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Plsql Tables</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Plsql Tables</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_2_3_PlsqlTables()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlPlsqlTable> getPlsqlTables()
+	{
+		if (plsqlTables == null)
+		{
+			plsqlTables = new EObjectContainmentEList<XmlPlsqlTable>(XmlPlsqlTable.class, this, EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES);
+		}
+		return plsqlTables;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Struct</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Struct</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Struct</em>' containment reference.
+	 * @see #setStruct(XmlStruct_2_3)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_2_3_Struct()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlStruct_2_3 getStruct()
+	{
+		return struct;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetStruct(XmlStruct_2_3 newStruct, NotificationChain msgs)
+	{
+		XmlStruct_2_3 oldStruct = struct;
+		struct = newStruct;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT, oldStruct, newStruct);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable#getStruct <em>Struct</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Struct</em>' containment reference.
+	 * @see #getStruct()
+	 * @generated
+	 */
+	public void setStruct(XmlStruct_2_3 newStruct)
+	{
+		if (newStruct != struct)
+		{
+			NotificationChain msgs = null;
+			if (struct != null)
+				msgs = ((InternalEObject)struct).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT, null, msgs);
+			if (newStruct != null)
+				msgs = ((InternalEObject)newStruct).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT, null, msgs);
+			msgs = basicSetStruct(newStruct, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT, newStruct, newStruct));
 	}
 
 	/**
@@ -864,6 +1005,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ASSOCIATION_OVERRIDES:
 				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS:
+				return ((InternalEList<?>)getPlsqlRecords()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES:
+				return ((InternalEList<?>)getPlsqlTables()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
+				return basicSetStruct(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
@@ -906,6 +1053,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				return getAssociationOverrides();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
 				return getParentClass();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS:
+				return getPlsqlRecords();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES:
+				return getPlsqlTables();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
+				return getStruct();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return getCustomizer();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
@@ -956,6 +1109,17 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
 				setParentClass((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS:
+				getPlsqlRecords().clear();
+				getPlsqlRecords().addAll((Collection<? extends XmlPlsqlRecord_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES:
+				getPlsqlTables().clear();
+				getPlsqlTables().addAll((Collection<? extends XmlPlsqlTable>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
+				setStruct((XmlStruct_2_3)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				setCustomizer((XmlClassReference)newValue);
@@ -1021,6 +1185,15 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
 				setParentClass(PARENT_CLASS_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS:
+				getPlsqlRecords().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES:
+				getPlsqlTables().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
+				setStruct((XmlStruct_2_3)null);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				setCustomizer((XmlClassReference)null);
 				return;
@@ -1076,6 +1249,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				return associationOverrides != null && !associationOverrides.isEmpty();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
 				return PARENT_CLASS_EDEFAULT == null ? parentClass != null : !PARENT_CLASS_EDEFAULT.equals(parentClass);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS:
+				return plsqlRecords != null && !plsqlRecords.isEmpty();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES:
+				return plsqlTables != null && !plsqlTables.isEmpty();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
+				return struct != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return customizer != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
@@ -1146,6 +1325,16 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS: return EclipseLinkOrmV2_2Package.XML_EMBEDDABLE_22__PARENT_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEmbeddable_2_3.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS: return EclipseLinkOrmV2_3Package.XML_EMBEDDABLE_23__PLSQL_RECORDS;
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES: return EclipseLinkOrmV2_3Package.XML_EMBEDDABLE_23__PLSQL_TABLES;
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT: return EclipseLinkOrmV2_3Package.XML_EMBEDDABLE_23__STRUCT;
 				default: return -1;
 			}
 		}
@@ -1234,6 +1423,16 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEmbeddable_2_3.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_3Package.XML_EMBEDDABLE_23__PLSQL_RECORDS: return EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS;
+				case EclipseLinkOrmV2_3Package.XML_EMBEDDABLE_23__PLSQL_TABLES: return EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES;
+				case EclipseLinkOrmV2_3Package.XML_EMBEDDABLE_23__STRUCT: return EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlCustomizerHolder.class)
 		{
 			switch (baseFeatureID)
@@ -1312,6 +1511,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 			buildAccessMethodsTranslator(),
 			buildCustomizerTranslator(),
 			buildChangeTrackingTranslator(),
+			XmlStruct.buildTranslator(EclipseLink2_3.STRUCT, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEmbeddable_2_3_Struct()),
 			buildConverterTranslator(),
 			buildTypeConverterTranslator(),
 			buildObjectTypeConverterTranslator(),
@@ -1319,6 +1519,8 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 			buildCopyPolicyTranslator(),
 			buildInstantiationCoypPolicyTranslator(),
 			buildCloneCopyPolicyTranslator(),
+			XmlPlsqlRecord.buildTranslator(EclipseLink2_3.PLSQL_RECORD, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEmbeddable_2_3_PlsqlRecords()),
+			XmlPlsqlTable.buildTranslator(EclipseLink2_3.PLSQL_TABLE, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEmbeddable_2_3_PlsqlTables()),
 			buildPropertyTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),

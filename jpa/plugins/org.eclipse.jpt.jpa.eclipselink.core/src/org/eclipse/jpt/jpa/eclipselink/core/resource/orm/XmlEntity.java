@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2010  Oracle. 
+ *  Copyright (c) 2008, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -51,6 +51,15 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlReplicationPart
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -84,7 +93,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity implements XmlEntity_1_1, XmlEntity_2_0, XmlEntity_2_1, XmlEntity_2_2, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer, XmlPropertyContainer
+public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity implements XmlEntity_1_1, XmlEntity_2_0, XmlEntity_2_1, XmlEntity_2_2, XmlEntity_2_3, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer, XmlPropertyContainer
 {
 	/**
 	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
@@ -305,6 +314,76 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	 * @ordered
 	 */
 	protected XmlIndex_2_2 index;
+
+	/**
+	 * The cached value of the '{@link #getMultitenant() <em>Multitenant</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultitenant()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlMultitenant_2_3 multitenant;
+
+	/**
+	 * The cached value of the '{@link #getNamedStoredFunctionQueries() <em>Named Stored Function Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedStoredFunctionQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedStoredFunctionQuery_2_3> namedStoredFunctionQueries;
+
+	/**
+	 * The cached value of the '{@link #getNamedPlsqlStoredFunctionQueries() <em>Named Plsql Stored Function Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedPlsqlStoredFunctionQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedPlsqlStoredFunctionQuery_2_3> namedPlsqlStoredFunctionQueries;
+
+	/**
+	 * The cached value of the '{@link #getNamedPlsqlStoredProcedureQueries() <em>Named Plsql Stored Procedure Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedPlsqlStoredProcedureQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedPlsqlStoredProcedureQuery_2_3> namedPlsqlStoredProcedureQueries;
+
+	/**
+	 * The cached value of the '{@link #getPlsqlRecords() <em>Plsql Records</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPlsqlRecords()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPlsqlRecord_2_3> plsqlRecords;
+
+	/**
+	 * The cached value of the '{@link #getPlsqlTables() <em>Plsql Tables</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPlsqlTables()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPlsqlTable> plsqlTables;
+
+	/**
+	 * The cached value of the '{@link #getStruct() <em>Struct</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStruct()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlStruct_2_3 struct;
 
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -2114,6 +2193,241 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Multitenant</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Multitenant</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Multitenant</em>' containment reference.
+	 * @see #setMultitenant(XmlMultitenant_2_3)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_3_Multitenant()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlMultitenant_2_3 getMultitenant()
+	{
+		return multitenant;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetMultitenant(XmlMultitenant_2_3 newMultitenant, NotificationChain msgs)
+	{
+		XmlMultitenant_2_3 oldMultitenant = multitenant;
+		multitenant = newMultitenant;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT, oldMultitenant, newMultitenant);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity#getMultitenant <em>Multitenant</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Multitenant</em>' containment reference.
+	 * @see #getMultitenant()
+	 * @generated
+	 */
+	public void setMultitenant(XmlMultitenant_2_3 newMultitenant)
+	{
+		if (newMultitenant != multitenant)
+		{
+			NotificationChain msgs = null;
+			if (multitenant != null)
+				msgs = ((InternalEObject)multitenant).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT, null, msgs);
+			if (newMultitenant != null)
+				msgs = ((InternalEObject)newMultitenant).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT, null, msgs);
+			msgs = basicSetMultitenant(newMultitenant, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT, newMultitenant, newMultitenant));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Stored Function Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Stored Function Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Stored Function Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_3_NamedStoredFunctionQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedStoredFunctionQuery_2_3> getNamedStoredFunctionQueries()
+	{
+		if (namedStoredFunctionQueries == null)
+		{
+			namedStoredFunctionQueries = new EObjectContainmentEList<XmlNamedStoredFunctionQuery_2_3>(XmlNamedStoredFunctionQuery_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES);
+		}
+		return namedStoredFunctionQueries;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Plsql Stored Function Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Plsql Stored Function Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Plsql Stored Function Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_3_NamedPlsqlStoredFunctionQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedPlsqlStoredFunctionQuery_2_3> getNamedPlsqlStoredFunctionQueries()
+	{
+		if (namedPlsqlStoredFunctionQueries == null)
+		{
+			namedPlsqlStoredFunctionQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredFunctionQuery_2_3>(XmlNamedPlsqlStoredFunctionQuery_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_FUNCTION_QUERIES);
+		}
+		return namedPlsqlStoredFunctionQueries;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Plsql Stored Procedure Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Plsql Stored Procedure Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Plsql Stored Procedure Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_3_NamedPlsqlStoredProcedureQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedPlsqlStoredProcedureQuery_2_3> getNamedPlsqlStoredProcedureQueries()
+	{
+		if (namedPlsqlStoredProcedureQueries == null)
+		{
+			namedPlsqlStoredProcedureQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredProcedureQuery_2_3>(XmlNamedPlsqlStoredProcedureQuery_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_PROCEDURE_QUERIES);
+		}
+		return namedPlsqlStoredProcedureQueries;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Plsql Records</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Plsql Records</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Plsql Records</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_3_PlsqlRecords()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlPlsqlRecord_2_3> getPlsqlRecords()
+	{
+		if (plsqlRecords == null)
+		{
+			plsqlRecords = new EObjectContainmentEList<XmlPlsqlRecord_2_3>(XmlPlsqlRecord_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY__PLSQL_RECORDS);
+		}
+		return plsqlRecords;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Plsql Tables</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Plsql Tables</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Plsql Tables</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_3_PlsqlTables()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlPlsqlTable> getPlsqlTables()
+	{
+		if (plsqlTables == null)
+		{
+			plsqlTables = new EObjectContainmentEList<XmlPlsqlTable>(XmlPlsqlTable.class, this, EclipseLinkOrmPackage.XML_ENTITY__PLSQL_TABLES);
+		}
+		return plsqlTables;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Struct</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Struct</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Struct</em>' containment reference.
+	 * @see #setStruct(XmlStruct_2_3)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_3_Struct()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlStruct_2_3 getStruct()
+	{
+		return struct;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetStruct(XmlStruct_2_3 newStruct, NotificationChain msgs)
+	{
+		XmlStruct_2_3 oldStruct = struct;
+		struct = newStruct;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__STRUCT, oldStruct, newStruct);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity#getStruct <em>Struct</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Struct</em>' containment reference.
+	 * @see #getStruct()
+	 * @generated
+	 */
+	public void setStruct(XmlStruct_2_3 newStruct)
+	{
+		if (newStruct != struct)
+		{
+			NotificationChain msgs = null;
+			if (struct != null)
+				msgs = ((InternalEObject)struct).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__STRUCT, null, msgs);
+			if (newStruct != null)
+				msgs = ((InternalEObject)newStruct).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__STRUCT, null, msgs);
+			msgs = basicSetStruct(newStruct, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__STRUCT, newStruct, newStruct));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Additional Criteria</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -2250,6 +2564,20 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return basicSetAdditionalCriteria(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__INDEX:
 				return basicSetIndex(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT:
+				return basicSetMultitenant(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES:
+				return ((InternalEList<?>)getNamedStoredFunctionQueries()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
+				return ((InternalEList<?>)getNamedPlsqlStoredFunctionQueries()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
+				return ((InternalEList<?>)getNamedPlsqlStoredProcedureQueries()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_RECORDS:
+				return ((InternalEList<?>)getPlsqlRecords()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_TABLES:
+				return ((InternalEList<?>)getPlsqlTables()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
+				return basicSetStruct(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
@@ -2328,6 +2656,20 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return getCascadeOnDelete();
 			case EclipseLinkOrmPackage.XML_ENTITY__INDEX:
 				return getIndex();
+			case EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT:
+				return getMultitenant();
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES:
+				return getNamedStoredFunctionQueries();
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
+				return getNamedPlsqlStoredFunctionQueries();
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
+				return getNamedPlsqlStoredProcedureQueries();
+			case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_RECORDS:
+				return getPlsqlRecords();
+			case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_TABLES:
+				return getPlsqlTables();
+			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
+				return getStruct();
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -2432,6 +2774,32 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__INDEX:
 				setIndex((XmlIndex_2_2)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT:
+				setMultitenant((XmlMultitenant_2_3)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES:
+				getNamedStoredFunctionQueries().clear();
+				getNamedStoredFunctionQueries().addAll((Collection<? extends XmlNamedStoredFunctionQuery_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
+				getNamedPlsqlStoredFunctionQueries().clear();
+				getNamedPlsqlStoredFunctionQueries().addAll((Collection<? extends XmlNamedPlsqlStoredFunctionQuery_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
+				getNamedPlsqlStoredProcedureQueries().clear();
+				getNamedPlsqlStoredProcedureQueries().addAll((Collection<? extends XmlNamedPlsqlStoredProcedureQuery_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_RECORDS:
+				getPlsqlRecords().clear();
+				getPlsqlRecords().addAll((Collection<? extends XmlPlsqlRecord_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_TABLES:
+				getPlsqlTables().clear();
+				getPlsqlTables().addAll((Collection<? extends XmlPlsqlTable>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
+				setStruct((XmlStruct_2_3)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly((Boolean)newValue);
@@ -2558,6 +2926,27 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			case EclipseLinkOrmPackage.XML_ENTITY__INDEX:
 				setIndex((XmlIndex_2_2)null);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT:
+				setMultitenant((XmlMultitenant_2_3)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES:
+				getNamedStoredFunctionQueries().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
+				getNamedPlsqlStoredFunctionQueries().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
+				getNamedPlsqlStoredProcedureQueries().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_RECORDS:
+				getPlsqlRecords().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_TABLES:
+				getPlsqlTables().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
+				setStruct((XmlStruct_2_3)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
@@ -2658,6 +3047,20 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return CASCADE_ON_DELETE_EDEFAULT == null ? cascadeOnDelete != null : !CASCADE_ON_DELETE_EDEFAULT.equals(cascadeOnDelete);
 			case EclipseLinkOrmPackage.XML_ENTITY__INDEX:
 				return index != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT:
+				return multitenant != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES:
+				return namedStoredFunctionQueries != null && !namedStoredFunctionQueries.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
+				return namedPlsqlStoredFunctionQueries != null && !namedPlsqlStoredFunctionQueries.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
+				return namedPlsqlStoredProcedureQueries != null && !namedPlsqlStoredProcedureQueries.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_RECORDS:
+				return plsqlRecords != null && !plsqlRecords.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_TABLES:
+				return plsqlTables != null && !plsqlTables.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
+				return struct != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -2767,6 +3170,20 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				case EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA: return EclipseLinkOrmV2_2Package.XML_ENTITY_22__ADDITIONAL_CRITERIA;
 				case EclipseLinkOrmPackage.XML_ENTITY__CASCADE_ON_DELETE: return EclipseLinkOrmV2_2Package.XML_ENTITY_22__CASCADE_ON_DELETE;
 				case EclipseLinkOrmPackage.XML_ENTITY__INDEX: return EclipseLinkOrmV2_2Package.XML_ENTITY_22__INDEX;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntity_2_3.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__MULTITENANT;
+				case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_STORED_FUNCTION_QUERIES;
+				case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_FUNCTION_QUERIES: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES;
+				case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
+				case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_RECORDS: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__PLSQL_RECORDS;
+				case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_TABLES: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__PLSQL_TABLES;
+				case EclipseLinkOrmPackage.XML_ENTITY__STRUCT: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__STRUCT;
 				default: return -1;
 			}
 		}
@@ -2909,6 +3326,20 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEntity_2_3.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__MULTITENANT: return EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT;
+				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_STORED_FUNCTION_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES;
+				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_FUNCTION_QUERIES;
+				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
+				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__PLSQL_RECORDS: return EclipseLinkOrmPackage.XML_ENTITY__PLSQL_RECORDS;
+				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__PLSQL_TABLES: return EclipseLinkOrmPackage.XML_ENTITY__PLSQL_TABLES;
+				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__STRUCT: return EclipseLinkOrmPackage.XML_ENTITY__STRUCT;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlReadOnly.class)
 		{
 			switch (baseFeatureID)
@@ -3026,11 +3457,13 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			buildExcludeDefaultMappingsTranslator(),
 			buildDescriptionTranslator(),
 			buildAccessMethodsTranslator(),
+		    XmlMultitenant.buildTranslator(EclipseLink2_3.MULTITENANT, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_Multitenant()),
 			buildAdditionalCriteriaTranslator(),
 			buildCustomizerTranslator(),
 			buildChangeTrackingTranslator(),
 			buildTableTranslator(),
 			buildSecondaryTableTranslator(),
+			XmlStruct.buildTranslator(EclipseLink2_3.STRUCT, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_Struct()),
 			buildPrimaryKeyJoinColumnTranslator(),
 			buildCascadeOnDeleteTranslator(),
 			buildIndexTranslator(),
@@ -3053,9 +3486,23 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			buildCloneCopyPolicyTranslator(),
 			buildSequenceGeneratorTranslator(),
 			buildTableGeneratorTranslator(),
+		    XmlPartitioning.buildTranslator(EclipseLink2_2.PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_Partitioning()),
+			XmlReplicationPartitioning.buildTranslator(EclipseLink2_2.REPLICATION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_ReplicationPartitioning()),
+			XmlRoundRobinPartitioning.buildTranslator(EclipseLink2_2.ROUND_ROBIN_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_RoundRobinPartitioning()),
+			XmlPinnedPartitioning.buildTranslator(EclipseLink2_2.PINNED_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_PinnedPartitioning()),
+			XmlRangePartitioning.buildTranslator(EclipseLink2_2.RANGE_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_RangePartitioning()),
+			XmlValuePartitioning.buildTranslator(EclipseLink2_2.VALUE_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_ValuePartitioning()),
+			XmlHashPartitioning.buildTranslator(EclipseLink2_2.HASH_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_HashPartitioning()),
+			XmlUnionPartitioning.buildTranslator(EclipseLink2_2.UNION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_UnionPartitioning()),
+			buildPartitionedTranslator(),
 			buildNamedQueryTranslator(),
 			buildNamedNativeQueryTranslator(),
 			buildNamedStoredProcedureQueryTranslator(),
+			XmlNamedStoredFunctionQuery.buildTranslator(EclipseLink2_3.NAMED_STORED_FUNCTION_QUERY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_NamedStoredFunctionQueries()),
+			XmlNamedPlsqlStoredProcedureQuery.buildTranslator(EclipseLink2_3.NAMED_PLSQL_STORED_PROCEDURE_QUERY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_NamedPlsqlStoredProcedureQueries()),
+			XmlNamedPlsqlStoredFunctionQuery.buildTranslator(EclipseLink2_3.NAMED_PLSQL_STORED_FUNCTION_QUERY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_NamedPlsqlStoredFunctionQueries()),
+			XmlPlsqlRecord.buildTranslator(EclipseLink2_3.PLSQL_RECORD, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_PlsqlRecords()),
+			XmlPlsqlTable.buildTranslator(EclipseLink2_3.PLSQL_TABLE, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_PlsqlTables()),
 			buildSqlResultSetMappingTranslator(),
 			buildQueryRedirectorsTranslator(),
 			buildExcludeDefaultListenersTranslator(),
@@ -3190,4 +3637,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 		return XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
 	}
 
+    protected static Translator buildPartitionedTranslator() {
+		return new Translator(EclipseLink2_2.PARTITIONING_GROUP__PARTITIONED, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_Partitioned());
+	}
 }

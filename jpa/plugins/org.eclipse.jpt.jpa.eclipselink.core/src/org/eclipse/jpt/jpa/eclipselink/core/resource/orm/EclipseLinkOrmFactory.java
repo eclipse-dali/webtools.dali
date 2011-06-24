@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2010  Oracle. 
+ *  Copyright (c) 2008, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -83,6 +83,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 		{
 			case EclipseLinkOrmPackage.XML_ACCESS_METHODS: return (EObject)createXmlAccessMethods();
 			case EclipseLinkOrmPackage.XML_ADDITIONAL_CRITERIA: return (EObject)createXmlAdditionalCriteria();
+			case EclipseLinkOrmPackage.XML_ARRAY: return (EObject)createXmlArray();
 			case EclipseLinkOrmPackage.ATTRIBUTES: return (EObject)createAttributes();
 			case EclipseLinkOrmPackage.XML_BASIC: return (EObject)createXmlBasic();
 			case EclipseLinkOrmPackage.XML_BASIC_COLLECTION: return (EObject)createXmlBasicCollection();
@@ -112,7 +113,11 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
+			case EclipseLinkOrmPackage.XML_MULTITENANT: return (EObject)createXmlMultitenant();
 			case EclipseLinkOrmPackage.XML_NAMED_CONVERTER: return (EObject)createXmlNamedConverter();
+			case EclipseLinkOrmPackage.XML_NAMED_PLSQL_STORED_FUNCTION_QUERY: return (EObject)createXmlNamedPlsqlStoredFunctionQuery();
+			case EclipseLinkOrmPackage.XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY: return (EObject)createXmlNamedPlsqlStoredProcedureQuery();
+			case EclipseLinkOrmPackage.XML_NAMED_STORED_FUNCTION_QUERY: return (EObject)createXmlNamedStoredFunctionQuery();
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY: return (EObject)createXmlNamedStoredProcedureQuery();
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER: return (EObject)createXmlObjectTypeConverter();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
@@ -123,6 +128,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS: return (EObject)createXmlPersistenceUnitDefaults();
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_METADATA: return (EObject)createXmlPersistenceUnitMetadata();
 			case EclipseLinkOrmPackage.XML_PINNED_PARTITIONING: return (EObject)createXmlPinnedPartitioning();
+			case EclipseLinkOrmPackage.XML_PLSQL_RECORD: return (EObject)createXmlPlsqlRecord();
+			case EclipseLinkOrmPackage.XML_PLSQL_TABLE: return (EObject)createXmlPlsqlTable();
 			case EclipseLinkOrmPackage.XML_PRIMARY_KEY: return (EObject)createXmlPrimaryKey();
 			case EclipseLinkOrmPackage.XML_PROPERTY: return (EObject)createXmlProperty();
 			case EclipseLinkOrmPackage.XML_QUERY_REDIRECTORS: return (EObject)createXmlQueryRedirectors();
@@ -132,9 +139,12 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ROUND_ROBIN_PARTITIONING: return (EObject)createXmlRoundRobinPartitioning();
 			case EclipseLinkOrmPackage.XML_SECONDARY_TABLE: return (EObject)createXmlSecondaryTable();
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER: return (EObject)createXmlStoredProcedureParameter();
+			case EclipseLinkOrmPackage.XML_STRUCT: return (EObject)createXmlStruct();
 			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER: return (EObject)createXmlStructConverter();
+			case EclipseLinkOrmPackage.XML_STRUCTURE: return (EObject)createXmlStructure();
 			case EclipseLinkOrmPackage.XML_TABLE: return (EObject)createXmlTable();
 			case EclipseLinkOrmPackage.XML_TABLE_GENERATOR: return (EObject)createXmlTableGenerator();
+			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR: return (EObject)createXmlTenantDiscriminator();
 			case EclipseLinkOrmPackage.XML_TIME_OF_DAY: return (EObject)createXmlTimeOfDay();
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
 			case EclipseLinkOrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
@@ -226,6 +236,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlAdditionalCriteria xmlAdditionalCriteria = new XmlAdditionalCriteria();
 		return xmlAdditionalCriteria;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlArray createXmlArray()
+	{
+		XmlArray xmlArray = new XmlArray();
+		return xmlArray;
 	}
 
 	/**
@@ -541,10 +562,54 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlMultitenant createXmlMultitenant()
+	{
+		XmlMultitenant xmlMultitenant = new XmlMultitenant();
+		return xmlMultitenant;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlNamedConverter createXmlNamedConverter()
 	{
 		XmlNamedConverter xmlNamedConverter = new XmlNamedConverter();
 		return xmlNamedConverter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlNamedPlsqlStoredFunctionQuery createXmlNamedPlsqlStoredFunctionQuery()
+	{
+		XmlNamedPlsqlStoredFunctionQuery xmlNamedPlsqlStoredFunctionQuery = new XmlNamedPlsqlStoredFunctionQuery();
+		return xmlNamedPlsqlStoredFunctionQuery;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlNamedPlsqlStoredProcedureQuery createXmlNamedPlsqlStoredProcedureQuery()
+	{
+		XmlNamedPlsqlStoredProcedureQuery xmlNamedPlsqlStoredProcedureQuery = new XmlNamedPlsqlStoredProcedureQuery();
+		return xmlNamedPlsqlStoredProcedureQuery;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlNamedStoredFunctionQuery createXmlNamedStoredFunctionQuery()
+	{
+		XmlNamedStoredFunctionQuery xmlNamedStoredFunctionQuery = new XmlNamedStoredFunctionQuery();
+		return xmlNamedStoredFunctionQuery;
 	}
 
 	/**
@@ -706,10 +771,32 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlStruct createXmlStruct()
+	{
+		XmlStruct xmlStruct = new XmlStruct();
+		return xmlStruct;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlStructConverter createXmlStructConverter()
 	{
 		XmlStructConverter xmlStructConverter = new XmlStructConverter();
 		return xmlStructConverter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlStructure createXmlStructure()
+	{
+		XmlStructure xmlStructure = new XmlStructure();
+		return xmlStructure;
 	}
 
 	/**
@@ -732,6 +819,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlTableGenerator xmlTableGenerator = new XmlTableGenerator();
 		return xmlTableGenerator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlTenantDiscriminator createXmlTenantDiscriminator()
+	{
+		XmlTenantDiscriminator xmlTenantDiscriminator = new XmlTenantDiscriminator();
+		return xmlTenantDiscriminator;
 	}
 
 	/**
@@ -831,6 +929,28 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlPinnedPartitioning xmlPinnedPartitioning = new XmlPinnedPartitioning();
 		return xmlPinnedPartitioning;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlPlsqlRecord createXmlPlsqlRecord()
+	{
+		XmlPlsqlRecord xmlPlsqlRecord = new XmlPlsqlRecord();
+		return xmlPlsqlRecord;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlPlsqlTable createXmlPlsqlTable()
+	{
+		XmlPlsqlTable xmlPlsqlTable = new XmlPlsqlTable();
+		return xmlPlsqlTable;
 	}
 
 	/**

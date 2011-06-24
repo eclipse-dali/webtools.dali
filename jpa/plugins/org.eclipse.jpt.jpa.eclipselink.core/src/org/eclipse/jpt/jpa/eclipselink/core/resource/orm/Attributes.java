@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,12 +20,17 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -54,8 +59,28 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
+public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes implements XmlAttributes_2_3
 {
+	/**
+	 * The cached value of the '{@link #getStructures() <em>Structures</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStructures()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlStructure_2_3> structures;
+
+	/**
+	 * The cached value of the '{@link #getArrays() <em>Arrays</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getArrays()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlArray_2_3> arrays;
+
 	/**
 	 * The cached value of the '{@link #getBasicCollections() <em>Basic Collections</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -115,6 +140,52 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 	protected EClass eStaticClass()
 	{
 		return EclipseLinkOrmPackage.Literals.ATTRIBUTES;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Structures</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Structures</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Structures</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributes_2_3_Structures()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlStructure_2_3> getStructures()
+	{
+		if (structures == null)
+		{
+			structures = new EObjectContainmentEList<XmlStructure_2_3>(XmlStructure_2_3.class, this, EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES);
+		}
+		return structures;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Arrays</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Arrays</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Arrays</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributes_2_3_Arrays()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlArray_2_3> getArrays()
+	{
+		if (arrays == null)
+		{
+			arrays = new EObjectContainmentEList<XmlArray_2_3>(XmlArray_2_3.class, this, EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS);
+		}
+		return arrays;
 	}
 
 	/**
@@ -219,6 +290,10 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES:
+				return ((InternalEList<?>)getStructures()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS:
+				return ((InternalEList<?>)getArrays()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.ATTRIBUTES__BASIC_COLLECTIONS:
 				return ((InternalEList<?>)getBasicCollections()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.ATTRIBUTES__BASIC_MAPS:
@@ -241,6 +316,10 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES:
+				return getStructures();
+			case EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS:
+				return getArrays();
 			case EclipseLinkOrmPackage.ATTRIBUTES__BASIC_COLLECTIONS:
 				return getBasicCollections();
 			case EclipseLinkOrmPackage.ATTRIBUTES__BASIC_MAPS:
@@ -264,6 +343,14 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES:
+				getStructures().clear();
+				getStructures().addAll((Collection<? extends XmlStructure_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS:
+				getArrays().clear();
+				getArrays().addAll((Collection<? extends XmlArray_2_3>)newValue);
+				return;
 			case EclipseLinkOrmPackage.ATTRIBUTES__BASIC_COLLECTIONS:
 				getBasicCollections().clear();
 				getBasicCollections().addAll((Collection<? extends XmlBasicCollection>)newValue);
@@ -294,6 +381,12 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES:
+				getStructures().clear();
+				return;
+			case EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS:
+				getArrays().clear();
+				return;
 			case EclipseLinkOrmPackage.ATTRIBUTES__BASIC_COLLECTIONS:
 				getBasicCollections().clear();
 				return;
@@ -320,6 +413,10 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES:
+				return structures != null && !structures.isEmpty();
+			case EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS:
+				return arrays != null && !arrays.isEmpty();
 			case EclipseLinkOrmPackage.ATTRIBUTES__BASIC_COLLECTIONS:
 				return basicCollections != null && !basicCollections.isEmpty();
 			case EclipseLinkOrmPackage.ATTRIBUTES__BASIC_MAPS:
@@ -332,6 +429,46 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 		return super.eIsSet(featureID);
 	}
 	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlAttributes_2_3.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES: return EclipseLinkOrmV2_3Package.XML_ATTRIBUTES_23__STRUCTURES;
+				case EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS: return EclipseLinkOrmV2_3Package.XML_ATTRIBUTES_23__ARRAYS;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlAttributes_2_3.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_3Package.XML_ATTRIBUTES_23__STRUCTURES: return EclipseLinkOrmPackage.ATTRIBUTES__STRUCTURES;
+				case EclipseLinkOrmV2_3Package.XML_ATTRIBUTES_23__ARRAYS: return EclipseLinkOrmPackage.ATTRIBUTES__ARRAYS;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
 	@Override
 	public List<XmlAttributeMapping> getAttributeMappings() {
 		// convert lists to arrays to avoid ConcurrentModificationException while adding to result list
@@ -389,6 +526,8 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 			XmlEmbedded.buildTranslator(EclipseLink2_0.EMBEDDED, OrmPackage.eINSTANCE.getAttributes_Embeddeds()),
 			XmlTransformation.buildTranslator(EclipseLink2_0.TRANSFORMATION, EclipseLinkOrmPackage.eINSTANCE.getAttributes_Transformations()),
 			XmlTransient.buildTranslator(EclipseLink2_0.TRANSIENT, OrmPackage.eINSTANCE.getAttributes_Transients()),
+			XmlStructure.buildTranslator(EclipseLink2_3.STRUCTURE, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlAttributes_2_3_Structures()),
+			XmlArray.buildTranslator(EclipseLink2_3.ARRAY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlAttributes_2_3_Arrays()),
 		};
 	}
 }

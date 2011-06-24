@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -61,6 +61,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlReplicationPart
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMappedSuperclass_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -94,7 +102,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass implements XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0, XmlMappedSuperclass_2_1, XmlMappedSuperclass_2_2, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer
+public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass implements XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0, XmlMappedSuperclass_2_1, XmlMappedSuperclass_2_2, XmlMappedSuperclass_2_3, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer
 {
 	/**
 	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
@@ -375,6 +383,66 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @ordered
 	 */
 	protected XmlAdditionalCriteria_2_2 additionalCriteria;
+
+	/**
+	 * The cached value of the '{@link #getMultitenant() <em>Multitenant</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultitenant()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlMultitenant_2_3 multitenant;
+
+	/**
+	 * The cached value of the '{@link #getNamedStoredFunctionQueries() <em>Named Stored Function Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedStoredFunctionQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedStoredFunctionQuery_2_3> namedStoredFunctionQueries;
+
+	/**
+	 * The cached value of the '{@link #getNamedPlsqlStoredFunctionQueries() <em>Named Plsql Stored Function Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedPlsqlStoredFunctionQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedPlsqlStoredFunctionQuery_2_3> namedPlsqlStoredFunctionQueries;
+
+	/**
+	 * The cached value of the '{@link #getNamedPlsqlStoredProcedureQueries() <em>Named Plsql Stored Procedure Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedPlsqlStoredProcedureQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedPlsqlStoredProcedureQuery_2_3> namedPlsqlStoredProcedureQueries;
+
+	/**
+	 * The cached value of the '{@link #getPlsqlRecords() <em>Plsql Records</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPlsqlRecords()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPlsqlRecord_2_3> plsqlRecords;
+
+	/**
+	 * The cached value of the '{@link #getPlsqlTables() <em>Plsql Tables</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPlsqlTables()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPlsqlTable> plsqlTables;
 
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -2349,6 +2417,181 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Multitenant</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Multitenant</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Multitenant</em>' containment reference.
+	 * @see #setMultitenant(XmlMultitenant_2_3)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_3_Multitenant()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlMultitenant_2_3 getMultitenant()
+	{
+		return multitenant;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetMultitenant(XmlMultitenant_2_3 newMultitenant, NotificationChain msgs)
+	{
+		XmlMultitenant_2_3 oldMultitenant = multitenant;
+		multitenant = newMultitenant;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT, oldMultitenant, newMultitenant);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass#getMultitenant <em>Multitenant</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Multitenant</em>' containment reference.
+	 * @see #getMultitenant()
+	 * @generated
+	 */
+	public void setMultitenant(XmlMultitenant_2_3 newMultitenant)
+	{
+		if (newMultitenant != multitenant)
+		{
+			NotificationChain msgs = null;
+			if (multitenant != null)
+				msgs = ((InternalEObject)multitenant).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT, null, msgs);
+			if (newMultitenant != null)
+				msgs = ((InternalEObject)newMultitenant).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT, null, msgs);
+			msgs = basicSetMultitenant(newMultitenant, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT, newMultitenant, newMultitenant));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Stored Function Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Stored Function Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Stored Function Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_3_NamedStoredFunctionQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedStoredFunctionQuery_2_3> getNamedStoredFunctionQueries()
+	{
+		if (namedStoredFunctionQueries == null)
+		{
+			namedStoredFunctionQueries = new EObjectContainmentEList<XmlNamedStoredFunctionQuery_2_3>(XmlNamedStoredFunctionQuery_2_3.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES);
+		}
+		return namedStoredFunctionQueries;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Plsql Stored Function Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Plsql Stored Function Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Plsql Stored Function Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_3_NamedPlsqlStoredFunctionQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedPlsqlStoredFunctionQuery_2_3> getNamedPlsqlStoredFunctionQueries()
+	{
+		if (namedPlsqlStoredFunctionQueries == null)
+		{
+			namedPlsqlStoredFunctionQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredFunctionQuery_2_3>(XmlNamedPlsqlStoredFunctionQuery_2_3.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES);
+		}
+		return namedPlsqlStoredFunctionQueries;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Plsql Stored Procedure Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Plsql Stored Procedure Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Plsql Stored Procedure Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_3_NamedPlsqlStoredProcedureQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedPlsqlStoredProcedureQuery_2_3> getNamedPlsqlStoredProcedureQueries()
+	{
+		if (namedPlsqlStoredProcedureQueries == null)
+		{
+			namedPlsqlStoredProcedureQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredProcedureQuery_2_3>(XmlNamedPlsqlStoredProcedureQuery_2_3.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES);
+		}
+		return namedPlsqlStoredProcedureQueries;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Plsql Records</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Plsql Records</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Plsql Records</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_3_PlsqlRecords()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlPlsqlRecord_2_3> getPlsqlRecords()
+	{
+		if (plsqlRecords == null)
+		{
+			plsqlRecords = new EObjectContainmentEList<XmlPlsqlRecord_2_3>(XmlPlsqlRecord_2_3.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS);
+		}
+		return plsqlRecords;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Plsql Tables</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Plsql Tables</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Plsql Tables</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_3_PlsqlTables()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlPlsqlTable> getPlsqlTables()
+	{
+		if (plsqlTables == null)
+		{
+			plsqlTables = new EObjectContainmentEList<XmlPlsqlTable>(XmlPlsqlTable.class, this, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES);
+		}
+		return plsqlTables;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Exclude Default Mappings</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -2437,6 +2680,18 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return basicSetUnionPartitioning(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
 				return basicSetAdditionalCriteria(null, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT:
+				return basicSetMultitenant(null, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES:
+				return ((InternalEList<?>)getNamedStoredFunctionQueries()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
+				return ((InternalEList<?>)getNamedPlsqlStoredFunctionQueries()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
+				return ((InternalEList<?>)getNamedPlsqlStoredProcedureQueries()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS:
+				return ((InternalEList<?>)getPlsqlRecords()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
+				return ((InternalEList<?>)getPlsqlTables()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CHANGE_TRACKING:
@@ -2525,6 +2780,18 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return getPartitioned();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
 				return getAdditionalCriteria();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT:
+				return getMultitenant();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES:
+				return getNamedStoredFunctionQueries();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
+				return getNamedPlsqlStoredFunctionQueries();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
+				return getNamedPlsqlStoredProcedureQueries();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS:
+				return getPlsqlRecords();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
+				return getPlsqlTables();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
@@ -2651,6 +2918,29 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
 				setAdditionalCriteria((XmlAdditionalCriteria_2_2)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT:
+				setMultitenant((XmlMultitenant_2_3)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES:
+				getNamedStoredFunctionQueries().clear();
+				getNamedStoredFunctionQueries().addAll((Collection<? extends XmlNamedStoredFunctionQuery_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
+				getNamedPlsqlStoredFunctionQueries().clear();
+				getNamedPlsqlStoredFunctionQueries().addAll((Collection<? extends XmlNamedPlsqlStoredFunctionQuery_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
+				getNamedPlsqlStoredProcedureQueries().clear();
+				getNamedPlsqlStoredProcedureQueries().addAll((Collection<? extends XmlNamedPlsqlStoredProcedureQuery_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS:
+				getPlsqlRecords().clear();
+				getPlsqlRecords().addAll((Collection<? extends XmlPlsqlRecord_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
+				getPlsqlTables().clear();
+				getPlsqlTables().addAll((Collection<? extends XmlPlsqlTable>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				setReadOnly((Boolean)newValue);
@@ -2791,6 +3081,24 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
 				setAdditionalCriteria((XmlAdditionalCriteria_2_2)null);
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT:
+				setMultitenant((XmlMultitenant_2_3)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES:
+				getNamedStoredFunctionQueries().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
+				getNamedPlsqlStoredFunctionQueries().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
+				getNamedPlsqlStoredProcedureQueries().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS:
+				getPlsqlRecords().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
+				getPlsqlTables().clear();
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
@@ -2900,6 +3208,18 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return PARTITIONED_EDEFAULT == null ? partitioned != null : !PARTITIONED_EDEFAULT.equals(partitioned);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
 				return additionalCriteria != null;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT:
+				return multitenant != null;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES:
+				return namedStoredFunctionQueries != null && !namedStoredFunctionQueries.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
+				return namedPlsqlStoredFunctionQueries != null && !namedPlsqlStoredFunctionQueries.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES:
+				return namedPlsqlStoredProcedureQueries != null && !namedPlsqlStoredProcedureQueries.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS:
+				return plsqlRecords != null && !plsqlRecords.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
+				return plsqlTables != null && !plsqlTables.isEmpty();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
@@ -3055,6 +3375,19 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA: return EclipseLinkOrmV2_2Package.XML_MAPPED_SUPERCLASS_22__ADDITIONAL_CRITERIA;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedSuperclass_2_3.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__MULTITENANT;
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__NAMED_STORED_FUNCTION_QUERIES;
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES;
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__PLSQL_RECORDS;
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__PLSQL_TABLES;
 				default: return -1;
 			}
 		}
@@ -3237,6 +3570,19 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMappedSuperclass_2_3.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__MULTITENANT: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__MULTITENANT;
+				case EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__NAMED_STORED_FUNCTION_QUERIES: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_FUNCTION_QUERIES;
+				case EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_FUNCTION_QUERIES;
+				case EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
+				case EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__PLSQL_RECORDS: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS;
+				case EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__PLSQL_TABLES: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlReadOnly.class)
 		{
 			switch (baseFeatureID)
@@ -3351,7 +3697,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			buildExcludeDefaultMappingsTranslator(),
 			buildDescriptionTranslator(),
 			buildAccessMethodsTranslator(),
-			buildAdditionalCriteriaTranslator(),
+		    XmlMultitenant.buildTranslator(EclipseLink2_3.MULTITENANT, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlMappedSuperclass_2_3_Multitenant()),
+		    buildAdditionalCriteriaTranslator(),
 			buildCustomizerTranslator(),
 			buildChangeTrackingTranslator(),
 			buildIdClassTranslator(),
@@ -3372,6 +3719,11 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			buildNamedQueryTranslator(),
 			buildNamedNativeQueryTranslator(),
 			buildNamedStoredProcedureQueryTranslator(),
+			XmlNamedStoredFunctionQuery.buildTranslator(EclipseLink2_3.NAMED_STORED_FUNCTION_QUERY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlMappedSuperclass_2_3_NamedStoredFunctionQueries()),
+			XmlNamedPlsqlStoredProcedureQuery.buildTranslator(EclipseLink2_3.NAMED_PLSQL_STORED_PROCEDURE_QUERY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlMappedSuperclass_2_3_NamedPlsqlStoredProcedureQueries()),
+			XmlNamedPlsqlStoredFunctionQuery.buildTranslator(EclipseLink2_3.NAMED_PLSQL_STORED_FUNCTION_QUERY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlMappedSuperclass_2_3_NamedPlsqlStoredFunctionQueries()),
+			XmlPlsqlRecord.buildTranslator(EclipseLink2_3.PLSQL_RECORD, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_PlsqlRecords()),
+			XmlPlsqlTable.buildTranslator(EclipseLink2_3.PLSQL_TABLE, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_PlsqlTables()),
 			buildSqlResultSetMappingTranslator(),
 			buildQueryRedirectorsTranslator(),
 			buildExcludeDefaultListenersTranslator(),
@@ -3513,5 +3865,4 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	protected static Translator buildAdditionalCriteriaTranslator() {
 		return XmlAdditionalCriteria.buildTranslator(EclipseLink2_2.ADDITIONAL_CRITERIA, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlMappedSuperclass_2_2_AdditionalCriteria());
 	}
-
 }
