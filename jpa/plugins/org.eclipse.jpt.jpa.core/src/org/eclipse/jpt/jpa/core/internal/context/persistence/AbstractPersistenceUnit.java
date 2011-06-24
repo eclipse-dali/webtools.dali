@@ -59,7 +59,6 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
@@ -2813,7 +2812,7 @@ public abstract class AbstractPersistenceUnit
 			return null;
 		}
 
-		public <T extends PersistentAttribute> ListIterator<T> attributes() {
+		public <T extends ReadOnlyPersistentAttribute> ListIterator<T> attributes() {
 			return EmptyListIterator.instance();
 		}
 

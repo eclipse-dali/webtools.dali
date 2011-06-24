@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,8 +27,8 @@ import org.eclipse.jpt.common.utility.internal.SimpleStack;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
@@ -341,14 +341,14 @@ public class GenericMetamodelSynchronizer
 	 */
 	protected boolean printAttributesOn(BodySourceWriter pw) {
 		boolean printed = false;
-		for (Iterator<PersistentAttribute> stream = this.sourceType.attributes(); stream.hasNext(); ) {
+		for (Iterator<ReadOnlyPersistentAttribute> stream = this.sourceType.attributes(); stream.hasNext(); ) {
 			this.printAttributeOn(stream.next(), pw);
 			printed = true;
 		}
 		return printed;
 	}
 
-	protected void printAttributeOn(PersistentAttribute persistentAttribute, BodySourceWriter pw) {
+	protected void printAttributeOn(ReadOnlyPersistentAttribute persistentAttribute, BodySourceWriter pw) {
 		AttributeMapping attributeMapping = persistentAttribute.getMapping();
 		if (attributeMapping != null) {  // probably shouldn't be null?
 			this.printAttributeMappingOn(attributeMapping, pw);
