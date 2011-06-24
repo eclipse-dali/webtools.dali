@@ -23,7 +23,6 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -124,12 +123,18 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<String> getAllAttributeMappingChoiceNames() {
-		return new TransformationIterable<AttributeMapping, String>(this.getAllAttributeMappingChoices()) {
-				@Override
-				protected String transform(AttributeMapping mapping) {
-					return mapping.getName();
-				}
-			};
+		return new FilteringIterable<String>(
+				new TransformationIterable<AttributeMapping, String>(this.getAllAttributeMappingChoices()) {
+					@Override
+					protected String transform(AttributeMapping mapping) {
+						return mapping.getName();
+					}
+				}) {
+			@Override
+			protected boolean accept(String o) {
+				return o != null;
+			}
+		};
 	}
 
 	protected Iterable<AttributeMapping> getAllAttributeMappingChoices() {
