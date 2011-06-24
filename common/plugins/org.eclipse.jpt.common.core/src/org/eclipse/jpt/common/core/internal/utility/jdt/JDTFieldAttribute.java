@@ -80,7 +80,9 @@ public class JDTFieldAttribute
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return new ASTNodeTextRange(this.getFragment(astRoot).getName());
+		VariableDeclarationFragment fragment = this.getFragment(astRoot);
+		//fragment can be null if the resource is out of sync with the file system
+		return fragment == null ? null : new ASTNodeTextRange(fragment.getName());
 	}
 
 	public String getAttributeName() {
@@ -142,7 +144,9 @@ public class JDTFieldAttribute
 	}
 
 	protected FieldDeclaration[] getDeclaringTypeFieldDeclarations(CompilationUnit astRoot) {
-		return this.getDeclaringTypeDeclaration(astRoot).getFields();
+		TypeDeclaration typeDeclaration = this.getDeclaringTypeDeclaration(astRoot);
+		//typeDeclaration can be null if the resource is out of sync with the file system
+		return typeDeclaration == null ? new FieldDeclaration[0] : typeDeclaration.getFields();
 	}
 
 	// minimize scope of suppressed warnings

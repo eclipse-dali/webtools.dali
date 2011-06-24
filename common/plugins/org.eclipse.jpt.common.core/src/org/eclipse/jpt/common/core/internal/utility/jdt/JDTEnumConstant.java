@@ -74,7 +74,9 @@ public class JDTEnumConstant
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return new ASTNodeTextRange(this.getBodyDeclaration(astRoot).getName());
+		EnumConstantDeclaration declaration = this.getBodyDeclaration(astRoot);
+		//declaration can be null if the resource is out of sync with the file system
+		return declaration == null ? null : new ASTNodeTextRange(declaration.getName());
 	}
 
 	//As far as I can tell, enum constants are always "persistable", 

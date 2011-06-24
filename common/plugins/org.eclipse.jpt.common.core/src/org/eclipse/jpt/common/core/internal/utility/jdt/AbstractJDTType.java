@@ -113,7 +113,9 @@ public abstract class AbstractJDTType
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return new ASTNodeTextRange(this.getBodyDeclaration(astRoot).getName());
+		AbstractTypeDeclaration bodyDeclaration = this.getBodyDeclaration(astRoot);
+		//bodyDeclaration can be null if the resource is out of sync with the file system
+		return bodyDeclaration == null ? null : new ASTNodeTextRange(bodyDeclaration.getName());
 	}
 
 

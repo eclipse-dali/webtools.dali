@@ -144,7 +144,9 @@ public class JDTMethodAttribute
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return new ASTNodeTextRange(this.getBodyDeclaration(astRoot).getName());
+		MethodDeclaration methodDeclaration = this.getBodyDeclaration(astRoot);
+		//methodDeclaration can be null if the resource is out of sync with the file system
+		return methodDeclaration == null ? null : new ASTNodeTextRange(methodDeclaration.getName());
 	}
 
 	/**
@@ -174,7 +176,9 @@ public class JDTMethodAttribute
 	}
 
 	protected MethodDeclaration[] getDeclaringTypeMethodDeclarations(CompilationUnit astRoot) {
-		return this.getDeclaringTypeDeclaration(astRoot).getMethods();
+		TypeDeclaration typeDeclaration = this.getDeclaringTypeDeclaration(astRoot);
+		//typeDeclaration can be null if the resource is out of sync with the file system
+		return typeDeclaration == null ? new MethodDeclaration[0] : typeDeclaration.getMethods();
 	}
 
 
