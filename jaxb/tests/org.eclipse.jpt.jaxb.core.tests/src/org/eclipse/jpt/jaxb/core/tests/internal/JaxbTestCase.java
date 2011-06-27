@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
@@ -17,8 +19,6 @@ import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetDataModelProperties;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallDataModelProvider;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;

@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 
 public class GenericJavaPersistentEnum

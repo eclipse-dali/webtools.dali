@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
+import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 
 /**
@@ -21,8 +22,7 @@ public final class BinaryXmlListAnnotation
 	implements XmlListAnnotation
 {
 
-	public BinaryXmlListAnnotation(JavaResourceMember
-		parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlListAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

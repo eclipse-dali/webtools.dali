@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.source.AbstractJavaResourceNode;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 
 /**
  * Simplify null annotation classes

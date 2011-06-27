@@ -28,24 +28,14 @@ Require-Bundle: org.eclipse.core.expressions;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.wst.validation;bundle-version="[1.2.0,2.0.0)"
 Dali-Comment: We friend 'utility' to all non-EclipseLink, non-test bundles
 Export-Package: org.eclipse.jpt.common.core,
- org.eclipse.jpt.common.core.internal;
-  x-friends:="org.eclipse.jpt.jpa.core,
-   org.eclipse.jpt.jaxb.core",
- org.eclipse.jpt.common.core.internal.gen;
-  x-friends:="org.eclipse.jpt.jpa.core,
-   org.eclipse.jpt.jaxb.core",
- org.eclipse.jpt.common.core.internal.libprov;
-  x-friends:="org.eclipse.jpt.jpa.core,
-   org.eclipse.jpt.jaxb.core",
- org.eclipse.jpt.common.core.internal.libval;
-  x-friends:="org.eclipse.jpt.jpa.core,
-   org.eclipse.jpt.jaxb.core",
- org.eclipse.jpt.common.core.internal.operations;
-  x-friends:="org.eclipse.jpt.jpa.core,
-   org.eclipse.jpt.jaxb.core",
- org.eclipse.jpt.common.core.internal.resource;
-  x-friends:="org.eclipse.jpt.jpa.core,
-   org.eclipse.jpt.jaxb.core",
+ org.eclipse.jpt.common.core.internal;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
+ org.eclipse.jpt.common.core.internal.gen;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
+ org.eclipse.jpt.common.core.internal.libprov;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
+ org.eclipse.jpt.common.core.internal.libval;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
+ org.eclipse.jpt.common.core.internal.operations;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
+ org.eclipse.jpt.common.core.internal.resource;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
+ org.eclipse.jpt.common.core.internal.resource.java.binary;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
+ org.eclipse.jpt.common.core.internal.resource.java.source;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.utility;
   x-friends:="org.eclipse.jpt.common.ui,
    org.eclipse.jpt.jaxb.core,
@@ -55,15 +45,12 @@ Export-Package: org.eclipse.jpt.common.core,
    org.eclipse.jpt.jpa.db.ui,
    org.eclipse.jpt.jpa.gen,
    org.eclipse.jpt.jpa.ui",
- org.eclipse.jpt.common.core.internal.utility.jdt;
-  x-friends:="org.eclipse.jpt.jaxb.core,
-   org.eclipse.jpt.jpa.core",
- org.eclipse.jpt.common.core.internal.utility.translators;
-  x-friends:="org.eclipse.jpt.jpa.core,
-   org.eclipse.jpt.jaxb.core",
+ org.eclipse.jpt.common.core.internal.utility.jdt;x-friends:="org.eclipse.jpt.jaxb.core,org.eclipse.jpt.jpa.core",
+ org.eclipse.jpt.common.core.internal.utility.translators;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.libprov,
  org.eclipse.jpt.common.core.libval,
  org.eclipse.jpt.common.core.resource,
+ org.eclipse.jpt.common.core.resource.java,
  org.eclipse.jpt.common.core.utility,
  org.eclipse.jpt.common.core.utility.jdt
 Import-Package: com.ibm.icu.text;version="4.0.1"

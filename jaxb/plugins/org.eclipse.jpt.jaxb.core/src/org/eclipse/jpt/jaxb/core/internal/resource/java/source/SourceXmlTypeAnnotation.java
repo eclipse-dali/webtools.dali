@@ -12,14 +12,16 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 import java.util.Arrays;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -27,7 +29,6 @@ import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 
@@ -35,7 +36,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
  * javax.xml.bind.annotation.XmlType
  */
 public final class SourceXmlTypeAnnotation
-	extends SourceAnnotation<AbstractType>
+	extends SourceAnnotation
 	implements XmlTypeAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -62,8 +63,8 @@ public final class SourceXmlTypeAnnotation
 	private final AnnotationElementAdapter<String[]> propOrderAdapter;
 	private final Vector<String> propOrder = new Vector<String>();
 
-	public SourceXmlTypeAnnotation(JavaResourceAbstractType parent, AbstractType type) {
-		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceXmlTypeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 		this.factoryClassAdapter = this.buildAnnotationElementAdapter(FACTORY_CLASS_ADAPTER);
 		this.factoryMethodAdapter = this.buildAnnotationElementAdapter(FACTORY_METHOD_ADAPTER);
 		this.nameAdapter = this.buildAnnotationElementAdapter(NAME_ADAPTER);

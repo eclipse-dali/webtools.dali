@@ -10,25 +10,26 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlAttribute
  */
 public final class SourceXmlAttributeAnnotation
-	extends SourceAnnotation<Attribute>
+	extends SourceAnnotation
 	implements XmlAttributeAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -47,12 +48,12 @@ public final class SourceXmlAttributeAnnotation
 
 
 	// ********** constructors **********
-	public SourceXmlAttributeAnnotation(JavaResourceMember parent, Attribute attribute) {
-		this(parent, attribute, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(attribute, DECLARATION_ANNOTATION_ADAPTER));
+	public SourceXmlAttributeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		this(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(annotatedElement, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	public SourceXmlAttributeAnnotation(JavaResourceMember parent, Attribute attribute, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, attribute, daa, annotationAdapter);
+	public SourceXmlAttributeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, annotatedElement, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
 		this.nameAdapter = this.buildAnnotationElementAdapter(this.nameDeclarationAdapter);
 		this.namespaceDeclarationAdapter = this.buildNamespaceAdapter(daa);

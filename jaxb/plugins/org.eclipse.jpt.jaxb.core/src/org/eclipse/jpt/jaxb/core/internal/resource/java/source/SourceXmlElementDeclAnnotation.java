@@ -10,27 +10,28 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
-import org.eclipse.jpt.common.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlElementDecl
  */
 public final class SourceXmlElementDeclAnnotation
-	extends SourceAnnotation<MethodAttribute>
+	extends SourceAnnotation
 	implements XmlElementDeclAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -63,8 +64,8 @@ public final class SourceXmlElementDeclAnnotation
 
 	// ********** constructors **********
 
-	public SourceXmlElementDeclAnnotation(JavaResourceMethod parent, MethodAttribute method) {
-		super(parent, method, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(method, DECLARATION_ANNOTATION_ADAPTER));
+	public SourceXmlElementDeclAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(annotatedElement, DECLARATION_ANNOTATION_ADAPTER));
 		this.nameAdapter = this.buildAnnotationElementAdapter(NAME_ADAPTER);
 		this.namespaceAdapter = this.buildAnnotationElementAdapter(NAMESPACE_ADAPTER);
 		this.defaultValueAdapter = this.buildAnnotationElementAdapter(DEFAULT_VALUE_ADAPTER);

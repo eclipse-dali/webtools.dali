@@ -1,6 +1,7 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.Collection;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
@@ -8,7 +9,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 
 
 public class JavaXmlElementsMappingDefinition

@@ -10,14 +10,15 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefsAnnotation;
 
@@ -25,7 +26,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefsAnnotation;
  * javax.xml.bind.annotation.XmlElementRefs
  */
 public class SourceXmlElementRefsAnnotation
-		extends SourceAnnotation<Attribute>
+		extends SourceAnnotation
 		implements XmlElementRefsAnnotation {
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER 
@@ -36,12 +37,12 @@ public class SourceXmlElementRefsAnnotation
 			= new XmlElementRefsAnnotationContainer();
 	
 	
-	public SourceXmlElementRefsAnnotation(JavaResourceAttribute parent, Attribute attribute) {
-		this(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceXmlElementRefsAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		this(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
-	public SourceXmlElementRefsAnnotation(JavaResourceAttribute parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
-		super(parent, attribute, daa);
+	public SourceXmlElementRefsAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa) {
+		super(parent, annotatedElement, daa);
 	}
 	
 	

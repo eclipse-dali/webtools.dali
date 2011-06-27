@@ -10,13 +10,13 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlSchemaTypeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
 
 public class XmlSchemaTypeAnnotationDefinition

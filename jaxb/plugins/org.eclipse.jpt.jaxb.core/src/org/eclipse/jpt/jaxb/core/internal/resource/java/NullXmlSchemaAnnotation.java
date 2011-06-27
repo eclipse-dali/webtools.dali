@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
@@ -25,7 +25,7 @@ public final class NullXmlSchemaAnnotation
 	extends NullAnnotation
 	implements XmlSchemaAnnotation
 {
-	protected NullXmlSchemaAnnotation(JavaResourcePackage parent) {
+	protected NullXmlSchemaAnnotation(JavaResourceNode parent) {
 		super(parent);
 	}
 

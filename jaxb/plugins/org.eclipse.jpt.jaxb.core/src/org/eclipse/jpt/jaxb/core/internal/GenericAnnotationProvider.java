@@ -10,15 +10,15 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.AnnotationProvider;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.jaxb.core.AnnotationProvider;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
 /**
  * Delegate to annotation definition providers.

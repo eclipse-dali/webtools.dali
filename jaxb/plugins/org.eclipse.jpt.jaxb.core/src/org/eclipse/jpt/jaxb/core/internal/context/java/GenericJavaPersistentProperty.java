@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 
 public class GenericJavaPersistentProperty
 		extends GenericJavaPersistentAttribute

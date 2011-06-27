@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlElementsAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlElementsAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementsAnnotation;
 
 /**
@@ -44,7 +44,7 @@ public final class XmlElementsAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlElementsAnnotation((JavaResourceAttribute) parent, (Attribute) annotatedElement);
+		return new SourceXmlElementsAnnotation(parent, annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -52,7 +52,7 @@ public final class XmlElementsAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlElementsAnnotation((JavaResourceAttribute) parent, jdtAnnotation);
+		return new BinaryXmlElementsAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

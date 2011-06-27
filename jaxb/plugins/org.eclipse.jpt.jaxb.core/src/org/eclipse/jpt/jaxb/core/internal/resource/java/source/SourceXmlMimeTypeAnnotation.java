@@ -10,23 +10,24 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMimeTypeAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlMimeType
  */
 public final class SourceXmlMimeTypeAnnotation
-	extends SourceAnnotation<Attribute>
+	extends SourceAnnotation
 	implements XmlMimeTypeAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -35,8 +36,8 @@ public final class SourceXmlMimeTypeAnnotation
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 
-	public SourceXmlMimeTypeAnnotation(JavaResourceMember parent, Attribute attribute) {
-		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceXmlMimeTypeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = this.buildAnnotationElementAdapter(VALUE_ADAPTER);
 	}
 

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
 
 /**
@@ -21,7 +21,7 @@ public final class NullXmlElementDeclAnnotation
 	extends NullAnnotation
 	implements XmlElementDeclAnnotation
 {
-	protected NullXmlElementDeclAnnotation(JavaResourceMethod parent) {
+	protected NullXmlElementDeclAnnotation(JavaResourceNode parent) {
 		super(parent);
 	}
 

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 
@@ -22,7 +22,7 @@ public final class NullXmlAccessorTypeAnnotation
 	extends NullAnnotation
 	implements XmlAccessorTypeAnnotation
 {
-	protected NullXmlAccessorTypeAnnotation(JavaResourceAnnotatedElement parent) {
+	protected NullXmlAccessorTypeAnnotation(JavaResourceNode parent) {
 		super(parent);
 	}
 

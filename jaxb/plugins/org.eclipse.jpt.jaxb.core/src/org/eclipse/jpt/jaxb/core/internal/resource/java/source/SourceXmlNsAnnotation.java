@@ -10,23 +10,24 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.core.utility.jdt.AnnotatedPackage;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 
 
 public class SourceXmlNsAnnotation
-		extends SourceAnnotation<AnnotatedPackage>
+		extends SourceAnnotation
 		implements XmlNsAnnotation {
 	
 	private final DeclarationAnnotationElementAdapter<String> namespaceURIDeclarationAdapter;
@@ -38,8 +39,8 @@ public class SourceXmlNsAnnotation
 	private String prefix;
 	
 	
-	public SourceXmlNsAnnotation(JavaResourceNode parent, AnnotatedPackage pack, IndexedDeclarationAnnotationAdapter idaa) {
-		super(parent, pack, idaa, new ElementIndexedAnnotationAdapter(pack, idaa));
+	public SourceXmlNsAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+		super(parent, annotatedElement, idaa, new ElementIndexedAnnotationAdapter(annotatedElement, idaa));
 		this.namespaceURIDeclarationAdapter = this.buildNamespaceURIDeclarationAdapter(idaa);
 		this.namespaceURIAdapter = this.buildAdapter(this.namespaceURIDeclarationAdapter);
 		this.prefixDeclarationAdapter = this.buildPrefixDeclarationAdapter(idaa);

@@ -10,27 +10,28 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.core.utility.jdt.AnnotatedPackage;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
 
 
 public class SourceXmlSchemaAnnotation
-		extends SourceAnnotation<AnnotatedPackage>
+		extends SourceAnnotation
 		implements XmlSchemaAnnotation {
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER 
@@ -80,12 +81,12 @@ public class SourceXmlSchemaAnnotation
 	}
 	
 	
-	public SourceXmlSchemaAnnotation(JavaResourcePackage parent, AnnotatedPackage pack) {
-		this(parent, pack, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceXmlSchemaAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		this(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
-	public SourceXmlSchemaAnnotation(JavaResourcePackage parent, AnnotatedPackage pack, DeclarationAnnotationAdapter daa) {
-		super(parent, pack, daa);
+	public SourceXmlSchemaAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa) {
+		super(parent, annotatedElement, daa);
 		this.attributeFormDefaultAdapter = buildAnnotationElementAdapter(ATTRIBUTE_FORM_DEFAULT_ADAPTER);
 		this.elementFormDefaultAdapter = buildAnnotationElementAdapter(ELEMENT_FORM_DEFAULT_ADAPTER);
 		this.locationAdapter = buildAnnotationElementAdapter(LOCATION_ADAPTER);

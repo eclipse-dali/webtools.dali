@@ -12,6 +12,12 @@ package org.eclipse.jpt.jaxb.core.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
@@ -59,12 +65,6 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlRootElement
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlTransientMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlValueMapping;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 

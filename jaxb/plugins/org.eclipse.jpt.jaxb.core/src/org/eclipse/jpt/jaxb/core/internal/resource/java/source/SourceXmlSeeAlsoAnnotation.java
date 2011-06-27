@@ -14,12 +14,14 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -30,14 +32,13 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlSeeAlso
  */
 public final class SourceXmlSeeAlsoAnnotation
-		extends SourceAnnotation<AbstractType>
+		extends SourceAnnotation
 		implements XmlSeeAlsoAnnotation {
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -57,8 +58,8 @@ public final class SourceXmlSeeAlsoAnnotation
 	private final Vector<String> fullyQualifiedClasses;
 	
 	
-	public SourceXmlSeeAlsoAnnotation(JavaResourceAbstractType parent, AbstractType type) {
-		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceXmlSeeAlsoAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueDeclarationAdapter = buildArrayAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SEE_ALSO__VALUE);
 		this.valueAdapter = this.buildArrayAnnotationElementAdapter(this.valueDeclarationAdapter);
 		this.classes = new Vector<String>();

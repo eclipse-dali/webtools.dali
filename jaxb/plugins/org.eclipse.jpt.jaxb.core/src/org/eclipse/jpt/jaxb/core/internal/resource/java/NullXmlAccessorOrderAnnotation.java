@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 
@@ -22,7 +22,7 @@ public final class NullXmlAccessorOrderAnnotation
 	extends NullAnnotation
 	implements XmlAccessorOrderAnnotation
 {
-	protected NullXmlAccessorOrderAnnotation(JavaResourceAnnotatedElement parent) {
+	protected NullXmlAccessorOrderAnnotation(JavaResourceNode parent) {
 		super(parent);
 	}
 

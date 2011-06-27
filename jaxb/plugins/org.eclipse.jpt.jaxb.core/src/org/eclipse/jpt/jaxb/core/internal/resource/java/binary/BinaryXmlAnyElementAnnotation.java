@@ -11,9 +11,10 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyElementAnnotation;
 
 /**
@@ -27,7 +28,7 @@ public final class BinaryXmlAnyElementAnnotation
 	private String value;
 
 
-	public BinaryXmlAnyElementAnnotation(JavaResourceMember parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlAnyElementAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.lax = this.buildLax();
 		this.value = this.buildValue();

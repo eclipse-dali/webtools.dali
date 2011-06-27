@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlSeeAlsoAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlSeeAlsoAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 
 /**
@@ -44,7 +44,7 @@ public final class XmlSeeAlsoAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlSeeAlsoAnnotation((JavaResourceAbstractType) parent, (AbstractType) annotatedElement);
+		return new SourceXmlSeeAlsoAnnotation(parent, annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -52,7 +52,7 @@ public final class XmlSeeAlsoAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlSeeAlsoAnnotation((JavaResourceAbstractType) parent, jdtAnnotation);
+		return new BinaryXmlSeeAlsoAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

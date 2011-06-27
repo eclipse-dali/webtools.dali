@@ -9,10 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 
 /**
  * Represents a JAXB attribute (field/property).

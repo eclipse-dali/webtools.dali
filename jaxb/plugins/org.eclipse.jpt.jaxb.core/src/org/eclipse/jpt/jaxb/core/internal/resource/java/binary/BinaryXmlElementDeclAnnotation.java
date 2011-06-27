@@ -11,9 +11,10 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
 
 /**
@@ -31,7 +32,7 @@ public final class BinaryXmlElementDeclAnnotation
 	private String substitutionHeadNamespace;
 
 
-	public BinaryXmlElementDeclAnnotation(JavaResourceMethod parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlElementDeclAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
 		this.namespace = this.buildNamespace();

@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
+import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlInlineBinaryDataAnnotation;
 
 /**
@@ -21,7 +22,7 @@ public final class BinaryXmlInlineBinaryDataAnnotation
 	implements XmlInlineBinaryDataAnnotation
 {
 
-	public BinaryXmlInlineBinaryDataAnnotation(JavaResourceMember parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlInlineBinaryDataAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 
 
 /**

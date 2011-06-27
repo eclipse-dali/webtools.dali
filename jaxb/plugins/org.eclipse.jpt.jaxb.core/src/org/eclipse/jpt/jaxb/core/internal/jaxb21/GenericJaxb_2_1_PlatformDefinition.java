@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.GenericJaxbPlatform;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
@@ -63,8 +65,6 @@ import org.eclipse.jpt.jaxb.core.internal.resource.jaxbindex.JaxbIndexResourceMo
 import org.eclipse.jpt.jaxb.core.internal.resource.jaxbprops.JaxbPropertiesResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
 public class GenericJaxb_2_1_PlatformDefinition
 		extends  AbstractJaxbPlatformDefinition {

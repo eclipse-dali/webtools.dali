@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_PlatformDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
 public class JaxbJavaResourceModelTestCase
 		extends JavaResourceModelTestCase {	

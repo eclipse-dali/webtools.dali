@@ -10,15 +10,15 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlElementRefAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 
 /**
  * javax.xml.bind.annotation.XmlElementRef
@@ -47,7 +47,7 @@ public final class XmlElementRefAnnotationDefinition
 	
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return SourceXmlElementRefAnnotation.buildSourceXmlElementRefAnnotation((JavaResourceAttribute) parent, (Attribute) annotatedElement);
+		return SourceXmlElementRefAnnotation.buildSourceXmlElementRefAnnotation(parent, annotatedElement);
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {

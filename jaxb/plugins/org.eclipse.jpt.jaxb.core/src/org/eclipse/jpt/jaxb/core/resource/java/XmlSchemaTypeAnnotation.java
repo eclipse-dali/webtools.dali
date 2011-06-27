@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**

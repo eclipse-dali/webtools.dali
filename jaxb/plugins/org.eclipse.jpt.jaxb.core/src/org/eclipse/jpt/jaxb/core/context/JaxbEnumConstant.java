@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 
 /**
  * Represents a JAXB enum constant.  

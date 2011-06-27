@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 
 /**
  * Represents a JAXB element factory method  

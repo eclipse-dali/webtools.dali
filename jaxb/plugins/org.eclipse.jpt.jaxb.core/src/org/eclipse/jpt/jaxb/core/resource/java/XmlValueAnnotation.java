@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+
 
 /**
  * Corresponds to the JAXB annotation

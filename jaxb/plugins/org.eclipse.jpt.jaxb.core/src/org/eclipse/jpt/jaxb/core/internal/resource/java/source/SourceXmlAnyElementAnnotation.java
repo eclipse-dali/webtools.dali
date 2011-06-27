@@ -10,28 +10,29 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyElementAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlAnyElement
  */
 public final class SourceXmlAnyElementAnnotation
-	extends SourceAnnotation<Attribute>
+	extends SourceAnnotation
 	implements XmlAnyElementAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -47,12 +48,12 @@ public final class SourceXmlAnyElementAnnotation
 
 
 	// ********** constructors **********
-	public SourceXmlAnyElementAnnotation(JavaResourceMember parent, Attribute attribute) {
-		this(parent, attribute, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(attribute, DECLARATION_ANNOTATION_ADAPTER));
+	public SourceXmlAnyElementAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		this(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(annotatedElement, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	public SourceXmlAnyElementAnnotation(JavaResourceMember parent, Attribute attribute, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, attribute, daa, annotationAdapter);
+	public SourceXmlAnyElementAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, annotatedElement, daa, annotationAdapter);
 		this.laxDeclarationAdapter = this.buildLaxAdapter(daa);
 		this.laxAdapter = this.buildShortCircuitBooleanElementAdapter(this.laxDeclarationAdapter);
 		this.valueDeclarationAdapter = this.buildValueAdapter(daa);

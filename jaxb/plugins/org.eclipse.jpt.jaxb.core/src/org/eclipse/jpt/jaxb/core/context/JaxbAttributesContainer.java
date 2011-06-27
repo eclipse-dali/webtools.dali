@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 
 /**
  * Holds the attributes represented by a particular JavaResourceType and XmlAccessType.

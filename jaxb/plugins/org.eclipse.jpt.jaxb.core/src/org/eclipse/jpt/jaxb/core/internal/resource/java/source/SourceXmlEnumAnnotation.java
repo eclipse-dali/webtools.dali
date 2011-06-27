@@ -10,26 +10,27 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlEnum
  */
 public final class SourceXmlEnumAnnotation
-	extends SourceAnnotation<AbstractType>
+	extends SourceAnnotation
 	implements XmlEnumAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -40,8 +41,8 @@ public final class SourceXmlEnumAnnotation
 	
 	private String fullyQualifiedValueClassName;
 
-	public SourceXmlEnumAnnotation(JavaResourceAbstractType parent, AbstractType type) {
-		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceXmlEnumAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = this.buildAnnotationElementAdapter(VALUE_ADAPTER);
 	}
 
