@@ -36,6 +36,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -139,7 +140,11 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 	    	String newAtName = JPAEditorUtil.decapitalizeFirstLetter(value);
 	    	if (JpaArtifactFactory.instance().isMethodAnnotated(at)) 
 	    		newAtName = JPAEditorUtil.produceValidAttributeName(newAtName);
-	    	newAtName = JpaArtifactFactory.instance().renameAttribute(at, newAtName, jpt.getName(), getFeatureProvider()).getName();
+	    	try {
+				newAtName = JpaArtifactFactory.instance().renameAttribute(at, newAtName, jpt.getName(), getFeatureProvider()).getName();
+			} catch (InterruptedException e) {
+				JPADiagramEditorPlugin.logError(e);
+			}
 			
 	    	final GraphicsAlgorithm algo = pel.getGraphicsAlgorithm().getGraphicsAlgorithmChildren().get(0);
             final String attName = newAtName;
