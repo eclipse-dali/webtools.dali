@@ -454,7 +454,7 @@ public class JpaArtifactFactory {
 					cu.commitWorkingCopy(true, new NullProgressMonitor());
 					cu.save(new NullProgressMonitor(), true);
 				} catch (JavaModelException e) {
-					if (cu.getResource().getProject().isAccessible())
+					if (cu.getResource().getProject().isAccessible() && cu.getResource().isAccessible())
 						JPADiagramEditorPlugin.logError("Cannot save entity '" + jpt.getName() + "'", e);	//$NON-NLS-1$		//$NON-NLS-2$		
 				}
 			}
