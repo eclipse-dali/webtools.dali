@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlInverseReferenceAnnotation;
 
@@ -25,7 +25,7 @@ public class BinaryXmlInverseReferenceAnnotation
 	private String mappedBy;
 	
 	
-	public BinaryXmlInverseReferenceAnnotation(JavaResourceMember parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlInverseReferenceAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.mappedBy = buildMappedBy();
 	}

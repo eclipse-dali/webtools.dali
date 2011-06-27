@@ -10,12 +10,10 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.binary.BinaryXmlTransformationAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source.SourceXmlTransformationAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
@@ -44,8 +42,12 @@ public class XmlTransformationAnnotationDefinition
 	}
 	
 	
+	public String getAnnotationName() {
+		return ELJaxb.XML_TRANSFORMATION;
+	}
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlTransformationAnnotation((JavaResourceMember) parent, (Attribute) annotatedElement);
+		return new SourceXmlTransformationAnnotation(parent, annotatedElement);
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -53,10 +55,6 @@ public class XmlTransformationAnnotationDefinition
 	}
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlTransformationAnnotation((JavaResourceMember) parent, jdtAnnotation);
-	}
-	
-	public String getAnnotationName() {
-		return ELJaxb.XML_TRANSFORMATION;
+		return new BinaryXmlTransformationAnnotation(parent, jdtAnnotation);
 	}
 }

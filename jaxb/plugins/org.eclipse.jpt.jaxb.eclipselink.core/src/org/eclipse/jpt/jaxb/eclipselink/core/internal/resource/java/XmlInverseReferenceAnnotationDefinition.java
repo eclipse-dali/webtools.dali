@@ -10,12 +10,10 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.binary.BinaryXmlInverseReferenceAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source.SourceXmlInverseReferenceAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
@@ -44,8 +42,12 @@ public class XmlInverseReferenceAnnotationDefinition
 	}
 	
 	
+	public String getAnnotationName() {
+		return ELJaxb.XML_INVERSE_REFERENCE;
+	}
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlInverseReferenceAnnotation((JavaResourceMember) parent, (Attribute) annotatedElement);
+		return new SourceXmlInverseReferenceAnnotation(parent, annotatedElement);
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -53,10 +55,6 @@ public class XmlInverseReferenceAnnotationDefinition
 	}
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlInverseReferenceAnnotation((JavaResourceMember) parent, jdtAnnotation);
-	}
-	
-	public String getAnnotationName() {
-		return ELJaxb.XML_INVERSE_REFERENCE;
+		return new BinaryXmlInverseReferenceAnnotation(parent, jdtAnnotation);
 	}
 }
