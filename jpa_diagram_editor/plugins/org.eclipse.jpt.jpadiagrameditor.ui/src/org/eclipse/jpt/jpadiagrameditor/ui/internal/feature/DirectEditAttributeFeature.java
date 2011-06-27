@@ -110,7 +110,11 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 			inverseJPTName = rel.getInverse().getName();
 		if (oldAt.getName().equals(value))
 			return;
-		JpaArtifactFactory.instance().renameAttribute(oldAt, value, inverseJPTName, getFeatureProvider());
+		try {
+			JpaArtifactFactory.instance().renameAttribute(oldAt, value, inverseJPTName, getFeatureProvider());
+		} catch (InterruptedException e) {
+			return;
+		}
 		
 		if (pe.getGraphicsAlgorithm() == null)
 			return;

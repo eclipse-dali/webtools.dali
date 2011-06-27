@@ -1497,7 +1497,7 @@ public class JpaArtifactFactory {
 
 	public JavaPersistentAttribute renameAttribute(JavaPersistentType jpt,
 			String oldName, String newName, String inverseEntityName,
-									 IJPAEditorFeatureProvider fp) {
+									 IJPAEditorFeatureProvider fp) throws InterruptedException {
 		newName = JPAEditorUtil.decapitalizeFirstLetter(newName);
 		if (JpaArtifactFactory.instance().isMethodAnnotated(jpt)) {		
 			newName = JPAEditorUtil.produceValidAttributeName(newName);
@@ -1587,13 +1587,13 @@ public class JpaArtifactFactory {
 	}
 
 	public JavaPersistentAttribute renameAttribute(JavaPersistentAttribute jpa,
-			String newName, String newEntityName, IJPAEditorFeatureProvider fp) {
+			String newName, String newEntityName, IJPAEditorFeatureProvider fp) throws InterruptedException {
 		return renameAttribute((JavaPersistentType)jpa.getParent(), jpa.getName(), newName,
 				newEntityName, fp);
 	}
 
 	private void renameAttribute(ICompilationUnit cu, String oldName,
-			String newName, IJPAEditorFeatureProvider fp, boolean isMethodAnnotated) {
+			String newName, IJPAEditorFeatureProvider fp, boolean isMethodAnnotated) throws InterruptedException {
 		IType javaType = cu.findPrimaryType();
 		if (javaType == null)
 			return;
@@ -1656,7 +1656,7 @@ public class JpaArtifactFactory {
 
 	}
 
-	private void renameField(IField field, String newName, boolean isMethodAnnotated) {
+	private void renameField(IField field, String newName, boolean isMethodAnnotated) throws InterruptedException {
 		if (!field.exists())
 			return;
 		String oldName = field.getElementName();
@@ -1671,8 +1671,6 @@ public class JpaArtifactFactory {
 						.getWorkbench().getActiveWorkbenchWindow();
 				Shell sh = ww.getShell();
 				s.perform(sh, ww);
-			} catch (InterruptedException e) {
-				JPADiagramEditorPlugin.logError("Cannot rename the field of the attribute " + oldName, e); //$NON-NLS-1$  
 			} catch (InvocationTargetException e) {
 				JPADiagramEditorPlugin.logError("Cannot rename the field of the attribute " + oldName, e); //$NON-NLS-1$  
 			}
@@ -1681,7 +1679,7 @@ public class JpaArtifactFactory {
 		}
 	}
 
-	private void renameGetter(IMethod getter, String newName) {
+	private void renameGetter(IMethod getter, String newName) throws InterruptedException {
 		if (!getter.exists())
 			return;
 		String oldName = getter.getElementName();
@@ -1703,8 +1701,6 @@ public class JpaArtifactFactory {
 						.getWorkbench().getActiveWorkbenchWindow();
 				Shell sh = ww.getShell();
 				s.perform(sh, ww);
-			} catch (InterruptedException e) {
-				JPADiagramEditorPlugin.logError("Cannot rename the getter of the attribute " + oldName, e); //$NON-NLS-1$
 			} catch (InvocationTargetException e) {
 				JPADiagramEditorPlugin.logError("Cannot rename the getter of the attribute " + oldName, e); //$NON-NLS-1$
 			}
@@ -1713,7 +1709,7 @@ public class JpaArtifactFactory {
 		}
 	}
 		
-	private void renameSetter(IMethod setter, String newName) {
+	private void renameSetter(IMethod setter, String newName) throws InterruptedException {
 		if (!setter.exists())
 			return;
 		String oldName = setter.getElementName();
@@ -1729,8 +1725,6 @@ public class JpaArtifactFactory {
 						.getWorkbench().getActiveWorkbenchWindow();
 				Shell sh = ww.getShell();
 				s.perform(sh, ww);
-			} catch (InterruptedException e) {
-				JPADiagramEditorPlugin.logError("Cannot rename the setter of the attribute " + oldName, e); //$NON-NLS-1$
 			} catch (InvocationTargetException e) {
 				JPADiagramEditorPlugin.logError("Cannot rename the setter of the attribute " + oldName, e); //$NON-NLS-1$
 			}

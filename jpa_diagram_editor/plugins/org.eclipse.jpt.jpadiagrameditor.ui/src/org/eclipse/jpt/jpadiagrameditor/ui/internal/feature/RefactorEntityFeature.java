@@ -293,11 +293,20 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 						ICompilationUnit cu = getFeatureProvider().getCompilationUnit((JavaPersistentType) at.getParent());
 						if (!cu.exists()) {
 							at = (JavaPersistentAttribute)at.getPersistenceUnit().getPersistentType(newJptName).getAttributeNamed(at.getName());
-							JavaPersistentAttribute newAt = JpaArtifactFactory.instance().renameAttribute(at, JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
+							JavaPersistentAttribute newAt = null;
+							try {
+								newAt = JpaArtifactFactory.instance().renameAttribute(at, JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
+							} catch (InterruptedException e) {
+								JPADiagramEditorPlugin.logError(e);
+							}
 							atOldToNewName.put(at.getName(), newAt.getName());
 							newSelfAts.add(newAt);
 						} else {
-							JpaArtifactFactory.instance().renameAttribute(at, JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
+							try {
+								JpaArtifactFactory.instance().renameAttribute(at, JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
+							} catch (InterruptedException e) {
+								JPADiagramEditorPlugin.logError(e);
+							}
 						}
 					}
 					Iterator<JavaPersistentAttribute> itr =  newSelfAts.iterator();
