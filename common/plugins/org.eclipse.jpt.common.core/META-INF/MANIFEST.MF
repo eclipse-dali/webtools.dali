@@ -34,6 +34,7 @@ Export-Package: org.eclipse.jpt.common.core,
  org.eclipse.jpt.common.core.internal.libval;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.operations;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.resource;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
+ org.eclipse.jpt.common.core.internal.resource.java;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.resource.java.binary;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.resource.java.source;x-friends:="org.eclipse.jpt.jpa.core,org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.utility;
