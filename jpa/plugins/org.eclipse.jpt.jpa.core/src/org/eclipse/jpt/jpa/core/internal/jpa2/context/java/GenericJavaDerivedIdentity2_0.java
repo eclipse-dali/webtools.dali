@@ -111,11 +111,6 @@ public class GenericJavaDerivedIdentity2_0
 		this.updateStrategy();
 	}
 
-	public void unsetIdDerivedIdentityStrategy() {
-		this.idStrategy.removeStrategy();
-		this.updateStrategy();
-	}
-
 	public boolean usesIdDerivedIdentityStrategy() {
 		return this.strategy == this.idStrategy;
 	}
@@ -134,11 +129,6 @@ public class GenericJavaDerivedIdentity2_0
 	public void setMapsIdDerivedIdentityStrategy() {
 		this.mapsIdStrategy.addStrategy();
 		this.idStrategy.removeStrategy();
-		this.updateStrategy();
-	}
-
-	public void unsetMapsIdDerivedIdentityStrategy() {
-		this.mapsIdStrategy.removeStrategy();
 		this.updateStrategy();
 	}
 

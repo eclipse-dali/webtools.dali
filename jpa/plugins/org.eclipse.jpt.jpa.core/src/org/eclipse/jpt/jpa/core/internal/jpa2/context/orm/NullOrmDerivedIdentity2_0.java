@@ -59,10 +59,6 @@ public class NullOrmDerivedIdentity2_0
 		// NOP
 	}
 
-	public void unsetIdDerivedIdentityStrategy() {
-		// NOP
-	}
-
 
 	// ********** maps ID derived identity strategy **********
 
@@ -75,10 +71,6 @@ public class NullOrmDerivedIdentity2_0
 	}
 
 	public void setMapsIdDerivedIdentityStrategy() {
-		// NOP
-	}
-
-	public void unsetMapsIdDerivedIdentityStrategy() {
 		// NOP
 	}
 

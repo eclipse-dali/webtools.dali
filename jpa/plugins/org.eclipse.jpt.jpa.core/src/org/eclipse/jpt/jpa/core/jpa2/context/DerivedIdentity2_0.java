@@ -78,13 +78,6 @@ public interface DerivedIdentity2_0
 	 */
 	void setIdDerivedIdentityStrategy();
 
-	/**
-	 * Clear the mapping's ID strategy.
-	 * This will not set any other strategy; so whichever other strategy is
-	 * present (or the null strategy) will apply.
-	 */
-	void unsetIdDerivedIdentityStrategy();
-
 
 	// ********** maps ID strategy **********
 
@@ -104,10 +97,4 @@ public interface DerivedIdentity2_0
 	 */
 	void setMapsIdDerivedIdentityStrategy();
 
-	/**
-	 * Clear the mapping's "maps ID" strategy.
-	 * This will not set any other strategy; so whichever other strategy is
-	 * present (or the null strategy) will apply.
-	 */
-	void unsetMapsIdDerivedIdentityStrategy();
 }
