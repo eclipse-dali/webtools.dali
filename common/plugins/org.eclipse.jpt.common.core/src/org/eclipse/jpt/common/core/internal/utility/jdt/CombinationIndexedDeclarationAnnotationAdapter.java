@@ -77,7 +77,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	 * </pre>
 	 * and is only used when the index is 0 or 1
 	 */
-	private final SimpleDeclarationAnnotationAdapter standAloneAnnotationAdapter;
+	private final DeclarationAnnotationAdapter standAloneAnnotationAdapter;
 
 	/**
 	 * this adapter is used when the annotation is "nested":
@@ -118,8 +118,8 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	 * default element name is "value"
 	 */
 	public CombinationIndexedDeclarationAnnotationAdapter(
-			SimpleDeclarationAnnotationAdapter standAloneAnnotationAdapter, 
-			SimpleDeclarationAnnotationAdapter containerAnnotationAdapter, 
+			DeclarationAnnotationAdapter standAloneAnnotationAdapter, 
+			DeclarationAnnotationAdapter containerAnnotationAdapter, 
 			int index, 
 			String nestedAnnotationName
 	) {
@@ -127,8 +127,8 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	}
 
 	public CombinationIndexedDeclarationAnnotationAdapter(
-			SimpleDeclarationAnnotationAdapter standAloneAnnotationAdapter, 
-			SimpleDeclarationAnnotationAdapter containerAnnotationAdapter, 
+			DeclarationAnnotationAdapter standAloneAnnotationAdapter, 
+			DeclarationAnnotationAdapter containerAnnotationAdapter, 
 			String elementName, 
 			int index, 
 			String nestedAnnotationName
