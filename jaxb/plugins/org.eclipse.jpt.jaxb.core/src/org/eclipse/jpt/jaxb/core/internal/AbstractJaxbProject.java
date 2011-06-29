@@ -44,7 +44,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType.Kind;
 import org.eclipse.jpt.common.utility.Command;
 import org.eclipse.jpt.common.utility.CommandExecutor;
 import org.eclipse.jpt.common.utility.internal.BitTools;
@@ -778,7 +777,7 @@ public abstract class AbstractJaxbProject
 //		return this.buildPersistableExternalJavaResourcePersistentType(typeName);
 	}
 	
-	public JavaResourceAbstractType getJavaResourceType(String typeName, Kind kind) {
+	public JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind) {
 		JavaResourceAbstractType resourceType = getJavaResourceType(typeName);
 		if (resourceType == null || resourceType.getKind() != kind) {
 			return null;
