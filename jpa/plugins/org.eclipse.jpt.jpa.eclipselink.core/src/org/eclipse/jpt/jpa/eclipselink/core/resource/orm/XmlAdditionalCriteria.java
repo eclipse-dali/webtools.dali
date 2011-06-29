@@ -204,7 +204,7 @@ public class XmlAdditionalCriteria extends AbstractJpaEObject implements XmlAddi
 		return new SimpleTranslator(
 			elementName, 
 			structuralFeature, 
-			EclipseLinkOrmV2_2Package.eINSTANCE.getXmlAdditionalCriteria_2_2(), 
+			EclipseLinkOrmPackage.eINSTANCE.getXmlAdditionalCriteria(), 
 			buildTranslatorChildren());
 	}
 	

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
@@ -48,7 +47,7 @@ public class EclipseLinkPersistenceUnitMetadataTests extends EclipseLinkOrmConte
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(false);
 		assertTrue(persistenceUnitMetadata.isUnset());
 		
-		persistenceUnitMetadata.setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		persistenceUnitMetadata.setPersistenceUnitDefaults(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 		assertFalse(persistenceUnitMetadata.isUnset());		
 	}
 	
@@ -97,7 +96,7 @@ public class EclipseLinkPersistenceUnitMetadataTests extends EclipseLinkOrmConte
 		
 		//set xmlMappingMetadataComplete to null in the context model
 		//set another element on the persistence-unit-metadata element so it doesn't get removed
-		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(false);
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
 		assertFalse(getXmlEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());

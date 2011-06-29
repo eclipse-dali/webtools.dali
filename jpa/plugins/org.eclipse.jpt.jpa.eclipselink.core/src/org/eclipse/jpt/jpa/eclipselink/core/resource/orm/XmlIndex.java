@@ -523,7 +523,7 @@ public class XmlIndex extends AbstractJpaEObject implements XmlIndex_2_2
 		return new SimpleTranslator(
 			elementName, 
 			structuralFeature, 
-			EclipseLinkOrmV2_2Package.eINSTANCE.getXmlIndex_2_2(), 
+			EclipseLinkOrmPackage.eINSTANCE.getXmlIndex(), 
 			buildTranslatorChildren());
 	}
 	
