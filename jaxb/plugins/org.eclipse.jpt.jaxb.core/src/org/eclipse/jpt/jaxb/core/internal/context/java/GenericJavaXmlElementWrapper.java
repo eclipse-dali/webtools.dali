@@ -97,7 +97,7 @@ public class GenericJavaXmlElementWrapper
 	
 	// ***** schema component ref *****
 	
-	public JaxbSchemaComponentRef getSchemaComponentRef() {
+	public JaxbSchemaComponentRef getSchemaElementRef() {
 		return this.schemaComponentRef;
 	}
 	
@@ -232,7 +232,7 @@ public class GenericJavaXmlElementWrapper
 		@Override
 		public String getDefaultNamespace() {
 			return (GenericJavaXmlElementWrapper.this.getPersistentClass().getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlElementWrapper.this.getPersistentClass().getNamespace() : "";
+					GenericJavaXmlElementWrapper.this.getPersistentClass().getSchemaTypeRef().getNamespace() : "";
 		}
 		
 		@Override
@@ -249,7 +249,7 @@ public class GenericJavaXmlElementWrapper
 		
 		@Override
 		public String getSchemaComponentTypeDescription() {
-			return JptJaxbCoreMessages.XML_ELEMENT__ELEMENT;
+			return JptJaxbCoreMessages.XML_ELEMENT_DESC;
 		}
 		
 		@Override

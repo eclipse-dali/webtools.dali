@@ -71,7 +71,7 @@ public class GenericJavaXmlAttributeMapping
 		@Override
 		public String getDefaultNamespace() {
 			return (GenericJavaXmlAttributeMapping.this.getJaxbPackage().getAttributeFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlAttributeMapping.this.getPersistentClass().getNamespace() : "";
+					GenericJavaXmlAttributeMapping.this.getPersistentClass().getSchemaTypeRef().getNamespace() : "";
 		}
 		
 		@Override
@@ -82,7 +82,7 @@ public class GenericJavaXmlAttributeMapping
 		
 		@Override
 		public String getSchemaComponentTypeDescription() {
-			return JptJaxbCoreMessages.XML_ATTRIBUTE__ATTRIBUTE;
+			return JptJaxbCoreMessages.XML_ATTRIBUTE_DESC;
 		}
 		
 		@Override

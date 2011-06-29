@@ -27,85 +27,34 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
  */
 public interface JaxbPersistentType
 		extends JaxbType {
-
-	/**************** factory class *****************/
-
+	
+	// ***** schema type ref *****
+	
+	JaxbSchemaComponentRef getSchemaTypeRef();
+	
+	
+	// **************** factory class *****************/
+	
 	/**
 	 * factory class corresponds to the XmlType annotation factoryClass element
 	 */
 	String getFactoryClass();
 	void setFactoryClass(String factoryClass);
 		String FACTORY_CLASS_PROPERTY = "factoryClass"; //$NON-NLS-1$
-
-
-	/**************** factory method *****************/
-
+	
+	
+	// **************** factory method *****************/
+	
 	/**
 	 * factory method corresponds to the XmlType annotation factoryMethod element
 	 */
 	String getFactoryMethod();
 	void setFactoryMethod(String factoryMethod);
 		String FACTORY_METHOD_PROPERTY = "factoryMethod"; //$NON-NLS-1$
-
-
-	/**************** name *****************/
-
-	/**
-	 * Return the specified xml type name or the default type name if it is not specified
-	 */
-	String getXmlTypeName();
-	
-	/**
-	 * Return the specified xml type name or null if it is not specified
-	 */
-	String getSpecifiedXmlTypeName();
-	
-	/**
-	 * Set the xml type name, null to unspecify (use the default)
-	 */
-	void setSpecifiedXmlTypeName(String xmlTypeName);
-	
-	/**
-	 * String constant associated with changes to the specified xml type name
-	 */
-	String SPECIFIED_XML_TYPE_NAME_PROPERTY = "specifiedXmlTypeName"; //$NON-NLS-1$
-	
-	/**
-	 * Return the default xml type name
-	 */
-	String getDefaultXmlTypeName();
 	
 	
-	/**************** namespace *****************/
-
-	/**
-	 * Return the specified xml type namespace or the default namespace if it is not specified
-	 */
-	String getNamespace();
+	// ********** propOrder **********/
 	
-	/**
-	 * Return the specified xml type namespace or null if it is not specified
-	 */
-	String getSpecifiedNamespace();
-	
-	/**
-	 * Set the xml type namespace, null to unspecify (use the default)
-	 */
-	void setSpecifiedNamespace(String namespace);
-	
-	/**
-	 * String constant associated with changes to the specified xml type namespace
-	 */
-	String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
-	
-	/**
-	 * Return the default namespace
-	 */
-	String getDefaultNamespace();
-	
-	
-	/********** propOrder **********/
-
 	/**
 	 * propOrder corresponds to the XmlType annotation propOrder element
 	 */
@@ -116,18 +65,20 @@ public interface JaxbPersistentType
 	void removeProp(String prop);
 	void moveProp(int targetIndex, int sourceIndex);
 		String PROP_ORDER_LIST = "propOrder"; //$NON-NLS-1$
-
+	
+	
 	// ********** root element ************
+	
 	/**
 	 * Return whether this class is a root element (has the XmlRootElement annotation)
 	 */
 	boolean isRootElement();
-
+	
 	/**
 	 * Return the root element or null if it is not a root element.
 	 */
 	XmlRootElement getRootElement();
-
+	
 	/**
 	 * Set the root element name, this will add the XmlRootElement annotation
 	 * and set its name to the specified name.

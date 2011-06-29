@@ -28,8 +28,8 @@ import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase
 
 
 @SuppressWarnings("nls")
-public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
-{
+public class GenericJavaXmlRootElementTests
+		extends JaxbContextModelTestCase {
 	
 	public GenericJavaXmlRootElementTests(String name) {
 		super(name);
@@ -56,21 +56,21 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 		
-		assertNull(contextRootElement.getSpecifiedNamespace());
-		assertEquals("", contextRootElement.getDefaultNamespace());
-		assertEquals("", contextRootElement.getNamespace());
+		assertNull(contextRootElement.getSchemaElementRef().getSpecifiedNamespace());
+		assertEquals("", contextRootElement.getSchemaElementRef().getDefaultNamespace());
+		assertEquals("", contextRootElement.getSchemaElementRef().getNamespace());
 		
-		contextRootElement.setSpecifiedNamespace("foo");
+		contextRootElement.getSchemaElementRef().setSpecifiedNamespace("foo");
 		XmlRootElementAnnotation rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", rootElementAnnotation.getNamespace());
-		assertEquals("foo", contextRootElement.getSpecifiedNamespace());
-		assertEquals("foo", contextRootElement.getNamespace());
+		assertEquals("foo", contextRootElement.getSchemaElementRef().getSpecifiedNamespace());
+		assertEquals("foo", contextRootElement.getSchemaElementRef().getNamespace());
 		
-		contextRootElement.setSpecifiedNamespace(null);
+		contextRootElement.getSchemaElementRef().setSpecifiedNamespace(null);
 		rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 		assertNull(rootElementAnnotation.getNamespace());
-		assertNull(contextRootElement.getSpecifiedNamespace());
-		assertEquals("", contextRootElement.getNamespace());
+		assertNull(contextRootElement.getSchemaElementRef().getSpecifiedNamespace());
+		assertEquals("", contextRootElement.getSchemaElementRef().getNamespace());
 	}
 	
 	public void testUpdateNamespace() throws Exception {
@@ -79,9 +79,9 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 		
-		assertNull(contextRootElement.getSpecifiedNamespace());
-		assertEquals("", contextRootElement.getDefaultNamespace());
-		assertEquals("", contextRootElement.getNamespace());
+		assertNull(contextRootElement.getSchemaElementRef().getSpecifiedNamespace());
+		assertEquals("", contextRootElement.getSchemaElementRef().getDefaultNamespace());
+		assertEquals("", contextRootElement.getSchemaElementRef().getNamespace());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
@@ -90,8 +90,8 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 				GenericJavaXmlRootElementTests.this.addXmlRootElementMemberValuePair(declaration, JAXB.XML_ROOT_ELEMENT__NAMESPACE, "foo");
 			}
 		});
-		assertEquals("foo", contextRootElement.getSpecifiedNamespace());
-		assertEquals("foo", contextRootElement.getNamespace());
+		assertEquals("foo", contextRootElement.getSchemaElementRef().getSpecifiedNamespace());
+		assertEquals("foo", contextRootElement.getSchemaElementRef().getNamespace());
 		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -109,21 +109,21 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 		String defaultName = Introspector.decapitalize(TYPE_NAME);
 		
-		assertNull(contextRootElement.getSpecifiedName());
-		assertEquals(defaultName, contextRootElement.getDefaultName());
-		assertEquals(defaultName, contextRootElement.getName());
+		assertNull(contextRootElement.getSchemaElementRef().getSpecifiedName());
+		assertEquals(defaultName, contextRootElement.getSchemaElementRef().getDefaultName());
+		assertEquals(defaultName, contextRootElement.getSchemaElementRef().getName());
 		
-		contextRootElement.setSpecifiedName("foo");
+		contextRootElement.getSchemaElementRef().setSpecifiedName("foo");
 		XmlRootElementAnnotation rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", rootElementAnnotation.getName());
-		assertEquals("foo", contextRootElement.getSpecifiedName());
-		assertEquals("foo", contextRootElement.getName());
+		assertEquals("foo", contextRootElement.getSchemaElementRef().getSpecifiedName());
+		assertEquals("foo", contextRootElement.getSchemaElementRef().getName());
 		
-		contextRootElement.setSpecifiedName(null);
+		contextRootElement.getSchemaElementRef().setSpecifiedName(null);
 		rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 		assertNull(rootElementAnnotation.getName());
-		assertNull(contextRootElement.getSpecifiedName());
-		assertEquals(defaultName, contextRootElement.getName());
+		assertNull(contextRootElement.getSchemaElementRef().getSpecifiedName());
+		assertEquals(defaultName, contextRootElement.getSchemaElementRef().getName());
 	}
 	
 	public void testUpdateName() throws Exception {
@@ -133,9 +133,9 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 		String defaultName = Introspector.decapitalize(TYPE_NAME);
 		
-		assertNull(contextRootElement.getSpecifiedName());
-		assertEquals(defaultName, contextRootElement.getDefaultName());
-		assertEquals(defaultName, contextRootElement.getName());
+		assertNull(contextRootElement.getSchemaElementRef().getSpecifiedName());
+		assertEquals(defaultName, contextRootElement.getSchemaElementRef().getDefaultName());
+		assertEquals(defaultName, contextRootElement.getSchemaElementRef().getName());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
@@ -144,8 +144,8 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 				GenericJavaXmlRootElementTests.this.addXmlRootElementMemberValuePair(declaration, JAXB.XML_ROOT_ELEMENT__NAME, "foo");
 			}
 		});
-		assertEquals("foo", contextRootElement.getSpecifiedName());
-		assertEquals("foo", contextRootElement.getName());
+		assertEquals("foo", contextRootElement.getSchemaElementRef().getSpecifiedName());
+		assertEquals("foo", contextRootElement.getSchemaElementRef().getName());
 		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {

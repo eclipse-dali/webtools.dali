@@ -181,6 +181,14 @@ public abstract class AbstractJavaSchemaComponentRef
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
+		validateName(messages, reporter, astRoot);
+		
+		if (! StringTools.stringIsEmpty(getName())) {
+			validateSchemaComponentRef(messages, reporter, astRoot);
+		}
+	}
+	
+	protected void validateName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if (StringTools.stringIsEmpty(getName())) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
@@ -189,9 +197,6 @@ public abstract class AbstractJavaSchemaComponentRef
 					new String[] { getSchemaComponentTypeDescription() },
 					this,
 					getNameTextRange(astRoot)));
-		}
-		else {
-			validateSchemaComponentRef(messages, reporter, astRoot);
 		}
 	}
 	

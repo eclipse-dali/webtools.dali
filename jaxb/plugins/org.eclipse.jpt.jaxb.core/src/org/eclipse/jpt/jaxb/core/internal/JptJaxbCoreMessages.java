@@ -33,8 +33,9 @@ public class JptJaxbCoreMessages {
 	
 	public static String SchemaGenerator_creatingJAXBPropertiesFileTask;
 	
-	public static String XML_ATTRIBUTE__ATTRIBUTE;
-	public static String XML_ELEMENT__ELEMENT;
+	public static String XML_ATTRIBUTE_DESC;
+	public static String XML_ELEMENT_DESC;
+	public static String XML_TYPE_DESC;
 	
 	
 	

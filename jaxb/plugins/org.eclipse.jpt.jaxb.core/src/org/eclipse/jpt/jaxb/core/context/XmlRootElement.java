@@ -13,7 +13,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
  * Represents a JAXB xml root element.  
- * (A class with either an explicit @XmlRootElement annotation)
+ * (A class with an explicit @XmlRootElement annotation)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -27,58 +27,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 public interface XmlRootElement
 		extends JavaContextNode {
 	
-	/**************** name *****************/
-
-	/**
-	 * Return the specified name or the default type name if it is not specified
-	 */
-	String getName();
+	JaxbPersistentType getPersistentType();
 	
-	/**
-	 * Return the specified name or null if it is not specified
-	 */
-	String getSpecifiedName();
-	
-	/**
-	 * Set the name, null to unspecify (use the default)
-	 */
-	void setSpecifiedName(String name);
-	
-	/**
-	 * String constant associated with changes to the specified name
-	 */
-	String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
-	
-	/**
-	 * Return the default name
-	 */
-	String getDefaultName();
-
-
-	/**************** namespace *****************/
-
-	/**
-	 * Return the specified namespace or the default namespace if it is not specified
-	 */
-	String getNamespace();
-	
-	/**
-	 * Return the specified namespace or null if it is not specified
-	 */
-	String getSpecifiedNamespace();
-	
-	/**
-	 * Set the namespace, null to unspecify (use the default)
-	 */
-	void setSpecifiedNamespace(String namespace);
-	
-	/**
-	 * String constant associated with changes to the specified namespace
-	 */
-	String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
-	
-	/**
-	 * Return the default namespace
-	 */
-	String getDefaultNamespace();
+	JaxbSchemaComponentRef getSchemaElementRef();
 }

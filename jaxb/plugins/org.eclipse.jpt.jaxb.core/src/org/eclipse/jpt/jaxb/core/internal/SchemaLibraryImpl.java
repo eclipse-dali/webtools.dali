@@ -17,6 +17,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
@@ -84,7 +85,7 @@ public class SchemaLibraryImpl
 	}
 	
 	protected void removeSchemaResource(XSDResourceImpl schemaResource) {
-		for (String namespace : this.schemaResources.keySet()) {
+		for (String namespace : new SnapshotCloneIterable<String>(this.schemaResources.keySet())) {
 			if (schemaResource.equals(this.schemaResources.get(namespace))) {
 				removeSchemaResource(namespace, schemaResource);
 			}
@@ -127,7 +128,7 @@ public class SchemaLibraryImpl
 	}
 	
 	public void refreshAllSchemas() {
-		for (String namespace : this.schemaResources.keySet()) {
+		for (String namespace : new SnapshotCloneIterable<String>(this.schemaResources.keySet())) {
 			refreshSchema(namespace);
 		}
 	}

@@ -539,7 +539,8 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		validateSchemaComponentRef(messages, reporter, astRoot);
+		this.schemaComponentRef.validate(messages, reporter, astRoot);
+		
 		this.xmlAdaptable.validate(messages, reporter, astRoot);
 		
 		if (this.xmlSchemaType != null) {
@@ -561,10 +562,6 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		if (this.xmlAttachmentRef != null) {
 			this.xmlAttachmentRef.validate(messages, reporter, astRoot);
 		}
-	}
-	
-	protected void validateSchemaComponentRef(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.schemaComponentRef.validate(messages, reporter, astRoot);
 	}
 	
 	

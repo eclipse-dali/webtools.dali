@@ -260,6 +260,7 @@ public class GenericJavaXmlElementMapping
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		
 		if (this.getXmlElementWrapper() != null) {
 			this.getXmlElementWrapper().validate(messages, reporter, astRoot);
 		}
@@ -277,7 +278,7 @@ public class GenericJavaXmlElementMapping
 		@Override
 		public String getDefaultNamespace() {
 			return (GenericJavaXmlElementMapping.this.getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlElementMapping.this.getPersistentClass().getNamespace() : "";
+					GenericJavaXmlElementMapping.this.getPersistentClass().getSchemaTypeRef().getNamespace() : "";
 		}
 		
 		@Override
@@ -299,7 +300,7 @@ public class GenericJavaXmlElementMapping
 		
 		@Override
 		public String getSchemaComponentTypeDescription() {
-			return JptJaxbCoreMessages.XML_ELEMENT__ELEMENT;
+			return JptJaxbCoreMessages.XML_ELEMENT_DESC;
 		}
 		
 		@Override

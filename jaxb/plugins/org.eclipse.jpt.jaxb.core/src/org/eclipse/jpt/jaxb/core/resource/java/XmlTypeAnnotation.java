@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
@@ -24,11 +23,11 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.?
  * @since 3.0
  */
 public interface XmlTypeAnnotation
-		extends Annotation {
+		extends SchemaComponentRefAnnotation {
 	
 	String ANNOTATION_NAME = JAXB.XML_TYPE;
 
@@ -85,56 +84,6 @@ public interface XmlTypeAnnotation
 	 * does not exist return the {@link TextRange} for the XmlType annotation.
 	 */
 	TextRange getFactoryMethodTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Corresponds to the 'name' element of the XmlType annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getName();
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'name' element of the XmlType annotation.
-	 * Set to null to remove the element.
-	 */
-	void setName(String name);
-
-	/**
-	 * Return the {@link TextRange} for the 'name' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlType annotation.
-	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
-	
-	/**
-	 * Return whether the specified position touches the 'name' element.
-	 * Return false if the element does not exist.
-	 */
-	boolean nameTouches(int pos, CompilationUnit astRoot);
-	
-	/**
-	 * Corresponds to the 'namespace' element of the XmlType annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getNamespace();
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlType annotation.
-	 * Set to null to remove the element.
-	 */
-	void setNamespace(String namespace);
-
-	/**
-	 * Return the {@link TextRange} for the 'namespace' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlType annotation.
-	 */
-	TextRange getNamespaceTextRange(CompilationUnit astRoot);
-	
-	/**
-	 * Return whether the specified position touches the 'namespace' element.
-	 * Return false if the element does not exist.
-	 */
-	boolean namespaceTouches(int pos, CompilationUnit astRoot);
 	
 	/**
 	 * Corresponds to the 'propOrder' element of the XmlType annotation.
@@ -172,5 +121,4 @@ public interface XmlTypeAnnotation
 	 * Corresponds to the 'propOrder' element of the XmlType annotation.
 	 */
 	void removeProp(int index);
-
 }

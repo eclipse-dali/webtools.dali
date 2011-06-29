@@ -119,11 +119,13 @@ public class XsdComplexTypeDefinition
 		
 		@Override
 		public void visitXSDElementDeclaration(XSDElementDeclaration node) {
+			boolean cachedVisitChildren = this.visitChildren;
 			this.visitChildren = false;
 			super.visitXSDElementDeclaration(node);
 			if (! this.elements.contains(node)) {
 				elements.add(node);
 			}
+			this.visitChildren = cachedVisitChildren;
 		}
 		
 		public Iterable<XSDElementDeclaration> getElements() {

@@ -571,8 +571,6 @@ public class GenericContextRootTests
 		assertTrue(CollectionTools.isEmpty(getContextRoot().getPersistentClasses()));
 		
 		createAnnotatedPersistentClass();
-		JavaResourceType thisType = (JavaResourceType) getJaxbProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME);
-		AnnotatedElement annotatedType = annotatedElement(thisType);
 		
 		// make sure unannotated other classes are not in context
 		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));

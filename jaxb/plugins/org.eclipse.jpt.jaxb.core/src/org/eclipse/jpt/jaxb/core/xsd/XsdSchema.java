@@ -197,5 +197,16 @@ public class XsdSchema
 						},
 						filter));
 	}
-
+	
+	public Iterable<String> getElementNameProposals(String namespace, Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(
+				new FilteringIterable<String>(
+						new TransformationIterable<XsdElementDeclaration, String>(this.getElementDeclarations(namespace)) {
+							@Override
+							protected String transform(XsdElementDeclaration o) {
+								return o.getName();
+							}
+						},
+						filter));
+	}
 }

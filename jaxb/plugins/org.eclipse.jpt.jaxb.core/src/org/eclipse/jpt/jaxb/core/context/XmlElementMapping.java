@@ -24,8 +24,7 @@ package org.eclipse.jpt.jaxb.core.context;
  */
 public interface XmlElementMapping
 		extends JaxbContainmentMapping {
-
-
+	
 	boolean isNillable();
 	boolean isDefaultNillable();
 		boolean DEFAULT_NILLABLE = false;
@@ -45,9 +44,9 @@ public interface XmlElementMapping
 
 
 	/********** XmlElementWrapper **********/
+	
 	XmlElementWrapper getXmlElementWrapper();
 	XmlElementWrapper addXmlElementWrapper();
 	void removeXmlElementWrapper();
 		String XML_ELEMENT_WRAPPER_PROPERTY = "xmlElementWrapper"; //$NON-NLS-1$
-
 }
