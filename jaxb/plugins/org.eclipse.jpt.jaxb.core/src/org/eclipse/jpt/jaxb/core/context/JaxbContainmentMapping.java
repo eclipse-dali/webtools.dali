@@ -24,29 +24,27 @@ package org.eclipse.jpt.jaxb.core.context;
  */
 public interface JaxbContainmentMapping
 		extends JaxbAttributeMapping, XmlAdaptable {
-
-
-	String getName();
-	String getDefaultName();
-	String getSpecifiedName();
-	void setSpecifiedName(String name);
-		String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
-
+	
+	// ***** schema component ref *****
+	
+	JaxbSchemaComponentRef getSchemaComponentRef();
+	
+	
+	// ***** required *****
+	
+	static String SPECIFIED_REQUIRED_PROPERTY = "specifiedRequired"; //$NON-NLS-1$
+	
+	static boolean DEFAULT_REQUIRED = false;
+	
 	boolean isRequired();
+	
 	boolean isDefaultRequired();
-		boolean DEFAULT_REQUIRED = false;
+	
 	Boolean getSpecifiedRequired();
+	
 	void setSpecifiedRequired(Boolean specifiedRequired);
-		String SPECIFIED_REQUIRED_PROPERTY = "specifiedRequired"; //$NON-NLS-1$
-
-	String getNamespace();
-	String getDefaultNamespace();
-	String getSpecifiedNamespace();
-	void setSpecifiedNamespace(String namespace);
-		String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
-
-
-
+	
+	
 	// ********** xml schema type ************
 	/**
 	 * Return whether this class has an XmlSchemaType annotation)

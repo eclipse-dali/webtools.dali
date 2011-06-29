@@ -176,7 +176,12 @@ public final class SourceXmlElementRefAnnotation
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
-
+	
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	}
+	
+	
 	// ***** namespace
 	public String getNamespace() {
 		return this.namespace;
@@ -202,6 +207,11 @@ public final class SourceXmlElementRefAnnotation
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.namespaceDeclarationAdapter, astRoot);
 	}
+	
+	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(this.namespaceDeclarationAdapter, pos, astRoot);
+	}
+	
 
 	// ***** type
 	public String getType() {

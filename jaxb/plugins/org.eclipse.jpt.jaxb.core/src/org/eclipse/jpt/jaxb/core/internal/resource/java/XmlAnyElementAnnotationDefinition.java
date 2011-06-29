@@ -13,50 +13,51 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlAnyElementAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlAnyElementAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyElementAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 /**
  * javax.xml.bind.annotation.XmlAnyElement
  */
 public final class XmlAnyElementAnnotationDefinition
-	implements AnnotationDefinition
-{
+		implements AnnotationDefinition {
+	
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new XmlAnyElementAnnotationDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private XmlAnyElementAnnotationDefinition() {
 		super();
 	}
-
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlAnyElementAnnotation(parent, annotatedElement);
+	
+	
+	public String getAnnotationName() {
+		return JAXB.XML_ANY_ELEMENT;
 	}
-
+	
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return new SourceXmlAnyElementAnnotation(parent, (Attribute) annotatedElement);
+	}
+	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryXmlAnyElementAnnotation(parent, jdtAnnotation);
 	}
-
-	public String getAnnotationName() {
-		return XmlAnyElementAnnotation.ANNOTATION_NAME;
-	}
-
 }

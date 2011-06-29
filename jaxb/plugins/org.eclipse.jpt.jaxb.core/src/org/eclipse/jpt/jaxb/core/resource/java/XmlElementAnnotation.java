@@ -27,8 +27,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlElementAnnotation
-	extends JaxbContainmentAnnotation, NestableAnnotation
-{
+		extends JaxbContainmentAnnotation, NestableAnnotation {
+	
 	String ANNOTATION_NAME = JAXB.XML_ELEMENT;
 
 	/**

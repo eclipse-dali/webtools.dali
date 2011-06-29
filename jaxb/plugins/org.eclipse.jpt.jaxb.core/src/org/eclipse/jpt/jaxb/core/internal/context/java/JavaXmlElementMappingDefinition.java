@@ -18,16 +18,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlInlineBinaryDataAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlMimeTypeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 
 
 public class JavaXmlElementMappingDefinition

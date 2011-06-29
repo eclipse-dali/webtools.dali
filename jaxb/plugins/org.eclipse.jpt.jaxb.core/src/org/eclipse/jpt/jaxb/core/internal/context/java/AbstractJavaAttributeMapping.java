@@ -41,37 +41,34 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 
 
 	// ********** annotation **********
-
+	
 	@SuppressWarnings("unchecked")
-	public A getMappingAnnotation() {
-		return (A) this.getAnnotation_();
+	public A getAnnotation() {
+		return (A) getJavaResourceAttribute().getAnnotation(getAnnotationName());
 	}
-
-	protected Annotation getAnnotation_() {
-		return this.getJavaResourceAttribute().getAnnotation(this.getAnnotationName());
-	}
-
+	
 	protected abstract String getAnnotationName();
-
+	
 	/**
-	 * This method should only be called on mappings that can occur by default
-	 * (e.g. <code>XmlElement</code>).
+	 * This method should only be called when an annotation *must* be present (such as when setting fields on it).
+	 * For most mappings, this is equivalent to #getAnnotation(), but for default mappings (such as @XmlElement)
+	 * an annotation will be added if none currently exists.
 	 */
-	public A getAnnotationForUpdate() {
-		A annotation = this.getMappingAnnotation();
+	public A getOrCreateAnnotation() {
+		A annotation = getAnnotation();
 		if (annotation == null) {
-			this.getPersistentAttribute().setMappingKey(this.getKey());
-			annotation = this.getMappingAnnotation();
+			getPersistentAttribute().setMappingKey(getKey());
+			annotation = getAnnotation();
 			if (annotation == null) {
 				throw new IllegalStateException("missing annotation: " + this); //$NON-NLS-1$
 			}
 		}
 		return annotation;
 	}
-
-
+	
+	
 	// ********** default **********
-
+	
 	public boolean isDefault() {
 		return this.default_;
 	}
@@ -87,18 +84,18 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	}
 
 	protected boolean buildDefault() {
-		return this.getMappingAnnotation() == null;
+		return this.getAnnotation() == null;
 	}
 
 
 	// ********** validation **********
-
+	
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getAnnotation_() == null ? getJavaResourceAttribute().getNameTextRange(astRoot) : getAnnotation_().getTextRange(astRoot);
+		return getAnnotation() == null ? getJavaResourceAttribute().getNameTextRange(astRoot) : getAnnotation().getTextRange(astRoot);
 	}
-
-
+	
+	
 	// ********** misc **********
 
 	@Override
@@ -111,7 +108,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	}
 	
 	public JaxbPersistentClass getPersistentClass() {
-		return getPersistentAttribute().getParent();
+		return getPersistentAttribute().getPersistentClass();
 	}
 	
 	public JaxbPackage getJaxbPackage() {

@@ -80,7 +80,12 @@ public final class BinaryXmlElementWrapperAnnotation
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	
+	
 	// ***** namespace
 	public String getNamespace() {
 		return this.namespace;
@@ -103,7 +108,12 @@ public final class BinaryXmlElementWrapperAnnotation
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	
+	
 	// ***** nillable
 	public Boolean getNillable() {
 		return this.nillable;

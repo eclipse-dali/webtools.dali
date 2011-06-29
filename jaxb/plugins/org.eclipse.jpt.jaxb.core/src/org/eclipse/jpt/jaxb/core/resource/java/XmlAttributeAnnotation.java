@@ -23,8 +23,7 @@ package org.eclipse.jpt.jaxb.core.resource.java;
  * @since 3.0
  */
 public interface XmlAttributeAnnotation
-	extends JaxbContainmentAnnotation
-{
+	extends JaxbContainmentAnnotation {
+	
 	String ANNOTATION_NAME = JAXB.XML_ATTRIBUTE;
-
 }

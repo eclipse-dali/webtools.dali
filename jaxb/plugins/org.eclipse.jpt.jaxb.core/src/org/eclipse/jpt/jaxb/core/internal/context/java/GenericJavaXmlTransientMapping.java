@@ -30,6 +30,7 @@ public class GenericJavaXmlTransientMapping
 		return XmlTransientAnnotation.ANNOTATION_NAME;
 	}
 	
+	@Override
 	public Iterable<String> getDirectlyReferencedTypeNames() {
 		return EmptyIterable.instance();
 	}

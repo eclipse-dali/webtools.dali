@@ -18,16 +18,17 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
 public class GenericJavaPersistentField
 		extends GenericJavaPersistentAttribute
 		implements JaxbPersistentField {
-
-
+	
 	protected final JavaResourceField resourceField;
-
+	
+	
 	public GenericJavaPersistentField(JaxbPersistentClass parent, JavaResourceField resourceField) {
 		super(parent);
 		this.resourceField = resourceField;
 		this.initializeMapping();
 	}
-
+	
+	
 	public JavaResourceAttribute getJavaResourceAttribute() {
 		return this.getResourceField();
 	}

@@ -23,42 +23,45 @@ import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
  * javax.xml.bind.annotation.adapters.XmlJavaTypeAdapterAnnotation
  */
 public final class XmlJavaTypeAdapterAnnotationDefinition
-	implements NestableAnnotationDefinition
-{
+		implements NestableAnnotationDefinition {
+	
 	// singleton
 	private static final NestableAnnotationDefinition INSTANCE = new XmlJavaTypeAdapterAnnotationDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private XmlJavaTypeAdapterAnnotationDefinition() {
 		super();
 	}
-
-	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
-		return SourceXmlJavaTypeAdapterAnnotation.buildSourceXmlJavaTypeAdapterAnnotation(parent, annotatedElement, index);
-	}
-
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlJavaTypeAdapterAnnotation(parent, jdtAnnotation);
-	}
-
+	
+	
 	public String getNestableAnnotationName() {
 		return JAXB.XML_JAVA_TYPE_ADAPTER;
 	}
-
+	
 	public String getContainerAnnotationName() {
 		return JAXB.XML_JAVA_TYPE_ADAPTERS;
 	}
-
+	
 	public String getElementName() {
 		return JAXB.XML_JAVA_TYPE_ADAPTERS__VALUE;
+	}
+	
+	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+		return SourceXmlJavaTypeAdapterAnnotation.buildSourceXmlJavaTypeAdapterAnnotation(parent, annotatedElement, index);
+	}
+	
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+		return new BinaryXmlJavaTypeAdapterAnnotation(parent, jdtAnnotation);
 	}
 }

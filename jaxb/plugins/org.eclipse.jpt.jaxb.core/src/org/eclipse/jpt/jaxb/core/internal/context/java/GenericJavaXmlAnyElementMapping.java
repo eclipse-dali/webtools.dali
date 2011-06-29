@@ -83,7 +83,7 @@ public class GenericJavaXmlAnyElementMapping
 	}
 
 	public void setSpecifiedLax(Boolean newSpecifiedLax) {
-		this.getAnnotationForUpdate().setLax(newSpecifiedLax);
+		this.getOrCreateAnnotation().setLax(newSpecifiedLax);
 		this.setSpecifiedLax_(newSpecifiedLax);
 	}
 
@@ -94,7 +94,7 @@ public class GenericJavaXmlAnyElementMapping
 	}
 
 	protected Boolean buildSpecifiedLax() {
-		return getMappingAnnotation().getLax();
+		return getAnnotation().getLax();
 	}
 
 	// ********** value **********
@@ -112,7 +112,7 @@ public class GenericJavaXmlAnyElementMapping
 	}
 
 	public void setSpecifiedValue(String location) {
-		this.getAnnotationForUpdate().setValue(location);
+		this.getOrCreateAnnotation().setValue(location);
 		this.setSpecifiedValue_(location);	
 	}
 
@@ -123,7 +123,7 @@ public class GenericJavaXmlAnyElementMapping
 	}
 
 	protected String getResourceValueString() {
-		return getMappingAnnotation().getValue();
+		return getAnnotation().getValue();
 	}
 
 	//****************** XmlJavaTypeAdapter *********************

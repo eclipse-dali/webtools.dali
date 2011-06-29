@@ -13,9 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -46,6 +44,10 @@ public final class XmlElementAnnotationDefinition
 	}
 	
 	
+	public String getAnnotationName() {
+		return JAXB.XML_ELEMENT;
+	}
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		return SourceXmlElementAnnotation.buildSourceXmlElementAnnotation(parent, annotatedElement);
 	}
@@ -56,9 +58,5 @@ public final class XmlElementAnnotationDefinition
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryXmlElementAnnotation(parent, jdtAnnotation);
-	}
-	
-	public String getAnnotationName() {
-		return JAXB.XML_ELEMENT;
 	}
 }

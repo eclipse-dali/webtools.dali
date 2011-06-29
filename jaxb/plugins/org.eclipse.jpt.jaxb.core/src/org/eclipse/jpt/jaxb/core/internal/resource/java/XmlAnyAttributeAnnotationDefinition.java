@@ -13,50 +13,50 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlAnyAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlAnyAttributeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyAttributeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 /**
  * javax.xml.bind.annotation.XmlAnyAttribute
  */
 public final class XmlAnyAttributeAnnotationDefinition
-	implements AnnotationDefinition
-{
+		implements AnnotationDefinition {
+	
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new XmlAnyAttributeAnnotationDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private XmlAnyAttributeAnnotationDefinition() {
 		super();
 	}
-
+	
+	
+	public String getAnnotationName() {
+		return JAXB.XML_ANY_ATTRIBUTE;
+	}
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		return new SourceXmlAnyAttributeAnnotation(parent, annotatedElement);
 	}
-
+	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryXmlAnyAttributeAnnotation(parent, jdtAnnotation);
 	}
-
-	public String getAnnotationName() {
-		return XmlAnyAttributeAnnotation.ANNOTATION_NAME;
-	}
-
 }

@@ -33,6 +33,10 @@ public class JptJaxbCoreMessages {
 	
 	public static String SchemaGenerator_creatingJAXBPropertiesFileTask;
 	
+	public static String XML_ATTRIBUTE__ATTRIBUTE;
+	public static String XML_ELEMENT__ELEMENT;
+	
+	
 	
 	private static final String BUNDLE_NAME = "jpt_jaxb_core"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptJaxbCoreMessages.class;

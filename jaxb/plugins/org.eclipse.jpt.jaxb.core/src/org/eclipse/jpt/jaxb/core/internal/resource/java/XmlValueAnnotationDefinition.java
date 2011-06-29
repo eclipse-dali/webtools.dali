@@ -16,45 +16,47 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlValueAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlValueAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlValueAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 /**
  * javax.xml.bind.annotation.XmlValue
  */
 public final class XmlValueAnnotationDefinition
-	implements AnnotationDefinition
-{
+		implements AnnotationDefinition {
+	
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new XmlValueAnnotationDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private XmlValueAnnotationDefinition() {
 		super();
 	}
-
+	
+	
+	public String getAnnotationName() {
+		return JAXB.XML_VALUE;
+	}
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		return new SourceXmlValueAnnotation(parent, annotatedElement);
 	}
-
+	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryXmlValueAnnotation(parent, jdtAnnotation);
 	}
-
-	public String getAnnotationName() {
-		return XmlValueAnnotation.ANNOTATION_NAME;
-	}
-
 }

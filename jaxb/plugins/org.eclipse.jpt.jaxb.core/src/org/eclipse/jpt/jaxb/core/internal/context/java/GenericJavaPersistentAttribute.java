@@ -29,26 +29,27 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class GenericJavaPersistentAttribute
 		extends AbstractJavaContextNode
 		implements JaxbPersistentAttribute {
-
+	
 	protected JaxbAttributeMapping mapping;  // never null
+	
 	protected String defaultMappingKey;
-
-
+	
+	
 	protected GenericJavaPersistentAttribute(JaxbPersistentClass parent) {
 		super(parent);
 	}
-
-	@Override
-	public JaxbPersistentClass getParent() {
+	
+	
+	public JaxbPersistentClass getPersistentClass() {
 		return (JaxbPersistentClass) super.getParent();
 	}
 
 	public boolean isInherited() {
-		return getParent().isInherited(this);
+		return getPersistentClass().isInherited(this);
 	}
 
 	public String getInheritedJavaResourceAttributeOwningTypeName() {
-		return getParent().getJavaResourceAttributeOwningTypeName(this);
+		return getPersistentClass().getJavaResourceAttributeOwningTypeName(this);
 	}
 
 	/**

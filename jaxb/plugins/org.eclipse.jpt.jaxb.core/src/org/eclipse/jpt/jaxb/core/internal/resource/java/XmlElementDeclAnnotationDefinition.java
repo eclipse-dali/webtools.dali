@@ -13,50 +13,50 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlElementDeclAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlElementDeclAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 /**
  * javax.xml.bind.annotation.XmlElementDecl
  */
 public final class XmlElementDeclAnnotationDefinition
-	implements AnnotationDefinition
-{
+		implements AnnotationDefinition {
+	
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new XmlElementDeclAnnotationDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private XmlElementDeclAnnotationDefinition() {
 		super();
 	}
-
+	
+	
+	public String getAnnotationName() {
+		return JAXB.XML_ELEMENT_DECL;
+	}
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		return new SourceXmlElementDeclAnnotation(parent, annotatedElement);
 	}
-
+	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		return new NullXmlElementDeclAnnotation(parent);
 	}
-
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryXmlElementDeclAnnotation(parent, jdtAnnotation);
 	}
-
-	public String getAnnotationName() {
-		return XmlElementDeclAnnotation.ANNOTATION_NAME;
-	}
-
 }

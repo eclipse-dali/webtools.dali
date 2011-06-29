@@ -37,24 +37,25 @@ public class XmlSchemaTypeAnnotationDefinition
 	private XmlSchemaTypeAnnotationDefinition() {
 		super();
 	}
-
+	
+	
+	public String getNestableAnnotationName() {
+		return JAXB.XML_SCHEMA_TYPE;
+	}
+	
+	public String getContainerAnnotationName() {
+		return JAXB.XML_SCHEMA_TYPES;
+	}
+	
+	public String getElementName() {
+		return JAXB.XML_SCHEMA_TYPES__VALUE;
+	}
+	
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
 		return SourceXmlSchemaTypeAnnotation.buildSourceXmlSchemaTypeAnnotation(parent, annotatedElement, index);
 	}
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		throw new UnsupportedOperationException();
-	}
-	
-	public String getNestableAnnotationName() {
-		return JAXB.XML_SCHEMA_TYPE;
-	}
-
-	public String getContainerAnnotationName() {
-		return JAXB.XML_SCHEMA_TYPES;
-	}
-
-	public String getElementName() {
-		return JAXB.XML_SCHEMA_TYPES__VALUE;
 	}
 }

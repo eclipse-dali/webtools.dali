@@ -142,5 +142,4 @@ public interface JaxbPersistentType
 	// **************** misc **************************************************
 	
 	XsdTypeDefinition getXsdTypeDefinition();
-	
 }

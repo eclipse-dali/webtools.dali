@@ -16,45 +16,47 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlAccessorOrderAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 /**
  * javax.xml.bind.annotation.XmlAccessorOrder
  */
 public final class XmlAccessorOrderAnnotationDefinition
-	implements AnnotationDefinition
-{
+		implements AnnotationDefinition {
+	
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new XmlAccessorOrderAnnotationDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private XmlAccessorOrderAnnotationDefinition() {
 		super();
 	}
-
+	
+	
+	public String getAnnotationName() {
+		return JAXB.XML_ACCESSOR_ORDER;
+	}
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		return new SourceXmlAccessorOrderAnnotation(parent, annotatedElement);
 	}
-
+	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		return new NullXmlAccessorOrderAnnotation(parent);
 	}
-
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryXmlAccessorOrderAnnotation(parent, jdtAnnotation);
 	}
-
-	public String getAnnotationName() {
-		return XmlAccessorOrderAnnotation.ANNOTATION_NAME;
-	}
-
 }

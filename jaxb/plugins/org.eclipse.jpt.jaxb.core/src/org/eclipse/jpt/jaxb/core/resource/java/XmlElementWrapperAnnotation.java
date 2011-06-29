@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
@@ -27,80 +26,42 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlElementWrapperAnnotation
-	extends Annotation
-{
+		extends SchemaComponentRefAnnotation {
+	
 	String ANNOTATION_NAME = JAXB.XML_ELEMENT_WRAPPER;
-
-	/**
-	 * Corresponds to the 'name' element of the XmlElementWrapper annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getName();
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'name' element of the XmlElementWrapper annotation.
-	 * Set to null to remove the element.
-	 */
-	void setName(String name);
-
-	/**
-	 * Return the {@link TextRange} for the 'name' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementWrapper annotation.
-	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlElementWrapper annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getNamespace();
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlElementWrapper annotation.
-	 * Set to null to remove the element.
-	 */
-	void setNamespace(String namespace);
-
-	/**
-	 * Return the {@link TextRange} for the 'namespace' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementWrapper annotation.
-	 */
-	TextRange getNamespaceTextRange(CompilationUnit astRoot);
-
+	
 	/**
 	 * Corresponds to the 'nillable' element of the XmlElementWrapper annotation.
 	 * Return null if the element does not exist in Java.
 	 */
 	Boolean getNillable();
-		String NILLABLE_PROPERTY = "nillable"; //$NON-NLS-1$
-
+	String NILLABLE_PROPERTY = "nillable"; //$NON-NLS-1$
+	
 	/**
 	 * Corresponds to the 'nillable' element of the XmlElementWrapper annotation.
 	 * Set to null to remove the element.
 	 */
 	void setNillable(Boolean nillable);
-
+	
 	/**
 	 * Return the {@link TextRange} for the 'nillable' element. If the element
 	 * does not exist return the {@link TextRange} for the XmlElementWrapper annotation.
 	 */
 	TextRange getNillableTextRange(CompilationUnit astRoot);
-
+	
 	/**
 	 * Corresponds to the 'required' element of the XmlElementWrapper annotation.
 	 * Return null if the element does not exist in Java.
 	 */
 	Boolean getRequired();
-		String REQUIRED_PROPERTY = "required"; //$NON-NLS-1$
-
+	String REQUIRED_PROPERTY = "required"; //$NON-NLS-1$
+	
 	/**
 	 * Corresponds to the 'required' element of the XmlElementWrapper annotation.
 	 * Set to null to remove the element.
 	 */
 	void setRequired(Boolean required);
-
+	
 	/**
 	 * Return the {@link TextRange} for the 'required' element. If the element
 	 * does not exist return the {@link TextRange} for the XmlElementWrapper annotation.

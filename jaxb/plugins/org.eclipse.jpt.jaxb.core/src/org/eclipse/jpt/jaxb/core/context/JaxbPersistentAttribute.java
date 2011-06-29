@@ -28,16 +28,15 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  */
 public interface JaxbPersistentAttribute
 		extends JavaContextNode {
-
-
-	JaxbPersistentClass getParent();
-
+	
+	JaxbPersistentClass getPersistentClass();
+	
 	/**
 	 * Return true if this JaxbPersistentAttribute is inherited from one of the
 	 * superclasses of the parent JaxbPersistentClass.
 	 */
 	boolean isInherited();
-
+	
 	/**
 	 * Only ask this of inherited persistent attributes. Returns the simple
 	 * type name of the attribute's resource type.
@@ -45,41 +44,43 @@ public interface JaxbPersistentAttribute
 	 * @see JaxbPersistentAttribute#isInherited()
 	 */
 	String getInheritedJavaResourceAttributeOwningTypeName();
-
+	
+	
 	// ********** name **********
-
+	
 	/**
 	 * Return the name of the attribute. This will not change, a
 	 * new JaxbPersistentAttribute will be built if the name changes.
 	 */
 	String getName();
-
+	
 	boolean isFor(JavaResourceField resourceField);
-
+	
 	boolean isFor(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
-
+	
 	JavaResourceAttribute getJavaResourceAttribute();
-
+	
 	/**
 	 * Return the type name of the java resource attribute
 	 * This might not return the same thing as getJavaResourceAttribute().getTypeName().
 	 */
 	String getJavaResourceAttributeTypeName();
-
+	
 	/**
 	 * Return whether the java resource attribute type is an array
 	 * This might not return the same thing as getJavaResourceAttribute().typeIsArray().
 	 */
 	boolean isJavaResourceAttributeTypeArray();
-
+	
 	/**
 	 * Return whether the java resource attribute type is a subtype of the given type
 	 * This might not return the same thing as getJavaResourceAttribute().typeIsSubTypeOf(String).
 	 */
 	boolean isJavaResourceAttributeTypeSubTypeOf(String typeName);
-
+	
+	
 	// ********** mapping **********
-
+	
 	/**
 	 * Return the attribute's mapping. This is never <code>null</code>
 	 * (although, it may be a <em>null</em> mapping).
@@ -87,12 +88,12 @@ public interface JaxbPersistentAttribute
 	 */
 	JaxbAttributeMapping getMapping();
 		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
-
+	
 	/**
 	 * Return the attribute's mapping key.
 	 */
 	String getMappingKey();
-
+	
 	/**
 	 * Set the attribute's mapping.
 	 * If the specified key is <code>null</code>, clear the specified mapping,
@@ -100,7 +101,7 @@ public interface JaxbPersistentAttribute
 	 * Return the new mapping (which may be a <em>null</em> mapping).
 	 */
 	JaxbAttributeMapping setMappingKey(String key);
-
+	
 	/**
 	 * Return the key for the attribute's default mapping.
 	 * This can be <code>null</code> (e.g. for <em>specified</em>

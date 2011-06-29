@@ -13,182 +13,184 @@ import java.util.Collection;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbSchemaComponentRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
+import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlElementWrapper
-	extends AbstractJavaContextNode
-	implements XmlElementWrapper
-{
-
-	protected final XmlElementWrapperAnnotation resourceXmlElementWrapper;
-
-	protected String specifiedName;
-
+		extends AbstractJavaContextNode
+		implements XmlElementWrapper {
+	
+	protected final XmlElementWrapperAnnotation annotation;
+	
+	protected JaxbSchemaComponentRef schemaComponentRef;
+	
 	protected Boolean specifiedRequired;
-
-	protected String specifiedNamespace;
-
+	
 	protected Boolean specifiedNillable;
-
-	public GenericJavaXmlElementWrapper(JaxbAttributeMapping parent, XmlElementWrapperAnnotation resource) {
+	
+	
+	public GenericJavaXmlElementWrapper(JaxbAttributeMapping parent, XmlElementWrapperAnnotation annotation) {
 		super(parent);
-		this.resourceXmlElementWrapper = resource;
-		this.specifiedName = buildSpecifiedName();
-		this.specifiedNamespace = buildSpecifiedNamespace();
+		this.annotation = annotation;
+		this.schemaComponentRef = buildSchemaComponentRef();
 		this.specifiedRequired = buildSpecifiedRequired();
 		this.specifiedNillable = this.buildSpecifiedNillable();
 	}
-
+	
+	
+	protected JaxbSchemaComponentRef buildSchemaComponentRef() {
+		return new XmlElementSchemaComponentRef(this);
+	}
+	
 	@Override
 	public JaxbAttributeMapping getParent() {
 		return (JaxbAttributeMapping) super.getParent();
 	}
-
-	protected JaxbPersistentAttribute getPersistentAttribute() {
-		return getParent().getParent();
+	
+	protected JaxbAttributeMapping getAttributeMapping() {
+		return getParent();
 	}
-
+	
+	protected JaxbPersistentAttribute getPersistentAttribute() {
+		return getAttributeMapping().getParent();
+	}
+	
+	protected JaxbPersistentClass getPersistentClass() {
+		return getPersistentAttribute().getPersistentClass();
+	}
+	
+	
 	// ********** synchronize/update **********
-
+	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		setSpecifiedName_(buildSpecifiedName());
-		setSpecifiedNamespace_(buildSpecifiedNamespace());
+		this.schemaComponentRef.synchronizeWithResourceModel();
 		setSpecifiedRequired_(buildSpecifiedRequired());
 		this.setSpecifiedNillable_(this.buildSpecifiedNillable());
 	}
-
-
-	//************ XmlElementWrapper.name ***************
-
-	public String getName() {
-		return this.getSpecifiedName() == null ? this.getDefaultName() : getSpecifiedName();
+	
+	@Override
+	public void update() {
+		super.update();
+		this.schemaComponentRef.update();
 	}
-
-	public String getDefaultName() {
-		return getParent().getParent().getName();
+	
+	
+	// ***** schema component ref *****
+	
+	public JaxbSchemaComponentRef getSchemaComponentRef() {
+		return this.schemaComponentRef;
 	}
-
-	public String getSpecifiedName() {
-		return this.specifiedName;
-	}
-
-	public void setSpecifiedName(String name) {
-		this.resourceXmlElementWrapper.setName(name);
-		this.setSpecifiedName_(name);
-	}
-
-	protected  void setSpecifiedName_(String name) {
-		String old = this.specifiedName;
-		this.specifiedName = name;
-		firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
-	}
-
-	protected String buildSpecifiedName() {
-		return this.resourceXmlElementWrapper.getName();
-	}
-
-
+	
+	
 	//************ XmlElementWrapper.required ***************
-
+	
 	public boolean isRequired() {
 		return (this.getSpecifiedRequired() == null) ? this.isDefaultRequired() : this.getSpecifiedRequired().booleanValue();
 	}
-
+	
 	public boolean isDefaultRequired() {
 		return DEFAULT_REQUIRED;
 	}
-
+	
 	public Boolean getSpecifiedRequired() {
 		return this.specifiedRequired;
 	}
-
+	
 	public void setSpecifiedRequired(Boolean newSpecifiedRequired) {
-		this.resourceXmlElementWrapper.setRequired(newSpecifiedRequired);
+		this.annotation.setRequired(newSpecifiedRequired);
 		this.setSpecifiedRequired_(newSpecifiedRequired);
 	}
-
+	
 	protected void setSpecifiedRequired_(Boolean newSpecifiedRequired) {
 		Boolean oldRequired = this.specifiedRequired;
 		this.specifiedRequired = newSpecifiedRequired;
 		firePropertyChanged(SPECIFIED_REQUIRED_PROPERTY, oldRequired, newSpecifiedRequired);
 	}
-
+	
 	protected Boolean buildSpecifiedRequired() {
-		return this.resourceXmlElementWrapper.getRequired();
+		return this.annotation.getRequired();
 	}
-
-
-	//************ XmlElementWrapper.namespace ***************
-
-	public String getNamespace() {
-		return getSpecifiedNamespace() == null ? getDefaultNamespace() : getSpecifiedNamespace();
-	}
-
-	public String getDefaultNamespace() {
-		return null;
-		//TODO what is the default namespace? Is the default namespace in GeneraicJavaContainmentMapping even right? ask Paul
-		//return getPersistentAttribute().getParent().getNamespace();
-	}
-
-	public String getSpecifiedNamespace() {
-		return this.specifiedNamespace;
-	}
-
-	public void setSpecifiedNamespace(String newSpecifiedNamespace) {
-		this.resourceXmlElementWrapper.setNamespace(newSpecifiedNamespace);
-		this.setSpecifiedNamespace_(newSpecifiedNamespace);
-	}
-
-	protected void setSpecifiedNamespace_(String newSpecifiedNamespace) {
-		String oldNamespace = this.specifiedNamespace;
-		this.specifiedNamespace = newSpecifiedNamespace;
-		firePropertyChanged(SPECIFIED_NAMESPACE_PROPERTY, oldNamespace, newSpecifiedNamespace);
-	}
-
-	protected String buildSpecifiedNamespace() {
-		return this.resourceXmlElementWrapper.getNamespace();
-	}
-
+	
+	
 	//************  XmlElementWrapper.nillable ***************
-
+	
 	public boolean isNillable() {
 		return (this.getSpecifiedNillable() == null) ? this.isDefaultNillable() : this.getSpecifiedNillable().booleanValue();
 	}
-
+	
 	public boolean isDefaultNillable() {
 		return DEFAULT_NILLABLE;
 	}
-
+	
 	public Boolean getSpecifiedNillable() {
 		return this.specifiedNillable;
 	}
-
+	
 	public void setSpecifiedNillable(Boolean newSpecifiedNillable) {
-		this.resourceXmlElementWrapper.setNillable(newSpecifiedNillable);
+		this.annotation.setNillable(newSpecifiedNillable);
 		this.setSpecifiedNillable_(newSpecifiedNillable);
 	}
-
+	
 	protected void setSpecifiedNillable_(Boolean newSpecifiedNillable) {
 		Boolean oldNillable = this.specifiedNillable;
 		this.specifiedNillable = newSpecifiedNillable;
 		firePropertyChanged(SPECIFIED_NILLABLE_PROPERTY, oldNillable, newSpecifiedNillable);
 	}
-
+	
 	protected Boolean buildSpecifiedNillable() {
-		return this.resourceXmlElementWrapper.getNillable();
+		return this.annotation.getNillable();
 	}
-
-
+	
+	
+	// **************** misc **************************************************
+	
+	public XsdElementDeclaration getXsdElementDeclaration() {
+		XsdTypeDefinition xsdType = getPersistentAttribute().getPersistentClass().getXsdTypeDefinition();
+		return (xsdType == null) ? null : xsdType.getElement(this.schemaComponentRef.getNamespace(), this.schemaComponentRef.getName());
+	}
+	
+	
+	// ***** content assist *****
+	
+	@Override
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		result = this.schemaComponentRef.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		return EmptyIterable.instance();
+	}
+	
+	
 	//************* validation ****************
+	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
@@ -204,6 +206,62 @@ public class GenericJavaXmlElementWrapper
 
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.resourceXmlElementWrapper.getTextRange(astRoot);
+		return this.annotation.getTextRange(astRoot);
+	}
+	
+	
+	protected class XmlElementSchemaComponentRef
+			extends AbstractJavaSchemaComponentRef {
+		
+		protected XmlElementSchemaComponentRef(JavaContextNode parent) {
+			super(parent);
+		}
+		
+		
+		@Override
+		protected SchemaComponentRefAnnotation getAnnotation(boolean createIfNull) {
+			// never null
+			return GenericJavaXmlElementWrapper.this.annotation;
+		}
+		
+		@Override
+		public String getDefaultName() {
+			return "";
+		}
+		
+		@Override
+		public String getDefaultNamespace() {
+			return (GenericJavaXmlElementWrapper.this.getPersistentClass().getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
+					GenericJavaXmlElementWrapper.this.getPersistentClass().getNamespace() : "";
+		}
+		
+		@Override
+		public Iterable<String> getNameProposals(Filter<String> filter) {
+			XsdTypeDefinition xsdType = GenericJavaXmlElementWrapper.this.getPersistentClass().getXsdTypeDefinition();
+			return (xsdType == null) ? EmptyIterable.instance() : xsdType.getElementNameProposals(getNamespace(), filter);
+		}
+		
+		@Override
+		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
+			XsdSchema schema = GenericJavaXmlElementWrapper.this.getPersistentClass().getJaxbPackage().getXsdSchema();
+			return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
+		}
+		
+		@Override
+		public String getSchemaComponentTypeDescription() {
+			return JptJaxbCoreMessages.XML_ELEMENT__ELEMENT;
+		}
+		
+		@Override
+		protected void validateSchemaComponentRef(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+			XsdTypeDefinition type = getPersistentClass().getXsdTypeDefinition();
+			if (type == null) {
+				return;
+			}
+			
+			if (type.getElement(getNamespace(), getName()) == null) {
+				messages.add(getUnresolveSchemaComponentMessage(astRoot));
+			}
+		}
 	}
 }

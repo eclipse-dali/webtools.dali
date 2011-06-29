@@ -27,48 +27,10 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlElementRefAnnotation
-	extends NestableAnnotation
-{
+		extends SchemaComponentRefAnnotation, NestableAnnotation {
+	
 	String ANNOTATION_NAME = JAXB.XML_ELEMENT_REF;
-
-	/**
-	 * Corresponds to the 'name' element of the XmlElementRef annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getName();
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'name' element of the XmlElementRef annotation.
-	 * Set to null to remove the element.
-	 */
-	void setName(String name);
-
-	/**
-	 * Return the {@link TextRange} for the 'name' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementRef annotation.
-	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlElementRef annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getNamespace();
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlElementRef annotation.
-	 * Set to null to remove the element.
-	 */
-	void setNamespace(String namespace);
-
-	/**
-	 * Return the {@link TextRange} for the 'namespace' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementRef annotation.
-	 */
-	TextRange getNamespaceTextRange(CompilationUnit astRoot);
-
+	
 	/**
 	 * Corresponds to the 'type' element of the XmlElementRef annotation.
 	 * Return null if the element does not exist in Java.

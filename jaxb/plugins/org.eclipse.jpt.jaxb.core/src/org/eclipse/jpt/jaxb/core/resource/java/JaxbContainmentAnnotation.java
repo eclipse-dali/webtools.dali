@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
@@ -25,59 +24,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface JaxbContainmentAnnotation
-	extends Annotation
-{
-
-	/**
-	 * Corresponds to the 'name' element of the XmlAttribute annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getName();
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'name' element of the XmlAttribute annotation.
-	 * Set to null to remove the element.
-	 */
-	void setName(String name);
-
-	/**
-	 * Return the {@link TextRange} for the 'name' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlAttribute annotation.
-	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Return whether the specified position touches the 'name' element.
-	 * Return false if the element does not exist.
-	 */
-	boolean nameTouches(int pos, CompilationUnit astRoot);
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlAttribute annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getNamespace();
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlAttribute annotation.
-	 * Set to null to remove the element.
-	 */
-	void setNamespace(String namespace);
-
-	/**
-	 * Return the {@link TextRange} for the 'namespace' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlAttribute annotation.
-	 */
-	TextRange getNamespaceTextRange(CompilationUnit astRoot);
+		extends SchemaComponentRefAnnotation {
 	
-	/**
-	 * Return whether the specified position touches the 'namespace' element.
-	 * Return false if the element does not exist.
-	 */
-	boolean namespaceTouches(int pos, CompilationUnit astRoot);
-
 	/**
 	 * Corresponds to the 'required' element of the XmlAttribute annotation.
 	 * Return null if the element does not exist in Java.

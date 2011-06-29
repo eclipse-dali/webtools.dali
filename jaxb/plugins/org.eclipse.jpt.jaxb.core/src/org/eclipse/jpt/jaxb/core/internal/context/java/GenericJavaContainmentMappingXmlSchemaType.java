@@ -37,7 +37,7 @@ public class GenericJavaContainmentMappingXmlSchemaType
 	}
 
 	protected JaxbPersistentClass getPersistentClass() {
-		return getPersistentAttribute().getParent();
+		return getPersistentAttribute().getPersistentClass();
 	}
 
 	@Override
