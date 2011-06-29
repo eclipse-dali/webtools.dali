@@ -19,6 +19,8 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
@@ -120,5 +122,15 @@ public class EclipseLinkOrmXmlContextNodeFactory
 	
 	public OrmEclipseLinkVariableOneToOneMapping buildOrmEclipseLinkVariableOneToOneMapping(OrmPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
 		return new OrmEclipseLinkVariableOneToOneMapping(parent, resourceMapping);
+	}
+
+	@Override
+	public OrmPersistenceUnitDefaults buildOrmPersistenceUnitDefaults(OrmPersistenceUnitMetadata parent) {
+		return new OrmEclipseLinkPersistenceUnitDefaults(parent);
+	}
+
+	@Override
+	public OrmPersistenceUnitMetadata buildOrmPersistenceUnitMetadata(EntityMappings parent) {
+		return new OrmEclipseLinkPersistenceUnitMetadata(parent);
 	}
 }

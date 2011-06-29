@@ -204,7 +204,11 @@ public class XmlUnionPartitioning extends AbstractJpaEObject implements XmlUnion
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLinkOrmPackage.eINSTANCE.getXmlUnionPartitioning(), 
+			buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {

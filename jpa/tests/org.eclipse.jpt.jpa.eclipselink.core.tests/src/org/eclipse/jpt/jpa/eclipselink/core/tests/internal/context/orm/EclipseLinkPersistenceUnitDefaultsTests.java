@@ -11,12 +11,12 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
-import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPersistenceUnitDefaults;
 
 @SuppressWarnings("nls")
 public class EclipseLinkPersistenceUnitDefaultsTests extends EclipseLinkOrmContextModelTestCase
@@ -48,7 +48,7 @@ public class EclipseLinkPersistenceUnitDefaultsTests extends EclipseLinkOrmConte
 		getXmlEntityMappings().setPersistenceUnitMetadata(persistenceUnitMetadata);
 		assertTrue(persistenceUnitMetadata.isUnset());
 		
-		org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaultsResource = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
+		XmlPersistenceUnitDefaults persistenceUnitDefaultsResource = EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 		persistenceUnitMetadata.setPersistenceUnitDefaults(persistenceUnitDefaultsResource);
 		assertTrue(persistenceUnitDefaultsResource.isUnset());
 		
@@ -88,7 +88,7 @@ public class EclipseLinkPersistenceUnitDefaultsTests extends EclipseLinkOrmConte
 		
 		//set schema in the resource model, verify context model updated
 		getXmlEntityMappings().setPersistenceUnitMetadata(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 		getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("MY_SCHEMA");
 		assertEquals("MY_SCHEMA", persistenceUnitDefaults.getSchema());
 		assertEquals("MY_SCHEMA", getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
@@ -159,7 +159,7 @@ public class EclipseLinkPersistenceUnitDefaultsTests extends EclipseLinkOrmConte
 		
 		//set catalog in the resource model, verify context model updated
 		getXmlEntityMappings().setPersistenceUnitMetadata(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 		getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("MY_CATALOG");
 		assertEquals("MY_CATALOG", persistenceUnitDefaults.getCatalog());
 		assertEquals("MY_CATALOG", getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
@@ -230,7 +230,7 @@ public class EclipseLinkPersistenceUnitDefaultsTests extends EclipseLinkOrmConte
 		
 		//set cascadePersist in the resource model, verify context model updated
 		getXmlEntityMappings().setPersistenceUnitMetadata(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 		getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCascadePersist(true);
 		assertTrue(persistenceUnitDefaults.isCascadePersist());
 		assertTrue(getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
@@ -302,7 +302,7 @@ public class EclipseLinkPersistenceUnitDefaultsTests extends EclipseLinkOrmConte
 		
 		//set access in the resource model, verify context model updated
 		getXmlEntityMappings().setPersistenceUnitMetadata(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 		getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(org.eclipse.jpt.jpa.core.resource.orm.AccessType.FIELD);
 		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getAccess());
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.AccessType.FIELD, getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());

@@ -204,7 +204,11 @@ public class XmlHashPartitioning extends AbstractJpaEObject implements XmlHashPa
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLinkOrmPackage.eINSTANCE.getXmlHashPartitioning(), 
+			buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {
