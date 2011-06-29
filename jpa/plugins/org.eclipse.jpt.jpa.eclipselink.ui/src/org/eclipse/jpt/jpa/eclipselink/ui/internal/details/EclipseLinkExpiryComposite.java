@@ -200,7 +200,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 
 			@Override
 			protected void setValue_(Boolean value) {
-				if (value == Boolean.TRUE) {
+				if (value == Boolean.TRUE && this.subject.getExpiryTimeOfDay() == null) {
 					this.subject.addExpiryTimeOfDay();
 				}
 			}
