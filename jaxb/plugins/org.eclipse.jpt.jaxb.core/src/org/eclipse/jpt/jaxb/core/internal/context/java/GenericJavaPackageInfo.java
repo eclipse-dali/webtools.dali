@@ -95,6 +95,8 @@ public class GenericJavaPackageInfo
 	public void update() {
 		super.update();
 		this.xmlSchema.update();
+		this.updateXmlSchemaTypes();
+		this.updateXmlJavaTypeAdapters();
 	}
 
 
@@ -215,6 +217,10 @@ public class GenericJavaPackageInfo
 		this.xmlSchemaTypeContainer.synchronizeWithResourceModel();
 	}
 
+	protected void updateXmlSchemaTypes() {
+		this.xmlSchemaTypeContainer.update();
+	}
+
 	@SuppressWarnings("unchecked")
 	protected ListIterable<XmlSchemaTypeAnnotation> getXmlSchemaTypeAnnotations() {
 		return (ListIterable<XmlSchemaTypeAnnotation>) this.resourcePackage.getAnnotations(XmlSchemaTypeAnnotation.ANNOTATION_NAME);
@@ -252,6 +258,10 @@ public class GenericJavaPackageInfo
 
 	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
 		return new GenericJavaPackageXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
+	}
+
+	protected void updateXmlJavaTypeAdapters() {
+		this.xmlJavaTypeAdapterContainer.update();
 	}
 
 	protected void syncXmlJavaTypeAdapters() {
