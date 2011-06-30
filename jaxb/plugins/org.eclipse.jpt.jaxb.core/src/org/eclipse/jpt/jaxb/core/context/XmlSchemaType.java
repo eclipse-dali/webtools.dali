@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
+import org.eclipse.xsd.util.XSDUtil;
 
 /**
  * 
@@ -25,35 +26,17 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
  * @since 3.0
  */
 public interface XmlSchemaType
-	extends 
-		JavaContextNode
-{
-
-	XmlSchemaTypeAnnotation getResourceXmlSchemaType();
-
-
-	/**************** name *****************/
-
-	String getName();
-	void setName(String name);
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
-
-	/**************** namespace *****************/
-
-	/**
-	 * Corresponds to the XmlSchemaType annotation 'namespace' element
-	 */
-	String getNamespace();
-	String getDefaultNamespace();
-	String getSpecifiedNamespace();
-	void setSpecifiedNamespace(String namespace);
-		String SPECIFIED_NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-		String DEFAULT_NAMESPACE = "http://www.w3.org/2001/XMLSchema"; //$NON-NLS-1$
-
-
+		extends JavaContextNode {
+	
+	String DEFAULT_NAMESPACE = XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001;
+	
+	XmlSchemaTypeAnnotation getXmlSchemaTypeAnnotation();
+	
+	JaxbSchemaComponentRef getSchemaTypeRef();
+	
+	
 	/**************** type *****************/
-
+	
 	/**
 	 * Corresponds to the XmlSchemaType annotation 'type' element
 	 */

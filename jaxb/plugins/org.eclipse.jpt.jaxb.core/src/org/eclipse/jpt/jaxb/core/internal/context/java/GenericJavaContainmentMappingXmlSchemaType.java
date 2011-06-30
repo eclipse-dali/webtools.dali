@@ -16,9 +16,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 
 public class GenericJavaContainmentMappingXmlSchemaType
-	extends GenericJavaXmlSchemaType
-{
-
+		extends GenericJavaXmlSchemaType {
+	
 	public GenericJavaContainmentMappingXmlSchemaType(JaxbContainmentMapping parent, XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation) {
 		super(parent, xmlSchemaTypeAnnotation);
 	}

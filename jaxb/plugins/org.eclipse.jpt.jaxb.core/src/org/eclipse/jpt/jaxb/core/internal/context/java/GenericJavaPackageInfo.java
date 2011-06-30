@@ -336,6 +336,10 @@ public class GenericJavaPackageInfo
 		
 		this.xmlSchema.validate(messages, reporter, astRoot);
 		
+		for (XmlSchemaType schemaType : getXmlSchemaTypes()) {
+			schemaType.validate(messages, reporter, astRoot);
+		}
+		
 		for (XmlJavaTypeAdapter adapter : getXmlJavaTypeAdapters()) {
 			adapter.validate(messages, reporter, astRoot);
 		}
@@ -362,7 +366,7 @@ public class GenericJavaPackageInfo
 		}
 		@Override
 		protected XmlSchemaTypeAnnotation getResourceElement(XmlSchemaType contextElement) {
-			return contextElement.getResourceXmlSchemaType();
+			return contextElement.getXmlSchemaTypeAnnotation();
 		}
 	}
 
