@@ -2362,15 +2362,17 @@ public abstract class AbstractPersistenceUnit
 		for (ArrayList<Generator> dups : generatorsByName.values()) {
 			if (dups.size() > 1) {
 				for (Generator dup : dups) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-							new String[] {dup.getName()},
-							dup,
-							this.extractNameTextRange(dup)
-						)
-					);
+					if (!StringTools.stringIsEmpty(dup.getName())) {
+						messages.add(
+								DefaultJpaValidationMessages.buildMessage(
+										IMessage.HIGH_SEVERITY,
+										JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+										new String[] {dup.getName()},
+										dup,
+										this.extractNameTextRange(dup)
+										)
+								);
+					}
 				}
 			}
 		}
@@ -2408,15 +2410,17 @@ public abstract class AbstractPersistenceUnit
 		for (ArrayList<Query> dups : queriesByName.values()) {
 			if (dups.size() > 1) {
 				for (Query dup : dups) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_DUPLICATE_NAME,
-							new String[] {dup.getName()},
-							dup,
-							this.extractNameTextRange(dup)
-						)
-					);
+					if (!StringTools.stringIsEmpty(dup.getName())) {
+						messages.add(
+								DefaultJpaValidationMessages.buildMessage(
+										IMessage.HIGH_SEVERITY,
+										JpaValidationMessages.QUERY_DUPLICATE_NAME,
+										new String[] {dup.getName()},
+										dup,
+										this.extractNameTextRange(dup)
+										)
+								);
+					}
 				}
 			}
 		}
