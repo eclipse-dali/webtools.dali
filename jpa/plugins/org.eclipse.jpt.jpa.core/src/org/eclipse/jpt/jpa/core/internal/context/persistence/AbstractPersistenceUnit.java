@@ -2218,6 +2218,15 @@ public abstract class AbstractPersistenceUnit
 		sb.append(this.name);
 	}
 
+	public int getPersistenceUnitMetadataSize() {
+		int  persistenceUnitMetadatSize= 0;
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			if (mappingFileRef.persistenceUnitMetadataExists()) {
+				persistenceUnitMetadatSize++;
+			}
+		}
+		return persistenceUnitMetadatSize;
+	}	
 
 	// ********** validation **********
 
@@ -2241,21 +2250,17 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForMultiplePersistenceUnitMetadata(List<IMessage> messages) {
-		boolean first = true;
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			if (mappingFileRef.persistenceUnitMetadataExists()) {
-				if (first) {
-					first = false;
-				} else {
-					messages.add(
+			if (mappingFileRef.persistenceUnitMetadataExists() && (this.getPersistenceUnitMetadataSize() > 1)) {
+				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
-							IMessage.NORMAL_SEVERITY,
-							JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
-							new String[] {mappingFileRef.getFileName()},
-							mappingFileRef
-						)
-					);
-				}
+								IMessage.NORMAL_SEVERITY,
+								JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
+								new String[] {mappingFileRef.getFileName()},
+								mappingFileRef.getMappingFile(),
+								mappingFileRef.getPersistenceUnitMetadata().getValidationTextRange()
+								)
+						);
 			}
 		}
 	}
