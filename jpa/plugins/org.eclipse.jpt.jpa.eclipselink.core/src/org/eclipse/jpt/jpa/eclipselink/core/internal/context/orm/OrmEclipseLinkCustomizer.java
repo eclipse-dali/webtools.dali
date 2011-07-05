@@ -252,7 +252,7 @@ public class OrmEclipseLinkCustomizer
 								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_SPECIFIED,
 								EMPTY_STRING_ARRAY,
 								this,
-								this.getTypeMapping().getValidationTextRange()
+								this.getValidationTextRange()
 						)
 				);
 			} else if (JDTTools.findType(javaProject, this.getCustomizerClass()) == null) {
@@ -262,7 +262,7 @@ public class OrmEclipseLinkCustomizer
 								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_EXIST,
 								new String[] { this.getCustomizerClass()},
 								this,
-								this.getTypeMapping().getValidationTextRange()
+								this.getValidationTextRange()
 						)
 				);
 			} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, this.getCustomizerClass())) {
@@ -272,7 +272,7 @@ public class OrmEclipseLinkCustomizer
 								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
 								new String[] {this.getCustomizerClass()},
 								this,
-								this.getTypeMapping().getValidationTextRange()
+								this.getValidationTextRange()
 						)
 				);
 			} else if (!JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.getCustomizerClass(), ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
@@ -282,7 +282,7 @@ public class OrmEclipseLinkCustomizer
 								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
 								new String[] {this.getCustomizerClass()},
 								this,
-								this.getTypeMapping().getValidationTextRange()
+								this.getValidationTextRange()
 						)
 				);
 			}
