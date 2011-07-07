@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -88,7 +89,193 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEmbeddable_2_3()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDABLE_23 = 0;
+	public static final int XML_EMBEDDABLE_23 = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3 <em>Xml Multitenant 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMultitenant_2_3()
+	 * @generated
+	 */
+	public static final int XML_MULTITENANT_23 = 6;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3 <em>Xml Entity 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEntity_2_3()
+	 * @generated
+	 */
+	public static final int XML_ENTITY_23 = 3;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMappedSuperclass_2_3 <em>Xml Mapped Superclass 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMappedSuperclass_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMappedSuperclass_2_3()
+	 * @generated
+	 */
+	public static final int XML_MAPPED_SUPERCLASS_23 = 5;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3 <em>Xml Entity Mappings 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEntityMappings_2_3()
+	 * @generated
+	 */
+	public static final int XML_ENTITY_MAPPINGS_23 = 4;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3 <em>Xml Named Plsql Stored Function Query 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlNamedPlsqlStoredFunctionQuery_2_3()
+	 * @generated
+	 */
+	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY_23 = 7;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3 <em>Xml Named Plsql Stored Procedure Query 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlNamedPlsqlStoredProcedureQuery_2_3()
+	 * @generated
+	 */
+	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY_23 = 8;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3 <em>Xml Named Stored Function Query 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlNamedStoredFunctionQuery_2_3()
+	 * @generated
+	 */
+	public static final int XML_NAMED_STORED_FUNCTION_QUERY_23 = 9;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPersistenceUnitDefaults_2_3 <em>Xml Persistence Unit Defaults 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPersistenceUnitDefaults_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlPersistenceUnitDefaults_2_3()
+	 * @generated
+	 */
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_23 = 10;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3 <em>Xml Plsql Record 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlPlsqlRecord_2_3()
+	 * @generated
+	 */
+	public static final int XML_PLSQL_RECORD_23 = 11;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlTable_2_3 <em>Xml Plsql Table 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlTable_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlPlsqlTable_2_3()
+	 * @generated
+	 */
+	public static final int XML_PLSQL_TABLE_23 = 12;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3 <em>Xml Struct 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlStruct_2_3()
+	 * @generated
+	 */
+	public static final int XML_STRUCT_23 = 13;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3 <em>Xml Tenant Discriminator 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlTenantDiscriminator_2_3()
+	 * @generated
+	 */
+	public static final int XML_TENANT_DISCRIMINATOR_23 = 14;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3 <em>Xml Attributes 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlAttributes_2_3()
+	 * @generated
+	 */
+	public static final int XML_ATTRIBUTES_23 = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3 <em>Xml Structure 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlStructure_2_3()
+	 * @generated
+	 */
+	public static final int XML_STRUCTURE_23 = 15;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3 <em>Xml Array 23</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlArray_2_3()
+	 * @generated
+	 */
+	public static final int XML_ARRAY_23 = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Array 23</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23_FEATURE_COUNT = 0;
+
+	/**
+	 * The feature id for the '<em><b>Structures</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ATTRIBUTES_23__STRUCTURES = 0;
+
+	/**
+	 * The feature id for the '<em><b>Arrays</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ATTRIBUTES_23__ARRAYS = 1;
+
+	/**
+	 * The number of structural features of the '<em>Xml Attributes 23</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ATTRIBUTES_23_FEATURE_COUNT = 2;
 
 	/**
 	 * The feature id for the '<em><b>Plsql Records</b></em>' containment reference list.
@@ -125,26 +312,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_EMBEDDABLE_23_FEATURE_COUNT = 3;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3 <em>Xml Multitenant 23</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMultitenant_2_3()
-	 * @generated
-	 */
-	public static final int XML_MULTITENANT_23 = 4;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3 <em>Xml Entity 23</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEntity_2_3()
-	 * @generated
-	 */
-	public static final int XML_ENTITY_23 = 1;
 
 	/**
 	 * The feature id for the '<em><b>Multitenant</b></em>' containment reference.
@@ -217,26 +384,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY_23_FEATURE_COUNT = 7;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMappedSuperclass_2_3 <em>Xml Mapped Superclass 23</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMappedSuperclass_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMappedSuperclass_2_3()
-	 * @generated
-	 */
-	public static final int XML_MAPPED_SUPERCLASS_23 = 3;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3 <em>Xml Entity Mappings 23</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEntityMappings_2_3()
-	 * @generated
-	 */
-	public static final int XML_ENTITY_MAPPINGS_23 = 2;
 
 	/**
 	 * The feature id for the '<em><b>Tenant Discriminators</b></em>' containment reference list.
@@ -365,23 +512,31 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS_23_FEATURE_COUNT = 6;
 
 	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTITENANT_23__TYPE = 0;
+
+	/**
 	 * The number of structural features of the '<em>Xml Multitenant 23</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTITENANT_23_FEATURE_COUNT = 0;
+	public static final int XML_MULTITENANT_23_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3 <em>Xml Named Plsql Stored Function Query 23</em>}' class.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlNamedPlsqlStoredFunctionQuery_2_3()
 	 * @generated
+	 * @ordered
 	 */
-	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY_23 = 5;
+	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY_23__NAME = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Named Plsql Stored Function Query 23</em>' class.
@@ -390,17 +545,16 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY_23_FEATURE_COUNT = 0;
+	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY_23_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3 <em>Xml Named Plsql Stored Procedure Query 23</em>}' class.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlNamedPlsqlStoredProcedureQuery_2_3()
 	 * @generated
+	 * @ordered
 	 */
-	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY_23 = 6;
+	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY_23__NAME = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Named Plsql Stored Procedure Query 23</em>' class.
@@ -409,17 +563,16 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY_23_FEATURE_COUNT = 0;
+	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY_23_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3 <em>Xml Named Stored Function Query 23</em>}' class.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlNamedStoredFunctionQuery_2_3()
 	 * @generated
+	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_FUNCTION_QUERY_23 = 7;
+	public static final int XML_NAMED_STORED_FUNCTION_QUERY_23__NAME = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Named Stored Function Query 23</em>' class.
@@ -428,17 +581,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_NAMED_STORED_FUNCTION_QUERY_23_FEATURE_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPersistenceUnitDefaults_2_3 <em>Xml Persistence Unit Defaults 23</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPersistenceUnitDefaults_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlPersistenceUnitDefaults_2_3()
-	 * @generated
-	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_23 = 8;
+	public static final int XML_NAMED_STORED_FUNCTION_QUERY_23_FEATURE_COUNT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Tenant Discriminators</b></em>' containment reference list.
@@ -459,14 +602,13 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_23_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3 <em>Xml Plsql Record 23</em>}' class.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlPlsqlRecord_2_3()
 	 * @generated
+	 * @ordered
 	 */
-	public static final int XML_PLSQL_RECORD_23 = 9;
+	public static final int XML_PLSQL_RECORD_23__NAME = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Plsql Record 23</em>' class.
@@ -475,17 +617,16 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PLSQL_RECORD_23_FEATURE_COUNT = 0;
+	public static final int XML_PLSQL_RECORD_23_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlTable_2_3 <em>Xml Plsql Table 23</em>}' class.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlTable_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlPlsqlTable_2_3()
 	 * @generated
+	 * @ordered
 	 */
-	public static final int XML_PLSQL_TABLE_23 = 10;
+	public static final int XML_PLSQL_TABLE_23__NAME = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Plsql Table 23</em>' class.
@@ -494,17 +635,16 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PLSQL_TABLE_23_FEATURE_COUNT = 0;
+	public static final int XML_PLSQL_TABLE_23_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3 <em>Xml Struct 23</em>}' class.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlStruct_2_3()
 	 * @generated
+	 * @ordered
 	 */
-	public static final int XML_STRUCT_23 = 11;
+	public static final int XML_STRUCT_23__NAME = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Struct 23</em>' class.
@@ -513,17 +653,16 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_STRUCT_23_FEATURE_COUNT = 0;
+	public static final int XML_STRUCT_23_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3 <em>Xml Tenant Discriminator 23</em>}' class.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlTenantDiscriminator_2_3()
 	 * @generated
+	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_23 = 12;
+	public static final int XML_TENANT_DISCRIMINATOR_23__NAME = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Tenant Discriminator 23</em>' class.
@@ -532,54 +671,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_23_FEATURE_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3 <em>Xml Attributes 23</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlAttributes_2_3()
-	 * @generated
-	 */
-	public static final int XML_ATTRIBUTES_23 = 13;
-
-	/**
-	 * The feature id for the '<em><b>Structures</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ATTRIBUTES_23__STRUCTURES = 0;
-
-	/**
-	 * The feature id for the '<em><b>Arrays</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ATTRIBUTES_23__ARRAYS = 1;
-
-	/**
-	 * The number of structural features of the '<em>Xml Attributes 23</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ATTRIBUTES_23_FEATURE_COUNT = 2;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3 <em>Xml Structure 23</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlStructure_2_3()
-	 * @generated
-	 */
-	public static final int XML_STRUCTURE_23 = 14;
+	public static final int XML_TENANT_DISCRIMINATOR_23_FEATURE_COUNT = 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Structure 23</em>' class.
@@ -589,25 +681,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_STRUCTURE_23_FEATURE_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3 <em>Xml Array 23</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlArray_2_3()
-	 * @generated
-	 */
-	public static final int XML_ARRAY_23 = 15;
-
-	/**
-	 * The number of structural features of the '<em>Xml Array 23</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ARRAY_23_FEATURE_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlElementCollection_2_3 <em>Xml Element Collection 23</em>}' class.
@@ -636,6 +709,16 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ELEMENT_COLLECTION_23_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType <em>Xml Multitenant Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMultitenantType()
+	 * @generated
+	 */
+	public static final int XML_MULTITENANT_TYPE = 17;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -755,6 +838,13 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlElementCollection_2_3EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum xmlMultitenantTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -915,6 +1005,21 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3#getType()
+	 * @see #getXmlMultitenant_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlMultitenant_2_3_Type()
+	{
+		return (EAttribute)xmlMultitenant_2_3EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3 <em>Xml Named Plsql Stored Function Query 23</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -925,6 +1030,21 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public EClass getXmlNamedPlsqlStoredFunctionQuery_2_3()
 	{
 		return xmlNamedPlsqlStoredFunctionQuery_2_3EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3#getName()
+	 * @see #getXmlNamedPlsqlStoredFunctionQuery_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlNamedPlsqlStoredFunctionQuery_2_3_Name()
+	{
+		return (EAttribute)xmlNamedPlsqlStoredFunctionQuery_2_3EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -943,6 +1063,21 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3#getName()
+	 * @see #getXmlNamedPlsqlStoredProcedureQuery_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlNamedPlsqlStoredProcedureQuery_2_3_Name()
+	{
+		return (EAttribute)xmlNamedPlsqlStoredProcedureQuery_2_3EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3 <em>Xml Named Stored Function Query 23</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -953,6 +1088,21 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public EClass getXmlNamedStoredFunctionQuery_2_3()
 	{
 		return xmlNamedStoredFunctionQuery_2_3EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3#getName()
+	 * @see #getXmlNamedStoredFunctionQuery_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlNamedStoredFunctionQuery_2_3_Name()
+	{
+		return (EAttribute)xmlNamedStoredFunctionQuery_2_3EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -1323,6 +1473,21 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3#getName()
+	 * @see #getXmlPlsqlRecord_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlPlsqlRecord_2_3_Name()
+	{
+		return (EAttribute)xmlPlsqlRecord_2_3EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlTable_2_3 <em>Xml Plsql Table 23</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1333,6 +1498,21 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public EClass getXmlPlsqlTable_2_3()
 	{
 		return xmlPlsqlTable_2_3EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlTable_2_3#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlTable_2_3#getName()
+	 * @see #getXmlPlsqlTable_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlPlsqlTable_2_3_Name()
+	{
+		return (EAttribute)xmlPlsqlTable_2_3EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -1351,6 +1531,21 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3#getName()
+	 * @see #getXmlStruct_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlStruct_2_3_Name()
+	{
+		return (EAttribute)xmlStruct_2_3EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3 <em>Xml Tenant Discriminator 23</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1361,6 +1556,21 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public EClass getXmlTenantDiscriminator_2_3()
 	{
 		return xmlTenantDiscriminator_2_3EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3#getName()
+	 * @see #getXmlTenantDiscriminator_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlTenantDiscriminator_2_3_Name()
+	{
+		return (EAttribute)xmlTenantDiscriminator_2_3EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -1466,6 +1676,20 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType <em>Xml Multitenant Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Xml Multitenant Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType
+	 * @generated
+	 */
+	public EEnum getXmlMultitenantType()
+	{
+		return xmlMultitenantTypeEEnum;
+	}
+
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1497,6 +1721,12 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		isCreated = true;
 
 		// Create classes and their features
+		xmlArray_2_3EClass = createEClass(XML_ARRAY_23);
+
+		xmlAttributes_2_3EClass = createEClass(XML_ATTRIBUTES_23);
+		createEReference(xmlAttributes_2_3EClass, XML_ATTRIBUTES_23__STRUCTURES);
+		createEReference(xmlAttributes_2_3EClass, XML_ATTRIBUTES_23__ARRAYS);
+
 		xmlEmbeddable_2_3EClass = createEClass(XML_EMBEDDABLE_23);
 		createEReference(xmlEmbeddable_2_3EClass, XML_EMBEDDABLE_23__PLSQL_RECORDS);
 		createEReference(xmlEmbeddable_2_3EClass, XML_EMBEDDABLE_23__PLSQL_TABLES);
@@ -1528,34 +1758,39 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		createEReference(xmlMappedSuperclass_2_3EClass, XML_MAPPED_SUPERCLASS_23__PLSQL_TABLES);
 
 		xmlMultitenant_2_3EClass = createEClass(XML_MULTITENANT_23);
+		createEAttribute(xmlMultitenant_2_3EClass, XML_MULTITENANT_23__TYPE);
 
 		xmlNamedPlsqlStoredFunctionQuery_2_3EClass = createEClass(XML_NAMED_PLSQL_STORED_FUNCTION_QUERY_23);
+		createEAttribute(xmlNamedPlsqlStoredFunctionQuery_2_3EClass, XML_NAMED_PLSQL_STORED_FUNCTION_QUERY_23__NAME);
 
 		xmlNamedPlsqlStoredProcedureQuery_2_3EClass = createEClass(XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY_23);
+		createEAttribute(xmlNamedPlsqlStoredProcedureQuery_2_3EClass, XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY_23__NAME);
 
 		xmlNamedStoredFunctionQuery_2_3EClass = createEClass(XML_NAMED_STORED_FUNCTION_QUERY_23);
+		createEAttribute(xmlNamedStoredFunctionQuery_2_3EClass, XML_NAMED_STORED_FUNCTION_QUERY_23__NAME);
 
 		xmlPersistenceUnitDefaults_2_3EClass = createEClass(XML_PERSISTENCE_UNIT_DEFAULTS_23);
 		createEReference(xmlPersistenceUnitDefaults_2_3EClass, XML_PERSISTENCE_UNIT_DEFAULTS_23__TENANT_DISCRIMINATORS);
 
 		xmlPlsqlRecord_2_3EClass = createEClass(XML_PLSQL_RECORD_23);
+		createEAttribute(xmlPlsqlRecord_2_3EClass, XML_PLSQL_RECORD_23__NAME);
 
 		xmlPlsqlTable_2_3EClass = createEClass(XML_PLSQL_TABLE_23);
+		createEAttribute(xmlPlsqlTable_2_3EClass, XML_PLSQL_TABLE_23__NAME);
 
 		xmlStruct_2_3EClass = createEClass(XML_STRUCT_23);
+		createEAttribute(xmlStruct_2_3EClass, XML_STRUCT_23__NAME);
 
 		xmlTenantDiscriminator_2_3EClass = createEClass(XML_TENANT_DISCRIMINATOR_23);
-
-		xmlAttributes_2_3EClass = createEClass(XML_ATTRIBUTES_23);
-		createEReference(xmlAttributes_2_3EClass, XML_ATTRIBUTES_23__STRUCTURES);
-		createEReference(xmlAttributes_2_3EClass, XML_ATTRIBUTES_23__ARRAYS);
+		createEAttribute(xmlTenantDiscriminator_2_3EClass, XML_TENANT_DISCRIMINATOR_23__NAME);
 
 		xmlStructure_2_3EClass = createEClass(XML_STRUCTURE_23);
 
-		xmlArray_2_3EClass = createEClass(XML_ARRAY_23);
-
 		xmlElementCollection_2_3EClass = createEClass(XML_ELEMENT_COLLECTION_23);
 		createEAttribute(xmlElementCollection_2_3EClass, XML_ELEMENT_COLLECTION_23__COMPOSITE_MEMBER);
+
+		// Create enums
+		xmlMultitenantTypeEEnum = createEEnum(XML_MULTITENANT_TYPE);
 	}
 
 	/**
@@ -1593,6 +1828,12 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		// Add supertypes to classes
 
 		// Initialize classes and features; add operations and parameters
+		initEClass(xmlArray_2_3EClass, XmlArray_2_3.class, "XmlArray_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlAttributes_2_3EClass, XmlAttributes_2_3.class, "XmlAttributes_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlAttributes_2_3_Structures(), this.getXmlStructure_2_3(), null, "structures", null, 0, -1, XmlAttributes_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlAttributes_2_3_Arrays(), this.getXmlArray_2_3(), null, "arrays", null, 0, -1, XmlAttributes_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(xmlEmbeddable_2_3EClass, XmlEmbeddable_2_3.class, "XmlEmbeddable_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlEmbeddable_2_3_PlsqlRecords(), this.getXmlPlsqlRecord_2_3(), null, "plsqlRecords", null, 0, -1, XmlEmbeddable_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEmbeddable_2_3_PlsqlTables(), theEclipseLinkOrmPackage.getXmlPlsqlTable(), null, "plsqlTables", null, 0, -1, XmlEmbeddable_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1624,34 +1865,41 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		initEReference(getXmlMappedSuperclass_2_3_PlsqlTables(), theEclipseLinkOrmPackage.getXmlPlsqlTable(), null, "plsqlTables", null, 0, -1, XmlMappedSuperclass_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMultitenant_2_3EClass, XmlMultitenant_2_3.class, "XmlMultitenant_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlMultitenant_2_3_Type(), this.getXmlMultitenantType(), "type", null, 0, 1, XmlMultitenant_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlNamedPlsqlStoredFunctionQuery_2_3EClass, XmlNamedPlsqlStoredFunctionQuery_2_3.class, "XmlNamedPlsqlStoredFunctionQuery_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlNamedPlsqlStoredFunctionQuery_2_3_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlNamedPlsqlStoredFunctionQuery_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlNamedPlsqlStoredProcedureQuery_2_3EClass, XmlNamedPlsqlStoredProcedureQuery_2_3.class, "XmlNamedPlsqlStoredProcedureQuery_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlNamedPlsqlStoredProcedureQuery_2_3_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlNamedPlsqlStoredProcedureQuery_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlNamedStoredFunctionQuery_2_3EClass, XmlNamedStoredFunctionQuery_2_3.class, "XmlNamedStoredFunctionQuery_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlNamedStoredFunctionQuery_2_3_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlNamedStoredFunctionQuery_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlPersistenceUnitDefaults_2_3EClass, XmlPersistenceUnitDefaults_2_3.class, "XmlPersistenceUnitDefaults_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlPersistenceUnitDefaults_2_3_TenantDiscriminators(), this.getXmlTenantDiscriminator_2_3(), null, "tenantDiscriminators", null, 0, -1, XmlPersistenceUnitDefaults_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlPlsqlRecord_2_3EClass, XmlPlsqlRecord_2_3.class, "XmlPlsqlRecord_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlPlsqlRecord_2_3_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlPlsqlRecord_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlPlsqlTable_2_3EClass, XmlPlsqlTable_2_3.class, "XmlPlsqlTable_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlPlsqlTable_2_3_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlPlsqlTable_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlStruct_2_3EClass, XmlStruct_2_3.class, "XmlStruct_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlStruct_2_3_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlStruct_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlTenantDiscriminator_2_3EClass, XmlTenantDiscriminator_2_3.class, "XmlTenantDiscriminator_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(xmlAttributes_2_3EClass, XmlAttributes_2_3.class, "XmlAttributes_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlAttributes_2_3_Structures(), this.getXmlStructure_2_3(), null, "structures", null, 0, -1, XmlAttributes_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlAttributes_2_3_Arrays(), this.getXmlArray_2_3(), null, "arrays", null, 0, -1, XmlAttributes_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlTenantDiscriminator_2_3_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlTenantDiscriminator_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlStructure_2_3EClass, XmlStructure_2_3.class, "XmlStructure_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(xmlArray_2_3EClass, XmlArray_2_3.class, "XmlArray_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
 		initEClass(xmlElementCollection_2_3EClass, XmlElementCollection_2_3.class, "XmlElementCollection_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlElementCollection_2_3_CompositeMember(), theXMLTypePackage.getString(), "compositeMember", null, 0, 1, XmlElementCollection_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(xmlMultitenantTypeEEnum, XmlMultitenantType.class, "XmlMultitenantType");
+		addEEnumLiteral(xmlMultitenantTypeEEnum, XmlMultitenantType.SINGLE_TABLE);
+		addEEnumLiteral(xmlMultitenantTypeEEnum, XmlMultitenantType.TABLE_PER_TENANT);
 	}
 
 	/**
@@ -1713,6 +1961,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		public static final EClass XML_MULTITENANT_23 = eINSTANCE.getXmlMultitenant_2_3();
 
 		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_MULTITENANT_23__TYPE = eINSTANCE.getXmlMultitenant_2_3_Type();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3 <em>Xml Named Plsql Stored Function Query 23</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1721,6 +1977,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_NAMED_PLSQL_STORED_FUNCTION_QUERY_23 = eINSTANCE.getXmlNamedPlsqlStoredFunctionQuery_2_3();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_NAMED_PLSQL_STORED_FUNCTION_QUERY_23__NAME = eINSTANCE.getXmlNamedPlsqlStoredFunctionQuery_2_3_Name();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3 <em>Xml Named Plsql Stored Procedure Query 23</em>}' class.
@@ -1733,6 +1997,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		public static final EClass XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY_23 = eINSTANCE.getXmlNamedPlsqlStoredProcedureQuery_2_3();
 
 		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY_23__NAME = eINSTANCE.getXmlNamedPlsqlStoredProcedureQuery_2_3_Name();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3 <em>Xml Named Stored Function Query 23</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1741,6 +2013,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_NAMED_STORED_FUNCTION_QUERY_23 = eINSTANCE.getXmlNamedStoredFunctionQuery_2_3();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_NAMED_STORED_FUNCTION_QUERY_23__NAME = eINSTANCE.getXmlNamedStoredFunctionQuery_2_3_Name();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3 <em>Xml Entity 23</em>}' class.
@@ -1953,6 +2233,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		public static final EClass XML_PLSQL_RECORD_23 = eINSTANCE.getXmlPlsqlRecord_2_3();
 
 		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_PLSQL_RECORD_23__NAME = eINSTANCE.getXmlPlsqlRecord_2_3_Name();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlTable_2_3 <em>Xml Plsql Table 23</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1961,6 +2249,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_PLSQL_TABLE_23 = eINSTANCE.getXmlPlsqlTable_2_3();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_PLSQL_TABLE_23__NAME = eINSTANCE.getXmlPlsqlTable_2_3_Name();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3 <em>Xml Struct 23</em>}' class.
@@ -1973,6 +2269,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		public static final EClass XML_STRUCT_23 = eINSTANCE.getXmlStruct_2_3();
 
 		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_STRUCT_23__NAME = eINSTANCE.getXmlStruct_2_3_Name();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3 <em>Xml Tenant Discriminator 23</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1981,6 +2285,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_TENANT_DISCRIMINATOR_23 = eINSTANCE.getXmlTenantDiscriminator_2_3();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TENANT_DISCRIMINATOR_23__NAME = eINSTANCE.getXmlTenantDiscriminator_2_3_Name();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3 <em>Xml Attributes 23</em>}' class.
@@ -2045,6 +2357,16 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_ELEMENT_COLLECTION_23__COMPOSITE_MEMBER = eINSTANCE.getXmlElementCollection_2_3_CompositeMember();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType <em>Xml Multitenant Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMultitenantType()
+		 * @generated
+		 */
+		public static final EEnum XML_MULTITENANT_TYPE = eINSTANCE.getXmlMultitenantType();
 
 	}
 

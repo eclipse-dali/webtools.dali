@@ -26,16 +26,23 @@ public interface EclipseLink2_3
 	String COMPOSITE_MEMBER = "composite-member";
 
 	String MULTITENANT = "multitenant";
-		String TENANT_DISCRIMINATOR = "tenant-discriminator";
 		String MULTITENANT__TYPE = "type";
 	String MULTITENANT_TYPE = "multiltenant-type";
 	String NAMED_STORED_FUNCTION_QUERY = "named-stored-function-query";
+		String NAMED_STORED_FUNCTION_QUERY__NAME = "nname";
 	String NAMED_PLSQL_STORED_PROCEDURE_QUERY = "named-plsql-stored-procedure-query";
+		String NAMED_PLSQL_STORED_PROCEDURE_QUERY__NAME = "name";
 	String NAMED_PLSQL_STORED_FUNCTION_QUERY = "named-plsql-stored-function-query";
+		String NAMED_PLSQL_STORED_FUNCTION_QUERY__NAME = "name";
 	String PLSQL_RECORD = "plsql-record";
+		String PLSQL_RECORD__NAME = "name";
 	String PLSQL_TABLE = "plsql-table";
+		String PLSQL_TABLE__NAME = "name";
 	String STRUCT = "struct";
+		String STRUCT__NAME = "name";
 	String STRUCTURE = "structure";
+	String TENANT_DISCRIMINATOR = "tenant-discriminator";
+		String TENANT_DISCRIMINATOR__NAME = "name";
 
 
 }

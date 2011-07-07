@@ -4728,6 +4728,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MULTITENANT = 42;
 	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTITENANT__TYPE = EclipseLinkOrmV2_3Package.XML_MULTITENANT_23__TYPE;
+	/**
 	 * The number of structural features of the '<em>Xml Multitenant</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4761,6 +4769,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY = 45;
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY__NAME = EclipseLinkOrmV2_3Package.XML_NAMED_PLSQL_STORED_FUNCTION_QUERY_23__NAME;
+	/**
 	 * The number of structural features of the '<em>Xml Named Plsql Stored Function Query</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4778,6 +4794,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY = 46;
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY__NAME = EclipseLinkOrmV2_3Package.XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY_23__NAME;
+	/**
 	 * The number of structural features of the '<em>Xml Named Plsql Stored Procedure Query</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4794,6 +4818,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_NAMED_STORED_FUNCTION_QUERY = 47;
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NAMED_STORED_FUNCTION_QUERY__NAME = EclipseLinkOrmV2_3Package.XML_NAMED_STORED_FUNCTION_QUERY_23__NAME;
 	/**
 	 * The number of structural features of the '<em>Xml Named Stored Function Query</em>' class.
 	 * <!-- begin-user-doc -->
@@ -5758,6 +5790,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_PLSQL_RECORD = 58;
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_PLSQL_RECORD__NAME = EclipseLinkOrmV2_3Package.XML_PLSQL_RECORD_23__NAME;
+	/**
 	 * The number of structural features of the '<em>Xml Plsql Record</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5774,6 +5814,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_PLSQL_TABLE = 59;
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_PLSQL_TABLE__NAME = EclipseLinkOrmV2_3Package.XML_PLSQL_TABLE_23__NAME;
 	/**
 	 * The number of structural features of the '<em>Xml Plsql Table</em>' class.
 	 * <!-- begin-user-doc -->
@@ -6187,6 +6235,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_STRUCT = 73;
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_STRUCT__NAME = EclipseLinkOrmV2_3Package.XML_STRUCT_23__NAME;
+	/**
 	 * The number of structural features of the '<em>Xml Struct</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6428,6 +6484,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final int XML_TENANT_DISCRIMINATOR = 78;
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TENANT_DISCRIMINATOR__NAME = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_23__NAME;
 	/**
 	 * The number of structural features of the '<em>Xml Tenant Discriminator</em>' class.
 	 * <!-- begin-user-doc -->

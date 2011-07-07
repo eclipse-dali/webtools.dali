@@ -528,6 +528,15 @@
     <nestedGenPackages prefix="EclipseLinkOrmV2_3" basePackage="org.eclipse.jpt.jpa.eclipselink.core.resource.orm"
         disposableProviderFactory="true" adapterFactory="false" fileExtensions="EclipselinkOrmV2_3"
         ecorePackage="eclipselink_orm.ecore#//v2_3">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v2_3/XmlMultitenantType">
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_3/XmlMultitenantType/SINGLE_TABLE"/>
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_3/XmlMultitenantType/TABLE_PER_TENANT"/>
+      </genEnums>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlArray_2_3"/>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3/structures"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3/arrays"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlEmbeddable_2_3">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEmbeddable_2_3/plsqlRecords"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEmbeddable_2_3/plsqlTables"/>
@@ -558,23 +567,34 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlMappedSuperclass_2_3/plsqlRecords"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlMappedSuperclass_2_3/plsqlTables"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlMultitenant_2_3"/>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlNamedPlsqlStoredFunctionQuery_2_3"/>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlNamedPlsqlStoredProcedureQuery_2_3"/>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlNamedStoredFunctionQuery_2_3"/>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlMultitenant_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlMultitenant_2_3/type"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlNamedPlsqlStoredFunctionQuery_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlNamedPlsqlStoredFunctionQuery_2_3/name"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlNamedPlsqlStoredProcedureQuery_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlNamedPlsqlStoredProcedureQuery_2_3/name"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlNamedStoredFunctionQuery_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlNamedStoredFunctionQuery_2_3/name"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlPersistenceUnitDefaults_2_3">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlPersistenceUnitDefaults_2_3/tenantDiscriminators"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlPlsqlRecord_2_3"/>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlPlsqlTable_2_3"/>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStruct_2_3"/>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminator_2_3"/>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3/structures"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3/arrays"/>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlPlsqlRecord_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlPlsqlRecord_2_3/name"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlPlsqlTable_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlPlsqlTable_2_3/name"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStruct_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlStruct_2_3/name"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminator_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminator_2_3/name"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStructure_2_3"/>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlArray_2_3"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlElementCollection_2_3">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlElementCollection_2_3/compositeMember"/>
       </genClasses>

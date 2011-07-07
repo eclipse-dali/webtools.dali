@@ -659,6 +659,14 @@
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="v2_3" nsURI="jpt.eclipselink.orm.v2_3.xmi" nsPrefix="org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3">
+    <eClassifiers xsi:type="ecore:EClass" name="XmlArray_2_3" abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlAttributes_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="structures" upperBound="-1"
+          eType="#//v2_3/XmlStructure_2_3" containment="true" resolveProxies="false"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="arrays" upperBound="-1"
+          eType="#//v2_3/XmlArray_2_3" containment="true" resolveProxies="false"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable_2_3" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="plsqlRecords" upperBound="-1"
@@ -715,38 +723,50 @@
           eType="#//XmlPlsqlTable" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlMultitenant_2_3" abstract="true"
-        interface="true"/>
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//v2_3/XmlMultitenantType"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlNamedPlsqlStoredFunctionQuery_2_3"
-        abstract="true" interface="true"/>
+        abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlNamedPlsqlStoredProcedureQuery_2_3"
-        abstract="true" interface="true"/>
+        abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredFunctionQuery_2_3" abstract="true"
-        interface="true"/>
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults_2_3" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="tenantDiscriminators"
           upperBound="-1" eType="#//v2_3/XmlTenantDiscriminator_2_3" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlPlsqlRecord_2_3" abstract="true"
-        interface="true"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlPlsqlTable_2_3" abstract="true"
-        interface="true"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlStruct_2_3" abstract="true" interface="true"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlTenantDiscriminator_2_3" abstract="true"
-        interface="true"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlAttributes_2_3" abstract="true"
         interface="true">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="structures" upperBound="-1"
-          eType="#//v2_3/XmlStructure_2_3" containment="true" resolveProxies="false"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="arrays" upperBound="-1"
-          eType="#//v2_3/XmlArray_2_3" containment="true" resolveProxies="false"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlPlsqlTable_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlStruct_2_3" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlTenantDiscriminator_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlStructure_2_3" abstract="true"
         interface="true"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlArray_2_3" abstract="true" interface="true"/>
     <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_3" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="compositeMember" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="XmlMultitenantType">
+      <eLiterals name="SINGLE_TABLE"/>
+      <eLiterals name="TABLE_PER_TENANT" value="1" literal="CHANGED_COLUMNS"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
