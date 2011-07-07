@@ -54,7 +54,11 @@ public class XmlNamedPlsqlStoredFunctionQuery extends AbstractJpaEObject impleme
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature,
+			EclipseLinkOrmPackage.eINSTANCE.getXmlNamedPlsqlStoredFunctionQuery(),
+			buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {
