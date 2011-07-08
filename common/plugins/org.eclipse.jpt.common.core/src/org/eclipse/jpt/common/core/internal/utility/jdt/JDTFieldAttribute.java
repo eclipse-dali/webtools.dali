@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -81,8 +81,8 @@ public class JDTFieldAttribute
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		VariableDeclarationFragment fragment = this.getFragment(astRoot);
-		//fragment can be null if the resource is out of sync with the file system
-		return fragment == null ? null : new ASTNodeTextRange(fragment.getName());
+		// the fragment can be null if the resource is out of sync with the file system
+		return (fragment == null) ? null : ASTTools.buildTextRange(fragment.getName());
 	}
 
 	public String getAttributeName() {
@@ -145,9 +145,10 @@ public class JDTFieldAttribute
 
 	protected FieldDeclaration[] getDeclaringTypeFieldDeclarations(CompilationUnit astRoot) {
 		TypeDeclaration typeDeclaration = this.getDeclaringTypeDeclaration(astRoot);
-		//typeDeclaration can be null if the resource is out of sync with the file system
-		return typeDeclaration == null ? new FieldDeclaration[0] : typeDeclaration.getFields();
+		// the declaration can be null if the resource is out of sync with the file system
+		return (typeDeclaration == null) ? EMPTY_FIELD_DECLARATION_ARRAY : typeDeclaration.getFields();
 	}
+	protected static final FieldDeclaration[] EMPTY_FIELD_DECLARATION_ARRAY = new FieldDeclaration[0];
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")

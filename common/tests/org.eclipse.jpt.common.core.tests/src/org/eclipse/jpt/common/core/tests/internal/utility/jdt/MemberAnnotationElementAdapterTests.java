@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.core.tests.internal.utility.jdt;
 
 import java.util.Arrays;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ASTNodeTextRange;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.BooleanExpressionConverter;
@@ -342,7 +342,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "bar");
 		AnnotationElementAdapter<String> aea = new AnnotatedElementAnnotationElementAdapter<String>(this.idField(cu), daea);
 
-		TextRange textRange = new ASTNodeTextRange(aea.getAstNode(this.buildASTRoot(cu)));
+		TextRange textRange = ASTTools.buildTextRange(aea.getAstNode(this.buildASTRoot(cu)));
 		assertEquals(this.getSource(cu).indexOf(value), textRange.getOffset());
 		assertEquals(value.length(), textRange.getLength());
 		assertEquals(7, textRange.getLineNumber());
@@ -362,7 +362,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa3, "fred", BooleanExpressionConverter.instance());
 		AnnotationElementAdapter<Boolean> aea = new AnnotatedElementAnnotationElementAdapter<Boolean>(this.idField(cu), daea);
 		assertEquals(Boolean.FALSE, aea.getValue());
-		TextRange textRange = new ASTNodeTextRange(aea.getAstNode(this.buildASTRoot(cu)));
+		TextRange textRange = ASTTools.buildTextRange(aea.getAstNode(this.buildASTRoot(cu)));
 		assertEquals(value.length(), textRange.getLength());
 	}
 
@@ -375,7 +375,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa);
 		AnnotationElementAdapter<String> aea = new AnnotatedElementAnnotationElementAdapter<String>(this.idField(cu), daea);
 
-		TextRange textRange = new ASTNodeTextRange(aea.getAstNode(this.buildASTRoot(cu)));
+		TextRange textRange = ASTTools.buildTextRange(aea.getAstNode(this.buildASTRoot(cu)));
 		assertEquals(this.getSource(cu).indexOf(element), textRange.getOffset());
 		assertEquals(element.length(), textRange.getLength());
 	}
@@ -388,7 +388,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa);
 		AnnotationElementAdapter<String> aea = new AnnotatedElementAnnotationElementAdapter<String>(this.idField(cu), daea);
 
-		TextRange textRange = new ASTNodeTextRange(aea.getAstNode(this.buildASTRoot(cu)));
+		TextRange textRange = ASTTools.buildTextRange(aea.getAstNode(this.buildASTRoot(cu)));
 		assertEquals(this.getSource(cu).indexOf(annotation), textRange.getOffset());
 		assertEquals(annotation.length(), textRange.getLength());
 	}

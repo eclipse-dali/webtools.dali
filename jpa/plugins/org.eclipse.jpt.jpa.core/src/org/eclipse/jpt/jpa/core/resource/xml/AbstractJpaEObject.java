@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.jpt.common.core.utility.AbstractTextRange;
+import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
@@ -160,20 +160,21 @@ public abstract class AbstractJpaEObject
 	 */
 	protected TextRange getTextTextRange() {
 		IDOMNode textNode = this.getTextNode();
-		return (textNode != null) ? buildTextRange(textNode) : this.getValidationTextRange();
+		return (textNode != null) ? this.buildTextRange(textNode) : this.getValidationTextRange();
 	}
 	
 	protected IDOMNode getTextNode() {
+		// TODO bjv null check no longer needed? (orm nodes are no longer virtual)
 		// virtual objects have no node
-		return (this.node == null) ? null : getTextNode(this.node);
+		return (this.node == null) ? null : selectTextNode(this.node.getChildNodes());
 	}
 
-	protected static IDOMNode getTextNode(IDOMNode node) {
-		NodeList children = node.getChildNodes();
-		for (int i = 0; i < children.getLength(); i++) {
-			IDOMNode child = (IDOMNode) children.item(i);
-			if (child.getNodeType() == Node.TEXT_NODE) {
-				return child;
+	
+	protected IDOMNode selectTextNode(NodeList nodes) {
+		for (int i = 0; i < nodes.getLength(); i++) {
+			IDOMNode n = (IDOMNode) nodes.item(i);
+			if (n.getNodeType() == Node.TEXT_NODE) {
+				return n;
 			}
 		}
 		return null;
@@ -186,7 +187,7 @@ public abstract class AbstractJpaEObject
 	 */
 	protected TextRange getAttributeTextRange(String attributeName) {
 		IDOMNode attributeNode = this.getAttributeNode(attributeName);
-		return (attributeNode != null) ? buildTextRange(attributeNode) : this.getValidationTextRange();
+		return (attributeNode != null) ? this.buildTextRange(attributeNode) : this.getValidationTextRange();
 	}
 	
 	protected IDOMAttr getAttributeNode(String attributeName) {
@@ -201,7 +202,7 @@ public abstract class AbstractJpaEObject
 	 */
 	protected TextRange getElementTextRange(String elementName) {
 		IDOMNode elementNode = this.getElementNode(elementName);
-		return (elementNode != null) ? buildTextRange(elementNode) : this.getValidationTextRange();
+		return (elementNode != null) ? this.buildTextRange(elementNode) : this.getValidationTextRange();
 	}
 	
 	/**
@@ -229,13 +230,31 @@ public abstract class AbstractJpaEObject
 	}
 	
 	protected TextRange getFullTextRange() {
-		return buildTextRange(this.node);
+		return this.buildTextRange(this.node);
 	}
-	
-	protected static TextRange buildTextRange(IDOMNode domNode) {
-		return (domNode == null) ? null : new DOMNodeTextRange(domNode);
+
+	protected TextRange buildTextRange(IDOMNode domNode) {
+		return (domNode == null) ? null : this.buildTextRange_(domNode, null);
 	}
-	
+
+	protected TextRange buildTextRange(IDOMNode domNode, TextRange textRange) {
+		return (domNode == null) ? null : this.buildTextRange_(domNode, textRange);
+	}
+
+	/**
+	 * pre-condition: the specified DOM node is not <code>null</code>
+	 */
+	protected TextRange buildTextRange_(IDOMNode domNode, TextRange textRange) {
+		int offset = domNode.getStartOffset();
+		int length = (domNode.getNodeType() == Node.ELEMENT_NODE) ?
+						(((IDOMElement) domNode).getStartEndOffset() - offset) :
+						domNode.getLength();
+		int lineNumber = domNode.getStructuredDocument().getLineOfOffset(offset) + 1;
+		return (textRange == null) ?
+				new SimpleTextRange(offset, length, lineNumber) :
+				textRange.buildTextRange(offset, length, lineNumber);
+	}
+
 	public boolean containsOffset(int textOffset) {
 		return (this.node == null) ? false : this.node.contains(textOffset);
 	}
@@ -295,38 +314,4 @@ public abstract class AbstractJpaEObject
 			super.didRemove(index, oldObject);
 		}
 	}
-
-
-	// ********** DOM node text range **********
-
-	/**
-	 * Adapt an IDOMNode to the TextRange interface.
-	 */
-	protected static class DOMNodeTextRange
-		extends AbstractTextRange
-	{
-		private final IDOMNode node;
-
-		DOMNodeTextRange(IDOMNode node) {
-			super();
-			this.node = node;
-		}
-
-		public int getOffset() {
-			return this.node.getStartOffset();
-		}
-
-		public int getLength() {
-			if (this.node.getNodeType() == Node.ELEMENT_NODE) {
-				return ((IDOMElement) this.node).getStartEndOffset() - this.node.getStartOffset();
-			}
-			return this.node.getLength();
-		}
-
-		public int getLineNumber() {
-			return this.node.getStructuredDocument().getLineOfOffset(this.getOffset()) + 1;
-		}
-
-	}
-
 }

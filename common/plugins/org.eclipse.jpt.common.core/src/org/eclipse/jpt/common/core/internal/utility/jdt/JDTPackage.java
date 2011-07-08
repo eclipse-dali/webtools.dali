@@ -1,13 +1,13 @@
 /*******************************************************************************
-  * Copyright (c) 2010 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+ * Copyright (c) 2005, 2011 Red Hat, Inc. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ *     Oracle
+ ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -20,14 +20,10 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.CommandExecutor;
 
-/**
- * @author Dmitry Geraskov
- *
- */
-
-public class JDTPackage extends JDTAnnotatedElement implements AnnotatedPackage {
-	
-	
+public class JDTPackage
+	extends JDTAnnotatedElement 
+	implements AnnotatedPackage
+{
 	protected JDTPackage(PackageDeclaration declaringPackage,
 			ICompilationUnit compilationUnit,
 			CommandExecutor modifySharedDocumentCommandExecutor) {
@@ -60,6 +56,6 @@ public class JDTPackage extends JDTAnnotatedElement implements AnnotatedPackage 
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return new ASTNodeTextRange(this.getBodyDeclaration(astRoot).getName());
+		return ASTTools.buildTextRange(this.getBodyDeclaration(astRoot).getName());
 	}
 }

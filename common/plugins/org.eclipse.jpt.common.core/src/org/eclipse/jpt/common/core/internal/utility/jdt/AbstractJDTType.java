@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -114,8 +114,8 @@ public abstract class AbstractJDTType
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		AbstractTypeDeclaration bodyDeclaration = this.getBodyDeclaration(astRoot);
-		//bodyDeclaration can be null if the resource is out of sync with the file system
-		return bodyDeclaration == null ? null : new ASTNodeTextRange(bodyDeclaration.getName());
+		// the declaration can be null if the resource is out of sync with the file system
+		return (bodyDeclaration) == null ? null : ASTTools.buildTextRange(bodyDeclaration.getName());
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ASTNodeTextRange;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -141,7 +141,7 @@ public abstract class SourceAnnotation
 	 * If the AST node is null, return null.
 	 */
 	protected TextRange getTextRange(ASTNode astNode) {
-		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
+		return (astNode == null) ? null : ASTTools.buildTextRange(astNode);
 	}
 
 

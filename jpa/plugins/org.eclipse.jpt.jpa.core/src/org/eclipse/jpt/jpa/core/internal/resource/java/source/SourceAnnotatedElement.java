@@ -20,7 +20,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ASTNodeTextRange;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -387,7 +386,7 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 	}
 
 	private TextRange buildTextRange(ASTNode astNode) {
-		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
+		return (astNode == null) ? null : ASTTools.buildTextRange(astNode);
 	}
 
 

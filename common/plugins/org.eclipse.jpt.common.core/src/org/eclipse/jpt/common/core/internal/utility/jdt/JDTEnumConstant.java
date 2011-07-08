@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -75,8 +75,8 @@ public class JDTEnumConstant
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		EnumConstantDeclaration declaration = this.getBodyDeclaration(astRoot);
-		//declaration can be null if the resource is out of sync with the file system
-		return declaration == null ? null : new ASTNodeTextRange(declaration.getName());
+		// the declaration can be null if the resource is out of sync with the file system
+		return (declaration == null) ? null : ASTTools.buildTextRange(declaration.getName());
 	}
 
 	//As far as I can tell, enum constants are always "persistable", 

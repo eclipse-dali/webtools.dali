@@ -17,7 +17,7 @@ import java.util.Map;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ASTNodeTextRange;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
@@ -198,10 +198,18 @@ public abstract class SourceAnnotation<A extends AnnotatedElement>
 
 	/**
 	 * Return the text range corresponding to the specified AST node.
-	 * If the AST node is null, return null.
+	 * If the AST node is <code>null</code>, return <code>null</code>.
 	 */
 	protected TextRange getTextRange(ASTNode astNode) {
-		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
+		return (astNode == null) ? null : ASTTools.buildTextRange(astNode);
+	}
+
+	/**
+	 * Return the text range corresponding to the specified AST node.
+	 * If the AST node is <code>null</code>, return <code>null</code>.
+	 */
+	protected TextRange getTextRange(ASTNode astNode, TextRange textRange) {
+		return (astNode == null) ? null : ASTTools.buildTextRange(astNode, textRange);
 	}
 
 	/**

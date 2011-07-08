@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility;
 
+import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
@@ -26,21 +27,32 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 public abstract class AbstractTextRange
 	implements TextRange
 {
+	protected AbstractTextRange() {
+		super();
+	}
 
 	public boolean includes(int index) {
-		return (this.getOffset() <= index) && (index < this.end());
+		return (this.getOffset() <= index) && (index < this.getEnd());
 	}
 
 	public boolean touches(int index) {
-		return this.includes(index) || (index == this.end());
+		return (this.getOffset() <= index) && (index <= this.getEnd());
 	}
 
 	/**
-	 * The end offset is "exclusive", i.e. the element at the end offset
+	 * The end offset is <em>exclusive</em>, i.e. the element at the end offset
 	 * is not included in the range.
 	 */
-	protected int end() {
+	protected int getEnd() {
 		return this.getOffset() + this.getLength();
+	}
+
+	public TextRange buildTextRange(int offset, int length, int lineNumber) {
+		return ((offset == this.getOffset()) &&
+				(length == this.getLength()) &&
+				(lineNumber == this.getLineNumber())) ?
+					this :
+					new SimpleTextRange(offset, length, lineNumber);
 	}
 
 	@Override
@@ -51,21 +63,22 @@ public abstract class AbstractTextRange
 		if ( ! (o instanceof TextRange)) {
 			return false;
 		}
-		TextRange r = (TextRange) o;
-		return (r.getOffset() == this.getOffset())
-				&& (r.getLength() == this.getLength());
+		TextRange other = (TextRange) o;
+		return (other.getOffset() == this.getOffset())
+				&& (other.getLength() == this.getLength())
+				&& (other.getLineNumber() == this.getLineNumber());
 	}
 
 	@Override
 	public int hashCode() {
-		return this.getOffset() ^ this.getLength();
+		return this.getOffset() ^ this.getLength() ^ this.getLineNumber();
 	}
 
 	@Override
 	public String toString() {
 		String start = String.valueOf(this.getOffset());
-		String end = String.valueOf(this.end());
-		return StringTools.buildToStringFor(this, start + ", " + end); //$NON-NLS-1$
+		String end = String.valueOf(this.getEnd());
+		String line = String.valueOf(this.getLineNumber());
+		return StringTools.buildToStringFor(this, start + ", " + end + " [" + line + ']'); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,6 +27,8 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.TypeLiteral;
+import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.JavaType;
 import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.SimpleJavaType;
@@ -128,21 +130,25 @@ public class ASTTools {
 	}
 	
 	/**
-	 * If the specified expression is an array initializer, return an iterable on 
+	 * If the specified expression is an array initializer, return an iterable of
 	 * the corresponding type bindings for each sub-expression.
-	 * The result may include nulls.
+	 * The result may include <code>null</code> elements.
 	 */
 	public static Iterable<ITypeBinding> resolveTypeBindings(Expression expression) {
-		if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
-			ArrayInitializer arrayExpression = (ArrayInitializer) expression;
-			return new TransformationIterable<Expression, ITypeBinding>(arrayExpression.expressions()) {
-				@Override
-				protected ITypeBinding transform(Expression o) {
-					return resolveTypeBinding(o);
-				}
-			};
-		}
-		return EmptyIterable.instance();
+		return (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) ?
+				resolveTypeBindings((ArrayInitializer) expression) :
+				EmptyIterable.<ITypeBinding>instance();
+	}
+	
+	private static Iterable<ITypeBinding> resolveTypeBindings(ArrayInitializer arrayExpression) {
+		@SuppressWarnings("unchecked")
+		Iterable<Expression> expressions = arrayExpression.expressions();
+		return new TransformationIterable<Expression, ITypeBinding>(expressions) {
+			@Override
+			protected ITypeBinding transform(Expression expression) {
+				return resolveTypeBinding(expression);
+			}
+		};
 	}
 	
 	public static MethodSignature buildMethodSignature(MethodDeclaration methodDeclaration) {
@@ -281,4 +287,25 @@ public class ASTTools {
 
 	}
 
+	/**
+	 * Build and return a text range for the specified AST node.
+	 */
+	public static TextRange buildTextRange(ASTNode astNode) {
+		return buildTextRange(astNode, null);
+	}
+
+	/**
+	 * Build and return a text range for the specified AST node if it differs
+	 * from the specified text range or the specified text range is
+	 * <code>null</code>. If the AST node already matches the
+	 * specified text range, simply return the text range unchanged.
+	 */
+	public static TextRange buildTextRange(ASTNode astNode, TextRange textRange) {
+		int offset = astNode.getStartPosition();
+		int length = astNode.getLength();
+		int lineNumber = ((CompilationUnit) astNode.getRoot()).getLineNumber(offset);
+		return (textRange == null) ?
+				new SimpleTextRange(offset, length, lineNumber) :
+				textRange.buildTextRange(offset, length, lineNumber);
+	}
 }
