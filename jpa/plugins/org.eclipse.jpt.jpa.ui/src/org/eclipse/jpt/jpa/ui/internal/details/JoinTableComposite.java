@@ -291,7 +291,7 @@ public class JoinTableComposite
 
 		try {
 			if (selected) {
-				joinTable.convertDefaultToSpecifiedInverseJoinColumn();
+				joinTable.convertDefaultInverseJoinColumnToSpecified();
 				setSelectedInverseJoinColumn(joinTable.specifiedInverseJoinColumns().next());
 			} else {
 				joinTable.clearSpecifiedInverseJoinColumns();

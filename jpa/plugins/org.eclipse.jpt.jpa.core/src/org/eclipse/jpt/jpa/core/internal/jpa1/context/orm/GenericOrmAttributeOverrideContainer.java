@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
@@ -38,7 +38,7 @@ public class GenericOrmAttributeOverrideContainer
 	}
 
 
-	public Column resolveOverriddenColumn(String attributeName) {
+	public ReadOnlyColumn resolveOverriddenColumn(String attributeName) {
 		return (attributeName == null) ? null : this.owner.resolveOverriddenColumn(attributeName);
 	}
 

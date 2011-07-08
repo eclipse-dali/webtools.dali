@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,6 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 
 /**
  * <ul>
@@ -46,43 +44,9 @@ public interface Table
 	void removeUniqueConstraint(UniqueConstraint uniqueConstraint);
 	void moveUniqueConstraint(int targetIndex, int sourceIndex);
 
-
-	// ********** misc **********
-
 	/**
 	 * Return whether the table is specified in the
 	 * (Java or XML) resource.
 	 */
 	boolean isSpecifiedInResource();
-
-	/**
-	 * Return whether the table can be resolved to a table on the database.
-	 */
-	boolean isResolved();
-
-	/**
-	 * Return whether the table's schema can be resolved to a schema on the
-	 * database.
-	 */
-	boolean schemaIsResolved();
-
-	/**
-	 * Return whether the table has a catalog and it can be resolved to a
-	 * catalog on the database.
-	 */
-	boolean catalogIsResolved();
-
-	/**
-	 * Return whether the table is validated against a live database connection.
-	 */
-	boolean validatesAgainstDatabase();
-
-	/**
-	 * interface allowing columns to be used in multiple places
-	 * (e.g. basic mappings and attribute overrides)
-	 */
-	interface Owner
-	{
-		JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver);
-	}
 }

@@ -23,5 +23,5 @@ public interface VirtualRelationship
 {
 	VirtualRelationshipStrategy getStrategy();
 
-	Relationship resolveOverriddenRelationship();
+	ReadOnlyRelationship resolveOverriddenRelationship();
 }

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualBaseColumn;
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualBaseColum
  * <code>orm.xml</code> virtual column
  */
 public class GenericOrmVirtualColumn
-	extends AbstractOrmVirtualBaseColumn<OrmVirtualColumn.Owner, Column>
+	extends AbstractOrmVirtualBaseColumn<OrmVirtualColumn.Owner, ReadOnlyColumn>
 	implements OrmVirtualColumn
 {
 	protected Integer specifiedLength;
@@ -56,7 +56,7 @@ public class GenericOrmVirtualColumn
 	// ********** column **********
 
 	@Override
-	public Column getOverriddenColumn() {
+	public ReadOnlyColumn getOverriddenColumn() {
 		return this.owner.resolveOverriddenColumn();
 	}
 

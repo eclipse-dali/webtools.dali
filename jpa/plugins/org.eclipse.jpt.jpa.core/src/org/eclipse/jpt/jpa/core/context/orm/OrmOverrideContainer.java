@@ -33,8 +33,12 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOverride;
 public interface OrmOverrideContainer
 	extends OverrideContainer, XmlContextNode
 {
-	// we need this covariant override because there is no override *container*
-	// element in the orm.xml (there is just a list of overrides)
+	// covariant overrides
+	/**
+	 * We need this covariant override because there is no override
+	 * <em>container</em> element in the <code>orm.xml</code> file;
+	 * there is simply a list of overrides.
+	 */
 	XmlContextNode getParent();
 	ListIterator<? extends OrmReadOnlyOverride> overrides();
 	OrmReadOnlyOverride getOverrideNamed(String name);
@@ -50,9 +54,27 @@ public interface OrmOverrideContainer
 		extends OverrideContainer.Owner
 	{		
 		<T extends XmlOverride> EList<T> getXmlOverrides();
+		
+		/**
+		 * Return the names of all the corresponding Java overrides, specified and
+		 * virtual. Return <code>null</code> if the Java overrides are not relevant
+		 * (i.e. the parent is not an entity, the parent entity has no 
+		 * corresponding Java entity, or the parent entity is <em>metadata
+		 * complete</em>). Return an empty list if the Java overrides are
+		 * <em>possible</em> but there are simply none.
+		 * <p>
+		 * <strong>NB:</strong> Unlike overrides associated with attribute
+		 * mappings, the overrides associated with an <code>orm.xml</code>
+		 * entity are <em>additive</em> to any specified Java overrides. An
+		 * <code>orm.xml</code> override only overrides the Java override with
+		 * the same name. [JPA spec 10.1.3.13-14; JPA 2.0 spec 12.2.3.14-15]
+		 * 
+		 * @see org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer#getOverrideNames()
+		 */
+		Iterable<String> getJavaOverrideNames();
+
+		TextRange getValidationTextRange();
 
 		OrmTypeMapping getTypeMapping();
-		
-		TextRange getValidationTextRange();
 	}
 }

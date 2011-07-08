@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractNamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -19,7 +19,7 @@ public class OrderColumnValidator
 	extends AbstractNamedColumnValidator<OrderColumn2_0, NamedColumnTextRangeResolver>
 {
 	public OrderColumnValidator(
-				PersistentAttribute persistentAttribute,
+				ReadOnlyPersistentAttribute persistentAttribute,
 				OrderColumn2_0 column,
 				NamedColumnTextRangeResolver textRangeResolver) {
 		super(persistentAttribute, column, textRangeResolver);

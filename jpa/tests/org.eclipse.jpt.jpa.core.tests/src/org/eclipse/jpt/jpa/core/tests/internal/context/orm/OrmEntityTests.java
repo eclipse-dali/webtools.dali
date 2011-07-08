@@ -1773,19 +1773,6 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(4, overrideContainer.virtualOverridesSize());
 		virtualAttributeOverrides = overrideContainer.virtualOverrides();
 		virtualOverride = virtualAttributeOverrides.next();
-		assertEquals("basic", virtualOverride.getName());
-		assertEquals("MY_NAME", virtualOverride.getColumn().getSpecifiedName());
-		assertEquals("BAR", virtualOverride.getColumn().getTable());
-		assertEquals("COLUMN_DEF", virtualOverride.getColumn().getColumnDefinition());
-		assertEquals(false, virtualOverride.getColumn().isInsertable());
-		assertEquals(false, virtualOverride.getColumn().isUpdatable());
-		assertEquals(true, virtualOverride.getColumn().isUnique());
-		assertEquals(false, virtualOverride.getColumn().isNullable());
-		assertEquals(5, virtualOverride.getColumn().getLength());
-		assertEquals(6, virtualOverride.getColumn().getPrecision());
-		assertEquals(7, virtualOverride.getColumn().getScale());
-
-		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("foo", virtualOverride.getName());
 		assertEquals("FOO", virtualOverride.getColumn().getSpecifiedName());//TODO specified or default?
 		assertEquals("BAR", virtualOverride.getColumn().getSpecifiedTable());
@@ -1797,6 +1784,19 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(Integer.valueOf(7), virtualOverride.getColumn().getSpecifiedLength());
 		assertEquals(Integer.valueOf(8), virtualOverride.getColumn().getSpecifiedPrecision());
 		assertEquals(Integer.valueOf(9), virtualOverride.getColumn().getSpecifiedScale());
+
+		virtualOverride = virtualAttributeOverrides.next();
+		assertEquals("basic", virtualOverride.getName());
+		assertEquals("MY_NAME", virtualOverride.getColumn().getSpecifiedName());
+		assertEquals("BAR", virtualOverride.getColumn().getTable());
+		assertEquals("COLUMN_DEF", virtualOverride.getColumn().getColumnDefinition());
+		assertEquals(false, virtualOverride.getColumn().isInsertable());
+		assertEquals(false, virtualOverride.getColumn().isUpdatable());
+		assertEquals(true, virtualOverride.getColumn().isUnique());
+		assertEquals(false, virtualOverride.getColumn().isNullable());
+		assertEquals(5, virtualOverride.getColumn().getLength());
+		assertEquals(6, virtualOverride.getColumn().getPrecision());
+		assertEquals(7, virtualOverride.getColumn().getScale());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualOverride.getName());
 	}
@@ -2176,12 +2176,12 @@ public class OrmEntityTests extends ContextModelTestCase
 		virtualOverrides = overrideContainer.virtualOverrides();
 		virtualOverride = virtualOverrides.next();
 		joiningStrategy = virtualOverride.getRelationship().getJoinColumnStrategy();
-		assertEquals("manyToOne", virtualOverride.getName());
+		assertEquals("oneToOne", virtualOverride.getName());
 		ormJoinColumn = joiningStrategy.joinColumns().next();
-		assertEquals("MY_NAME", ormJoinColumn.getSpecifiedName());
-		assertEquals("MY_REFERNCE_NAME", ormJoinColumn.getSpecifiedReferencedColumnName());
-		assertEquals("BAR2", ormJoinColumn.getSpecifiedTable());
-		assertEquals("COLUMN_DEF2", ormJoinColumn.getColumnDefinition());
+		assertEquals("FOO", ormJoinColumn.getSpecifiedName());
+		assertEquals("REFERENCE", ormJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals("BAR", ormJoinColumn.getSpecifiedTable());
+		assertEquals("COLUMN_DEF", ormJoinColumn.getColumnDefinition());
 		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
@@ -2189,12 +2189,12 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		virtualOverride = virtualOverrides.next();
 		joiningStrategy = virtualOverride.getRelationship().getJoinColumnStrategy();
-		assertEquals("oneToOne", virtualOverride.getName());
+		assertEquals("manyToOne", virtualOverride.getName());
 		ormJoinColumn = joiningStrategy.joinColumns().next();
-		assertEquals("FOO", ormJoinColumn.getSpecifiedName());
-		assertEquals("REFERENCE", ormJoinColumn.getSpecifiedReferencedColumnName());
-		assertEquals("BAR", ormJoinColumn.getSpecifiedTable());
-		assertEquals("COLUMN_DEF", ormJoinColumn.getColumnDefinition());
+		assertEquals("MY_NAME", ormJoinColumn.getSpecifiedName());
+		assertEquals("MY_REFERNCE_NAME", ormJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals("BAR2", ormJoinColumn.getSpecifiedTable());
+		assertEquals("COLUMN_DEF2", ormJoinColumn.getColumnDefinition());
 		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());

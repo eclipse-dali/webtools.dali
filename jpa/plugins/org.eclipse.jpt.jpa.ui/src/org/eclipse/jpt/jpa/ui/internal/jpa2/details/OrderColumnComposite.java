@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,42 +70,6 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 		super(parentPane, subjectHolder, parent, false);
 	}
 
-	/**
-	 * Creates a new <code>ColumnComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of the subject <code>IColumn</code>
-	 * @param parent The parent container
-	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent controller;
-	 * <code>false</code> to not align them
-	 */
-	public OrderColumnComposite(Pane<?> parentPane,
-	                       PropertyValueModel<? extends OrderColumn2_0> subjectHolder,
-	                       Composite parent,
-	                       boolean automaticallyAlignWidgets) {
-
-		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
-	}
-	
-	/**
-	 * Creates a new <code>ColumnComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of the subject <code>IColumn</code>
-	 * @param parent The parent container
-	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent controller;
-	 * <code>false</code> to not align them
-	 */
-	public OrderColumnComposite(Pane<?> parentPane,
-	                       PropertyValueModel<? extends OrderColumn2_0> subjectHolder,
-	                       Composite parent,
-	                       boolean automaticallyAlignWidgets,
-	                       boolean parentManagePane) {
-
-		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets, parentManagePane);
-	}
 
 	private ColumnCombo<OrderColumn2_0> addColumnCombo(Composite container) {
 

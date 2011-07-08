@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -21,31 +21,27 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class AbstractTableValidator
 	implements JptValidator
 {
-	// this is null for tables defined on entities
-	protected final PersistentAttribute persistentAttribute;
+	/** this is <code>null</code> for tables defined on entities */
+	protected final ReadOnlyPersistentAttribute persistentAttribute;
 
-	protected final Table table;
+	protected final ReadOnlyTable table;
 
 	protected final TableTextRangeResolver textRangeResolver;
 
 	protected AbstractTableValidator(
-				Table table,
+				ReadOnlyTable table,
 				TableTextRangeResolver textRangeResolver) {
 		this(null, table, textRangeResolver);
 	}
 
 	protected AbstractTableValidator(
-				PersistentAttribute persistentAttribute,
-				Table table,
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyTable table,
 				TableTextRangeResolver textRangeResolver) {
 		super();
 		this.persistentAttribute = persistentAttribute;
 		this.table = table;
 		this.textRangeResolver = textRangeResolver;
-	}
-
-	protected Table getTable() {
-		return this.table;
 	}
 
 	protected TableTextRangeResolver getTextRangeResolver() {
@@ -82,7 +78,7 @@ public abstract class AbstractTableValidator
 	}
 
 	protected IMessage buildUnresolvedCatalogMessage() {
-		return this.tableParentIsVirtualAttribute() ?
+		return this.tableIsPartOfVirtualAttribute() ?
 				this.buildVirtualAttributeUnresolvedCatalogMessage() :
 				this.buildUnresolvedCatalogMessage(this.getUnresolvedCatalogMessage());
 	}
@@ -119,7 +115,7 @@ public abstract class AbstractTableValidator
 	protected abstract String getVirtualAttributeUnresolvedCatalogMessage();
 
 	protected IMessage buildUnresolvedSchemaMessage() {
-		return this.tableParentIsVirtualAttribute() ?
+		return this.tableIsPartOfVirtualAttribute() ?
 				this.buildVirtualAttributeUnresolvedSchemaMessage() :
 				this.buildUnresolvedSchemaMessage(this.getUnresolvedSchemaMessage());
 	}
@@ -156,7 +152,7 @@ public abstract class AbstractTableValidator
 	protected abstract String getVirtualAttributeUnresolvedSchemaMessage();
 
 	protected IMessage buildUnresolvedNameMessage() {
-		return this.tableParentIsVirtualAttribute() ?
+		return this.tableIsPartOfVirtualAttribute() ?
 				this.buildVirtualAttributeUnresolvedNameMessage() :
 				this.buildUnresolvedNameMessage(this.getUnresolvedNameMessage());
 	}
@@ -188,7 +184,7 @@ public abstract class AbstractTableValidator
 
 	protected abstract String getVirtualAttributeUnresolvedNameMessage();
 
-	protected boolean tableParentIsVirtualAttribute() {
+	protected boolean tableIsPartOfVirtualAttribute() {
 		return (this.persistentAttribute != null) &&
 				this.persistentAttribute.isVirtual();
 	}

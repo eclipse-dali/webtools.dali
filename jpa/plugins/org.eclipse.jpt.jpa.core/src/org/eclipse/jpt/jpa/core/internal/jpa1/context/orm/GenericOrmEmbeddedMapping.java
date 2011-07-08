@@ -22,18 +22,19 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
@@ -51,6 +52,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideValidat
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
@@ -101,7 +103,7 @@ public class GenericOrmEmbeddedMapping
 				new GenericOrmAssociationOverrideContainer(this, null);
 	}
 
-	protected OrmAssociationOverrideContainer.Owner buildAssociationOverrideContainerOwner() {
+	protected OrmAssociationOverrideContainer2_0.Owner buildAssociationOverrideContainerOwner() {
 		return new AssociationOverrideContainerOwner();
 	}
 
@@ -206,6 +208,11 @@ public class GenericOrmEmbeddedMapping
 		return (this.targetEmbeddable == null) ? null : this.targetEmbeddable.resolveOverriddenRelationship(attributeName);
 	}
 
+	@Override
+	protected OrmAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner() {
+		return new AttributeOverrideContainerOwner();
+	}
+
 
 	// ********** validation **********
 
@@ -216,10 +223,19 @@ public class GenericOrmEmbeddedMapping
 	}
 
 
+	// ********** attribute override container owner *********
+
+	protected class AttributeOverrideContainerOwner
+		extends AbstractOrmBaseEmbeddedMapping<XmlEmbedded>.AttributeOverrideContainerOwner
+	{
+		// nothing yet
+	}
+
+
 	// ********** association override container owner **********
 
 	protected class AssociationOverrideContainerOwner
-		implements OrmAssociationOverrideContainer.Owner
+		implements OrmAssociationOverrideContainer2_0.Owner
 	{
 		protected String getMappingName() {
 			return GenericOrmEmbeddedMapping.this.getName();
@@ -236,6 +252,10 @@ public class GenericOrmEmbeddedMapping
 		public Iterator<String> allOverridableNames() {
 			TypeMapping typeMapping = this.getOverridableTypeMapping();
 			return (typeMapping != null) ? typeMapping.allOverridableAssociationNames() : EmptyIterator.<String>instance();
+		}
+
+		public Iterable<String> getJavaOverrideNames() {
+			return null;
 		}
 
 		public EList<XmlAssociationOverride> getXmlOverrides() {
@@ -266,24 +286,24 @@ public class GenericOrmEmbeddedMapping
 			return GenericOrmEmbeddedMapping.this.getValidationTextRange();
 		}
 
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideValidator(this.getPersistentAttribute(), (AssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyAssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideInverseJoinColumnValidator(this.getPersistentAttribute(), override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinTableValidator(this.getPersistentAttribute(), override, (JoinTable) table, textRangeResolver);
+		public JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideJoinTableValidator(this.getPersistentAttribute(), override, (ReadOnlyJoinTable) table, textRangeResolver);
 		}
 
 		protected OrmPersistentAttribute getPersistentAttribute() {

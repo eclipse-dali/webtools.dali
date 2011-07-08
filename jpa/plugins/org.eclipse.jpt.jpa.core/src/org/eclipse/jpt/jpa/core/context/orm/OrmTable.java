@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 
 /**
  * <code>orm.xml</code> table
@@ -27,12 +25,8 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
  * @since 2.0
  */
 public interface OrmTable
-	extends Table, XmlContextNode
+	extends Table, OrmReadOnlyTable
 {
-	TextRange getNameTextRange();
-	TextRange getSchemaTextRange();
-	TextRange getCatalogTextRange();
-
 	ListIterator<OrmUniqueConstraint> uniqueConstraints();
 	OrmUniqueConstraint getUniqueConstraint(int index);
 	OrmUniqueConstraint addUniqueConstraint();

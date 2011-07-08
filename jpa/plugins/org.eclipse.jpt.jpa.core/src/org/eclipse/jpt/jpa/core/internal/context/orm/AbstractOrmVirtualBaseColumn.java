@@ -9,14 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import java.util.Iterator;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 
-public abstract class AbstractOrmVirtualBaseColumn<O extends ReadOnlyNamedColumn.Owner, C extends BaseColumn>
+public abstract class AbstractOrmVirtualBaseColumn<O extends OrmReadOnlyBaseColumn.Owner, C extends ReadOnlyBaseColumn>
 	extends AbstractOrmVirtualNamedColumn<O, C>
-	implements VirtualBaseColumn
+	implements VirtualBaseColumn, OrmReadOnlyBaseColumn
 {
 	protected String specifiedTable;
 	protected String defaultTable;
@@ -234,5 +237,28 @@ public abstract class AbstractOrmVirtualBaseColumn<O extends ReadOnlyNamedColumn
 
 	protected boolean buildDefaultUpdatable() {
 		return DEFAULT_UPDATABLE;
+	}
+
+
+	// ********** misc **********
+
+	public boolean tableNameIsInvalid() {
+		return this.owner.tableNameIsInvalid(this.getTable());
+	}
+
+	public Iterator<String> candidateTableNames() {
+		return this.owner.candidateTableNames();
+	}
+
+
+	// ********** validation **********
+
+	public TextRange getTableTextRange() {
+		return this.getValidationTextRange();
+	}
+
+	@Override
+	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
+		return new OrmBaseColumnTextRangeResolver(this);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
@@ -24,6 +23,7 @@ import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
@@ -126,8 +126,8 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY);
 			}
 
 			@Override

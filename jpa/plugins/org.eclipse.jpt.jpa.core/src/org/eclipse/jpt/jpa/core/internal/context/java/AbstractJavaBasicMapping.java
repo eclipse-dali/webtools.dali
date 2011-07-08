@@ -18,10 +18,10 @@ import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
@@ -347,8 +347,8 @@ public abstract class AbstractJavaBasicMapping
 		return this.getTypeMapping().allAssociatedTableNames();
 	}
 
-	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator(this.getPersistentAttribute(), (BaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 
 

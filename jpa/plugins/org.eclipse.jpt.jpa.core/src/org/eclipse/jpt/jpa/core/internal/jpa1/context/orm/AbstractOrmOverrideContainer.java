@@ -21,8 +21,9 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
@@ -145,7 +146,7 @@ public abstract class AbstractOrmOverrideContainer<
 	 * remaining specified overrides.
 	 */
 	protected boolean overrideWillBeVirtual(String overrideName, S specifiedOverrideToBeRemoved) {
-		return CollectionTools.contains(this.allOverridableNames(), overrideName) &&
+		return CollectionTools.contains(this.possibleVirtualOverrideNames(), overrideName) &&
 				(this.getSpecifiedOverrideNamed(overrideName, specifiedOverrideToBeRemoved) == null);
 	}
 
@@ -342,7 +343,7 @@ public abstract class AbstractOrmOverrideContainer<
 	}
 
 	protected Iterator<String> virtualOverrideNames() {
-		return new FilteringIterator<String>(this.allOverridableNames()) {
+		return new FilteringIterator<String>(this.possibleVirtualOverrideNames()) {
 			@Override
 			protected boolean accept(String name) {
 				return AbstractOrmOverrideContainer.this.overrideIsVirtual(name);
@@ -413,6 +414,22 @@ public abstract class AbstractOrmOverrideContainer<
 		return this.owner.getTypeMapping();
 	}
 
+	/**
+	 * Return all the possible virtual override names. If we have a
+	 * corresponding Java entity, take the override names from it. This allows
+	 * us to include any Java specified overrides that are invalid (and
+	 * generate the appropriate error messages). If we don't have a
+	 * corresponding Java entity, take the override names directly from the
+	 * type.
+	 */
+	protected Iterator<String> possibleVirtualOverrideNames() {
+		if (this.owner == null) {
+			return EmptyIterator.instance();
+		}
+		Iterable<String> javaNames = this.owner.getJavaOverrideNames();
+		return (javaNames != null) ? javaNames.iterator() : this.owner.allOverridableNames();
+	}
+
 	public Iterator<String> allOverridableNames() {
 		return (this.owner != null) ? this.owner.allOverridableNames() : EmptyIterator.<String>instance();
 	}
@@ -433,11 +450,11 @@ public abstract class AbstractOrmOverrideContainer<
 		return this.owner.getDefaultTableName();
 	}
 
-	public JptValidator buildValidator(Override_ override, OverrideTextRangeResolver textRangeResolver) {
-		return this.owner.buildValidator(override, this, textRangeResolver);
+	public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideTextRangeResolver textRangeResolver) {
+		return this.owner.buildOverrideValidator(override, this, textRangeResolver);
 	}
 
-	public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
 		return this.owner.buildColumnValidator(override, column, columnOwner, textRangeResolver);
 	}
 
@@ -463,7 +480,6 @@ public abstract class AbstractOrmOverrideContainer<
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-
 		for (R override : this.getOverrides()) {
 			override.validate(messages, reporter);
 		}

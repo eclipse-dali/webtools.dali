@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -16,27 +17,29 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReferenceTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.VirtualReferenceTable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractOrmVirtualReferenceTable<T extends ReferenceTable>
+public abstract class AbstractOrmVirtualReferenceTable<T extends ReadOnlyReferenceTable>
 	extends AbstractOrmVirtualTable<T>
 	implements VirtualReferenceTable
 {
 	protected final Vector<OrmVirtualJoinColumn> specifiedJoinColumns = new Vector<OrmVirtualJoinColumn>();
 	protected final SpecifiedJoinColumnContainerAdapter specifiedJoinColumnContainerAdapter = new SpecifiedJoinColumnContainerAdapter();
-	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final OrmReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected OrmVirtualJoinColumn defaultJoinColumn;
 
 
-	protected AbstractOrmVirtualReferenceTable(XmlContextNode parent) {
-		super(parent);
+	protected AbstractOrmVirtualReferenceTable(XmlContextNode parent, Owner owner) {
+		super(parent, owner);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 	}
 
@@ -92,7 +95,7 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReferenceTable>
 		ContextContainerTools.update(this.specifiedJoinColumnContainerAdapter);
 	}
 
-	protected Iterable<JoinColumn> getOverriddenJoinColumns() {
+	protected Iterable<ReadOnlyJoinColumn> getOverriddenJoinColumns() {
 		return CollectionTools.iterable(this.getOverriddenTable().specifiedJoinColumns());
 	}
 
@@ -100,7 +103,7 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReferenceTable>
 		this.moveItemInList(index, joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 
-	protected OrmVirtualJoinColumn addSpecifiedJoinColumn(int index, JoinColumn joinColumn) {
+	protected OrmVirtualJoinColumn addSpecifiedJoinColumn(int index, ReadOnlyJoinColumn joinColumn) {
 		OrmVirtualJoinColumn virtualJoinColumn = this.buildJoinColumn(joinColumn);
 		this.addItemToList(index, virtualJoinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
 		return virtualJoinColumn;
@@ -114,21 +117,21 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReferenceTable>
 	 * specified join column container adapter
 	 */
 	protected class SpecifiedJoinColumnContainerAdapter
-		implements ContextContainerTools.Adapter<OrmVirtualJoinColumn, JoinColumn>
+		implements ContextContainerTools.Adapter<OrmVirtualJoinColumn, ReadOnlyJoinColumn>
 	{
 		public Iterable<OrmVirtualJoinColumn> getContextElements() {
 			return AbstractOrmVirtualReferenceTable.this.getSpecifiedJoinColumns();
 		}
-		public Iterable<JoinColumn> getResourceElements() {
+		public Iterable<ReadOnlyJoinColumn> getResourceElements() {
 			return AbstractOrmVirtualReferenceTable.this.getOverriddenJoinColumns();
 		}
-		public JoinColumn getResourceElement(OrmVirtualJoinColumn contextElement) {
+		public ReadOnlyJoinColumn getResourceElement(OrmVirtualJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
 		}
 		public void moveContextElement(int index, OrmVirtualJoinColumn element) {
 			AbstractOrmVirtualReferenceTable.this.moveSpecifiedJoinColumn(index, element);
 		}
-		public void addContextElement(int index, JoinColumn element) {
+		public void addContextElement(int index, ReadOnlyJoinColumn element) {
 			AbstractOrmVirtualReferenceTable.this.addSpecifiedJoinColumn(index, element);
 		}
 		public void removeContextElement(OrmVirtualJoinColumn element) {
@@ -178,15 +181,15 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReferenceTable>
 
 	// ********** misc **********
 
-	protected OrmVirtualJoinColumn buildJoinColumn(JoinColumn joinColumn) {
+	protected OrmVirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn joinColumn) {
 		return this.buildJoinColumn(this.joinColumnOwner, joinColumn);
 	}
 
-	protected OrmVirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn.Owner owner, JoinColumn joinColumn) {
-		return this.getContextNodeFactory().buildOrmVirtualJoinColumn(this, owner, joinColumn);
+	protected OrmVirtualJoinColumn buildJoinColumn(OrmReadOnlyJoinColumn.Owner columnOwner, ReadOnlyJoinColumn joinColumn) {
+		return this.getContextNodeFactory().buildOrmVirtualJoinColumn(this, columnOwner, joinColumn);
 	}
 
-	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
 	@Override
 	protected String buildDefaultSchema() {
@@ -196,5 +199,24 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReferenceTable>
 	@Override
 	protected String buildDefaultCatalog() {
 		return this.getContextDefaultCatalog();
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		boolean continueValidating = this.buildTableValidator().validate(messages, reporter);
+
+		//join column validation will handle the check for whether to validate against the database
+		//some validation messages are not database specific. If the database validation for the
+		//table fails we will stop there and not validate the join columns at all
+		if (continueValidating) {
+			this.validateJoinColumns(messages, reporter);
+		}
+	}
+
+	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
+		this.validateNodes(this.getJoinColumns(), messages, reporter);
 	}
 }

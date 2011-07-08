@@ -21,8 +21,11 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinColumnRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinTableRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingMappedByRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -32,13 +35,13 @@ public class GenericOrmOneToManyRelationship
 	extends AbstractOrmMappingRelationship<OrmOneToManyMapping>
 	implements OrmOneToManyRelationship2_0
 {
-	protected final OrmMappedByRelationshipStrategy mappedByStrategy;
+	protected final OrmMappingMappedByRelationshipStrategy2_0 mappedByStrategy;
 
-	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
+	protected final OrmMappingJoinTableRelationshipStrategy2_0 joinTableStrategy;
 
 	// JPA 2.0 or EclipseLink
 	protected final boolean supportsJoinColumnStrategy;
-	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
+	protected final OrmMappingJoinColumnRelationshipStrategy2_0 joinColumnStrategy;
 
 
 	public GenericOrmOneToManyRelationship(OrmOneToManyMapping parent, boolean supportsJoinColumnStrategy) {
@@ -76,7 +79,7 @@ public class GenericOrmOneToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected OrmRelationshipStrategy buildStrategy() {
+	protected OrmMappingRelationshipStrategy2_0 buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -117,7 +120,7 @@ public class GenericOrmOneToManyRelationship
 		return false;
 	}
 
-	protected OrmMappedByRelationshipStrategy buildMappedByStrategy() {
+	protected OrmMappingMappedByRelationshipStrategy2_0 buildMappedByStrategy() {
 		return new GenericOrmMappedByRelationshipStrategy(this);
 	}
 
@@ -144,7 +147,7 @@ public class GenericOrmOneToManyRelationship
 				! this.joinColumnStrategy.hasSpecifiedJoinColumns();
 	}
 
-	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected OrmMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
 		return new GenericOrmMappingJoinTableRelationshipStrategy(this);
 	}
 
@@ -170,7 +173,7 @@ public class GenericOrmOneToManyRelationship
 		return false;
 	}
 
-	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+	protected OrmMappingJoinColumnRelationshipStrategy2_0 buildJoinColumnStrategy() {
 		return this.supportsJoinColumnStrategy ?
 				new GenericOrmMappingJoinColumnRelationshipStrategy(this, true) :  // true = target foreign key
 				new NullOrmJoinColumnRelationshipStrategy(this);

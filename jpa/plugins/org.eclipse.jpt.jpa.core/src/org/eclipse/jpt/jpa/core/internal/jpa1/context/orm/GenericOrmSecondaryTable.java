@@ -19,17 +19,16 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
@@ -56,7 +55,7 @@ public class GenericOrmSecondaryTable
 
 	protected final Vector<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns = new Vector<OrmPrimaryKeyJoinColumn>();
 	protected final SpecifiedPrimaryKeyJoinColumnContainerAdapter specifiedPrimaryKeyJoinColumnContainerAdapter = new SpecifiedPrimaryKeyJoinColumnContainerAdapter();
-	protected final OrmBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final OrmReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected OrmPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
@@ -243,7 +242,7 @@ public class GenericOrmSecondaryTable
 		}
 	}
 
-	protected OrmBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected OrmReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -349,9 +348,7 @@ public class GenericOrmSecondaryTable
 		//some validation messages are not database specific. If the database validation for the
 		//table fails we will stop there and not validate the join columns at all
 		if (continueValidating) {
-			for (OrmPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
-				pkJoinColumn.validate(messages, reporter);
-			}
+			this.validateNodes(this.getPrimaryKeyJoinColumns(), messages, reporter);
 		}
 	}
 
@@ -359,7 +356,7 @@ public class GenericOrmSecondaryTable
 	// ********** primary key join column owner adapter **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements OrmBaseJoinColumn.Owner
+		implements OrmReadOnlyBaseJoinColumn.Owner
 	{
 		protected OrmEntity getEntity() {
 			return GenericOrmSecondaryTable.this.getEntity();
@@ -403,12 +400,8 @@ public class GenericOrmSecondaryTable
 			return GenericOrmSecondaryTable.this.getValidationTextRange();
 		}
 
-		protected String getSecondaryTableName() {
-			return GenericOrmSecondaryTable.this.getName();
-		}
-
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmSecondaryTable.this, (BaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 }

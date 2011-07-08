@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context;
 
 /**
- * Association override
+ * <em>Specified</em> association override
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,11 +24,12 @@ package org.eclipse.jpt.jpa.core.context;
 public interface AssociationOverride
 	extends Override_, ReadOnlyAssociationOverride
 {
-	VirtualAssociationOverride convertToVirtual();
-
-	OverrideRelationship getRelationship();
-
 	void initializeFrom(ReadOnlyAssociationOverride oldOverride);
 
 	void initializeFromVirtual(ReadOnlyAssociationOverride virtualOverride);
+
+	// covariant overrides
+	VirtualAssociationOverride convertToVirtual();
+
+	OverrideRelationship getRelationship();
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -163,33 +163,33 @@ public class DerivedIdentity2_0Pane
 		@Override
 		protected void addPropertyNames(Collection<String> propertyNames) {
 			super.addPropertyNames(propertyNames);
-			propertyNames.add(MapsIdDerivedIdentityStrategy2_0.DEFAULT_VALUE_PROPERTY);
-			propertyNames.add(MapsIdDerivedIdentityStrategy2_0.SPECIFIED_VALUE_PROPERTY);
+			propertyNames.add(MapsIdDerivedIdentityStrategy2_0.DEFAULT_ID_ATTRIBUTE_NAME_PROPERTY);
+			propertyNames.add(MapsIdDerivedIdentityStrategy2_0.SPECIFIED_ID_ATTRIBUTE_NAME_PROPERTY);
 		}
 		
 		@Override
 		protected String getValue() {
-			return (getSubject() == null) ? null : getSubject().getSpecifiedValue();
+			return (getSubject() == null) ? null : getSubject().getSpecifiedIdAttributeName();
 		}
 		
 		@Override
 		protected void setValue(String value) {
-			if (getSubject() != null) getSubject().setSpecifiedValue(value);
+			if (getSubject() != null) getSubject().setSpecifiedIdAttributeName(value);
 		}
 		
 		@Override
 		protected boolean usesDefaultValue() {
-			return (getSubject() == null) ? true : getSubject().usesDefaultValue();
+			return (getSubject() != null) && getSubject().defaultIdAttributeNameIsPossible();
 		}
 		
 		@Override
 		protected String getDefaultValue() {
-			return (getSubject() == null) ? null : getSubject().getDefaultValue();
+			return (getSubject() == null) ? null : getSubject().getDefaultIdAttributeName();
 		}
 		
 		@Override
 		protected Iterable<String> getValues() {
-			return (getSubject() == null) ? EmptyIterable.<String>instance() : getSubject().getSortedValueChoices();
+			return (getSubject() == null) ? EmptyIterable.<String>instance() : getSubject().getSortedCandidateIdAttributeNames();
 		}
 		
 		@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,14 +21,13 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
@@ -55,7 +54,7 @@ public class GenericJavaSecondaryTable
 
 	protected final Vector<JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns = new Vector<JavaPrimaryKeyJoinColumn>();
 	protected final SpecifiedPrimaryKeyJoinColumnContainerAdapter specifiedPrimaryKeyJoinColumnContainerAdapter = new SpecifiedPrimaryKeyJoinColumnContainerAdapter();
-	protected final JavaBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final JavaReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected JavaPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
@@ -225,7 +224,7 @@ public class GenericJavaSecondaryTable
 		}
 	}
 
-	protected JavaBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected JavaReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -352,7 +351,7 @@ public class GenericJavaSecondaryTable
 	// ********** primary key join column owner adapter **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements JavaBaseJoinColumn.Owner
+		implements JavaReadOnlyBaseJoinColumn.Owner
 	{
 		protected JavaEntity getEntity() {
 			return GenericJavaSecondaryTable.this.getEntity();
@@ -393,8 +392,8 @@ public class GenericJavaSecondaryTable
 			return GenericJavaSecondaryTable.this.getValidationTextRange(astRoot);
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericJavaSecondaryTable.this, (BaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericJavaSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 }

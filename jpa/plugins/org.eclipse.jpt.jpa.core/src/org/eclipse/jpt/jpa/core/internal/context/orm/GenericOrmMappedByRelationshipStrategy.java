@@ -18,12 +18,14 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingMappedByRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlMappedByMapping;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.osgi.util.NLS;
@@ -32,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmMappedByRelationshipStrategy
 	extends AbstractOrmXmlContextNode
-	implements OrmMappedByRelationshipStrategy
+	implements OrmMappingMappedByRelationshipStrategy2_0
 {
 	protected String mappedByAttribute;
 
@@ -132,6 +134,10 @@ public class GenericOrmMappedByRelationshipStrategy
 	protected String getEntityName() {
 		Entity entity = this.getRelationship().getEntity();
 		return (entity == null) ? null : entity.getName();
+	}
+
+	public ReadOnlyRelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+		return null;  // mapped-by strategies cannot be overridden
 	}
 
 	public void addStrategy() {

@@ -25,16 +25,18 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterab
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -54,7 +56,7 @@ public class GenericOrmJoinTable
 {
 	protected final Vector<OrmJoinColumn> specifiedInverseJoinColumns = new Vector<OrmJoinColumn>();
 	protected final SpecifiedInverseJoinColumnContainerAdapter specifiedInverseJoinColumnContainerAdapter = new SpecifiedInverseJoinColumnContainerAdapter();
-	protected final OrmJoinColumn.Owner inverseJoinColumnOwner;
+	protected final OrmReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
 
 	protected OrmJoinColumn defaultInverseJoinColumn;
 
@@ -66,7 +68,7 @@ public class GenericOrmJoinTable
 	}
 
 	@Override
-	protected OrmJoinColumn.Owner buildJoinColumnOwner() {
+	protected OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -94,17 +96,17 @@ public class GenericOrmJoinTable
 
 	@Override
 	protected XmlJoinTable getXmlTable() {
-		return this.getJoinStrategy().getXmlJoinTable();
+		return this.getRelationshipStrategy().getXmlJoinTable();
 	}
 
 	@Override
 	protected XmlJoinTable buildXmlTable() {
-		return this.getJoinStrategy().buildXmlJoinTable();
+		return this.getRelationshipStrategy().buildXmlJoinTable();
 	}
 
 	@Override
 	protected void removeXmlTable() {
-		this.getJoinStrategy().removeXmlJoinTable();
+		this.getRelationshipStrategy().removeXmlJoinTable();
 	}
 
 
@@ -122,7 +124,7 @@ public class GenericOrmJoinTable
 		return this.hasSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumnsSize() : this.getDefaultInverseJoinColumnsSize();
 	}
 
-	public void convertDefaultToSpecifiedInverseJoinColumn() {
+	public void convertDefaultInverseJoinColumnToSpecified() {
 		MappingTools.convertJoinTableDefaultToSpecifiedInverseJoinColumn(this);
 	}
 
@@ -243,7 +245,7 @@ public class GenericOrmJoinTable
 		}
 	}
 
-	protected OrmJoinColumn.Owner buildInverseJoinColumnOwner() {
+	protected OrmReadOnlyJoinColumn.Owner buildInverseJoinColumnOwner() {
 		return new InverseJoinColumnOwner();
 	}
 
@@ -294,13 +296,13 @@ public class GenericOrmJoinTable
 		return (OrmJoinTableRelationshipStrategy) super.getParent();
 	}
 
-	protected OrmJoinTableRelationshipStrategy getJoinStrategy() {
+	protected OrmJoinTableRelationshipStrategy getRelationshipStrategy() {
 		return this.getParent();
 	}
 
 	@Override
 	protected String buildDefaultName() {
-		return this.getJoinStrategy().getJoinTableDefaultName();
+		return this.getRelationshipStrategy().getJoinTableDefaultName();
 	}
 
 	public void initializeFrom(ReadOnlyJoinTable oldTable) {
@@ -322,7 +324,7 @@ public class GenericOrmJoinTable
 	}
 
 	public RelationshipMapping getRelationshipMapping() {
-		return this.getJoinStrategy().getRelationship().getMapping();
+		return this.getRelationshipStrategy().getRelationship().getMapping();
 	}
 
 	public PersistentAttribute getPersistentAttribute() {
@@ -335,11 +337,11 @@ public class GenericOrmJoinTable
 	@Override
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
 		super.validateJoinColumns(messages, reporter);
-		this.validateJoinColumns(this.getInverseJoinColumns(), messages, reporter);
+		this.validateNodes(this.getInverseJoinColumns(), messages, reporter);
 	}
 
 	public boolean validatesAgainstDatabase() {
-		return this.getJoinStrategy().validatesAgainstDatabase();
+		return this.getRelationshipStrategy().validatesAgainstDatabase();
 	}
 
 
@@ -349,18 +351,14 @@ public class GenericOrmJoinTable
 	 * just a little common behavior
 	 */
 	protected abstract class AbstractJoinColumnOwner
-		implements OrmJoinColumn.Owner
+		implements OrmReadOnlyJoinColumn.Owner
 	{
 		protected AbstractJoinColumnOwner() {
 			super();
 		}
 
 		public TypeMapping getTypeMapping() {
-			return GenericOrmJoinTable.this.getJoinStrategy().getRelationship().getTypeMapping();
-		}
-
-		protected PersistentAttribute getPersistentAttribute() {
-			return GenericOrmJoinTable.this.getPersistentAttribute();
+			return this.getRelationship().getTypeMapping();
 		}
 
 		/**
@@ -372,7 +370,7 @@ public class GenericOrmJoinTable
 
 		/**
 		 * If there is a specified table name it needs to be the same
-		 * the default table name.  the table is always the join table
+		 * the default table name. The table is always the join table.
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
 			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
@@ -403,12 +401,12 @@ public class GenericOrmJoinTable
 			return GenericOrmJoinTable.this.getValidationTextRange();
 		}
 
-		protected String getPersistentAttributeName() {
-			return this.getPersistentAttribute().getName();
+		protected OrmRelationship getRelationship() {
+			return this.getRelationshipStrategy().getRelationship();
 		}
 
-		protected OrmJoinTableRelationshipStrategy getJoinStrategy() {
-			return GenericOrmJoinTable.this.getJoinStrategy();
+		protected OrmJoinTableRelationshipStrategy getRelationshipStrategy() {
+			return GenericOrmJoinTable.this.getRelationshipStrategy();
 		}
 	}
 
@@ -425,7 +423,7 @@ public class GenericOrmJoinTable
 		}
 
 		public Entity getRelationshipTarget() {
-			return this.getJoinStrategy().getRelationship().getEntity();
+			return this.getRelationship().getEntity();
 		}
 
 		public String getAttributeName() {
@@ -450,8 +448,8 @@ public class GenericOrmJoinTable
 			return GenericOrmJoinTable.this.joinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return this.getJoinStrategy().buildJoinTableJoinColumnValidator((JoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 
@@ -500,8 +498,8 @@ public class GenericOrmJoinTable
 			return GenericOrmJoinTable.this.inverseJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return this.getJoinStrategy().buildJoinTableInverseJoinColumnValidator((JoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 }

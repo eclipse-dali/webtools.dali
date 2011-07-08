@@ -16,14 +16,13 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.Association;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
@@ -34,7 +33,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
@@ -67,8 +65,8 @@ public abstract class AbstractJavaIdMapping
 
 	protected JavaConverter converter;  // never null
 
-	/* 2.0 feature - a relationship may map this id */
-	protected boolean mappedByRelationship;
+	/* JPA 2.0 - the embedded id may be derived from a relationship */
+	protected boolean derived;
 
 
 	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
@@ -106,7 +104,7 @@ public abstract class AbstractJavaIdMapping
 			this.generatedValue.update();
 		}
 		this.converter.update();
-		this.setMappedByRelationship(this.buildMappedByRelationship());
+		this.setDerived(this.buildDerived());
 	}
 
 
@@ -305,28 +303,24 @@ public abstract class AbstractJavaIdMapping
 	}
 
 
-	// ********** mapped by relationship **********
+	// ********** derived **********
 
-	public boolean isMappedByRelationship() {
-		return this.mappedByRelationship;
+	public boolean isDerived() {
+		return this.derived;
 	}
 
-	protected void setMappedByRelationship(boolean mappedByRelationship) {
-		boolean old = this.mappedByRelationship;
-		this.mappedByRelationship = mappedByRelationship;
-		this.firePropertyChanged(MAPPED_BY_RELATIONSHIP_PROPERTY, old, mappedByRelationship);
+	protected void setDerived(boolean derived) {
+		boolean old = this.derived;
+		this.derived = derived;
+		this.firePropertyChanged(DERIVED_PROPERTY, old, derived);
 	}
 
-	protected boolean buildMappedByRelationship() {
-		return this.isJpa2_0Compatible() && this.buildMappedByRelationship_();
+	protected boolean buildDerived() {
+		return this.isJpa2_0Compatible() && this.buildDerived_();
 	}
 
-	protected boolean buildMappedByRelationship_() {
-		return CollectionTools.contains(this.getMappedByRelationshipAttributeNames(), this.getName());
-	}
-
-	protected Iterable<String> getMappedByRelationshipAttributeNames() {
-		return TypeMappingTools.getMappedByRelationshipAttributeNames(this.getTypeMapping());
+	protected boolean buildDerived_() {
+		return this.getTypeMapping().attributeIsDerivedId(this.getName());
 	}
 
 
@@ -374,11 +368,11 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	public String getDefaultColumnName() {
-		return (this.mappedByRelationship && ! this.columnIsSpecified()) ? null : this.getName();
+		return (this.derived && ! this.columnIsSpecified()) ? null : this.getName();
 	}
 
 	public String getDefaultTableName() {
-		return (this.mappedByRelationship && ! this.columnIsSpecified()) ? null : this.getTypeMapping().getPrimaryTableName();
+		return (this.derived && ! this.columnIsSpecified()) ? null : this.getTypeMapping().getPrimaryTableName();
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
@@ -389,8 +383,8 @@ public abstract class AbstractJavaIdMapping
 		return this.getTypeMapping().allAssociatedTableNames();
 	}
 
-	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator(this.getPersistentAttribute(), (BaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 
 
@@ -438,15 +432,15 @@ public abstract class AbstractJavaIdMapping
 		// the column is validated.
 		// JPA 1.0: The column is always be validated, since the ID is never mapped by a
 		// relationship.
-		if (this.columnIsSpecified() || ! this.mappedByRelationship) {
+		if (this.columnIsSpecified() || ! this.derived) {
 			this.column.validate(messages, reporter, astRoot);
 		}
 
 		// JPA 2.0: If the column is specified and the ID is mapped by a relationship,
 		// we have an error.
 		// JPA 1.0: The ID cannot be mapped by a relationship.
-		if (this.columnIsSpecified() && this.mappedByRelationship) {
-			messages.add(this.buildMappedByRelationshipAndColumnSpecifiedMessage(astRoot));
+		if (this.columnIsSpecified() && this.derived) {
+			messages.add(this.buildColumnSpecifiedAndDerivedMessage(astRoot));
 		}
 
 		this.generatorContainer.validate(messages, reporter, astRoot);
@@ -456,7 +450,7 @@ public abstract class AbstractJavaIdMapping
 		this.converter.validate(messages, reporter, astRoot);
 	}
 
-	protected IMessage buildMappedByRelationshipAndColumnSpecifiedMessage(CompilationUnit astRoot) {
+	protected IMessage buildColumnSpecifiedAndDerivedMessage(CompilationUnit astRoot) {
 		return this.buildMessage(
 				JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 				EMPTY_STRING_ARRAY,

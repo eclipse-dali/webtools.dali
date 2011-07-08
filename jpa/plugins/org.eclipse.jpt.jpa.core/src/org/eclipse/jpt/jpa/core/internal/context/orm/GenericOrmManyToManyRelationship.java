@@ -20,7 +20,9 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinTableRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingMappedByRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -29,9 +31,9 @@ public class GenericOrmManyToManyRelationship
 	extends AbstractOrmMappingRelationship<OrmManyToManyMapping>
 	implements OrmManyToManyRelationship
 {
-	protected final OrmMappedByRelationshipStrategy mappedByStrategy;
+	protected final OrmMappingMappedByRelationshipStrategy2_0 mappedByStrategy;
 
-	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
+	protected final OrmMappingJoinTableRelationshipStrategy2_0 joinTableStrategy;
 
 
 	public GenericOrmManyToManyRelationship(OrmManyToManyMapping parent) {
@@ -63,7 +65,7 @@ public class GenericOrmManyToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected OrmRelationshipStrategy buildStrategy() {
+	protected OrmMappingRelationshipStrategy2_0 buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -91,7 +93,7 @@ public class GenericOrmManyToManyRelationship
 		return mapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected OrmMappedByRelationshipStrategy buildMappedByStrategy() {
+	protected OrmMappingMappedByRelationshipStrategy2_0 buildMappedByStrategy() {
 		return new GenericOrmMappedByRelationshipStrategy(this);
 	}
 
@@ -116,7 +118,7 @@ public class GenericOrmManyToManyRelationship
 		return this.mappedByStrategy.getMappedByAttribute() == null;
 	}
 
-	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected OrmMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
 		return new GenericOrmMappingJoinTableRelationshipStrategy(this);
 	}
 

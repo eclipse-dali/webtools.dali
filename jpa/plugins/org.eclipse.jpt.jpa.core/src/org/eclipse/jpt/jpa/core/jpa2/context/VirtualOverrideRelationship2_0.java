@@ -26,5 +26,5 @@ public interface VirtualOverrideRelationship2_0
 			VirtualJoinTableRelationship,
 			ReadOnlyOverrideRelationship2_0
 {
-	// combine interfaces
+	// add join table support to JPA 1.0 association override
 }

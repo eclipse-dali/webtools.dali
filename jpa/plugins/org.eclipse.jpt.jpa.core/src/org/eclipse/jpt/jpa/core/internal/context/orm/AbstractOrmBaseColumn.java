@@ -14,13 +14,14 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn;
 
 /**
  * <code>orm.xml</code> column or join column
  */
-public abstract class AbstractOrmBaseColumn<X extends AbstractXmlColumn, O extends OrmBaseColumn.Owner>
+public abstract class AbstractOrmBaseColumn<X extends AbstractXmlColumn, O extends OrmReadOnlyBaseColumn.Owner>
 	extends AbstractOrmNamedColumn<X, O>
 	implements OrmBaseColumn
 {

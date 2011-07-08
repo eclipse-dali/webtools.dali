@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -38,6 +40,16 @@ public interface ReadOnlyTable
 	String getDefaultName();
 		String DEFAULT_NAME_PROPERTY = "defaultName"; //$NON-NLS-1$
 
+	/**
+	 * Return whether the table can be resolved to a table on the database.
+	 */
+	boolean isResolved();
+
+	/**
+	 * Return the corresponding database table.
+	 */
+	org.eclipse.jpt.jpa.db.Table getDbTable();
+
 
 	// ********** schema **********
 
@@ -50,6 +62,17 @@ public interface ReadOnlyTable
 		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
 	String getDefaultSchema();
 		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
+
+	/**
+	 * Return whether the table's schema can be resolved to a schema on the
+	 * database.
+	 */
+	boolean schemaIsResolved();
+
+	/**
+	 * Return the corresponding database schema.
+	 */
+	Schema getDbSchema();
 
 
 	// ********** catalog **********
@@ -64,6 +87,17 @@ public interface ReadOnlyTable
 	String getDefaultCatalog();
 		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
 
+	/**
+	 * Return whether the table has a catalog and it can be resolved to a
+	 * catalog on the database.
+	 */
+	boolean catalogIsResolved();
+
+	/**
+	 * Return the corresponding database catalog.
+	 */
+	Catalog getDbCatalog();
+
 
 	// ********** unique constraints **********
 
@@ -73,25 +107,26 @@ public interface ReadOnlyTable
 	ReadOnlyUniqueConstraint getUniqueConstraint(int index);
 
 
-	// ********** database **********
-
-	/**
-	 * Return the corresponding database table.
-	 */
-	org.eclipse.jpt.jpa.db.Table getDbTable();
-
-	/**
-	 * Return the corresponding database schema.
-	 */
-	Schema getDbSchema();
-
-	/**
-	 * Return the corresponding database catalog.
-	 */
-	Catalog getDbCatalog();
+	// ********** misc **********
 
 	/**
 	 * Return the corresponding database schema container (catalog or database).
 	 */
 	SchemaContainer getDbSchemaContainer();
+
+	/**
+	 * Return whether the table is validated against a live database connection.
+	 */
+	boolean validatesAgainstDatabase();
+
+
+	// ********** owner **********
+
+	/**
+	 * interface allowing columns to be used in multiple places
+	 * (e.g. basic mappings and attribute overrides)
+	 */
+	interface Owner {
+		JptValidator buildTableValidator(ReadOnlyTable table, TableTextRangeResolver textRangeResolver);
+	}
 }

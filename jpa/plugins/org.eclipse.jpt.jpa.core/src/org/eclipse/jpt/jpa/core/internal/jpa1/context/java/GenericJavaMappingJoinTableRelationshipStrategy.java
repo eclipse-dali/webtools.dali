@@ -11,11 +11,11 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -25,11 +25,14 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.InverseJoinColumnValidator
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableValidator;
+import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 
 public class GenericJavaMappingJoinTableRelationshipStrategy
 	extends AbstractJavaJoinTableRelationshipStrategy
+	implements JavaMappingJoinTableRelationshipStrategy2_0
 {
 	public GenericJavaMappingJoinTableRelationshipStrategy(JavaMappingJoinTableRelationship parent) {
 		super(parent);
@@ -73,6 +76,10 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 		return this.getJpaPlatformVariation().isJoinTableOverridable();
 	}
 
+	public ReadOnlyRelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+		return overrideRelationship.getJoinTableStrategy();
+	}
+
 
 	// ********** validation **********
 
@@ -88,15 +95,15 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 		return this.getRelationshipMapping().getPersistentAttribute();
 	}
 
-	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+	public JptValidator buildTableValidator(ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
 		return new JoinTableValidator(this.getPersistentAttribute(), (JoinTable) table, textRangeResolver);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		return new JoinColumnValidator(this.getPersistentAttribute(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		return new InverseJoinColumnValidator(this.getPersistentAttribute(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 	}
 }

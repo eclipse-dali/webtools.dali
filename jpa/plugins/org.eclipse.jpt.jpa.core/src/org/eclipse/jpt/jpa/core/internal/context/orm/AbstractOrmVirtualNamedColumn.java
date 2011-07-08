@@ -9,24 +9,33 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualNamedColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * <code>orm.xml</code> virtual<ul>
  * <li>column
  * <li>join column
+ * <li>primary key join column
  * </ul>
  * <strong>NB:</strong> all state is sync'ed/updated in {@link #update()}
  * because <em>all</em> of its derived from the context model (i.e. none of it
  * is derived from the resource model).
  */
-public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColumn.Owner, C extends NamedColumn>
+public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColumn.Owner, C extends ReadOnlyNamedColumn>
 	extends AbstractOrmXmlContextNode
-	implements VirtualNamedColumn
+	implements VirtualNamedColumn, OrmReadOnlyNamedColumn
 {
 	protected final O owner;
 
@@ -115,10 +124,44 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 	}
 
 
+	// ********** database stuff **********
+
+	protected Column getDbColumn() {
+		Table table = this.getDbTable();
+		return (table == null) ? null : table.getColumnForIdentifier(this.getName());
+	}
+
+	public Table getDbTable() {
+		return this.owner.resolveDbTable(this.getTable());
+	}
+
+	public boolean isResolved() {
+		return this.getDbColumn() != null;
+	}
+
+
 	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.buildColumnValidator().validate(messages, reporter);
+	}
+
+	protected JptValidator buildColumnValidator() {
+		return this.owner.buildColumnValidator(this, this.buildTextRangeResolver());
+	}
+
+	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
+		return new OrmNamedColumnTextRangeResolver(this);
+	}
 
 	public TextRange getValidationTextRange() {
 		return this.getParent().getValidationTextRange();
+	}
+
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange();
 	}
 
 
@@ -127,6 +170,13 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 	@Override
 	public XmlContextNode getParent() {
 		return (XmlContextNode) super.getParent();
+	}
+
+	/**
+	 * This is used by the subclasses that implement {@link ReadOnlyBaseJoinColumn#isVirtual()}.
+	 */
+	public boolean isVirtual() {
+		return true;
 	}
 
 	@Override

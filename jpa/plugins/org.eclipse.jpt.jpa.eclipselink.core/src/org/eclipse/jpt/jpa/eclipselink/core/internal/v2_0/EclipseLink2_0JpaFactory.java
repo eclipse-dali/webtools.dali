@@ -17,11 +17,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaOrderable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaColumn;
@@ -134,7 +134,7 @@ public class EclipseLink2_0JpaFactory
 		return new GenericJavaCollectionTable2_0(parent, owner);
 	}
 
-	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
+	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaReadOnlyNamedColumn.Owner owner) {
 		return new GenericJavaOrderColumn2_0(parent, owner);
 	}
 

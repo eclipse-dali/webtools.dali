@@ -26,57 +26,56 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 public interface MapsIdDerivedIdentityStrategy2_0
 	extends DerivedIdentityStrategy2_0
 {
-// TODO bjv rename value to attributeName
 	/**
-	 * Return the specified attribute name, or in its absence, the default
-	 * attribute name. This the name of the ID attribute the relationship
+	 * Return the specified ID attribute name or, in its absence, the default
+	 * ID attribute name. This the name of the ID attribute the relationship
 	 * mapping also maps (e.g. a Child's parent mapping also maps part of
 	 * the Child's primary key, the parent ID).
 	 */
-	String getValue();
+	String getIdAttributeName();
 	
 	/**
-	 * String associated with changes to the specified value property of this object
+	 * String associated with changes to the specified ID attribute name property.
 	 */
-	String SPECIFIED_VALUE_PROPERTY = "specifiedValue"; //$NON-NLS-1$
+	String SPECIFIED_ID_ATTRIBUTE_NAME_PROPERTY = "specifiedIdAttributeName"; //$NON-NLS-1$
 	
 	/**
-	 * Return the specified attribute name.
+	 * Return the specified ID attribute name.
 	 * Return <code>null</code> if no name is specified.
 	 */
-	String getSpecifiedValue();
+	String getSpecifiedIdAttributeName();
 	
 	/**
 	 * Set the specified attribute name.
 	 */
-	void setSpecifiedValue(String value);
+	void setSpecifiedIdAttributeName(String idAttributeName);
 	
 	/**
 	 * Return whether a default value is ever used.
 	 * (In some cases, there can be no default.)
 	 */
-	boolean usesDefaultValue();
+	boolean defaultIdAttributeNameIsPossible();
 	
 	/**
-	 * String associated with changes to the default value property of this object
+	 * String associated with changes to the default ID attribute name property.
 	 */
-	String DEFAULT_VALUE_PROPERTY = "defaultValue"; //$NON-NLS-1$
+	String DEFAULT_ID_ATTRIBUTE_NAME_PROPERTY = "defaultIdAttributeName"; //$NON-NLS-1$
 	
 	/**
-	 * Return the default attribute name.
+	 * Return the default ID attribute name.
 	 */
-	String getDefaultValue();
+	String getDefaultIdAttributeName();
 	
 	/**
-	 * Return a sorted list of possible attribute names.
+	 * Return a sorted list of candidate ID attribute names.
 	 */
-	Iterable<String> getSortedValueChoices();
+	Iterable<String> getSortedCandidateIdAttributeNames();
 	
 	/**
-	 * Return attribute mapping referenced by the attribute name,
+	 * Return attribute mapping referenced by the ID attribute name,
 	 * which may be a mapping on the entity
 	 * or a mapping within the embeddable mapping referenced by the entity's
 	 * embedded ID mapping.
 	 */
-	AttributeMapping getResolvedAttributeMappingValue();
+	AttributeMapping getDerivedIdAttributeMapping();
 }

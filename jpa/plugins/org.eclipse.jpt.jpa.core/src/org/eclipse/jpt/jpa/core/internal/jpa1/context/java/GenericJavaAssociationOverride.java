@@ -14,12 +14,18 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
+import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaOverride;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverride2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -29,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJavaAssociationOverride
 	extends AbstractJavaOverride<JavaAssociationOverrideContainer, AssociationOverrideAnnotation>
-	implements JavaAssociationOverride
+	implements JavaAssociationOverride2_0
 {
 	protected final JavaOverrideRelationship relationship;
 
@@ -76,6 +82,11 @@ public class GenericJavaAssociationOverride
 
 	// ********** misc **********
 
+	@Override
+	protected JavaAssociationOverrideContainer2_0 getContainer2_0() {
+		return (JavaAssociationOverrideContainer2_0) super.getContainer2_0();
+	}
+
 	public RelationshipMapping getMapping() {
 		return this.getContainer().getRelationshipMapping(this.name);
 	}
@@ -118,5 +129,17 @@ public class GenericJavaAssociationOverride
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		this.relationship.validate(messages, reporter, astRoot);
+	}
+
+	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table, TableTextRangeResolver textRangeResolver) {
+		return this.getContainer2_0().buildJoinTableValidator(this, table, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return this.getContainer2_0().buildJoinTableJoinColumnValidator(this, column, owner, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return this.getContainer2_0().buildJoinTableInverseJoinColumnValidator(this, column, owner, textRangeResolver);
 	}
 }

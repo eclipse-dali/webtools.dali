@@ -17,15 +17,18 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
@@ -38,6 +41,7 @@ import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
@@ -70,9 +74,13 @@ public abstract class AbstractJavaOverrideContainer<
 			A extends OverrideAnnotation & NestableAnnotation
 		>
 	extends AbstractJavaJpaContextNode
-	implements JavaOverrideContainer
+	implements JavaOverrideContainer2_0
 {
-	// this can be null if the container is "read-only" (i.e. a "null" container)
+	/**
+	 * this can be <code>null</code> if the container is "read-only"
+	 * (i.e. a <em>null</em> container)
+	 * @see #getOwner2_0()
+	 */
 	protected final O owner;
 
 	protected final Vector<S> specifiedOverrides = new Vector<S>();
@@ -122,6 +130,19 @@ public abstract class AbstractJavaOverrideContainer<
 
 	public R getOverrideNamed(String name) {
 		return this.selectOverrideNamed(this.getOverrides(), name);
+	}
+
+	public Iterable<String> getOverrideNames() {
+		return new FilteringIterable<String>(this.getOverrideNames_(), NotNullFilter.<String>instance());
+	}
+
+	protected Iterable<String> getOverrideNames_() {
+		return new TransformationIterable<R, String>(this.getOverrides()) {
+			@Override
+			protected String transform(R override) {
+				return override.getName();
+			}
+		};
 	}
 
 
@@ -316,7 +337,10 @@ public abstract class AbstractJavaOverrideContainer<
 			@Override
 			protected boolean accept(A annotation) {
 				String overrideName = annotation.getName();
-				return (overrideName != null) && AbstractJavaOverrideContainer.this.owner.isRelevant(overrideName);
+				return (overrideName != null) && this.getOwner().isRelevant(overrideName);
+			}
+			protected JavaOverrideContainer2_0.Owner getOwner() {
+				return AbstractJavaOverrideContainer.this.getOwner2_0();
 			}
 		};
 	}
@@ -472,6 +496,10 @@ public abstract class AbstractJavaOverrideContainer<
 
 	// ********** misc **********
 
+	protected JavaOverrideContainer2_0.Owner getOwner2_0() {
+		return (JavaOverrideContainer2_0.Owner) this.owner;
+	}
+
 	public TypeMapping getTypeMapping() {
 		return this.owner.getTypeMapping();
 	}
@@ -504,20 +532,20 @@ public abstract class AbstractJavaOverrideContainer<
 		return this.owner.getDefaultTableName();
 	}
 
-	public JptValidator buildValidator(Override_ override, OverrideTextRangeResolver textRangeResolver) {
-		return this.owner.buildValidator(override, this, textRangeResolver);
+	public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideTextRangeResolver textRangeResolver) {
+		return this.owner.buildOverrideValidator(override, this, textRangeResolver);
 	}
 
-	public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
 		return this.owner.buildColumnValidator(override, column, columnOwner, textRangeResolver);
 	}
 
 	public String getPossiblePrefix() {
-		return this.owner.getPossiblePrefix();
+		return this.getOwner2_0().getPossiblePrefix();
 	}
 
 	public String getWritePrefix() {
-		return this.owner.getWritePrefix();
+		return this.getOwner2_0().getWritePrefix();
 	}
 
 	protected R selectOverrideNamed(Iterable<R> overrides, String name) {

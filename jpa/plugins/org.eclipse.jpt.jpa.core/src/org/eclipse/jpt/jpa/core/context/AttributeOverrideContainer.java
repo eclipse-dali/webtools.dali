@@ -27,6 +27,15 @@ import java.util.ListIterator;
 public interface AttributeOverrideContainer
 	extends OverrideContainer
 {
+	/**
+	 * Return the column of the mapping or attribute override for the specified
+	 * attribute. Return <code>null</code> if it does not exist. This
+	 * column mapping/attribute override will be found in the mapped superclass
+	 * (or embeddable), not in the owning entity.
+	 */
+	ReadOnlyColumn resolveOverriddenColumn(String attributeName);
+
+	// covariant overrides
 	ListIterator<? extends ReadOnlyAttributeOverride> overrides();
 	ReadOnlyAttributeOverride getOverrideNamed(String name);
 	ListIterator<? extends AttributeOverride> specifiedOverrides();
@@ -35,14 +44,6 @@ public interface AttributeOverrideContainer
 	ListIterator<? extends VirtualAttributeOverride> virtualOverrides();
 	VirtualAttributeOverride convertOverrideToVirtual(Override_ specifiedOverride);
 	AttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
-
-	/**
-	 * Return the column of the mapping or attribute override with the specified
-	 * attribute name. Return <code>null</code> if it does not exist. This
-	 * column mapping/attribute override will be found in the mapped superclass
-	 * (or embeddable), not in the owning entity.
-	 */
-	Column resolveOverriddenColumn(String attributeName);
 
 
 	// ********** owner **********
@@ -53,6 +54,6 @@ public interface AttributeOverrideContainer
 		/**
 		 * @see AttributeOverrideContainer#resolveOverriddenColumn(String)
 		 */
-		Column resolveOverriddenColumn(String attributeName);
+		ReadOnlyColumn resolveOverriddenColumn(String attributeName);
 	}
 }

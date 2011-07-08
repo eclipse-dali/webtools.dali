@@ -17,10 +17,11 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
@@ -40,13 +41,13 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <strong>NB:</strong> any subclass that directly holds its column annotation
  * must:<ul>
  * <li>call the "super" constructor that takes a column annotation
- *     {@link #AbstractJavaNamedColumn(JavaJpaContextNode, JavaNamedColumn.Owner, NamedColumnAnnotation)}
+ *     {@link #AbstractJavaNamedColumn(JavaJpaContextNode, JavaReadOnlyNamedColumn.Owner, NamedColumnAnnotation)}
  * <li>override {@link #setColumnAnnotation(NamedColumnAnnotation)} to set the column annotation
  *     so it is in place before the column's state (e.g. {@link #specifiedName})
  *     is initialized
  * </ul>
  */
-public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O extends JavaNamedColumn.Owner>
+public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O extends JavaReadOnlyNamedColumn.Owner>
 	extends AbstractJavaJpaContextNode
 	implements JavaNamedColumn
 {
@@ -243,11 +244,11 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.buildColumnValidator(astRoot).validate(messages, reporter);
+		this.buildValidator(astRoot).validate(messages, reporter);
 	}
 
-	protected JptValidator buildColumnValidator(CompilationUnit astRoot) {
-		return this.owner.buildColumnValidator(this, buildTextRangeResolver(astRoot));
+	protected JptValidator buildValidator(CompilationUnit astRoot) {
+		return this.owner.buildColumnValidator(this, this.buildTextRangeResolver(astRoot));
 	}
 
 	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
@@ -267,7 +268,7 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	// ********** misc **********
 
 	/**
-	 * This is used by the subclasses that implement {@link BaseJoinColumn}.
+	 * This is used by the subclasses that implement {@link ReadOnlyBaseJoinColumn#isVirtual()}.
 	 */
 	public boolean isVirtual() {
 		return false;

@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlRelationshipMapping;
 
 /**
@@ -31,7 +31,7 @@ public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMa
 	extends AbstractOrmXmlContextNode
 	implements OrmMappingRelationship
 {
-	protected OrmRelationshipStrategy strategy;
+	protected OrmMappingRelationshipStrategy2_0 strategy;
 
 
 	protected AbstractOrmMappingRelationship(M parent) {
@@ -50,17 +50,17 @@ public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMa
 
 	// ********** strategy **********
 
-	public OrmRelationshipStrategy getStrategy() {
+	public OrmMappingRelationshipStrategy2_0 getStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(OrmRelationshipStrategy strategy) {
+	protected void setStrategy(OrmMappingRelationshipStrategy2_0 strategy) {
 		RelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected abstract OrmRelationshipStrategy buildStrategy();
+	protected abstract OrmMappingRelationshipStrategy2_0 buildStrategy();
 
 	/**
 	 * This is called by subclasses when the various supported strategies are

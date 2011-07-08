@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -44,7 +45,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 {
 	protected final Vector<JavaJoinColumn> specifiedJoinColumns = new Vector<JavaJoinColumn>();
 	protected final SpecifiedJoinColumnContainerAdapter specifiedJoinColumnContainerAdapter = new SpecifiedJoinColumnContainerAdapter();
-	protected final JavaJoinColumn.Owner joinColumnOwner;
+	protected final JavaReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected JavaJoinColumn defaultJoinColumn;
 
@@ -86,7 +87,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 		return this.hasSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.getDefaultJoinColumnsSize();
 	}
 
-	public void convertDefaultToSpecifiedJoinColumn() {
+	public void convertDefaultJoinColumnToSpecified() {
 		MappingTools.convertReferenceTableDefaultToSpecifiedJoinColumn(this);
 	}
 
@@ -195,7 +196,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 		}
 	}
 
-	protected abstract JavaJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
 
 	// ********** default join column **********
@@ -257,7 +258,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 		return this.buildJoinColumn(this.joinColumnOwner, joinColumnAnnotation);
 	}
 
-	protected JavaJoinColumn buildJoinColumn(JavaJoinColumn.Owner jcOwner, JoinColumnAnnotation joinColumnAnnotation) {
+	protected JavaJoinColumn buildJoinColumn(JavaReadOnlyJoinColumn.Owner jcOwner, JoinColumnAnnotation joinColumnAnnotation) {
 		return this.getJpaFactory().buildJavaJoinColumn(this, jcOwner, joinColumnAnnotation);
 	}
 
@@ -280,7 +281,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 		if (result != null) {
 			return result;
 		}
-		for (JavaJoinColumn column : CollectionTools.iterable(this.joinColumns())) {
+		for (JavaJoinColumn column : this.getJoinColumns()) {
 			result = column.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
@@ -305,13 +306,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	}
 
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.validateJoinColumns(this.joinColumns(), messages, reporter, astRoot);		
-	}
-
-	protected void validateJoinColumns(Iterator<JavaJoinColumn> joinColumns, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		while (joinColumns.hasNext()) {
-			joinColumns.next().validate(messages, reporter, astRoot);
-		}
+		this.validateNodes(this.getJoinColumns(), messages, reporter, astRoot);
 	}
 }
 

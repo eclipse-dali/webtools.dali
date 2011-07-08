@@ -16,13 +16,19 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
+import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -101,7 +107,7 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 	}
 
 	protected String getPossiblePrefix() {
-		return this.getContainer().getPossiblePrefix();
+		return this.isJpa2_0Compatible() ? this.getContainer2_0().getPossiblePrefix() : null;
 	}
 
 
@@ -124,8 +130,12 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 		return (C) super.getParent();
 	}
 
-	public C getContainer() {
+	protected C getContainer() {
 		return this.getParent();
+	}
+
+	protected JavaOverrideContainer2_0 getContainer2_0() {
+		return (JavaOverrideContainer2_0) this.getContainer();
 	}
 
 	public A getOverrideAnnotation() {
@@ -140,6 +150,22 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 		this.setName(this.prefix(virtualOverride.getName()));
 	}
 
+	public TypeMapping getTypeMapping() {
+		return this.getContainer().getTypeMapping();
+	}
+
+	public Table resolveDbTable(String tableName) {
+		return this.getContainer().resolveDbTable(tableName);
+	}
+	
+	public String getDefaultTableName() {
+		return this.getContainer().getDefaultTableName();
+	}
+
+	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+		return this.getContainer().buildColumnValidator(this, column, owner, textRangeResolver);
+	}
+
 	protected String prefix(String oldName) {
 		if (oldName == null) {
 			return null;
@@ -149,7 +175,7 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 	}
 
 	protected String getWritePrefix() {
-		return this.getContainer().getWritePrefix();
+		return this.isJpa2_0Compatible() ? this.getContainer2_0().getWritePrefix() : null;
 	}
 
 	@Override
@@ -196,7 +222,7 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 	}
 
 	protected JptValidator buildValidator(CompilationUnit astRoot) {
-		return this.getContainer().buildValidator(this, buildTextRangeResolver(astRoot));
+		return this.getContainer().buildOverrideValidator(this, buildTextRangeResolver(astRoot));
 	}
 
 	protected OverrideTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
@@ -210,5 +236,13 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.getValidationTextRange(this.overrideAnnotation.getNameTextRange(astRoot), astRoot);
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return this.getContainer().tableNameIsInvalid(tableName);
+	}
+
+	public Iterator<String> candidateTableNames() {
+		return this.getContainer().candidateTableNames();
 	}
 }

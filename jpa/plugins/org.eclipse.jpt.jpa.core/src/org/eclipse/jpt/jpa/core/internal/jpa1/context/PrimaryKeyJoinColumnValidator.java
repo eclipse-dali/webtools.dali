@@ -9,32 +9,32 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public abstract class PrimaryKeyJoinColumnValidator
-	extends BaseJoinColumnValidator<BaseJoinColumn, BaseJoinColumnTextRangeResolver>
+	extends BaseJoinColumnValidator<ReadOnlyBaseJoinColumn, BaseJoinColumnTextRangeResolver>
 {
 	protected PrimaryKeyJoinColumnValidator(
-				BaseJoinColumn column,
-				BaseJoinColumn.Owner owner,
+				ReadOnlyBaseJoinColumn column,
+				ReadOnlyBaseJoinColumn.Owner owner,
 				BaseJoinColumnTextRangeResolver textRangeResolver) {
 		super(column, owner, textRangeResolver, TableDescriptionProvider.Null.instance());
 	}
 
 	protected PrimaryKeyJoinColumnValidator(
-				PersistentAttribute persistentAttribute,
-				BaseJoinColumn column,
-				BaseJoinColumn.Owner owner,
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyBaseJoinColumn column,
+				ReadOnlyBaseJoinColumn.Owner owner,
 				BaseJoinColumnTextRangeResolver textRangeResolver) {
 		super(persistentAttribute, column, owner, textRangeResolver, TableDescriptionProvider.Null.instance());
 	}
 
 	@Override
-	public IMessage buildUnresolvedNameMessage() {
+	protected IMessage buildUnresolvedNameMessage() {
 		return this.column.isVirtual() ?
 				this.buildUnresolvedNameMessage(this.getVirtualPKJoinColumnUnresolvedNameMessage()) :
 				super.buildUnresolvedNameMessage();

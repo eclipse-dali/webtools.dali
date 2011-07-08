@@ -15,12 +15,14 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinColumnRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -30,7 +32,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class NullJavaJoinColumnRelationshipStrategy
 	extends AbstractJavaJpaContextNode
-	implements JavaJoinColumnRelationshipStrategy
+	implements JavaMappingJoinColumnRelationshipStrategy2_0
 {
 	public NullJavaJoinColumnRelationshipStrategy(JavaJoinColumnRelationship parent) {
 		super(parent);
@@ -131,6 +133,10 @@ public class NullJavaJoinColumnRelationshipStrategy
 
 	public void initializeFromVirtual(ReadOnlyJoinColumnRelationshipStrategy oldStrategy) {
 		// NOP
+	}
+
+	public ReadOnlyRelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+		return null;
 	}
 
 	public void addStrategy() {

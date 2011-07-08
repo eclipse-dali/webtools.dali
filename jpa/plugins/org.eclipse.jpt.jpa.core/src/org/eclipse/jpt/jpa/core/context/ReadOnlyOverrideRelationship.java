@@ -9,6 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import java.util.Iterator;
+import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.db.Table;
+
 /**
  * Read-only association override relationship
  * <p>
@@ -23,7 +28,33 @@ package org.eclipse.jpt.jpa.core.context;
 public interface ReadOnlyOverrideRelationship
 	extends ReadOnlyJoinColumnRelationship
 {
-	ReadOnlyAssociationOverride getAssociationOverride();
+	String getAttributeName();
+
+	/**
+	 * @see ReadOnlyOverride#getTypeMapping()
+	 */
+	TypeMapping getTypeMapping();
+
+	/**
+	 * Return whether the specified table cannot be explicitly specified
+	 * as the table for the relationship's join column.
+	 */
+	boolean tableNameIsInvalid(String tableName);
+
+	/**
+	 * Return the names of tables that are valid for the relationship's
+	 * join column.
+	 */
+	Iterator<String> candidateTableNames();
+
+	/**
+	 * Return the database table for the specified table name.
+	 */
+	Table resolveDbTable(String tableName);
+
+	String getDefaultTableName();
+
+	JptValidator buildColumnValidator(ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver);
 
 	void initializeOnSpecified(OverrideRelationship specifiedRelationship);
 }

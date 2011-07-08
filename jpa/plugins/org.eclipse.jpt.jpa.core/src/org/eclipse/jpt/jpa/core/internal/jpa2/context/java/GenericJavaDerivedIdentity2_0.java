@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
@@ -27,6 +28,7 @@ public class GenericJavaDerivedIdentity2_0
 	extends AbstractJavaJpaContextNode
 	implements JavaDerivedIdentity2_0
 {
+	/** this can be <code>null</code> */
 	protected DerivedIdentityStrategy2_0 strategy;
 
 	protected final JavaIdDerivedIdentityStrategy2_0 idStrategy;
@@ -59,7 +61,7 @@ public class GenericJavaDerivedIdentity2_0
 	}
 
 
-	// ********** predominant strategy **********
+	// ********** strategy **********
 
 	public DerivedIdentityStrategy2_0 getPredominantDerivedIdentityStrategy() {
 		return this.strategy;
@@ -161,13 +163,11 @@ public class GenericJavaDerivedIdentity2_0
 		if (result != null) {
 			return result;
 		}
-		result = this.mapsIdStrategy.javaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		result = this.idStrategy.javaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
+		if (this.strategy != null) {
+			result = ((JavaJpaContextNode) this.strategy).javaCompletionProposals(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
 		}
 		return null;
 	}
@@ -178,8 +178,9 @@ public class GenericJavaDerivedIdentity2_0
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.idStrategy.validate(messages, reporter, astRoot);
-		this.mapsIdStrategy.validate(messages, reporter, astRoot);
+		if (this.strategy != null) {
+			((JavaJpaContextNode) this.strategy).validate(messages, reporter, astRoot);
+		}
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

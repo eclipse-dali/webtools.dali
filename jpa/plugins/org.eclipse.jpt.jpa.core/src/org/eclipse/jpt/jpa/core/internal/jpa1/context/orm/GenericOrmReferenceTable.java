@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,6 +24,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -43,7 +44,7 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 {
 	protected final Vector<OrmJoinColumn> specifiedJoinColumns = new Vector<OrmJoinColumn>();
 	protected final SpecifiedJoinColumnContainerAdapter specifiedJoinColumnContainerAdapter = new SpecifiedJoinColumnContainerAdapter();
-	protected final OrmJoinColumn.Owner joinColumnOwner;
+	protected final OrmReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected OrmJoinColumn defaultJoinColumn;
 
@@ -85,7 +86,7 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 		return this.hasSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.getDefaultJoinColumnsSize();
 	}
 
-	public void convertDefaultToSpecifiedJoinColumn() {
+	public void convertDefaultJoinColumnToSpecified() {
 		MappingTools.convertReferenceTableDefaultToSpecifiedJoinColumn(this);
 	}
 
@@ -205,7 +206,7 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 		}
 	}
 
-	protected abstract OrmJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
 
 	// ********** default join column **********
@@ -293,12 +294,6 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 	}
 
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
-		this.validateJoinColumns(this.getJoinColumns(), messages, reporter);
-	}
-
-	protected void validateJoinColumns(Iterable<OrmJoinColumn> joinColumns, List<IMessage> messages, IReporter reporter) {
-		for (OrmJoinColumn joinColumn : joinColumns) {
-			joinColumn.validate(messages, reporter);
-		}
+		this.validateNodes(this.getJoinColumns(), messages, reporter);
 	}
 }

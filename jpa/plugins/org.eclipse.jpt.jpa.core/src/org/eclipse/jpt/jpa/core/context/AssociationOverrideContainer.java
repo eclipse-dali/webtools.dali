@@ -10,9 +10,6 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 
 /**
  * Association override container.
@@ -30,6 +27,20 @@ import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 public interface AssociationOverrideContainer
 	extends OverrideContainer
 {
+	/**
+	 * Return the relationship mapping for the specified attribute.
+	 * Return <code>null</code> if it does not exist. This relationship mapping
+	 * will be found in the mapped superclass or embeddable type whose mapping
+	 * is being overridden, not in the owning entity
+	 */
+	RelationshipMapping getRelationshipMapping(String attributeName);
+
+	/**
+	 * Return the relationship with the specified attribute name.
+	 */
+	ReadOnlyRelationship resolveOverriddenRelationship(String attributeName);
+
+	// covariant overrides
 	ListIterator<? extends ReadOnlyAssociationOverride> overrides();
 	ReadOnlyAssociationOverride getOverrideNamed(String name);
 	ListIterator<? extends AssociationOverride> specifiedOverrides();
@@ -39,36 +50,15 @@ public interface AssociationOverrideContainer
 	VirtualAssociationOverride convertOverrideToVirtual(Override_ specifiedOverride);
 	AssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
-	/**
-	 * Return the relationship mapping with the given attribute name.
-	 * Return null if it does not exist.  This relationship mapping
-	 * will be found in the mapped superclass, not in the owning entity
-	 */
-	RelationshipMapping getRelationshipMapping(String attributeName);
-
-	/**
-	 * Return the relationship with the specified attribute name.
-	 */
-	Relationship resolveOverriddenRelationship(String attributeName);
-
-	JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-
-	JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-
-	JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver);
-
 
 	// ********** owner **********
 
 	interface Owner
 		extends OverrideContainer.Owner
 	{
-		Relationship resolveOverriddenRelationship(String attributeName);
-
-		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-
-		JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-
-		JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver);
+		/**
+		 * @see AssociationOverrideContainer#resolveOverriddenRelationship(String)
+		 */
+		ReadOnlyRelationship resolveOverriddenRelationship(String attributeName);
 	}
 }

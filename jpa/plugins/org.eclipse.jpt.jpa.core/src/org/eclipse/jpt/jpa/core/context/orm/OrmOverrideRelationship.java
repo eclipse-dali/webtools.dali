@@ -28,7 +28,5 @@ public interface OrmOverrideRelationship
 	extends OverrideRelationship,
 		OrmJoinColumnRelationship
 {
-	OrmAssociationOverride getAssociationOverride();
-
 	XmlAssociationOverride getXmlContainer();
 }

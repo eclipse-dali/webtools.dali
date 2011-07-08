@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -324,23 +324,23 @@ public class GenericOrmOneToOneMapping2_0Tests
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		resourceMapping.setMapsId("foo");
 		assertEquals("foo", resourceMapping.getMapsId());
-		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		resourceMapping.setMapsId("bar");
 		assertEquals("bar", resourceMapping.getMapsId());
-		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		resourceMapping.setMapsId("");
 		assertEquals("", resourceMapping.getMapsId());
-		assertEquals("", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		resourceMapping.setMapsId(null);
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 	
 	public void testSetMapsId() throws Exception {
@@ -352,23 +352,23 @@ public class GenericOrmOneToOneMapping2_0Tests
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue("foo");
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName("foo");
 		assertEquals("foo", resourceMapping.getMapsId());
-		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue("bar");
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName("bar");
 		assertEquals("bar", resourceMapping.getMapsId());
-		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue("");
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName("");
 		assertEquals("", resourceMapping.getMapsId());
-		assertEquals("", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue(null);
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName(null);
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 	
 	public void testUpdatePredominantDerivedIdentityStrategy() throws Exception {
@@ -465,7 +465,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertNull(resourceOneToOne.getMapsId());
 		assertNull(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).
-				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		XmlManyToOne resourceManyToOne = resourceEntity.getAttributes().getManyToOnes().get(0);
@@ -474,7 +474,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertNull(resourceManyToOne.getMapsId());
 		assertNull(((OrmManyToOneMapping2_0) contextAttribute.getMapping()).
-				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		resourceOneToOne = resourceEntity.getAttributes().getOneToOnes().get(0);
@@ -483,7 +483,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertNull(resourceOneToOne.getMapsId());
 		assertNull(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).
-				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 	}
 	

@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+
 /**
  * Read-only join table relationship strategy.
  * <p>
@@ -40,4 +43,10 @@ public interface ReadOnlyJoinTableRelationshipStrategy
 	 * Return the default name of the strategy's join table
 	 */
 	String getJoinTableDefaultName();
+
+	boolean validatesAgainstDatabase();
+
+	JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
+
+	JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
 }

@@ -24,9 +24,12 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinColumnRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinTableRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingMappedByRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -36,13 +39,13 @@ public class GenericJavaOneToManyRelationship
 	extends AbstractJavaMappingRelationship<JavaOneToManyMapping>
 	implements JavaOneToManyRelationship2_0
 {
-	protected final JavaMappedByRelationshipStrategy mappedByStrategy;
+	protected final JavaMappingMappedByRelationshipStrategy2_0 mappedByStrategy;
 
-	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
+	protected final JavaMappingJoinTableRelationshipStrategy2_0 joinTableStrategy;
 
 	// JPA 2.0 or EclipseLink
 	protected final boolean supportsJoinColumnStrategy;
-	protected final JavaJoinColumnRelationshipStrategy joinColumnStrategy;
+	protected final JavaMappingJoinColumnRelationshipStrategy2_0 joinColumnStrategy;
 
 
 	public GenericJavaOneToManyRelationship(JavaOneToManyMapping parent, boolean supportsJoinColumnStrategy) {
@@ -80,7 +83,7 @@ public class GenericJavaOneToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected JavaRelationshipStrategy buildStrategy() {
+	protected JavaMappingRelationshipStrategy2_0 buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -121,7 +124,7 @@ public class GenericJavaOneToManyRelationship
 		return false;
 	}
 
-	protected JavaMappedByRelationshipStrategy buildMappedByStrategy() {
+	protected JavaMappingMappedByRelationshipStrategy2_0 buildMappedByStrategy() {
 		return new GenericJavaMappedByRelationshipStrategy(this);
 	}
 
@@ -148,7 +151,7 @@ public class GenericJavaOneToManyRelationship
 				! this.joinColumnStrategy.hasSpecifiedJoinColumns();
 	}
 
-	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected JavaMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
 		return new GenericJavaMappingJoinTableRelationshipStrategy(this);
 	}
 
@@ -174,7 +177,7 @@ public class GenericJavaOneToManyRelationship
 		return false;
 	}
 
-	protected JavaJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+	protected JavaMappingJoinColumnRelationshipStrategy2_0 buildJoinColumnStrategy() {
 		return this.supportsJoinColumnStrategy ?
 				new GenericJavaMappingJoinColumnRelationshipStrategy(this, true) :  // true = target foreign key
 				new NullJavaJoinColumnRelationshipStrategy(this);

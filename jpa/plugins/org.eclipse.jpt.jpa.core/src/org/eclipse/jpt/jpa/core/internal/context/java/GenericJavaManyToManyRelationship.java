@@ -23,8 +23,10 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinTableRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingMappedByRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -33,9 +35,9 @@ public class GenericJavaManyToManyRelationship
 	extends AbstractJavaMappingRelationship<JavaManyToManyMapping>
 	implements JavaManyToManyRelationship
 {
-	protected final JavaMappedByRelationshipStrategy mappedByStrategy;
+	protected final JavaMappingMappedByRelationshipStrategy2_0 mappedByStrategy;
 
-	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
+	protected final JavaMappingJoinTableRelationshipStrategy2_0 joinTableStrategy;
 
 
 	public GenericJavaManyToManyRelationship(JavaManyToManyMapping parent) {
@@ -67,7 +69,7 @@ public class GenericJavaManyToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected JavaRelationshipStrategy buildStrategy() {
+	protected JavaMappingRelationshipStrategy2_0 buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -95,7 +97,7 @@ public class GenericJavaManyToManyRelationship
 		return mapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected JavaMappedByRelationshipStrategy buildMappedByStrategy() {
+	protected JavaMappingMappedByRelationshipStrategy2_0 buildMappedByStrategy() {
 		return new GenericJavaMappedByRelationshipStrategy(this);
 	}
 
@@ -120,7 +122,7 @@ public class GenericJavaManyToManyRelationship
 		return this.getMappedByStrategy().getMappedByAttribute() == null;
 	}
 
-	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected JavaMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
 		return new GenericJavaMappingJoinTableRelationshipStrategy(this);
 	}
 

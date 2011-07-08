@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -20,20 +20,20 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class AssociationOverrideJoinTableValidator
 	extends AbstractJoinTableValidator
 {
-	private final AssociationOverride override;
+	private final ReadOnlyAssociationOverride override;
 
 	public AssociationOverrideJoinTableValidator(
-				AssociationOverride override,
-				JoinTable table,
+				ReadOnlyAssociationOverride override,
+				ReadOnlyJoinTable table,
 				TableTextRangeResolver textRangeResolver) {
 		super(table, textRangeResolver);
 		this.override = override;
 	}
 
 	public AssociationOverrideJoinTableValidator(
-				PersistentAttribute persistentAttribute,
-				AssociationOverride override, 
-				JoinTable table, 
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyAssociationOverride override, 
+				ReadOnlyJoinTable table, 
 				TableTextRangeResolver textRangeResolver) {
 		super(persistentAttribute, table, textRangeResolver);
 		this.override = override;
@@ -52,9 +52,9 @@ public class AssociationOverrideJoinTableValidator
 			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_NAME,
 			new String[] {
 				this.override.getName(),
-				this.getTable().getName()
+				this.table.getName()
 			},
-			this.getTable(), 
+			this.table, 
 			this.getTextRangeResolver().getNameTextRange()
 		);
 	}
@@ -72,9 +72,9 @@ public class AssociationOverrideJoinTableValidator
 			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_CATALOG,
 			new String[] {
 				this.override.getName(),
-				this.getTable().getCatalog()
+				this.table.getCatalog()
 			},
-			this.getTable(), 
+			this.table, 
 			this.getTextRangeResolver().getCatalogTextRange()
 		);
 	}
@@ -92,40 +92,44 @@ public class AssociationOverrideJoinTableValidator
 			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_TABLE_UNRESOLVED_SCHEMA,
 			new String[] {
 				this.override.getName(),
-				this.getTable().getSchema()
+				this.table.getSchema()
 			},
-			this.getTable(), 
+			this.table, 
 			this.getTextRangeResolver().getSchemaTextRange()
 		);
 	}
 
 	@Override
 	protected IMessage buildVirtualAttributeUnresolvedNameMessage() {
-		throw new UnsupportedOperationException("Nested relationship mappings with JoinTable are unsupported"); //$NON-NLS-1$
+		throw this.buildNestedJoinTableNotSupportedException();
 	}
 
 	@Override
 	protected IMessage buildVirtualAttributeUnresolvedCatalogMessage() {
-		throw new UnsupportedOperationException("Nested relationship mappings with JoinTable are unsupported"); //$NON-NLS-1$
+		throw this.buildNestedJoinTableNotSupportedException();
 	}
 
 	@Override
 	protected IMessage buildVirtualAttributeUnresolvedSchemaMessage() {
-		throw new UnsupportedOperationException("Nested relationship mappings with JoinTable are unsupported"); //$NON-NLS-1$
+		throw this.buildNestedJoinTableNotSupportedException();
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedCatalogMessage() {
-		throw new UnsupportedOperationException("Nested relationship mappings with JoinTable are unsupported"); //$NON-NLS-1$
+		throw this.buildNestedJoinTableNotSupportedException();
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedSchemaMessage() {
-		throw new UnsupportedOperationException("Nested relationship mappings with JoinTable are unsupported"); //$NON-NLS-1$
+		throw this.buildNestedJoinTableNotSupportedException();
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		throw new UnsupportedOperationException("Nested relationship mappings with JoinTable are unsupported"); //$NON-NLS-1$
+		throw this.buildNestedJoinTableNotSupportedException();
+	}
+
+	protected UnsupportedOperationException buildNestedJoinTableNotSupportedException() {
+		return new UnsupportedOperationException("A nested relationship mapping cannot specify a join table"); //$NON-NLS-1$
 	}
 }

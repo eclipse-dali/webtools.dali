@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,7 +69,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	 * <br> key is the preferenceKey which is also the validation message key @see JpaValidationMessages.
 	 * <br> value is a severity level - @see JpaValidationPreferences#ERROR WARNING INFO IGNORE
 	 */
-	private Map<String, String> severityLevels;
+	Map<String, String> severityLevels;
 
 	/**
 	 * Default severity levels are stored here,  ERROR is the default default so only need
@@ -172,30 +172,30 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		this.expandablePanes = new ArrayList<ExpandableComposite>();
 		this.severityDisplayStrings = buildSeverityDisplayStrings();
 		this.severityLevels = new HashMap<String, String>();
-		this.defaultSeverities = buildDefaultSeverties();
+		this.defaultSeverities = buildDefaultSeverities();
 	}
 
 	//since most of our problems have a default severity of ERROR, we are just defining the WARNING, INFO, IGNORE cases
-	protected Map<String, String> buildDefaultSeverties() {
-		 Map<String, String> defaultSeverities = new HashMap<String, String>();
+	protected Map<String, String> buildDefaultSeverities() {
+		 Map<String, String> result = new HashMap<String, String>();
 
-		 defaultSeverities.put(JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS, 												JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.PROJECT_NO_CONNECTION, 																			JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.PROJECT_INVALID_CONNECTION, 																	JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.PROJECT_INACTIVE_CONNECTION, 																	JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA, 						JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS, 															JpaValidationPreferences.WARNING); //3.0 M7
-		 defaultSeverities.put(JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING, 						JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED, 				JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT, 	JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED,										JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE, 							JpaValidationPreferences.WARNING); //3.0 M7
-		 defaultSeverities.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED, 						JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM, 							JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS, 												JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.PROJECT_NO_CONNECTION, 																			JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.PROJECT_INVALID_CONNECTION, 																	JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.PROJECT_INACTIVE_CONNECTION, 																	JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA, 						JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS, 															JpaValidationPreferences.WARNING); //3.0 M7
+		 result.put(JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING, 						JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED, 				JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT, 	JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED,										JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE, 							JpaValidationPreferences.WARNING); //3.0 M7
+		 result.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED, 						JpaValidationPreferences.WARNING);
+		 result.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM, 							JpaValidationPreferences.WARNING);
 
-		 defaultSeverities.put(JpaValidationMessages.XML_VERSION_NOT_LATEST, 																			JpaValidationPreferences.INFO);
-		 defaultSeverities.put(JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS, 														JpaValidationPreferences.INFO);
-		 return defaultSeverities;
+		 result.put(JpaValidationMessages.XML_VERSION_NOT_LATEST, 																			JpaValidationPreferences.INFO);
+		 result.put(JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS, 														JpaValidationPreferences.INFO);
+		 return result;
 	}
 
 	@Override
@@ -477,7 +477,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ASSOCIATION_OVERRIDE_INVALID_NAME,                    																																			JpaValidationMessages.ASSOCIATION_OVERRIDE_INVALID_NAME);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ATTRIBUTE_OVERRIDE_INVALID_NAME,                    																																				JpaValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_NAME);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ATTRIBUTE_OVERRIDE_INVALID_TYPE,                    																																				JpaValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_TYPE);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ATTRIBUTE_OVERRIDE_MAPPED_BY_RELATIONSHIP_AND_SPECIFIED,                    																									JpaValidationMessages.ATTRIBUTE_OVERRIDE_MAPPED_BY_RELATIONSHIP_AND_SPECIFIED); //3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ATTRIBUTE_OVERRIDE_MAPPED_BY_RELATIONSHIP_AND_SPECIFIED,                    																									JpaValidationMessages.ATTRIBUTE_OVERRIDE_DERIVED_AND_SPECIFIED); //3.0 M7
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVALID_NAME,                    																																JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVALID_NAME);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS, 									JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS,JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS);
@@ -495,7 +495,6 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID,                    																											JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,                                    																							JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_NAME,                    																																JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_NAME);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_TYPE,                    																																	JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_TYPE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID, 																												JpaValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_INVALID_NAME,                    																													JpaValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_INVALID_NAME);
 

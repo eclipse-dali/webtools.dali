@@ -9,33 +9,34 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
 public class InverseJoinColumnValidator
-	extends BaseJoinColumnValidator<JoinColumn, JoinColumnTextRangeResolver>
+	extends BaseJoinColumnValidator<ReadOnlyJoinColumn, JoinColumnTextRangeResolver>
 {
 	protected InverseJoinColumnValidator(
-				JoinColumn column,
-				JoinColumn.Owner joinColumnOwner,
+				ReadOnlyJoinColumn column,
+				ReadOnlyJoinColumn.Owner joinColumnOwner,
 				JoinColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
 		super(column, joinColumnOwner, textRangeResolver, provider);
 	}
 
 	public InverseJoinColumnValidator(
-				PersistentAttribute persistentAttribute,
-				JoinColumn column,
-				JoinColumn.Owner joinColumnOwner,
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyJoinColumn column,
+				ReadOnlyJoinColumn.Owner joinColumnOwner,
 				JoinColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, joinColumnOwner, textRangeResolver, provider);
 	}
 
 	@Override
-	protected TableValidator buildTableValidator() {
+	protected JptValidator buildTableValidator() {
 		return new TableValidator();
 	}
 
@@ -78,6 +79,9 @@ public class InverseJoinColumnValidator
 	protected String getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
 		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
+
+
+	// ********** table validator **********
 
 	protected class TableValidator
 		extends BaseColumnTableValidator

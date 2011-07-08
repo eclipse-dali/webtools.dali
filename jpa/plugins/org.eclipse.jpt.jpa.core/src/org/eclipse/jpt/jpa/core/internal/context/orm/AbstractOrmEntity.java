@@ -9,21 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -36,7 +34,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
@@ -49,24 +46,26 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -75,25 +74,26 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
+import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
-import org.eclipse.jpt.jpa.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
@@ -123,7 +123,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTableValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.TableValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.Inheritance;
@@ -160,6 +160,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected boolean specifiedTableIsAllowed;
 	protected boolean tableIsUndefined;
 
+	protected final ReadOnlyTable.Owner secondaryTableOwner;
 	protected final Vector<OrmSecondaryTable> specifiedSecondaryTables = new Vector<OrmSecondaryTable>();
 	protected final SpecifiedSecondaryTableContainerAdapter specifiedSecondaryTableContainerAdapter = new SpecifiedSecondaryTableContainerAdapter();
 
@@ -203,6 +204,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.specifiedName = xmlEntity.getName();
 		this.idClassReference = this.buildIdClassReference();
 		this.table = this.buildTable();
+		this.secondaryTableOwner = this.buildSecondaryTableOwner();
 		this.initializeSpecifiedSecondaryTables();
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
 		this.initializeSpecifiedPrimaryKeyJoinColumns();
@@ -493,9 +495,9 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected static class TableOwner
-		implements Table.Owner
+		implements ReadOnlyTable.Owner
 	{
-		public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+		public JptValidator buildTableValidator(ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
 			return new TableValidator(table, textRangeResolver);
 		}
 	}
@@ -593,16 +595,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected void initializeSpecifiedSecondaryTables() {
 		for (XmlSecondaryTable xmlTable : this.getXmlSecondaryTables()) {
-			this.specifiedSecondaryTables.add(this.buildSecondaryTable(xmlTable));
+			this.specifiedSecondaryTables.add(this.buildSpecifiedSecondaryTable(xmlTable));
 		}
 	}
 
-	protected OrmSecondaryTable buildSecondaryTable(XmlSecondaryTable xmlSecondaryTable) {
-		return this.getContextNodeFactory().buildOrmSecondaryTable(this, this.buildSecondaryTableOwner(), xmlSecondaryTable);
-	}
-
-	protected Table.Owner buildSecondaryTableOwner() {
-		return new SecondaryTableOwner();
+	protected OrmSecondaryTable buildSpecifiedSecondaryTable(XmlSecondaryTable xmlSecondaryTable) {
+		return this.getContextNodeFactory().buildOrmSecondaryTable(this, this.secondaryTableOwner, xmlSecondaryTable);
 	}
 
 	protected void clearSpecifiedSecondaryTables() {
@@ -624,7 +622,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmSecondaryTable addSpecifiedSecondaryTable_(int index, XmlSecondaryTable xmlSecondaryTable) {
-		OrmSecondaryTable secondaryTable = this.buildSecondaryTable(xmlSecondaryTable);
+		OrmSecondaryTable secondaryTable = this.buildSpecifiedSecondaryTable(xmlSecondaryTable);
 		this.addItemToList(index, secondaryTable, this.specifiedSecondaryTables, SPECIFIED_SECONDARY_TABLES_LIST);
 		return secondaryTable;
 	}
@@ -656,14 +654,6 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		}
 		public void removeContextElement(OrmSecondaryTable element) {
 			AbstractOrmEntity.this.removeSpecifiedSecondaryTable_(element);
-		}
-	}
-
-	protected static class SecondaryTableOwner
-		implements Table.Owner
-	{
-		public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
-			return new SecondaryTableValidator((SecondaryTable) table, textRangeResolver);
 		}
 	}
 
@@ -722,7 +712,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected OrmVirtualSecondaryTable buildVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
-		return this.getContextNodeFactory().buildOrmVirtualSecondaryTable(this, javaSecondaryTable);
+		return this.getContextNodeFactory().buildOrmVirtualSecondaryTable(this, this.secondaryTableOwner, javaSecondaryTable);
 	}
 
 	protected void removeVirtualSecondaryTable(OrmVirtualSecondaryTable secondaryTable) {
@@ -797,6 +787,18 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected void removeSecondaryTablesFromXml() {
 		this.clearSpecifiedSecondaryTables();
 		// the virtual secondary tables will be built during the update
+	}
+
+	protected Table.Owner buildSecondaryTableOwner() {
+		return new SecondaryTableOwner();
+	}
+
+	protected static class SecondaryTableOwner
+		implements ReadOnlyTable.Owner
+	{
+		public JptValidator buildTableValidator(ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
+			return new SecondaryTableValidator((ReadOnlySecondaryTable) table, textRangeResolver);
+		}
 	}
 
 
@@ -1335,6 +1337,21 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 
+	// ********** override container **********
+
+	protected JavaEntity getJavaOverrideContainerEntity() {
+		if (this.isMetadataComplete()) {
+			return null;
+		}
+		JavaPersistentType javaType = this.getJavaPersistentType();
+		if (javaType == null) {
+			return null;
+		}
+		JavaTypeMapping javaTypeMapping = javaType.getMapping();
+		return (javaTypeMapping instanceof JavaEntity) ? (JavaEntity) javaTypeMapping : null;
+	}
+
+
 	// ********** attribute override container **********
 
 	public OrmAttributeOverrideContainer getAttributeOverrideContainer() {
@@ -1350,7 +1367,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return (superPersistentType == null) ? null : superPersistentType.getMapping();
 	}
 
-	protected Column resolveOverriddenColumnForAttributeOverride(String attributeName) {
+	protected ReadOnlyColumn resolveOverriddenColumnForAttributeOverride(String attributeName) {
 		if ( ! this.isMetadataComplete()) {
 			JavaPersistentType javaType = this.getJavaPersistentType();
 			if (javaType != null) {
@@ -1394,7 +1411,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return super.resolveOverriddenRelationship(attributeName);
 	}
 
-	protected Relationship resolveOverriddenRelationshipForAssociationOverride(String attributeName) {
+	protected ReadOnlyRelationship resolveOverriddenRelationshipForAssociationOverride(String attributeName) {
 		if ( ! this.isMetadataComplete()) {
 			JavaPersistentType javaType = this.getJavaPersistentType();
 			if (javaType != null) {
@@ -1482,7 +1499,13 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected boolean tableNameIsValid(String tableName) {
-		return this.tableIsUndefined || CollectionTools.contains(this.getAllAssociatedTableNames(), tableName);
+		return this.tableIsUndefined || this.tableNameIsValid_(tableName);
+	}
+
+	protected boolean tableNameIsValid_(String tableName) {
+		return this.connectionProfileIsActive() ?
+				(this.resolveDbTable(tableName) != null) :
+				CollectionTools.contains(this.getAllAssociatedTableNames(), tableName);
 	}
 
 
@@ -1800,7 +1823,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected void validateDuplicateEntityNames(List<IMessage> messages) {
-		HashBag<String> javaEntityNamesExclOverridden = CollectionTools.bag(this.getPersistenceUnit().javaEntityNamesExclOverridden());
+		HashSet<String> javaEntityNamesExclOverridden = CollectionTools.set(this.getPersistenceUnit().javaEntityNamesExclOverridden());
 		Map<String, Set<String>> map = this.getPersistenceUnit().mapEntityNameToClassNames();
 		Set<String> classNames = map.get(this.getName());
 		// Check whether or not this entity name has duplicates among the orm entities defined with different classes
@@ -1991,7 +2014,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected abstract class OverrideContainerOwner
 		implements OrmOverrideContainer.Owner
 	{
-		public OrmTypeMapping getTypeMapping() {
+		public AbstractOrmEntity<?> getTypeMapping() {
 			return AbstractOrmEntity.this;
 		}
 
@@ -2003,15 +2026,35 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.getOverridableTypeMapping();
 		}
 
+		/**
+		 * Use the Java overrides if appropriate, so we bring over any invalid
+		 * overrides also.
+		 * @see JavaOverrideContainer#getOverrideNames()
+		 */
+		public Iterable<String> getJavaOverrideNames() {
+			JavaEntity javaEntity = this.getJavaOverrideContainerEntity();
+			return (javaEntity == null) ? null : this.getOverrideContainer(javaEntity).getOverrideNames();
+		}
+
+		/**
+		 * Return the Java entity with the corresponding override container.
+		 * Return <code>null</code> if not appropriate.
+		 */
+		protected JavaEntity getJavaOverrideContainerEntity() {
+			return AbstractOrmEntity.this.getJavaOverrideContainerEntity();
+		}
+
+		protected abstract JavaOverrideContainer getOverrideContainer(JavaEntity javaEntity);
+
 		public Iterator<String> allOverridableNames() {
-			TypeMapping typeMapping = this.getOverridableTypeMapping();
-			return (typeMapping != null) ? this.allOverridableNames_(typeMapping) : EmptyIterator.<String>instance();
+			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
+			return (overriddenTypeMapping != null) ? this.allOverridableNames_(overriddenTypeMapping) : EmptyIterator.<String>instance();
 		}
 
 		/**
 		 * pre-condition: <code>typeMapping</code> is not <code>null</code>
 		 */
-		protected abstract Iterator<String> allOverridableNames_(TypeMapping typeMapping);
+		protected abstract Iterator<String> allOverridableNames_(TypeMapping overriddenTypeMapping);
 
 		public String getDefaultTableName() {
 			return AbstractOrmEntity.this.getPrimaryTableName();
@@ -2038,64 +2081,37 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		implements OrmAttributeOverrideContainer.Owner
 	{
 		@Override
-		protected Iterator<String> allOverridableNames_(TypeMapping typeMapping) {
-			final Collection<String> mappedByRelationshipAttributes = CollectionTools.collection(
-					new TransformationIterator<SingleRelationshipMapping2_0, String>(this.getMapsIdRelationships()) {
-						@Override
-						protected String transform(SingleRelationshipMapping2_0 mapping) {
-							return mapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getValue();
-						}
-					});
-			return new FilteringIterator<String>(typeMapping.allOverridableAttributeNames()) {
+		protected JavaOverrideContainer getOverrideContainer(JavaEntity javaEntity) {
+			return javaEntity.getAttributeOverrideContainer();
+		}
+
+		@Override
+		protected Iterator<String> allOverridableNames_(TypeMapping overriddenTypeMapping) {
+			return new FilteringIterator<String>(overriddenTypeMapping.allOverridableAttributeNames()) {
 					@Override
-					protected boolean accept(String name) {
-						if (mappedByRelationshipAttributes.isEmpty()) {
-							return true;
-						}
-						// overridable names are (usually?) qualified with a container mapping,
-						// which may also be the one mapped by a relationship
-						int index = name.indexOf('.');
-						String qualifier = (index > 0) ? name.substring(0, index) : name;
-						return ! mappedByRelationshipAttributes.contains(qualifier);
+					protected boolean accept(String attributeName) {
+						return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);
 					}
 				};
-		}
-
-		protected Iterable<SingleRelationshipMapping2_0> getMapsIdRelationships() {
-			return new FilteringIterable<SingleRelationshipMapping2_0>(this.getSingleRelationshipMappings()) {
-					@Override
-					protected boolean accept(SingleRelationshipMapping2_0 mapping) {
-						return mapping.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
-					}
-				};
-		}
-
-		protected Iterable<SingleRelationshipMapping2_0> getSingleRelationshipMappings() {
-			return new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(this.getSingleRelationshipMappings_());
-		}
-
-		@SuppressWarnings("unchecked")
-		protected Iterable<AttributeMapping> getSingleRelationshipMappings_() {
-			return new CompositeIterable<AttributeMapping>(
-						this.getTypeMapping().getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
-						this.getTypeMapping().getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)
-					);
 		}
 
 		public EList<XmlAttributeOverride> getXmlOverrides() {
 			return AbstractOrmEntity.this.xmlTypeMapping.getAttributeOverrides();
 		}
 
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideValidator((ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideColumnValidator((ReadOnlyAttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
 		}
 
-		public Column resolveOverriddenColumn(String attributeName) {
-			return AbstractOrmEntity.this.resolveOverriddenColumnForAttributeOverride(attributeName);
+		public ReadOnlyColumn resolveOverriddenColumn(String attributeName) {
+			JavaEntity javaEntity = this.getJavaOverrideContainerEntity();
+			return (javaEntity != null) ? 
+					javaEntity.getAttributeOverrideContainer().getOverrideColumn(attributeName) :
+					AbstractOrmEntity.this.resolveOverriddenColumnForAttributeOverride(attributeName);
 		}
 	}
 
@@ -2104,8 +2120,13 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected class AssociationOverrideContainerOwner
 		extends OverrideContainerOwner
-		implements OrmAssociationOverrideContainer.Owner
+		implements OrmAssociationOverrideContainer2_0.Owner
 	{
+		@Override
+		protected JavaOverrideContainer getOverrideContainer(JavaEntity javaEntity) {
+			return javaEntity.getAssociationOverrideContainer();
+		}
+
 		@Override
 		protected Iterator<String> allOverridableNames_(TypeMapping typeMapping) {
 			return typeMapping.allOverridableAssociationNames();
@@ -2115,28 +2136,31 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.xmlTypeMapping.getAssociationOverrides();
 		}
 
-		public Relationship resolveOverriddenRelationship(String attributeName) {
-			return AbstractOrmEntity.this.resolveOverriddenRelationshipForAssociationOverride(attributeName);
+		public ReadOnlyRelationship resolveOverriddenRelationship(String attributeName) {
+			JavaEntity javaEntity = this.getJavaOverrideContainerEntity();
+			return (javaEntity != null) ? 
+					javaEntity.getAssociationOverrideContainer().getOverrideRelationship(attributeName) :
+					AbstractOrmEntity.this.resolveOverriddenRelationshipForAssociationOverride(attributeName);
 		}
 
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideValidator((AssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideValidator((ReadOnlyAssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideJoinColumnValidator((ReadOnlyAssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator(override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildTableValidator(AssociationOverride override, Table t, TableTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinTableValidator(override, (JoinTable) t, textRangeResolver);
+		public JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable t, TableTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideJoinTableValidator(override, (ReadOnlyJoinTable) t, textRangeResolver);
 		}
 	}
 
@@ -2147,7 +2171,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * some common behavior
 	 */
 	protected abstract class NamedColumnOwner
-		implements OrmNamedColumn.Owner
+		implements OrmReadOnlyNamedColumn.Owner
 	{
 		public TypeMapping getTypeMapping() {
 			return AbstractOrmEntity.this;
@@ -2171,7 +2195,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected class PrimaryKeyJoinColumnOwner
 		extends NamedColumnOwner
-		implements OrmBaseJoinColumn.Owner
+		implements OrmReadOnlyBaseJoinColumn.Owner
 	{
 		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity parentEntity = AbstractOrmEntity.this.getParentEntity();
@@ -2194,8 +2218,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return (parentEntity == null) ? AbstractOrmEntity.this.getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new EntityPrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new EntityPrimaryKeyJoinColumnValidator((ReadOnlyBaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 
@@ -2251,7 +2275,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 					this.isTablePerClass() ? null : DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
 			return new DiscriminatorColumnValidator(column, textRangeResolver);
 		}
 

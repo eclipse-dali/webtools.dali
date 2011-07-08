@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 import java.util.ListIterator;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 
 /**
@@ -29,6 +30,15 @@ import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 public interface JavaAssociationOverrideContainer
 	extends AssociationOverrideContainer, JavaOverrideContainer
 {
+	/**
+	 * Return the specified override's relationship.
+	 * This is used by the <code>orm.xml</code> association override container
+	 * when it is also using the Java container's override names.
+	 * @see #getOverrideNames()
+	 */
+	ReadOnlyOverrideRelationship getOverrideRelationship(String overrideName);
+
+	// covariant overrides
 	ListIterator<JavaReadOnlyAssociationOverride> overrides();
 	JavaReadOnlyAssociationOverride getOverrideNamed(String name);
 	ListIterator<JavaAssociationOverride> specifiedOverrides();
@@ -44,6 +54,6 @@ public interface JavaAssociationOverrideContainer
 	interface Owner
 		extends AssociationOverrideContainer.Owner, JavaOverrideContainer.Owner
 	{		
-		// combine two interfaces
+		// combine interfaces
 	}
 }

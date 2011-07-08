@@ -9,26 +9,34 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaVirtualOverrideRelationship2_0;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	extends AbstractJavaJpaContextNode
-	implements JavaVirtualJoinTableRelationshipStrategy
+	implements JavaVirtualJoinTableRelationshipStrategy, ReadOnlyTable.Owner
 {
 	protected JavaVirtualJoinTable joinTable;
 
 
-	public GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0(JavaVirtualJoinTableRelationship parent) {
+	public GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0(JavaVirtualOverrideRelationship2_0 parent) {
 		super(parent);
 	}
 
@@ -55,7 +63,7 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	}
 
 	protected void updateJoinTable() {
-		JoinTable overriddenJoinTable = this.getOverriddenJoinTable();
+		ReadOnlyJoinTable overriddenJoinTable = this.getOverriddenJoinTable();
 		if (overriddenJoinTable == null) {
 			if (this.joinTable != null) {
 				this.setJoinTable(null);
@@ -69,38 +77,38 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 		}
 	}
 
-	protected JoinTable getOverriddenJoinTable() {
-		JoinTableRelationshipStrategy overriddenStrategy = this.getOverriddenStrategy();
+	protected ReadOnlyJoinTable getOverriddenJoinTable() {
+		ReadOnlyJoinTableRelationshipStrategy overriddenStrategy = this.getOverriddenStrategy();
 		return (overriddenStrategy == null) ? null : overriddenStrategy.getJoinTable();
 	}
 
-	protected JavaVirtualJoinTable buildJoinTable(JoinTable overriddenJoinTable) {
-		return this.getJpaFactory().buildJavaVirtualJoinTable(this, overriddenJoinTable);
+	protected JavaVirtualJoinTable buildJoinTable(ReadOnlyJoinTable overriddenJoinTable) {
+		return this.getJpaFactory().buildJavaVirtualJoinTable(this, this, overriddenJoinTable);
 	}
 
 
 	// ********** misc **********
 
 	@Override
-	public JavaVirtualJoinTableRelationship getParent() {
-		return (JavaVirtualJoinTableRelationship) super.getParent();
+	public JavaVirtualOverrideRelationship2_0 getParent() {
+		return (JavaVirtualOverrideRelationship2_0) super.getParent();
 	}
 
-	public JavaVirtualJoinTableRelationship getRelationship() {
+	public JavaVirtualOverrideRelationship2_0 getRelationship() {
 		return this.getParent();
 	}
 
-	protected JoinTableRelationshipStrategy getOverriddenStrategy() {
-		JoinTableRelationship relationship = this.getOverriddenJoinTableRelationship();
+	protected ReadOnlyJoinTableRelationshipStrategy getOverriddenStrategy() {
+		ReadOnlyJoinTableRelationship relationship = this.getOverriddenJoinTableRelationship();
 		return (relationship == null) ? null : relationship.getJoinTableStrategy();
 	}
 
-	protected JoinTableRelationship getOverriddenJoinTableRelationship() {
-		Relationship relationship = this.resolveOverriddenRelationship();
-		return (relationship instanceof JoinTableRelationship) ? (JoinTableRelationship) relationship : null;
+	protected ReadOnlyJoinTableRelationship getOverriddenJoinTableRelationship() {
+		ReadOnlyRelationship relationship = this.resolveOverriddenRelationship();
+		return (relationship instanceof ReadOnlyJoinTableRelationship) ? (ReadOnlyJoinTableRelationship) relationship : null;
 	}
 
-	protected Relationship resolveOverriddenRelationship() {
+	protected ReadOnlyRelationship resolveOverriddenRelationship() {
 		return this.getRelationship().resolveOverriddenRelationship();
 	}
 
@@ -115,7 +123,31 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 
 	// ********** validation **********
 
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		if (this.joinTable != null) {
+			this.joinTable.validate(messages, reporter, astRoot);
+		}
+	}
+
+	public boolean validatesAgainstDatabase() {
+		return this.getRelationship().getTypeMapping().validatesAgainstDatabase();
+	}
+
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.getRelationship().getValidationTextRange(astRoot);
+	}
+
+	public JptValidator buildTableValidator(ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
+		return this.getRelationship().buildJoinTableValidator((ReadOnlyJoinTable) table, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return this.getRelationship().buildJoinTableJoinColumnValidator(column, owner, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return this.getRelationship().buildJoinTableInverseJoinColumnValidator(column, owner, textRangeResolver);
 	}
 }

@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
@@ -22,7 +22,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class AbstractPersistentAttributeValidator
 	implements JptValidator
 {
-	protected PersistentAttribute persistentAttribute;
+	protected ReadOnlyPersistentAttribute persistentAttribute;
 
 	protected JavaPersistentAttribute javaPersistentAttribute;
 
@@ -30,7 +30,7 @@ public abstract class AbstractPersistentAttributeValidator
 
 
 	protected AbstractPersistentAttributeValidator(
-		PersistentAttribute persistentAttribute, JavaPersistentAttribute javaPersistentAttribute, PersistentAttributeTextRangeResolver textRangeResolver) {
+		ReadOnlyPersistentAttribute persistentAttribute, JavaPersistentAttribute javaPersistentAttribute, PersistentAttributeTextRangeResolver textRangeResolver) {
 		this.persistentAttribute = persistentAttribute;
 		this.javaPersistentAttribute = javaPersistentAttribute;
 		this.textRangeResolver = textRangeResolver;

@@ -330,19 +330,19 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		resourceMapping.setMapsId("foo");
 		assertEquals("foo", resourceMapping.getMapsId());
-		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		resourceMapping.setMapsId("bar");
 		assertEquals("bar", resourceMapping.getMapsId());
-		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		resourceMapping.setMapsId(null);
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 	
 	public void testSetMapsId() throws Exception {
@@ -354,19 +354,19 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue("foo");
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName("foo");
 		assertEquals("foo", resourceMapping.getMapsId());
-		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue("bar");
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName("bar");
 		assertEquals("bar", resourceMapping.getMapsId());
-		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue(null);
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName(null);
 		assertNull(resourceMapping.getMapsId());
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 	
 	public void testMorphMapping() throws Exception {
@@ -382,7 +382,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertEquals("foo", resourceOneToOne.getMapsId());
 		assertEquals("foo", ((OrmOneToOneMapping2_0) contextAttribute.getMapping()).
-				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		XmlManyToOne resourceManyToOne = resourceEntity.getAttributes().getManyToOnes().get(0);
@@ -391,7 +391,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertEquals("foo", resourceManyToOne.getMapsId());
 		assertEquals("foo", ((OrmManyToOneMapping2_0) contextAttribute.getMapping()).
-				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		resourceOneToOne = resourceEntity.getAttributes().getOneToOnes().get(0);
@@ -400,7 +400,7 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertEquals("foo", resourceOneToOne.getMapsId());
 		assertEquals("foo", ((OrmOneToOneMapping2_0) contextAttribute.getMapping()).
-				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 	
 	public void testCandidateMappedByAttributeNames() throws Exception {

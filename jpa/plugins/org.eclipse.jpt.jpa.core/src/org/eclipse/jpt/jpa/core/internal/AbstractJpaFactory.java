@@ -16,11 +16,12 @@ import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
@@ -28,7 +29,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
@@ -60,6 +60,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
@@ -244,20 +246,20 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaDiscriminatorColumn(parent, owner);
 	}
 	
-	public JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner, JoinColumnAnnotation joinColumnAnnotation) {
+	public JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, JoinColumnAnnotation joinColumnAnnotation) {
 		return new GenericJavaJoinColumn(parent, owner, joinColumnAnnotation);
 	}
 
-	public JavaVirtualJoinColumn buildJavaVirtualJoinColumn(JavaJpaContextNode parent, ReadOnlyJoinColumn.Owner owner, JoinColumn joinColumn) {
-		return new GenericJavaVirtualJoinColumn(parent, owner, joinColumn);
+	public JavaVirtualJoinColumn buildJavaVirtualJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
+		return new GenericJavaVirtualJoinColumn(parent, owner, overriddenColumn);
 	}
 	
 	public JavaJoinTable buildJavaJoinTable(JavaJoinTableRelationshipStrategy parent, Table.Owner owner) {
 		return new GenericJavaJoinTable(parent, owner);
 	}
 	
-	public JavaVirtualJoinTable buildJavaVirtualJoinTable(JavaVirtualJoinTableRelationshipStrategy parent, JoinTable overriddenTable) {
-		return new GenericJavaVirtualJoinTable(parent, overriddenTable);
+	public JavaVirtualJoinTable buildJavaVirtualJoinTable(JavaVirtualJoinTableRelationshipStrategy parent, ReadOnlyTable.Owner owner, ReadOnlyJoinTable overriddenTable) {
+		return new GenericJavaVirtualJoinTable(parent, owner, overriddenTable);
 	}
 	
 	public JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner, SecondaryTableAnnotation tableAnnotation) {
@@ -324,7 +326,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaGeneratedValue(parent, generatedValueAnnotation);
 	}
 	
-	public JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation) {
+	public JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaReadOnlyBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation) {
 		return new GenericJavaPrimaryKeyJoinColumn(parent, owner, pkJoinColumnAnnotation);
 	}
 	
@@ -380,8 +382,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaUniqueConstraint(parent, owner, constraintAnnotation);
 	}
 	
-	public JavaVirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JavaJpaContextNode parent, UniqueConstraint uniqueConstraint) {
-		return new GenericJavaVirtualUniqueConstraint(parent, uniqueConstraint);
+	public JavaVirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JavaJpaContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint) {
+		return new GenericJavaVirtualUniqueConstraint(parent, overriddenUniqueConstraint);
 	}
 	
 	public JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, EnumeratedAnnotation annotation) {

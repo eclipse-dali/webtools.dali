@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
@@ -23,19 +23,19 @@ import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractNamedColumnValidator<C extends NamedColumn, R extends NamedColumnTextRangeResolver>
+public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn, R extends NamedColumnTextRangeResolver>
 	implements JptValidator
 {
-	// this is null for columns defined on entities and secondary tables
-	protected final PersistentAttribute persistentAttribute;
+	/** this is <code>null</code> for columns defined on entities and secondary tables */
+	protected final ReadOnlyPersistentAttribute persistentAttribute;
 
 	protected final C column;
 
 	protected final R textRangeResolver;
 
 	protected final TableDescriptionProvider tableDescriptionProvider;
-	
-	protected final TableValidator tableValidator;
+
+	protected final JptValidator tableValidator;
 
 
 	protected AbstractNamedColumnValidator(
@@ -52,14 +52,14 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn, R exte
 	}
 
 	protected AbstractNamedColumnValidator(
-				PersistentAttribute persistentAttribute,
+				ReadOnlyPersistentAttribute persistentAttribute,
 				C column,
 				R textRangeResolver) {
 		this(persistentAttribute, column, textRangeResolver, TableDescriptionProvider.Null.instance());
 	}
 
 	protected AbstractNamedColumnValidator(
-				PersistentAttribute persistentAttribute,
+				ReadOnlyPersistentAttribute persistentAttribute,
 				C column,
 				R textRangeResolver,
 				TableDescriptionProvider tableDescriptionProvider) {
@@ -70,15 +70,15 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn, R exte
 		this.tableValidator = this.buildTableValidator();
 	}
 
-	protected TableValidator buildTableValidator() {
-		return TableValidator.Null.instance();
+	protected JptValidator buildTableValidator() {
+		return JptValidator.Null.instance();
 	}
 
-	public boolean validate(List<IMessage> messages, IReporter reporter) {
-		if (this.tableValidator.tableNameIsInvalid()) {
-			return this.tableValidator.validate(messages, reporter);
+	public final boolean validate(List<IMessage> messages, IReporter reporter) {
+		if (this.tableValidator.validate(messages, reporter)) {
+			// validate the name only if the table is valid
+			this.validateName(messages);
 		}
-		this.validateName(messages);
 		return true;
 	}
 
@@ -90,7 +90,7 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn, R exte
 	}
 
 	protected IMessage buildUnresolvedNameMessage() {
-		return this.columnParentIsVirtualAttribute() ?
+		return this.columnIsPartOfVirtualAttribute() ?
 				this.buildVirtualAttributeUnresolvedNameMessage() :
 				this.buildUnresolvedNameMessage(this.getUnresolvedNameMessage());
 	}
@@ -126,42 +126,13 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn, R exte
 
 	protected abstract String getVirtualAttributeUnresolvedNameMessage();
 
-	public boolean columnParentIsVirtualAttribute() {
+	protected boolean columnIsPartOfVirtualAttribute() {
 		return (this.persistentAttribute != null) &&
 				this.persistentAttribute.isVirtual();
 	}
 
 
-	// ********** table validator **********
-
-	public interface TableValidator
-		extends JptValidator
-	{
-		boolean tableNameIsInvalid();
-
-		final class Null
-			implements TableValidator
-		{
-			private static final TableValidator INSTANCE = new Null();
-			public static TableValidator instance() {
-				return INSTANCE;
-			}
-			// ensure single instance
-			private Null() {
-				super();
-			}
-			public boolean validate(List<IMessage> messages, IReporter reporter) {
-				return true;
-			}
-			public boolean tableNameIsInvalid() {
-				return false;
-			}
-			@Override
-			public String toString() {
-				return StringTools.buildToStringClassName(this.getClass());
-			}
-		}
-	}
+	// ********** table description provider **********
 
 	public interface TableDescriptionProvider {
 		String getColumnTableDescriptionMessage();
@@ -182,39 +153,45 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn, R exte
 			}
 			@Override
 			public String toString() {
-				return StringTools.buildToStringClassName(this.getClass());
+				return StringTools.buildSingletonToString(this);
 			}
 		}
 	}
 
+
+	// ********** base column table validator **********
+
+	/**
+	 * This column table validator (or its subclasses) can only be used by
+	 * a validator for a <em>base</em> column, which specifies a table. This
+	 * includes both normal columns and join columns.
+	 */
 	protected class BaseColumnTableValidator
-		implements TableValidator
+		implements JptValidator
 	{
 		protected BaseColumnTableValidator() {
 			super();
 		}
 
-		protected BaseColumn getColumn() {
-			return (BaseColumn) AbstractNamedColumnValidator.this.column;
-		}
-
-		protected BaseColumnTextRangeResolver getTextRangeResolver() {
-			return (BaseColumnTextRangeResolver) AbstractNamedColumnValidator.this.textRangeResolver;
-		}
-
-		public boolean tableNameIsInvalid() {
-			return this.getColumn().tableNameIsInvalid();
-		}
-	
 		public boolean validate(List<IMessage> messages, IReporter reporter) {
-			messages.add(this.buildTableNotValidMessage());
-			return false;
+			if (this.getColumn().tableNameIsInvalid()) {
+				messages.add(this.buildTableNotValidMessage());
+				return false;
+			}
+			return true;
 		}
 	
+		protected ReadOnlyBaseColumn getColumn() {
+			return (ReadOnlyBaseColumn) AbstractNamedColumnValidator.this.column;
+		}
+
 		protected IMessage buildTableNotValidMessage() {
-			if (AbstractNamedColumnValidator.this.columnParentIsVirtualAttribute()) {
-				return this.buildVirtualAttributeTableNotValidMessage();
-			}
+			return AbstractNamedColumnValidator.this.columnIsPartOfVirtualAttribute() ?
+					this.buildVirtualAttributeTableNotValidMessage() :
+					this.buildTableNotValidMessage_();
+		}
+	
+		protected IMessage buildTableNotValidMessage_() {
 			return DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					this.getColumnTableNotValidMessage(),
@@ -236,6 +213,10 @@ public abstract class AbstractNamedColumnValidator<C extends NamedColumn, R exte
 			return AbstractNamedColumnValidator.this.tableDescriptionProvider.getColumnTableDescriptionMessage();
 		}
 	
+		protected BaseColumnTextRangeResolver getTextRangeResolver() {
+			return (BaseColumnTextRangeResolver) AbstractNamedColumnValidator.this.textRangeResolver;
+		}
+
 		protected IMessage buildVirtualAttributeTableNotValidMessage() {
 			return DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

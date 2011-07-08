@@ -173,17 +173,17 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		annotation.setValue("foo");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", annotation.getValue());
-		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		annotation.setValue("bar");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("bar", annotation.getValue());
-		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		resourceAttribute.removeAnnotation(JPA2_0.MAPS_ID);
 		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 	
 	public void testSetMapsId() throws Exception {
@@ -197,22 +197,22 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		JavaManyToOneMapping2_0 contextMapping = (JavaManyToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue("foo");
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName("foo");
 		MapsId2_0Annotation annotation = 
 				(MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID);
 		assertNotNull(annotation);
 		assertEquals("foo", annotation.getValue());
-		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue("bar");
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName("bar");
 		assertEquals("bar", annotation.getValue());
-		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedValue(null);
+		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName(null);
 		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
-		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 	
 	public void testMorphMapping() throws Exception {
@@ -233,7 +233,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
 		assertEquals("foo", ((MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID)).getValue());
 		assertEquals("foo", ((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
-				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertFalse(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
@@ -241,7 +241,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
 		assertEquals("foo", ((MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID)).getValue());
 		assertEquals("foo", ((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
-				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertFalse(((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
@@ -249,7 +249,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
 		assertEquals("foo", ((MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID)).getValue());
 		assertEquals("foo", ((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
-				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
+				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 
 	public void testModifyPredominantJoiningStrategy() throws Exception {

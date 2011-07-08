@@ -15,14 +15,13 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumnMapping;
@@ -36,7 +35,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
@@ -70,8 +68,8 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 
 	protected OrmConverter converter;  // never null
 
-	/* 2.0 feature - a relationship may map this ID */
-	protected boolean mappedByRelationship;
+	/* JPA 2.0 - the embedded id may be derived from a relationship */
+	protected boolean derived;
 
 
 	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
@@ -109,7 +107,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 			this.generatedValue.update();
 		}
 		this.converter.update();
-		this.setMappedByRelationship(this.buildMappedByRelationship());
+		this.setDerived(this.buildDerived());
 	}
 
 
@@ -293,28 +291,24 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	}
 
 
-	// ********** mapped by relationship **********
+	// ********** derived **********
 
-	public boolean isMappedByRelationship() {
-		return this.mappedByRelationship;
+	public boolean isDerived() {
+		return this.derived;
 	}
 
-	protected void setMappedByRelationship(boolean value) {
-		boolean old = this.mappedByRelationship;
-		this.mappedByRelationship = value;
-		this.firePropertyChanged(MAPPED_BY_RELATIONSHIP_PROPERTY, old, value);
+	protected void setDerived(boolean derived) {
+		boolean old = this.derived;
+		this.derived = derived;
+		this.firePropertyChanged(DERIVED_PROPERTY, old, derived);
 	}
 
-	protected boolean buildMappedByRelationship() {
-		return this.isJpa2_0Compatible() && this.buildMappedByRelationship_();
+	protected boolean buildDerived() {
+		return this.isJpa2_0Compatible() && this.buildDerived_();
 	}
 
-	protected boolean buildMappedByRelationship_() {
-		return CollectionTools.contains(this.getMappedByRelationshipAttributeNames(), this.getName());
-	}
-
-	protected Iterable<String> getMappedByRelationshipAttributeNames() {
-		return TypeMappingTools.getMappedByRelationshipAttributeNames(this.getTypeMapping());
+	protected boolean buildDerived_() {
+		return this.getTypeMapping().attributeIsDerivedId(this.name);
 	}
 
 
@@ -360,11 +354,11 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	// ********** OrmColumn.Owner implementation **********
 
 	public String getDefaultColumnName() {
-		return (this.mappedByRelationship && ! this.isColumnSpecified()) ? null : this.name;
+		return (this.derived && ! this.isColumnSpecified()) ? null : this.name;
 	}
 
 	public String getDefaultTableName() {
-		return (this.mappedByRelationship && ! this.isColumnSpecified()) ? null : this.getTypeMapping().getPrimaryTableName();
+		return (this.derived && ! this.isColumnSpecified()) ? null : this.getTypeMapping().getPrimaryTableName();
 	}
 
 	public Table resolveDbTable(String tableName) {
@@ -456,15 +450,15 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 		// the column is validated.
 		// JPA 1.0: The column is always be validated, since the ID is never mapped by a
 		// relationship.
-		if (this.isColumnSpecified() || ! this.mappedByRelationship) {
+		if (this.isColumnSpecified() || ! this.derived) {
 			this.column.validate(messages, reporter);
 		}
 
 		// JPA 2.0: If the column is specified and the ID is mapped by a relationship,
 		// we have an error.
 		// JPA 1.0: The ID cannot be mapped by a relationship.
-		if (this.isColumnSpecified() && this.mappedByRelationship) {
-			messages.add(this.buildMappedByRelationshipAndColumnSpecifiedMessage());
+		if (this.isColumnSpecified() && this.derived) {
+			messages.add(this.buildColumnSpecifiedAndDerivedMessage());
 		}
 
 		if (this.generatedValue != null) {
@@ -474,7 +468,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 		this.converter.validate(messages, reporter);
 	}
 
-	protected IMessage buildMappedByRelationshipAndColumnSpecifiedMessage() {
+	protected IMessage buildColumnSpecifiedAndDerivedMessage() {
 		return this.buildMessage(
 				JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 				EMPTY_STRING_ARRAY,
@@ -500,7 +494,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 		return JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
 	}
 
-	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator(this.getPersistentAttribute(), (BaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 }

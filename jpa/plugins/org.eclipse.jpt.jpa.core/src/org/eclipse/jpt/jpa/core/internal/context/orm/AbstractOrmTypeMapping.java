@@ -206,6 +206,19 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		this.setOverrideMetadataComplete(oldMapping.isOverrideMetadataComplete());
 	}
 
+	public X getXmlTypeMapping() {
+		return this.xmlTypeMapping;
+	}
+
+	public boolean attributeIsDerivedId(String attributeName) {
+		return TypeMappingTools.attributeIsDerivedId(this, attributeName);
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getPersistentType().getName());
+	}
+
 
 	// ********** tables **********
 
@@ -368,18 +381,6 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 				return type.getMapping();
 			}
 		};
-	}
-
-
-	// ********** misc **********
-
-	public X getXmlTypeMapping() {
-		return this.xmlTypeMapping;
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getPersistentType().getName());
 	}
 
 

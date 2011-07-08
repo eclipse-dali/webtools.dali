@@ -14,11 +14,11 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -319,7 +319,7 @@ public class GenericJavaOrderable
 	}
 
 	protected JavaOrderColumn2_0 buildOrderColumn() {
-		JavaNamedColumn.Owner columnOwner = new OrderColumnOwner();
+		JavaReadOnlyNamedColumn.Owner columnOwner = new OrderColumnOwner();
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildJavaOrderColumn(this, columnOwner) :
 				new GenericJavaOrderColumn2_0(this, columnOwner);
@@ -453,7 +453,7 @@ public class GenericJavaOrderable
 	// ********** order column owner (JPA 2.0) **********
 
 	protected class OrderColumnOwner
-		implements JavaNamedColumn.Owner
+		implements JavaReadOnlyNamedColumn.Owner
 	{
 		public String getDefaultTableName() {
 			return GenericJavaOrderable.this.getDefaultTableName();
@@ -475,7 +475,7 @@ public class GenericJavaOrderable
 			return GenericJavaOrderable.this.getValidationTextRange(astRoot);
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
 			return new OrderColumnValidator(this.getPersistentAttribute(), (OrderColumn2_0) column, textRangeResolver);
 		}
 

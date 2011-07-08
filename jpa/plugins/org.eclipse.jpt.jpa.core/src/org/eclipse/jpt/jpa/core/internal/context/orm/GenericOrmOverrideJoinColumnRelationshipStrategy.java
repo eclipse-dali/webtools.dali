@@ -11,18 +11,15 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn.Owner;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
@@ -36,7 +33,7 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 	}
 
 	@Override
-	protected Owner buildJoinColumnOwner() {
+	protected OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -49,12 +46,12 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 	public TypeMapping getRelationshipSource() {
 		return this.isTargetForeignKey() ?
 				this.getRelationshipMapping().getResolvedTargetEntity() :
-				this.getAssociationOverrideContainer().getTypeMapping();
+				this.getRelationship().getTypeMapping();
 	}
 
 	public TypeMapping getRelationshipTarget() {
 		return this.isTargetForeignKey() ?
-				this.getAssociationOverrideContainer().getTypeMapping() :
+				this.getRelationship().getTypeMapping() :
 				this.getRelationshipMappingTargetEntity();
 	}
 
@@ -70,39 +67,39 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 
 	@Override
 	public RelationshipMapping getRelationshipMapping() {
-		return this.getAssociationOverride().getMapping();
+		return this.getRelationship().getMapping();
 	}
 
 	protected String getAttributeName() {
-		return this.getAssociationOverride().getName();
+		return this.getRelationship().getAttributeName();
 	}
 
 	@Override
 	public String getTableName() {
 		return this.isTargetForeignKey() ?
 				super.getTableName() :
-				this.getAssociationOverrideContainer().getDefaultTableName();
+				this.getRelationship().getDefaultTableName();
 	}
 
 	@Override
 	public Table resolveDbTable(String tableName) {
 		return this.isTargetForeignKey() ?
 				super.resolveDbTable(tableName) :
-				this.getAssociationOverrideContainer().resolveDbTable(tableName);
+				this.getRelationship().resolveDbTable(tableName);
 	}
 
 	@Override
 	public boolean tableNameIsInvalid(String tableName) {
 		return this.isTargetForeignKey() ?
 				super.tableNameIsInvalid(tableName) :
-				this.getAssociationOverrideContainer().tableNameIsInvalid(tableName);
+				this.getRelationship().tableNameIsInvalid(tableName);
 	}
 
 	@Override
 	public Iterator<String> candidateTableNames() {
 		return this.isTargetForeignKey() ?
 				super.candidateTableNames() :
-				this.getAssociationOverrideContainer().candidateTableNames();
+				this.getRelationship().candidateTableNames();
 	}
 
 	public String getColumnTableNotValidDescription() {
@@ -111,14 +108,6 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 
 	public boolean isOverridable() {
 		return false;
-	}
-
-	protected OrmAssociationOverride getAssociationOverride() {
-		return this.getRelationship().getAssociationOverride();
-	}
-
-	protected AssociationOverrideContainer getAssociationOverrideContainer() {
-		return this.getAssociationOverride().getContainer();
 	}
 
 	@Override
@@ -134,7 +123,7 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 	// ********** join column owner **********
 
 	protected class JoinColumnOwner
-		implements OrmJoinColumn.Owner
+		implements OrmReadOnlyJoinColumn.Owner
 	{
 		protected JoinColumnOwner() {
 			super();
@@ -194,16 +183,8 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return this.getAssociationOverrideContainer().buildColumnValidator(this.getAssociationOverride(), (BaseColumn) column, this, (BaseColumnTextRangeResolver) textRangeResolver);
-		}
-
-		protected OrmAssociationOverride getAssociationOverride() {
-			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getAssociationOverride();
-		}
-
-		protected AssociationOverrideContainer getAssociationOverrideContainer() {
-			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getAssociationOverrideContainer();
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getRelationship().buildColumnValidator((ReadOnlyBaseColumn) column, this, (BaseColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 }

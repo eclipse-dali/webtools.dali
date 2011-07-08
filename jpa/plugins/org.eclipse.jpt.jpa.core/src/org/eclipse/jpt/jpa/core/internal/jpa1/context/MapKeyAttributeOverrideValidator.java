@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
@@ -19,8 +19,8 @@ public class MapKeyAttributeOverrideValidator
 	extends AttributeOverrideValidator
 {
 	public MapKeyAttributeOverrideValidator(
-				PersistentAttribute persistentAttribute,
-				AttributeOverride override,
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyAttributeOverride override,
 				AttributeOverrideContainer container,
 				OverrideTextRangeResolver textRangeResolver,
 				OverrideDescriptionProvider overrideDescriptionProvider) {

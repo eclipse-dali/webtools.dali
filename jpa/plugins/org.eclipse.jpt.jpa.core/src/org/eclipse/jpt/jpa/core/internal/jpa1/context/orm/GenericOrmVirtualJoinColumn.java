@@ -9,27 +9,32 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualBaseColumn;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmJoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * <code>orm.xml</code> virtual join column
  */
 public class GenericOrmVirtualJoinColumn
-	extends AbstractOrmVirtualBaseColumn<ReadOnlyJoinColumn.Owner, JoinColumn>
+	extends AbstractOrmVirtualBaseColumn<OrmReadOnlyJoinColumn.Owner, ReadOnlyJoinColumn>
 	implements OrmVirtualJoinColumn
 {
-	protected final JoinColumn overriddenColumn;
+	protected final ReadOnlyJoinColumn overriddenColumn;
 
 	protected String specifiedReferencedColumnName;
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmVirtualJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner, JoinColumn overriddenColumn) {
+	public GenericOrmVirtualJoinColumn(XmlContextNode parent, OrmReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
 		super(parent, owner);
 		this.overriddenColumn = overriddenColumn;
 	}
@@ -49,7 +54,7 @@ public class GenericOrmVirtualJoinColumn
 	// ********** column **********
 
 	@Override
-	public JoinColumn getOverriddenColumn() {
+	public ReadOnlyJoinColumn getOverriddenColumn() {
 		return this.overriddenColumn;
 	}
 
@@ -93,10 +98,38 @@ public class GenericOrmVirtualJoinColumn
 	}
 
 
+	// ********** database stuff **********
+
+	public Table getReferencedColumnDbTable() {
+		return this.owner.getReferencedColumnDbTable();
+	}
+
+	protected Column getReferencedDbColumn() {
+		Table table = this.getReferencedColumnDbTable();
+		return (table == null) ? null : table.getColumnForIdentifier(this.getReferencedColumnName());
+	}
+
+	public boolean referencedColumnIsResolved() {
+		return this.getReferencedDbColumn() != null;
+	}
+
+
 	// ********** misc **********
 
 	@Override
 	protected String buildDefaultName() {
 		return MappingTools.buildJoinColumnDefaultName(this, this.owner);
+	}
+
+
+	// ********** validation **********
+
+	public TextRange getReferencedColumnNameTextRange() {
+		return this.getValidationTextRange();
+	}
+
+	@Override
+	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
+		return new OrmJoinColumnTextRangeResolver(this);
 	}
 }

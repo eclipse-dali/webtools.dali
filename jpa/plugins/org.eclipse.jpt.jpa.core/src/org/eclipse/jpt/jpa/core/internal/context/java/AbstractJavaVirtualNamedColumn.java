@@ -9,12 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Java virtual<ul>
@@ -25,9 +32,9 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
  * because <em>all</em> of it is derived from the context model (i.e. none of it
  * is derived from the resource model).
  */
-public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColumn.Owner, C extends NamedColumn>
+public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColumn.Owner, C extends ReadOnlyNamedColumn>
 	extends AbstractJavaJpaContextNode
-	implements VirtualNamedColumn
+	implements VirtualNamedColumn, JavaReadOnlyNamedColumn
 {
 	protected final O owner;
 
@@ -116,10 +123,52 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColu
 	}
 
 
+	// ********** database stuff **********
+
+	protected Column getDbColumn() {
+		Table table = this.getDbTable();
+		return (table == null) ? null : table.getColumnForIdentifier(this.getName());
+	}
+
+	public Table getDbTable() {
+		return this.owner.resolveDbTable(this.getTable());
+	}
+
+	/**
+	 * Return the name of the column's table. This is overridden
+	 * in {@link AbstractJavaVirtualBaseColumn} where a table can be defined.
+	 */
+	public String getTable() {
+		return this.owner.getTypeMapping().getPrimaryTableName();
+	}
+
+	public boolean isResolved() {
+		return this.getDbColumn() != null;
+	}
+
+
 	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.buildValidator(astRoot).validate(messages, reporter);
+	}
+
+	protected JptValidator buildValidator(CompilationUnit astRoot) {
+		return this.owner.buildColumnValidator(this, this.buildTextRangeResolver(astRoot));
+	}
+
+	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaNamedColumnTextRangeResolver(this, astRoot);
+	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.getParent().getValidationTextRange(astRoot);
+	}
+
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(astRoot);
 	}
 
 

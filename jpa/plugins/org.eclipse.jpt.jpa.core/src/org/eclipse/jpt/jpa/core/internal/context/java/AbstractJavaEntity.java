@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -28,7 +28,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
@@ -43,23 +42,24 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
@@ -67,19 +67,17 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
-import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
@@ -108,8 +106,10 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.TableValidator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.InheritanceAnnotation;
@@ -1074,7 +1074,13 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected boolean tableNameIsValid(String tableName) {
-		return this.tableIsUndefined || CollectionTools.contains(this.getAllAssociatedTableNames(), tableName);
+		return this.tableIsUndefined || this.tableNameIsValid_(tableName);
+	}
+
+	protected boolean tableNameIsValid_(String tableName) {
+		return this.connectionProfileIsActive() ?
+				(this.resolveDbTable(tableName) != null) :
+				CollectionTools.contains(this.getAllAssociatedTableNames(), tableName);
 	}
 
 
@@ -1367,10 +1373,8 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected void validateDuplicateEntityNames(List<IMessage> messages, CompilationUnit astRoot) {
-		HashBag<String>  javaEntityNamesExclOverridden = new HashBag<String>();
-		CollectionTools.addAll(javaEntityNamesExclOverridden, this.getPersistenceUnit().javaEntityNamesExclOverridden());
-		HashBag<String>  ormEntityNames = new HashBag<String>();
-		CollectionTools.addAll(ormEntityNames, this.getPersistenceUnit().ormEntityNames());
+		HashBag<String> javaEntityNamesExclOverridden = CollectionTools.bag(this.getPersistenceUnit().javaEntityNamesExclOverridden());
+		HashSet<String> ormEntityNames = CollectionTools.set(this.getPersistenceUnit().ormEntityNames());
 		String  javaEntityName = this.getName(); 
 		if ((javaEntityName != null) 
 				// Check whether or not this entity name has duplicates among 
@@ -1558,13 +1562,13 @@ public abstract class AbstractJavaEntity
 	 * some common behavior
 	 */
 	protected abstract class OverrideContainerOwner
-		implements JavaOverrideContainer.Owner
+		implements JavaOverrideContainer2_0.Owner
 	{
 		public JavaResourcePersistentMember getResourcePersistentMember() {
 			return AbstractJavaEntity.this.getResourcePersistentType();
 		}
 
-		public JavaTypeMapping getTypeMapping() {
+		public AbstractJavaEntity getTypeMapping() {
 			return AbstractJavaEntity.this;
 		}
 
@@ -1577,14 +1581,14 @@ public abstract class AbstractJavaEntity
 		}
 
 		public Iterator<String> allOverridableNames() {
-			TypeMapping typeMapping = this.getOverridableTypeMapping();
-			return (typeMapping != null) ? this.allOverridableNames_(typeMapping) : EmptyIterator.<String>instance();
+			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
+			return (overriddenTypeMapping != null) ? this.allOverridableNames_(overriddenTypeMapping) : EmptyIterator.<String>instance();
 		}
 
 		/**
 		 * pre-condition: <code>typeMapping</code> is not <code>null</code>
 		 */
-		protected abstract Iterator<String> allOverridableNames_(TypeMapping typeMapping);
+		protected abstract Iterator<String> allOverridableNames_(TypeMapping overriddenTypeMapping);
 
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
@@ -1622,62 +1626,28 @@ public abstract class AbstractJavaEntity
 
 	protected class AttributeOverrideContainerOwner
 		extends OverrideContainerOwner
-		implements JavaAttributeOverrideContainer.Owner
+		implements JavaAttributeOverrideContainer2_0.Owner
 	{
 		@Override
-		protected Iterator<String> allOverridableNames_(TypeMapping typeMapping) {
-			final Collection<String> mappedByRelationshipAttributes = CollectionTools.collection(
-					new TransformationIterator<SingleRelationshipMapping2_0, String>(this.getMapsIdRelationships()) {
-						@Override
-						protected String transform(SingleRelationshipMapping2_0 mapping) {
-							return mapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getValue();
-						}
-					});
-			return new FilteringIterator<String>(typeMapping.allOverridableAttributeNames()) {
+		protected Iterator<String> allOverridableNames_(TypeMapping overriddenTypeMapping) {
+			return new FilteringIterator<String>(overriddenTypeMapping.allOverridableAttributeNames()) {
 					@Override
-					protected boolean accept(String name) {
-						if (mappedByRelationshipAttributes.isEmpty()) {
-							return true;
-						}
-						// overridable names are (usually?) qualified with a container mapping,
-						// which may also be the one mapped by a relationship
-						int index = name.indexOf('.');
-						String qualifier = (index > 0) ? name.substring(0, index) : name;
-						return ! mappedByRelationshipAttributes.contains(qualifier);
+					protected boolean accept(String attributeName) {
+						return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);
 					}
 				};
 		}
 
-		protected Iterable<SingleRelationshipMapping2_0> getMapsIdRelationships() {
-			return new FilteringIterable<SingleRelationshipMapping2_0>(this.getSingleRelationshipMappings()) {
-				@Override
-				protected boolean accept(SingleRelationshipMapping2_0 mapping) {
-					return mapping.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
-				}
-			};
-		}
-
-		protected Iterable<SingleRelationshipMapping2_0> getSingleRelationshipMappings() {
-			return new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(this.getSingleRelationshipMappings_());
-		}
-
-		@SuppressWarnings("unchecked")
-		protected Iterable<AttributeMapping> getSingleRelationshipMappings_() {
-			return new CompositeIterable<AttributeMapping>(
-						this.getTypeMapping().getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
-						this.getTypeMapping().getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)
-					);
-		}
 		public Column resolveOverriddenColumn(String attributeName) {
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideValidator((ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideColumnValidator((ReadOnlyAttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
 		}
 	}
 
@@ -1686,35 +1656,35 @@ public abstract class AbstractJavaEntity
 
 	protected class AssociationOverrideContainerOwner
 		extends OverrideContainerOwner
-		implements JavaAssociationOverrideContainer.Owner
+		implements JavaAssociationOverrideContainer2_0.Owner
 	{
 		@Override
-		protected Iterator<String> allOverridableNames_(TypeMapping typeMapping) {
-			return typeMapping.allOverridableAssociationNames();
+		protected Iterator<String> allOverridableNames_(TypeMapping overriddenTypeMapping) {
+			return overriddenTypeMapping.allOverridableAssociationNames();
 		}
 
 		public Relationship resolveOverriddenRelationship(String attributeName) {
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideValidator((AssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideValidator((ReadOnlyAssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideJoinColumnValidator((ReadOnlyAssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator(override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildTableValidator(AssociationOverride override, Table t, TableTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinTableValidator(override, (JoinTable) t, textRangeResolver);
+		public JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable t, TableTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideJoinTableValidator(override, (ReadOnlyJoinTable) t, textRangeResolver);
 		}
 	}
 
@@ -1725,7 +1695,7 @@ public abstract class AbstractJavaEntity
 	 * some common behavior
 	 */
 	protected abstract class NamedColumnOwner
-		implements JavaNamedColumn.Owner
+		implements JavaReadOnlyNamedColumn.Owner
 	{
 		public TypeMapping getTypeMapping() {
 			return AbstractJavaEntity.this;
@@ -1749,7 +1719,7 @@ public abstract class AbstractJavaEntity
 
 	protected class PrimaryKeyJoinColumnOwner
 		extends NamedColumnOwner
-		implements JavaBaseJoinColumn.Owner
+		implements JavaReadOnlyBaseJoinColumn.Owner
 	{
 		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity parentEntity = AbstractJavaEntity.this.getParentEntity();
@@ -1772,8 +1742,8 @@ public abstract class AbstractJavaEntity
 			return (parentEntity == null) ? AbstractJavaEntity.this.getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new EntityPrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new EntityPrimaryKeyJoinColumnValidator((ReadOnlyBaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 
@@ -1814,7 +1784,7 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.discriminatorColumnIsUndefined;
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
 			return new DiscriminatorColumnValidator(column, textRangeResolver);
 		}
 	}
@@ -1822,8 +1792,10 @@ public abstract class AbstractJavaEntity
 
 	// ********** table owner **********
 
-	protected class TableOwner implements Table.Owner {
-		public JptValidator buildTableValidator(Table t, TableTextRangeResolver textRangeResolver) {
+	protected class TableOwner
+		implements ReadOnlyTable.Owner
+	{
+		public JptValidator buildTableValidator(ReadOnlyTable t, TableTextRangeResolver textRangeResolver) {
 			return new TableValidator(t, textRangeResolver);
 		}
 	}
@@ -1831,9 +1803,11 @@ public abstract class AbstractJavaEntity
 
 	// ********** secondary table owner **********
 
-	protected class SecondaryTableOwner implements Table.Owner {
-		public JptValidator buildTableValidator(Table t, TableTextRangeResolver textRangeResolver) {
-			return new SecondaryTableValidator((SecondaryTable) t, textRangeResolver);
+	protected class SecondaryTableOwner
+		implements ReadOnlyTable.Owner
+	{
+		public JptValidator buildTableValidator(ReadOnlyTable t, TableTextRangeResolver textRangeResolver) {
+			return new SecondaryTableValidator((ReadOnlySecondaryTable) t, textRangeResolver);
 		}
 	}
 }

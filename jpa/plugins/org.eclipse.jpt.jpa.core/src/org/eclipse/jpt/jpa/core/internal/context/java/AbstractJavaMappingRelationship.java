@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingRelationshipStrategy2_0;
 
 /**
  * <strong>NB:</strong> Subclasses may want to set the {@link #strategy} at the
@@ -31,7 +31,7 @@ public abstract class AbstractJavaMappingRelationship<M extends JavaRelationship
 	extends AbstractJavaJpaContextNode
 	implements JavaMappingRelationship
 {
-	protected JavaRelationshipStrategy strategy;
+	protected JavaMappingRelationshipStrategy2_0 strategy;
 
 
 	public AbstractJavaMappingRelationship(M parent) {
@@ -50,17 +50,17 @@ public abstract class AbstractJavaMappingRelationship<M extends JavaRelationship
 
 	// ********** strategy **********
 
-	public JavaRelationshipStrategy getStrategy() {
+	public JavaMappingRelationshipStrategy2_0 getStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(JavaRelationshipStrategy strategy) {
+	protected void setStrategy(JavaMappingRelationshipStrategy2_0 strategy) {
 		RelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected abstract JavaRelationshipStrategy buildStrategy();
+	protected abstract JavaMappingRelationshipStrategy2_0 buildStrategy();
 
 	/**
 	 * This is called by subclasses when the various supported strategies are

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context;
 
 /**
- * Virtual<ul>
+ * <em>Virtual</em><ul>
  * <li>attribute override
  * <li>association override
  * </ul>
@@ -24,8 +24,8 @@ public interface VirtualOverride
 	extends ReadOnlyOverride
 {
 	/**
-	 * Convert the virtual override to a specified override.
-	 * Return the new override.
+	 * Convert the <em>virtual</em> override to a <em>specified</em> override.
+	 * Return the new <em>specified</em> override.
 	 * @see #isVirtual()
 	 */
 	Override_ convertToSpecified();

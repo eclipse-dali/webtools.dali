@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 
 /**
  * <code>orm.xml</code> virtual join table
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmVirtualJoinTable
-	extends VirtualJoinTable, XmlContextNode
+	extends VirtualJoinTable, OrmReadOnlyTable
 {
 	OrmVirtualJoinTableRelationshipStrategy getParent();
 
@@ -39,4 +39,11 @@ public interface OrmVirtualJoinTable
 	ListIterator<OrmVirtualJoinColumn> specifiedInverseJoinColumns();
 	OrmVirtualJoinColumn getSpecifiedInverseJoinColumn(int index);
 	OrmVirtualJoinColumn getDefaultInverseJoinColumn();
+
+	/**
+	 * The overridden table can be either a Java table
+	 * or an <code>orm.xml</code> table; so we don't change the
+	 * return type here.
+	 */
+	public ReadOnlyJoinTable getOverriddenTable();
 }

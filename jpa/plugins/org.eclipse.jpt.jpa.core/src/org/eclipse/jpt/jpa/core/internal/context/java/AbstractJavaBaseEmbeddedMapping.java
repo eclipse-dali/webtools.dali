@@ -21,11 +21,12 @@ import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEmbeddedMapping;
@@ -39,9 +40,10 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideColumnVal
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmEmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.db.Table;
@@ -92,9 +94,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this.buildAttributeOverrideContainerOwner());
 	}
 
-	protected JavaAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner() {
-		return new AttributeOverrideContainerOwner();
-	}
+	protected abstract JavaAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner();
 
 
 	// ********** target embeddable **********
@@ -242,8 +242,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 
 	// ********** attribute override container owner *********
 
-	protected class AttributeOverrideContainerOwner
-		implements JavaAttributeOverrideContainer.Owner
+	protected abstract class AttributeOverrideContainerOwner
+		implements JavaAttributeOverrideContainer2_0.Owner
 	{
 		public JavaResourcePersistentMember getResourcePersistentMember() {
 			return AbstractJavaBaseEmbeddedMapping.this.getResourcePersistentAttribute();
@@ -258,17 +258,17 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 		}
 
 		public Iterator<String> allOverridableNames() {
-			TypeMapping typeMapping = this.getOverridableTypeMapping();
-			return (typeMapping != null) ? this.allOverridableAttributeNames_(typeMapping) : EmptyIterator.<String>instance();
+			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
+			return (overriddenTypeMapping != null) ? this.allOverridableAttributeNames_(overriddenTypeMapping) : EmptyIterator.<String>instance();
 		}
 
 		/**
 		 * pre-condition: type mapping is not <code>null</code>
 		 * <p>
-		 * NB: Overridden in {@link GenericOrmEmbeddedIdMapping.AttributeOverrideContainerOwner}
+		 * NB: Overridden in {@link GenericJavaEmbeddedIdMapping.AttributeOverrideContainerOwner}
 		 */
-		protected Iterator<String> allOverridableAttributeNames_(TypeMapping typeMapping) {
-			return typeMapping.allOverridableAttributeNames();
+		protected Iterator<String> allOverridableAttributeNames_(TypeMapping overriddenTypeMapping) {
+			return overriddenTypeMapping.allOverridableAttributeNames();
 		}
 
 		public Column resolveOverriddenColumn(String attributeName) {
@@ -308,12 +308,12 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 			return AbstractJavaBaseEmbeddedMapping.this.getValidationTextRange(astRoot);
 		}
 
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
 		}
 
 		protected JavaPersistentAttribute getPersistentAttribute() {

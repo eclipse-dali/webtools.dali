@@ -12,25 +12,28 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.Iterator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn.Owner;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinColumnRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericOrmMappingJoinColumnRelationshipStrategy
 	extends AbstractOrmJoinColumnRelationshipStrategy
+	implements OrmMappingJoinColumnRelationshipStrategy2_0
 {
 	protected final boolean targetForeignKey;
 
@@ -49,7 +52,7 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 
 
 	@Override
-	protected Owner buildJoinColumnOwner() {
+	protected OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -80,6 +83,10 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 		return this.targetForeignKey;
 	}
 
+	public ReadOnlyRelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+		return overrideRelationship.getJoinColumnStrategy();
+	}
+
 
 	// ********** validation **********
 
@@ -95,7 +102,7 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 	// ********** join column owner **********
 
 	protected class JoinColumnOwner
-		implements OrmJoinColumn.Owner
+		implements OrmReadOnlyJoinColumn.Owner
 	{
 		protected JoinColumnOwner() {
 			super();
@@ -157,8 +164,8 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 			return GenericOrmMappingJoinColumnRelationshipStrategy.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new JoinColumnValidator(this.getPersistentAttribute(), (JoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new JoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 		}
 	}
 }

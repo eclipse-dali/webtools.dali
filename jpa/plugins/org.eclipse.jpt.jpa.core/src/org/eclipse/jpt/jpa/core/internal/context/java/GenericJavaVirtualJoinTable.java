@@ -9,46 +9,58 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
+import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Java virtual join table
  */
 public class GenericJavaVirtualJoinTable
-	extends AbstractJavaVirtualReferenceTable<JoinTable>
+	extends AbstractJavaVirtualReferenceTable<ReadOnlyJoinTable>
 	implements JavaVirtualJoinTable
 {
-	protected final JoinTable overriddenTable;
+	protected final ReadOnlyJoinTable overriddenTable;
 
 	protected final Vector<JavaVirtualJoinColumn> specifiedInverseJoinColumns = new Vector<JavaVirtualJoinColumn>();
 	protected final SpecifiedInverseJoinColumnContainerAdapter specifiedInverseJoinColumnContainerAdapter = new SpecifiedInverseJoinColumnContainerAdapter();
-	protected final ReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
+	protected final JavaReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
 
 	protected JavaVirtualJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericJavaVirtualJoinTable(JavaVirtualJoinTableRelationshipStrategy parent, JoinTable overriddenTable) {
-		super(parent);
+	public GenericJavaVirtualJoinTable(JavaVirtualJoinTableRelationshipStrategy parent, Owner owner, ReadOnlyJoinTable overriddenTable) {
+		super(parent, owner);
 		this.overriddenTable = overriddenTable;
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 	}
@@ -67,7 +79,7 @@ public class GenericJavaVirtualJoinTable
 	// ********** table **********
 
 	@Override
-	public JoinTable getOverriddenTable() {
+	public ReadOnlyJoinTable getOverriddenTable() {
 		return this.overriddenTable;
 	}
 
@@ -113,7 +125,7 @@ public class GenericJavaVirtualJoinTable
 		ContextContainerTools.update(this.specifiedInverseJoinColumnContainerAdapter);
 	}
 
-	protected Iterable<JoinColumn> getOverriddenInverseJoinColumns() {
+	protected Iterable<ReadOnlyJoinColumn> getOverriddenInverseJoinColumns() {
 		return CollectionTools.iterable(this.getOverriddenTable().specifiedInverseJoinColumns());
 	}
 
@@ -121,7 +133,7 @@ public class GenericJavaVirtualJoinTable
 		this.moveItemInList(index, joinColumn, this.specifiedInverseJoinColumns, SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
 	}
 
-	protected JavaVirtualJoinColumn addSpecifiedInverseJoinColumn(int index, JoinColumn joinColumn) {
+	protected JavaVirtualJoinColumn addSpecifiedInverseJoinColumn(int index, ReadOnlyJoinColumn joinColumn) {
 		JavaVirtualJoinColumn virtualJoinColumn = this.buildInverseJoinColumn(joinColumn);
 		this.addItemToList(index, virtualJoinColumn, this.specifiedInverseJoinColumns, SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
 		return virtualJoinColumn;
@@ -135,21 +147,21 @@ public class GenericJavaVirtualJoinTable
 	 * specified inverse join column container adapter
 	 */
 	protected class SpecifiedInverseJoinColumnContainerAdapter
-		implements ContextContainerTools.Adapter<JavaVirtualJoinColumn, JoinColumn>
+		implements ContextContainerTools.Adapter<JavaVirtualJoinColumn, ReadOnlyJoinColumn>
 	{
 		public Iterable<JavaVirtualJoinColumn> getContextElements() {
 			return GenericJavaVirtualJoinTable.this.getSpecifiedInverseJoinColumns();
 		}
-		public Iterable<JoinColumn> getResourceElements() {
+		public Iterable<ReadOnlyJoinColumn> getResourceElements() {
 			return GenericJavaVirtualJoinTable.this.getOverriddenInverseJoinColumns();
 		}
-		public JoinColumn getResourceElement(JavaVirtualJoinColumn contextElement) {
+		public ReadOnlyJoinColumn getResourceElement(JavaVirtualJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
 		}
 		public void moveContextElement(int index, JavaVirtualJoinColumn element) {
 			GenericJavaVirtualJoinTable.this.moveSpecifiedInverseJoinColumn(index, element);
 		}
-		public void addContextElement(int index, JoinColumn element) {
+		public void addContextElement(int index, ReadOnlyJoinColumn element) {
 			GenericJavaVirtualJoinTable.this.addSpecifiedInverseJoinColumn(index, element);
 		}
 		public void removeContextElement(JavaVirtualJoinColumn element) {
@@ -204,34 +216,47 @@ public class GenericJavaVirtualJoinTable
 		return (JavaVirtualJoinTableRelationshipStrategy) super.getParent();
 	}
 
-	protected JavaVirtualJoinTableRelationshipStrategy getJoinStrategy() {
+	protected JavaVirtualJoinTableRelationshipStrategy getRelationshipStrategy() {
 		return this.getParent();
 	}
 
 	@Override
-	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
-	protected ReadOnlyJoinColumn.Owner buildInverseJoinColumnOwner() {
+	protected JavaReadOnlyJoinColumn.Owner buildInverseJoinColumnOwner() {
 		return new InverseJoinColumnOwner();
 	}
 
-	protected JavaVirtualJoinColumn buildInverseJoinColumn(JoinColumn joinColumn) {
+	protected JavaVirtualJoinColumn buildInverseJoinColumn(ReadOnlyJoinColumn joinColumn) {
 		return this.buildJoinColumn(this.inverseJoinColumnOwner, joinColumn);
 	}
 
 	@Override
 	protected String buildDefaultName() {
-		return this.getJoinStrategy().getJoinTableDefaultName();
+		return this.getRelationshipStrategy().getJoinTableDefaultName();
 	}
 
 	public RelationshipMapping getRelationshipMapping() {
-		return this.getJoinStrategy().getRelationship().getMapping();
+		return this.getRelationshipStrategy().getRelationship().getMapping();
 	}
 
 	public PersistentAttribute getPersistentAttribute() {
 		return this.getRelationshipMapping().getPersistentAttribute();
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validateJoinColumns(messages, reporter, astRoot);
+		this.validateNodes(this.getInverseJoinColumns(), messages, reporter, astRoot);
+	}
+
+	public boolean validatesAgainstDatabase() {
+		return this.getRelationshipStrategy().validatesAgainstDatabase();
 	}
 
 
@@ -241,7 +266,7 @@ public class GenericJavaVirtualJoinTable
 	 * just a little common behavior
 	 */
 	protected abstract class AbstractJoinColumnOwner
-		implements ReadOnlyJoinColumn.Owner
+		implements JavaReadOnlyJoinColumn.Owner
 	{
 		protected AbstractJoinColumnOwner() {
 			super();
@@ -252,6 +277,34 @@ public class GenericJavaVirtualJoinTable
 		}
 
 		/**
+		 * @see MappingTools#buildJoinColumnDefaultName(org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn, org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn.Owner)
+		 */
+		public String getDefaultColumnName() {
+			throw new UnsupportedOperationException();
+		}
+
+		/**
+		 * If there is a specified table name it needs to be the same
+		 * the default table name. The table is always the join table.
+		 */
+		public boolean tableNameIsInvalid(String tableName) {
+			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
+		}
+
+		/**
+		 * the join column can only be on the join table itself
+		 */
+		public Iterator<String> candidateTableNames() {
+			return EmptyIterator.instance();
+		}
+
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
+			return Tools.valuesAreEqual(GenericJavaVirtualJoinTable.this.getName(), tableName) ?
+					GenericJavaVirtualJoinTable.this.getDbTable() :
+					null;
+		}
+
+		/**
 		 * by default, the join column is, obviously, in the join table;
 		 * not sure whether it can be anywhere else...
 		 */
@@ -259,15 +312,12 @@ public class GenericJavaVirtualJoinTable
 			return GenericJavaVirtualJoinTable.this.getName();
 		}
 
-		/**
-		 * @see MappingTools#buildJoinColumnDefaultName(org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn, org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn.Owner)
-		 */
-		public String getDefaultColumnName() {
-			throw new UnsupportedOperationException();
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaVirtualJoinTable.this.getValidationTextRange(astRoot);
 		}
 
 		protected JavaVirtualRelationship getRelationship() {
-			return GenericJavaVirtualJoinTable.this.getJoinStrategy().getRelationship();
+			return GenericJavaVirtualJoinTable.this.getRelationshipStrategy().getRelationship();
 		}
 	}
 
@@ -291,12 +341,20 @@ public class GenericJavaVirtualJoinTable
 			return MappingTools.getTargetAttributeName(GenericJavaVirtualJoinTable.this.getRelationshipMapping());
 		}
 
+		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
+			return this.getTypeMapping().getPrimaryDbTable();
+		}
+
 		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
 			return GenericJavaVirtualJoinTable.this.defaultJoinColumn == joinColumn;
 		}
 
 		public int joinColumnsSize() {
 			return GenericJavaVirtualJoinTable.this.joinColumnsSize();
+		}
+
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return GenericJavaVirtualJoinTable.this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 
@@ -322,12 +380,21 @@ public class GenericJavaVirtualJoinTable
 			return (relationshipMapping == null) ? null : relationshipMapping.getName();
 		}
 
+		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
+			Entity relationshipTarget = this.getRelationshipTarget();
+			return (relationshipTarget == null) ? null : relationshipTarget.getPrimaryDbTable();
+		}
+
 		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
 			return GenericJavaVirtualJoinTable.this.defaultInverseJoinColumn == joinColumn;
 		}
 
 		public int joinColumnsSize() {
 			return GenericJavaVirtualJoinTable.this.inverseJoinColumnsSize();
+		}
+
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return GenericJavaVirtualJoinTable.this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 }

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -19,12 +19,12 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class SecondaryTablePrimaryKeyJoinColumnValidator
 	extends PrimaryKeyJoinColumnValidator
 {
-	private final SecondaryTable secondaryTable;
+	private final ReadOnlySecondaryTable secondaryTable;
 
 	public SecondaryTablePrimaryKeyJoinColumnValidator(
-				SecondaryTable secondaryTable,
-				BaseJoinColumn column,
-				BaseJoinColumn.Owner owner,
+				ReadOnlySecondaryTable secondaryTable,
+				ReadOnlyBaseJoinColumn column,
+				ReadOnlyBaseJoinColumn.Owner owner,
 				BaseJoinColumnTextRangeResolver textRangeResolver) {
 		super(column, owner, textRangeResolver);
 		this.secondaryTable = secondaryTable;
@@ -39,7 +39,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	@Override
-	public IMessage buildUnresolvedNameMessage() {
+	protected IMessage buildUnresolvedNameMessage() {
 		return this.secondaryTableIsVirtual() ?
 				this.buildVirtualSecondaryTableUnresolvedNameMessage() :
 				super.buildUnresolvedNameMessage();
@@ -65,7 +65,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	@Override
-	public IMessage buildUnresolvedReferencedColumnNameMessage() {
+	protected IMessage buildUnresolvedReferencedColumnNameMessage() {
 		return this.secondaryTableIsVirtual() ?
 				this.buildVirtualSecondaryTableUnresolvedReferencedColumnNameMessage() :
 				super.buildUnresolvedReferencedColumnNameMessage();
@@ -91,7 +91,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	@Override
-	public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
+	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
 		return this.secondaryTableIsVirtual() ?
 				this.buildVirtualSecondaryTableUnspecifiedNameMultipleJoinColumnsMessage() :
 				super.buildUnspecifiedNameMultipleJoinColumnsMessage();
@@ -113,7 +113,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	}
 
 	@Override
-	public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
 		return this.secondaryTableIsVirtual() ?
 				this.buildVirtualSecondaryTableUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() :
 				super.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();

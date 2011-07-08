@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -17,20 +18,27 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractJavaVirtualTable<T extends Table>
+public abstract class AbstractJavaVirtualTable<T extends ReadOnlyTable>
 	extends AbstractJavaJpaContextNode
-	implements VirtualTable
+	implements VirtualTable, JavaReadOnlyTable
 {
+	protected final Owner owner;
+
 	protected String specifiedName;
 	protected String defaultName;
 
@@ -44,8 +52,9 @@ public abstract class AbstractJavaVirtualTable<T extends Table>
 	protected final UniqueConstraintContainerAdapter uniqueConstraintContainerAdapter = new UniqueConstraintContainerAdapter();
 
 
-	protected AbstractJavaVirtualTable(JavaJpaContextNode parent) {
+	protected AbstractJavaVirtualTable(JavaJpaContextNode parent, Owner owner) {
 		super(parent);
+		this.owner = owner;
 	}
 
 
@@ -197,7 +206,7 @@ public abstract class AbstractJavaVirtualTable<T extends Table>
 		ContextContainerTools.update(this.uniqueConstraintContainerAdapter);
 	}
 
-	protected Iterable<UniqueConstraint> getOverriddenUniqueConstraints() {
+	protected Iterable<ReadOnlyUniqueConstraint> getOverriddenUniqueConstraints() {
 		return CollectionTools.iterable(this.getOverriddenTable().uniqueConstraints());
 	}
 
@@ -205,13 +214,13 @@ public abstract class AbstractJavaVirtualTable<T extends Table>
 		this.moveItemInList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 
-	protected JavaVirtualUniqueConstraint addUniqueConstraint(int index, UniqueConstraint uniqueConstraint) {
+	protected JavaVirtualUniqueConstraint addUniqueConstraint(int index, ReadOnlyUniqueConstraint uniqueConstraint) {
 		JavaVirtualUniqueConstraint virtualConstraint = this.buildUniqueConstraint(uniqueConstraint);
 		this.addItemToList(index, virtualConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 		return virtualConstraint;
 	}
 
-	protected JavaVirtualUniqueConstraint buildUniqueConstraint(UniqueConstraint uniqueConstraint) {
+	protected JavaVirtualUniqueConstraint buildUniqueConstraint(ReadOnlyUniqueConstraint uniqueConstraint) {
 		return this.getJpaFactory().buildJavaVirtualUniqueConstraint(this, uniqueConstraint);
 	}
 
@@ -223,21 +232,21 @@ public abstract class AbstractJavaVirtualTable<T extends Table>
 	 * unique constraint container adapter
 	 */
 	protected class UniqueConstraintContainerAdapter
-		implements ContextContainerTools.Adapter<JavaVirtualUniqueConstraint, UniqueConstraint>
+		implements ContextContainerTools.Adapter<JavaVirtualUniqueConstraint, ReadOnlyUniqueConstraint>
 	{
 		public Iterable<JavaVirtualUniqueConstraint> getContextElements() {
 			return AbstractJavaVirtualTable.this.getUniqueConstraints();
 		}
-		public Iterable<UniqueConstraint> getResourceElements() {
+		public Iterable<ReadOnlyUniqueConstraint> getResourceElements() {
 			return AbstractJavaVirtualTable.this.getOverriddenUniqueConstraints();
 		}
-		public UniqueConstraint getResourceElement(JavaVirtualUniqueConstraint contextElement) {
+		public ReadOnlyUniqueConstraint getResourceElement(JavaVirtualUniqueConstraint contextElement) {
 			return contextElement.getOverriddenUniqueConstraint();
 		}
 		public void moveContextElement(int index, JavaVirtualUniqueConstraint element) {
 			AbstractJavaVirtualTable.this.moveUniqueConstraint(index, element);
 		}
-		public void addContextElement(int index, UniqueConstraint resourceElement) {
+		public void addContextElement(int index, ReadOnlyUniqueConstraint resourceElement) {
 			AbstractJavaVirtualTable.this.addUniqueConstraint(index, resourceElement);
 		}
 		public void removeContextElement(JavaVirtualUniqueConstraint element) {
@@ -256,6 +265,19 @@ public abstract class AbstractJavaVirtualTable<T extends Table>
 	public Schema getDbSchema() {
 		SchemaContainer dbSchemaContainer = this.getDbSchemaContainer();
 		return (dbSchemaContainer == null) ? null : dbSchemaContainer.getSchemaForIdentifier(this.getSchema());
+	}
+
+	public boolean schemaIsResolved() {
+		return this.getDbSchema() != null;
+	}
+
+	/**
+	 * If we don't have a catalog (i.e. we don't even have a <em>default</em>
+	 * catalog), then the database probably does not support catalogs.
+	 */
+	public boolean catalogIsResolved() {
+		String catalog = this.getCatalog();
+		return (catalog == null) || (this.resolveDbCatalog(catalog) != null);
 	}
 
 	/**
@@ -277,7 +299,7 @@ public abstract class AbstractJavaVirtualTable<T extends Table>
 		return (catalog == null) ? null : this.resolveDbCatalog(catalog);
 	}
 
-	protected boolean isResolved() {
+	public boolean isResolved() {
 		return this.getDbTable() != null;
 	}
 
@@ -297,8 +319,34 @@ public abstract class AbstractJavaVirtualTable<T extends Table>
 
 	// ********** validation **********
 
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.buildTableValidator(astRoot).validate(messages, reporter);
+	}
+
+	protected JptValidator buildTableValidator(CompilationUnit astRoot) {
+		return this.owner.buildTableValidator(this, buildTextRangeResolver(astRoot));
+	}
+
+	protected TableTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaTableTextRangeResolver(this, astRoot);
+	}
+
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.getParent().getValidationTextRange(astRoot);
+	}
+
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(astRoot);
+	}
+
+	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(astRoot);
+	}
+
+	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(astRoot);
 	}
 
 

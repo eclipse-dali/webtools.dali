@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
+import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 
 /**
  * Java association override relationship
@@ -27,5 +28,5 @@ public interface JavaOverrideRelationship
 	extends OverrideRelationship,
 			JavaJoinColumnRelationship
 {
-	JavaAssociationOverride getAssociationOverride();
+	AssociationOverrideAnnotation getOverrideAnnotation();
 }

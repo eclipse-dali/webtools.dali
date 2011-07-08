@@ -10,19 +10,21 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class NullOrmJoinTableRelationshipStrategy
 	extends AbstractOrmXmlContextNode
-	implements OrmJoinTableRelationshipStrategy
+	implements OrmMappingJoinTableRelationshipStrategy2_0
 {
 	public NullOrmJoinTableRelationshipStrategy(OrmJoinTableRelationship parent) {
 		super(parent);
@@ -57,11 +59,11 @@ public class NullOrmJoinTableRelationshipStrategy
 		return this.getRelationship().getValidationTextRange();
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		throw new UnsupportedOperationException();
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -102,6 +104,10 @@ public class NullOrmJoinTableRelationshipStrategy
 	}
 
 	public String getJoinTableDefaultName() {
+		return null;
+	}
+
+	public ReadOnlyRelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
 		return null;
 	}
 

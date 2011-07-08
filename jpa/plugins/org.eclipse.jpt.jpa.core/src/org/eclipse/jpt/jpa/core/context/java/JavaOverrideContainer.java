@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,17 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 public interface JavaOverrideContainer
 	extends OverrideContainer, JavaJpaContextNode
 {
+	/**
+	 * Return the names of all the container's overrides, specified and virtual.
+	 * This is used by the <code>orm.xml</code> override container so any
+	 * invalid Java overrides (i.e. overrides for a non-existent or
+	 * non-overridable attributes) are included among the <code>orm.xml</code>
+	 * virtual overrides.
+	 * @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity.OverrideContainerOwner#getJavaOverrideNames()
+	 */
+	Iterable<String> getOverrideNames();
+
+	// covariant overrides
 	ListIterator<? extends JavaReadOnlyOverride> overrides();
 	JavaReadOnlyOverride getOverrideNamed(String name);
 	ListIterator<? extends JavaOverride> specifiedOverrides();
@@ -40,16 +51,6 @@ public interface JavaOverrideContainer
 	ListIterator<? extends JavaVirtualOverride> virtualOverrides();
 	JavaVirtualOverride convertOverrideToVirtual(Override_ specifiedOverride);
 	JavaOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
-
-	/**
-	 * JPA 2.0
-	 * <p>
-	 * Return a prefix (<em>without</em> the following <code>'.'</code>)
-	 * that may be prepended to the override name.
-	 * Return <code>null</code> if no prefix is supported.
-	 */
-	String getPossiblePrefix();
-	String getWritePrefix();
 
 
 	// ********** owner **********
@@ -60,37 +61,5 @@ public interface JavaOverrideContainer
 		JavaResourcePersistentMember getResourcePersistentMember();
 
 		TextRange getValidationTextRange(CompilationUnit astRoot);
-
-		/**
-		 * JPA 2.0
-		 * <p>
-		 * Return the prefix (<em>without</em> the following <code>'.'</code>)
-		 * to be prepended to the override name.
-		 */
-		String getWritePrefix();
-
-		/**
-		 * JPA 2.0
-		 * <p>
-		 * Return a prefix (<em>without</em> the following <code>'.'</code>)
-		 * that may be prepended to the override name.
-		 * Return <code>null</code> if no prefix is supported.
-		 * <p>
-		 * JPA 2.0 supports the prefixes <code>"value"</code> and <code>"key"</code>.
-		 */
-		String getPossiblePrefix();
-
-		/**
-		 * JPA 2.0
-		 * <p>
-		 * This is necessary for JPA 2.0 because an override annotation for an
-		 * element collection can have a name with a prefix that indicates
-		 * whether the override applies to element collection's embedded key or
-		 * value. Return whether the specified override name, which may have a
-		 * prefix, is relevant to the override container.
-		 * <p>
-		 * JPA 2.0 supports the prefixes <code>"value"</code> and <code>"key"</code>.
-		 */
-		boolean isRelevant(String overrideName);
 	}
 }

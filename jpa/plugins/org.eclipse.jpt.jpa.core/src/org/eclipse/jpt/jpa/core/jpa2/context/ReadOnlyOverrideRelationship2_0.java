@@ -10,11 +10,16 @@
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
+import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 
 /**
- * Association override relationship
+ * JPA 2.0 association override relationship
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,5 +33,9 @@ public interface ReadOnlyOverrideRelationship2_0
 	extends ReadOnlyOverrideRelationship,
 			ReadOnlyJoinTableRelationship
 {
-	// add join table support to JPA 1.0 association override
+	JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
+
+	JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
+
+	JptValidator buildJoinTableValidator(ReadOnlyJoinTable table, TableTextRangeResolver textRangeResolver);
 }

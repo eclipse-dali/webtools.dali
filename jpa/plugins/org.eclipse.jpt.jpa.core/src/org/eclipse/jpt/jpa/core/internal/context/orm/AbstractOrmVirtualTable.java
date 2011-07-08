@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -16,20 +17,27 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualTable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractOrmVirtualTable<T extends Table>
+public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 	extends AbstractOrmXmlContextNode
-	implements VirtualTable
+	implements VirtualTable, OrmReadOnlyTable
 {
+	protected final Owner owner;
+
 	protected String specifiedName;
 	protected String defaultName;
 
@@ -43,8 +51,9 @@ public abstract class AbstractOrmVirtualTable<T extends Table>
 	protected final UniqueConstraintContainerAdapter uniqueConstraintContainerAdapter = new UniqueConstraintContainerAdapter();
 
 
-	protected AbstractOrmVirtualTable(XmlContextNode parent) {
+	protected AbstractOrmVirtualTable(XmlContextNode parent, Owner owner) {
 		super(parent);
+		this.owner = owner;
 	}
 
 
@@ -196,7 +205,7 @@ public abstract class AbstractOrmVirtualTable<T extends Table>
 		ContextContainerTools.update(this.uniqueConstraintContainerAdapter);
 	}
 
-	protected Iterable<UniqueConstraint> getOverriddenUniqueConstraints() {
+	protected Iterable<ReadOnlyUniqueConstraint> getOverriddenUniqueConstraints() {
 		return CollectionTools.iterable(this.getOverriddenTable().uniqueConstraints());
 	}
 
@@ -204,13 +213,13 @@ public abstract class AbstractOrmVirtualTable<T extends Table>
 		this.moveItemInList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 
-	protected OrmVirtualUniqueConstraint addUniqueConstraint(int index, UniqueConstraint uniqueConstraint) {
+	protected OrmVirtualUniqueConstraint addUniqueConstraint(int index, ReadOnlyUniqueConstraint uniqueConstraint) {
 		OrmVirtualUniqueConstraint virtualConstraint = this.buildUniqueConstraint(uniqueConstraint);
 		this.addItemToList(index, virtualConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 		return virtualConstraint;
 	}
 
-	protected OrmVirtualUniqueConstraint buildUniqueConstraint(UniqueConstraint uniqueConstraint) {
+	protected OrmVirtualUniqueConstraint buildUniqueConstraint(ReadOnlyUniqueConstraint uniqueConstraint) {
 		return this.getContextNodeFactory().buildOrmVirtualUniqueConstraint(this, uniqueConstraint);
 	}
 
@@ -222,21 +231,21 @@ public abstract class AbstractOrmVirtualTable<T extends Table>
 	 * unique constraint container adapter
 	 */
 	protected class UniqueConstraintContainerAdapter
-		implements ContextContainerTools.Adapter<OrmVirtualUniqueConstraint, UniqueConstraint>
+		implements ContextContainerTools.Adapter<OrmVirtualUniqueConstraint, ReadOnlyUniqueConstraint>
 	{
 		public Iterable<OrmVirtualUniqueConstraint> getContextElements() {
 			return AbstractOrmVirtualTable.this.getUniqueConstraints();
 		}
-		public Iterable<UniqueConstraint> getResourceElements() {
+		public Iterable<ReadOnlyUniqueConstraint> getResourceElements() {
 			return AbstractOrmVirtualTable.this.getOverriddenUniqueConstraints();
 		}
-		public UniqueConstraint getResourceElement(OrmVirtualUniqueConstraint contextElement) {
+		public ReadOnlyUniqueConstraint getResourceElement(OrmVirtualUniqueConstraint contextElement) {
 			return contextElement.getOverriddenUniqueConstraint();
 		}
 		public void moveContextElement(int index, OrmVirtualUniqueConstraint element) {
 			AbstractOrmVirtualTable.this.moveUniqueConstraint(index, element);
 		}
-		public void addContextElement(int index, UniqueConstraint resourceElement) {
+		public void addContextElement(int index, ReadOnlyUniqueConstraint resourceElement) {
 			AbstractOrmVirtualTable.this.addUniqueConstraint(index, resourceElement);
 		}
 		public void removeContextElement(OrmVirtualUniqueConstraint element) {
@@ -255,6 +264,10 @@ public abstract class AbstractOrmVirtualTable<T extends Table>
 	public Schema getDbSchema() {
 		SchemaContainer dbSchemaContainer = this.getDbSchemaContainer();
 		return (dbSchemaContainer == null) ? null : dbSchemaContainer.getSchemaForIdentifier(this.getSchema());
+	}
+
+	public boolean schemaIsResolved() {
+		return this.getDbSchema() != null;
 	}
 
 	/**
@@ -276,7 +289,16 @@ public abstract class AbstractOrmVirtualTable<T extends Table>
 		return (catalog == null) ? null : this.resolveDbCatalog(catalog);
 	}
 
-	protected boolean isResolved() {
+	/**
+	 * If we don't have a catalog (i.e. we don't even have a <em>default</em>
+	 * catalog), then the database probably does not support catalogs.
+	 */
+	public boolean catalogIsResolved() {
+		String catalog = this.getCatalog();
+		return (catalog == null) || (this.resolveDbCatalog(catalog) != null);
+	}
+
+	public boolean isResolved() {
 		return this.getDbTable() != null;
 	}
 
@@ -296,8 +318,34 @@ public abstract class AbstractOrmVirtualTable<T extends Table>
 
 	// ********** validation **********
 
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.buildTableValidator().validate(messages, reporter);
+	}
+
+	protected JptValidator buildTableValidator() {
+		return this.owner.buildTableValidator(this, this.buildTextRangeResolver());
+	}
+
+	protected TableTextRangeResolver buildTextRangeResolver() {
+		return new OrmTableTextRangeResolver(this);
+	}
+
 	public TextRange getValidationTextRange() {
 		return this.getParent().getValidationTextRange();
+	}
+
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange();
+	}
+
+	public TextRange getSchemaTextRange() {
+		return this.getValidationTextRange();
+	}
+
+	public TextRange getCatalogTextRange() {
+		return this.getValidationTextRange();
 	}
 
 

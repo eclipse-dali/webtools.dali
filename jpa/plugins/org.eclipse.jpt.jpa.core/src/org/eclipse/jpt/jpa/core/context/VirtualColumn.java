@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ package org.eclipse.jpt.jpa.core.context;
 public interface VirtualColumn
 	extends VirtualBaseColumn, ReadOnlyColumn
 {
-	Column getOverriddenColumn();
+	ReadOnlyColumn getOverriddenColumn();
 
 
 	// ********** owner **********
@@ -30,11 +30,11 @@ public interface VirtualColumn
 	 * Interface allowing the virtual column to be get the column it overrides.
 	 */
 	interface Owner
-		extends ReadOnlyColumn.Owner
+		extends ReadOnlyBaseColumn.Owner
 	{
 		/**
 		 * Return the column overridden by the virtual column.
 		 */
-		Column resolveOverriddenColumn();
+		ReadOnlyColumn resolveOverriddenColumn();
 	}
 }

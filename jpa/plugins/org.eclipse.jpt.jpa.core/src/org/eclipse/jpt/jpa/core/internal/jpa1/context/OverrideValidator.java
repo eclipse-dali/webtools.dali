@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Override_;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -24,10 +24,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class OverrideValidator
 	implements JptValidator
 {
-	// this is null for overrides defined on entities
-	protected final PersistentAttribute persistentAttribute;
+	/** this is <code>null</code> for overrides defined on entities */
+	protected final ReadOnlyPersistentAttribute persistentAttribute;
 
-	protected final Override_ override;
+	protected final ReadOnlyOverride override;
 
 	protected final OverrideContainer container;
 
@@ -36,7 +36,7 @@ public abstract class OverrideValidator
 	protected final OverrideDescriptionProvider overrideDescriptionProvider;
 
 	protected OverrideValidator(
-				Override_ override,
+				ReadOnlyOverride override,
 				OverrideContainer container,
 				OverrideTextRangeResolver textRangeResolver,
 				OverrideDescriptionProvider overrideDescriptionProvider) {
@@ -45,8 +45,8 @@ public abstract class OverrideValidator
 
 
 	protected OverrideValidator(
-				PersistentAttribute persistentAttribute,
-				Override_ override,
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyOverride override,
 				OverrideContainer container,
 				OverrideTextRangeResolver textRangeResolver,
 				OverrideDescriptionProvider overrideDescriptionProvider) {
@@ -62,38 +62,35 @@ public abstract class OverrideValidator
 	}
 
 	public boolean validate(List<IMessage> messages, IReporter reporter) {
-		if (!this.validateType(messages)) {
+		if (this.validateType(messages)) {
+			// validate the name only if the type is valid
 			return this.validateName(messages);
 		}
-		return true;
+		return false;
 	}
 
 	protected boolean validateType(List<IMessage> messages) {
 		if (this.container.getOverridableTypeMapping() == null) {
 			messages.add(this.buildUnresolvedOverrideTypeMessage());
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	protected IMessage buildUnresolvedOverrideTypeMessage() {
-		if (this.override.isVirtual()) {
-			return DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_TYPE,
-					new String[] {this.override.getName()},
-					this.override,
-					this.textRangeResolver.getNameTextRange()
-			); 
-		}
-
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_TYPE,
+				this.getUnresolvedOverrideTypeMessage(),
 				new String[] {this.override.getName()},
 				this.override,
 				this.textRangeResolver.getNameTextRange()
-		); 
+			); 
+	}
+
+	protected String getUnresolvedOverrideTypeMessage() {
+		return this.override.isVirtual() ?
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_TYPE :
+				JpaValidationMessages.ATTRIBUTE_OVERRIDE_INVALID_TYPE;
 	}
 
 	protected boolean validateName(List<IMessage> messages) {
@@ -106,9 +103,11 @@ public abstract class OverrideValidator
 
 	protected IMessage buildUnresolvedNameMessage() {
 		if (this.override.isVirtual()) {
+			// this can happen when an erroneous Java override triggers a
+			// corresponding orm.xml virtual override
 			return this.buildVirtualUnresolvedNameMessage();
 		}
-		if (this.overrideParentIsVirtualAttribute()) {
+		if (this.overrideIsPartOfVirtualAttribute()) {
 			return this.buildVirtualAttributeUnresolvedNameMessage();
 		}
 		return this.buildUnresolvedNameMessage(this.getUnresolvedNameMessage());
@@ -163,7 +162,7 @@ public abstract class OverrideValidator
 
 	protected abstract String getVirtualAttributeUnresolvedNameMessage();
 
-	protected boolean overrideParentIsVirtualAttribute() {
+	protected boolean overrideIsPartOfVirtualAttribute() {
 		return (this.persistentAttribute != null) &&
 				this.persistentAttribute.isVirtual();
 	}

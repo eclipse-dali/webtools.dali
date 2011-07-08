@@ -18,13 +18,14 @@ import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
  * Java column or join column
  */
-public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O extends JavaBaseColumn.Owner>
+public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O extends JavaReadOnlyBaseColumn.Owner>
 	extends AbstractJavaNamedColumn<A, O>
 	implements JavaBaseColumn
 {
@@ -318,10 +319,6 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		// ignore other settings?
 	}
 
-	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTable());
-	}
-
 
 	// ********** Java completion proposals **********
 
@@ -351,6 +348,13 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 
 	public Iterator<String> candidateTableNames() {
 		return this.owner.candidateTableNames();
+	}
+
+
+	// ********** validation **********
+
+	public boolean tableNameIsInvalid() {
+		return this.owner.tableNameIsInvalid(this.getTable());
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import java.util.Iterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 
-public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyNamedColumn.Owner, C extends BaseColumn>
+public abstract class AbstractJavaVirtualBaseColumn<O extends JavaReadOnlyBaseColumn.Owner, C extends ReadOnlyBaseColumn>
 	extends AbstractJavaVirtualNamedColumn<O, C>
-	implements VirtualBaseColumn
+	implements VirtualBaseColumn, JavaReadOnlyBaseColumn
 {
 	protected String specifiedTable;
 	protected String defaultTable;
@@ -64,6 +68,7 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyNamedColum
 
 	// ********** table **********
 
+	@Override
 	public String getTable() {
 		return (this.specifiedTable != null) ? this.specifiedTable : this.defaultTable;
 	}
@@ -234,5 +239,28 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyNamedColum
 
 	protected boolean buildDefaultUpdatable() {
 		return DEFAULT_UPDATABLE;
+	}
+
+
+	// ********** misc **********
+
+	public boolean tableNameIsInvalid() {
+		return this.owner.tableNameIsInvalid(this.getTable());
+	}
+
+	public Iterator<String> candidateTableNames() {
+		return this.owner.candidateTableNames();
+	}
+
+
+	// ********** validation **********
+
+	public TextRange getTableTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(astRoot);
+	}
+
+	@Override
+	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaBaseColumnTextRangeResolver(this, astRoot);
 	}
 }

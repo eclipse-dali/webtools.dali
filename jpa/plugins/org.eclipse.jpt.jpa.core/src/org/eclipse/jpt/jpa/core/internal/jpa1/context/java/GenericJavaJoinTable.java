@@ -25,16 +25,18 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterab
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -59,7 +61,7 @@ public class GenericJavaJoinTable
 {
 	protected final Vector<JavaJoinColumn> specifiedInverseJoinColumns = new Vector<JavaJoinColumn>();
 	protected final SpecifiedInverseJoinColumnContainerAdapter specifiedInverseJoinColumnContainerAdapter = new SpecifiedInverseJoinColumnContainerAdapter();
-	protected final JavaJoinColumn.Owner inverseJoinColumnOwner;
+	protected final JavaReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
 
 	protected JavaJoinColumn defaultInverseJoinColumn;
 
@@ -71,7 +73,7 @@ public class GenericJavaJoinTable
 	}
 
 	@Override
-	protected JavaJoinColumn.Owner buildJoinColumnOwner() {
+	protected JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -122,7 +124,7 @@ public class GenericJavaJoinTable
 		return this.hasSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumnsSize() : this.defaultInverseJoinColumnsSize();
 	}
 
-	public void convertDefaultToSpecifiedInverseJoinColumn() {
+	public void convertDefaultInverseJoinColumnToSpecified() {
 		MappingTools.convertJoinTableDefaultToSpecifiedInverseJoinColumn(this);
 	}
 
@@ -238,7 +240,7 @@ public class GenericJavaJoinTable
 		}
 	}
 
-	protected JavaJoinColumn.Owner buildInverseJoinColumnOwner() {
+	protected JavaReadOnlyJoinColumn.Owner buildInverseJoinColumnOwner() {
 		return new InverseJoinColumnOwner();
 	}
 
@@ -348,7 +350,7 @@ public class GenericJavaJoinTable
 	@Override
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validateJoinColumns(messages, reporter, astRoot);
-		this.validateJoinColumns(this.inverseJoinColumns(), messages, reporter, astRoot);
+		this.validateNodes(this.getInverseJoinColumns(), messages, reporter, astRoot);
 	}
 
 	public boolean validatesAgainstDatabase() {
@@ -362,18 +364,14 @@ public class GenericJavaJoinTable
 	 * just a little common behavior
 	 */
 	protected abstract class AbstractJoinColumnOwner
-		implements JavaJoinColumn.Owner
+		implements JavaReadOnlyJoinColumn.Owner
 	{
 		protected AbstractJoinColumnOwner() {
 			super();
 		}
 
 		public TypeMapping getTypeMapping() {
-			return GenericJavaJoinTable.this.getRelationshipStrategy().getRelationship().getTypeMapping();
-		}
-
-		public PersistentAttribute getPersistentAttribute() {
-			return GenericJavaJoinTable.this.getPersistentAttribute();
+			return this.getRelationship().getTypeMapping();
 		}
 
 		/**
@@ -385,7 +383,7 @@ public class GenericJavaJoinTable
 
 		/**
 		 * If there is a specified table name it needs to be the same
-		 * the default table name.  the table is always the join table
+		 * the default table name. The table is always the join table.
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
 			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
@@ -415,6 +413,14 @@ public class GenericJavaJoinTable
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return GenericJavaJoinTable.this.getValidationTextRange(astRoot);
 		}
+
+		protected JavaRelationship getRelationship() {
+			return this.getRelationshipStrategy().getRelationship();
+		}
+
+		protected JavaJoinTableRelationshipStrategy getRelationshipStrategy() {
+			return GenericJavaJoinTable.this.getRelationshipStrategy();
+		}
 	}
 
 
@@ -430,7 +436,7 @@ public class GenericJavaJoinTable
 		}
 
 		public Entity getRelationshipTarget() {
-			return GenericJavaJoinTable.this.getRelationshipStrategy().getRelationship().getEntity();
+			return this.getRelationship().getEntity();
 		}
 
 		public String getAttributeName() {
@@ -449,8 +455,8 @@ public class GenericJavaJoinTable
 			return GenericJavaJoinTable.this.joinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return GenericJavaJoinTable.this.getParent().buildJoinTableJoinColumnValidator((JoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 
@@ -489,8 +495,8 @@ public class GenericJavaJoinTable
 			return GenericJavaJoinTable.this.inverseJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return GenericJavaJoinTable.this.getParent().buildJoinTableInverseJoinColumnValidator((JoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 }

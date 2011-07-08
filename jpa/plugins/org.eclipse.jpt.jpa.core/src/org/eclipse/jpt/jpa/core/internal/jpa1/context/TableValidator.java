@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
-public class TableValidator extends AbstractTableValidator
+public class TableValidator
+	extends AbstractTableValidator
 {
-	public TableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+	public TableValidator(ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
 		super(table, textRangeResolver);
 	}
 
@@ -26,7 +27,7 @@ public class TableValidator extends AbstractTableValidator
 
 	@Override
 	protected String getVirtualAttributeUnresolvedCatalogMessage() {
-		throw new UnsupportedOperationException("No Table annotations exist on attributes"); //$NON-NLS-1$
+		throw this.buildAttributeTableNotSupportedException();
 	}
 
 	@Override
@@ -36,7 +37,7 @@ public class TableValidator extends AbstractTableValidator
 
 	@Override
 	protected String getVirtualAttributeUnresolvedSchemaMessage() {
-		throw new UnsupportedOperationException("No Table annotations exist on attributes"); //$NON-NLS-1$
+		throw this.buildAttributeTableNotSupportedException();
 	}
 
 	@Override
@@ -46,6 +47,10 @@ public class TableValidator extends AbstractTableValidator
 
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		throw new UnsupportedOperationException("No Table annotations exist on attributes"); //$NON-NLS-1$
+		throw this.buildAttributeTableNotSupportedException();
+	}
+
+	protected UnsupportedOperationException buildAttributeTableNotSupportedException() {
+		return new UnsupportedOperationException("An attribute cannot specify a table"); //$NON-NLS-1$
 	}
 }

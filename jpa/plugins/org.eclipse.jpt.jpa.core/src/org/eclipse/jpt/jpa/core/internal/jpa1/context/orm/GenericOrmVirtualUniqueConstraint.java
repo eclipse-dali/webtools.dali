@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmReadOnlyUniqueConstraint;
@@ -19,10 +19,10 @@ public class GenericOrmVirtualUniqueConstraint
 	extends AbstractOrmReadOnlyUniqueConstraint
 	implements OrmVirtualUniqueConstraint
 {
-	protected final UniqueConstraint overriddenUniqueConstraint;
+	protected final ReadOnlyUniqueConstraint overriddenUniqueConstraint;
 
 
-	public GenericOrmVirtualUniqueConstraint(XmlContextNode parent, UniqueConstraint overriddenUniqueConstraint) {
+	public GenericOrmVirtualUniqueConstraint(XmlContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint) {
 		super(parent);
 		this.overriddenUniqueConstraint = overriddenUniqueConstraint;
 	}
@@ -51,7 +51,7 @@ public class GenericOrmVirtualUniqueConstraint
 		return (XmlContextNode) super.getParent();
 	}
 
-	public UniqueConstraint getOverriddenUniqueConstraint() {
+	public ReadOnlyUniqueConstraint getOverriddenUniqueConstraint() {
 		return this.overriddenUniqueConstraint;
 	}
 

@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -20,11 +21,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class AttributeOverrideColumnValidator
 	extends NamedColumnValidator
 {
-	final AttributeOverride override;
+	final ReadOnlyAttributeOverride override;
 
 	public AttributeOverrideColumnValidator(
-				AttributeOverride override,
-				BaseColumn column,
+				ReadOnlyAttributeOverride override,
+				ReadOnlyBaseColumn column,
 				BaseColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider message) {
 		super(column, textRangeResolver, message);
@@ -32,9 +33,9 @@ public class AttributeOverrideColumnValidator
 	}
 
 	public AttributeOverrideColumnValidator(
-				PersistentAttribute persistentAttribute,
-				AttributeOverride override,
-				BaseColumn column,
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyAttributeOverride override,
+				ReadOnlyBaseColumn column,
 				BaseColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider message) {
 		super(persistentAttribute, column, textRangeResolver, message);
@@ -42,7 +43,7 @@ public class AttributeOverrideColumnValidator
 	}
 
 	@Override
-	protected TableValidator buildTableValidator() {
+	protected JptValidator buildTableValidator() {
 		return new TableValidator();
 	}
 
@@ -92,6 +93,8 @@ public class AttributeOverrideColumnValidator
 		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME;
 	}
 
+
+	// ********** table validator **********
 
 	protected class TableValidator
 		extends BaseColumnTableValidator

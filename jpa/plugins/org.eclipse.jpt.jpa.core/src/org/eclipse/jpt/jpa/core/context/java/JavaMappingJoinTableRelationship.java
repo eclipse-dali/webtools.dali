@@ -22,5 +22,5 @@ public interface JavaMappingJoinTableRelationship
 	extends JavaJoinTableRelationship,
 		JavaMappingRelationship
 {
-	// combine various interfaces
+	// combine interfaces
 }

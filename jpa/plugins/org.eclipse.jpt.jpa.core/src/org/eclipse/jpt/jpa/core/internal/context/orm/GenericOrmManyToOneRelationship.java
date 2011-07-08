@@ -17,8 +17,10 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmManyToOneRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinColumnRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinTableRelationshipStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -27,10 +29,10 @@ public class GenericOrmManyToOneRelationship
 	extends AbstractOrmMappingRelationship<OrmManyToOneMapping>
 	implements OrmManyToOneRelationship2_0
 {
-	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
+	protected final OrmMappingJoinColumnRelationshipStrategy2_0 joinColumnStrategy;
 
 	// JPA 2.0
-	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
+	protected final OrmMappingJoinTableRelationshipStrategy2_0 joinTableStrategy;
 
 	
 	public GenericOrmManyToOneRelationship(OrmManyToOneMapping parent) {
@@ -62,7 +64,7 @@ public class GenericOrmManyToOneRelationship
 	// ********** strategy **********
 
 	@Override
-	protected OrmRelationshipStrategy buildStrategy() {
+	protected OrmMappingRelationshipStrategy2_0 buildStrategy() {
 		if (this.isJpa2_0Compatible()) {
 			if (this.joinTableStrategy.getJoinTable() != null){
 				return this.joinTableStrategy;
@@ -92,7 +94,7 @@ public class GenericOrmManyToOneRelationship
 		return false;
 	}
 
-	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected OrmMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
 		return this.isJpa2_0Compatible() ?
 				new GenericOrmMappingJoinTableRelationshipStrategy(this) :
 				new NullOrmJoinTableRelationshipStrategy(this);
@@ -121,7 +123,7 @@ public class GenericOrmManyToOneRelationship
 		return this.joinTableStrategy.getJoinTable() == null;
 	}
 
-	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+	protected OrmMappingJoinColumnRelationshipStrategy2_0 buildJoinColumnStrategy() {
 		return new GenericOrmMappingJoinColumnRelationshipStrategy(this);
 	}
 

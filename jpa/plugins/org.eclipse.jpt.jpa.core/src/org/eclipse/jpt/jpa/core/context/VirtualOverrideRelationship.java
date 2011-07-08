@@ -24,5 +24,5 @@ public interface VirtualOverrideRelationship
 	extends ReadOnlyOverrideRelationship,
 			VirtualJoinColumnRelationship
 {
-	VirtualAssociationOverride getAssociationOverride();
+	// combine interfaces
 }

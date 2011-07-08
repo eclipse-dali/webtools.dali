@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -20,12 +21,12 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class AssociationOverrideInverseJoinColumnValidator
 	extends InverseJoinColumnValidator
 {
-	final AssociationOverride override;
+	final ReadOnlyAssociationOverride override;
 
 	public AssociationOverrideInverseJoinColumnValidator(
-				AssociationOverride override,
-				JoinColumn column,
-				JoinColumn.Owner joinColumnOwner,
+				ReadOnlyAssociationOverride override,
+				ReadOnlyJoinColumn column,
+				ReadOnlyJoinColumn.Owner joinColumnOwner,
 				JoinColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
 		super(column, joinColumnOwner, textRangeResolver, provider);
@@ -33,10 +34,10 @@ public class AssociationOverrideInverseJoinColumnValidator
 	}
 
 	public AssociationOverrideInverseJoinColumnValidator(
-				PersistentAttribute persistentAttribute,
-				AssociationOverride override,
-				JoinColumn column,
-				JoinColumn.Owner joinColumnOwner,
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyAssociationOverride override,
+				ReadOnlyJoinColumn column,
+				ReadOnlyJoinColumn.Owner joinColumnOwner,
 				JoinColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, joinColumnOwner, textRangeResolver, provider);
@@ -44,7 +45,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 	}
 
 	@Override
-	protected TableValidator buildTableValidator() {
+	protected JptValidator buildTableValidator() {
 		return new TableValidator();
 	}
 
@@ -91,7 +92,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 	}
 
 	@Override
-	public IMessage buildUnresolvedReferencedColumnNameMessage() {
+	protected IMessage buildUnresolvedReferencedColumnNameMessage() {
 		return this.override.isVirtual() ?
 				this.buildVirtualOverrideUnresolvedReferencedColumnNameMessage() :
 				super.buildUnresolvedReferencedColumnNameMessage();
@@ -204,6 +205,8 @@ public class AssociationOverrideInverseJoinColumnValidator
 		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS;
 	}
 
+
+	// ********** table validator **********
 
 	public class TableValidator
 		extends InverseJoinColumnValidator.TableValidator

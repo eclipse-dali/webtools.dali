@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,11 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
-
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
@@ -216,7 +214,7 @@ public class OrmEclipseLinkEntityImpl
 			return null;
 		}
 
-		return this.getEntityMappings().resolveJavaResourcePersistentType(className);
+		return this.getMappingFileRoot().resolveJavaResourcePersistentType(className);
 	}
 
 	protected boolean classExtractorIsFor(String typeName) {
@@ -227,10 +225,6 @@ public class OrmEclipseLinkEntityImpl
 	protected boolean classExtractorIsIn(IPackageFragment packageFragment) {
 		JavaResourcePersistentType classExtractorType = this.getResourceClassExtractorPersistentType();
 		return (classExtractorType != null) && classExtractorType.isIn(packageFragment);
-	}
-
-	protected EntityMappings getEntityMappings() {
-		return (EntityMappings) getMappingFileRoot();
 	}
 
 

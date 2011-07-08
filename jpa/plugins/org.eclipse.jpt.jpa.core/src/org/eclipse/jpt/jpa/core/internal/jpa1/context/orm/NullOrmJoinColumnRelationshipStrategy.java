@@ -14,12 +14,14 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinColumnRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -29,7 +31,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class NullOrmJoinColumnRelationshipStrategy
 	extends AbstractOrmXmlContextNode
-	implements OrmJoinColumnRelationshipStrategy
+	implements OrmMappingJoinColumnRelationshipStrategy2_0
 {
 	public NullOrmJoinColumnRelationshipStrategy(OrmJoinColumnRelationship parent) {
 		super(parent);
@@ -121,6 +123,10 @@ public class NullOrmJoinColumnRelationshipStrategy
 
 	public void initializeFromVirtual(ReadOnlyJoinColumnRelationshipStrategy oldStrategy) {
 		// NOP
+	}
+
+	public ReadOnlyRelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+		return null;
 	}
 
 	public void addStrategy() {

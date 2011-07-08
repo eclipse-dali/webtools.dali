@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -40,13 +41,13 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	extends AbstractOrmXmlContextNode
 	implements OrmMapsIdDerivedIdentityStrategy2_0
 {
-	protected String specifiedValue;
-	// no default value
+	protected String specifiedIdAttributeName;
+	// no default
 
 
 	public GenericOrmMapsIdDerivedIdentityStrategy2_0(OrmDerivedIdentity2_0 parent) {
 		super(parent);
-		this.specifiedValue = this.getXmlMapping().getMapsId();
+		this.specifiedIdAttributeName = this.getXmlMapping().getMapsId();
 	}
 
 
@@ -55,38 +56,38 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedValue_(this.getXmlMapping().getMapsId());
+		this.setSpecifiedIdAttributeName_(this.getXmlMapping().getMapsId());
 	}
 
 
-	// ********** value **********
+	// ********** ID attribute name **********
 
-	public String getValue() {
-		// there is no default value
-		return this.specifiedValue;
+	public String getIdAttributeName() {
+		// there is no default
+		return this.specifiedIdAttributeName;
 	}
 
-	public String getSpecifiedValue() {
-		return this.specifiedValue;
+	public String getSpecifiedIdAttributeName() {
+		return this.specifiedIdAttributeName;
 	}
 
-	public void setSpecifiedValue(String value) {
-		this.setSpecifiedValue_(value);
-		this.getXmlMapping().setMapsId(value);
+	public void setSpecifiedIdAttributeName(String idAttributeName) {
+		this.setSpecifiedIdAttributeName_(idAttributeName);
+		this.getXmlMapping().setMapsId(idAttributeName);
 	}
 
-	protected void setSpecifiedValue_(String value) {
-		String old = this.specifiedValue;
-		this.specifiedValue = value;
-		this.firePropertyChanged(SPECIFIED_VALUE_PROPERTY, old, value);
+	protected void setSpecifiedIdAttributeName_(String idAttributeName) {
+		String old = this.specifiedIdAttributeName;
+		this.specifiedIdAttributeName = idAttributeName;
+		this.firePropertyChanged(SPECIFIED_ID_ATTRIBUTE_NAME_PROPERTY, old, idAttributeName);
 	}
 
-	public String getDefaultValue() {
-		// there is no way to have default values in xml
+	public String getDefaultIdAttributeName() {
+		// there is no way to have a default in xml
 		return null;
 	}
 
-	public boolean usesDefaultValue() {
+	public boolean defaultIdAttributeNameIsPossible() {
 		return false;
 	}
 
@@ -118,69 +119,67 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		return CollectionTools.collection(this.getPersistentAttribute().getOwningTypeMapping().allAttributeMappings());
 	}
 
-	public Iterable<String> getSortedValueChoices() {
-		return CollectionTools.sort(this.getAllAttributeMappingChoiceNames());
+	public Iterable<String> getSortedCandidateIdAttributeNames() {
+		return CollectionTools.sort(this.getNonNullCandidateIdAttributeNames());
 	}
 
-	protected Iterable<String> getAllAttributeMappingChoiceNames() {
-		return new FilteringIterable<String>(
-				new TransformationIterable<AttributeMapping, String>(this.getAllAttributeMappingChoices()) {
-					@Override
-					protected String transform(AttributeMapping mapping) {
-						return mapping.getName();
-					}
-				}) {
+	protected Iterable<String> getNonNullCandidateIdAttributeNames() {
+		return new FilteringIterable<String>(this.getCandidateIdAttributeNames(), NotNullFilter.<String>instance());
+	}
+
+	protected Iterable<String> getCandidateIdAttributeNames() {
+		return new TransformationIterable<AttributeMapping, String>(this.getCandidateIdAttributeMappings()) {
 			@Override
-			protected boolean accept(String o) {
-				return o != null;
+			protected String transform(AttributeMapping mapping) {
+				return mapping.getName();
 			}
 		};
 	}
 
-	protected Iterable<AttributeMapping> getAllAttributeMappingChoices() {
-		return this.buildAttributeMappingChoices(this.getAllAttributeMappings());
+	protected Iterable<AttributeMapping> getCandidateIdAttributeMappings() {
+		return this.buildCandidateIdAttributeMappings(this.getAllAttributeMappings());
 	}
 
-	protected Iterable<AttributeMapping> buildAttributeMappingChoices(Iterable<AttributeMapping> attributeMappings) {
-		return new CompositeIterable<AttributeMapping>(this.getAttributeMappingChoiceIterables(attributeMappings));
+	protected Iterable<AttributeMapping> buildCandidateIdAttributeMappings(Iterable<AttributeMapping> attributeMappings) {
+		return new CompositeIterable<AttributeMapping>(this.getCandidateIdAttributeMappingLists(attributeMappings));
 	}
 
-	/**
-	 * @see #getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping)
-	 */
-	protected Iterable<Iterable<AttributeMapping>> getAttributeMappingChoiceIterables(Iterable<AttributeMapping> availableMappings) {
-		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(availableMappings) {
+	protected Iterable<Iterable<AttributeMapping>> getCandidateIdAttributeMappingLists(Iterable<AttributeMapping> attributeMappings) {
+		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(attributeMappings) {
 			@Override
-			protected Iterable<AttributeMapping> transform(AttributeMapping o) {
-				return Tools.valuesAreEqual(o.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) ?
-					GenericOrmMapsIdDerivedIdentityStrategy2_0.this.getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) o) :
-					new SingleElementIterable<AttributeMapping>(o);
+			protected Iterable<AttributeMapping> transform(AttributeMapping attributeMapping) {
+				return Tools.valuesAreEqual(attributeMapping.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) ?
+						this.getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) attributeMapping) :
+						new SingleElementIterable<AttributeMapping>(attributeMapping);
+			}
+
+			/**
+			 * Convert the specified mapping into a collection of its "mappings".
+			 * Typically, this collection will include just the mapping itself;
+			 * but, if the mapping is an embedded ID, this collection will include
+			 * the mapping itself plus all the mappings of its target embeddable.
+			 * 
+			 * NB: Recursion is unnecessary.
+			 */
+			protected Iterable<AttributeMapping> getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping mapping) {
+				Embeddable embeddable = mapping.getTargetEmbeddable();
+				if (embeddable == null) {
+					return new SingleElementIterable<AttributeMapping>(mapping);
+				}
+				return new CompositeIterable<AttributeMapping>(
+						mapping,
+						CollectionTools.collection(embeddable.allAttributeMappings())
+					);
 			}
 		};
 	}
 
-	/**
-	 * Convert the specified mapping into a collection of its "mappings".
-	 * Typically, this collection will include just the mapping itself;
-	 * but, if the mapping is an embedded ID, this collection will include
-	 * the mapping itself plus all the mappings of its target embeddable.
-	 */
-	protected Iterable<AttributeMapping> getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping mapping) {
-		Embeddable embeddable = mapping.getTargetEmbeddable();
-		if (embeddable == null) {
-			return new SingleElementIterable<AttributeMapping>(mapping);
-		}
-		return new CompositeIterable<AttributeMapping>(
-				mapping,
-				CollectionTools.collection(embeddable.allAttributeMappings())
-			);
-	}
 
-	public AttributeMapping getResolvedAttributeMappingValue() {
-		String value = this.getValue();
-		if (value != null) {
-			for (AttributeMapping mapping : this.getAllAttributeMappingChoices()) {
-				if (value.equals(mapping.getName())) {
+	public AttributeMapping getDerivedIdAttributeMapping() {
+		String idAttributeName = this.getIdAttributeName();
+		if (idAttributeName != null) {
+			for (AttributeMapping mapping : this.getCandidateIdAttributeMappings()) {
+				if (idAttributeName.equals(mapping.getName())) {
 					return mapping;
 				}
 			}
@@ -201,7 +200,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	public void initializeFrom(OrmMapsIdDerivedIdentityStrategy2_0 oldStrategy) {
-		this.setSpecifiedValue(oldStrategy.getSpecifiedValue());
+		this.setSpecifiedIdAttributeName(oldStrategy.getSpecifiedIdAttributeName());
 	}
 
 
@@ -247,21 +246,21 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected void validateMapsId_(List<IMessage> messages) {
-		// test whether value can be resolved
-		AttributeMapping attributeMapping = this.getResolvedAttributeMappingValue();
+		// test whether id attribute name can be resolved
+		AttributeMapping attributeMapping = this.getDerivedIdAttributeMapping();
 		if (attributeMapping == null) {
-			// there is no defaulting, so only use the 'resolved' error, even if the value is empty string
-			messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getValue()}));
+			// there is no defaulting, so only use the 'resolved' error, even if the name is an empty string
+			messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getIdAttributeName()}));
 		} else {
 			// test whether attribute mapping is allowable
 			if ( ! CollectionTools.contains(this.getValidAttributeMappingChoices(), attributeMapping)) {
-				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getValue()}));
+				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getIdAttributeName()}));
 			}
 		}
 	}
 
 	protected Iterable<AttributeMapping> getValidAttributeMappingChoices() {
-		return this.buildAttributeMappingChoices(this.getIdAttributeMappings());
+		return this.buildCandidateIdAttributeMappings(this.getIdAttributeMappings());
 	}
 
 	protected IMessage buildMessage(String msgID, String[] parms) {

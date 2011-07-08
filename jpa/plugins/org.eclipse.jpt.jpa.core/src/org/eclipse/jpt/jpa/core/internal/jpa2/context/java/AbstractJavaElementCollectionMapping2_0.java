@@ -34,18 +34,20 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -85,6 +87,8 @@ import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
@@ -390,9 +394,9 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected class CollectionTableOwner
-		implements Table.Owner
+		implements ReadOnlyTable.Owner
 	{
-		public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+		public JptValidator buildTableValidator(ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
 			return new CollectionTableValidator(AbstractJavaElementCollectionMapping2_0.this.getPersistentAttribute(), (CollectionTable2_0) table, textRangeResolver);
 		}
 	}
@@ -581,7 +585,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return this.getJpaFactory().buildJavaAssociationOverrideContainer(this, this.buildValueAssociationOverrideContainerOwner());
 	}
 
-	protected JavaAssociationOverrideContainer.Owner buildValueAssociationOverrideContainerOwner() {
+	protected JavaAssociationOverrideContainer2_0.Owner buildValueAssociationOverrideContainerOwner() {
 		return new ValueAssociationOverrideContainerOwner();
 	}
 
@@ -1381,8 +1385,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return this.getMappingName();
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new NamedColumnValidator(this.getPersistentAttribute(), (BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
 	}
 
@@ -1405,8 +1409,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return this.getMappingName() + "_KEY"; //$NON-NLS-1$
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyColumnValidator(this.getPersistentAttribute(), (BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new MapKeyColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
 	}
 
@@ -1446,23 +1450,23 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected class ValueAttributeOverrideContainerOwner
 		extends ValueOverrideContainerOwner
-		implements JavaAttributeOverrideContainer.Owner
+		implements JavaAttributeOverrideContainer2_0.Owner
 	{
 		public Iterator<String> allOverridableNames() {
-			TypeMapping typeMapping = this.getOverridableTypeMapping();
-			return (typeMapping != null) ? typeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
+			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
+			return (overriddenTypeMapping != null) ? overriddenTypeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
 		}
 
 		public Column resolveOverriddenColumn(String attributeName) {
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, textRangeResolver, new CollectionTableTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, column, textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
 	}
 
@@ -1471,7 +1475,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected class ValueAssociationOverrideContainerOwner
 		extends ValueOverrideContainerOwner
-		implements JavaAssociationOverrideContainer.Owner
+		implements JavaAssociationOverrideContainer2_0.Owner
 	{
 		public Iterator<String> allOverridableNames() {
 			TypeMapping typeMapping = this.getOverridableTypeMapping();
@@ -1482,24 +1486,28 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideValidator(this.getPersistentAttribute(), (AssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) columnOwner, (JoinColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyAssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) columnOwner, (JoinColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a join table is not supported"); //$NON-NLS-1$
+		public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+			throw this.buildJoinTableUnsupportedException();
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a join table is not supported"); //$NON-NLS-1$
+		public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+			throw this.buildJoinTableUnsupportedException();
 		}
 
-		public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a join table is not supported"); //$NON-NLS-1$
+		public JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
+			throw this.buildJoinTableUnsupportedException();
+		}
+
+		protected UnsupportedOperationException buildJoinTableUnsupportedException() {
+			return new UnsupportedOperationException("An element collection containing a nested relationship mapping using a join table is not supported"); //$NON-NLS-1$
 		}
 	}
 
@@ -1508,7 +1516,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected class MapKeyAttributeOverrideContainerOwner
 		extends AbstractOwner
-		implements JavaAttributeOverrideContainer.Owner
+		implements JavaAttributeOverrideContainer2_0.Owner
 	{
 		protected static final String POSSIBLE_PREFIX = "key"; //$NON-NLS-1$
 		protected static final String RELEVANT_PREFIX_ = "key."; //$NON-NLS-1$
@@ -1518,8 +1526,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		}
 
 		public Iterator<String> allOverridableNames() {
-			TypeMapping typeMapping = this.getOverridableTypeMapping();
-			return (typeMapping != null) ? typeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
+			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
+			return (overriddenTypeMapping != null) ? overriddenTypeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
 		}
 
 		public String getPossiblePrefix() {
@@ -1543,12 +1551,12 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new MapKeyAttributeOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, textRangeResolver, new CollectionTableTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, column, textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
 	}
 }

@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-
 /**
  * Join table relationship strategy.
  * <p>
@@ -36,11 +33,4 @@ public interface JoinTableRelationshipStrategy
 	void initializeFromVirtual(ReadOnlyJoinTableRelationshipStrategy virtualStrategy);
 
 	JoinTable getJoinTable();
-
-	boolean validatesAgainstDatabase();
-
-	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-
-	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-
 }

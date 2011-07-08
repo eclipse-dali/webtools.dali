@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,25 +42,6 @@ public class ColumnComposite
 		super(parentPane, subjectHolder, parent, false);
 	}
 	
-	public ColumnComposite(
-			Pane<?> parentPane,
-			PropertyValueModel<? extends ReadOnlyColumn> subjectHolder,
-			Composite parent,
-			boolean automaticallyAlignWidgets) {
-		
-		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
-	}
-	
-	public ColumnComposite(
-			Pane<?> parentPane,
-			PropertyValueModel<? extends ReadOnlyColumn> subjectHolder,
-			Composite parent,
-			boolean automaticallyAlignWidgets,
-			boolean parentManagePane) {
-		
-		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets, parentManagePane);
-	}
-	
 	
 	private ColumnCombo<ReadOnlyColumn> addColumnCombo(Composite container) {
 		
@@ -96,15 +77,10 @@ public class ColumnComposite
 			
 			@Override
 			protected Table getDbTable_() {
-				Column column = this.getColumn();
+				ReadOnlyColumn column = this.getSubject();
 				return (column == null) ? null : column.getDbTable();
 			}
 
-			protected Column getColumn() {
-				ReadOnlyColumn column = this.getSubject();
-				return (column instanceof Column) ? (Column) column : null;
-			}
-			
 			@Override
 			protected String getValue() {
 				return getSubject().getSpecifiedName();
@@ -256,15 +232,11 @@ public class ColumnComposite
 				return this.getSubject().getSpecifiedTable();
 			}
 			
+			// TODO we need to listen for this list to change...
 			@Override
 			protected Iterable<String> getValues_() {
-				Column column = this.getColumn();
-				return (column != null) ? CollectionTools.iterable(column.candidateTableNames()) : EmptyIterable.<String> instance();
-			}
-			
-			protected Column getColumn() {
 				ReadOnlyColumn column = this.getSubject();
-				return (column instanceof Column) ? (Column) column : null;
+				return (column != null) ? CollectionTools.iterable(column.candidateTableNames()) : EmptyIterable.<String> instance();
 			}
 			
 			@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -22,6 +21,8 @@ import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOrderingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToManyMappingComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingComposite;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -62,19 +63,6 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 		super(parentPane, parent);
 	}
 
-	/**
-	 * Creates a new <code>OrderingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IMultiRelationshipMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public Ordering2_0Composite(PropertyValueModel<? extends CollectionMapping> subjectHolder,
-	                         Composite parent,
-	                         WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
-	}
 	
 	@Override
 	protected void initializeLayout(Composite container) {

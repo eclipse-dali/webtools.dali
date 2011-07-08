@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -223,7 +223,6 @@ public class JptUiValidationPreferenceMessages {
 	public static String VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID;
 	public static String VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME;
 	public static String VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_NAME;
-	public static String VIRTUAL_ATTRIBUTE_OVERRIDE_INVALID_TYPE;
 	public static String VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID;
 	public static String VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_INVALID_NAME;
 			// ---------- Implied Attributes ------------

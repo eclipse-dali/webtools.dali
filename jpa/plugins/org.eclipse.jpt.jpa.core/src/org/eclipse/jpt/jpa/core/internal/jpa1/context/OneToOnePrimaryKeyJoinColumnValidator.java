@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
@@ -18,9 +18,9 @@ public class OneToOnePrimaryKeyJoinColumnValidator
 	extends PrimaryKeyJoinColumnValidator
 {
 	public OneToOnePrimaryKeyJoinColumnValidator(
-				PersistentAttribute persistentAttribute,
-				BaseJoinColumn column,
-				BaseJoinColumn.Owner owner,
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyBaseJoinColumn column,
+				ReadOnlyBaseJoinColumn.Owner owner,
 				BaseJoinColumnTextRangeResolver textRangeResolver) {
 		super(persistentAttribute, column, owner, textRangeResolver);
 	}

@@ -27,8 +27,6 @@ public interface OverrideRelationship
 	extends ReadOnlyOverrideRelationship,
 			JoinColumnRelationship
 {
-	AssociationOverride getAssociationOverride();
-
 	void initializeFromVirtual(ReadOnlyOverrideRelationship virtualRelationship);
 
 	void initializeFromVirtualJoinColumnRelationship(ReadOnlyJoinColumnRelationship virtualRelationship);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,11 +19,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaOrderable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
@@ -150,7 +150,7 @@ public class GenericJpaFactory2_0
 		return new GenericJavaCollectionTable2_0(parent, owner);
 	}
 
-	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
+	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaReadOnlyNamedColumn.Owner owner) {
 		return new GenericJavaOrderColumn2_0(parent, owner);
 	}
 

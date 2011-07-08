@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
@@ -29,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaJoinTableRelationshipStrategy
 	extends AbstractJavaJpaContextNode
-	implements JavaJoinTableRelationshipStrategy, Table.Owner
+	implements JavaJoinTableRelationshipStrategy, ReadOnlyTable.Owner
 {
 	protected JavaJoinTable joinTable;
 

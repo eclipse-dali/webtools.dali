@@ -24,5 +24,5 @@ public interface JavaVirtualOverrideRelationship
 	extends VirtualOverrideRelationship,
 			JavaVirtualJoinColumnRelationship
 {
-	JavaVirtualAssociationOverride getAssociationOverride();
+	// combine interfaces
 }

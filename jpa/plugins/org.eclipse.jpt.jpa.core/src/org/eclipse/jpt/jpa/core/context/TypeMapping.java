@@ -106,13 +106,21 @@ public interface TypeMapping
 	Iterator<String> allAssociatedTableNames();
 
 	/**
-	 * Return the resolved associated db table with the specified name.
+	 * Return the resolved <em>associated</em> db table with the specified name;
+	 * i.e. the specified table must be among those associated with the type
+	 * mapping otherwise return <code>null</code>.
+	 * <p>
+	 * <strong>NB:</strong> The spec does allow for columns or join columns to
+	 * specify a schema and/or catalog; so the results can be unpredictable....
 	 */
 	org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName);
 
 	/**
 	 * Return whether the specified table is invalid for any annotations
-	 * associated with the type mapping.
+	 * associated with the type mapping. The table name is case-
+	 * <em>sensitive</em> when the database connection is missing or inactive;
+	 * when the database connection is active, case-sensitivity is determined
+	 * by the database.
 	 */
 	boolean tableNameIsInvalid(String tableName);
 	
@@ -147,6 +155,11 @@ public interface TypeMapping
 	 * embeddable type mapping)
 	 */
 	boolean attributeMappingKeyAllowed(String attributeMappingKey);
+
+	/**
+	 * Return whether the attribute with the specified name is a derived ID.
+	 */
+	boolean attributeIsDerivedId(String attributeName);
 
 
 	// ********** attribute overrides **********

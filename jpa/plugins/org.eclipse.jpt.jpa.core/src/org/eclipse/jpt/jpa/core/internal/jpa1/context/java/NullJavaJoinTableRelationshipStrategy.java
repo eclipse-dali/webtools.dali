@@ -11,21 +11,22 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class NullJavaJoinTableRelationshipStrategy
 	extends AbstractJavaJpaContextNode
-	implements JavaJoinTableRelationshipStrategy
+	implements JavaMappingJoinTableRelationshipStrategy2_0
 {
 	public NullJavaJoinTableRelationshipStrategy(JavaJoinTableRelationship parent) {
 		super(parent);
@@ -89,6 +90,10 @@ public class NullJavaJoinTableRelationshipStrategy
 		return null;
 	}
 
+	public ReadOnlyRelationshipStrategy selectOverrideStrategy(ReadOnlyOverrideRelationship2_0 overrideRelationship) {
+		return null;
+	}
+
 	public void addStrategy() {
 		// NOP
 	}
@@ -105,11 +110,11 @@ public class NullJavaJoinTableRelationshipStrategy
 		return false;
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		throw new UnsupportedOperationException();
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		throw new UnsupportedOperationException();
 	}
 }

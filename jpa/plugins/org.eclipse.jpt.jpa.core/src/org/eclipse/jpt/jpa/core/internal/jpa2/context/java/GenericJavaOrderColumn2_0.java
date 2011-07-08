@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
  * Java order column
  */
 public class GenericJavaOrderColumn2_0
-	extends AbstractJavaNamedColumn<OrderColumn2_0Annotation, JavaNamedColumn.Owner>
+	extends AbstractJavaNamedColumn<OrderColumn2_0Annotation, JavaReadOnlyNamedColumn.Owner>
 	implements JavaOrderColumn2_0
 {
 	protected Boolean specifiedNullable;
@@ -37,7 +37,7 @@ public class GenericJavaOrderColumn2_0
 	protected OrderColumn2_0Annotation nullColumnAnnotation;
 
 
-	public GenericJavaOrderColumn2_0(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
+	public GenericJavaOrderColumn2_0(JavaOrderable2_0 parent, JavaReadOnlyNamedColumn.Owner owner) {
 		super(parent, owner);
 		this.specifiedNullable = this.buildSpecifiedNullable();
 		this.specifiedInsertable = this.buildSpecifiedInsertable();

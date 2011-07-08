@@ -9,12 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAttributeOverrideAnnotation;
@@ -30,15 +31,19 @@ public class GenericJavaAttributeOverrideContainer
 			JavaVirtualAttributeOverride,
 			NestableAttributeOverrideAnnotation
 		>
-	implements JavaAttributeOverrideContainer
+	implements JavaAttributeOverrideContainer2_0
 {
 	public GenericJavaAttributeOverrideContainer(JavaJpaContextNode parent, JavaAttributeOverrideContainer.Owner owner) {
 		super(parent, owner);
 	}
 
 
-	public Column resolveOverriddenColumn(String attributeName) {
+	public ReadOnlyColumn resolveOverriddenColumn(String attributeName) {
 		return (attributeName == null) ? null : this.owner.resolveOverriddenColumn(attributeName);
+	}
+
+	public ReadOnlyColumn getOverrideColumn(String overrideName) {
+		return this.getOverrideNamed(overrideName).getColumn();
 	}
 
 	@Override

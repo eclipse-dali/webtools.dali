@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011s Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,11 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn;
@@ -33,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  * <strong>NB:</strong> any subclass that directly holds its XML column must:<ul>
  * <li>call the "super" constructor that takes an XML column
- *     {@link #AbstractOrmNamedColumn(XmlContextNode, OrmNamedColumn.Owner, AbstractXmlNamedColumn)}
+ *     {@link #AbstractOrmNamedColumn(XmlContextNode, OrmReadOnlyNamedColumn.Owner, AbstractXmlNamedColumn)}
  * <li>override {@link #setXmlColumn(AbstractXmlNamedColumn)} to set the XML column
  *     so it is in place before the column's state (e.g. {@link #specifiedName})
  *     is initialized
@@ -41,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Typically, a column belonging to a list of columns will directly hold its XML
  * column; since the context column only exists if the XML column exists.
  */
-public abstract class AbstractOrmNamedColumn<X extends AbstractXmlNamedColumn, O extends OrmNamedColumn.Owner>
+public abstract class AbstractOrmNamedColumn<X extends AbstractXmlNamedColumn, O extends OrmReadOnlyNamedColumn.Owner>
 	extends AbstractOrmXmlContextNode
 	implements OrmNamedColumn
 {
@@ -260,7 +261,7 @@ public abstract class AbstractOrmNamedColumn<X extends AbstractXmlNamedColumn, O
 	}
 
 	/**
-	 * This is used by the subclasses that implement {@link BaseJoinColumn}.
+	 * This is used by the subclasses that implement {@link ReadOnlyBaseJoinColumn#isVirtual()}.
 	 */
 	public boolean isVirtual() {
 		return false;

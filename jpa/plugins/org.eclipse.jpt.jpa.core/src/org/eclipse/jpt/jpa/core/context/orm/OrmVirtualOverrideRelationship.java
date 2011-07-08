@@ -24,5 +24,5 @@ public interface OrmVirtualOverrideRelationship
 	extends VirtualOverrideRelationship,
 			OrmVirtualJoinColumnRelationship
 {
-	OrmVirtualAssociationOverride getAssociationOverride();
+	// combine interfaces
 }

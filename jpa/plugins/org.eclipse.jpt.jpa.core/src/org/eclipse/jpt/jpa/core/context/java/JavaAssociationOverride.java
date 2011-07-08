@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 
 /**
- * Java association override
+ * <em>Specified</em> Java association override
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

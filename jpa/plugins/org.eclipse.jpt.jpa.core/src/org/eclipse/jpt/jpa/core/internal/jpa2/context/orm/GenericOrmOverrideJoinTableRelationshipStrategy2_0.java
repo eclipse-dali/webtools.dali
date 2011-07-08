@@ -10,8 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
@@ -43,19 +44,18 @@ public class GenericOrmOverrideJoinTableRelationshipStrategy2_0
 	}
 
 	public TextRange getValidationTextRange() {
-		TextRange textRange = this.getRelationship().getAssociationOverride().getXmlOverride().getValidationTextRange();
-		return (textRange != null) ? textRange : this.getRelationship().getValidationTextRange();
+		return this.getRelationship().getValidationTextRange();
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildTableValidator(ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
+		return this.getRelationship().buildJoinTableValidator((ReadOnlyJoinTable) table, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		return this.getRelationship().buildJoinTableJoinColumnValidator(column, owner, textRangeResolver);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		return this.getRelationship().buildJoinTableInverseJoinColumnValidator(column, owner, textRangeResolver);
-	}
-
-	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
-		return this.getRelationship().buildTableValidator(table, textRangeResolver);
 	}
 }

@@ -9,15 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JoinColumn;
-import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.jpa2.context.OverrideRelationship2_0;
 
 /**
@@ -38,10 +32,4 @@ public interface OrmOverrideRelationship2_0
 			OrmJoinTableRelationship
 {
 	OrmJoinTableRelationshipStrategy getJoinTableStrategy();
-
-	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-
-	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-
-	JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import java.util.Iterator;
 
 /**
  * Read-only database unique constraint
@@ -36,4 +38,14 @@ public interface ReadOnlyUniqueConstraint
 	 * Return the column name at the specified index.
 	 */
 	String getColumnName(int index);
+
+
+	// ********** owner **********
+
+	/**
+	 * All containers must implement this interface.
+	 */
+	interface Owner {
+		Iterator<String> candidateUniqueConstraintColumnNames();
+	}
 }

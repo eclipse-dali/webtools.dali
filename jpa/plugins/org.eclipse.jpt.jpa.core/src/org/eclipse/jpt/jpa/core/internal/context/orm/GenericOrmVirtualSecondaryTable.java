@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -18,13 +20,22 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
+import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinColumnValidator;
+import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * <code>orm.xml</code> virtual secondary table
@@ -37,13 +48,13 @@ public class GenericOrmVirtualSecondaryTable
 
 	protected final Vector<OrmVirtualPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns = new Vector<OrmVirtualPrimaryKeyJoinColumn>();
 	protected final SpecifiedPrimaryKeyJoinColumnContainerAdapter specifiedPrimaryKeyJoinColumnContainerAdapter = new SpecifiedPrimaryKeyJoinColumnContainerAdapter();
-	protected final ReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final OrmReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected OrmVirtualPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 
-	public GenericOrmVirtualSecondaryTable(OrmEntity parent, JavaSecondaryTable overriddenTable) {
-		super(parent);
+	public GenericOrmVirtualSecondaryTable(OrmEntity parent, Owner owner, JavaSecondaryTable overriddenTable) {
+		super(parent, owner);
 		this.overriddenTable = overriddenTable;
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
 	}
@@ -204,12 +215,31 @@ public class GenericOrmVirtualSecondaryTable
 		return true;
 	}
 
-	protected ReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected OrmReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
 	protected OrmVirtualPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn javaColumn) {
 		return this.getContextNodeFactory().buildOrmVirtualPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, javaColumn);
+	}
+
+
+	// ********** validation **********
+
+	public boolean validatesAgainstDatabase() {
+		return this.connectionProfileIsActive();
+	}
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		boolean continueValidating = this.buildTableValidator().validate(messages, reporter);
+
+		//join column validation will handle the check for whether to validate against the database
+		//some validation messages are not database specific. If the database validation for the
+		//table fails we will stop there and not validate the join columns at all
+		if (continueValidating) {
+			this.validateNodes(this.getPrimaryKeyJoinColumns(), messages, reporter);
+		}
 	}
 
 
@@ -237,7 +267,7 @@ public class GenericOrmVirtualSecondaryTable
 	// ********** primary key join column owner **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements ReadOnlyBaseJoinColumn.Owner
+		implements OrmReadOnlyBaseJoinColumn.Owner
 	{
 		protected OrmEntity getEntity() {
 			return GenericOrmVirtualSecondaryTable.this.getEntity();
@@ -261,12 +291,28 @@ public class GenericOrmVirtualSecondaryTable
 					this.getEntity().getPrimaryKeyColumnName();
 		}
 
-		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
-			return GenericOrmVirtualSecondaryTable.this.defaultPrimaryKeyJoinColumn == joinColumn;
+		public Table resolveDbTable(String tableName) {
+			return GenericOrmVirtualSecondaryTable.this.getDbTable();
 		}
 
 		public int joinColumnsSize() {
 			return GenericOrmVirtualSecondaryTable.this.primaryKeyJoinColumnsSize();
+		}
+
+		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
+			return GenericOrmVirtualSecondaryTable.this.defaultPrimaryKeyJoinColumn == joinColumn;
+		}
+
+		public Table getReferencedColumnDbTable() {
+			return this.getTypeMapping().getPrimaryDbTable();
+		}
+
+		public TextRange getValidationTextRange() {
+			return GenericOrmVirtualSecondaryTable.this.getValidationTextRange();
+		}
+
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmVirtualSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 }

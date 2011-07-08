@@ -11,11 +11,17 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
+import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverride2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -25,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmAssociationOverride
 	extends AbstractOrmOverride<OrmAssociationOverrideContainer, XmlAssociationOverride>
-	implements OrmAssociationOverride
+	implements OrmAssociationOverride2_0
 {
 	protected final OrmOverrideRelationship relationship;
 
@@ -72,6 +78,10 @@ public class GenericOrmAssociationOverride
 
 	// ********** misc **********
 
+	protected OrmAssociationOverrideContainer2_0 getContainer2_0() {
+		return (OrmAssociationOverrideContainer2_0) this.getContainer();
+	}
+
 	public RelationshipMapping getMapping() {
 		return this.getContainer().getRelationshipMapping(this.name);
 	}
@@ -93,5 +103,17 @@ public class GenericOrmAssociationOverride
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.relationship.validate(messages, reporter);
+	}
+
+	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table, TableTextRangeResolver textRangeResolver) {
+		return this.getContainer2_0().buildJoinTableValidator(this, table, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return this.getContainer2_0().buildJoinTableJoinColumnValidator(this, column, owner, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return this.getContainer2_0().buildJoinTableInverseJoinColumnValidator(this, column, owner, textRangeResolver);
 	}
 }

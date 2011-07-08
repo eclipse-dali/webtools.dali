@@ -9,24 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
 public class MapKeyColumnValidator
-	extends AbstractNamedColumnValidator<BaseColumn, BaseColumnTextRangeResolver>
+	extends AbstractNamedColumnValidator<ReadOnlyBaseColumn, BaseColumnTextRangeResolver>
 {
 	public MapKeyColumnValidator(
-				PersistentAttribute persistentAttribute,
-				BaseColumn column,
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyBaseColumn column,
 				BaseColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, textRangeResolver, provider);
 	}
 
 	@Override
-	protected TableValidator buildTableValidator() {
+	protected JptValidator buildTableValidator() {
 		return new TableValidator();
 	}
 
@@ -39,6 +40,9 @@ public class MapKeyColumnValidator
 	protected String getVirtualAttributeUnresolvedNameMessage() {
 		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_UNRESOLVED_NAME;
 	}
+
+
+	// ********** table validator **********
 
 	protected class TableValidator
 		extends BaseColumnTableValidator

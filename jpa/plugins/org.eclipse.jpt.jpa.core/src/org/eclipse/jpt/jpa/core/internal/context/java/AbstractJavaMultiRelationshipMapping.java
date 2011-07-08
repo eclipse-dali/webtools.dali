@@ -19,16 +19,16 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
-import org.eclipse.jpt.jpa.core.context.Override_;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -49,6 +49,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.RelationshipStrategyTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
@@ -721,8 +722,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return this.getRelationshipStrategy().tableNameIsInvalid(tableName);
 		}
 
-		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyColumnValidator(this.getPersistentAttribute(), (BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new MapKeyColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
 
@@ -731,7 +732,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	protected class MapKeyAttributeOverrideContainerOwner
 		extends AbstractOwner
-		implements JavaAttributeOverrideContainer.Owner
+		implements JavaAttributeOverrideContainer2_0.Owner
 	{
 		public JavaResourcePersistentMember getResourcePersistentMember() {
 			return AbstractJavaMultiRelationshipMapping.this.getResourcePersistentAttribute();
@@ -750,8 +751,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		}
 
 		public Iterator<String> allOverridableNames() {
-			TypeMapping typeMapping = this.getOverridableTypeMapping();
-			return (typeMapping != null) ? typeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
+			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
+			return (overriddenTypeMapping != null) ? overriddenTypeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
 		}
 
 		protected static final String POSSIBLE_PREFIX = "key"; //$NON-NLS-1$
@@ -773,12 +774,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideValidator(this.getPersistentAttribute(), (AttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new MapKeyAttributeOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, column, textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
 }

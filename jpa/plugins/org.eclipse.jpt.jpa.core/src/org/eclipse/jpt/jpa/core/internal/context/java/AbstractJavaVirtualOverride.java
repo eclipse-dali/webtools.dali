@@ -9,11 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import java.util.Iterator;
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
+import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
+import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Virtual Java override
@@ -48,16 +59,61 @@ public abstract class AbstractJavaVirtualOverride<C extends JavaOverrideContaine
 		return (C) super.getParent();
 	}
 
-	public C getContainer() {
+	protected C getContainer() {
 		return this.getParent();
+	}
+
+	public TypeMapping getTypeMapping() {
+		return this.getContainer().getTypeMapping();
+	}
+
+	public Table resolveDbTable(String tableName) {
+		return this.getContainer().resolveDbTable(tableName);
+	}
+	
+	public String getDefaultTableName() {
+		return this.getContainer().getDefaultTableName();
+	}
+
+	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+		return this.getContainer().buildColumnValidator(this, column, owner, textRangeResolver);
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
+
+	// ********** validation **********
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.buildValidator(astRoot).validate(messages, reporter);
+	}
+
+	protected JptValidator buildValidator(CompilationUnit astRoot) {
+		return this.getContainer().buildOverrideValidator(this, this.buildTextRangeResolver(astRoot));
+	}
+
+	protected OverrideTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaOverrideTextRangeResolver(this, astRoot);
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.getContainer().getValidationTextRange(astRoot);
 	}
 
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.name);
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(astRoot);
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return this.getContainer().tableNameIsInvalid(tableName);
+	}
+
+	public Iterator<String> candidateTableNames() {
+		return this.getContainer().candidateTableNames();
 	}
 }

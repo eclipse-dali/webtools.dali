@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
 public class JoinTableValidator
 	extends AbstractJoinTableValidator
 {
-	public JoinTableValidator(PersistentAttribute persistentAttribute, JoinTable table, TableTextRangeResolver textRangeResolver) {
+	public JoinTableValidator(ReadOnlyPersistentAttribute persistentAttribute, ReadOnlyJoinTable table, TableTextRangeResolver textRangeResolver) {
 		super(persistentAttribute, table, textRangeResolver);
 	}
 

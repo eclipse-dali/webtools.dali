@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 import org.eclipse.jpt.jpa.core.context.VirtualAssociationOverride;
 
 /**
- * <code>orm.xml</code> virtual association override
+ * <code>orm.xml</code> <em>virtual</em> association override
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

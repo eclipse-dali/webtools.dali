@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import java.util.Iterator;
 
 
 /**
@@ -87,4 +89,36 @@ public interface ReadOnlyBaseColumn
 	boolean isDefaultUpdatable();
 		String DEFAULT_UPDATABLE_PROPERTY = "defaultUpdatable"; //$NON-NLS-1$
 	boolean DEFAULT_UPDATABLE = true;
+
+
+	// ********** misc **********
+
+	boolean tableNameIsInvalid();
+
+	/**
+	 * Return a list of table names that are valid for this column
+	 */
+	Iterator<String> candidateTableNames();
+
+
+	// ********** owner **********
+
+	/**
+	 * Interface allowing columns to be used in multiple places
+	 * (e.g. basic mappings and attribute overrides).
+	 */
+	interface Owner
+		extends NamedColumn.Owner
+	{
+		/**
+		 * return whether the given table cannot be explicitly specified
+		 * in the column's 'table' element
+		 */
+		boolean tableNameIsInvalid(String tableName);
+		
+		/**
+		 * Return a list of table names that are valid for this column
+		 */
+		Iterator<String> candidateTableNames();
+	}
 }

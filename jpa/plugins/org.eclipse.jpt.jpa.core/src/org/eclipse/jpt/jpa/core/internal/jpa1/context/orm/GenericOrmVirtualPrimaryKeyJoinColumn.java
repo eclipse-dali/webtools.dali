@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,28 +9,33 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualNamedColumn;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmPrimaryKeyJoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * <code>orm.xml</code> virtual primary key join column
  */
 public class GenericOrmVirtualPrimaryKeyJoinColumn
-	extends AbstractOrmVirtualNamedColumn<ReadOnlyBaseJoinColumn.Owner, JavaPrimaryKeyJoinColumn>
+	extends AbstractOrmVirtualNamedColumn<OrmReadOnlyBaseJoinColumn.Owner, JavaPrimaryKeyJoinColumn>
 	implements OrmVirtualPrimaryKeyJoinColumn
 {
-	protected final JavaPrimaryKeyJoinColumn overriddenColumn;
+	protected final JavaPrimaryKeyJoinColumn javaColumn;
 
 	protected String specifiedReferencedColumnName;
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmVirtualPrimaryKeyJoinColumn(XmlContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn overriddenColumn) {
+	public GenericOrmVirtualPrimaryKeyJoinColumn(XmlContextNode parent, OrmReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaColumn) {
 		super(parent, owner);
-		this.overriddenColumn = overriddenColumn;
+		this.javaColumn = javaColumn;
 	}
 
 
@@ -49,7 +54,7 @@ public class GenericOrmVirtualPrimaryKeyJoinColumn
 
 	@Override
 	public JavaPrimaryKeyJoinColumn getOverriddenColumn() {
-		return this.overriddenColumn;
+		return this.javaColumn;
 	}
 
 	public boolean isDefault() {
@@ -92,9 +97,37 @@ public class GenericOrmVirtualPrimaryKeyJoinColumn
 	}
 
 
+	// ********** database stuff **********
+
+	public Table getReferencedColumnDbTable() {
+		return this.owner.getReferencedColumnDbTable();
+	}
+
+	protected Column getReferencedDbColumn() {
+		Table table = this.getReferencedColumnDbTable();
+		return (table == null) ? null : table.getColumnForIdentifier(this.getReferencedColumnName());
+	}
+
+	public boolean referencedColumnIsResolved() {
+		return this.getReferencedDbColumn() != null;
+	}
+
+
 	// ********** misc **********
 
 	public String getTable() {
 		return this.owner.getDefaultTableName();
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
+		return new OrmPrimaryKeyJoinColumnTextRangeResolver(this);
+	}
+
+	public TextRange getReferencedColumnNameTextRange() {
+		return this.getValidationTextRange();
 	}
 }

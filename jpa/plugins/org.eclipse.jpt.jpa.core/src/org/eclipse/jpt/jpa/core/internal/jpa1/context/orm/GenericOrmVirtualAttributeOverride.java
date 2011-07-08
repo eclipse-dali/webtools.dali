@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.Column;
+import java.util.List;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualColumn;
+import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Virtual <code>orm.xml</code> attribute override
@@ -61,13 +67,10 @@ public class GenericOrmVirtualAttributeOverride
 
 	// ********** column owner implementation **********
 
-	public TypeMapping getTypeMapping() {
-		return this.getContainer().getTypeMapping();
-	}
-
+	@Override
 	public String getDefaultTableName() {
 		String overriddenColumnTable = this.getOverriddenColumnTable();
-		return (overriddenColumnTable != null) ? overriddenColumnTable : this.getContainer().getDefaultTableName();
+		return (overriddenColumnTable != null) ? overriddenColumnTable : super.getDefaultTableName();
 	}
 
 	protected String getOverriddenColumnTable() {
@@ -86,7 +89,20 @@ public class GenericOrmVirtualAttributeOverride
 		return (overriddenColumn == null) ? null : overriddenColumn.getName();
 	}
 
-	public Column resolveOverriddenColumn() {
+	public ReadOnlyColumn resolveOverriddenColumn() {
 		return this.getContainer().resolveOverriddenColumn(this.name);
+	}
+
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
+		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this, (BaseColumnTextRangeResolver) textRangeResolver);
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.column.validate(messages, reporter);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,10 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Read-only
@@ -56,6 +60,19 @@ public interface ReadOnlyNamedColumn
 		String COLUMN_DEFINITION_PROPERTY = "columnDefinition"; //$NON-NLS-1$
 
 
+	// ********** database stuff **********
+
+	/**
+	 * Return the column's datasource table.
+	 */
+	Table getDbTable();
+
+	/**
+	 * Return whether the column is found on the datasource.
+	 */
+	boolean isResolved();
+
+
 	// ********** owner **********
 
 	/**
@@ -78,5 +95,12 @@ public interface ReadOnlyNamedColumn
 		 * Return the default column name.
 		 */
 		String getDefaultColumnName();
+
+		/**
+		 * Return the database table for the specified table name.
+		 */
+		Table resolveDbTable(String tableName);
+		
+		JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver);
 	}
 }

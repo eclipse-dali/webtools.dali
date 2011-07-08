@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Read-only
@@ -39,6 +41,16 @@ public interface ReadOnlyBaseJoinColumn
 
 	// ********** misc **********
 
+	/**
+	 * Return the wrapper for the referenced column datasource table
+	 */
+	Table getReferencedColumnDbTable();
+
+	boolean referencedColumnIsResolved();
+
+	// TODO bjv rename?
+	boolean isVirtual();
+
 	boolean isDefault();
 
 
@@ -51,6 +63,11 @@ public interface ReadOnlyBaseJoinColumn
 	interface Owner
 		extends ReadOnlyNamedColumn.Owner
 	{
+		/**
+		 * Return the wrapper for the datasource table for the referenced column
+		 */
+		Table getReferencedColumnDbTable();
+
 		boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn);
 		
 		/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
-import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
@@ -19,7 +19,7 @@ public class AssociationOverrideValidator
 	extends OverrideValidator
 {
 	public AssociationOverrideValidator(
-				AssociationOverride override,
+				ReadOnlyAssociationOverride override,
 				AssociationOverrideContainer container,
 				OverrideTextRangeResolver textRangeResolver,
 				OverrideDescriptionProvider overrideDescriptionProvider) {
@@ -27,8 +27,8 @@ public class AssociationOverrideValidator
 	}
 
 	public AssociationOverrideValidator(
-				PersistentAttribute persistentAttribute,
-				AssociationOverride override,
+				ReadOnlyPersistentAttribute persistentAttribute,
+				ReadOnlyAssociationOverride override,
 				AssociationOverrideContainer container,
 				OverrideTextRangeResolver textRangeResolver,
 				OverrideDescriptionProvider overrideDescriptionProvider) {

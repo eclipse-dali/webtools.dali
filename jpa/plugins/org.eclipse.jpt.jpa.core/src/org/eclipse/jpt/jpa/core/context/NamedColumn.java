@@ -9,10 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.db.Table;
-
 /**
  * Specified
  * <ul>
@@ -37,35 +33,4 @@ public interface NamedColumn
 	void setSpecifiedName(String name);
 
 	void setColumnDefinition(String columnDefinition);
-
-
-	// ********** database stuff **********
-
-	/**
-	 * Return the wrapper for the datasource table
-	 */
-	Table getDbTable();
-
-	/**
-	 * Return whether the column is found on the datasource.
-	 */
-	boolean isResolved();
-
-
-	// ********** owner **********
-
-	/**
-	 * Interface allowing columns to be used in multiple places
-	 * (e.g. basic mappings and attribute overrides).
-	 */
-	interface Owner
-		extends ReadOnlyNamedColumn.Owner
-	{
-		/**
-		 * Return the database table for the specified table name.
-		 */
-		Table resolveDbTable(String tableName);
-		
-		JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver);
-	}
 }

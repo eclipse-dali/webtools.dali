@@ -29,6 +29,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -41,7 +42,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 {
 	protected final Vector<JavaJoinColumn> specifiedJoinColumns = new Vector<JavaJoinColumn>();
 	protected final SpecifiedJoinColumnContainerAdapter specifiedJoinColumnContainerAdapter;
-	protected final JavaJoinColumn.Owner joinColumnOwner;
+	protected final JavaReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected JavaJoinColumn defaultJoinColumn;
 
@@ -192,7 +193,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 		}
 	}
 
-	protected abstract JavaJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
 
 	// ********** default join column **********

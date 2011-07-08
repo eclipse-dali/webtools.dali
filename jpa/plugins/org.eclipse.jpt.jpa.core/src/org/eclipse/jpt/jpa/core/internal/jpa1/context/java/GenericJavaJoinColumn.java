@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
@@ -32,21 +33,21 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java join column
  */
 public class GenericJavaJoinColumn
-	extends AbstractJavaBaseColumn<JoinColumnAnnotation, JavaJoinColumn.Owner>
+	extends AbstractJavaBaseColumn<JoinColumnAnnotation, JavaReadOnlyJoinColumn.Owner>
 	implements JavaJoinColumn
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ JoinColumnAnnotation columnAnnotation;  // never null
 
 	protected String specifiedReferencedColumnName;
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner) {
+	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner) {
 		this(parent, owner, null);
 	}
 
-	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner, JoinColumnAnnotation columnAnnotation) {
+	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, JoinColumnAnnotation columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName();
 	}
@@ -126,10 +127,6 @@ public class GenericJavaJoinColumn
 	protected String buildDefaultReferencedColumnName() {
 		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.owner);
 	}
-
-	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getColumnAnnotation().getReferencedColumnNameTextRange(astRoot), astRoot);
-	}
 	
 
 	// ********** database stuff **********
@@ -207,5 +204,9 @@ public class GenericJavaJoinColumn
 	@Override
 	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
 		return new JavaJoinColumnTextRangeResolver(this, astRoot);
+	}
+
+	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(this.getColumnAnnotation().getReferencedColumnNameTextRange(astRoot), astRoot);
 	}
 }

@@ -9,19 +9,28 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.Relationship;
+import java.util.List;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverrideRelationship;
+import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmVirtualAssociationOverride2_0;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Virtual <code>orm.xml</code> association override
  */
 public class GenericOrmVirtualAssociationOverride
 	extends AbstractOrmVirtualOverride<OrmAssociationOverrideContainer>
-	implements OrmVirtualAssociationOverride
+	implements OrmVirtualAssociationOverride2_0
 {
 	protected final OrmVirtualOverrideRelationship relationship;
 
@@ -46,6 +55,10 @@ public class GenericOrmVirtualAssociationOverride
 		return this.getContainer().getRelationshipMapping(this.name);
 	}
 
+	protected OrmAssociationOverrideContainer2_0 getContainer2_0() {
+		return (OrmAssociationOverrideContainer2_0) this.getContainer();
+	}
+
 
 	// ********** relationship **********
 
@@ -61,7 +74,28 @@ public class GenericOrmVirtualAssociationOverride
 		return this.getContextNodeFactory().buildOrmVirtualOverrideRelationship(this);
 	}
 
-	public Relationship resolveOverriddenRelationship() {
+	public ReadOnlyRelationship resolveOverriddenRelationship() {
 		return this.getContainer().resolveOverriddenRelationship(this.name);
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.relationship.validate(messages, reporter);
+	}
+
+	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table, TableTextRangeResolver textRangeResolver) {
+		return this.getContainer2_0().buildJoinTableValidator(this, table, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return this.getContainer2_0().buildJoinTableJoinColumnValidator(this, column, owner, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return this.getContainer2_0().buildJoinTableInverseJoinColumnValidator(this, column, owner, textRangeResolver);
 	}
 }

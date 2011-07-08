@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.Collection;
@@ -145,7 +144,7 @@ public abstract class AbstractPrimaryKeyValidator
 			}
 			
 			AttributeMapping resolvedAttributeMapping = 
-					mapsIdRelationshipMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getResolvedAttributeMappingValue();
+					mapsIdRelationshipMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getDerivedIdAttributeMapping();
 			if (resolvedAttributeMapping != null 
 					&& ! ClassName.areAutoboxEquivalents(
 						resolvedAttributeMapping.getPersistentAttribute().getTypeName(), 
@@ -572,9 +571,7 @@ public abstract class AbstractPrimaryKeyValidator
 				if (definesComplexPrimaryKey(entity)) {
 					return true;
 				}
-				else {
-					simplePrimaryKeyMappingCount++;
-				}
+				simplePrimaryKeyMappingCount++;
 				if (simplePrimaryKeyMappingCount > 1) {
 					return true;
 				}

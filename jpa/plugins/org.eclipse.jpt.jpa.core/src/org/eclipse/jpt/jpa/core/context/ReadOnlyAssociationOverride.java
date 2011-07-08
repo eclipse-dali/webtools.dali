@@ -21,8 +21,12 @@ package org.eclipse.jpt.jpa.core.context;
 public interface ReadOnlyAssociationOverride
 	extends ReadOnlyOverride
 {
-	AssociationOverrideContainer getContainer();
-
+	/**
+	 * Return the overridden relationship mapping.
+	 * Return <code>null</code> if it does not exist. This relationship mapping
+	 * will be found in the mapped superclass or embeddable type, not in the
+	 * owning entity
+	 */
 	RelationshipMapping getMapping();
 
 	ReadOnlyOverrideRelationship getRelationship();

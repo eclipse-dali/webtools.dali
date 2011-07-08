@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context;
 
 /**
- * <ul>
+ * <em>Specified</em><ul>
  * <li>attribute override
  * <li>association override
  * </ul>
@@ -25,14 +25,16 @@ package org.eclipse.jpt.jpa.core.context;
  */
 // the class name "Override" is sorta taken: java.lang.Override
 // maybe if it weren't in the java.lang package we would take it on, but... :)
+// very little code will directly refer to this interface, so the underscore
+// isn't *too* evil...
 public interface Override_
 	extends ReadOnlyOverride
 {
 	void setName(String value);
 
 	/**
-	 * Convert the override to a virtual override.
-	 * Return the new override.
+	 * Convert the <em>specified</em> override to a <em>virtual</em> override.
+	 * Return the new <em>virtual</em> override.
 	 * @see #isVirtual()
 	 */
 	VirtualOverride convertToVirtual();

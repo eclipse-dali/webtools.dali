@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,11 +19,11 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
-import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer.Owner;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmOrderable;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionTable2_0;
@@ -66,7 +66,7 @@ public class GenericOrmXml2_0ContextNodeFactory
 		return new GenericOrmSequenceGenerator2_0(parent, resourceSequenceGenerator);
 	}
 	
-	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEmbeddedMapping2_0 parent, Owner owner) {
+	public OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(OrmEmbeddedMapping2_0 parent, OrmAssociationOverrideContainer2_0.Owner owner) {
 		return new GenericOrmAssociationOverrideContainer(parent, owner);
 	}
 	

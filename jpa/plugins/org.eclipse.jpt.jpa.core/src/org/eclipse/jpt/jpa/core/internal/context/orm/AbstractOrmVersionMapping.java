@@ -18,9 +18,9 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumnMapping;
@@ -324,7 +324,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 	}
 
 	protected void validateAttributeType(List<IMessage> messages) {
-		if (!ArrayTools.contains(VERSION_MAPPING_SUPPORTED_TYPES, this.getPersistentAttribute().getTypeName())) {
+		if (!ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getPersistentAttribute().getTypeName())) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 							IMessage.NORMAL_SEVERITY,
@@ -337,7 +337,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 		}
 	}
 
-	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator(this.getPersistentAttribute(), (BaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 }

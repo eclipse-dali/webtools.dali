@@ -47,13 +47,13 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	extends AbstractJavaJpaContextNode
 	implements JavaMapsIdDerivedIdentityStrategy2_0
 {
-	protected String specifiedValue;
-	protected String defaultValue;
+	protected String specifiedIdAttributeName;
+	protected String defaultIdAttributeName;
 
 
 	public GenericJavaMapsIdDerivedIdentityStrategy2_0(JavaDerivedIdentity2_0 parent) {
 		super(parent);
-		this.specifiedValue = this.buildSpecifiedValue();
+		this.specifiedIdAttributeName = this.buildSpecifiedIdAttributeName();
 	}
 
 
@@ -62,54 +62,54 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedValue_(this.buildSpecifiedValue());
+		this.setSpecifiedIdAttributeName_(this.buildSpecifiedIdAttributeName());
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		this.setDefaultValue(this.buildDefaultValue());
+		this.setDefaultIdAttributeName(this.buildDefaultIdAttributeName());
 	}
 
 
-	// ********** value **********
+	// ********** ID attribute name **********
 
-	public String getValue() {
-		return (this.specifiedValue != null) ? this.specifiedValue : this.defaultValue;
+	public String getIdAttributeName() {
+		return (this.specifiedIdAttributeName != null) ? this.specifiedIdAttributeName : this.defaultIdAttributeName;
 	}
 
-	public String getSpecifiedValue() {
-		return this.specifiedValue;
+	public String getSpecifiedIdAttributeName() {
+		return this.specifiedIdAttributeName;
 	}
 
-	public void setSpecifiedValue(String value) {
-		if (this.valuesAreDifferent(value, this.specifiedValue)) {
-			this.getAnnotation().setValue(value);
-			this.setSpecifiedValue_(value);
+	public void setSpecifiedIdAttributeName(String idAttributeName) {
+		if (this.valuesAreDifferent(idAttributeName, this.specifiedIdAttributeName)) {
+			this.getAnnotation().setValue(idAttributeName);
+			this.setSpecifiedIdAttributeName_(idAttributeName);
 		}
 	}
 
-	protected void setSpecifiedValue_(String value) {
-		String old = this.specifiedValue;
-		this.specifiedValue = value;
-		this.firePropertyChanged(SPECIFIED_VALUE_PROPERTY, old, value);
+	protected void setSpecifiedIdAttributeName_(String idAttributeName) {
+		String old = this.specifiedIdAttributeName;
+		this.specifiedIdAttributeName = idAttributeName;
+		this.firePropertyChanged(SPECIFIED_ID_ATTRIBUTE_NAME_PROPERTY, old, idAttributeName);
 	}
 
-	protected String buildSpecifiedValue() {
+	protected String buildSpecifiedIdAttributeName() {
 		return this.getAnnotation().getValue();
 	}
 
-	public String getDefaultValue() {
-		return this.defaultValue;
+	public String getDefaultIdAttributeName() {
+		return this.defaultIdAttributeName;
 	}
 
-	protected void setDefaultValue(String value) {
-		String old = this.defaultValue;
-		this.defaultValue = value;
-		this.firePropertyChanged(SPECIFIED_VALUE_PROPERTY, old, value);
+	protected void setDefaultIdAttributeName(String idAttributeName) {
+		String old = this.defaultIdAttributeName;
+		this.defaultIdAttributeName = idAttributeName;
+		this.firePropertyChanged(DEFAULT_ID_ATTRIBUTE_NAME_PROPERTY, old, idAttributeName);
 	}
 
-	protected String buildDefaultValue() {
+	protected String buildDefaultIdAttributeName() {
 		Iterator<AttributeMapping> stream = this.getIdAttributeMappings().iterator();
 		if (stream.hasNext()) {
 			AttributeMapping mapping = stream.next();
@@ -119,7 +119,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		return null;  // empty
 	}
 
-	public boolean usesDefaultValue() {
+	public boolean defaultIdAttributeNameIsPossible() {
 		return true;
 	}
 
@@ -180,7 +180,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		return CollectionTools.collection(this.getPersistentAttribute().getOwningTypeMapping().allAttributeMappings());
 	}
 
-	public Iterable<String> getSortedValueChoices() {
+	public Iterable<String> getSortedCandidateIdAttributeNames() {
 		return CollectionTools.sort(this.getAllAttributeMappingChoiceNames());
 	}
 
@@ -233,11 +233,11 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 			);
 	}
 
-	public AttributeMapping getResolvedAttributeMappingValue() {
-		String value = this.getValue();
-		if (value != null) {
+	public AttributeMapping getDerivedIdAttributeMapping() {
+		String idAttributeName = this.getIdAttributeName();
+		if (idAttributeName != null) {
 			for (AttributeMapping mapping : this.getAllAttributeMappingChoices()) {
-				if (value.equals(mapping.getName())) {
+				if (idAttributeName.equals(mapping.getName())) {
 					return mapping;
 				}
 			}
@@ -277,7 +277,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterator<String> sortedJavaValueChoices(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(new FilteringIterator<String>(this.getSortedValueChoices(), filter));
+		return StringTools.convertToJavaStringLiterals(new FilteringIterator<String>(this.getSortedCandidateIdAttributeNames(), filter));
 	}
 
 
@@ -323,19 +323,19 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected void validateMapsId_(List<IMessage> messages, CompilationUnit astRoot) {
-		// test whether value can be resolved
-		AttributeMapping attributeMapping = this.getResolvedAttributeMappingValue();
+		// test whether id attribute name can be resolved
+		AttributeMapping attributeMapping = this.getDerivedIdAttributeMapping();
 		if (attributeMapping == null) {
-			// if value is not specified, use that message
-			if (this.specifiedValue == null) {
+			// if id attribute name is not specified, use that message
+			if (this.specifiedIdAttributeName == null) {
 				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_SPECIFIED, EMPTY_STRING_ARRAY, astRoot));
 			} else {
-				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getValue()}, astRoot));
+				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getIdAttributeName()}, astRoot));
 			}
 		} else {
 			// test whether attribute mapping is allowable
 			if ( ! CollectionTools.contains(this.getValidAttributeMappingChoices(), attributeMapping)) {
-				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getValue()}, astRoot));
+				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getIdAttributeName()}, astRoot));
 			}
 		}
 	}

@@ -82,6 +82,10 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return this.mappingAnnotation;
 	}
 
+	public boolean attributeIsDerivedId(String attributeName) {
+		return TypeMappingTools.attributeIsDerivedId(this, attributeName);
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getPersistentType().getName());
