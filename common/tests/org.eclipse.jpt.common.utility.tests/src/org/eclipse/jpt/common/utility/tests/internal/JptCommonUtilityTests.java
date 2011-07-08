@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -77,6 +77,7 @@ public class JptCommonUtilityTests {
 		suite.addTestSuite(SynchronizedQueueTests.class);
 		suite.addTestSuite(SynchronizedStackTests.class);
 		suite.addTestSuite(ToolsTests.class);
+		suite.addTestSuite(VersionComparatorTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
 
 		return suite;
