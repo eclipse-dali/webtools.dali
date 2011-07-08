@@ -31,9 +31,6 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 public interface EclipseLinkConverter
 	extends JpaContextNode
 {
-
-	String ECLIPSELINK_CONVERTER_CLASS_NAME = "org.eclipse.persistence.mappings.converters.Converter"; //$NON-NLS-1$
-
 	/**
 	 * Return the converter's type.
 	 */
