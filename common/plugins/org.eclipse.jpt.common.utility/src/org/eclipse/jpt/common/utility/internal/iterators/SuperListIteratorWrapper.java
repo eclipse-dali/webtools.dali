@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,8 +16,9 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
- * Wrap a list iterator on elements of any sub-type of <code>E</code>, converting it into a
- * list iterator on elements of type <code>E</code>. This shouldn't be a problem since the
+ * Wrap a list iterator on elements of any sub-type of <code>E</code>,
+ * converting it into a <em>non-writable</em> list iterator on elements of type
+ * <code>E</code>. This shouldn't be a problem since the
  * resulting list iterator disables the methods that would put invalid elements
  * in the iterator's backing list (i.e. {@link #set(Object)} and {@link #add(Object)}).
  * 
@@ -84,5 +85,4 @@ public class SuperListIteratorWrapper<E>
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.listIterator);
 	}
-
 }

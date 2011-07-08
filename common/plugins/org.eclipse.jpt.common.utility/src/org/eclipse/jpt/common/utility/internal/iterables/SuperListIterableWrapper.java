@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,8 @@ import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrappe
 
 /**
  * Wrap a list iterable of elements of any sub-type of <code>E</code>,
- * converting it into a list iterable of elements of type <code>E</code>.
+ * converting it into a <em>non-writable</em> list iterable of elements
+ * of type <code>E</code>.
  * This shouldn't be a problem since the resulting list iterable's list
  * iterator disables the methods that would put invalid elements in the list
  * iterator's backing list (i.e. {@link SuperListIteratorWrapper#set(Object)}
@@ -25,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrappe
  * 
  * @param <E> the type of elements returned by the iterable's iterators
  * 
- * @see org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper
+ * @see SuperListIteratorWrapper
  */
 public class SuperListIterableWrapper<E>
 	implements ListIterable<E>
@@ -50,5 +51,4 @@ public class SuperListIterableWrapper<E>
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.iterable);
 	}
-
 }

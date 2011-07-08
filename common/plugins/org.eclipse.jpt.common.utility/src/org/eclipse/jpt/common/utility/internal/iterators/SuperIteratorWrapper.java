@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * Wrap an iterator on elements of any sub-type of <code>E</code>, converting
- * it into an iterator on elements of type <code>E</code>. This shouldn't be a
+ * it into a iterator on elements of type <code>E</code>. This shouldn't be a
  * problem since there is no way to add invalid elements to the iterator's
  * backing collection. (Note the lack of compiler warnings, suppressed or
  * otherwise.)
@@ -54,5 +54,4 @@ public class SuperIteratorWrapper<E>
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.iterator);
 	}
-
 }
