@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
- * This interface allows clients to control how a command is executed.
+ * This interface allows clients to control how an interruptible command is executed.
  * This is useful when the server provides the command but the client provides
  * the context (e.g. the client would like to dispatch the command to the UI
  * thread).
@@ -23,31 +23,33 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @see org.eclipse.jpt.common.utility.CommandExecutor
  */
-public interface CommandExecutor {
+public interface InterruptibleCommandExecutor {
 
 	/**
 	 * Execute the specified command.
 	 */
-	void execute(Command command);
+	void execute(InterruptibleCommand command) throws InterruptedException;
 
 
 	/**
-	 * Singleton implementation of the command executor interface
+	 * Singleton implementation of the interruptible command executor interface
 	 * that simply executes the command without any sort of enhancement.
 	 */
 	final class Default
-		implements CommandExecutor, Serializable
+		implements InterruptibleCommandExecutor, Serializable
 	{
-		public static final CommandExecutor INSTANCE = new Default();
-		public static CommandExecutor instance() {
+		public static final InterruptibleCommandExecutor INSTANCE = new Default();
+		public static InterruptibleCommandExecutor instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
 		private Default() {
 			super();
 		}
-		public void execute(Command command) {
+		public void execute(InterruptibleCommand command) throws InterruptedException {
 			command.execute();
 		}
 		@Override

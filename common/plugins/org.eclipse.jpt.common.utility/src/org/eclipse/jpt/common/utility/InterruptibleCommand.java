@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,42 +13,44 @@ import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
- * This interface allows clients to control how a command is executed.
- * This is useful when the server provides the command but the client provides
- * the context (e.g. the client would like to dispatch the command to the UI
- * thread).
+ * Simple interface for implementing the GOF Command design pattern
+ * and allows for the command to throw an {@link InterruptedException}.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @see org.eclipse.jpt.common.utility.Command
  */
-public interface CommandExecutor {
+public interface InterruptibleCommand {
 
 	/**
-	 * Execute the specified command.
+	 * Execute the command. The semantics of the command
+	 * is determined by the contract between the client and server.
 	 */
-	void execute(Command command);
+	void execute() throws InterruptedException;
 
 
 	/**
-	 * Singleton implementation of the command executor interface
-	 * that simply executes the command without any sort of enhancement.
+	 * Singleton implementation of the interruptible command interface that
+	 * will throw an interrupted exception when executed.
 	 */
-	final class Default
-		implements CommandExecutor, Serializable
+	final class Interrupted
+		implements InterruptibleCommand, Serializable
 	{
-		public static final CommandExecutor INSTANCE = new Default();
-		public static CommandExecutor instance() {
+		public static final InterruptibleCommand INSTANCE = new Interrupted();
+		public static InterruptibleCommand instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
-		private Default() {
+		private Interrupted() {
 			super();
 		}
-		public void execute(Command command) {
-			command.execute();
+		// throw an exception
+		public void execute() throws InterruptedException {
+			throw new InterruptedException();
 		}
 		@Override
 		public String toString() {

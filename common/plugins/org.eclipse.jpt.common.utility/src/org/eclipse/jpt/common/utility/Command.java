@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.utility;
 
 import java.io.Serializable;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * Simple interface for implementing the GOF Command design pattern,
@@ -21,19 +22,23 @@ import java.io.Serializable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Command {
-
+public interface Command
+	extends InterruptibleCommand
+{
 	/**
 	 * Execute the command. The semantics of the command
 	 * is determined by the contract between the client and server.
 	 */
 	void execute();
 
+
 	/**
 	 * Singleton implementation of the command interface that will do nothing
 	 * when executed.
 	 */
-	final class Null implements Command, Serializable {
+	final class Null
+		implements Command, Serializable
+	{
 		public static final Command INSTANCE = new Null();
 		public static Command instance() {
 			return INSTANCE;
@@ -47,7 +52,7 @@ public interface Command {
 		}
 		@Override
 		public String toString() {
-			return "Command.Null"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -60,7 +65,9 @@ public interface Command {
 	 * Singleton implementation of the command interface that will throw an
 	 * exception when executed.
 	 */
-	final class Disabled implements Command, Serializable {
+	final class Disabled
+		implements Command, Serializable
+	{
 		public static final Command INSTANCE = new Disabled();
 		public static Command instance() {
 			return INSTANCE;
@@ -75,7 +82,7 @@ public interface Command {
 		}
 		@Override
 		public String toString() {
-			return "Command.Disabled"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -83,5 +90,4 @@ public interface Command {
 			return INSTANCE;
 		}
 	}
-
 }
