@@ -24,11 +24,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
-import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
-import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
-import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.xsd.XSDForm;
@@ -283,26 +280,27 @@ public class GenericJavaXmlSchema
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		XsdSchema schema = getJaxbPackage().getXsdSchema();
-		if (schema != null) {
-			if (formConflicts(getAttributeFormDefault(), schema.getXSDComponent().getAttributeFormDefault())) {
-				messages.add(
-				DefaultValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JaxbValidationMessages.XML_SCHEMA__MISMATCHED_ATTRIBUTE_FORM_DEFAULT,
-					this,
-					getXmlSchemaAnnotation().getAttributeFormDefaultTextRange(astRoot)));
-			}
-			
-			if (formConflicts(getElementFormDefault(), schema.getXSDComponent().getElementFormDefault())) {
-				messages.add(
-				DefaultValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JaxbValidationMessages.XML_SCHEMA__MISMATCHED_ELEMENT_FORM_DEFAULT,
-					this,
-					getXmlSchemaAnnotation().getElementFormDefaultTextRange(astRoot)));
-			}
-		}
+		// removing this validation message for now:  see jaxb bug 823 (http://java.net/jira/browse/JAXB-823)
+//		XsdSchema schema = getJaxbPackage().getXsdSchema();
+//		if (schema != null) {
+//			if (formConflicts(getAttributeFormDefault(), schema.getXSDComponent().getAttributeFormDefault())) {
+//				messages.add(
+//				DefaultValidationMessages.buildMessage(
+//					IMessage.HIGH_SEVERITY,
+//					JaxbValidationMessages.XML_SCHEMA__MISMATCHED_ATTRIBUTE_FORM_DEFAULT,
+//					this,
+//					getXmlSchemaAnnotation().getAttributeFormDefaultTextRange(astRoot)));
+//			}
+//			
+//			if (formConflicts(getElementFormDefault(), schema.getXSDComponent().getElementFormDefault())) {
+//				messages.add(
+//				DefaultValidationMessages.buildMessage(
+//					IMessage.HIGH_SEVERITY,
+//					JaxbValidationMessages.XML_SCHEMA__MISMATCHED_ELEMENT_FORM_DEFAULT,
+//					this,
+//					getXmlSchemaAnnotation().getElementFormDefaultTextRange(astRoot)));
+//			}
+//		}
 	}
 	
 	protected boolean formConflicts(XmlNsForm form, XSDForm xsdForm) {
