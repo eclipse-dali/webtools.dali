@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,8 +24,13 @@ package org.eclipse.jpt.jpa.core.context;
 public interface VersionMapping
 	extends ColumnMapping, ConvertibleMapping
 {
-	static final String[] VERSION_MAPPING_SUPPORTED_TYPES = 
-								{"int", "java.lang.Integer", "short", "java.lang.Short", "long", "java.lang.Long", "java.sql.Timestamp"};
-
-	// combine various interfaces
+	String[] SUPPORTED_TYPE_NAMES = {
+		int.class.getName(),
+		java.lang.Integer.class.getName(),
+		short.class.getName(),
+		java.lang.Short.class.getName(),
+		long.class.getName(),
+		java.lang.Long.class.getName(),
+		java.sql.Timestamp.class.getName()
+	};
 }

@@ -47,8 +47,6 @@ public class GenericJpaDataSource
 	 */
 	protected final ConnectionListener connectionListener;
 
-	private static final long serialVersionUID = 1L;
-
 
 	// ********** constructor/initialization **********
 

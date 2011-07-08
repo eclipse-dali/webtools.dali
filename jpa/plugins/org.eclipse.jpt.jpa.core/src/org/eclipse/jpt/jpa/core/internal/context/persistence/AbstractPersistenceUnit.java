@@ -2218,15 +2218,6 @@ public abstract class AbstractPersistenceUnit
 		sb.append(this.name);
 	}
 
-	public int getPersistenceUnitMetadataSize() {
-		int  persistenceUnitMetadatSize= 0;
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			if (mappingFileRef.persistenceUnitMetadataExists()) {
-				persistenceUnitMetadatSize++;
-			}
-		}
-		return persistenceUnitMetadatSize;
-	}	
 
 	// ********** validation **********
 
@@ -2250,19 +2241,29 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForMultiplePersistenceUnitMetadata(List<IMessage> messages) {
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			if (mappingFileRef.persistenceUnitMetadataExists() && (this.getPersistenceUnitMetadataSize() > 1)) {
+		Iterable<MappingFileRef> pumdMappingFileRefs = this.getPersistenceUnitMetadataMappingFileRefs();
+		if (CollectionTools.size(pumdMappingFileRefs) > 1) {
+			for (MappingFileRef mappingFileRef : pumdMappingFileRefs) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.NORMAL_SEVERITY,
-								JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
-								new String[] {mappingFileRef.getFileName()},
-								mappingFileRef.getMappingFile(),
-								mappingFileRef.getPersistenceUnitMetadata().getValidationTextRange()
-								)
-						);
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.NORMAL_SEVERITY,
+							JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
+							new String[] {mappingFileRef.getFileName()},
+							mappingFileRef.getMappingFile(),
+							mappingFileRef.getPersistenceUnitMetadata().getValidationTextRange()
+					)
+				);
 			}
 		}
+	}
+
+	protected Iterable<MappingFileRef> getPersistenceUnitMetadataMappingFileRefs() {
+		return new FilteringIterable<MappingFileRef>(this.getMappingFileRefs()) {
+			@Override
+			protected boolean accept(MappingFileRef mappingFileRef) {
+				return mappingFileRef.persistenceUnitMetadataExists();
+			}
+		};
 	}
 
 	protected void checkForDuplicateMappingFiles(List<IMessage> messages) {
@@ -2359,19 +2360,21 @@ public abstract class AbstractPersistenceUnit
 
 	protected void checkForDuplicateGenerators(List<IMessage> messages) {
 		HashMap<String, ArrayList<Generator>> generatorsByName = this.mapGeneratorsByName(this.getGenerators());
-		for (ArrayList<Generator> dups : generatorsByName.values()) {
-			if (dups.size() > 1) {
-				for (Generator dup : dups) {
-					if (!StringTools.stringIsEmpty(dup.getName())) {
+		for (Map.Entry<String, ArrayList<Generator>> entry : generatorsByName.entrySet()) {
+			String generatorName = entry.getKey();
+			if (StringTools.stringIsNotEmpty(generatorName)) {  // ignore empty names
+				ArrayList<Generator> dups = entry.getValue();
+				if (dups.size() > 1) {
+					for (Generator dup : dups) {
 						messages.add(
-								DefaultJpaValidationMessages.buildMessage(
-										IMessage.HIGH_SEVERITY,
-										JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-										new String[] {dup.getName()},
-										dup,
-										this.extractNameTextRange(dup)
-										)
-								);
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+								new String[] {generatorName},
+								dup,
+								this.extractNameTextRange(dup)
+							)
+						);
 					}
 				}
 			}
@@ -2407,19 +2410,21 @@ public abstract class AbstractPersistenceUnit
 
 	protected void checkForDuplicateQueries(List<IMessage> messages) {
 		HashMap<String, ArrayList<Query>> queriesByName = this.mapQueriesByName(this.getQueries());
-		for (ArrayList<Query> dups : queriesByName.values()) {
-			if (dups.size() > 1) {
-				for (Query dup : dups) {
-					if (!StringTools.stringIsEmpty(dup.getName())) {
+		for (Map.Entry<String, ArrayList<Query>> entry : queriesByName.entrySet()) {
+			String queryName = entry.getKey();
+			if (StringTools.stringIsNotEmpty(queryName)) {  // ignore empty names
+				ArrayList<Query> dups = entry.getValue();
+				if (dups.size() > 1) {
+					for (Query dup : dups) {
 						messages.add(
-								DefaultJpaValidationMessages.buildMessage(
-										IMessage.HIGH_SEVERITY,
-										JpaValidationMessages.QUERY_DUPLICATE_NAME,
-										new String[] {dup.getName()},
-										dup,
-										this.extractNameTextRange(dup)
-										)
-								);
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.QUERY_DUPLICATE_NAME,
+								new String[] {queryName},
+								dup,
+								this.extractNameTextRange(dup)
+							)
+						);
 					}
 				}
 			}
