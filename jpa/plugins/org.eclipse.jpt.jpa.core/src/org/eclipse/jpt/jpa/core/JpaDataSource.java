@@ -70,6 +70,12 @@ public interface JpaDataSource
 
 	/**
 	 * Select and return the table with the specified identifier.
+	 * We need this unusual method because the JPA spec does not allow columns
+	 * or join columns to specify a schema and/or catalog (which is only a
+	 * problem when an entity has two tables from different schemata but with
+	 * the same name).
+	 * 
+	 * @see org.eclipse.jpt.jpa.core.context.TypeMapping#resolveDbTable(String)
 	 */
 	Table selectTableForIdentifier(Iterable<Table> tables, String identifier);
 

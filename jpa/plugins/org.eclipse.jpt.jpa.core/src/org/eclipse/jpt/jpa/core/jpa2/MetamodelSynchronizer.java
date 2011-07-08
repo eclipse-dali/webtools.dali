@@ -58,7 +58,7 @@ public interface MetamodelSynchronizer {
 
 
 	/**
-	 * Singleton implemetation of the metamodel synchronizer interface that
+	 * Singleton implementation of the metamodel synchronizer interface that
 	 * does nothing. (Not sure we need this....)
 	 */
 	final class Null implements MetamodelSynchronizer, Serializable {

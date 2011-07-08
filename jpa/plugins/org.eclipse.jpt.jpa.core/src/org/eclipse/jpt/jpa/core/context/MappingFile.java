@@ -39,12 +39,12 @@ public interface MappingFile
 
 	/**
 	 * Return the mapping file's root.
-	 * This can be null.
+	 * This can be <code>null</code>.
 	 */
 	MappingFileRoot getRoot();
 
 	/**
-	 * Return true if this mapping file exists in the given folder
+	 * Return whether the mapping file exists in the specified folder.
 	 */
 	boolean isIn(IFolder folder);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -124,27 +124,24 @@ public interface JpaPlatform
 	// ********** resource types and definitions **********
 	
 	/**
-	 * Return true if the resource type is supported.  The result of this call is consistent with
-	 * the result of {@link #getResourceDefinition(JptResourceType)}
+	 * Return whether the platform supports the specified resource type.
+	 * This method is consistent with {@link #getResourceDefinition(JptResourceType)}.
 	 */
 	boolean supportsResourceType(JptResourceType resourceType);
 	
 	/**
-	 * Return a {@link ResourceDefinition} to describe the context model for a file of the given
-	 * resource type.
-	 * Throw an {@link IllegalArgumentException} if the resource type is not supported by the platform.
-	 * 
-	 * @param resourceType The resource type of a potential resource definition
-	 * @return The resource definition that can be used for such a file
+	 * Return the platform's resource definition for the specified resource type.
+	 * The returned definition describes the platform's corresponding context model.
+	 * Throw an {@link IllegalArgumentException} if the resource type is not
+	 * supported by the platform.
+	 * This method is consistent with {@link #supportsResourceType(JptResourceType)}.
 	 */
 	ResourceDefinition getResourceDefinition(JptResourceType resourceType);
 	
 	/**
-	 * Return the most recent supported {@link JptResourceType} for the given content type.
-	 * Throw an {@link IllegalArgumentException} if the content type is not supported by the platform.
-	 * 
-	 * @param contentType A content type supported by the platform
-	 * @return The most recent resource type supported by the platform
+	 * Return the most recent supported resource type for the specified content
+	 * type. Throw an {@link IllegalArgumentException} if the content type is not
+	 * supported by the platform.
 	 */
 	JptResourceType getMostRecentSupportedResourceType(IContentType contentType);
 	
