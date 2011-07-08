@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
@@ -54,7 +54,6 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	@Override
 	public void update() {
 		super.update();
-		this.getPersistenceUnit().addConverter(this);
 	}
 
 
@@ -104,6 +103,48 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 
 	// ********** validation **********
 
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.validateName(messages, astRoot);
+	}
+
+	protected void validateName(List<IMessage> messages, CompilationUnit astRoot) {
+		if (StringTools.stringIsEmpty(this.name)) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY, 
+					EclipseLinkJpaValidationMessages.CONVERTER_NAME_UNDEFINED, 
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getNameTextRange(astRoot)
+				)
+			);
+			return;
+		}
+
+		if (ArrayTools.contains(EclipseLinkConvert.RESERVED_CONVERTER_NAMES, this.name)) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					EclipseLinkJpaValidationMessages.RESERVED_CONVERTER_NAME,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getNameTextRange(astRoot)
+				)
+			);
+		}
+	}
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.converterAnnotation.getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	}
+	
+	public TextRange getNameTextRange(CompilationUnit astRoot){
+		return this.getValidationTextRange(this.getConverterAnnotation().getNameTextRange(astRoot), astRoot);
+	}
+	
 	public boolean overrides(EclipseLinkConverter converter) {
 		// java is at the base of the tree
 		return false;
@@ -115,11 +156,6 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 				this.name.equals(converter.getName()) &&
 				! this.overrides(converter) &&
 				! converter.overrides(this);
-	}
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.converterAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
 
@@ -219,44 +255,6 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this, ClassName.getSimpleName(this.getAnnotationName()));
-		}
-	}
-	
-	public TextRange getNameTextRange(CompilationUnit astRoot){
-		return this.getValidationTextRange(this.getConverterAnnotation().getNameTextRange(astRoot), astRoot);
-	}
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateConverterNames(messages, astRoot);
-	}
-
-	protected void validateConverterNames(List<IMessage> messages, CompilationUnit astRoot){
-		if (StringTools.stringIsEmpty(this.name)) {
-			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY, 
-							EclipseLinkJpaValidationMessages.CONVERTER_NAME_UNDEFINED, 
-							EMPTY_STRING_ARRAY,
-							this,
-							this.getNameTextRange(astRoot)
-							));
-		} else {
-			List<String> reportedNames = new ArrayList<String>();
-			for (ListIterator<EclipseLinkConverter> globalConverters = this.getPersistenceUnit	().allConverters(); globalConverters.hasNext(); ) {
-				if ( this.duplicates( globalConverters.next())  && !reportedNames.contains(this.name)){
-					messages.add(
-							DefaultEclipseLinkJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
-									EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
-									new String[] {this.name},
-									this,
-									this.getNameTextRange(astRoot)
-							));
-					reportedNames.add(this.name);
-				}
-			}
 		}
 	}
 }

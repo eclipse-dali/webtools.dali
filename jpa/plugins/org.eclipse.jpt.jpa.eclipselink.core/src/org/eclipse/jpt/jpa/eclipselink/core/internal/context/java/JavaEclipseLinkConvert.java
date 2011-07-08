@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.Association;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
@@ -135,9 +136,9 @@ public class JavaEclipseLinkConvert
 			}
 		} else {
 			if ((this.converter == null) || (this.converter.getType() != converterType)) {
-				JavaEclipseLinkConverter.Adapter adapter = this.getConverterAdapter(converterType);
-				this.retainConverterAnnotation(adapter);
-				this.setConverter_(buildConverter(adapter));
+				JavaEclipseLinkConverter.Adapter converterAdapter = this.getConverterAdapter(converterType);
+				this.retainConverterAnnotation(converterAdapter);
+				this.setConverter_(converterAdapter.buildNewConverter(this.getResourcePersistentAttribute(), this));
 			}
 		}
 	}
@@ -149,12 +150,10 @@ public class JavaEclipseLinkConvert
 	}
 
 	protected JavaEclipseLinkConverter<?> buildConverter() {
-		
-		// do not build a converter for a "virtual" attribute
-		if (getAttributeMapping().getPersistentAttribute().isVirtual()) {
-			return null;
-		}
-		
+		return this.isVirtual() ? null : this.buildConverter_();
+	}
+
+	protected JavaEclipseLinkConverter<?> buildConverter_() {
 		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
 		for (JavaEclipseLinkConverter.Adapter adapter : this.getConverterAdapters()) {
 			JavaEclipseLinkConverter<?> javaConverter = adapter.buildConverter(resourceAttribute, this);
@@ -164,28 +163,7 @@ public class JavaEclipseLinkConvert
 		}
 		return null;
 	}
-	
-	protected JavaEclipseLinkConverter<?> buildConverter(JavaEclipseLinkConverter.Adapter adapter) {
-		
-		// do not build a converter for a "virtual" attribute
-		if (getAttributeMapping().getPersistentAttribute().isVirtual()) {
-			return null;
-		}
-						
-		return adapter.buildNewConverter(this.getResourcePersistentAttribute(), this);
-	}
-	
-	protected JavaEclipseLinkConverter<?> buildConverter(
-			JavaEclipseLinkConverter.Adapter adapter, EclipseLinkNamedConverterAnnotation annotation) {
-		
-		// do not build a converter for a "virtual" attribute
-		if (getAttributeMapping().getPersistentAttribute().isVirtual()) {
-			return null;
-		}
-		
-		return adapter.buildConverter(annotation, this);
-	}
-	
+
 	/**
 	 * Clear all the converter annotations <em>except</em> for the annotation
 	 * corresponding to the specified adapter. If the specified adapter is
@@ -201,6 +179,12 @@ public class JavaEclipseLinkConvert
 	}
 
 	protected void syncConverter() {
+		if ( ! this.isVirtual()) {
+			this.syncConverter_();
+		}
+	}
+
+	protected void syncConverter_() {
 		Association<JavaEclipseLinkConverter.Adapter, EclipseLinkNamedConverterAnnotation> assoc = this.getEclipseLinkConverterAnnotation();
 		if (assoc == null) {
 			if (this.converter != null) {
@@ -214,7 +198,7 @@ public class JavaEclipseLinkConvert
 					(this.converter.getConverterAnnotation() == annotation)) {
 				this.converter.synchronizeWithResourceModel();
 			} else {
-				this.setConverter_(buildConverter(adapter, annotation));
+				this.setConverter_(adapter.buildConverter(annotation, this));
 			}
 		}
 	}
@@ -266,6 +250,14 @@ public class JavaEclipseLinkConvert
 		return EclipseLinkConvertAnnotation.ANNOTATION_NAME;
 	}
 
+	/**
+	 * Return whether the convert is <em>virtual</em> and, as a result, does
+	 * not have a converter.
+	 */
+	protected boolean isVirtual() {
+		return this.getAttributeMapping().getPersistentAttribute().isVirtual();
+	}
+
 	@Override
 	public void dispose() {
 		super.dispose();
@@ -313,25 +305,25 @@ public class JavaEclipseLinkConvert
 
 	// ********** validation **********
 
+	/**
+	 * The converters are validated in the persistence unit.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit#validateConverters(List, IReporter)
+	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.converter != null) {
-			this.converter.validate(messages, reporter, astRoot);
-		}
-		this.validateConvertValue(messages, astRoot);
+		// converters are validated in the persistence unit
+		this.validateConverterName(messages, astRoot);
 	}
 	
-	private void validateConvertValue(List<IMessage> messages, CompilationUnit astRoot) {
+	private void validateConverterName(List<IMessage> messages, CompilationUnit astRoot) {
 		String converterName = this.getConverterName();
 		if (converterName == null) {
 			return;
 		}
 
-		for (Iterator<EclipseLinkConverter> converters = this.getEclipseLinkPersistenceUnit().allConverters(); converters.hasNext(); ) {
-			if (converterName.equals(converters.next().getName())) {
-				return;
-			}
+		if (CollectionTools.contains(this.getEclipseLinkPersistenceUnit().getUniqueConverterNames(), converterName)) {
+			return;
 		}
 		
 		if (ArrayTools.contains(RESERVED_CONVERTER_NAMES, converterName)) {
@@ -339,13 +331,16 @@ public class JavaEclipseLinkConvert
 		}
 		
 		messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						EclipseLinkJpaValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
-						new String[] {converterName, this.getParent().getName()},
-						this.getParent(),
-						this.getValidationTextRange(astRoot)
-				)
+			DefaultEclipseLinkJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				EclipseLinkJpaValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
+				new String[] {
+					converterName,
+					this.getParent().getName()
+				},
+				this.getParent(),
+				this.getValidationTextRange(astRoot)
+			)
 		);	
 	}
 	

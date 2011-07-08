@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,8 +23,12 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseEclipseLinkTypeConverterAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.TypeConverter
- * org.eclipse.persistence.annotations.ObjectTypeConverter
+ * <code>
+ * <ul>
+ * <li>org.eclipse.persistence.annotations.TypeConverter
+ * <li>org.eclipse.persistence.annotations.ObjectTypeConverter
+ * </ul>
+ * </code>
  */
 abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	extends SourceEclipseLinkNamedConverterAnnotation
@@ -33,6 +37,7 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	final DeclarationAnnotationElementAdapter<String> dataTypeDeclarationAdapter;
 	final AnnotationElementAdapter<String> dataTypeAdapter;
 	String dataType;
+	TextRange dataTypeTextRange;
 
 	/**
 	 * @see org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
@@ -44,6 +49,7 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	final DeclarationAnnotationElementAdapter<String> objectTypeDeclarationAdapter;
 	final AnnotationElementAdapter<String> objectTypeAdapter;
 	String objectType;
+	TextRange objectTypeTextRange;
 
 	/**
 	 * @see org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
@@ -71,14 +77,18 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.dataType = this.buildDataType(astRoot);
+		this.dataTypeTextRange = this.buildDataTypeTextRange(astRoot);
 		this.objectType = this.buildObjectType(astRoot);
+		this.objectTypeTextRange = this.buildObjectTypeTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncDataType(this.buildDataType(astRoot));
+		this.dataTypeTextRange = this.buildDataTypeTextRange(astRoot);
 		this.syncObjectType(this.buildObjectType(astRoot));
+		this.objectTypeTextRange = this.buildObjectTypeTextRange(astRoot);
 	}
 
 	@Override
@@ -122,6 +132,10 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	}
 
 	public TextRange getDataTypeTextRange(CompilationUnit astRoot) {
+		return this.dataTypeTextRange;
+	}
+
+	private TextRange buildDataTypeTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.dataTypeDeclarationAdapter, astRoot);
 	}
 
@@ -175,6 +189,10 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	}
 
 	public TextRange getObjectTypeTextRange(CompilationUnit astRoot) {
+		return this.objectTypeTextRange;
+	}
+
+	private TextRange buildObjectTypeTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.objectTypeDeclarationAdapter, astRoot);
 	}
 

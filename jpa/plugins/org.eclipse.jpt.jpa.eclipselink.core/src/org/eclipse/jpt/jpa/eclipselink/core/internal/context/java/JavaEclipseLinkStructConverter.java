@@ -9,58 +9,36 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import java.util.List;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * <code>org.eclipse.persistence.annotations.StructConverter</code>
+ */
 public class JavaEclipseLinkStructConverter
-	extends JavaEclipseLinkConverter<EclipseLinkStructConverterAnnotation>
+	extends JavaEclipseLinkConverterClassConverter<EclipseLinkStructConverterAnnotation>
 	implements EclipseLinkStructConverter
 {
-	private String converterClass;
-
-
 	public JavaEclipseLinkStructConverter(JavaJpaContextNode parent, EclipseLinkStructConverterAnnotation converterAnnotation) {
-		super(parent, converterAnnotation);
-		this.converterClass = converterAnnotation.getConverter();
-	}
-
-
-	// ********** synchronize/update **********
-
-	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.setConverterClass_(this.converterAnnotation.getConverter());
+		super(parent, converterAnnotation, converterAnnotation.getConverter());
 	}
 
 
 	// ********** converter class **********
 
-	public String getConverterClass() {
-		return this.converterClass;
+	@Override
+	protected String getAnnotationConverterClass() {
+		return this.converterAnnotation.getConverter();
 	}
 
-	public void setConverterClass(String converterClass) {
+	@Override
+	protected void setAnnotationConverterClass(String converterClass) {
 		this.converterAnnotation.setConverter(converterClass);
-		this.setConverterClass_(converterClass);
-	}
-
-	protected void setConverterClass_(String converterClass) {
-		String old = this.converterClass;
-		this.converterClass = converterClass;
-		this.firePropertyChanged(CONVERTER_CLASS_PROPERTY, old, converterClass);
 	}
 
 
@@ -69,69 +47,33 @@ public class JavaEclipseLinkStructConverter
 	public Class<EclipseLinkStructConverter> getType() {
 		return EclipseLinkStructConverter.class;
 	}
-	
-	//************ validation ***************
-	
+
+
+	// ********** validation **********
+
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		if (this.converterClass != null) {
-			// the annotation will have a compile error if its converter class is missing
-			validateConverterClass(messages, astRoot);
-		}
-	}
-	
-	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
-		IJavaProject javaProject = getJpaProject().getJavaProject();
-
-		if (StringTools.stringIsEmpty(this.converterClass)) {
-			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_DEFINED,
-					this,
-					getConverterClassTextRange(astRoot)
-				)
-			);			
-		}
-		
-		else if (!converterClassExists(javaProject)) {
-			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_EXISTS,
-					new String[] {this.converterClass},
-					this,
-					getConverterClassTextRange(astRoot)
-				)
-			);			
-		} 
-		else if (!converterClassImplementsInterface(javaProject, ECLIPSELINK_STRUCT_CONVERTER_CLASS_NAME)) {
-			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.STRUCT_CONVERTER_CLASS_IMPLEMENTS_STRUCT_CONVERTER,
-					new String[] {this.converterClass},
-					this,
-					getConverterClassTextRange(astRoot)
-				)
-			);			
-		}
-	}
-	
-	private boolean converterClassExists(IJavaProject javaProject) {
-		return (this.converterClass != null) &&
-				(JDTTools.findType(javaProject, this.converterClass) != null);
+	protected String getEclipseLinkConverterInterface() {
+		return ECLIPSELINK_STRUCT_CONVERTER_CLASS_NAME;
 	}
 
-	private boolean converterClassImplementsInterface(IJavaProject javaProject, String interfaceName) {
-		return (this.converterClass != null) &&
-				JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.converterClass, interfaceName);
+	@Override
+	protected String getEclipseLinkConverterInterfaceErrorMessage() {
+		return EclipseLinkJpaValidationMessages.STRUCT_CONVERTER_CLASS_IMPLEMENTS_STRUCT_CONVERTER;
 	}
-	
-	protected TextRange getConverterClassTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.converterAnnotation.getConverterTextRange(astRoot), astRoot);
+
+	@Override
+	protected TextRange getAnnotationConverterClassTextRange(CompilationUnit astRoot) {
+		return this.converterAnnotation.getConverterTextRange(astRoot);
 	}
+
+	/**
+	 * Since the converter class is a string, it must be fully-qualified.
+	 */
+	@Override
+	protected String getFullyQualifiedConverterClass() {
+		return this.getConverterClass();
+	}
+
 
 	// ********** adapter **********
 
@@ -159,6 +101,6 @@ public class JavaEclipseLinkStructConverter
 		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(EclipseLinkNamedConverterAnnotation converterAnnotation, JavaJpaContextNode parent) {
 			return new JavaEclipseLinkStructConverter(parent, (EclipseLinkStructConverterAnnotation) converterAnnotation);
 		}
-		
+
 	}
 }

@@ -10,13 +10,15 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.common.utility.internal.node.Node;
 import org.eclipse.jpt.common.utility.internal.node.Problem;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
@@ -74,6 +76,8 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 		} 
 		else if (names().contains(this.name)) {
 			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_nameExists, IMessageProvider.WARNING));
+		} else if (ArrayTools.contains(EclipseLinkConvert.RESERVED_CONVERTER_NAMES, this.name)) {
+			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_nameIsReserved, IMessageProvider.ERROR));
 		}
 	}
 
@@ -92,9 +96,8 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	
 	private List<String> names() {
 		List<String> names = new ArrayList<String>();
-		for (ListIterator<EclipseLinkConverter> converters = this.pUnit.allConverters(); converters.hasNext();){
-			String name = converters.next().getName();
-			names.add(name);
+		for (Iterator<EclipseLinkConverter> converters = this.pUnit.allConverters(); converters.hasNext();){
+			names.add(converters.next().getName());
 		}
 		return names ;
 	}

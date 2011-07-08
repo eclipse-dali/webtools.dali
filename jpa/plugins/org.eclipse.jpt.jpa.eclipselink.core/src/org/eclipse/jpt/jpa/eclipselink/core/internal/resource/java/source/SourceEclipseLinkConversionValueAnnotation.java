@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,10 +35,12 @@ final class SourceEclipseLinkConversionValueAnnotation
 	private DeclarationAnnotationElementAdapter<String> dataValueDeclarationAdapter;
 	private AnnotationElementAdapter<String> dataValueAdapter;
 	private String dataValue;
+	private TextRange dataValueTextRange;
 
 	private DeclarationAnnotationElementAdapter<String> objectValueDeclarationAdapter;
 	private AnnotationElementAdapter<String> objectValueAdapter;
 	private String objectValue;
+	private TextRange objectValueTextRange;
 
 
 	SourceEclipseLinkConversionValueAnnotation(EclipseLinkObjectTypeConverterAnnotation parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
@@ -55,12 +57,16 @@ final class SourceEclipseLinkConversionValueAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.dataValue = this.buildDataValue(astRoot);
+		this.dataValueTextRange = this.buildDataValueTextRange(astRoot);
 		this.objectValue = this.buildObjectValue(astRoot);
+		this.objectValueTextRange = this.buildObjectValueTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncDataValue(this.buildDataValue(astRoot));
+		this.dataValueTextRange = this.buildDataValueTextRange(astRoot);
 		this.syncObjectValue(this.buildObjectValue(astRoot));
+		this.objectValueTextRange = this.buildObjectValueTextRange(astRoot);
 	}
 
 
@@ -89,6 +95,10 @@ final class SourceEclipseLinkConversionValueAnnotation
 	}
 
 	public TextRange getDataValueTextRange(CompilationUnit astRoot) {
+		return this.dataValueTextRange;
+	}
+
+	private TextRange buildDataValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.dataValueDeclarationAdapter, astRoot);
 	}
 
@@ -123,6 +133,10 @@ final class SourceEclipseLinkConversionValueAnnotation
 	}
 
 	public TextRange getObjectValueTextRange(CompilationUnit astRoot) {
+		return this.objectValueTextRange;
+	}
+
+	private TextRange buildObjectValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.objectValueDeclarationAdapter, astRoot);
 	}
 

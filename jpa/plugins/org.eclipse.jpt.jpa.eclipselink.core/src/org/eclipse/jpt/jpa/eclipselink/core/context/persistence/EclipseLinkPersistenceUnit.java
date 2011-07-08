@@ -10,26 +10,35 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.Converter;
+import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
+import org.eclipse.jpt.jpa.core.context.MappingFile;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
@@ -38,7 +47,13 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Customization;
@@ -48,6 +63,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.options.Options;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.general.EclipseLinkGeneralProperties;
@@ -86,12 +103,10 @@ public class EclipseLinkPersistenceUnit
 
 	// ********** synchronize/update **********
 
-	// TODO bjv calculate converters directly...
 	@Override
 	public void update() {
-		this.converters.clear();
 		super.update();
-		this.fireCollectionChanged(CONVERTERS_COLLECTION, this.converters);
+		this.setConverters(this.buildConverters());
 	}
 	
 
@@ -295,54 +310,188 @@ public class EclipseLinkPersistenceUnit
 	// ********** converters **********
 
 	/**
-	 * Identifier for changes to the list of global converter definitions.
-	 * Note that there are no granular changes to this list.  There is only
-	 * notification that the entire list has changed.
+	 * String constant associated with changes to the persistence unit's
+	 * collection of "global" converters.
 	 */
 	public static final String CONVERTERS_COLLECTION = "converters"; //$NON-NLS-1$
 
 	/**
-	 * Add the converter definition (defined elsewhere) to the list of converters
-	 * defined within this persistence unit.
-	 * Note that this should only be called during the process of updating the
-	 * local converter definition.
-	 * No change notification accompanies this action specifically.
+	 * Return the "active" converters defined within the persistence unit's scope,
+	 * including converters with duplicate names. "Active" converters are:<ul>
+	 * <li>any converter defined in mapping files
+	 * <li>any converter defined via Java annotations that is not "overridden"
+	 *     by a mapping file converter with the same name
+	 * </ul>
+	 * <strong>NB:</strong> A Java converter defined on a class or attribute
+	 * that is overridden in a mapping file is <em>not</em>, as a result,
+	 * itself overridden. A Java converter can only be overridden by a mapping
+	 * file converter with the same name.
+	 * <p>
+	 * <strong>NB:</strong> A Java converter defined on a class or attribute
+	 * whose corresponding mapping file mapping (or mapping file) is marked
+	 * "metadata complete" is ignored.
 	 */
-	public void addConverter(EclipseLinkConverter converter) {
-		this.converters.add(converter);
+	// TODO bjv change to getConverterNames() etc.
+	public Iterator<EclipseLinkConverter> allConverters() {
+		return this.getConverters().iterator();
 	}
 
-	/**
-	 * Return an iterator on all converters defined within this persistence unit,
-	 * included duplicately named converters definitions.
-	 */
-	public ListIterator<EclipseLinkConverter> allConverters() {
-		return new CloneListIterator<EclipseLinkConverter>(this.converters);
+	public Iterable<EclipseLinkConverter> getConverters() {
+		return new LiveCloneIterable<EclipseLinkConverter>(this.converters);
 	}
 
 	public int convertersSize() {
 		return this.converters.size();
 	}
 
+	// TODO bjv remove
+	public void addConverter(EclipseLinkConverter converter) {
+		this.converters.add(converter);
+	}
+
 	/**
-	 * Return the names of the converters defined in the persistence
-	 * unit, with duplicates removed.
+	 * Return the names of the "active" converters defined in the persistence
+	 * unit's scope, with duplicates removed.
 	 */
 	public Iterable<String> getUniqueConverterNames() {
-		return CollectionTools.set(this.allNonNullConverterNames(), this.converters.size());
+		HashSet<String> names = new HashSet<String>(this.converters.size());
+		this.addNonEmptyConverterNamesTo(names);
+		return names;
 	}
 
-	protected Iterator<String> allNonNullConverterNames() {
-		return new FilteringIterator<String>(this.allConverterNames(), NotNullFilter.<String>instance());
-	}
-
-	protected Iterator<String> allConverterNames() {
-		return new TransformationIterator<EclipseLinkConverter, String>(this.allConverters()) {
-			@Override
-			protected String transform(EclipseLinkConverter converter) {
-				return converter.getName();
+	protected void addNonEmptyConverterNamesTo(Set<String> names) {
+		for (EclipseLinkConverter converter : this.getConverters()) {
+			String converterName = converter.getName();
+			if (StringTools.stringIsNotEmpty(converterName)) {
+				names.add(converterName);
 			}
-		};
+		}
+	}
+
+	protected void setConverters(Iterable<EclipseLinkConverter> converters) {
+		this.synchronizeCollection(converters, this.converters, CONVERTERS_COLLECTION);
+	}
+
+	/**
+	 * We only hold "active" converters; i.e. the mapping file converters and
+	 * the Java converters that are not "overridden" by mapping file
+	 * converters (by converter name).
+	 */
+	protected Iterable<EclipseLinkConverter> buildConverters() {
+		ArrayList<EclipseLinkConverter> converterList = new ArrayList<EclipseLinkConverter>();
+
+		this.addMappingFileConvertersTo(converterList);
+
+		HashMap<String, ArrayList<EclipseLinkConverter>> mappingFileConverters = this.mapConvertersByName(this.getMappingFileConverters());
+		HashMap<String, ArrayList<EclipseLinkConverter>> javaConverters = this.mapConvertersByName(this.getJavaConverters());
+		for (Map.Entry<String, ArrayList<EclipseLinkConverter>> javaConverterEntry : javaConverters.entrySet()) {
+			if (mappingFileConverters.get(javaConverterEntry.getKey()) == null) {
+				converterList.addAll(javaConverterEntry.getValue());
+			}
+		}
+
+		return converterList;
+	}
+
+	protected Iterable<EclipseLinkConverter> getMappingFileConverters() {
+		ArrayList<EclipseLinkConverter> converterList = new ArrayList<EclipseLinkConverter>();
+		this.addMappingFileConvertersTo(converterList);
+		return converterList;
+	}
+
+	protected void addMappingFileConvertersTo(ArrayList<EclipseLinkConverter> converterList) {
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			MappingFile mappingFile = mappingFileRef.getMappingFile();
+			// TODO bjv - bogus cast - need to add API to MappingFileRef?
+			if (mappingFile instanceof OrmXml) {
+				EntityMappings entityMappings = ((OrmXml) mappingFile).getRoot();
+				if (entityMappings instanceof EclipseLinkEntityMappings) {
+					this.addConvertersTo(((EclipseLinkEntityMappings) entityMappings).getConverterContainer(), converterList);
+				}
+			}
+		}
+		this.addConvertersTo(this.getMappingFilePersistentTypes(), converterList);
+	}
+
+	/**
+	 * Include "overridden" Java converters.
+	 */
+	protected Iterable<EclipseLinkConverter> getJavaConverters() {
+		ArrayList<EclipseLinkConverter> converterList = new ArrayList<EclipseLinkConverter>();
+		this.addJavaConvertersTo(converterList);
+		return converterList;
+	}
+
+	/**
+	 * Include "overridden" Java converters.
+	 */
+	protected void addJavaConvertersTo(ArrayList<EclipseLinkConverter> converterList) {
+		this.addConvertersTo(this.getAllJavaPersistentTypesUnique(), converterList);
+	}
+
+	// TODO bjv - bogus casts - need to delegate...
+	protected void addConvertersTo(Iterable<PersistentType> persistentTypes, ArrayList<EclipseLinkConverter> converterList) {
+		for (PersistentType persistentType : persistentTypes) {
+			TypeMapping typeMapping = persistentType.getMapping();
+			if (typeMapping instanceof EclipseLinkOrmTypeMapping) {
+				this.addConvertersTo(((EclipseLinkOrmTypeMapping) typeMapping).getConverterContainer(), converterList);
+			}
+			else if (typeMapping instanceof EclipseLinkJavaTypeMapping) {
+				this.addConvertersTo(((EclipseLinkJavaTypeMapping) typeMapping).getConverterContainer(), converterList);
+			}
+			for (ReadOnlyPersistentAttribute persistentAttribute : CollectionTools.iterable(persistentType.attributes())) {
+				AttributeMapping attributeMapping = persistentAttribute.getMapping();
+				if (attributeMapping instanceof ConvertibleMapping) {
+					Converter converter = ((ConvertibleMapping) attributeMapping).getConverter();
+					if ((converter != null) && (converter.getType() == EclipseLinkConvert.class)) {
+						EclipseLinkConverter elConverter = ((EclipseLinkConvert) converter).getConverter();
+						if (elConverter != null) {
+							converterList.add(elConverter);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected void addConvertersTo(OrmEclipseLinkConverterContainer converterContainer, ArrayList<EclipseLinkConverter> converterList) {
+		CollectionTools.addAll(converterList, converterContainer.customConverters());
+		CollectionTools.addAll(converterList, converterContainer.objectTypeConverters());
+		CollectionTools.addAll(converterList, converterContainer.structConverters());
+		CollectionTools.addAll(converterList, converterContainer.typeConverters());
+	}
+
+	protected void addConvertersTo(JavaEclipseLinkConverterContainer converterContainer, ArrayList<EclipseLinkConverter> converterList) {
+		EclipseLinkConverter converter = converterContainer.getCustomConverter();
+		if (converter != null) {
+			converterList.add(converter);
+		}
+		converter = converterContainer.getObjectTypeConverter();
+		if (converter != null) {
+			converterList.add(converter);
+		}
+		converter = converterContainer.getStructConverter();
+		if (converter != null) {
+			converterList.add(converter);
+		}
+		converter = converterContainer.getTypeConverter();
+		if (converter != null) {
+			converterList.add(converter);
+		}
+	}
+
+	protected HashMap<String, ArrayList<EclipseLinkConverter>> mapConvertersByName(Iterable<EclipseLinkConverter> converterList) {
+		HashMap<String, ArrayList<EclipseLinkConverter>> map = new HashMap<String, ArrayList<EclipseLinkConverter>>();
+		for (EclipseLinkConverter converter : converterList) {
+			String converterName = converter.getName();
+			ArrayList<EclipseLinkConverter> list = map.get(converterName);
+			if (list == null) {
+				list = new ArrayList<EclipseLinkConverter>();
+				map.put(converterName, list);
+			}
+			list.add(converter);
+		}
+		return map;
 	}
 
 
@@ -356,12 +505,6 @@ public class EclipseLinkPersistenceUnit
 	@Override
 	public EclipseLinkPersistenceXmlContextNodeFactory getContextNodeFactory() {
 		return (EclipseLinkPersistenceXmlContextNodeFactory) super.getContextNodeFactory();
-	}
-
-	@Override
-	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
-		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
-		nonUpdateAspectNames.add(CONVERTERS_COLLECTION);
 	}
 
 	@Override
@@ -398,6 +541,12 @@ public class EclipseLinkPersistenceUnit
 
 
 	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateConverters(messages, reporter);
+	}
 
 	@Override
 	protected void validateProperties(List<IMessage> messages, IReporter reporter) {
@@ -744,6 +893,53 @@ public class EclipseLinkPersistenceUnit
 	private Iterable<Property> getSessionCustomizerProperties() {
 		return CollectionTools.iterable(this.propertiesWithNamePrefix(Customization.ECLIPSELINK_SESSION_CUSTOMIZER));
 	}
+
+	/**
+	 * <strong>NB:</strong> We validate converters here.
+	 * @see #validateGenerators(List, IReporter)
+	 */
+	protected void validateConverters(List<IMessage> messages, IReporter reporter) {
+		this.checkForDuplicateConverters(messages);
+		for (EclipseLinkConverter converter : this.getConverters()) {
+			this.validate(converter, messages, reporter);
+		}
+	}
+
+	protected void checkForDuplicateConverters(List<IMessage> messages) {
+		HashMap<String, ArrayList<EclipseLinkConverter>> convertersByName = this.mapConvertersByName(this.getConverters());
+		for (ArrayList<EclipseLinkConverter> dups : convertersByName.values()) {
+			if (dups.size() > 1) {
+				for (EclipseLinkConverter dup : dups) {
+					messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
+							new String[] {dup.getName()},
+							dup,
+							this.extractNameTextRange(dup)
+						)
+					);
+				}
+			}
+		}
+	}
+
+	// TODO bjv isn't it obvious?
+	protected TextRange extractNameTextRange(EclipseLinkConverter converter) {
+		return (converter instanceof OrmEclipseLinkConverter<?>) ?
+				((OrmEclipseLinkConverter<?>) converter).getNameTextRange() :
+				((JavaEclipseLinkConverter<?>) converter).getNameTextRange(null);
+	}
+
+	// TODO bjv isn't it obvious?
+	protected void validate(EclipseLinkConverter converter, List<IMessage> messages, IReporter reporter) {
+		if (converter instanceof OrmEclipseLinkConverter<?>) {
+			((OrmEclipseLinkConverter<?>) converter).validate(messages, reporter);
+		} else {
+			((JavaEclipseLinkConverter<?>) converter).validate(messages, reporter, null);
+		}
+	}
+
 
 	// ********** refactoring **********
 

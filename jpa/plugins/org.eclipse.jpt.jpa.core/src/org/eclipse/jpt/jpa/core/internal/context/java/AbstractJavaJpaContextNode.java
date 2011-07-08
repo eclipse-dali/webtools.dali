@@ -71,6 +71,24 @@ public abstract class AbstractJavaJpaContextNode
 	}
 
 	/**
+	 * Validate the specified node if it is not <code>null</code>.
+	 */
+	protected void validateNode(JavaJpaContextNode node, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (node != null) {
+			node.validate(messages, reporter, astRoot);
+		}
+	}
+
+	/**
+	 * Validate the specified nodes.
+	 */
+	protected void validateNodes(Iterable<? extends JavaJpaContextNode> nodes, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		for (JavaJpaContextNode node : nodes) {
+			node.validate(messages, reporter, astRoot);
+		}
+	}
+
+	/**
 	 * Return the specified text range if it is not <code>null</code>; if it is
 	 * <code>null</code>, return the node's validation text range.
 	 */

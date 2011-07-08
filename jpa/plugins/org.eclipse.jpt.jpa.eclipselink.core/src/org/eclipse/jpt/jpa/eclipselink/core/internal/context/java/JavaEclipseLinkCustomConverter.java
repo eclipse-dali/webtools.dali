@@ -12,38 +12,30 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * <code>org.eclipse.persistence.annotations.Converter</code>
+ */
 public class JavaEclipseLinkCustomConverter
-	extends JavaEclipseLinkConverter<EclipseLinkConverterAnnotation>
+	extends JavaEclipseLinkConverterClassConverter<EclipseLinkConverterAnnotation>
 	implements EclipseLinkCustomConverter
 {
-	private String converterClass;
 	private String fullyQualifiedConverterClass;
 		public static final String FULLY_QUALIFIED_CONVERTER_CLASS_PROPERTY = "fullyQualifiedConverterClass"; //$NON-NLS-1$
 
 
 	public JavaEclipseLinkCustomConverter(JavaJpaContextNode parent, EclipseLinkConverterAnnotation converterAnnotation) {
-		super(parent, converterAnnotation);
-		this.converterClass = converterAnnotation.getConverterClass();
+		super(parent, converterAnnotation, converterAnnotation.getConverterClass());
 	}
 
 
 	// ********** synchronize/update **********
-
-	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.setConverterClass_(this.converterAnnotation.getConverterClass());
-	}
 
 	@Override
 	public void update() {
@@ -54,24 +46,20 @@ public class JavaEclipseLinkCustomConverter
 
 	// ********** converter class **********
 
-	public String getConverterClass() {
-		return this.converterClass;
+	@Override
+	protected String getAnnotationConverterClass() {
+		return this.converterAnnotation.getConverterClass();
 	}
 
-	public void setConverterClass(String converterClass) {
+	@Override
+	protected void setAnnotationConverterClass(String converterClass) {
 		this.converterAnnotation.setConverterClass(converterClass);
-		this.setConverterClass_(converterClass);
-	}
-
-	protected void setConverterClass_(String converterClass) {
-		String old = this.converterClass;
-		this.converterClass = converterClass;
-		this.firePropertyChanged(CONVERTER_CLASS_PROPERTY, old, converterClass);
 	}
 
 
 	// ********** fully qualified converter class **********
 
+	@Override
 	public String getFullyQualifiedConverterClass() {
 		return this.fullyQualifiedConverterClass;
 	}
@@ -93,45 +81,23 @@ public class JavaEclipseLinkCustomConverter
 	//************ validation ***************
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		if (this.converterClass != null) {
-			// the annotation will have a compile error if its converter class is missing
-			this.validateConverterClass(messages, astRoot);
-		}
+	protected String getEclipseLinkConverterInterface() {
+		return ECLIPSELINK_CONVERTER_CLASS_NAME;
 	}
 
-	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.converterClass == null) {
-			//Annotation itself will have compile error if converter class not defined
-			return;
-		}
-
-		if (StringTools.stringIsEmpty(this.converterClass)) {
-			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_DEFINED,
-					this,
-					getConverterClassTextRange(astRoot)
-				)
-			);			
-		}
-		else if ( ! this.converterAnnotation.converterClassImplementsInterface(ECLIPSELINK_CONVERTER_CLASS_NAME, astRoot)) {
-			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER,
-					new String[] {this.converterClass},
-					this,
-					this.getConverterClassTextRange(astRoot)
-				)
-			);
-		}
+	@Override
+	protected String getEclipseLinkConverterInterfaceErrorMessage() {
+		return EclipseLinkJpaValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER;
 	}
 
-	protected TextRange getConverterClassTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.converterAnnotation.getConverterClassTextRange(astRoot), astRoot);
+	@Override
+	protected TextRange getAnnotationConverterClassTextRange(CompilationUnit astRoot) {
+		return this.converterAnnotation.getConverterClassTextRange(astRoot);
+	}
+
+	@Override
+	protected void addConverterClassDoesNotExistMessageTo(List<IMessage> messages, CompilationUnit astRoot) {
+		// no need to add message since there will already be a compiler error
 	}
 
 

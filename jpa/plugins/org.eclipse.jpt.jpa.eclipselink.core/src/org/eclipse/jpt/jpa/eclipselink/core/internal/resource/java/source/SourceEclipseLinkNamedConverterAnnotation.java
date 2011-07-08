@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,10 +23,14 @@ import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.Converter
- * org.eclipse.persistence.annotations.StructConverter
- * org.eclipse.persistence.annotations.TypeConverter
- * org.eclipse.persistence.annotations.ObjectTypeConverter
+ * <code>
+ * <ul>
+ * <li>org.eclipse.persistence.annotations.Converter
+ * <li>org.eclipse.persistence.annotations.StructConverter
+ * <li>org.eclipse.persistence.annotations.TypeConverter
+ * <li>org.eclipse.persistence.annotations.ObjectTypeConverter
+ * </ul>
+ * </code>
  */
 abstract class SourceEclipseLinkNamedConverterAnnotation
 	extends SourceAnnotation<Member>
@@ -35,6 +39,7 @@ abstract class SourceEclipseLinkNamedConverterAnnotation
 	final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	final AnnotationElementAdapter<String> nameAdapter;
 	String name;
+	TextRange nameTextRange;
 		
 
 	// ********** construction/initialization **********
@@ -47,10 +52,12 @@ abstract class SourceEclipseLinkNamedConverterAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 	}
 	
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 	}
 	
 	@Override
@@ -90,6 +97,10 @@ abstract class SourceEclipseLinkNamedConverterAnnotation
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.nameTextRange;
+	}
+
+	private TextRange buildNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
@@ -98,5 +109,4 @@ abstract class SourceEclipseLinkNamedConverterAnnotation
 	}
 
 	abstract String getNameElementName();
-
 }

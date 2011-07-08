@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
@@ -26,6 +28,8 @@ import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder;
@@ -102,7 +106,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected JavaResourcePersistentType getDataTypeJavaResourcePersistentType() {
-		return this.getEntityMappings().resolveJavaResourcePersistentType(this.getDataType());
+		return this.getMappingFileRoot().resolveJavaResourcePersistentType(this.getDataType());
 	}
 
 
@@ -132,7 +136,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected JavaResourcePersistentType getObjectTypeJavaResourcePersistentType() {
-		return this.getEntityMappings().resolveJavaResourcePersistentType(this.getObjectType());
+		return this.getMappingFileRoot().resolveJavaResourcePersistentType(this.getObjectType());
 	}
 
 
@@ -380,9 +384,42 @@ public class OrmEclipseLinkObjectTypeConverter
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		this.checkForDuplicateDataValues(messages);
 		for (OrmEclipseLinkConversionValue conversionValue : this.getConversionValues()) {
 			conversionValue.validate(messages, reporter);
 		}
+	}
+
+	protected void checkForDuplicateDataValues(List<IMessage> messages) {
+		for (ArrayList<OrmEclipseLinkConversionValue> dups : this.mapConversionValuesByDataValue().values()) {
+			if (dups.size() > 1) {
+				for (OrmEclipseLinkConversionValue dup : dups) {
+					messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE,
+							new String[] {dup.getDataValue()},
+							this,
+							dup.getDataValueTextRange()
+						)
+					);
+				}
+			}
+		}
+	}
+
+	protected HashMap<String, ArrayList<OrmEclipseLinkConversionValue>> mapConversionValuesByDataValue() {
+		HashMap<String, ArrayList<OrmEclipseLinkConversionValue>> map = new HashMap<String, ArrayList<OrmEclipseLinkConversionValue>>(this.conversionValuesSize());
+		for (OrmEclipseLinkConversionValue conversionValue : this.getConversionValues()) {
+			String dataValue = conversionValue.getDataValue();
+			ArrayList<OrmEclipseLinkConversionValue> list = map.get(dataValue);
+			if (list == null) {
+				list = new ArrayList<OrmEclipseLinkConversionValue>();
+				map.put(dataValue, list);
+			}
+			list.add(conversionValue);
+		}
+		return map;
 	}
 
 

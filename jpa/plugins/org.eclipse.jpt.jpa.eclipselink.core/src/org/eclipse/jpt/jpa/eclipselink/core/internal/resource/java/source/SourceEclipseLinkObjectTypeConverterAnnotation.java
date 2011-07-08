@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeC
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.NestableEclipseLinkConversionValueAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.ObjectTypeConverter
+ * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
  */
 public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	extends SourceBaseEclipseLinkTypeConverterAnnotation
@@ -47,6 +47,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> DEFAULT_OBJECT_VALUE_ADAPTER = buildDefaultObjectValueAdapter();
 	private final AnnotationElementAdapter<String> defaultObjectValueAdapter;
 	private String defaultObjectValue;
+	private TextRange defaultObjectValueTextRange;
 
 	private final Vector<NestableEclipseLinkConversionValueAnnotation> conversionValues = new Vector<NestableEclipseLinkConversionValueAnnotation>();
 	private final ConversionValuesAnnotationContainer conversionValuesContainer = new ConversionValuesAnnotationContainer();
@@ -65,6 +66,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.defaultObjectValue = this.buildDefaultObjectValue(astRoot);
+		this.defaultObjectValueTextRange = this.buildDefaultObjectValueTextRange(astRoot);
 		AnnotationContainerTools.initialize(this.conversionValuesContainer, astRoot);
 	}
 
@@ -72,6 +74,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncDefaultObjectValue(this.buildDefaultObjectValue(astRoot));
+		this.defaultObjectValueTextRange = this.buildDefaultObjectValueTextRange(astRoot);
 		AnnotationContainerTools.synchronize(this.conversionValuesContainer, astRoot);
 	}
 
@@ -129,6 +132,10 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	}
 
 	public TextRange getDefaultObjectValueTextRange(CompilationUnit astRoot) {
+		return this.defaultObjectValueTextRange;
+	}
+
+	private TextRange buildDefaultObjectValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(DEFAULT_OBJECT_VALUE_ADAPTER, astRoot);
 	}
 

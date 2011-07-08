@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,12 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -108,25 +104,9 @@ public class JavaEclipseLinkConversionValue
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.validateDataValuesUnique(messages, astRoot);
 	}
 
-	protected void validateDataValuesUnique(List<IMessage> messages, CompilationUnit astRoot) {
-		HashBag<String> dataValues = CollectionTools.bag(this.getObjectTypeConverter().getDataValues(), this.getObjectTypeConverter().getDataValuesSize());
-		if (dataValues.count(this.dataValue) > 1) {
-			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE,
-					new String[] {this.dataValue},
-					this,
-					this.getDataValueTextRange(astRoot)
-				)
-			);
-		}
-	}
-
-	protected TextRange getDataValueTextRange(CompilationUnit astRoot) {
+	public TextRange getDataValueTextRange(CompilationUnit astRoot) {
 		return this.getValidationTextRange(this.conversionValueAnnotation.getDataValueTextRange(astRoot), astRoot);
 	}
 

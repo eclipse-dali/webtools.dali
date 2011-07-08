@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -75,7 +75,7 @@ public class OrmEclipseLinkTypeConverter
 	}
 
 	protected JavaResourcePersistentType getDataTypeJavaResourcePersistentType() {
-		return this.getEntityMappings().resolveJavaResourcePersistentType(this.dataType);
+		return this.getMappingFileRoot().resolveJavaResourcePersistentType(this.dataType);
 	}
 
 
@@ -105,7 +105,7 @@ public class OrmEclipseLinkTypeConverter
 	}
 
 	protected JavaResourcePersistentType getObjectTypeJavaResourcePersistentType() {
-		return this.getEntityMappings().resolveJavaResourcePersistentType(this.objectType);
+		return this.getMappingFileRoot().resolveJavaResourcePersistentType(this.objectType);
 	}
 
 

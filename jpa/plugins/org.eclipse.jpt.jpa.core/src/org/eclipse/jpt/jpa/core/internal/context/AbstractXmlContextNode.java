@@ -38,6 +38,24 @@ public abstract class AbstractXmlContextNode
 	}
 
 	/**
+	 * Validate the specified node if it is not <code>null</code>.
+	 */
+	protected void validateNode(XmlContextNode node, List<IMessage> messages, IReporter reporter) {
+		if (node != null) {
+			node.validate(messages, reporter);
+		}
+	}
+
+	/**
+	 * Validate the specified nodes.
+	 */
+	protected void validateNodes(Iterable<? extends XmlContextNode> nodes, List<IMessage> messages, IReporter reporter) {
+		for (XmlContextNode node : nodes) {
+			node.validate(messages, reporter);
+		}
+	}
+
+	/**
 	 * Return the specified text range if it is not <code>null</code>; if it is
 	 * <code>null</code>, return the node's validation text range.
 	 */

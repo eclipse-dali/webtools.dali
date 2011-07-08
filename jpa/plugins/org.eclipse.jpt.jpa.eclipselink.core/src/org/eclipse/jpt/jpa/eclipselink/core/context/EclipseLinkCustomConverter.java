@@ -24,5 +24,5 @@ package org.eclipse.jpt.jpa.eclipselink.core.context;
 public interface EclipseLinkCustomConverter
 	extends EclipseLinkConverterClassConverter
 {
-	// nothing...
+	String ECLIPSELINK_CONVERTER_CLASS_NAME = "org.eclipse.persistence.mappings.converters.Converter"; //$NON-NLS-1$
 }

@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
@@ -30,20 +30,37 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedConverter>
 	extends OrmEclipseLinkConverter<X>
-	implements EclipseLinkCustomConverter
+	implements EclipseLinkConverterClassConverter
 {
-	protected String converterClass;
+	private String converterClass;
 
 	protected JavaResourcePersistentType converterPersistentType;
 
-	public OrmEclipseLinkConverterClassConverter(XmlContextNode parent, X xmlConverter) {
+
+	public OrmEclipseLinkConverterClassConverter(XmlContextNode parent, X xmlConverter, String converterClass) {
 		super(parent, xmlConverter);
+		this.converterClass = converterClass;
 	}
 
-	// **************** converter class ****************************************
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setConverterClass_(this.getXmlConverterClass());
+	}
+
+
+	// ********** converter class **********
 
 	public String getConverterClass() {
 		return this.converterClass;
+	}
+
+	public void setConverterClass(String converterClass) {
+		this.setConverterClass_(converterClass);
+		this.setXmlConverterClass(converterClass);
 	}
 
 	protected void setConverterClass_(String newConverterClass) {
@@ -53,16 +70,22 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	}
 
 	protected JavaResourcePersistentType getConverterJavaResourcePersistentType() {
-		return this.getEntityMappings().resolveJavaResourcePersistentType(this.converterClass);
+		return this.getMappingFileRoot().resolveJavaResourcePersistentType(this.converterClass);
 	}
 
-	// **************** resource interaction ***********************************
+	protected abstract String getXmlConverterClass();
+
+	protected abstract void setXmlConverterClass(String converterClass);
+
+
+	// ********** resource interaction **********
 
 	protected void updateConverterPersistentType() {
 		this.converterPersistentType = this.getConverterJavaResourcePersistentType();
 	}
 
-	// **************** validation *********************************************
+
+	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
@@ -71,11 +94,9 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	}
 
 	protected void validateConverterClass(List<IMessage> messages) {
-		IJavaProject javaProject = this.getJpaProject().getJavaProject();
-
 		if (StringTools.stringIsEmpty(this.converterClass)) {
 			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_DEFINED,
 					this,
@@ -84,9 +105,10 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 			);
 			return;
 		}
-		if ( ! this.converterClassExists(javaProject)) {
+
+		if ( ! this.converterClassExists()) {
 			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_EXISTS,
 					new String[] {this.converterClass},
@@ -96,11 +118,12 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 			);
 			return;
 		}
-		if ( ! this.converterClassImplementsInterface(javaProject, ECLIPSELINK_CONVERTER_CLASS_NAME)) {
+
+		if ( ! this.converterClassImplementsInterface(this.getEclipseLinkConverterInterface())) {
 			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER,
+					this.getEclipseLinkConverterInterfaceErrorMessage(),
 					new String[] {this.converterClass},
 					this,
 					this.getConverterClassTextRange()
@@ -109,34 +132,51 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 		}
 	}
 
-	private boolean converterClassExists(IJavaProject javaProject) {
-		if (this.converterClass == null) {
-			return false;
-		}
+	/**
+	 * Return the name of the EclipseLink interface the converter class must
+	 * implement.
+	 */
+	protected abstract String getEclipseLinkConverterInterface();
 
-		if (JDTTools.findType(javaProject, this.converterClass) != null) {
-			return true;
-		}
+	protected abstract String getEclipseLinkConverterInterfaceErrorMessage();
 
-		String globalPackage = this.getEntityMappings().getPackage();
-		if (StringTools.stringIsEmpty(globalPackage)) {
-			return false;
-		}
-		return JDTTools.findType(javaProject, globalPackage + '.' + this.converterClass) != null;
+	protected boolean converterClassExists() {
+		return this.typeExists(this.converterClass) ||
+				this.typeExists(this.getAlternateConverterClass());
 	}
 
-	private boolean converterClassImplementsInterface(IJavaProject javaProject, String interfaceName) {
-		if (this.converterClass == null) {
-			return false;
+	/**
+	 * Add <code>null</code> check.
+	 */
+	protected boolean typeExists(String typeName) {
+		return (typeName != null) && 
+				(JDTTools.findType(this.getJavaProject(), typeName) != null);
+	}
+
+	/**
+	 * Add <code>null</code> check.
+	 */
+	protected boolean typeImplementsInterface(String typeName, String interfaceName) {
+		return (typeName != null) && 
+				JDTTools.typeNamedImplementsInterfaceNamed(this.getJavaProject(), typeName, interfaceName);
+	}
+
+	protected boolean converterClassImplementsInterface(String interfaceName) {
+		return this.typeImplementsInterface(this.converterClass, interfaceName) ||
+				this.typeImplementsInterface(this.getAlternateConverterClass(), interfaceName);
+	}
+
+	/**
+	 * If present, append the mapping file package to the converter class and
+	 * return it. Return <code>null</code> if the mapping file package is not
+	 * specified.
+	 */
+	protected String getAlternateConverterClass() {
+		String mappingFilePackage = this.getMappingFileRoot().getPackage();
+		if (StringTools.stringIsEmpty(mappingFilePackage)) {
+			return null;
 		}
-		if (JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.converterClass, interfaceName)) {
-			return true;
-		}
-		String globalPackage = this.getEntityMappings().getPackage();
-		if (StringTools.stringIsEmpty(globalPackage)) {
-			return false;
-		}
-		return JDTTools.typeNamedImplementsInterfaceNamed(javaProject, globalPackage + '.' + this.converterClass, interfaceName);
+		return mappingFilePackage + '.' + this.converterClass;
 	}
 
 	protected TextRange getConverterClassTextRange() {
@@ -145,7 +185,12 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 
 	protected abstract TextRange getXmlConverterClassTextRange();
 
-	//************************* refactoring ************************
+	protected IJavaProject getJavaProject() {
+		return this.getJpaProject().getJavaProject();
+	}
+
+
+	// ********** refactoring **********
 
 	@Override
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
@@ -181,5 +226,4 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 		JavaResourcePersistentType converterType = this.getConverterJavaResourcePersistentType();
 		return (converterType != null) && converterType.isIn(packageFragment);
 	}
-
 }

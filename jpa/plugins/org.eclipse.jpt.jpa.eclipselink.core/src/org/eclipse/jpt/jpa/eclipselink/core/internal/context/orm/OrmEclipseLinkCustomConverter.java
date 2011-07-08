@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder;
@@ -21,29 +22,25 @@ import org.eclipse.text.edits.ReplaceEdit;
 
 public class OrmEclipseLinkCustomConverter
 	extends OrmEclipseLinkConverterClassConverter<XmlConverter>
+	implements EclipseLinkCustomConverter
 {
-
 	public OrmEclipseLinkCustomConverter(XmlContextNode parent, XmlConverter xmlConverter) {
-		super(parent, xmlConverter);
-		this.converterClass = xmlConverter.getClassName();
-	}
-
-
-	// ********** synchronize/update **********
-
-	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.setConverterClass_(this.xmlConverter.getClassName());
+		super(parent, xmlConverter, xmlConverter.getClassName());
 	}
 
 
 	// ********** converter class **********
 
-	public void setConverterClass(String converterClass) {
-		this.setConverterClass_(converterClass);
+	@Override
+	protected String getXmlConverterClass() {
+		return this.xmlConverter.getClassName();
+	}
+
+	@Override
+	protected void setXmlConverterClass(String converterClass) {
 		this.xmlConverter.setClassName(converterClass);
 	}
+
 
 	// ********** misc **********
 
@@ -51,10 +48,6 @@ public class OrmEclipseLinkCustomConverter
 		return EclipseLinkCustomConverter.class;
 	}
 
-	@Override
-	protected TextRange getXmlConverterClassTextRange() {
-		return this.xmlConverter.getConverterClassTextRange();
-	}
 
 	// ********** refactoring **********
 
@@ -67,6 +60,25 @@ public class OrmEclipseLinkCustomConverter
 	protected ReplaceEdit createRenamePackageEdit(String newName) {
 		return xmlConverter.createRenamePackageEdit(newName);
 	}
+
+
+	// ********** validation **********
+	
+	@Override
+	protected String getEclipseLinkConverterInterface() {
+		return ECLIPSELINK_CONVERTER_CLASS_NAME;
+	}
+
+	@Override
+	protected String getEclipseLinkConverterInterfaceErrorMessage() {
+		return EclipseLinkJpaValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER;
+	}
+
+	@Override
+	protected TextRange getXmlConverterClassTextRange() {
+		return this.xmlConverter.getConverterClassTextRange();
+	}
+
 
 	// ********** adapter **********
 

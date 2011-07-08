@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.StructConverter
+ * <code>org.eclipse.persistence.annotations.StructConverter</code>
  */
 public final class SourceEclipseLinkStructConverterAnnotation
 	extends SourceEclipseLinkNamedConverterAnnotation
@@ -35,6 +35,7 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> CONVERTER_ADAPTER = buildConverterAdapter();
 	private final AnnotationElementAdapter<String> converterAdapter;
 	private String converter;
+	private TextRange converterTextRange;
 
 
 	public SourceEclipseLinkStructConverterAnnotation(JavaResourcePersistentMember parent, Member member) {
@@ -50,12 +51,14 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.converter = this.buildConverter(astRoot);
+		this.converterTextRange = this.buildConverterTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncConverter(this.buildConverter(astRoot));
+		this.converterTextRange = this.buildConverterTextRange(astRoot);
 	}
 
 	@Override
@@ -98,6 +101,10 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	}
 
 	public TextRange getConverterTextRange(CompilationUnit astRoot) {
+		return this.converterTextRange;
+	}
+
+	private TextRange buildConverterTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(CONVERTER_ADAPTER, astRoot);
 	}
 
@@ -106,5 +113,4 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	private static DeclarationAnnotationElementAdapter<String> buildConverterAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.STRUCT_CONVERTER__CONVERTER, StringExpressionConverter.instance());
 	}
-
 }

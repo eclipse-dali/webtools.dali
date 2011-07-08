@@ -11,12 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -107,25 +103,9 @@ public class OrmEclipseLinkConversionValue
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateDataValuesUnique(messages);
 	}
 
-	protected void validateDataValuesUnique(List<IMessage> messages) {
-		HashBag<String> dataValues = CollectionTools.bag(this.getObjectTypeConverter().getDataValues(), this.getObjectTypeConverter().getDataValuesSize());
-		if (dataValues.count(this.dataValue) > 1) {
-			messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					EclipseLinkJpaValidationMessages.MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE,
-					new String[] {this.dataValue},
-					this,
-					this.getDataValueTextRange()
-				)
-			);
-		}
-	}
-
-	protected TextRange getDataValueTextRange() {
+	public TextRange getDataValueTextRange() {
 		return this.getValidationTextRange(this.xmlConversionValue.getDataValueTextRange());
 	}
 

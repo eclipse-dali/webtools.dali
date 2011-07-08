@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -22,12 +24,17 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
+ */
 public class JavaEclipseLinkObjectTypeConverter
 	extends JavaEclipseLinkConverter<EclipseLinkObjectTypeConverterAnnotation>
 	implements EclipseLinkObjectTypeConverter
@@ -284,9 +291,42 @@ public class JavaEclipseLinkObjectTypeConverter
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		this.checkForDuplicateDataValues(messages, astRoot);
 		for (JavaEclipseLinkConversionValue conversionValue : this.getConversionValues()) {
 			conversionValue.validate(messages, reporter, astRoot);
 		}
+	}
+
+	protected void checkForDuplicateDataValues(List<IMessage> messages, CompilationUnit astRoot) {
+		for (ArrayList<JavaEclipseLinkConversionValue> dups : this.mapConversionValuesByDataValue().values()) {
+			if (dups.size() > 1) {
+				for (JavaEclipseLinkConversionValue dup : dups) {
+					messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE,
+							new String[] {dup.getDataValue()},
+							this,
+							dup.getDataValueTextRange(astRoot)
+						)
+					);
+				}
+			}
+		}
+	}
+
+	protected HashMap<String, ArrayList<JavaEclipseLinkConversionValue>> mapConversionValuesByDataValue() {
+		HashMap<String, ArrayList<JavaEclipseLinkConversionValue>> map = new HashMap<String, ArrayList<JavaEclipseLinkConversionValue>>(this.conversionValuesSize());
+		for (JavaEclipseLinkConversionValue conversionValue : this.getConversionValues()) {
+			String dataValue = conversionValue.getDataValue();
+			ArrayList<JavaEclipseLinkConversionValue> list = map.get(dataValue);
+			if (list == null) {
+				list = new ArrayList<JavaEclipseLinkConversionValue>();
+				map.put(dataValue, list);
+			}
+			list.add(conversionValue);
+		}
+		return map;
 	}
 
 

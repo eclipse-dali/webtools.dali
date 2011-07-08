@@ -317,21 +317,14 @@ public class JavaEclipseLinkConverterContainerImpl
 
 	// ********** validation **********
 
+	/**
+	 * The converters are validated in the persistence unit.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit#validateConverters(List, IReporter)
+	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.customConverter != null) {
-			this.customConverter.validate(messages, reporter, astRoot);
-		}
-		if (this.objectTypeConverter != null) {
-			this.objectTypeConverter.validate(messages, reporter, astRoot);
-		}
-		if (this.typeConverter != null) {
-			this.typeConverter.validate(messages, reporter, astRoot);
-		}
-		if (this.structConverter != null) {
-			this.structConverter.validate(messages, reporter, astRoot);
-		}
+		// converters are validated in the persistence unit
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

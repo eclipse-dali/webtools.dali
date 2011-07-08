@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.Association;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -264,25 +264,25 @@ public class OrmEclipseLinkConvert
 
 	// ********** validation **********
 
+	/**
+	 * The converters are validated in the persistence unit.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit#validateConverters(List, IReporter)
+	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (this.converter != null) {
-			this.converter.validate(messages, reporter);
-		}
-		this.validateConvertValue(messages);
+		// converters are validated in the persistence unit
+		this.validateConverterName(messages);
 	}
 	
-	private void validateConvertValue(List<IMessage> messages) {
+	private void validateConverterName(List<IMessage> messages) {
 		String converterName = this.getConverterName();
 		if (converterName == null) {
 			return;
 		}
 
-		for (Iterator<EclipseLinkConverter> converters = this.getPersistenceUnit().allConverters(); converters.hasNext(); ) {
-			if (converterName.equals(converters.next().getName())) {
-				return;
-			}
+		if (CollectionTools.contains(this.getPersistenceUnit().getUniqueConverterNames(), converterName)) {
+			return;
 		}
 
 		if (ArrayTools.contains(RESERVED_CONVERTER_NAMES, converterName)) {
@@ -290,13 +290,16 @@ public class OrmEclipseLinkConvert
 		}
 
 		messages.add(
-				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						EclipseLinkJpaValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
-						new String[] {converterName, this.getParent().getName()},
-						this.getParent(),
-						this.getValidationTextRange()
-				)
+			DefaultEclipseLinkJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				EclipseLinkJpaValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
+				new String[] {
+					converterName,
+					this.getParent().getName()
+				},
+				this.getParent(),
+				this.getValidationTextRange()
+			)
 		);	
 	}
 	

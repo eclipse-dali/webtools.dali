@@ -36,7 +36,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.orm.VirtualOrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -604,7 +603,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 * type, the attribute must be one of the type's default attributes.
 	 * (Actually, the Java attribute is held by a <em>virtual</em>
 	 * <code>orm.xml</code> attribute
-	 * (see {@link VirtualOrmPersistentAttribute})
+	 * (see {@link org.eclipse.jpt.jpa.core.internal.context.orm.VirtualOrmPersistentAttribute})
 	 * that is held by the <code>orm.xml</code> type.
 	 * The <em>virtual</em> attribute returns the Java attribute's mapping
 	 * as its own.)

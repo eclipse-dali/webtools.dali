@@ -9,16 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
@@ -57,7 +56,6 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	@Override
 	public void update() {
 		super.update();
-		this.getPersistenceUnit().addConverter(this);
 	}
 
 
@@ -95,10 +93,6 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 
-	protected EntityMappings getEntityMappings() {
-		return (EntityMappings) this.getMappingFileRoot();
-	}
-
 	public char getEnclosingTypeSeparator() {
 		return '$';
 	}
@@ -118,38 +112,45 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateConverterNames(messages);
+		this.validateName(messages);
 	}
 
-	protected void validateConverterNames(List<IMessage> messages){
-			if (StringTools.stringIsEmpty(this.name)) {
-				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY, 
-							EclipseLinkJpaValidationMessages.CONVERTER_NAME_UNDEFINED, 
-							EMPTY_STRING_ARRAY,
-							this,
-							this.getNameTextRange()
-					));
-			} else {
-				List<String> reportedNames = new ArrayList<String>();
-				for (ListIterator<EclipseLinkConverter> globalConverters = this.getPersistenceUnit().allConverters(); globalConverters.hasNext(); ) {
-					if ( this.duplicates(globalConverters.next()) && !reportedNames.contains(this.name)	){
-						messages.add(
-							DefaultEclipseLinkJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
-									EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
-									new String[] {this.name},
-									this,
-									this.getNameTextRange()
-							)
-						);
-						reportedNames.add(this.name);
-					}
-				}
-			}
+	protected void validateName(List<IMessage> messages) {
+		if (StringTools.stringIsEmpty(this.name)) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY, 
+					EclipseLinkJpaValidationMessages.CONVERTER_NAME_UNDEFINED, 
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getNameTextRange()
+				)
+			);
+			return;
 		}
+
+		if (ArrayTools.contains(EclipseLinkConvert.RESERVED_CONVERTER_NAMES, this.name)) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					EclipseLinkJpaValidationMessages.RESERVED_CONVERTER_NAME,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getNameTextRange()
+				)
+			);
+		}
+	}
 	
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.xmlConverter.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+	}
+
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange(this.xmlConverter.getNameTextRange());
+	}
+
 	public boolean overrides(EclipseLinkConverter converter) {
 		if (this.name == null) {
 			return false;
@@ -167,14 +168,6 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 				! converter.overrides(this);
 	}
 
-	public TextRange getValidationTextRange() {
-		TextRange textRange = this.xmlConverter.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
-	}
-
-	public TextRange getNameTextRange() {
-		return this.getValidationTextRange(this.xmlConverter.getNameTextRange());
-	}
 
 	// ********** adapter **********
 
@@ -241,6 +234,9 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 		 */
 		void addXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter);
 	}
+
+
+	// ********** abstract adapter **********
 
 	public abstract static class AbstractAdapter
 		implements Adapter

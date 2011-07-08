@@ -15,19 +15,26 @@ import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
@@ -182,17 +189,46 @@ public class OrmEclipseLinkConvert1_0Composite extends Pane<EclipseLinkConvert>
 	}
 	
 	protected ListValueModel<String> buildSortedConverterNamesModel() {
-		return new SortedListValueModelAdapter<String>(this.buildConverterNamesModel());
+		return new SortedListValueModelAdapter<String>(this.buildUniqueConverterNamesModel());
 	}
 	
+	protected CollectionValueModel<String> buildUniqueConverterNamesModel() {
+		return new SetCollectionValueModel<String>(this.buildConverterNamesModel());
+	}
+
 	protected CollectionValueModel<String> buildConverterNamesModel() {
-		return new CollectionAspectAdapter<EclipseLinkPersistenceUnit, String>(
-			buildPersistenceUnitHolder(),
-			EclipseLinkPersistenceUnit.CONVERTERS_COLLECTION)//TODO need EclipseLinkPersistenceUnit interface
-		{
+		return new FilteringCollectionValueModel<String>(this.buildConverterNamesModel_(), NON_EMPTY_STRING_FILTER);
+	}
+
+	protected static final Filter<String> NON_EMPTY_STRING_FILTER =
+		new Filter<String>() {
+			public boolean accept(String string) {
+				return StringTools.stringIsNotEmpty(string);
+			}
+		};
+
+	protected ListValueModel<String> buildConverterNamesModel_() {
+		return new TransformationListValueModel<EclipseLinkConverter, String>(this.buildConvertersModel()) {
 			@Override
-			protected Iterable<String> getIterable() {
-				return this.subject.getUniqueConverterNames();
+			protected String transformItem_(EclipseLinkConverter converter) {
+				return converter.getName();
+			}
+		};
+	}
+
+	protected ListValueModel<EclipseLinkConverter> buildConvertersModel() {
+		return new ItemPropertyListValueModelAdapter<EclipseLinkConverter>(this.buildConvertersModel_(), EclipseLinkConverter.NAME_PROPERTY);
+	}
+
+	protected CollectionValueModel<EclipseLinkConverter> buildConvertersModel_() {
+		return new CollectionAspectAdapter<EclipseLinkPersistenceUnit, EclipseLinkConverter>(this.buildPersistenceUnitHolder(), EclipseLinkPersistenceUnit.CONVERTERS_COLLECTION) {
+			@Override
+			protected Iterable<EclipseLinkConverter> getIterable() {
+				return this.subject.getConverters();
+			}
+			@Override
+			protected int size_() {
+				return this.subject.convertersSize();
 			}
 		};
 	}
