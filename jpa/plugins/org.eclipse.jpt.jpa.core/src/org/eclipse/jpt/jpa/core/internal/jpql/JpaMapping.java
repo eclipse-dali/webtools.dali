@@ -260,7 +260,7 @@ final class JpaMapping implements IMapping {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		StringTools.buildSimpleToStringOn(this, sb);
+		StringTools.appendSimpleToString(sb, this);
 		sb.append(", name=");
 		sb.append(getName());
 		sb.append(", mappingType=");

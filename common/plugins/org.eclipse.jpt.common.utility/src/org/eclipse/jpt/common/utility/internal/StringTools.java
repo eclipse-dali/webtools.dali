@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -68,7 +68,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#pad(int)
+	 * <p>
+	 * <code>
+	 * String.pad(int)
+	 * </code>
 	 */
 	public static String pad(String string, int length) {
 		return pad(string, length, ' ');
@@ -79,7 +82,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOn(int, Writer)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, Writer)
+	 * </code>
 	 */
 	public static void padOn(String string, int length, Writer writer) {
 		padOn(string, length, ' ', writer);
@@ -90,7 +96,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOn(int, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, StringBuffer)
+	 * </code>
 	 */
 	public static void padOn(String string, int length, StringBuffer sb) {
 		padOn(string, length, ' ', sb);
@@ -101,7 +110,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOn(int, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, StringBuilder)
+	 * </code>
 	 */
 	public static void padOn(String string, int length, StringBuilder sb) {
 		padOn(string, length, ' ', sb);
@@ -113,7 +125,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#pad(int, char)
+	 * <p>
+	 * <code>
+	 * String.pad(int, char)
+	 * </code>
 	 */
 	public static String pad(String string, int length, char c) {
 		int stringLength = string.length();
@@ -132,7 +147,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOn(int, char, Writer)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, char, Writer)
+	 * </code>
 	 */
 	public static void padOn(String string, int length, char c, Writer writer) {
 		int stringLength = string.length();
@@ -152,7 +170,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOn(int, char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, char, StringBuffer)
+	 * </code>
 	 */
 	public static void padOn(String string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length();
@@ -172,7 +193,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOn(int, char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, char, StringBuilder)
+	 * </code>
 	 */
 	public static void padOn(String string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length();
@@ -191,7 +215,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#pad(int)
+	 * <p>
+	 * <code>
+	 * String.pad(int)
+	 * </code>
 	 */
 	public static char[] pad(char[] string, int length) {
 		return pad(string, length, ' ');
@@ -202,7 +229,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOn(int, writer)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, writer)
+	 * </code>
 	 */
 	public static void padOn(char[] string, int length, Writer writer) {
 		padOn(string, length, ' ', writer);
@@ -213,7 +243,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOn(int, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, StringBuffer)
+	 * </code>
 	 */
 	public static void padOn(char[] string, int length, StringBuffer sb) {
 		padOn(string, length, ' ', sb);
@@ -224,7 +257,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOn(int, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, StringBuilder)
+	 * </code>
 	 */
 	public static void padOn(char[] string, int length, StringBuilder sb) {
 		padOn(string, length, ' ', sb);
@@ -236,7 +272,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#pad(int, char)
+	 * <p>
+	 * <code>
+	 * String.pad(int, char)
+	 * </code>
 	 */
 	public static char[] pad(char[] string, int length, char c) {
 		int stringLength = string.length;
@@ -255,7 +294,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOn(int, char, Writer)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, char, Writer)
+	 * </code>
 	 */
 	public static void padOn(char[] string, int length, char c, Writer writer) {
 		int stringLength = string.length;
@@ -275,7 +317,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOn(int, char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, char, StringBuffer)
+	 * </code>
 	 */
 	public static void padOn(char[] string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length;
@@ -295,7 +340,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOn(int, char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.padOn(int, char, StringBuilder)
+	 * </code>
 	 */
 	public static void padOn(char[] string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length;
@@ -314,7 +362,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOrTruncate(int)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncate(int)
+	 * </code>
 	 */
 	public static String padOrTruncate(String string, int length) {
 		return padOrTruncate(string, length, ' ');
@@ -325,7 +376,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOrTruncateOn(int, Writer)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, Writer)
+	 * </code>
 	 */
 	public static void padOrTruncateOn(String string, int length, Writer writer) {
 		padOrTruncateOn(string, length, ' ', writer);
@@ -336,7 +390,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOrTruncateOn(int, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, StringBuffer)
+	 * </code>
 	 */
 	public static void padOrTruncateOn(String string, int length, StringBuffer sb) {
 		padOrTruncateOn(string, length, ' ', sb);
@@ -347,7 +404,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOrTruncateOn(int, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, StringBuilder)
+	 * </code>
 	 */
 	public static void padOrTruncateOn(String string, int length, StringBuilder sb) {
 		padOrTruncateOn(string, length, ' ', sb);
@@ -359,7 +419,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOrTruncate(int, char)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncate(int, char)
+	 * </code>
 	 */
 	public static String padOrTruncate(String string, int length, char c) {
 		int stringLength = string.length();
@@ -378,7 +441,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOrTruncateOn(int, char, Writer)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, char, Writer)
+	 * </code>
 	 */
 	public static void padOrTruncateOn(String string, int length, char c, Writer writer) {
 		int stringLength = string.length();
@@ -397,7 +463,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOrTruncateOn(int, char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, char, StringBuffer)
+	 * </code>
 	 */
 	public static void padOrTruncateOn(String string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length();
@@ -416,7 +485,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOrTruncateOn(int, char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, char, StringBuilder)
+	 * </code>
 	 */
 	public static void padOrTruncateOn(String string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length();
@@ -434,7 +506,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOrTruncate(int)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncate(int)
+	 * </code>
 	 */
 	public static char[] padOrTruncate(char[] string, int length) {
 		return padOrTruncate(string, length, ' ');
@@ -445,7 +520,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOrTruncateOn(int, Writer)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, Writer)
+	 * </code>
 	 */
 	public static void padOrTruncateOn(char[] string, int length, Writer writer) {
 		padOrTruncateOn(string, length, ' ', writer);
@@ -456,7 +534,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOrTruncateOn(int, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, StringBuffer)
+	 * </code>
 	 */
 	public static void padOrTruncate(char[] string, int length, StringBuffer sb) {
 		padOrTruncateOn(string, length, ' ', sb);
@@ -467,7 +548,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * String#padOrTruncateOn(int, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, StringBuilder)
+	 * </code>
 	 */
 	public static void padOrTruncate(char[] string, int length, StringBuilder sb) {
 		padOrTruncateOn(string, length, ' ', sb);
@@ -479,7 +563,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOrTruncate(int, char)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncate(int, char)
+	 * </code>
 	 */
 	public static char[] padOrTruncate(char[] string, int length, char c) {
 		int stringLength = string.length;
@@ -500,7 +587,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOrTruncateOn(int, char, Writer)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, char, Writer)
+	 * </code>
 	 */
 	public static void padOrTruncateOn(char[] string, int length, char c, Writer writer) {
 		int stringLength = string.length;
@@ -519,7 +609,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOrTruncateOn(int, char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, char, StringBuffer)
+	 * </code>
 	 */
 	public static void padOrTruncateOn(char[] string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length;
@@ -538,7 +631,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
-	 * String#padOrTruncateOn(int, char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.padOrTruncateOn(int, char, StringBuilder)
+	 * </code>
 	 */
 	public static void padOrTruncateOn(char[] string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length;
@@ -694,7 +790,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPad(int)
+	 * <p>
+	 * <code>
+	 * String.zeroPad(int)
+	 * </code>
 	 */
 	public static String zeroPad(String string, int length) {
 		return frontPad(string, length, '0');
@@ -705,7 +804,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOn(int, Writer)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOn(int, Writer)
+	 * </code>
 	 */
 	public static void zeroPadOn(String string, int length, Writer writer) {
 		frontPadOn(string, length, '0', writer);
@@ -716,7 +818,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOn(int, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOn(int, StringBuffer)
+	 * </code>
 	 */
 	public static void zeroPadOn(String string, int length, StringBuffer sb) {
 		frontPadOn(string, length, '0', sb);
@@ -727,7 +832,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOn(int, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOn(int, StringBuilder)
+	 * </code>
 	 */
 	public static void zeroPadOn(String string, int length, StringBuilder sb) {
 		frontPadOn(string, length, '0', sb);
@@ -739,7 +847,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPad(int, char)
+	 * <p>
+	 * <code>
+	 * String.frontPad(int, char)
+	 * </code>
 	 */
 	public static String frontPad(String string, int length, char c) {
 		int stringLength = string.length();
@@ -758,7 +869,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOn(int, char, Writer)
+	 * <p>
+	 * <code>
+	 * String.frontPadOn(int, char, Writer)
+	 * </code>
 	 */
 	public static void frontPadOn(String string, int length, char c, Writer writer) {
 		int stringLength = string.length();
@@ -778,7 +892,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOn(int, char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.frontPadOn(int, char, StringBuffer)
+	 * </code>
 	 */
 	public static void frontPadOn(String string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length();
@@ -798,7 +915,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOn(int, char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.frontPadOn(int, char, StringBuilder)
+	 * </code>
 	 */
 	public static void frontPadOn(String string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length();
@@ -817,7 +937,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPad(int)
+	 * <p>
+	 * <code>
+	 * String.zeroPad(int)
+	 * </code>
 	 */
 	public static char[] zeroPad(char[] string, int length) {
 		return frontPad(string, length, '0');
@@ -828,7 +951,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOn(int, Writer)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOn(int, Writer)
+	 * </code>
 	 */
 	public static void zeroPadOn(char[] string, int length, Writer writer) {
 		frontPadOn(string, length, '0', writer);
@@ -839,7 +965,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOn(int, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOn(int, StringBuffer)
+	 * </code>
 	 */
 	public static void zeroPadOn(char[] string, int length, StringBuffer sb) {
 		frontPadOn(string, length, '0', sb);
@@ -850,7 +979,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOn(int, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOn(int, StringBuilder)
+	 * </code>
 	 */
 	public static void zeroPadOn(char[] string, int length, StringBuilder sb) {
 		frontPadOn(string, length, '0', sb);
@@ -862,7 +994,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPad(int, char)
+	 * <p>
+	 * <code>
+	 * String.frontPad(int, char)
+	 * </code>
 	 */
 	public static char[] frontPad(char[] string, int length, char c) {
 		int stringLength = string.length;
@@ -881,7 +1016,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOn(int, char, Writer)
+	 * <p>
+	 * <code>
+	 * String.frontPadOn(int, char, Writer)
+	 * </code>
 	 */
 	public static void frontPadOn(char[] string, int length, char c, Writer writer) {
 		int stringLength = string.length;
@@ -901,7 +1039,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOn(int, char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.frontPadOn(int, char, StringBuffer)
+	 * </code>
 	 */
 	public static void frontPadOn(char[] string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length;
@@ -921,7 +1062,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOn(int, char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.frontPadOn(int, char, StringBuilder)
+	 * </code>
 	 */
 	public static void frontPadOn(char[] string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length;
@@ -940,7 +1084,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOrTruncate(int)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOrTruncate(int)
+	 * </code>
 	 */
 	public static String zeroPadOrTruncate(String string, int length) {
 		return frontPadOrTruncate(string, length, '0');
@@ -951,7 +1098,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOrTruncateOn(int, Writer)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOrTruncateOn(int, Writer)
+	 * </code>
 	 */
 	public static void zeroPadOrTruncateOn(String string, int length, Writer writer) {
 		frontPadOrTruncateOn(string, length, '0', writer);
@@ -962,7 +1112,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOrTruncateOn(int, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOrTruncateOn(int, StringBuffer)
+	 * </code>
 	 */
 	public static void zeroPadOrTruncateOn(String string, int length, StringBuffer sb) {
 		frontPadOrTruncateOn(string, length, '0', sb);
@@ -973,7 +1126,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOrTruncateOn(int, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOrTruncateOn(int, StringBuilder)
+	 * </code>
 	 */
 	public static void zeroPadOrTruncateOn(String string, int length, StringBuilder sb) {
 		frontPadOrTruncateOn(string, length, '0', sb);
@@ -985,7 +1141,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOrTruncate(int, char)
+	 * <p>
+	 * <code>
+	 * String.frontPadOrTruncate(int, char)
+	 * </code>
 	 */
 	public static String frontPadOrTruncate(String string, int length, char c) {
 		int stringLength = string.length();
@@ -1004,7 +1163,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOrTruncateOn(int, char, Writer)
+	 * <p>
+	 * <code>
+	 * String.frontPadOrTruncateOn(int, char, Writer)
+	 * </code>
 	 */
 	public static void frontPadOrTruncateOn(String string, int length, char c, Writer writer) {
 		int stringLength = string.length();
@@ -1023,7 +1185,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOrTruncateOn(int, char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.frontPadOrTruncateOn(int, char, StringBuffer)
+	 * </code>
 	 */
 	public static void frontPadOrTruncateOn(String string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length();
@@ -1042,7 +1207,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOrTruncateOn(int, char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.frontPadOrTruncateOn(int, char, StringBuilder)
+	 * </code>
 	 */
 	public static void frontPadOrTruncateOn(String string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length();
@@ -1060,7 +1228,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOrTruncate(int)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOrTruncate(int)
+	 * </code>
 	 */
 	public static char[] zeroPadOrTruncate(char[] string, int length) {
 		return frontPadOrTruncate(string, length, '0');
@@ -1071,7 +1242,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOrTruncateOn(int, Writer)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOrTruncateOn(int, Writer)
+	 * </code>
 	 */
 	public static void zeroPadOrTruncateOn(char[] string, int length, Writer writer) {
 		frontPadOrTruncateOn(string, length, '0', writer);
@@ -1082,7 +1256,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOrTruncateOn(int, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOrTruncateOn(int, StringBuffer)
+	 * </code>
 	 */
 	public static void zeroPadOrTruncateOn(char[] string, int length, StringBuffer sb) {
 		frontPadOrTruncateOn(string, length, '0', sb);
@@ -1093,7 +1270,10 @@ public final class StringTools {
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * String#zeroPadOrTruncateOn(int, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.zeroPadOrTruncateOn(int, StringBuilder)
+	 * </code>
 	 */
 	public static void zeroPadOrTruncateOn(char[] string, int length, StringBuilder sb) {
 		frontPadOrTruncateOn(string, length, '0', sb);
@@ -1105,7 +1285,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOrTruncate(int, char)
+	 * <p>
+	 * <code>
+	 * String.frontPadOrTruncate(int, char)
+	 * </code>
 	 */
 	public static char[] frontPadOrTruncate(char[] string, int length, char c) {
 		int stringLength = string.length;
@@ -1126,7 +1309,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOrTruncateOn(int, char, Writer)
+	 * <p>
+	 * <code>
+	 * String.frontPadOrTruncateOn(int, char, Writer)
+	 * </code>
 	 */
 	public static void frontPadOrTruncateOn(char[] string, int length, char c, Writer writer) {
 		int stringLength = string.length;
@@ -1145,7 +1331,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOrTruncateOn(int, char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.frontPadOrTruncateOn(int, char, StringBuffer)
+	 * </code>
 	 */
 	public static void frontPadOrTruncateOn(char[] string, int length, char c, StringBuffer sb) {
 		int stringLength = string.length;
@@ -1164,7 +1353,10 @@ public final class StringTools {
 	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
-	 * String#frontPadOrTruncateOn(int, char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.frontPadOrTruncateOn(int, char, StringBuilder)
+	 * </code>
 	 */
 	public static void frontPadOrTruncateOn(char[] string, int length, char c, StringBuilder sb) {
 		int stringLength = string.length;
@@ -2342,7 +2534,10 @@ public final class StringTools {
 	/**
 	 * Remove the first occurrence of the specified character
 	 * from the specified string and return the result.
-	 * String#removeFirstOccurrence(char)
+	 * <p>
+	 * <code>
+	 * String.removeFirstOccurrence(char)
+	 * </code>
 	 */
 	public static String removeFirstOccurrence(String string, char c) {
 		int index = string.indexOf(c);
@@ -2366,7 +2561,10 @@ public final class StringTools {
 	/**
 	 * Remove the first occurrence of the specified character
 	 * from the specified string and print the result on the specified stream.
-	 * String#removeFirstOccurrenceOn(char, Writer)
+	 * <p>
+	 * <code>
+	 * String.removeFirstOccurrenceOn(char, Writer)
+	 * </code>
 	 */
 	public static void removeFirstOccurrenceOn(String string, char c, Writer writer) {
 		int index = string.indexOf(c);
@@ -2380,7 +2578,10 @@ public final class StringTools {
 	/**
 	 * Remove the first occurrence of the specified character
 	 * from the specified string and print the result on the specified stream.
-	 * String#removeFirstOccurrenceOn(char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.removeFirstOccurrenceOn(char, StringBuffer)
+	 * </code>
 	 */
 	public static void removeFirstOccurrenceOn(String string, char c, StringBuffer sb) {
 		int index = string.indexOf(c);
@@ -2394,7 +2595,10 @@ public final class StringTools {
 	/**
 	 * Remove the first occurrence of the specified character
 	 * from the specified string and print the result on the specified stream.
-	 * String#removeFirstOccurrenceOn(char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.removeFirstOccurrenceOn(char, StringBuilder)
+	 * </code>
 	 */
 	public static void removeFirstOccurrenceOn(String string, char c, StringBuilder sb) {
 		int index = string.indexOf(c);
@@ -2408,7 +2612,10 @@ public final class StringTools {
 	/**
 	 * Remove the first occurrence of the specified character
 	 * from the specified string and return the result.
-	 * String#removeFirstOccurrence(char)
+	 * <p>
+	 * <code>
+	 * String.removeFirstOccurrence(char)
+	 * </code>
 	 */
 	public static char[] removeFirstOccurrence(char[] string, char c) {
 		int index = ArrayTools.indexOf(string, c);
@@ -2435,7 +2642,10 @@ public final class StringTools {
 	/**
 	 * Remove the first occurrence of the specified character
 	 * from the specified string and print the result on the specified stream.
-	 * String#removeFirstOccurrenceOn(char, Writer)
+	 * <p>
+	 * <code>
+	 * String.removeFirstOccurrenceOn(char, Writer)
+	 * </code>
 	 */
 	public static void removeFirstOccurrenceOn(char[] string, char c, Writer writer) {
 		int index = ArrayTools.indexOf(string, c);
@@ -2464,7 +2674,10 @@ public final class StringTools {
 	/**
 	 * Remove the first occurrence of the specified character
 	 * from the specified string and print the result on the specified stream.
-	 * String#removeFirstOccurrenceOn(char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.removeFirstOccurrenceOn(char, StringBuffer)
+	 * </code>
 	 */
 	public static void removeFirstOccurrenceOn(char[] string, char c, StringBuffer sb) {
 		int index = ArrayTools.indexOf(string, c);
@@ -2493,7 +2706,10 @@ public final class StringTools {
 	/**
 	 * Remove the first occurrence of the specified character
 	 * from the specified string and print the result on the specified stream.
-	 * String#removeFirstOccurrenceOn(char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.removeFirstOccurrenceOn(char, StringBuilder)
+	 * </code>
 	 */
 	public static void removeFirstOccurrenceOn(char[] string, char c, StringBuilder sb) {
 		int index = ArrayTools.indexOf(string, c);
@@ -2522,7 +2738,10 @@ public final class StringTools {
 	/**
 	 * Remove all occurrences of the specified character
 	 * from the specified string and return the result.
-	 * String#removeAllOccurrences(char)
+	 * <p>
+	 * <code>
+	 * String.removeAllOccurrences(char)
+	 * </code>
 	 */
 	public static String removeAllOccurrences(String string, char c) {
 		int first = string.indexOf(c);
@@ -2532,7 +2751,10 @@ public final class StringTools {
 	/**
 	 * Remove all occurrences of the specified character
 	 * from the specified string and write the result to the specified stream.
-	 * String#removeAllOccurrencesOn(char, Writer)
+	 * <p>
+	 * <code>
+	 * String.removeAllOccurrencesOn(char, Writer)
+	 * </code>
 	 */
 	public static void removeAllOccurrencesOn(String string, char c, Writer writer) {
 		int first = string.indexOf(c);
@@ -2546,7 +2768,10 @@ public final class StringTools {
 	/**
 	 * Remove all occurrences of the specified character
 	 * from the specified string and write the result to the specified stream.
-	 * String#removeAllOccurrencesOn(char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.removeAllOccurrencesOn(char, StringBuffer)
+	 * </code>
 	 */
 	public static void removeAllOccurrencesOn(String string, char c, StringBuffer sb) {
 		int first = string.indexOf(c);
@@ -2560,7 +2785,10 @@ public final class StringTools {
 	/**
 	 * Remove all occurrences of the specified character
 	 * from the specified string and write the result to the specified stream.
-	 * String#removeAllOccurrencesOn(char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.removeAllOccurrencesOn(char, StringBuilder)
+	 * </code>
 	 */
 	public static void removeAllOccurrencesOn(String string, char c, StringBuilder sb) {
 		int first = string.indexOf(c);
@@ -2574,7 +2802,10 @@ public final class StringTools {
 	/**
 	 * Remove all occurrences of the specified character
 	 * from the specified string and return the result.
-	 * String#removeAllOccurrences(char)
+	 * <p>
+	 * <code>
+	 * String.removeAllOccurrences(char)
+	 * </code>
 	 */
 	public static char[] removeAllOccurrences(char[] string, char c) {
 		int first = ArrayTools.indexOf(string, c);
@@ -2594,7 +2825,10 @@ public final class StringTools {
 	 * Remove all occurrences of the specified character
 	 * from the specified string and write the result to the
 	 * specified writer.
-	 * String#removeAllOccurrencesOn(char, Writer)
+	 * <p>
+	 * <code>
+	 * String.removeAllOccurrencesOn(char, Writer)
+	 * </code>
 	 */
 	public static void removeAllOccurrencesOn(char[] string, char c, Writer writer) {
 		int first = ArrayTools.indexOf(string, c);
@@ -2623,7 +2857,10 @@ public final class StringTools {
 	 * Remove all occurrences of the specified character
 	 * from the specified string and append the result to the
 	 * specified string buffer.
-	 * String#removeAllOccurrencesOn(char, StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.removeAllOccurrencesOn(char, StringBuffer)
+	 * </code>
 	 */
 	public static void removeAllOccurrencesOn(char[] string, char c, StringBuffer sb) {
 		int first = ArrayTools.indexOf(string, c);
@@ -2652,7 +2889,10 @@ public final class StringTools {
 	 * Remove all occurrences of the specified character
 	 * from the specified string and append the result to the
 	 * specified string builder.
-	 * String#removeAllOccurrencesOn(char, StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.removeAllOccurrencesOn(char, StringBuilder)
+	 * </code>
 	 */
 	public static void removeAllOccurrencesOn(char[] string, char c, StringBuilder sb) {
 		int first = ArrayTools.indexOf(string, c);
@@ -2679,7 +2919,10 @@ public final class StringTools {
 
 	/**
 	 * Remove all the spaces from the specified string and return the result.
-	 * String#removeAllSpaces()
+	 * <p>
+	 * <code>
+	 * String.removeAllSpaces()
+	 * </code>
 	 */
 	public static String removeAllSpaces(String string) {
 		return removeAllOccurrences(string, ' ');
@@ -2688,7 +2931,10 @@ public final class StringTools {
 	/**
 	 * Remove all the spaces
 	 * from the specified string and write the result to the specified writer.
-	 * String#removeAllSpacesOn(Writer)
+	 * <p>
+	 * <code>
+	 * String.removeAllSpacesOn(Writer)
+	 * </code>
 	 */
 	public static void removeAllSpacesOn(String string, Writer writer) {
 		removeAllOccurrencesOn(string, ' ', writer);
@@ -2698,7 +2944,10 @@ public final class StringTools {
 	 * Remove all the spaces
 	 * from the specified string and write the result to the specified
 	 * string buffer.
-	 * String#removeAllSpacesOn(StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.removeAllSpacesOn(StringBuffer)
+	 * </code>
 	 */
 	public static void removeAllSpacesOn(String string, StringBuffer sb) {
 		removeAllOccurrencesOn(string, ' ', sb);
@@ -2708,7 +2957,10 @@ public final class StringTools {
 	 * Remove all the spaces
 	 * from the specified string and write the result to the specified
 	 * string builder.
-	 * String#removeAllSpacesOn(StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.removeAllSpacesOn(StringBuilder)
+	 * </code>
 	 */
 	public static void removeAllSpacesOn(String string, StringBuilder sb) {
 		removeAllOccurrencesOn(string, ' ', sb);
@@ -2716,7 +2968,10 @@ public final class StringTools {
 
 	/**
 	 * Remove all the spaces from the specified string and return the result.
-	 * String#removeAllSpaces()
+	 * <p>
+	 * <code>
+	 * String.removeAllSpaces()
+	 * </code>
 	 */
 	public static char[] removeAllSpaces(char[] string) {
 		return removeAllOccurrences(string, ' ');
@@ -2726,7 +2981,10 @@ public final class StringTools {
 	 * Remove all the spaces
 	 * from the specified string and write the result to the
 	 * specified writer.
-	 * String#removeAllSpacesOn(Writer)
+	 * <p>
+	 * <code>
+	 * String.removeAllSpacesOn(Writer)
+	 * </code>
 	 */
 	public static void removeAllSpacesOn(char[] string, Writer writer) {
 		removeAllOccurrencesOn(string, ' ', writer);
@@ -2736,7 +2994,10 @@ public final class StringTools {
 	 * Remove all the spaces
 	 * from the specified string and append the result to the
 	 * specified string buffer.
-	 * String#removeAllSpacesOn(StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.removeAllSpacesOn(StringBuffer)
+	 * </code>
 	 */
 	public static void removeAllSpacesOn(char[] string, StringBuffer sb) {
 		removeAllOccurrencesOn(string, ' ', sb);
@@ -2746,7 +3007,10 @@ public final class StringTools {
 	 * Remove all the spaces
 	 * from the specified string and append the result to the
 	 * specified string builder.
-	 * String#removeAllSpacesOn(StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.removeAllSpacesOn(StringBuilder)
+	 * </code>
 	 */
 	public static void removeAllSpacesOn(char[] string, StringBuilder sb) {
 		removeAllOccurrencesOn(string, ' ', sb);
@@ -2754,7 +3018,10 @@ public final class StringTools {
 
 	/**
 	 * Remove all the whitespace from the specified string and return the result.
-	 * String#removeAllWhitespace()
+	 * <p>
+	 * <code>
+	 * String.removeAllWhitespace()
+	 * </code>
 	 */
 	public static String removeAllWhitespace(String string) {
 		char[] string2 = string.toCharArray();
@@ -2766,7 +3033,10 @@ public final class StringTools {
 	 * Remove all the whitespace
 	 * from the specified string and append the result to the
 	 * specified writer.
-	 * String#removeAllWhitespaceOn(Writer)
+	 * <p>
+	 * <code>
+	 * String.removeAllWhitespaceOn(Writer)
+	 * </code>
 	 */
 	public static void removeAllWhitespaceOn(String string, Writer writer) {
 		char[] string2 = string.toCharArray();
@@ -2782,7 +3052,10 @@ public final class StringTools {
 	 * Remove all the whitespace
 	 * from the specified string and append the result to the
 	 * specified string buffer.
-	 * String#removeAllWhitespaceOn(StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.removeAllWhitespaceOn(StringBuffer)
+	 * </code>
 	 */
 	public static void removeAllWhitespaceOn(String string, StringBuffer sb) {
 		char[] string2 = string.toCharArray();
@@ -2798,7 +3071,10 @@ public final class StringTools {
 	 * Remove all the whitespace
 	 * from the specified string and append the result to the
 	 * specified string builder.
-	 * String#removeAllWhitespaceOn(StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.removeAllWhitespaceOn(StringBuilder)
+	 * </code>
 	 */
 	public static void removeAllWhitespaceOn(String string, StringBuilder sb) {
 		char[] string2 = string.toCharArray();
@@ -2812,7 +3088,10 @@ public final class StringTools {
 
 	/**
 	 * Remove all the whitespace from the specified string and return the result.
-	 * String#removeAllWhitespace()
+	 * <p>
+	 * <code>
+	 * String.removeAllWhitespace()
+	 * </code>
 	 */
 	public static char[] removeAllWhitespace(char[] string) {
 		int first = indexOfWhitespace_(string);
@@ -2842,7 +3121,10 @@ public final class StringTools {
 	 * Remove all the whitespace
 	 * from the specified string and append the result to the
 	 * specified writer.
-	 * String#removeAllWhitespaceOn(Writer)
+	 * <p>
+	 * <code>
+	 * String.removeAllWhitespaceOn(Writer)
+	 * </code>
 	 */
 	public static void removeAllWhitespaceOn(char[] string, Writer writer) {
 		int first = indexOfWhitespace_(string);
@@ -2871,7 +3153,10 @@ public final class StringTools {
 	 * Remove all the whitespace
 	 * from the specified string and append the result to the
 	 * specified string buffer.
-	 * String#removeAllWhitespaceOn(StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.removeAllWhitespaceOn(StringBuffer)
+	 * </code>
 	 */
 	public static void removeAllWhitespaceOn(char[] string, StringBuffer sb) {
 		int first = indexOfWhitespace_(string);
@@ -2900,7 +3185,10 @@ public final class StringTools {
 	 * Remove all the whitespace
 	 * from the specified string and append the result to the
 	 * specified string builder.
-	 * String#removeAllWhitespaceOn(StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.removeAllWhitespaceOn(StringBuilder)
+	 * </code>
 	 */
 	public static void removeAllWhitespaceOn(char[] string, StringBuilder sb) {
 		int first = indexOfWhitespace_(string);
@@ -2929,7 +3217,10 @@ public final class StringTools {
 	 * Compress the whitespace in the specified string and return the result.
 	 * The whitespace is compressed by replacing any occurrence of one or more
 	 * whitespace characters with a single space.
-	 * String#compressWhitespace()
+	 * <p>
+	 * <code>
+	 * String.compressWhitespace()
+	 * </code>
 	 */
 	public static String compressWhitespace(String string) {
 		char[] string2 = string.toCharArray();
@@ -2943,7 +3234,10 @@ public final class StringTools {
 	 * specified writer.
 	 * The whitespace is compressed by replacing any occurrence of one or more
 	 * whitespace characters with a single space.
-	 * String#compressWhitespaceOn(Writer)
+	 * <p>
+	 * <code>
+	 * String.compressWhitespaceOn(Writer)
+	 * </code>
 	 */
 	public static void compressWhitespaceOn(String string, Writer writer) {
 		char[] string2 = string.toCharArray();
@@ -2961,7 +3255,10 @@ public final class StringTools {
 	 * specified string buffer.
 	 * The whitespace is compressed by replacing any occurrence of one or more
 	 * whitespace characters with a single space.
-	 * String#compressWhitespaceOn(StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.compressWhitespaceOn(StringBuffer)
+	 * </code>
 	 */
 	public static void compressWhitespaceOn(String string, StringBuffer sb) {
 		char[] string2 = string.toCharArray();
@@ -2979,7 +3276,10 @@ public final class StringTools {
 	 * specified string builder.
 	 * The whitespace is compressed by replacing any occurrence of one or more
 	 * whitespace characters with a single space.
-	 * String#compressWhitespaceOn(StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.compressWhitespaceOn(StringBuilder)
+	 * </code>
 	 */
 	public static void compressWhitespaceOn(String string, StringBuilder sb) {
 		char[] string2 = string.toCharArray();
@@ -2995,7 +3295,10 @@ public final class StringTools {
 	 * Compress the whitespace in the specified string and return the result.
 	 * The whitespace is compressed by replacing any occurrence of one or more
 	 * whitespace characters with a single space.
-	 * String#compressWhitespace()
+	 * <p>
+	 * <code>
+	 * String.compressWhitespace()
+	 * </code>
 	 */
 	public static char[] compressWhitespace(char[] string) {
 		int first = indexOfWhitespace_(string);
@@ -3017,7 +3320,10 @@ public final class StringTools {
 	 * specified writer.
 	 * The whitespace is compressed by replacing any occurrence of one or more
 	 * whitespace characters with a single space.
-	 * String#compressWhitespaceOn(Writer)
+	 * <p>
+	 * <code>
+	 * String.compressWhitespaceOn(Writer)
+	 * </code>
 	 */
 	public static void compressWhitespaceOn(char[] string, Writer writer) {
 		int first = indexOfWhitespace_(string);
@@ -3058,7 +3364,10 @@ public final class StringTools {
 	 * specified string buffer.
 	 * The whitespace is compressed by replacing any occurrence of one or more
 	 * whitespace characters with a single space.
-	 * String#compressWhitespaceOn(StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.compressWhitespaceOn(StringBuffer)
+	 * </code>
 	 */
 	public static void compressWhitespaceOn(char[] string, StringBuffer sb) {
 		int first = indexOfWhitespace_(string);
@@ -3099,7 +3408,10 @@ public final class StringTools {
 	 * specified string builder.
 	 * The whitespace is compressed by replacing any occurrence of one or more
 	 * whitespace characters with a single space.
-	 * String#compressWhitespaceOn(StringBuilder)
+	 * <p>
+	 * <code>
+	 * String.compressWhitespaceOn(StringBuilder)
+	 * </code>
 	 */
 	public static void compressWhitespaceOn(char[] string, StringBuilder sb) {
 		int first = indexOfWhitespace_(string);
@@ -3139,7 +3451,10 @@ public final class StringTools {
 
 	/**
 	 * Return the length of the common prefix shared by the specified strings.
-	 * String#commonPrefixLength(String)
+	 * <p>
+	 * <code>
+	 * String.commonPrefixLength(String)
+	 * </code>
 	 */
 	public static int commonPrefixLength(String s1, String s2) {
 		return commonPrefixLength(s1.toCharArray(), s2.toCharArray());
@@ -3155,7 +3470,10 @@ public final class StringTools {
 	/**
 	 * Return the length of the common prefix shared by the specified strings;
 	 * but limit the length to the specified maximum.
-	 * String#commonPrefixLength(String, int)
+	 * <p>
+	 * <code>
+	 * String.commonPrefixLength(String, int)
+	 * </code>
 	 */
 	public static int commonPrefixLength(String s1, String s2, int max) {
 		return commonPrefixLength(s1.toCharArray(), s2.toCharArray(), max);
@@ -3207,7 +3525,10 @@ public final class StringTools {
 
 	/**
 	 * Return the specified string with its first letter capitalized.
-	 * String#capitalize()
+	 * <p>
+	 * <code>
+	 * String.capitalize()
+	 * </code>
 	 */
 	public static String capitalize(String string) {
 		if ((string.length() == 0) || Character.isUpperCase(string.charAt(0))) {
@@ -3288,7 +3609,10 @@ public final class StringTools {
 	/**
 	 * Append the specified string to the specified string buffer
 	 * with its first letter capitalized.
-	 * String#capitalizeOn(StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.capitalizeOn(StringBuffer)
+	 * </code>
 	 */
 	public static void capitalizeOn(String string, StringBuffer sb) {
 		if (string.length() == 0) {
@@ -3327,7 +3651,10 @@ public final class StringTools {
 	/**
 	 * Append the specified string to the specified string builder
 	 * with its first letter capitalized.
-	 * String#capitalizeOn(StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.capitalizeOn(StringBuffer)
+	 * </code>
 	 */
 	public static void capitalizeOn(String string, StringBuilder sb) {
 		if (string.length() == 0) {
@@ -3366,7 +3693,10 @@ public final class StringTools {
 	/**
 	 * Append the specified string to the specified string buffer
 	 * with its first letter capitalized.
-	 * String#capitalizeOn(Writer)
+	 * <p>
+	 * <code>
+	 * String.capitalizeOn(Writer)
+	 * </code>
 	 */
 	public static void capitalizeOn(String string, Writer writer) {
 		if (string.length() == 0) {
@@ -3438,7 +3768,10 @@ public final class StringTools {
 	 * Return the specified string with its first letter converted to lower case.
 	 * (Unless both the first and second letters are upper case,
 	 * in which case the string is returned unchanged.)
-	 * String#uncapitalize()
+	 * <p>
+	 * <code>
+	 * String.uncapitalize()
+	 * </code>
 	 */
 	public static String uncapitalize(String string) {
 		if (stringNeedNotBeUncapitalized_(string)) {
@@ -3474,7 +3807,10 @@ public final class StringTools {
 	 * with its first letter converted to lower case.
 	 * (Unless both the first and second letters are upper case,
 	 * in which case the string is returned unchanged.)
-	 * String#uncapitalizeOn(StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.uncapitalizeOn(StringBuffer)
+	 * </code>
 	 */
 	public static void uncapitalizeOn(String string, StringBuffer sb) {
 		if (stringNeedNotBeUncapitalized_(string)) {
@@ -3511,7 +3847,10 @@ public final class StringTools {
 	 * with its first letter converted to lower case.
 	 * (Unless both the first and second letters are upper case,
 	 * in which case the string is returned unchanged.)
-	 * String#uncapitalizeOn(StringBuffer)
+	 * <p>
+	 * <code>
+	 * String.uncapitalizeOn(StringBuffer)
+	 * </code>
 	 */
 	public static void uncapitalizeOn(String string, StringBuilder sb) {
 		if (stringNeedNotBeUncapitalized_(string)) {
@@ -3548,7 +3887,10 @@ public final class StringTools {
 	 * with its first letter converted to lower case.
 	 * (Unless both the first and second letters are upper case,
 	 * in which case the string is returned unchanged.)
-	 * String#uncapitalizeOn(Writer)
+	 * <p>
+	 * <code>
+	 * String.uncapitalizeOn(Writer)
+	 * </code>
 	 */
 	public static void uncapitalizeOn(String string, Writer writer) {
 		if (stringNeedNotBeUncapitalized_(string)) {
@@ -3559,17 +3901,17 @@ public final class StringTools {
 	}
 
 
-	// ********** #toString() helper methods **********
+	// ********** toString() helper methods **********
 
 	/**
-	 * Build a "standard" {@link Object#toString() toString()} result for the
-	 * specified object and additional information:<pre>
+	 * Build a "Dali standard" {@link Object#toString() toString()} result for
+	 * the specified object and additional information:<pre>
 	 *     ClassName[00-F3-EE-42](add'l info)
 	 * </pre>
 	 */
 	public static String buildToStringFor(Object o, Object additionalInfo) {
 		StringBuilder sb = new StringBuilder();
-		buildSimpleToStringOn(o, sb);
+		appendSimpleToString(sb, o);
 		sb.append('(');
 		sb.append(additionalInfo);
 		sb.append(')');
@@ -3577,59 +3919,92 @@ public final class StringTools {
 	}
 
 	/**
-	 * Build a "standard" {@link Object#toString() toString()} result for the
-	 * specified object:<pre>
+	 * Build a "Dali standard" {@link Object#toString() toString()} result for
+	 * the specified object:<pre>
 	 *     ClassName[00-F3-EE-42]
 	 * </pre>
 	 */
 	public static String buildToStringFor(Object o) {
 		StringBuilder sb = new StringBuilder();
-		buildSimpleToStringOn(o, sb);
+		appendSimpleToString(sb, o);
 		return sb.toString();
 	}
 
 	/**
-	 * Append a "standard" {@link Object#toString() toString()} result for the
-	 * specified object to the specified buffer:<pre>
+	 * Append a "Dali standard" {@link Object#toString() toString()} result for
+	 * the specified object to the specified string builder:<pre>
 	 *     ClassName[00-F3-EE-42]
-	 * </pre>
 	 */
-	public static void buildSimpleToStringOn(Object o, StringBuffer sb) {
-		sb.append(buildToStringClassName(o.getClass()));
+	public static void appendSimpleToString(StringBuilder sb, Object o) {
+		appendToStringClassName(sb, o.getClass());
 		sb.append('[');
 		separateOn(buildHashCode(o), '-', 2, sb);
 		sb.append(']');
 	}
 
 	private static String buildHashCode(Object o) {
-		// use System#identityHashCode(Object), since Object#hashCode() may be overridden
+		// use System.identityHashCode(Object), since Object.hashCode() may be overridden
 		return zeroPad(Integer.toHexString(System.identityHashCode(o)).toUpperCase(), 8);
 	}
 
 	/**
-	 * Append a "standard" {@link Object#toString() toString()} result for the
-	 * specified object to the specified string builder:<pre>
-	 *     ClassName[00-F3-EE-42]
-	 * </pre>
+	 * Return a name suitable for a "Dali standard"
+	 * {@link Object#toString() toString()} implementation.
+	 * {@link Class#getSimpleName()} isn't quite useful enough:<ul>
+	 * <li>An <em>anonymous</em> class's simple name is an empty string.
+	 *     Return the "Dali standard" name of the anonymous class's super class
+	 *     instead, which is a bit more helpful.
+	 * <li>A <em>member</em> or <em>local</em> class's simple name does not
+	 *     include its context. Prefix the class's simple name with its
+	 *     enclosing class's "Dali standard" name.
+	 * </ul>
 	 */
-	public static void buildSimpleToStringOn(Object o, StringBuilder sb) {
-		sb.append(buildToStringClassName(o.getClass()));
-		sb.append('[');
-		separateOn(buildHashCode(o), '-', 2, sb);
-		sb.append(']');
+	public static String buildToStringClassName(Class<?> javaClass) {
+		StringBuilder sb = new StringBuilder();
+		appendToStringClassName(sb, javaClass);
+		return sb.toString();
 	}
 
 	/**
-	 * Return a name suitable for a {@link Object#toString() toString()} implementation.
-	 * {@link Class#getSimpleName()} isn't quite good enough for anonymous
-	 * classes; since it returns an empty string. This method will return the
-	 * name of the anonymous class's super class, which is a bit more helpful.
+	 * Return a string suitable for a <em>singleton</em>; which is the simple
+	 * name of the object's class, since there should only be one.
 	 */
-	public static String buildToStringClassName(Class<?> javaClass) {
-		String simpleName = javaClass.getSimpleName();
-		return simpleName.equals("") ? //$NON-NLS-1$
-				buildToStringClassName(javaClass.getSuperclass()) :  // recurse
-				simpleName;
+	public static String buildSingletonToString(Object o) {
+		return buildToStringClassName(o.getClass());
+	}
+
+	/**
+	 * Append a name suitable for a "Dali standard"
+	 * {@link Object#toString() toString()} implementation to the specified
+	 * string builder.
+	 * @see #buildToStringClassName(Class)
+	 */
+	public static void appendToStringClassName(StringBuilder sb, Class<?> javaClass) {
+		if (javaClass.isAnonymousClass()) {
+			appendToStringClassName(sb, javaClass.getSuperclass());  // recurse
+		} else {
+			Class<?> enclosingClass = javaClass.getEnclosingClass();
+			if (enclosingClass == null) {
+				appendToStringClassName_(sb, javaClass);  // top-level class
+			} else {
+				appendToStringClassName(sb, enclosingClass);  // recurse
+				sb.append('.');
+				sb.append(javaClass.getSimpleName());
+			}
+		}
+	}
+
+	/**
+	 * pre-condition: the specified class is a top-level class
+	 */
+	private static void appendToStringClassName_(StringBuilder sb, Class<?> javaClass) {
+		String fullName = javaClass.getName();
+		int dot = fullName.lastIndexOf('.');
+		if (dot == -1) {
+			sb.append(fullName);  // "default" package
+		} else {
+			sb.append(fullName, dot + 1, fullName.length());
+		}
 	}
 
 	/**
@@ -3637,6 +4012,10 @@ public final class StringTools {
 	 * to the specified string builder:<pre>
 	 *     ["foo", "bar", "baz"]
 	 * </pre>
+	 * <p>
+	 * <code>
+	 * StringBuilder.append(Object[])
+	 * </code>
 	 */
 	public static <T> String append(StringBuilder sb, T[] array) {
 		return append(sb, new ArrayListIterator<T>(array));
@@ -3647,6 +4026,10 @@ public final class StringTools {
 	 * to the specified string builder:<pre>
 	 *     ["foo", "bar", "baz"]
 	 * </pre>
+	 * <p>
+	 * <code>
+	 * StringBuilder.append(Iterable)
+	 * </code>
 	 */
 	public static <T> String append(StringBuilder sb, Iterable<T> iterable) {
 		return append(sb, iterable.iterator());
@@ -3657,6 +4040,10 @@ public final class StringTools {
 	 * to the specified string builder:<pre>
 	 *     ["foo", "bar", "baz"]
 	 * </pre>
+	 * <p>
+	 * <code>
+	 * StringBuilder.append(Iterator)
+	 * </code>
 	 */
 	public static <T> String append(StringBuilder sb, Iterator<T> iterator) {
 		sb.append('[');
@@ -3674,8 +4061,8 @@ public final class StringTools {
 	// ********** queries **********
 
 	/**
-	 * Return whether the specified string is null, empty, or contains
-	 * only whitespace characters.
+	 * Return whether the specified string is <code>null</code>, empty, or
+	 * contains only whitespace characters.
 	 */
 	public static boolean stringIsEmpty(String string) {
 		if (string == null) {
@@ -3689,8 +4076,8 @@ public final class StringTools {
 	}
 
 	/**
-	 * Return whether the specified string is null, empty, or contains
-	 * only whitespace characters.
+	 * Return whether the specified string is <code>null</code>, empty, or
+	 * contains only whitespace characters.
 	 */
 	public static boolean stringIsEmpty(char[] string) {
 		if (string == null) {
@@ -3713,16 +4100,16 @@ public final class StringTools {
 	}
 
 	/**
-	 * Return whether the specified string is non-null, non-empty, and does
-	 * not contain only whitespace characters.
+	 * Return whether the specified string is non-<code>null</code>, non-empty,
+	 * and does not contain only whitespace characters.
 	 */
 	public static boolean stringIsNotEmpty(String string) {
 		return ! stringIsEmpty(string);
 	}
 
 	/**
-	 * Return whether the specified string is non-null, non-empty, and does
-	 * not contain only whitespace characters.
+	 * Return whether the specified string is non-<code>null</code>, non-empty,
+	 * and does not contain only whitespace characters.
 	 */
 	public static boolean stringIsNotEmpty(char[] string) {
 		return ! stringIsEmpty(string);
@@ -3825,7 +4212,7 @@ public final class StringTools {
 
 	/**
 	 * Return whether the specified characters are are equal, ignoring case.
-	 * @see java.lang.String#regionMatches(boolean, int, String, int, int)
+	 * @see String#regionMatches(boolean, int, String, int, int)
 	 */
 	public static boolean charactersAreEqualIgnoreCase(char c1, char c2) {
 		//  something about the Georgian alphabet requires us to check lower case also

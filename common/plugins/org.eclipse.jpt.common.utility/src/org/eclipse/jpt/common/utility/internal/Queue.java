@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,7 +42,9 @@ public interface Queue<E> {
 	boolean isEmpty();
 
 
-	final class Empty<E> implements Queue<E>, Serializable {
+	final class Empty<E>
+		implements Queue<E>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final Queue INSTANCE = new Empty();
 		@SuppressWarnings("unchecked")
@@ -65,11 +67,14 @@ public interface Queue<E> {
 		public boolean isEmpty() {
 			return true;
 		}
+		@Override
+		public String toString() {
+			return StringTools.buildSingletonToString(this);
+		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
 			// replace this object with the singleton
 			return INSTANCE;
 		}
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,8 +20,9 @@ import org.eclipse.jpt.common.utility.Filter;
  * If anyone can come up with a better class name
  * and/or method name, I would love to hear it.  ~bjv
  */
-public interface BidiFilter<T> extends Filter<T> {
-
+public interface BidiFilter<T>
+	extends Filter<T>
+{
 	/**
 	 * Return whether the specified object is "accepted" by the
 	 * "reverse" filter. What that means is determined by the client.
@@ -29,7 +30,9 @@ public interface BidiFilter<T> extends Filter<T> {
 	boolean reverseAccept(T o);
 
 
-	final class Null<S> implements BidiFilter<S>, Serializable {
+	final class Null<S>
+		implements BidiFilter<S>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final BidiFilter INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
@@ -50,7 +53,7 @@ public interface BidiFilter<T> extends Filter<T> {
 		}
 		@Override
 		public String toString() {
-			return "BidiFilter.Null"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -59,7 +62,9 @@ public interface BidiFilter<T> extends Filter<T> {
 		}
 	}
 
-	final class Opaque<S> implements BidiFilter<S>, Serializable {
+	final class Opaque<S>
+		implements BidiFilter<S>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final BidiFilter INSTANCE = new Opaque();
 		@SuppressWarnings("unchecked")
@@ -80,7 +85,7 @@ public interface BidiFilter<T> extends Filter<T> {
 		}
 		@Override
 		public String toString() {
-			return "BidiFilter.Opaque"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -89,7 +94,9 @@ public interface BidiFilter<T> extends Filter<T> {
 		}
 	}
 
-	final class Disabled<S> implements BidiFilter<S>, Serializable {
+	final class Disabled<S>
+		implements BidiFilter<S>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final BidiFilter INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -110,7 +117,7 @@ public interface BidiFilter<T> extends Filter<T> {
 		}
 		@Override
 		public String toString() {
-			return "BidiFilter.Disabled"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -118,5 +125,4 @@ public interface BidiFilter<T> extends Filter<T> {
 			return INSTANCE;
 		}
 	}
-
 }

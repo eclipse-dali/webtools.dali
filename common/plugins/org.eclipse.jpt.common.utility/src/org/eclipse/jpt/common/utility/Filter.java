@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.utility;
 
 import java.io.Serializable;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * Used by various "pluggable" classes to filter objects.
@@ -33,10 +34,12 @@ public interface Filter<T> {
 
 
 	/**
-	 * Singleton implemetation of the filter interface that accepts all the
+	 * Singleton implementation of the filter interface that accepts all the
 	 * objects (i.e. it does no filtering).
 	 */
-	final class Null<S> implements Filter<S>, Serializable {
+	final class Null<S>
+		implements Filter<S>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final Filter INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
@@ -53,7 +56,7 @@ public interface Filter<T> {
 		}
 		@Override
 		public String toString() {
-			return "Filter.Null";  //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -63,10 +66,12 @@ public interface Filter<T> {
 	}
 
 	/**
-	 * Singleton implemetation of the filter interface that accepts none of the
+	 * Singleton implementation of the filter interface that accepts none of the
 	 * objects (i.e. it filters out all the objects).
 	 */
-	final class Opaque<S> implements Filter<S>, Serializable {
+	final class Opaque<S>
+		implements Filter<S>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final Filter INSTANCE = new Opaque();
 		@SuppressWarnings("unchecked")
@@ -83,7 +88,7 @@ public interface Filter<T> {
 		}
 		@Override
 		public String toString() {
-			return "Filter.Opaque";  //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -93,10 +98,12 @@ public interface Filter<T> {
 	}
 
 	/**
-	 * Singleton implemetation of the filter interface that throws an exception
+	 * Singleton implementation of the filter interface that throws an exception
 	 * if called.
 	 */
-	final class Disabled<S> implements Filter<S>, Serializable {
+	final class Disabled<S>
+		implements Filter<S>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final Filter INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -113,7 +120,7 @@ public interface Filter<T> {
 		}
 		@Override
 		public String toString() {
-			return "Filter.Disabled";  //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -121,5 +128,4 @@ public interface Filter<T> {
 			return INSTANCE;
 		}
 	}
-
 }

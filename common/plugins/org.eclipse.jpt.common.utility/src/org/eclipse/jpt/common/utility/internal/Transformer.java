@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,9 @@ public interface Transformer<T1, T2> {
 	 * A "null" transformer will perform no transformation at all;
 	 * it will simply return the object "untransformed".
 	 */
-	final class Null<S1, S2> implements Transformer<S1, S2>, Serializable {
+	final class Null<S1, S2>
+		implements Transformer<S1, S2>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final Transformer INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
@@ -51,7 +53,7 @@ public interface Transformer<T1, T2> {
 		}
 		@Override
 		public String toString() {
-			return "Transformer.Null"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -66,7 +68,9 @@ public interface Transformer<T1, T2> {
 	 * where a transformer is optional and the default transformer should
 	 * not be used.
 	 */
-	final class Disabled<S1, S2> implements Transformer<S1, S2>, Serializable {
+	final class Disabled<S1, S2>
+		implements Transformer<S1, S2>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final Transformer INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -83,7 +87,7 @@ public interface Transformer<T1, T2> {
 		}
 		@Override
 		public String toString() {
-			return "Transformer.Disabled"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -91,5 +95,4 @@ public interface Transformer<T1, T2> {
 			return INSTANCE;
 		}
 	}
-
 }

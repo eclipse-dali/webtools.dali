@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,9 @@ public interface ExceptionHandler {
 	 * Singleton implementation of the exception handler interface that does
 	 * nothing with the exception.
 	 */
-	final class Null implements ExceptionHandler, Serializable {
+	final class Null
+		implements ExceptionHandler, Serializable
+	{
 		public static final ExceptionHandler INSTANCE = new Null();
 		public static ExceptionHandler instance() {
 			return INSTANCE;
@@ -47,7 +49,7 @@ public interface ExceptionHandler {
 		}
 		@Override
 		public String toString() {
-			return "ExceptionHandler.Null"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -60,7 +62,9 @@ public interface ExceptionHandler {
 	 * Singleton implementation of the exception handler interface that
 	 * wraps the exception in a runtime exception and throws it.
 	 */
-	final class Runtime implements ExceptionHandler, Serializable {
+	final class Runtime
+		implements ExceptionHandler, Serializable
+	{
 		public static final ExceptionHandler INSTANCE = new Runtime();
 		public static ExceptionHandler instance() {
 			return INSTANCE;
@@ -75,7 +79,7 @@ public interface ExceptionHandler {
 		}
 		@Override
 		public String toString() {
-			return "ExceptionHandler.Runtime"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -83,5 +87,4 @@ public interface ExceptionHandler {
 			return INSTANCE;
 		}
 	}
-
 }

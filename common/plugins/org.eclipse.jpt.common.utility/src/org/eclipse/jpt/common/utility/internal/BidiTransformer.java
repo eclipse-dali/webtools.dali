@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,9 @@ import java.io.Serializable;
  * If anyone can come up with a better class name
  * and/or method name, I would love to hear it.  ~bjv
  */
-public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
-
+public interface BidiTransformer<T1, T2>
+	extends Transformer<T1, T2>
+{
 	/**
 	 * Return the "reverse-transformed" object.
 	 * The semantics of "reverse-transform" is determined by the
@@ -28,7 +29,9 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 	T1 reverseTransform(T2 o);
 
 
-	final class Null<S1, S2> implements BidiTransformer<S1, S2>, Serializable {
+	final class Null<S1, S2>
+		implements BidiTransformer<S1, S2>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final BidiTransformer INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
@@ -51,7 +54,7 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 		}
 		@Override
 		public String toString() {
-			return "BidiTransformer.Null"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -60,7 +63,9 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 		}
 	}
 
-	final class Disabled<S1, S2> implements BidiTransformer<S1, S2>, Serializable {
+	final class Disabled<S1, S2>
+		implements BidiTransformer<S1, S2>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final BidiTransformer INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -81,7 +86,7 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 		}
 		@Override
 		public String toString() {
-			return "BidiTransformer.Disabled"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -89,5 +94,4 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 			return INSTANCE;
 		}
 	}
-
 }

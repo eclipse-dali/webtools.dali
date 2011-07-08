@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.synchronizers;
 
 import java.io.Serializable;
 import java.util.EventListener;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * Extend {@link Synchronizer} to notify listeners
@@ -54,7 +55,9 @@ public interface CallbackSynchronizer
 	 * Singleton implementation of the {@link CallbackSynchronizer} interface that will do
 	 * nothing.
 	 */
-	final class Null implements CallbackSynchronizer, Serializable {
+	final class Null
+		implements CallbackSynchronizer, Serializable
+	{
 		public static final CallbackSynchronizer INSTANCE = new Null();
 		public static CallbackSynchronizer instance() {
 			return INSTANCE;
@@ -80,7 +83,7 @@ public interface CallbackSynchronizer
 		}
 		@Override
 		public String toString() {
-			return "CallbackSynchronizer.Null"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -88,5 +91,4 @@ public interface CallbackSynchronizer
 			return INSTANCE;
 		}
 	}
-
 }

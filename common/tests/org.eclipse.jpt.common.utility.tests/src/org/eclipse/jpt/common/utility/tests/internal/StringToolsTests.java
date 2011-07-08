@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1043,6 +1043,27 @@ public class StringToolsTests extends TestCase {
 	public void testBuildToStringClassName_anonymous() {
 		Object o = new Object(){/*anonymous subclass of Object*/};
 		assertEquals("Object", StringTools.buildToStringClassName(o.getClass()));
+	}
+
+	public void testBuildToStringClassName_member() {
+		assertEquals("Map.Entry", StringTools.buildToStringClassName(java.util.Map.Entry.class));
+	}
+
+	public void testBuildToStringClassName_local() {
+		class Foo {
+			Bar bar = new Bar();
+			class Bar {
+				Bar() {
+					super();
+				}
+			}
+			Foo() {
+				super();
+			}
+		}
+		Foo foo = new Foo();
+		assertEquals("StringToolsTests.Foo", StringTools.buildToStringClassName(foo.getClass()));
+		assertEquals("StringToolsTests.Foo.Bar", StringTools.buildToStringClassName(foo.bar.getClass()));
 	}
 
 	// ********** queries **********

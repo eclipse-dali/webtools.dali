@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,9 @@ import java.io.Serializable;
  * If anyone can come up with a better class name
  * and/or method name, I would love to hear it.  ~bjv
  */
-public interface BidiStringConverter<T> extends StringConverter<T> {
-
+public interface BidiStringConverter<T>
+	extends StringConverter<T>
+{
 	/**
 	 * Convert the specified string into an object.
 	 * The semantics of "convert to object" is determined by the
@@ -29,7 +30,9 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 	T convertToObject(String s);
 
 
-	final class Default<S> implements BidiStringConverter<S>, Serializable {
+	final class Default<S>
+		implements BidiStringConverter<S>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final BidiStringConverter INSTANCE = new Default();
 		@SuppressWarnings("unchecked")
@@ -51,7 +54,7 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		}
 		@Override
 		public String toString() {
-			return "BidiStringConverter.Default"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -60,7 +63,9 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		}
 	}
 
-	final class Disabled<S> implements BidiStringConverter<S>, Serializable {
+	final class Disabled<S>
+		implements BidiStringConverter<S>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final BidiStringConverter INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -81,7 +86,7 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		}
 		@Override
 		public String toString() {
-			return "BidiStringConverter.Disabled"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -90,7 +95,9 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		}
 	}
 
-	final class BooleanConverter implements BidiStringConverter<Boolean>, Serializable {
+	final class BooleanConverter
+		implements BidiStringConverter<Boolean>, Serializable
+	{
 		public static final BidiStringConverter<Boolean> INSTANCE = new BooleanConverter();
 		public static BidiStringConverter<Boolean> instance() {
 			return INSTANCE;
@@ -109,7 +116,7 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		}
 		@Override
 		public String toString() {
-			return "BidiStringConverter.BooleanConverter"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -118,7 +125,9 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		}
 	}
 
-	final class IntegerConverter implements BidiStringConverter<Integer>, Serializable {
+	final class IntegerConverter
+		implements BidiStringConverter<Integer>, Serializable
+	{
 		public static final BidiStringConverter<Integer> INSTANCE = new IntegerConverter();
 		public static BidiStringConverter<Integer> instance() {
 			return INSTANCE;
@@ -137,7 +146,7 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 		}
 		@Override
 		public String toString() {
-			return "BidiStringConverter.IntegerConverter"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -145,5 +154,4 @@ public interface BidiStringConverter<T> extends StringConverter<T> {
 			return INSTANCE;
 		}
 	}
-
 }

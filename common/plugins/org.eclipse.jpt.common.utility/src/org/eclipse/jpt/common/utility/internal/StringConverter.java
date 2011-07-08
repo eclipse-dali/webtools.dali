@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,9 @@ public interface StringConverter<T> {
 	String convertToString(T o);
 
 
-	final class Default<S> implements StringConverter<S>, Serializable {
+	final class Default<S>
+		implements StringConverter<S>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final StringConverter INSTANCE = new Default();
 		@SuppressWarnings("unchecked")
@@ -42,7 +44,7 @@ public interface StringConverter<T> {
 		}
 		@Override
 		public String toString() {
-			return "StringConverter.Default"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -51,7 +53,9 @@ public interface StringConverter<T> {
 		}
 	}
 
-	final class Disabled<S> implements StringConverter<S>, Serializable {
+	final class Disabled<S>
+		implements StringConverter<S>, Serializable
+	{
 		@SuppressWarnings("rawtypes")
 		public static final StringConverter INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
@@ -68,7 +72,7 @@ public interface StringConverter<T> {
 		}
 		@Override
 		public String toString() {
-			return "StringConverter.Disabled"; //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -76,5 +80,4 @@ public interface StringConverter<T> {
 			return INSTANCE;
 		}
 	}
-
 }
