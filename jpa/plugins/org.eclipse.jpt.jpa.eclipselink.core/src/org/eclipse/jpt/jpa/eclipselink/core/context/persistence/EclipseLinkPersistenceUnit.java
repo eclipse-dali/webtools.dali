@@ -129,6 +129,21 @@ public class EclipseLinkPersistenceUnit
 		return this.caching;
 	}
 
+	public String getDefaultCacheTypePropertyValue() {
+		Property cacheTypeDefaultProperty = getCacheTypeDefaultProperty();
+		return cacheTypeDefaultProperty != null ? cacheTypeDefaultProperty.getValue() : null;
+	}
+	
+	public String getDefaultCacheSizePropertyValue() {
+		Property cacheSizeDefaultProperty = getCacheSizeDefaultProperty();
+		return cacheSizeDefaultProperty != null ? cacheSizeDefaultProperty.getValue() : null;
+	}
+	
+	public String getDefaultCacheSharedPropertyValue() {
+		Property cacheSharedDefaultProperty = getCacheSharedDefaultProperty();
+		return cacheSharedDefaultProperty != null ? cacheSharedDefaultProperty.getValue() : null;
+	}
+	
 	public Logging getLogging() {
 		return this.logging;
 	}
@@ -141,7 +156,7 @@ public class EclipseLinkPersistenceUnit
 	public SchemaGeneration getSchemaGeneration() {
 		return this.schemaGeneration;
 	}
-
+	
 	protected GeneralProperties buildEclipseLinkGeneralProperties() {
 		return new EclipseLinkGeneralProperties(this);
 	}
@@ -827,6 +842,10 @@ public class EclipseLinkPersistenceUnit
 
 	private Property getCacheSizeDefaultProperty() {
 		return this.getProperty(Caching.ECLIPSELINK_CACHE_SIZE_DEFAULT);
+	}
+	
+	private Property getCacheSharedDefaultProperty() {
+		return this.getProperty(Caching.ECLIPSELINK_CACHE_SHARED_DEFAULT);
 	}
 
 	private Property getFlushClearCacheProperty() {

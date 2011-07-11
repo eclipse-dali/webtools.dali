@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -29,6 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCache;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCacheHolder;
@@ -176,6 +178,14 @@ public class OrmEclipseLinkCachingImpl
 	}
 
 	public EclipseLinkCacheType getDefaultType() {
+		String puDefaultCacheTypeName = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheTypePropertyValue();
+		if (!StringTools.stringIsEmpty(puDefaultCacheTypeName)) {
+			try { 
+				return EclipseLinkCacheType.valueOf(StringTools.convertCamelCaseToAllCaps(puDefaultCacheTypeName));
+			} catch (IllegalArgumentException exception) {
+				//no match, return default
+			}
+		}
 		return this.defaultType;
 	}
 
@@ -221,6 +231,14 @@ public class OrmEclipseLinkCachingImpl
 	}
 
 	public int getDefaultSize() {
+		String puDefaultCacheSize = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheSizePropertyValue();
+		if (!StringTools.stringIsEmpty(puDefaultCacheSize)) {
+			try {
+				return Integer.valueOf(puDefaultCacheSize).intValue();
+			} catch (NumberFormatException exception) {
+				//couldn't parse, return default
+			}
+		}
 		return this.defaultSize;
 	}
 
@@ -273,7 +291,8 @@ public class OrmEclipseLinkCachingImpl
 	}
 
 	public boolean isDefaultShared() {
-		return this.defaultShared;
+		String puDefaultSharedCache = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheSharedPropertyValue();
+		return !StringTools.stringIsEmpty(puDefaultSharedCache) ? Boolean.valueOf(puDefaultSharedCache) : this.defaultShared;
 	}
 
 	protected void setDefaultShared(boolean shared) {

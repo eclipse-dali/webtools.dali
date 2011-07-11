@@ -10,8 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -28,6 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
@@ -146,10 +149,17 @@ public class JavaEclipseLinkCachingImpl
 	}
 
 	public EclipseLinkCacheType getDefaultType() {
+		String puDefaultCacheTypeName = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheTypePropertyValue();
+		if (!StringTools.stringIsEmpty(puDefaultCacheTypeName)) {
+			try { 
+				return EclipseLinkCacheType.valueOf(StringTools.convertCamelCaseToAllCaps(puDefaultCacheTypeName));
+			} catch (IllegalArgumentException exception) {
+				//no match, return default
+			}
+		}
 		return DEFAULT_TYPE;
 	}
-
-
+	
 	// ********** size **********
 
 	public int getSize() {
@@ -176,6 +186,14 @@ public class JavaEclipseLinkCachingImpl
 	}
 
 	public int getDefaultSize() {
+		String puDefaultCacheSize = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheSizePropertyValue();
+		if (!StringTools.stringIsEmpty(puDefaultCacheSize)) {
+			try {
+				return Integer.valueOf(puDefaultCacheSize).intValue();
+			} catch (NumberFormatException exception) {
+				//couldn't parse, return default
+			}
+		}
 		return DEFAULT_SIZE;
 	}
 
@@ -213,7 +231,8 @@ public class JavaEclipseLinkCachingImpl
 	}
 
 	public boolean isDefaultShared() {
-		return DEFAULT_SHARED;
+		String puDefaultSharedCache = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheSharedPropertyValue();
+		return !StringTools.stringIsEmpty(puDefaultSharedCache) ? Boolean.valueOf(puDefaultSharedCache) : DEFAULT_SHARED;
 	}
 
 
@@ -573,7 +592,6 @@ public class JavaEclipseLinkCachingImpl
 		return this.getTypeMapping().getResourcePersistentType();
 	}
 
-
 	// ********** validation **********
 
 	@Override
@@ -581,7 +599,7 @@ public class JavaEclipseLinkCachingImpl
 		super.validate(messages, reporter, astRoot);
 		this.validateExpiry(messages, astRoot);
 	}
-
+	
 	protected void validateExpiry(List<IMessage> messages, CompilationUnit astRoot) {
 		if ((this.expiry != null) && (this.expiryTimeOfDay != null)) {
 			messages.add(

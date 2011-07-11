@@ -37,6 +37,7 @@ public class JptEclipseLinkCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLinkOrmObjectTypeConverterTests.class);
 		suite.addTestSuite(EclipseLinkOrmStructConverterTests.class);
 		suite.addTestSuite(EclipseLinkOrmTypeConverterTests.class);
+		suite.addTestSuite(EclipseLinkOrmCachingTests.class);
 		return suite;
 	}
 	

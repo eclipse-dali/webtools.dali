@@ -20,6 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
@@ -114,6 +115,20 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		assertNull(cacheAnnotation.getExpiryTimeOfDay());
 	}
 	
+	public void testGetDefaultShared() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaEclipseLinkEntity entity = (JavaEclipseLinkEntity) getJavaPersistentType().getMapping();
+		JavaEclipseLinkCaching caching = entity.getCaching();
+		
+		assertTrue(caching.isDefaultShared());
+		
+		getPersistenceUnit().setProperty(Caching.ECLIPSELINK_CACHE_SHARED_DEFAULT, "false");
+		
+		assertFalse(caching.isDefaultShared());
+	}
+	
 	public void testGetSpecifiedShared() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -163,6 +178,20 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		caching.setSpecifiedType(null);
 		assertNull(caching.getSpecifiedType());
 		assertEquals(EclipseLinkCacheType.SOFT_WEAK, caching.getType());
+	}
+	
+	public void testGetDefaultType() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaEclipseLinkEntity entity = (JavaEclipseLinkEntity) getJavaPersistentType().getMapping();
+		JavaEclipseLinkCaching caching = entity.getCaching();
+		
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, caching.getDefaultType());
+		
+		getPersistenceUnit().setProperty(Caching.ECLIPSELINK_CACHE_TYPE_DEFAULT, EclipseLinkCacheType.FULL.toString());
+		
+		assertEquals(EclipseLinkCacheType.FULL, caching.getDefaultType());
 	}
 	
 	public void testGetSpecifiedType() throws Exception {
@@ -622,6 +651,20 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		EclipseLinkCacheAnnotation cacheAnnotation = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
 		
 		assertEquals(new Integer(50), cacheAnnotation.getSize());		
+	}
+	
+	public void testGetDefaultSize() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaEclipseLinkEntity entity = (JavaEclipseLinkEntity) getJavaPersistentType().getMapping();
+		JavaEclipseLinkCaching caching = entity.getCaching();
+		
+		assertEquals(100, caching.getDefaultSize());
+		
+		getPersistenceUnit().setProperty(Caching.ECLIPSELINK_CACHE_SIZE_DEFAULT, "333");
+		
+		assertEquals(333, caching.getDefaultSize());
 	}
 	
 	public void testGetSpecifiedSize() throws Exception {
