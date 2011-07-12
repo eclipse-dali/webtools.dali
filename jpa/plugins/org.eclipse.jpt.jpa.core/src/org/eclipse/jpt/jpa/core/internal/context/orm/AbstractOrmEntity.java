@@ -1804,7 +1804,6 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.generatorContainer.validate(messages, reporter);
 		this.queryContainer.validate(messages, reporter);
 		this.validateEntityName(messages);
-		this.validateDuplicateEntityNames(messages);
 		this.idClassReference.validate(messages, reporter);
 	}
 
@@ -1815,27 +1814,6 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.ENTITY_NAME_MISSING,
 							new String[] {this.getClass_()}, 
-							this,
-							this.getNameTextRange()
-					)
-			);
-		}
-	}
-
-	protected void validateDuplicateEntityNames(List<IMessage> messages) {
-		HashSet<String> javaEntityNamesExclOverridden = CollectionTools.set(this.getPersistenceUnit().javaEntityNamesExclOverridden());
-		Map<String, Set<String>> map = this.getPersistenceUnit().mapEntityNameToClassNames();
-		Set<String> classNames = map.get(this.getName());
-		// Check whether or not this entity name has duplicates among the orm entities defined with different classes
-		if (((classNames  != null) && (classNames.size() > 1)) || 
-				// Check whether or not this entity name has duplicates among
-				// the java entities that are not defined in the mapping files
-				(javaEntityNamesExclOverridden.contains(this.getName()))) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.ENTITY_NAME_DUPLICATED,
-							new String[] {this.getName()},
 							this,
 							this.getNameTextRange()
 					)

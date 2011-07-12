@@ -11,8 +11,6 @@ package org.eclipse.jpt.jpa.core.context.persistence;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
@@ -728,58 +726,6 @@ public interface PersistenceUnit
 	 * the given text offset
 	 */
 	boolean containsOffset(int textOffset);
-
-	/**
-	 * Return a map with entity names as the key and class names as the value.
-	 * Duplicate class names are eliminated.
-	 */
-	// TODO bjv
-	Map<String, Set<String>> mapEntityNameToClassNames();
-	
-	/**
-	 * Return the class names of all the mapped orm classes cross the persistent unit
-	 */
-	// TODO bjv probably should re-work, but also should use "mapping file" instead of
-	// "orm"...
-	Iterable<String> getOrmMappedClassNames();
-	
-	/**
-	 * Return all the entities defined in both the implied and specified mapping files
-	 * of a persistence unit
-	 */
-	// TODO bjv probably should re-work, but also should use "mapping file" instead of
-	// "orm"...
-	 Iterable<Entity> getOrmEntities();
-	
-	/**
-	 * Return the entity names of all the entities defined in both the implied and specified mapping files
-	 * of a persistence unit 
-	 */
-	// TODO bjv probably should re-work, but also should use "mapping file" instead of
-	// "orm"...
-	 Iterator<String> ormEntityNames();
-	 
-	/**
-	 * Return all the entities defined with both the implied and specified Java classes
-	 * of a persistence unit 
-	 */
-	 // TODO bjv remove
-	 Iterable<Entity> getJavaEntities();
-	
-	/**
-	 * Return the entity names of all the entities defined with both the implied and specified Java classes
-	 * of a persistence unit 
-	 */
-	 // TODO bjv remove
-	Iterator<String> javaEntityNames();
-	
-	/**
-	 * Return the entity names of entities only defined with mapped Java classes of a persistence unit.
-	 * The names of Java entities overridden by entities defined in the mapping files are excluded.
-	 */
-	// TODO bjv
-	Iterator<String> javaEntityNamesExclOverridden();
-	
 
 	// ********** validation **********
 

@@ -18,7 +18,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -1349,7 +1348,6 @@ public abstract class AbstractJavaEntity
 		this.attributeOverrideContainer.validate(messages, reporter, astRoot);
 		this.associationOverrideContainer.validate(messages, reporter, astRoot);
 		this.validateEntityName(messages, astRoot);
-		this.validateDuplicateEntityNames(messages, astRoot);
 		this.idClassReference.validate(messages, reporter, astRoot);
 	}
 
@@ -1369,29 +1367,6 @@ public abstract class AbstractJavaEntity
 							this.getMappingAnnotation().getNameTextRange(astRoot)
 					)
 			);
-		}
-	}
-
-	protected void validateDuplicateEntityNames(List<IMessage> messages, CompilationUnit astRoot) {
-		HashBag<String> javaEntityNamesExclOverridden = CollectionTools.bag(this.getPersistenceUnit().javaEntityNamesExclOverridden());
-		HashSet<String> ormEntityNames = CollectionTools.set(this.getPersistenceUnit().ormEntityNames());
-		String  javaEntityName = this.getName(); 
-		if ((javaEntityName != null) 
-				// Check whether or not this entity name has duplicates among 
-				// the java entities that are not overridden by orm entities
-				&& ((javaEntityNamesExclOverridden.count(javaEntityName) > 1)
-						//Check whether or not this entity name has duplicates 
-						//with the names of orm entities
-						|| (ormEntityNames.contains(javaEntityName)))) {
-								messages.add(
-										DefaultJpaValidationMessages.buildMessage(
-												IMessage.HIGH_SEVERITY,
-												JpaValidationMessages.ENTITY_NAME_DUPLICATED,
-												new String[] {javaEntityName}, 
-												this, 
-												this.getMappingAnnotation().getNameTextRange(astRoot)
-										)
-								);
 		}
 	}
 

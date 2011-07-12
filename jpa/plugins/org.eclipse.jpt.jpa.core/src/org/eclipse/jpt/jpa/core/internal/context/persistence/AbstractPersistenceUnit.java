@@ -20,6 +20,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
@@ -64,9 +65,11 @@ import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
@@ -2036,18 +2039,38 @@ public abstract class AbstractPersistenceUnit
 			};
 	}
 
-
-	// ********** mapping file type mappings **********
-
 	/**
-	 * Return a map of the entities defined in the persistence unit's mapping files,
-	 * keyed by entity name. Since there can be (erroneously) duplicate entity
-	 * names, each entity name is mapped to a <em>list</em> of entities.
+	 * Filters out the entities from the active type mappings
 	 */
-	protected HashMap<String, ArrayList<Entity>> mapMappingFileEntitiesByName() {
-		return this.mapTypeMappingsByName(this.getMappingFileEntities());
+	protected Iterable<Entity> getActiveEntities() {
+		return filterToEntities(this.getActiveTypeMappings());
 	}
 
+	/**
+	 * Returns the "active" type mappings, i.e. the mapping file type mappings and
+	 * the Java type mappings that are not "overridden" by mapping file
+	 * type mappings (by full qualified class name).
+	 */
+	protected Iterable<TypeMapping> getActiveTypeMappings(){
+		ArrayList<TypeMapping> typeMappingList = new ArrayList<TypeMapping>();
+		CollectionTools.addAll(typeMappingList, this.getMappingFileTypeMappings());
+		
+		HashMap<String, ArrayList<TypeMapping>> mappingFileTypeMappings = this.mapTypeMappingsByClassName(this.getMappingFileTypeMappings());
+		HashMap<String, ArrayList<TypeMapping>> javaTypeMappings = this.mapTypeMappingsByClassName(this.getJavaTypeMappings());
+		for (Map.Entry<String, ArrayList<TypeMapping>> javaTypeMappingEntry : javaTypeMappings.entrySet()) {
+			if (mappingFileTypeMappings.get(javaTypeMappingEntry.getKey()) == null) {
+				typeMappingList.addAll(javaTypeMappingEntry.getValue());
+			}
+		}
+		
+		return typeMappingList;
+	}
+
+	/**
+	 * Return a map of the type mappings keyed by type mapping name (short class name). 
+	 * Since there can be duplicate (erroneously) type mapping names, 
+	 * each type mapping name is mapped to a <em>list</em> of type mappings.
+	 */
 	protected <M extends TypeMapping> HashMap<String, ArrayList<M>> mapTypeMappingsByName(Iterable<M> typeMappings) {
 		HashMap<String, ArrayList<M>> map = new HashMap<String, ArrayList<M>>();
 		for (M typeMapping : typeMappings) {
@@ -2061,6 +2084,27 @@ public abstract class AbstractPersistenceUnit
 		}
 		return map;
 	}
+
+	/**
+	 * Return a map of the type mappings keyed by full qualified class name. 
+	 * Since there can be duplicate (erroneously) class names, 
+	 * each class name is mapped to a <em>list</em> of type mappings.
+	 */
+	protected <M extends TypeMapping> HashMap<String, ArrayList<M>> mapTypeMappingsByClassName(Iterable<M> typeMappings) {
+		HashMap<String, ArrayList<M>> map = new HashMap<String, ArrayList<M>>();
+		for (M typeMapping : typeMappings) {
+			String typeMappingName = typeMapping.getPersistentType().getName();
+			ArrayList<M> list = map.get(typeMappingName);
+			if (list == null) {
+				list = new ArrayList<M>();
+				map.put(typeMappingName, list);
+			}
+			list.add(typeMapping);
+		}
+		return map;
+	}
+
+	// ********** mapping file type mappings **********
 
 	/**
 	 * Return all the entities defined in the persistence unit's mapping files
@@ -2083,8 +2127,7 @@ public abstract class AbstractPersistenceUnit
 		};
 	}
 
-	// TODO remove VVVVVVVVVVVVVVVVV
-	public Iterable<String> getOrmMappedClassNames() {
+	public Iterable<String> getMappingFileMappedClassNames() {
 		return new TransformationIterable<PersistentType, String>(this.getMappingFilePersistentTypes()) {
 			@Override
 			protected String transform(PersistentType persistentType) {
@@ -2093,43 +2136,8 @@ public abstract class AbstractPersistenceUnit
 		};
 	}
 
-	public Map<String, Set<String>> mapEntityNameToClassNames() {
-		HashMap<String, ArrayList<Entity>> mappingFileEntitiesByName = this.mapMappingFileEntitiesByName();
-		HashMap<String, Set<String>> map = new HashMap<String, Set<String>>(mappingFileEntitiesByName.size());
-		for (Map.Entry<String, ArrayList<Entity>> entry : mappingFileEntitiesByName.entrySet()) {
-			String entityName = entry.getKey();
-			ArrayList<Entity> entities = entry.getValue();
-			HashSet<String> entityClassNames = new HashSet<String>(entities.size());
-			for (Entity entity : entities) {
-				entityClassNames.add(entity.getPersistentType().getName());
-			}
-			map.put(entityName, entityClassNames);
-		}
-		return map;
-	}
-
-	public Iterator<String> ormEntityNames() {
-		return this.getMappingFileEntityNames().iterator();
-	}
-
-	protected Iterable<String> getMappingFileEntityNames() {
-		return new TransformationIterable<Entity, String>(this.getMappingFileEntities()) {
-			@Override
-			protected String transform(Entity entity) {
-				return entity.getName();
-			}
-		};
-	}
-
-	public Iterable<Entity> getOrmEntities() {
-		return this.getMappingFileEntities();
-	}
-	// remove ^^^^^^^^^^^^^^^^^
-
-
 	// ********** Java type mappings **********
 
-	// TODO remove VVVVVVVVVVVVVVVVV
 	/**
 	 * These may be overridden in the mapping files.
 	 * @see #getJavaPersistentTypes()
@@ -2150,38 +2158,6 @@ public abstract class AbstractPersistenceUnit
 			}
 		};
 	}
-
-	protected Iterator<String> javaEntityClassNames(){
-		return new TransformationIterator<Entity, String>(this.getJavaEntities()) {
-			@Override
-			protected String transform(Entity javaEntity) {
-				return javaEntity.getPersistentType().getName();
-			}
-		};
-	}
-
-	public Iterator<String> javaEntityNamesExclOverridden() {
-		HashSet<String> ormMappedClassNames = CollectionTools.set(this.getOrmMappedClassNames());
-		List<String> javaEntityNamesExclOverridden = new ArrayList<String>();
-		for (Iterator<String> javaEntityClassNames = this.javaEntityClassNames(); javaEntityClassNames.hasNext();){
-			String javaEntityClassName = javaEntityClassNames.next();
-			if (!ormMappedClassNames.contains(javaEntityClassName)) {
-				javaEntityNamesExclOverridden.add((this.getEntity(javaEntityClassName)).getName());
-			}
-		}
-		return javaEntityNamesExclOverridden.iterator();
-	}
-
-	public Iterator<String> javaEntityNames(){
-		return new TransformationIterator<Entity, String>(this.getJavaEntities()) {
-			@Override
-			protected String transform(Entity javaEntity) {
-				return javaEntity.getName();
-			}
-		};
-	}
-	// remove ^^^^^^^^^^^^^^^^^
-
 
 	// ********** misc **********
 
@@ -2230,6 +2206,7 @@ public abstract class AbstractPersistenceUnit
 		this.validateProperties(messages, reporter);
 		this.validateGenerators(messages, reporter);
 		this.validateQueries(messages, reporter);
+		this.validateEntityNames(messages, reporter);
 	}
 
 	protected void validateMappingFiles(List<IMessage> messages, IReporter reporter) {
@@ -2238,6 +2215,7 @@ public abstract class AbstractPersistenceUnit
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			mappingFileRef.validate(messages, reporter);
 		}
+		this.checkForDuplicateMappingFileClasses(messages);
 	}
 
 	protected void checkForMultiplePersistenceUnitMetadata(List<IMessage> messages) {
@@ -2282,6 +2260,25 @@ public abstract class AbstractPersistenceUnit
 				);
 			}
 		}
+	}
+
+	protected void checkForDuplicateMappingFileClasses(List<IMessage> messages) {
+		HashBag<String> classNames = CollectionTools.bag(this.getMappingFileMappedClassNames());
+		for (PersistentType persistentType : this.getMappingFilePersistentTypes()) {
+			String className = persistentType.getName();
+			if ((className != null) && (!StringTools.stringIsEmpty(className)) 
+					&&(classNames.count(className) > 1)) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.NORMAL_SEVERITY,
+								JpaValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS,
+								new String[] {className}, 
+								persistentType,
+								persistentType.getValidationTextRange()
+						)
+				);
+			}
+		}		
 	}
 
 	protected void validateClassRefs(List<IMessage> messages, IReporter reporter) {
@@ -2334,7 +2331,7 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected void validateProperties(@SuppressWarnings("unused") List<IMessage> messages, @SuppressWarnings("unused") IReporter reporter) {
+	protected void validateProperties(List<IMessage> messages, IReporter reporter) {
 		// do nothing by default
 	}
 
@@ -2445,6 +2442,38 @@ public abstract class AbstractPersistenceUnit
 		} else {
 			((JavaQuery) query).validate(messages, reporter, null);
 		}
+	}
+
+	protected void validateEntityNames(List<IMessage> messages, IReporter reporter) {
+		this.checkforDuplicateEntityNames(messages);
+	}
+
+	protected void checkforDuplicateEntityNames(List<IMessage> messages) {
+		HashMap<String, ArrayList<Entity>> activeEntityNames = this.mapTypeMappingsByName(this.getActiveEntities());
+		for (ArrayList<Entity> dups : activeEntityNames.values()) {
+			if (dups.size() > 1) {
+				for (Entity dup : dups) {
+					if (!StringTools.stringIsEmpty(dup.getName())) {
+						messages.add(
+								DefaultJpaValidationMessages.buildMessage(
+										IMessage.HIGH_SEVERITY,
+										JpaValidationMessages.ENTITY_NAME_DUPLICATED,
+										new String[] {dup.getName()},
+										dup,
+										this.extractNameTextRange(dup)
+										)
+								);
+					}
+
+				}
+			}
+		}		
+	}
+	
+	protected TextRange extractNameTextRange(Entity entity) {
+		return (entity instanceof OrmEntity) ?
+				((OrmEntity) entity).getXmlTypeMapping().getNameTextRange():
+				((JavaEntity) entity).getMappingAnnotation().getNameTextRange(null);
 	}
 
 	public boolean validatesAgainstDatabase() {

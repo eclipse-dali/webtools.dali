@@ -34,6 +34,7 @@ public final class SourceEntityAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
+	TextRange nameTextRange;
 
 
 	public SourceEntityAnnotation(JavaResourcePersistentType parent, Type type) {
@@ -47,10 +48,12 @@ public final class SourceEntityAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 	}
 
 	@Override
@@ -90,6 +93,10 @@ public final class SourceEntityAnnotation
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.nameTextRange;
+	}
+
+	private TextRange buildNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(NAME_ADAPTER, astRoot);
 	}
 
