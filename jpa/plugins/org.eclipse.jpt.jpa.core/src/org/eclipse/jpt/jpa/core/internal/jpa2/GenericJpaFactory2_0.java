@@ -37,7 +37,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaEmbeddable
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
@@ -58,7 +57,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
@@ -103,11 +101,6 @@ public class GenericJpaFactory2_0
 	@Override
 	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourcePersistentType jrpt) {
 		return new GenericJavaPersistentType2_0(owner, jrpt);
-	}
-
-	@Override
-	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
-		return new GenericJavaPersistentAttribute2_0(parent, jrpa);
 	}
 
 	@Override

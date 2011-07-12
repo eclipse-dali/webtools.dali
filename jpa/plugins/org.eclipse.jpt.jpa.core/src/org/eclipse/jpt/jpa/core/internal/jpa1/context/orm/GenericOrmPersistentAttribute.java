@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -30,21 +29,6 @@ public class GenericOrmPersistentAttribute
 {
 	public GenericOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
 		super(parent, xmlMapping);
-	}
-
-
-	// ********** access **********
-
-	/**
-	 * JPA 1.0 does not support a specified access for attributes.
-	 */
-	@Override
-	public AccessType getSpecifiedAccess() {
-		return null;
-	}
-
-	public void setSpecifiedAccess(AccessType access) {
-		throw new UnsupportedOperationException("A specified access is not supported in JPA 1.0: " + this); //$NON-NLS-1$
 	}
 
 

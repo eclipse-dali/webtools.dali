@@ -36,6 +36,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -68,12 +69,14 @@ public abstract class SpecifiedOrmPersistentAttribute
 	 */
 	protected JavaPersistentAttribute cachedJavaPersistentAttribute;
 
+	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;
 
 
 	protected SpecifiedOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
 		super(parent);
 		this.mapping = this.buildMapping(xmlMapping);
+		this.specifiedAccess = this.buildSpecifiedAccess();
 	}
 
 
@@ -82,6 +85,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
+		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.mapping.synchronizeWithResourceModel();
 		if (this.cachedJavaPersistentAttribute != null) {
 			this.cachedJavaPersistentAttribute.synchronizeWithResourceModel();
@@ -262,15 +266,10 @@ public abstract class SpecifiedOrmPersistentAttribute
 
 	// ********** access **********
 
-	/**
-	 * Subclasses determine the specified access.
-	 */
 	public AccessType getAccess() {
 		AccessType specifiedAccess = this.getSpecifiedAccess();
 		return (specifiedAccess != null) ? specifiedAccess : this.defaultAccess;
 	}
-
-	public abstract AccessType getSpecifiedAccess();
 
 	public AccessType getDefaultAccess() {
 		return this.defaultAccess;
@@ -284,6 +283,29 @@ public abstract class SpecifiedOrmPersistentAttribute
 
 	protected AccessType buildDefaultAccess() {
 		return this.getOwningPersistentType().getAccess();
+	}
+
+	public AccessType getSpecifiedAccess() {
+		return this.specifiedAccess;
+	}
+
+	public void setSpecifiedAccess(AccessType access) {
+		this.setSpecifiedAccess_(access);
+		this.getXmlAccessHolder().setAccess(AccessType.toOrmResourceModel(access));
+	}
+
+	protected void setSpecifiedAccess_(AccessType access) {
+		AccessType old = this.specifiedAccess;
+		this.specifiedAccess = access;
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
+	}
+
+	protected AccessType buildSpecifiedAccess() {
+		return AccessType.fromOrmResourceModel(this.getXmlAccessHolder().getAccess());
+	}
+
+	protected XmlAccessHolder getXmlAccessHolder() {
+		return this.getXmlAttributeMapping();
 	}
 
 

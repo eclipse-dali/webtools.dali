@@ -38,6 +38,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -55,6 +56,7 @@ public abstract class AbstractJavaPersistentAttribute
 	protected String name;
 
 	protected AccessType defaultAccess;
+	protected AccessType specifiedAccess;
 
 	protected JavaAttributeMapping mapping;  // never null
 	protected String defaultMappingKey;
@@ -67,6 +69,7 @@ public abstract class AbstractJavaPersistentAttribute
 
 		// this is determined directly from the resource model
 		this.defaultAccess = this.buildDefaultAccess();
+		this.specifiedAccess = this.buildSpecifiedAccess();
 
 		// keep non-null at all times
 		this.mapping = this.buildMapping();
@@ -81,6 +84,7 @@ public abstract class AbstractJavaPersistentAttribute
 		this.setName(this.resourcePersistentAttribute.getName());
 		// this is determined directly from the resource model
 		this.setDefaultAccess(this.buildDefaultAccess());
+		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.syncMapping();
 	}
 
@@ -106,15 +110,10 @@ public abstract class AbstractJavaPersistentAttribute
 
 	// ********** access **********
 
-	/**
-	 * Subclasses determine the specified access.
-	 */
 	public AccessType getAccess() {
 		AccessType access = this.getSpecifiedAccess();
 		return (access != null) ? access : this.defaultAccess;
 	}
-
-	public abstract AccessType getSpecifiedAccess();
 
 	public AccessType getDefaultAccess() {
 		return this.defaultAccess;
@@ -128,6 +127,39 @@ public abstract class AbstractJavaPersistentAttribute
 
 	protected AccessType buildDefaultAccess() {
 		return this.resourcePersistentAttribute.isField() ? AccessType.FIELD : AccessType.PROPERTY;
+	}
+	public AccessType getSpecifiedAccess() {
+		return this.specifiedAccess;
+	}
+
+	/**
+	 * Don't support changing to specified access on a java persistent attribute, this
+	 * involves a larger process of moving the annotations to the corresponding field/property
+	 * which may or may not exist or might need to be created.
+	 */
+	public void setSpecifiedAccess(AccessType specifiedAccess) {
+		throw new UnsupportedOperationException();
+	}
+
+	protected void setSpecifiedAccess_(AccessType access) {
+		AccessType old = this.specifiedAccess;
+		this.specifiedAccess = access;
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
+	}
+
+	/**
+	 * a specified Access annotation is only supported by JPA 2.0, but
+	 * putting this code here to simplify. A 1.0 persistent attribute
+	 * will never have an Access annotation on it, specifiedAccess will
+	 * always be null.
+	 */
+	protected AccessType buildSpecifiedAccess() {
+		Access2_0Annotation accessAnnotation = this.getAccessAnnotation();
+		return (accessAnnotation == null) ? null : AccessType.fromJavaResourceModel(accessAnnotation.getValue());
+	}
+
+	protected Access2_0Annotation getAccessAnnotation() {
+		return (Access2_0Annotation) this.resourcePersistentAttribute.getAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 	}
 
 

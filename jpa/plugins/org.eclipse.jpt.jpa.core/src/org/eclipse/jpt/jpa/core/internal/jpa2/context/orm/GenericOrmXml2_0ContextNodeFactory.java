@@ -36,7 +36,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
@@ -54,11 +53,6 @@ public class GenericOrmXml2_0ContextNodeFactory
 	@Override
 	public OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
 		return new GenericOrmEmbeddable2_0(parent, resourceMapping);
-	}
-	
-	@Override
-	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
-		return new GenericOrmPersistentAttribute2_0(parent, xmlMapping);
 	}
 	
 	@Override

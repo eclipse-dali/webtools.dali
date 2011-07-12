@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentAttribute;
@@ -27,21 +26,6 @@ public class OrmEclipseLinkPersistentAttribute
 		super(parent, xmlMapping);
 	}
 	
-
-	// ********** access **********
-
-	/**
-	 * EclipseLink 1.0 does not support a specified access for attributes.
-	 */
-	@Override
-	public AccessType getSpecifiedAccess() {
-		return null;
-	}
-
-	public void setSpecifiedAccess(AccessType access) {
-		throw new UnsupportedOperationException("A specified access is not supported in EclipseLink 1.0: " + this); //$NON-NLS-1$
-	}
-
 	// ********** validation **********
 
 	@Override

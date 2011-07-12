@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context.orm;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.AbstractEclipseLinkOrmXmlDefinition;
@@ -37,11 +36,6 @@ public class EclipseLinkOrmXml1_1Definition
 	}
 	public JptResourceType getResourceType() {
 		return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_1_RESOURCE_TYPE;
-	}
-
-	@Override
-	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
-		return new EclipseLinkOrmXml1_1ContextNodeFactory();
 	}
 
 }

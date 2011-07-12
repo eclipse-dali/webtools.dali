@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmBasicMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmEmbeddableDefinition;
@@ -41,6 +42,11 @@ public abstract class AbstractEclipseLinkOrmXmlDefinition
 
 	public EFactory getResourceNodeFactory() {
 		return EclipseLinkOrmFactory.eINSTANCE;
+	}
+
+	@Override
+	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
+		return new EclipseLinkOrmXmlContextNodeFactory();
 	}
 
 	@Override

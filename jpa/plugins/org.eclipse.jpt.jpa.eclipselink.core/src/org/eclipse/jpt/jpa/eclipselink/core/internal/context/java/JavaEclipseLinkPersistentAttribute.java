@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -29,19 +28,6 @@ public class JavaEclipseLinkPersistentAttribute
 	public JavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
 		super(parent, jrpa);
 	}
-
-
-	// ********** access **********
-
-	@Override
-	public AccessType getSpecifiedAccess() {
-		return null;
-	}
-
-	public void setSpecifiedAccess(AccessType access) {
-		throw new UnsupportedOperationException();
-	}
-
 
 	// ********** mapping **********
 

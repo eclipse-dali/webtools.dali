@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute;
@@ -26,21 +25,6 @@ public class GenericJavaPersistentAttribute
 
 	public GenericJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
 		super(parent, jrpa);
-	}
-
-
-	// ********** access **********
-
-	/**
-	 * JPA 1.0 does not support specified access, so we return <code>null</code>.
-	 */
-	@Override
-	public AccessType getSpecifiedAccess() {
-		return null;
-	}
-
-	public void setSpecifiedAccess(AccessType access) {
-		throw new UnsupportedOperationException();
 	}
 
 	// ********** validation **********
