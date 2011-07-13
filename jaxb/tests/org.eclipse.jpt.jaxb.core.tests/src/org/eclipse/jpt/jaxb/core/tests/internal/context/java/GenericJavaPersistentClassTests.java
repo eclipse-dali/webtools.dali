@@ -32,14 +32,14 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
@@ -1064,7 +1064,7 @@ public class GenericJavaPersistentClassTests
 
 
 		//add @XmlTransient annotation and test each access type
-		JavaResourceField resourceField = ((JaxbPersistentField) contextClass.getAttributes().iterator().next()).getResourceField();
+		JavaResourceField resourceField = (JavaResourceField) contextClass.getAttributes().iterator().next().getJavaResourceAttribute();
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -1112,7 +1112,7 @@ public class GenericJavaPersistentClassTests
 
 	protected void publicTransientFieldTest(JaxbPersistentClass contextClass) {
 		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		JavaResourceField resourceField = ((JaxbPersistentField) attributes.next()).getResourceField();
+		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public transient int foo; PUBLIC_MEMBER access - not persistent
 		this.addModifiers(resourceField, ModifierKeyword.TRANSIENT_KEYWORD);
@@ -1139,7 +1139,7 @@ public class GenericJavaPersistentClassTests
 
 	protected void publicStaticFieldTest(JaxbPersistentClass contextClass) {
 		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		JavaResourceField resourceField = ((JaxbPersistentField) attributes.next()).getResourceField();
+		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public static int foo; PUBLIC_MEMBER access - not persistent
 		this.addModifiers(resourceField, ModifierKeyword.STATIC_KEYWORD);
@@ -1166,7 +1166,7 @@ public class GenericJavaPersistentClassTests
 
 	protected void publicFinalFieldTest(JaxbPersistentClass contextClass) {
 		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		JavaResourceField resourceField = ((JaxbPersistentField) attributes.next()).getResourceField();
+		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public final int foo; PUBLIC_MEMBER access - persistent
 		this.addModifiers(resourceField, ModifierKeyword.FINAL_KEYWORD);
@@ -1202,7 +1202,7 @@ public class GenericJavaPersistentClassTests
 
 	protected void publicStaticFinalFieldTest(JaxbPersistentClass contextClass) {
 		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		JavaResourceField resourceField = ((JaxbPersistentField) attributes.next()).getResourceField();
+		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public static final int foo; PUBLIC_MEMBER access - not persistent
 		this.addModifiers(resourceField, ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD);
@@ -1229,7 +1229,7 @@ public class GenericJavaPersistentClassTests
 
 	protected void privateFieldTest(JaxbPersistentClass contextClass) {
 		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		JavaResourceField resourceField = ((JaxbPersistentField) attributes.next()).getResourceField();
+		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD);
 
@@ -1306,7 +1306,7 @@ public class GenericJavaPersistentClassTests
 
 	protected void privateTransientFieldTest(JaxbPersistentClass contextClass) {
 		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		JavaResourceField resourceField = ((JaxbPersistentField) attributes.next()).getResourceField();
+		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.TRANSIENT_KEYWORD);
 
@@ -1380,7 +1380,7 @@ public class GenericJavaPersistentClassTests
 
 	protected void privateStaticFieldTest(JaxbPersistentClass contextClass) {
 		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		JavaResourceField resourceField = ((JaxbPersistentField) attributes.next()).getResourceField();
+		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.STATIC_KEYWORD);
 
@@ -1454,7 +1454,7 @@ public class GenericJavaPersistentClassTests
 
 	protected void privateStaticFinalFieldTest(JaxbPersistentClass contextClass) {
 		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		JavaResourceField resourceField = ((JaxbPersistentField) attributes.next()).getResourceField();
+		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD);
 
@@ -1795,7 +1795,7 @@ public class GenericJavaPersistentClassTests
 
 
 		//add @XmlAttribute annotation and test each access type
-		JavaResourceMethod resourceMethod = ((JaxbPersistentProperty) contextClass.getAttributes().iterator().next()).getResourceGetterMethod();
+		JavaResourceMethod resourceMethod = (JavaResourceMethod) contextClass.getAttributes().iterator().next().getJavaResourceAttribute();
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMethod);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -1843,9 +1843,9 @@ public class GenericJavaPersistentClassTests
 
 	protected void publicStaticGetterSetterTest(JaxbPersistentClass contextClass) {
 		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		JaxbPersistentProperty contextProperty = (JaxbPersistentProperty) attributes.next();
-		JavaResourceMethod resourceGetter = contextProperty.getResourceGetterMethod();
-		JavaResourceMethod resourceSetter = contextProperty.getResourceSetterMethod();
+		PropertyAccessor propertyAccessor = (PropertyAccessor) ReflectionTools.getFieldValue(attributes.next(), "accessor");
+		JavaResourceMethod resourceGetter = propertyAccessor.getResourceGetterMethod();
+		JavaResourceMethod resourceSetter = propertyAccessor.getResourceSetterMethod();
 
 		//public static int getFoo();, public static void setFoo(int); PUBLIC_MEMBER access - not persistent
 		this.addModifiers(resourceGetter, ModifierKeyword.STATIC_KEYWORD);
@@ -1920,9 +1920,9 @@ public class GenericJavaPersistentClassTests
 
 	protected void privateGetterSetterTest(JaxbPersistentClass contextClass) {
 		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		JaxbPersistentProperty contextProperty = (JaxbPersistentProperty) attributes.next();
-		JavaResourceMethod resourceGetter = contextProperty.getResourceGetterMethod();
-		JavaResourceMethod resourceSetter = contextProperty.getResourceSetterMethod();
+		PropertyAccessor propertyAccessor = (PropertyAccessor) ReflectionTools.getFieldValue(attributes.next(), "accessor");
+		JavaResourceMethod resourceGetter = propertyAccessor.getResourceGetterMethod();
+		JavaResourceMethod resourceSetter = propertyAccessor.getResourceSetterMethod();
 
 		//private int getFoo();, private void setFoo(int); PUBLIC_MEMBER access - not persistent
 		this.removeModifiers(resourceGetter, ModifierKeyword.PUBLIC_KEYWORD);

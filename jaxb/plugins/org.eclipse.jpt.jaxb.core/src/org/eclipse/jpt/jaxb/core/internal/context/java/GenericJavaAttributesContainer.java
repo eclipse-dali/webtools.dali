@@ -30,8 +30,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -106,11 +104,11 @@ public class GenericJavaAttributesContainer
 		}
 	}
 
-	protected JaxbPersistentField buildField(JavaResourceField resourceField) {
+	protected JaxbPersistentAttribute buildField(JavaResourceField resourceField) {
 		return getFactory().buildJavaPersistentField(getParent(), resourceField);
 	}
 
-	protected JaxbPersistentProperty buildProperty(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	protected JaxbPersistentAttribute buildProperty(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		return getFactory().buildJavaPersistentProperty(getParent(), resourceGetter, resourceSetter);
 	}
 

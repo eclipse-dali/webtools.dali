@@ -19,7 +19,7 @@ import org.eclipse.jpt.jaxb.ui.internal.JaxbMappingImageHelper;
 import org.eclipse.swt.graphics.Image;
 
 
-public abstract class JaxbPersistentAttributeItemLabelProvider
+public class JaxbPersistentAttributeItemLabelProvider
 		 extends AbstractItemLabelProvider {
 	
 	public JaxbPersistentAttributeItemLabelProvider(

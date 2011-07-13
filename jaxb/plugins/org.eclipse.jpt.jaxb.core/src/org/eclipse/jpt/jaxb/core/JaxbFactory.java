@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.context.Accessor;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
@@ -27,8 +28,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.JaxbTransientClass;
@@ -126,9 +125,11 @@ public interface JaxbFactory  {
 
 	JaxbElementFactoryMethod buildJavaElementFactoryMethod(JaxbRegistry parent, JavaResourceMethod resourceMethod);
 
-	JaxbPersistentField buildJavaPersistentField(JaxbPersistentClass parent, JavaResourceField resourceField);
+	JaxbPersistentAttribute buildJavaPersistentAttribute(JaxbPersistentClass parent, Accessor accessor);
 
-	JaxbPersistentProperty buildJavaPersistentProperty(JaxbPersistentClass parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
+	JaxbPersistentAttribute buildJavaPersistentField(JaxbPersistentClass parent, JavaResourceField resourceField);
+
+	JaxbPersistentAttribute buildJavaPersistentProperty(JaxbPersistentClass parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
 
 	JaxbAttributeMapping buildJavaNullAttributeMapping(JaxbPersistentAttribute parent);
 

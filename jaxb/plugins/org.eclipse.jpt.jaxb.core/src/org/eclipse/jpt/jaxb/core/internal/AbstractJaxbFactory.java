@@ -22,6 +22,7 @@ import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
+import org.eclipse.jpt.jaxb.core.context.Accessor;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
@@ -31,8 +32,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.JaxbTransientClass;
@@ -50,10 +49,9 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaElementFactory
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaEnumConstant;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaNullAttributeMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPackageInfo;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentClass;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentEnum;
-import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentField;
-import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentProperty;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaRegistry;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaTransientClass;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAnyAttributeMapping;
@@ -144,12 +142,16 @@ public abstract class AbstractJaxbFactory
 		return new GenericJavaElementFactoryMethod(parent, resourceMethod);
 	}
 
-	public JaxbPersistentField buildJavaPersistentField(JaxbPersistentClass parent, JavaResourceField resourceField) {
-		return new GenericJavaPersistentField(parent, resourceField);
+	public JaxbPersistentAttribute buildJavaPersistentAttribute(JaxbPersistentClass parent, Accessor accessor) {
+		return new GenericJavaPersistentAttribute(parent, accessor);
 	}
 
-	public JaxbPersistentProperty buildJavaPersistentProperty(JaxbPersistentClass parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
-		return new GenericJavaPersistentProperty(parent, resourceGetter, resourceSetter);
+	public JaxbPersistentAttribute buildJavaPersistentField(JaxbPersistentClass parent, JavaResourceField resourceField) {
+		return GenericJavaPersistentAttribute.buildPersistentField(parent, resourceField);
+	}
+
+	public JaxbPersistentAttribute buildJavaPersistentProperty(JaxbPersistentClass parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		return GenericJavaPersistentAttribute.buildPersistentProperty(parent, resourceGetter, resourceSetter);
 	}
 
 	public JaxbAttributeMapping buildJavaNullAttributeMapping(JaxbPersistentAttribute parent) {

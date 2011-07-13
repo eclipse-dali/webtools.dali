@@ -9,15 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import java.util.Collection;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jaxb.core.context.Accessor;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
@@ -26,7 +28,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class GenericJavaPersistentAttribute
+public class GenericJavaPersistentAttribute
 		extends AbstractJavaContextNode
 		implements JaxbPersistentAttribute {
 	
@@ -34,12 +36,28 @@ public abstract class GenericJavaPersistentAttribute
 	
 	protected String defaultMappingKey;
 	
-	
-	protected GenericJavaPersistentAttribute(JaxbPersistentClass parent) {
-		super(parent);
+	protected final Accessor accessor;
+
+	public static JaxbPersistentAttribute buildPersistentProperty(
+		JaxbPersistentClass parent, 
+		JavaResourceMethod resourceGetter,
+		JavaResourceMethod resourceSetter) {
+		return new GenericJavaPersistentAttribute(parent, new PropertyAccessor(parent, resourceGetter, resourceSetter));
 	}
-	
-	
+
+	public static JaxbPersistentAttribute buildPersistentField(
+		JaxbPersistentClass parent, 
+		JavaResourceField resourceField) {
+		return new GenericJavaPersistentAttribute(parent, new FieldAccessor(parent, resourceField));
+	}
+
+	public GenericJavaPersistentAttribute(JaxbPersistentClass parent, Accessor accessor) {
+		super(parent);
+		this.accessor = accessor;
+		// keep non-null at all times
+		this.mapping = this.buildMapping();
+	}
+
 	public JaxbPersistentClass getPersistentClass() {
 		return (JaxbPersistentClass) super.getParent();
 	}
@@ -50,14 +68,6 @@ public abstract class GenericJavaPersistentAttribute
 
 	public String getInheritedJavaResourceAttributeOwningTypeName() {
 		return getPersistentClass().getJavaResourceAttributeOwningTypeName(this);
-	}
-
-	/**
-	 * subclasses must call this method in their constructor
-	 */
-	protected void initializeMapping() {
-		// keep non-null at all times
-		this.mapping = this.buildMapping();
 	}
 
 	// ********** synchronize/update **********
@@ -80,6 +90,32 @@ public abstract class GenericJavaPersistentAttribute
 		return this.getJavaResourceAttribute().getName();
 	}
 
+	// ********** accessor ********
+
+	public boolean isFor(JavaResourceField resourceField) {
+		return this.accessor.isFor(resourceField);
+	}
+
+	public boolean isFor(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		return this.accessor.isFor(resourceGetter, resourceSetter);
+	}
+
+	public JavaResourceAttribute getJavaResourceAttribute() {
+		return this.accessor.getJavaResourceAttribute();
+	}
+
+	public String getJavaResourceAttributeTypeName() {
+		return this.accessor.getJavaResourceAttributeTypeName();
+	}
+
+	public boolean isJavaResourceAttributeTypeArray() {
+		return this.accessor.isJavaResourceAttributeTypeArray();
+	}
+
+	public boolean isJavaResourceAttributeTypeSubTypeOf(String typeName) {
+		return this.accessor.isJavaResourceAttributeTypeSubTypeOf(typeName);
+	}
+	
 	// ********** mapping **********
 
 	public JaxbAttributeMapping getMapping() {
@@ -368,26 +404,4 @@ public abstract class GenericJavaPersistentAttribute
 		this.getMapping().validate(messages, reporter, astRoot);
 	}
 
-
-	//**************** static methods *****************
-
-	protected static String getJavaResourceAttributeType(JavaResourceAttribute attribute) {
-		if (attribute.typeIsSubTypeOf(COLLECTION_CLASS_NAME)) {
-			if (attribute.getTypeTypeArgumentNamesSize() == 1) {
-				return attribute.getTypeTypeArgumentName(0);
-			}
-			return null;
-		}
-		return attribute.getTypeName();
-	}
-
-	private static final String COLLECTION_CLASS_NAME = Collection.class.getName();
-
-	protected static boolean typeIsArray(JavaResourceAttribute attribute) {
-		return attribute.typeIsArray();
-	}
-
-	protected static boolean typeIsSubTypeOf(JavaResourceAttribute attribute, String typeName) {
-		return attribute.typeIsSubTypeOf(typeName);
-	}
 }
