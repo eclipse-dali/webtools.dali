@@ -39,7 +39,8 @@ public class GenericJavaPersistentType
 	/**
 	 * JPA 1.0 does not support a specified access.
 	 */
+	@Override
 	public void setSpecifiedAccess(AccessType specifiedAccess) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("JPA 1.0 does not support a specified access type in java."); //$NON-NLS-1$
 	}
 }

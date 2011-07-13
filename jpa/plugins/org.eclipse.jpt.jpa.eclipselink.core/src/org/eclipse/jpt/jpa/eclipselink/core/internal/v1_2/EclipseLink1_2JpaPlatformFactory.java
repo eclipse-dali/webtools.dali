@@ -19,6 +19,7 @@ import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkVersion;
 
 /**
@@ -40,7 +41,7 @@ public class EclipseLink1_2JpaPlatformFactory
 		return new GenericJpaPlatform(
 			id,
 			buildJpaVersion(),
-			new EclipseLink1_2JpaFactory(), 
+			new EclipseLinkJpaFactory(), 
 			buildJpaAnnotationProvider(),
 			EclipseLink1_2JpaPlatformProvider.instance(), 
 			buildJpaPlatformVariation());

@@ -46,6 +46,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
@@ -186,6 +187,27 @@ public abstract class AbstractJavaPersistentType
 		return this.getPersistenceUnit().getPersistentType(typeName);
 	}
 
+	// ********** access annotation **********
+
+	protected Access2_0Annotation getAccessAnnotation() {
+		return (Access2_0Annotation) this.resourcePersistentType.getNonNullAnnotation(this.getAccessAnnotationName());
+	}
+
+	protected void removeAccessAnnotationIfUnset() {
+		Access2_0Annotation accessAnnotation = this.getAccessAnnotation();
+		if (accessAnnotation != null && accessAnnotation.isUnset()) {
+			this.removeAccessAnnotation();
+		}
+	}
+
+	protected void removeAccessAnnotation() {
+		this.resourcePersistentType.removeAnnotation(this.getAccessAnnotationName());
+	}
+
+	protected String getAccessAnnotationName() {
+		return Access2_0Annotation.ANNOTATION_NAME;
+	}
+
 
 	// ********** access **********
 
@@ -197,17 +219,23 @@ public abstract class AbstractJavaPersistentType
 		return this.specifiedAccess;
 	}
 
+	public void setSpecifiedAccess(AccessType access) {
+		if (this.valuesAreDifferent(this.specifiedAccess, access)) {
+			this.getAccessAnnotation().setValue(AccessType.toJavaResourceModel(access));
+			this.removeAccessAnnotationIfUnset();
+			this.setSpecifiedAccess_(access);
+		}
+	}
+
 	protected void setSpecifiedAccess_(AccessType access) {
 		AccessType old = this.specifiedAccess;
 		this.specifiedAccess = access;
 		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
 	}
-	
-	/**
-	 * Build an access type based on annotations from the resource model.
-	 * (This is JPA platform-dependent.)
-	 */
-	protected abstract AccessType buildSpecifiedAccess();
+
+	protected AccessType buildSpecifiedAccess() {
+		return AccessType.fromJavaResourceModel(this.getAccessAnnotation().getValue());
+	}
 
 	public AccessType getDefaultAccess() {
 		return this.defaultAccess;
@@ -436,6 +464,10 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected Iterator<JavaResourcePersistentAttribute> resourceAttributes() {
+		if (this.specifiedAccess != null)  {
+			return this.resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(this.specifiedAccess));
+		}
+
 		return (this.getAccess() == AccessType.PROPERTY) ?
 				this.resourcePersistentType.persistableProperties() :
 				this.resourcePersistentType.persistableFields();
