@@ -58,7 +58,7 @@ import org.eclipse.swt.graphics.Image;
  * This computer adds content assist support when it is invoked inside the query element of {@link
  * javax.persistence.NamedQuery &#64;NamedQuery}.
  *
- * @version 3.0
+ * @version 3.0.1
  * @since 3.0
  * @author Pascal Filion
  */
@@ -126,6 +126,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 	                                                             IProgressMonitor monitor) throws Exception {
 
 		CompletionContext completionContext = context.getCoreContext();
+		if (completionContext == null) return Collections.emptyList();
 
 		// The token "start" is the offset of the token's first character within the document.
 		// A token start of -1 can means:
