@@ -86,10 +86,9 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
     	super.init(diagram, diagramEditor);
     	if (getTargetJPAProject() == null)
     		closeEditor();
-    	JPAEditorDiagramTypeProvider provider = ModelIntegrationUtil.getProviderByDiagram(diagram);
+    	JPAEditorDiagramTypeProvider provider = ModelIntegrationUtil.getProviderByDiagram(diagram.getName());
     	if ((provider != null) && provider.isAlive()) 
     		provider.getDiagramEditor().getSite().getWorkbenchWindow().getActivePage().closeEditor(provider.getDiagramEditor(), true);
-    	ModelIntegrationUtil.mapDiagramToProvider(getDiagram(), this);
 	}
     
     
@@ -215,8 +214,9 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 		removeConnections();
 		
 		final Hashtable<String, SizePosition> marks = new Hashtable<String, SizePosition>(); 				
-		EntitiesCoordinatesXML xml = new EntitiesCoordinatesXML(project, getDiagram());
+		EntitiesCoordinatesXML xml = new EntitiesCoordinatesXML(project.getName());
 		xml.load(marks);
+		xml.clean();
 				
 		List<Shape> picts = diagram.getChildren();
 		Iterator<Shape> it = picts.iterator();
@@ -293,7 +293,7 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 	}    
     
 	private JpaProject getTargetJPAProject() {
-		return ModelIntegrationUtil.getProjectByDiagram(getDiagram());
+		return ModelIntegrationUtil.getProjectByDiagram(getDiagram().getName());
 	}
 	
 	public boolean isAlive() {

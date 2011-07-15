@@ -18,12 +18,9 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.WeakReference;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.WeakHashMap;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -53,10 +50,16 @@ import org.eclipse.graphiti.ui.editor.DiagramEditorFactory;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
 
 public class ModelIntegrationUtil {
@@ -65,9 +68,6 @@ public class ModelIntegrationUtil {
 	public static final String DIAGRAM_XML_FILE_EXTENSION = "xml"; 		//$NON-NLS-1$
 	public static final String JPA_DIAGRAM_TYPE = "JPA Diagram"; 	//$NON-NLS-1$
 	public static final String DEFAULT_RES_FOLDER = "src";		//$NON-NLS-1$
-	private static WeakHashMap<Diagram, WeakReference<JpaProject>> diagramsToProjects = new WeakHashMap<Diagram, WeakReference<JpaProject>>();
-	private static WeakHashMap<Diagram, WeakReference<JPAEditorDiagramTypeProvider>> diagramsToProviders = new WeakHashMap<Diagram, WeakReference<JPAEditorDiagramTypeProvider>>();
-	private static HashMap<Diagram, Resource> diagramsToResources = new HashMap<Diagram, Resource>();
 
 	private static boolean xmiExists = false;
 	
@@ -160,8 +160,10 @@ public class ModelIntegrationUtil {
 	}
 	
 	public static ResourceSet getResourceSet(Diagram diagram) {
-		WeakReference<JpaProject> ref = diagramsToProjects.get(diagram);
-		TransactionalEditingDomain defaultTransEditDomain = (TransactionalEditingDomain)ref.get().getProject().getAdapter(TransactionalEditingDomain.class);
+		JpaProject jpaProject = getProjectByDiagram(diagram.getName());
+		if (jpaProject == null)
+			return null;
+		TransactionalEditingDomain defaultTransEditDomain = (TransactionalEditingDomain)jpaProject.getProject().getAdapter(TransactionalEditingDomain.class);
 		ResourceSet resourceSet = defaultTransEditDomain.getResourceSet();
 		return resourceSet;
 	}
@@ -183,6 +185,9 @@ public class ModelIntegrationUtil {
 									 int grid, 
 									 boolean snap) {
 		
+		Diagram diagram = getDiagramByProject(project);
+		if (diagram != null)
+			return diagram;
 		TransactionalEditingDomain defaultTransEditDomain = DiagramEditorFactory.createResourceSetAndEditingDomain();
 		ResourceSet resourceSet = defaultTransEditDomain.getResourceSet();
 
@@ -214,10 +219,10 @@ public class ModelIntegrationUtil {
 			EObject obj = it.next();
 			if ((obj == null) && !Diagram.class.isInstance(obj))
 				continue;
-			Diagram d = (Diagram)obj;
-			diagramsToResources.put(d, resource);
+			diagram = (Diagram)obj;
+			//diagramsToResources.put(diagram, resource);
 			defaultTransEditDomain.getCommandStack().flush();
-			return d;
+			return diagram;
 		}
 		return createNewDiagram(defaultTransEditDomain, resourceSet, resource, diagramName, grid, snap);
 	}
@@ -243,7 +248,7 @@ public class ModelIntegrationUtil {
 			}
 		});	
 		editingDomain.getCommandStack().flush();
-		mapDiagramToProject((Diagram)wrp.getObject(), resource);
+		//mapDiagramToProject((Diagram)wrp.getObject(), resource);
 		return (Diagram)wrp.getObject();		
 	}
 	
@@ -263,54 +268,98 @@ public class ModelIntegrationUtil {
 	public static IPath getDiagramsFolderPath(IProject project){
 		return JPADiagramEditorPlugin.getDefault().getStateLocation();
 	}
-	
-	public static void mapDiagramToProject(Diagram diagram, JpaProject project) {
-		diagramsToProjects.put(diagram, new WeakReference<JpaProject>(project));
-	}
-	
-	public static void mapDiagramToProject(Diagram diagram, Resource resource) {
-		diagramsToResources.put(diagram, resource);
-	}
-	
-	public static JpaProject removeDiagramProjectMapping(Diagram diagram) {
-		WeakReference<JpaProject> ref = diagramsToProjects.remove(diagram);
-		diagramsToProviders.remove(diagram);
-		if (ref == null)
+		
+	public static JpaProject getProjectByDiagram(String diagramName) {
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(diagramName);
+		try {
+			return JpaArtifactFactory.instance().getJpaProject(project);
+		} catch (CoreException e) {
 			return null;
-		return ref.get();
+		}
 	}
 	
-	public static Resource removeDiagramResourceMapping(Diagram diagram) {
-		return diagramsToResources.remove(diagram);
+	public static boolean isDiagramOpen(String diagramName) {
+		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();
+		IEditorReference[] editorRefs = workbenchPage.getEditorReferences();
+		for (IEditorReference editorRef : editorRefs) {
+			if(!JPADiagramEditorPlugin.PLUGIN_ID.equals(editorRef.getId())) 
+				continue;
+			JPADiagramEditor editor = (JPADiagramEditor)editorRef.getEditor(false);
+			if (editor == null)
+				continue;
+			JPAEditorDiagramTypeProvider diagramProvider = editor.getDiagramTypeProvider();  
+			Diagram d = diagramProvider.getDiagram();
+			if (diagramName.equals(d.getName()))
+				return true;
+		}		
+		return false;
+	}
+			
+		
+	public static JPAEditorDiagramTypeProvider getProviderByDiagram(String diagramName) {
+		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();
+		IEditorReference[] editorRefs = workbenchPage.getEditorReferences();
+		for (IEditorReference editorRef : editorRefs) {
+			if(!JPADiagramEditorPlugin.PLUGIN_ID.equals(editorRef.getId())) 
+				continue;
+			JPADiagramEditor editor = (JPADiagramEditor)editorRef.getEditor(false);
+			if (editor == null)
+				continue;
+			JPAEditorDiagramTypeProvider diagramProvider = editor.getDiagramTypeProvider();  
+			Diagram d = diagramProvider.getDiagram();
+			if (diagramName.equals(d.getName()))
+				return diagramProvider;
+		}
+		return null;
 	}
 	
-	public static JpaProject getProjectByDiagram(Diagram diagram) {
-		WeakReference<JpaProject> ref = diagramsToProjects.get(diagram);
-		if (ref == null)
-			return null;
-		return ref.get();		
-	}
-	
-	public static Resource getResourceByDiagram(Diagram diagram) {
-		return diagramsToResources.get(diagram);
-	}	
-	
-	public static JPAEditorDiagramTypeProvider getProviderByDiagram(Diagram diagram) {
-		WeakReference<JPAEditorDiagramTypeProvider> ref = diagramsToProviders.get(diagram);
-		if (ref == null)
-			return null;
-		return ref.get();		
-	}
-	
-	public static void mapDiagramToProvider(Diagram diagram, JPAEditorDiagramTypeProvider provider) {
-		diagramsToProviders.put(diagram, new WeakReference<JPAEditorDiagramTypeProvider>(provider));
-	}
-
-	public static boolean isXmiExists() {
+	public static boolean xmiExists() {
 		return xmiExists;
 	}
 
 	public static void setXmiExists(boolean xmiExists) {
 		ModelIntegrationUtil.xmiExists = xmiExists;
 	}
+
+	public static IPath getDiagramXMLFullPath(String diagramName) {
+		if (diagramName == null)
+			return null;
+		JpaProject jpaProject = getProjectByDiagram(diagramName);
+		if (jpaProject == null)
+			return null;
+		IProject project = jpaProject.getProject();
+		return project.getFile(ModelIntegrationUtil
+				.getDiagramsXMLFolderPath(project)
+				.append(diagramName)
+				.addFileExtension(
+						ModelIntegrationUtil.DIAGRAM_XML_FILE_EXTENSION)).getFullPath();
+	}
+
+	public static Diagram getDiagramByProject(IProject project) {
+		if (project == null)
+			return null;
+		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		IWorkbenchPage workbenchPage = null; 
+		try {
+			workbenchPage = workbenchWindow.getActivePage();
+		} catch (NullPointerException e) {
+			return null;
+		}
+		IEditorReference[] editorRefs = workbenchPage.getEditorReferences();
+		for (IEditorReference editorRef : editorRefs) {
+			if(!JPADiagramEditorPlugin.PLUGIN_ID.equals(editorRef.getId())) 
+				continue;
+			JPADiagramEditor editor = (JPADiagramEditor)editorRef.getEditor(false);
+			if (editor == null)
+				continue;
+			JPAEditorDiagramTypeProvider diagramProvider = editor.getDiagramTypeProvider();  
+			Diagram d = diagramProvider.getDiagram();
+			if (d.getName().equals(project.getName()))
+				return d;
+		}
+		return null;
+	}
+
 }

@@ -100,7 +100,7 @@ public class JPAEditorMatchingStrategy implements IEditorMatchingStrategy {
 							featureProvider = this.fp;
 							diagramProvider = featureProvider.getDiagramTypeProvider();
 						} else {
-							diagramProvider = ModelIntegrationUtil.getProviderByDiagram(diagram);
+							diagramProvider = ModelIntegrationUtil.getProviderByDiagram(diagram.getName());
 							featureProvider = (IJPAEditorFeatureProvider)diagramProvider.getFeatureProvider();
 						}
 						IModelIntegrationUtil moinIntegrationUtil = featureProvider.getMoinIntegrationUtil();

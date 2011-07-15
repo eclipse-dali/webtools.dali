@@ -83,15 +83,16 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 		}
 
 		public void run() {
-			ModelIntegrationUtil.mapDiagramToProject(diagram, jpaProject);			
+			//ModelIntegrationUtil.mapDiagramToProject(diagram, jpaProject);			
 			openDiagramEditor(diagram);
 		}
 	}
 		
 	public static IDiagramEditor openDiagramEditor(Diagram diagram) {
-
-		JpaProject jpaProject = ModelIntegrationUtil.getProjectByDiagram(diagram);
-		if (!JPAEditorUtil.checkJPAFacetVersion(jpaProject, "1.0")) {					//$NON-NLS-1$
+		
+		String diagramName = diagram.getName();
+		JpaProject jpaProject = ModelIntegrationUtil.getProjectByDiagram(diagramName);
+		if (!JPAEditorUtil.checkJPAFacetVersion(jpaProject, "1.0") && !ModelIntegrationUtil.isDiagramOpen(diagramName)) {					//$NON-NLS-1$
 			boolean wasEnabled = OptionalMessageDialog.isDialogEnabled(JPAEditorConstants.JPA_SUPPORT_DIALOG_ID);
 			int btnIndex = OptionalMessageDialog.open(JPAEditorConstants.JPA_SUPPORT_DIALOG_ID, 
 									   Display.getDefault().getShells()[0], 

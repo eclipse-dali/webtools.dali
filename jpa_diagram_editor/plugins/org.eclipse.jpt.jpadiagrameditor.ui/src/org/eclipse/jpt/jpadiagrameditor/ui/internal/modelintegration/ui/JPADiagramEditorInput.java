@@ -48,7 +48,7 @@ public class JPADiagramEditorInput extends DiagramEditorInput
 		
 		super(diagramUriString, domain, providerId, disposeEditingDomain);
 		this.diagram = diagram; 
-		this.projectName = ModelIntegrationUtil.getProjectByDiagram(diagram).getName();		
+		this.projectName = ModelIntegrationUtil.getProjectByDiagram(diagram.getName()).getName();		
 	}
 
 	public JPADiagramEditorInput(Diagram diagram,
@@ -59,7 +59,7 @@ public class JPADiagramEditorInput extends DiagramEditorInput
 		
 		super(diagramUri, domain, providerId, disposeEditingDomain);
 		this.diagram = diagram;
-		this.projectName = ModelIntegrationUtil.getProjectByDiagram(diagram).getName();
+		this.projectName = ModelIntegrationUtil.getProjectByDiagram(diagram.getName()).getName();
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -81,7 +81,7 @@ public class JPADiagramEditorInput extends DiagramEditorInput
 						.findMember(platformString);
 			} else {
 				IProject project = ModelIntegrationUtil.getProjectByDiagram(
-						diagram).getProject();
+						diagram.getName()).getProject();
 				return findXMLFile(project);
 			}
 		}
