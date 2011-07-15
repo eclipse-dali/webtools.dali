@@ -15,11 +15,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal;
 
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.internal.ui.dialogs.OptionalMessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.ResourceChangeListener;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -35,12 +39,14 @@ public class JPADiagramEditorPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static JPADiagramEditorPlugin plugin;
 	
+	private IResourceChangeListener changeListener;
+		
 	/**
 	 * The constructor
 	 */
 	public JPADiagramEditorPlugin() {
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
@@ -48,7 +54,10 @@ public class JPADiagramEditorPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		
 		OptionalMessageDialog.setDialogEnabled(JPAEditorConstants.JPA_SUPPORT_DIALOG_ID, true);
+		changeListener = new ResourceChangeListener();
+		EclipseFacade.INSTANCE.getWorkspace().addResourceChangeListener(changeListener, IResourceChangeEvent.POST_CHANGE);
 	}
 
 	/*
@@ -58,6 +67,7 @@ public class JPADiagramEditorPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+		EclipseFacade.INSTANCE.getWorkspace().removeResourceChangeListener(changeListener);
 	}
 
 	/**
@@ -115,4 +125,5 @@ public class JPADiagramEditorPlugin extends AbstractUIPlugin {
 	public static void logInfo(String msg) {
 		log(new Status(IStatus.INFO, PLUGIN_ID, IStatus.OK, msg, null));
 	}
+	
 }

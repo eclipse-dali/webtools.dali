@@ -1,9 +1,12 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -13,7 +16,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -22,6 +24,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.graphiti.mm.algorithms.RoundedRectangle;
@@ -39,22 +42,21 @@ import org.xml.sax.SAXException;
 
 public class EntitiesCoordinatesXML {
 	
-	private Diagram diagram;
-	private File file;
 	private Document document;
 	private Element rootElement;
-	private IFile existingXMLFile;
+	private String projectName;
 	
 	public static final String XML_ELEMENT_POSITION = "\n\t\t"; //$NON-NLS-1$
 		
-	public EntitiesCoordinatesXML(IProject project, Diagram diagram){
-		this.diagram = diagram;
+	public EntitiesCoordinatesXML(String projectName){
+		this.projectName = projectName;
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		documentBuilderFactory.setNamespaceAware(true);
+		InputStream is = null;
 		try {
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			file = findXMLFile(project);
-			document = documentBuilder.parse(file);
+			is = (InputStream)findXMLFile(true);
+			document = documentBuilder.parse(is);
 			rootElement = document.getDocumentElement();
 		} catch (ParserConfigurationException e) {
 			JPADiagramEditorPlugin.logError(JPAEditorMessages.EntitiesCoordinatesXML_CannotParseFileErrorMSG, e);
@@ -62,30 +64,42 @@ public class EntitiesCoordinatesXML {
 			JPADiagramEditorPlugin.logError(JPAEditorMessages.EntitiesCoordinatesXML_CannotParseFileErrorMSG, e);
 		} catch (IOException e) {
 			JPADiagramEditorPlugin.logError(JPAEditorMessages.EntitiesCoordinatesXML_CannotReadFileErrorMSG, e);
+		} finally {
+			if (is != null)
+				try {
+					is.close();
+				} catch (IOException e) {
+					// ignore
+				}
 		}
 	}
 
 	
-    private File findXMLFile(IProject project){
+    private Closeable findXMLFile(boolean inputStream) throws FileNotFoundException{
+    	IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		try {
 			IResource[] resources = project.members();
 			for (IResource res : resources) {
 				if (res instanceof IFolder) {
-					existingXMLFile = ((IFolder) res).getFile(diagram.getName() + "." + ModelIntegrationUtil.DIAGRAM_XML_FILE_EXTENSION); //$NON-NLS-1$
+					IFile existingXMLFile = ((IFolder) res).getFile(projectName + "." + ModelIntegrationUtil.DIAGRAM_XML_FILE_EXTENSION); //$NON-NLS-1$
 					if (existingXMLFile != null && existingXMLFile.exists()) {
-						return new File(existingXMLFile.getLocationURI());
+						return inputStream ? 
+								new FileInputStream(new File(existingXMLFile.getLocationURI())) :
+									new FileOutputStream(new File(existingXMLFile.getLocationURI()));
 					}
 				}
 			}
 		} catch (CoreException e) {
 			JPADiagramEditorPlugin.logError(JPAEditorMessages.EntitiesCoordinatesXML_CannotObtainProjectErrorMSG, e);
 		}
-		existingXMLFile = project.getFile(ModelIntegrationUtil.getDiagramsXMLFolderPath(project).append(diagram.getName()).addFileExtension(ModelIntegrationUtil.DIAGRAM_XML_FILE_EXTENSION));
-		return new File(existingXMLFile.getLocationURI());
+		IFile existingXMLFile = project.getFile(ModelIntegrationUtil.getDiagramsXMLFolderPath(project).append(projectName).addFileExtension(ModelIntegrationUtil.DIAGRAM_XML_FILE_EXTENSION));
+		return inputStream ? new FileInputStream(new File(existingXMLFile.getLocationURI())) :
+									new FileOutputStream(new File(existingXMLFile.getLocationURI()));
     }
 	
-	public void store() {
-
+    synchronized public void store() {
+    	IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+    	Diagram diagram = ModelIntegrationUtil.getDiagramByProject(project);
 		List<Shape> picts = diagram.getChildren();
 		Iterator<Shape> it = picts.iterator();
 		// collecting data from the saved pictograms
@@ -145,12 +159,12 @@ public class EntitiesCoordinatesXML {
 		ModelIntegrationUtil.setXmiExists(false);
 	}
 
-	public void load(Hashtable<String, SizePosition> marks){
+	synchronized public void load(Hashtable<String, SizePosition> marks){
 		
 		if(rootElement.getChildNodes().getLength()<=1){
-			if(ModelIntegrationUtil.isXmiExists()){
+			if(ModelIntegrationUtil.xmiExists()){
 				store();
-				close();
+				clean();
 			}
 		} 
 		
@@ -191,27 +205,37 @@ public class EntitiesCoordinatesXML {
 		parentElement.appendChild(document.createTextNode(position));
 	}
 	
-	public void close() {
-		OutputStream os;
+	synchronized public void close() {
+		OutputStream os = null;
 		try {
-			os = new FileOutputStream(file);
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
+			os = (OutputStream)findXMLFile(false);
 			transformer.transform(new DOMSource(document), new StreamResult(os));
-			os.close();
-		} catch (FileNotFoundException e) {
-			JPADiagramEditorPlugin.logError(JPAEditorMessages.EntitiesCoordinatesXML_CannotFindFileErrorMSG, e);
-		} catch (TransformerException e) {
+			os.flush();
+		} catch (Exception e) {
 			JPADiagramEditorPlugin.logError(JPAEditorMessages.EntitiesCoordinatesXML_CannotCreateDOMFileErrorMSG, e);
-		} catch (IOException e) {
-			JPADiagramEditorPlugin.logError(JPAEditorMessages.EntitiesCoordinatesXML_CannotCloseFileStreamErrorMSG, e);
+		} finally {
+			try {
+				os.close();
+			} catch (IOException e) {
+				// ignore
+			}
 		}
 		
+		clean();
+	}
+	
+	synchronized public void clean() {
 		try {
-			existingXMLFile.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+	    	IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);			
+	    	project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (CoreException e) {
 			JPADiagramEditorPlugin.logError(JPAEditorMessages.EntitiesCoordinatesXML_CannotRefrfreshFile, e);
-		}
+		}		
+		document = null;
+		rootElement = null;
 	}
+
 
 }

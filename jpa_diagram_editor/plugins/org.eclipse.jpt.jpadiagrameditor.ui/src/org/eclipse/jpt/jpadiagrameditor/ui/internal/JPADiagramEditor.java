@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -118,7 +117,7 @@ public class JPADiagramEditor extends DiagramEditor {
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(d);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			protected void doExecute() {
-				JPACheckSum.INSTANCE().assignEntityShapesMD5Strings(d, ModelIntegrationUtil.getProjectByDiagram(d));
+				JPACheckSum.INSTANCE().assignEntityShapesMD5Strings(d, ModelIntegrationUtil.getProjectByDiagram(d.getName()));
 				List<Shape> children = d.getChildren();
 				Iterator<Shape> chIt = children.iterator();
 				boolean save = true;
@@ -156,7 +155,7 @@ public class JPADiagramEditor extends DiagramEditor {
 		}
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			protected void doExecute() {
-				JPACheckSum.INSTANCE().assignEntityShapesMD5Strings(d, ModelIntegrationUtil.getProjectByDiagram(d));
+				JPACheckSum.INSTANCE().assignEntityShapesMD5Strings(d, ModelIntegrationUtil.getProjectByDiagram(d.getName()));
 				List<Shape> children = d.getChildren();
 				Iterator<Shape> chIt = children.iterator();
 				while (chIt.hasNext()) {
@@ -181,8 +180,8 @@ public class JPADiagramEditor extends DiagramEditor {
 			}
 		});
 		
-		IProject project = ModelIntegrationUtil.getProjectByDiagram(d).getProject();
-		EntitiesCoordinatesXML xml = new EntitiesCoordinatesXML(project, d);
+		//IProject project = ModelIntegrationUtil.getProjectByDiagram().getProject();
+		EntitiesCoordinatesXML xml = new EntitiesCoordinatesXML(d.getName());
 		xml.store();
 		xml.close();
 		
@@ -227,22 +226,22 @@ public class JPADiagramEditor extends DiagramEditor {
 																		   defaultTransEditDomain, 
 																		   JPAEditorDiagramTypeProvider.ID, 
 																		   false);
-			ModelIntegrationUtil.mapDiagramToProject(diagram, persistenceUnit
-					.getJpaProject());
+			//ModelIntegrationUtil.mapDiagramToProject(diagram, persistenceUnit
+			//		.getJpaProject());
 			super.init(site, diagramInput);
 		} catch (CoreException e) {
 			JPADiagramEditorPlugin.getDefault().getLog().log(e.getStatus());
-			ModelIntegrationUtil.removeDiagramProjectMapping(diagram);
+			//ModelIntegrationUtil.removeDiagramProjectMapping(diagram);
 		} catch (InvocationTargetException e) {
 			IStatus status = new Status(IStatus.ERROR,
 					JPADiagramEditorPlugin.PLUGIN_ID, e.getMessage(), e);
 			JPADiagramEditorPlugin.getDefault().getLog().log(status);
-			ModelIntegrationUtil.removeDiagramProjectMapping(diagram);
+			//ModelIntegrationUtil.removeDiagramProjectMapping(diagram);
 		} catch (InterruptedException e) {
 			IStatus status = new Status(IStatus.ERROR,
 					JPADiagramEditorPlugin.PLUGIN_ID, e.getMessage(), e);
 			JPADiagramEditorPlugin.getDefault().getLog().log(status);
-			ModelIntegrationUtil.removeDiagramProjectMapping(diagram);
+			//ModelIntegrationUtil.removeDiagramProjectMapping(diagram);
 		}
 	}
 

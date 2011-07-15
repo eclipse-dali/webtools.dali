@@ -21,6 +21,6 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 public class ModelIntegrationUtilImpl implements IModelIntegrationUtil {
 	
 	public JpaProject getProjectByDiagram(Diagram diagram) {
-		return ModelIntegrationUtil.getProjectByDiagram(diagram);
+		return ModelIntegrationUtil.getProjectByDiagram(diagram.getName());
 	}
 }

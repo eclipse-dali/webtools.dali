@@ -134,7 +134,7 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 	}
 	
 	private JpaProject getTargetJPAProject() {
-		return ModelIntegrationUtil.getProjectByDiagram(getDiagram());
+		return ModelIntegrationUtil.getProjectByDiagram(getDiagram().getName());
 	}
 	
 	public static Point getLowestRightestPoint(Diagram d) { 

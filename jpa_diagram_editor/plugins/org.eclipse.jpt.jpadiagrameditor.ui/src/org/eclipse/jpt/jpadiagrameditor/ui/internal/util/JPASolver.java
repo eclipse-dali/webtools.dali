@@ -1405,7 +1405,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 									public void run() {
 										IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-										if ((ModelIntegrationUtil.getProjectByDiagram(diagram).getProject()).equals((IProject)resource)) {
+										if ((ModelIntegrationUtil.getProjectByDiagram(diagram.getName()).getProject()).equals((IProject)resource)) {
 											page.closeEditor(diagramBySelectedProject, false);
 										}
 									}

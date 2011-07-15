@@ -111,7 +111,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 
 		PictogramElement[] pictograms = getFeatureProvider()
 				.getAllPictogramElementsForBusinessObject(jpt);
-		JpaProject proj = ModelIntegrationUtil.getProjectByDiagram(getDiagram());
+		JpaProject proj = ModelIntegrationUtil.getProjectByDiagram(getDiagram().getName());
 		if (proj != null)
 			if (proj != jpt.getJpaProject())
 				return false;
