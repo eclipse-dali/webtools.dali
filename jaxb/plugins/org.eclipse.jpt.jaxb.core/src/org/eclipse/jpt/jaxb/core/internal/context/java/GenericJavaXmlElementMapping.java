@@ -261,6 +261,11 @@ public class GenericJavaXmlElementMapping
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
+		// If the property or field type is a parametric collection type, then @XmlElement.type() 
+		// must be DEFAULT.class or collectionitem.class (since the type of the collection is 
+		// already known). [ JAXB 2.2 spec, 8.9.1.2 ]
+//		if (getPersistentAttribute().getResourceType())
+		
 		if (this.getXmlElementWrapper() != null) {
 			this.getXmlElementWrapper().validate(messages, reporter, astRoot);
 		}

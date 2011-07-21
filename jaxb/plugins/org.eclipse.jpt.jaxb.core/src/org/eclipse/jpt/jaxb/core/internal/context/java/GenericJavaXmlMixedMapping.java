@@ -11,26 +11,26 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlMixedMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlElementsAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
 
 
-public class GenericJavaXmlElementsMapping
-		extends AbstractJavaAttributeMapping<XmlElementsAnnotation> 
-		implements XmlElementsMapping {
+public class GenericJavaXmlMixedMapping
+		extends AbstractJavaAttributeMapping<XmlMixedAnnotation>
+		implements XmlMixedMapping {
 	
-	public GenericJavaXmlElementsMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaXmlMixedMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 	}
 	
 	
 	public String getKey() {
-		return MappingKeys.XML_ELEMENTS_ATTRIBUTE_MAPPING_KEY;
+		return MappingKeys.XML_MIXED_ATTRIBUTE_MAPPING_KEY;
 	}
 	
 	@Override
 	protected String getAnnotationName() {
-		return JAXB.XML_ELEMENTS;
+		return JAXB.XML_MIXED;
 	}
 }

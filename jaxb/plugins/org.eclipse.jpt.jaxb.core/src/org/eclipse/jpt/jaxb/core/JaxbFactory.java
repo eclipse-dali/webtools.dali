@@ -35,6 +35,10 @@ import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlElementRefMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlElementRefsMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlMixedMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
@@ -44,20 +48,14 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 
 /**
  * Use a JAXB factory to build any core (e.g. {@link JaxbProject})
- * model object or any Java (e.g. {@link JavaEntity}), ORM (e.g.
- * {@link EntityMappings}), or persistence (e.g. {@link PersistenceUnit})
- * context model objects.
+ * model object or any Java (e.g. {@link XmlType}) context model objects
  * <p>
  * Assumes a base JAXB project context structure 
  * corresponding to the JAXB spec:
  * <pre>
  *     RootContext
- *      |- persistence.xml
- *          |- persistence unit(s)
- *               |- mapping file(s)  (e.g. orm.xml)
- *               |   |- persistent type mapping(s)  (e.g. Entity)
- *               |       |- persistent attribute mapping(s)  (e.g. Basic)
- *               |- persistent type mapping(s)
+ *      |- jaxb packages/types
+ *          |- jaxb attributes/methods
  * </pre>
  *   ... and associated objects.
  *<p> 
@@ -69,7 +67,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
  *
  * @see org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_Factory
  * 
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  */
 public interface JaxbFactory  {
@@ -140,9 +138,16 @@ public interface JaxbFactory  {
 	XmlAttributeMapping buildJavaXmlAttributeMapping(JaxbPersistentAttribute parent);
 
 	XmlElementMapping buildJavaXmlElementMapping(JaxbPersistentAttribute parent);
-
+	
+	XmlElementRefMapping buildJavaXmlElementRefMapping(JaxbPersistentAttribute parent);
+	
+	XmlElementRefsMapping buildJavaXmlElementRefsMapping(JaxbPersistentAttribute parent);
+	
+	XmlElementsMapping buildJavaXmlElementsMapping(JaxbPersistentAttribute parent);
+	
+	XmlMixedMapping buildJavaXmlMixedMapping(JaxbPersistentAttribute parent);
+	
 	JaxbAttributeMapping buildJavaXmlTransientMapping(JaxbPersistentAttribute parent);
-
+	
 	XmlValueMapping buildJavaXmlValueMapping(JaxbPersistentAttribute parent);
-
 }

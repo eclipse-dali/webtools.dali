@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core;
 
 /**
- * 
+ * Identifiers for JAXB class/attribute mapping types
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -18,7 +18,7 @@ package org.eclipse.jpt.jaxb.core;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  */
 @SuppressWarnings("nls")
@@ -31,6 +31,7 @@ public interface MappingKeys {
 	String XML_ELEMENTS_ATTRIBUTE_MAPPING_KEY = "xml-elements";
 	String XML_ELEMENT_REF_ATTRIBUTE_MAPPING_KEY = "xml-element-ref";
 	String XML_ELEMENT_REFS_ATTRIBUTE_MAPPING_KEY = "xml-element-refs";
+	String XML_MIXED_ATTRIBUTE_MAPPING_KEY = "xml-mixed";
 	String XML_TRANSIENT_ATTRIBUTE_MAPPING_KEY = "xml-transient";
 	String XML_VALUE_ATTRIBUTE_MAPPING_KEY = "xml-value";
 	

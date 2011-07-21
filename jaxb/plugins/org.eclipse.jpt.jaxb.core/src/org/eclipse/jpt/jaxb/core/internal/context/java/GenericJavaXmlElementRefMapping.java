@@ -11,12 +11,14 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.XmlElementRefMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 
 
 public class GenericJavaXmlElementRefMapping
-		extends AbstractJavaAttributeMapping<XmlElementRefAnnotation> {
+		extends AbstractJavaAttributeMapping<XmlElementRefAnnotation>
+		implements XmlElementRefMapping {
 
 	public GenericJavaXmlElementRefMapping(JaxbPersistentAttribute parent) {
 		super(parent);

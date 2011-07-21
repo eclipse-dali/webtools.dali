@@ -155,7 +155,6 @@ public class GenericJaxb_2_1_PlatformDefinition
 	@Override
 	protected void addDefaultJavaAttributeMappingDefinitionsTo(ArrayList<DefaultJavaAttributeMappingDefinition> definitions) {
 		definitions.add(JavaXmlElementMappingDefinition.instance());
-		definitions.add(JavaXmlElementsMappingDefinition.instance());
 	}
 	
 	@Override

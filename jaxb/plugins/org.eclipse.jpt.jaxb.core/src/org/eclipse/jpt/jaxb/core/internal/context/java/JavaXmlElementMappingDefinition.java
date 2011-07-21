@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import java.util.Collection;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
@@ -85,14 +83,13 @@ public class JavaXmlElementMappingDefinition
 	 * <li> @XmlElement
 	 * </ul>
 	 * <li> otherwise the default mapping annotation is:<ul>
-	 * <li> @XmlElements({ @XmlElement(nillable=true)})
+	 * <li> @XmlElements({ @XmlElement(nillable=true)})  
+	 * 			(NB:  this actually means the same as
+	 *      		@XmlElement(nillable=true)
+	 *      	)
 	 * </ul>
 	 */
 	public boolean isDefault(JaxbPersistentAttribute persistentAttribute) {
-		JavaResourceAttribute resourceAttribute = persistentAttribute.getJavaResourceAttribute();
-		if (resourceAttribute.typeIsSubTypeOf(Collection.class.getName())) {
-			return resourceAttribute.getAnnotation(JAXB.XML_LIST) != null;
-		}
 		return true;
 	}
 }

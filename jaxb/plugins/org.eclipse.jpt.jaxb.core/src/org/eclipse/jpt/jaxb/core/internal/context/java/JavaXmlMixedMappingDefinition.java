@@ -18,11 +18,15 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 
-public class JavaXmlElementRefMappingDefinition
-		extends AbstractJavaAttributeMappingDefinition {
+public class JavaXmlMixedMappingDefinition
+		extends AbstractJavaAttributeMappingDefinition{
 	
 	// singleton
-	private static final JavaAttributeMappingDefinition INSTANCE = new JavaXmlElementRefMappingDefinition();
+	private static final JavaXmlMixedMappingDefinition INSTANCE = 
+			new JavaXmlMixedMappingDefinition();
+	
+	private static final String[] SUPPORTING_ANNOTATION_NAMES = 
+			{ JAXB.XML_JAVA_TYPE_ADAPTER };
 	
 	
 	/**
@@ -36,26 +40,24 @@ public class JavaXmlElementRefMappingDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaXmlElementRefMappingDefinition() {
+	private JavaXmlMixedMappingDefinition() {
 		super();
 	}
 	
 	
 	public String getKey() {
-		return MappingKeys.XML_ELEMENT_REF_ATTRIBUTE_MAPPING_KEY;
+		return MappingKeys.XML_MIXED_ATTRIBUTE_MAPPING_KEY;
 	}
 	
 	public String getAnnotationName() {
-		return JAXB.XML_ELEMENT_REF;
+		return JAXB.XML_MIXED;
 	}
 	
 	public Iterable<String> getSupportingAnnotationNames() {
-		return new ArrayListIterable<String>( new String[] {
-				JAXB.XML_ELEMENT_WRAPPER,
-				JAXB.XML_JAVA_TYPE_ADAPTER });
+		return new ArrayListIterable<String>(SUPPORTING_ANNOTATION_NAMES);
 	}
 	
 	public JaxbAttributeMapping buildMapping(JaxbPersistentAttribute parent, JaxbFactory factory) {
-		return factory.buildJavaXmlElementRefsMapping(parent);
+		return factory.buildJavaXmlMixedMapping(parent);
 	}
 }

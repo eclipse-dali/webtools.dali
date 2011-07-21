@@ -1,28 +1,35 @@
+/*******************************************************************************
+ *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v1.0, which accompanies this distribution
+ *  and is available at http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import java.util.Collection;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 
 public class JavaXmlElementsMappingDefinition
-		extends AbstractJavaAttributeMappingDefinition
-		implements DefaultJavaAttributeMappingDefinition {
+		extends AbstractJavaAttributeMappingDefinition {
 	
 	// singleton
-	private static final DefaultJavaAttributeMappingDefinition INSTANCE = new JavaXmlElementsMappingDefinition();
+	private static final JavaAttributeMappingDefinition INSTANCE 
+			= new JavaXmlElementsMappingDefinition();
 	
 	
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaAttributeMappingDefinition instance() {
+	public static JavaAttributeMappingDefinition instance() {
 		return INSTANCE;
 	}
 	
@@ -51,30 +58,6 @@ public class JavaXmlElementsMappingDefinition
 	}
 	
 	public JaxbAttributeMapping buildMapping(JaxbPersistentAttribute parent, JaxbFactory factory) {
-		// TODO: move to factory once API opens up again
-		return new GenericJavaXmlElementsMapping(parent);
-	}
-	
-	/**
-	 * From the JAXB spec section 8.12.5.1 Default Mapping:
-	 * <p>
-	 * A single valued property or field must be mapped by with the following default mapping annotation:<ul>
-	 * <li> @XmlElement
-	 * </ul>
-	 * <p>
-	 * A property or field with a collection type must be mapped by with the following default mapping annotation:<ul>
-	 * <li> if the property or field is annotated with @XmlList, then the default mapping annotation is:<ul>
-	 * <li> @XmlElement
-	 * </ul>
-	 * <li> otherwise the default mapping annotation is:<ul>
-	 * <li> @XmlElements({ @XmlElement(nillable=true)})
-	 * </ul>
-	 */
-	public boolean isDefault(JaxbPersistentAttribute persistentAttribute) {
-		JavaResourceAttribute resourceAttribute = persistentAttribute.getJavaResourceAttribute();
-		if (resourceAttribute.typeIsSubTypeOf(Collection.class.getName())) {
-			return resourceAttribute.getAnnotation(JAXB.XML_LIST) == null;
-		}
-		return true;
+		return factory.buildJavaXmlElementsMapping(parent);
 	}
 }

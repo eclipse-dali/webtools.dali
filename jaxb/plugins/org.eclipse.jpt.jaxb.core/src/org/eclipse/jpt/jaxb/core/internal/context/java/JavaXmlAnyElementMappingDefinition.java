@@ -21,44 +21,46 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
 
 
 public class JavaXmlAnyElementMappingDefinition
-	extends AbstractJavaAttributeMappingDefinition
-{
+		extends AbstractJavaAttributeMappingDefinition {
+	
 	// singleton
 	private static final JavaXmlAnyElementMappingDefinition INSTANCE = 
 		new JavaXmlAnyElementMappingDefinition();
-
-
+	
+	private static final String[] SUPPORTING_ANNOTATION_NAMES = 
+		{
+			XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME,
+			XmlMixedAnnotation.ANNOTATION_NAME };
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static JavaAttributeMappingDefinition instance() {
 		return INSTANCE;
 	}
-
-	private static final String[] SUPPORTING_ANNOTATION_NAMES = 
-		{XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME,
-		XmlMixedAnnotation.ANNOTATION_NAME};
-
+	
+	
 	/**
 	 * Enforce singleton usage
 	 */
 	private JavaXmlAnyElementMappingDefinition() {
 		super();
 	}
-
-
+	
+	
 	public String getKey() {
 		return MappingKeys.XML_ANY_ELEMENT_ATTRIBUTE_MAPPING_KEY;
 	}
-
+	
 	public String getAnnotationName() {
 		return XmlAnyElementAnnotation.ANNOTATION_NAME;
 	}
-
+	
 	public Iterable<String> getSupportingAnnotationNames() {
 		return new ArrayListIterable<String>(SUPPORTING_ANNOTATION_NAMES);
 	}
-
+	
 	public JaxbAttributeMapping buildMapping(JaxbPersistentAttribute parent, JaxbFactory factory) {
 		return factory.buildJavaXmlAnyElementMapping(parent);
 	}
