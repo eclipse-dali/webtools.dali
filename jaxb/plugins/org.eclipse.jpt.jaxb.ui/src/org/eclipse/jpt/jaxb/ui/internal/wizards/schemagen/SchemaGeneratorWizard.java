@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaElement;
@@ -149,21 +148,21 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
     }
 	
 	private String getTargetSchema() {
-		
-		IPath filePath = this.newSchemaFileWizardPage.getFilePath();
+
+		IPath filePath = this.newSchemaFileWizardPage.getFileRelativePath();
 		String fileName = this.newSchemaFileWizardPage.getFileName();
-		String targetSchema = filePath.toOSString() + File.separator + fileName;
-		if ( ! FileTools.extension(targetSchema).equalsIgnoreCase(XSD_EXTENSION)) {
-			targetSchema += XSD_EXTENSION;
-		}
-		
-		return this.makeRelativeToProjectPath(targetSchema);
+		String targetSchema = (filePath.isEmpty()) ?
+			fileName :
+			filePath.toOSString() + File.separator + fileName;
+
+		return this.addXsdExtension(targetSchema);
 	}
-	
-	private String makeRelativeToProjectPath(String filePath) {
-		Path path = new Path(filePath);
-		IPath relativePath = path.makeRelativeTo(this.targetProject.getProject().getLocation());
-		return relativePath.removeFirstSegments(1).toOSString();
+
+	private String addXsdExtension(String fileName) {
+
+		return (FileTools.extension(fileName).equalsIgnoreCase(XSD_EXTENSION)) ?
+			fileName :
+			fileName + XSD_EXTENSION;
 	}
 
 	private Object[] getAllCheckedItems() {
