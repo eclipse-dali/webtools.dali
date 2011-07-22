@@ -84,8 +84,17 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 		return (IProject) this.dataModel.getProperty(PROJECT);
 	}
 
-	public IPath getFilePath() {
-		return this.getContainerFullPath();
+	/**
+	 * @return the path of the schema file relative to the project
+	 */
+	public IPath getFileRelativePath() {
+		IPath filePath = this.getContainerFullPath();
+    	String projectName = filePath.segment(0);
+
+    	if(this.getProject().getName().equals(projectName)) {
+    		filePath = filePath.removeFirstSegments(1);
+    	}
+    	return filePath;
 	}
 
 	// ********** validation **********
