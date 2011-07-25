@@ -11,11 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -24,18 +22,18 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminator()
+ * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminatorColumn()
  * @model kind="class"
  * @generated
  */
-public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTenantDiscriminator_2_3
+public class XmlTenantDiscriminatorColumn extends AbstractJpaEObject implements XmlTenantDiscriminatorColumn_2_3
 {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlTenantDiscriminator()
+	protected XmlTenantDiscriminatorColumn()
 	{
 		super();
 	}
@@ -48,15 +46,17 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 	@Override
 	protected EClass eStaticClass()
 	{
-		return EclipseLinkOrmPackage.Literals.XML_TENANT_DISCRIMINATOR;
+		return EclipseLinkOrmPackage.Literals.XML_TENANT_DISCRIMINATOR_COLUMN;
 	}
+
+
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
 			structuralFeature,
-			EclipseLinkOrmPackage.eINSTANCE.getXmlTenantDiscriminator(),
+			EclipseLinkOrmPackage.eINSTANCE.getXmlTenantDiscriminatorColumn(),
 			buildTranslatorChildren());
 	}
 

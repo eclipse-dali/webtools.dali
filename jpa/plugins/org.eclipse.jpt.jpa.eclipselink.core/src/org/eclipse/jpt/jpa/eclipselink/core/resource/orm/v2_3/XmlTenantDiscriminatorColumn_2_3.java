@@ -17,11 +17,11 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlTenantDiscriminator_2_3()
+ * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlTenantDiscriminatorColumn_2_3()
  * @model kind="class" interface="true" abstract="true"
  * @extends JpaEObject
  * @generated
  */
-public interface XmlTenantDiscriminator_2_3 extends JpaEObject
+public interface XmlTenantDiscriminatorColumn_2_3 extends JpaEObject
 {
-} // XmlTenantDiscriminator2_3
+} // XmlTenantDiscriminatorColumn_2_3

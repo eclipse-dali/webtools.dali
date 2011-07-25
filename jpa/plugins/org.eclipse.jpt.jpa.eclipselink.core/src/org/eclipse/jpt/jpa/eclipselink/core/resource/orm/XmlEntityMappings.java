@@ -44,14 +44,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlReplicationPart
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -168,14 +168,14 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	protected EList<XmlUnionPartitioning_2_2> unionPartitioning;
 
 	/**
-	 * The cached value of the '{@link #getTenantDiscriminators() <em>Tenant Discriminators</em>}' containment reference list.
+	 * The cached value of the '{@link #getTenantDiscriminatorColumns() <em>Tenant Discriminator Columns</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTenantDiscriminators()
+	 * @see #getTenantDiscriminatorColumns()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlTenantDiscriminator_2_3> tenantDiscriminators;
+	protected EList<XmlTenantDiscriminatorColumn_2_3> tenantDiscriminatorColumns;
 
 	/**
 	 * The cached value of the '{@link #getNamedStoredFunctionQueries() <em>Named Stored Function Queries</em>}' containment reference list.
@@ -326,8 +326,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	{
 		XmlAccessMethods oldAccessMethods = accessMethods;
 		accessMethods = newAccessMethods;
-		if (eNotificationRequired())
-		{
+		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS, oldAccessMethods, newAccessMethods);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
@@ -344,8 +343,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public void setAccessMethods(XmlAccessMethods newAccessMethods)
 	{
-		if (newAccessMethods != accessMethods)
-		{
+		if (newAccessMethods != accessMethods) {
 			NotificationChain msgs = null;
 			if (accessMethods != null)
 				msgs = ((InternalEObject)accessMethods).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS, null, msgs);
@@ -374,8 +372,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlPartitioning_2_2> getPartitioning()
 	{
-		if (partitioning == null)
-		{
+		if (partitioning == null) {
 			partitioning = new EObjectContainmentEList<XmlPartitioning_2_2>(XmlPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING);
 		}
 		return partitioning;
@@ -397,8 +394,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlReplicationPartitioning_2_2> getReplicationPartitioning()
 	{
-		if (replicationPartitioning == null)
-		{
+		if (replicationPartitioning == null) {
 			replicationPartitioning = new EObjectContainmentEList<XmlReplicationPartitioning_2_2>(XmlReplicationPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING);
 		}
 		return replicationPartitioning;
@@ -420,8 +416,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlRoundRobinPartitioning_2_2> getRoundRobinPartitioning()
 	{
-		if (roundRobinPartitioning == null)
-		{
+		if (roundRobinPartitioning == null) {
 			roundRobinPartitioning = new EObjectContainmentEList<XmlRoundRobinPartitioning_2_2>(XmlRoundRobinPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING);
 		}
 		return roundRobinPartitioning;
@@ -443,8 +438,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlPinnedPartitioning_2_2> getPinnedPartitioning()
 	{
-		if (pinnedPartitioning == null)
-		{
+		if (pinnedPartitioning == null) {
 			pinnedPartitioning = new EObjectContainmentEList<XmlPinnedPartitioning_2_2>(XmlPinnedPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING);
 		}
 		return pinnedPartitioning;
@@ -466,8 +460,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlRangePartitioning_2_2> getRangePartitioning()
 	{
-		if (rangePartitioning == null)
-		{
+		if (rangePartitioning == null) {
 			rangePartitioning = new EObjectContainmentEList<XmlRangePartitioning_2_2>(XmlRangePartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING);
 		}
 		return rangePartitioning;
@@ -489,8 +482,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlValuePartitioning_2_2> getValuePartitioning()
 	{
-		if (valuePartitioning == null)
-		{
+		if (valuePartitioning == null) {
 			valuePartitioning = new EObjectContainmentEList<XmlValuePartitioning_2_2>(XmlValuePartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING);
 		}
 		return valuePartitioning;
@@ -512,8 +504,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlHashPartitioning_2_2> getHashPartitioning()
 	{
-		if (hashPartitioning == null)
-		{
+		if (hashPartitioning == null) {
 			hashPartitioning = new EObjectContainmentEList<XmlHashPartitioning_2_2>(XmlHashPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING);
 		}
 		return hashPartitioning;
@@ -535,34 +526,31 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlUnionPartitioning_2_2> getUnionPartitioning()
 	{
-		if (unionPartitioning == null)
-		{
+		if (unionPartitioning == null) {
 			unionPartitioning = new EObjectContainmentEList<XmlUnionPartitioning_2_2>(XmlUnionPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING);
 		}
 		return unionPartitioning;
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Tenant Discriminators</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3}.
+	 * Returns the value of the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Tenant Discriminators</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Tenant Discriminator Columns</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Tenant Discriminators</em>' containment reference list.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_3_TenantDiscriminators()
+	 * @return the value of the '<em>Tenant Discriminator Columns</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_3_TenantDiscriminatorColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlTenantDiscriminator_2_3> getTenantDiscriminators()
-	{
-		if (tenantDiscriminators == null)
-		{
-			tenantDiscriminators = new EObjectContainmentEList<XmlTenantDiscriminator_2_3>(XmlTenantDiscriminator_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATORS);
+	public EList<XmlTenantDiscriminatorColumn_2_3> getTenantDiscriminatorColumns() {
+		if (tenantDiscriminatorColumns == null) {
+			tenantDiscriminatorColumns = new EObjectContainmentEList<XmlTenantDiscriminatorColumn_2_3>(XmlTenantDiscriminatorColumn_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS);
 		}
-		return tenantDiscriminators;
+		return tenantDiscriminatorColumns;
 	}
 
 	/**
@@ -581,8 +569,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlNamedStoredFunctionQuery_2_3> getNamedStoredFunctionQueries()
 	{
-		if (namedStoredFunctionQueries == null)
-		{
+		if (namedStoredFunctionQueries == null) {
 			namedStoredFunctionQueries = new EObjectContainmentEList<XmlNamedStoredFunctionQuery_2_3>(XmlNamedStoredFunctionQuery_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES);
 		}
 		return namedStoredFunctionQueries;
@@ -604,8 +591,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlNamedPlsqlStoredFunctionQuery_2_3> getNamedPlsqlStoredFunctionQueries()
 	{
-		if (namedPlsqlStoredFunctionQueries == null)
-		{
+		if (namedPlsqlStoredFunctionQueries == null) {
 			namedPlsqlStoredFunctionQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredFunctionQuery_2_3>(XmlNamedPlsqlStoredFunctionQuery_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_FUNCTION_QUERIES);
 		}
 		return namedPlsqlStoredFunctionQueries;
@@ -627,8 +613,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlNamedPlsqlStoredProcedureQuery_2_3> getNamedPlsqlStoredProcedureQueries()
 	{
-		if (namedPlsqlStoredProcedureQueries == null)
-		{
+		if (namedPlsqlStoredProcedureQueries == null) {
 			namedPlsqlStoredProcedureQueries = new EObjectContainmentEList<XmlNamedPlsqlStoredProcedureQuery_2_3>(XmlNamedPlsqlStoredProcedureQuery_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES);
 		}
 		return namedPlsqlStoredProcedureQueries;
@@ -650,8 +635,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlPlsqlRecord_2_3> getPlsqlRecords()
 	{
-		if (plsqlRecords == null)
-		{
+		if (plsqlRecords == null) {
 			plsqlRecords = new EObjectContainmentEList<XmlPlsqlRecord_2_3>(XmlPlsqlRecord_2_3.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_RECORDS);
 		}
 		return plsqlRecords;
@@ -673,8 +657,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlPlsqlTable> getPlsqlTables()
 	{
-		if (plsqlTables == null)
-		{
+		if (plsqlTables == null) {
 			plsqlTables = new EObjectContainmentEList<XmlPlsqlTable>(XmlPlsqlTable.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_TABLES);
 		}
 		return plsqlTables;
@@ -696,8 +679,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlConverter> getConverters()
 	{
-		if (converters == null)
-		{
+		if (converters == null) {
 			converters = new EObjectContainmentEList<XmlConverter>(XmlConverter.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS);
 		}
 		return converters;
@@ -719,8 +701,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlTypeConverter> getTypeConverters()
 	{
-		if (typeConverters == null)
-		{
+		if (typeConverters == null) {
 			typeConverters = new EObjectContainmentEList<XmlTypeConverter>(XmlTypeConverter.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS);
 		}
 		return typeConverters;
@@ -742,8 +723,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlObjectTypeConverter> getObjectTypeConverters()
 	{
-		if (objectTypeConverters == null)
-		{
+		if (objectTypeConverters == null) {
 			objectTypeConverters = new EObjectContainmentEList<XmlObjectTypeConverter>(XmlObjectTypeConverter.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__OBJECT_TYPE_CONVERTERS);
 		}
 		return objectTypeConverters;
@@ -765,8 +745,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlStructConverter> getStructConverters()
 	{
-		if (structConverters == null)
-		{
+		if (structConverters == null) {
 			structConverters = new EObjectContainmentEList<XmlStructConverter>(XmlStructConverter.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__STRUCT_CONVERTERS);
 		}
 		return structConverters;
@@ -788,8 +767,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 */
 	public EList<XmlNamedStoredProcedureQuery> getNamedStoredProcedureQueries()
 	{
-		if (namedStoredProcedureQueries == null)
-		{
+		if (namedStoredProcedureQueries == null) {
 			namedStoredProcedureQueries = new EObjectContainmentEList<XmlNamedStoredProcedureQuery>(XmlNamedStoredProcedureQuery.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES);
 		}
 		return namedStoredProcedureQueries;
@@ -803,8 +781,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING:
@@ -823,8 +800,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return ((InternalEList<?>)getHashPartitioning()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING:
 				return ((InternalEList<?>)getUnionPartitioning()).basicRemove(otherEnd, msgs);
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATORS:
-				return ((InternalEList<?>)getTenantDiscriminators()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS:
+				return ((InternalEList<?>)getTenantDiscriminatorColumns()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES:
 				return ((InternalEList<?>)getNamedStoredFunctionQueries()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
@@ -857,8 +834,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING:
@@ -877,8 +853,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return getHashPartitioning();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING:
 				return getUnionPartitioning();
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATORS:
-				return getTenantDiscriminators();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS:
+				return getTenantDiscriminatorColumns();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES:
 				return getNamedStoredFunctionQueries();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
@@ -912,8 +888,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
 				return;
@@ -949,9 +924,9 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				getUnionPartitioning().clear();
 				getUnionPartitioning().addAll((Collection<? extends XmlUnionPartitioning_2_2>)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATORS:
-				getTenantDiscriminators().clear();
-				getTenantDiscriminators().addAll((Collection<? extends XmlTenantDiscriminator_2_3>)newValue);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS:
+				getTenantDiscriminatorColumns().clear();
+				getTenantDiscriminatorColumns().addAll((Collection<? extends XmlTenantDiscriminatorColumn_2_3>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES:
 				getNamedStoredFunctionQueries().clear();
@@ -1005,8 +980,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	@Override
 	public void eUnset(int featureID)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
@@ -1034,8 +1008,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING:
 				getUnionPartitioning().clear();
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATORS:
-				getTenantDiscriminators().clear();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS:
+				getTenantDiscriminatorColumns().clear();
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES:
 				getNamedStoredFunctionQueries().clear();
@@ -1079,8 +1053,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	@Override
 	public boolean eIsSet(int featureID)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING:
@@ -1099,8 +1072,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return hashPartitioning != null && !hashPartitioning.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING:
 				return unionPartitioning != null && !unionPartitioning.isEmpty();
-			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATORS:
-				return tenantDiscriminators != null && !tenantDiscriminators.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS:
+				return tenantDiscriminatorColumns != null && !tenantDiscriminatorColumns.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES:
 				return namedStoredFunctionQueries != null && !namedStoredFunctionQueries.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_FUNCTION_QUERIES:
@@ -1133,25 +1106,19 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAccessMethodsHolder.class)
-		{
-			switch (derivedFeatureID)
-			{
+		if (baseClass == XmlAccessMethodsHolder.class) {
+			switch (derivedFeatureID) {
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlEntityMappings_2_1.class)
-		{
-			switch (derivedFeatureID)
-			{
+		if (baseClass == XmlEntityMappings_2_1.class) {
+			switch (derivedFeatureID) {
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlEntityMappings_2_2.class)
-		{
-			switch (derivedFeatureID)
-			{
+		if (baseClass == XmlEntityMappings_2_2.class) {
+			switch (derivedFeatureID) {
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__PARTITIONING;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__REPLICATION_PARTITIONING;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__ROUND_ROBIN_PARTITIONING;
@@ -1163,11 +1130,9 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlEntityMappings_2_3.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATORS: return EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__TENANT_DISCRIMINATORS;
+		if (baseClass == XmlEntityMappings_2_3.class) {
+			switch (derivedFeatureID) {
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS: return EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__TENANT_DISCRIMINATOR_COLUMNS;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES: return EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__NAMED_STORED_FUNCTION_QUERIES;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_FUNCTION_QUERIES: return EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
@@ -1176,10 +1141,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlConvertersHolder.class)
-		{
-			switch (derivedFeatureID)
-			{
+		if (baseClass == XmlConvertersHolder.class) {
+			switch (derivedFeatureID) {
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__CONVERTERS;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__OBJECT_TYPE_CONVERTERS;
@@ -1187,10 +1150,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlQueryContainer.class)
-		{
-			switch (derivedFeatureID)
-			{
+		if (baseClass == XmlQueryContainer.class) {
+			switch (derivedFeatureID) {
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_QUERY_CONTAINER__NAMED_STORED_PROCEDURE_QUERIES;
 				default: return -1;
 			}
@@ -1206,25 +1167,19 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAccessMethodsHolder.class)
-		{
-			switch (baseFeatureID)
-			{
+		if (baseClass == XmlAccessMethodsHolder.class) {
+			switch (baseFeatureID) {
 				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS;
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlEntityMappings_2_1.class)
-		{
-			switch (baseFeatureID)
-			{
+		if (baseClass == XmlEntityMappings_2_1.class) {
+			switch (baseFeatureID) {
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlEntityMappings_2_2.class)
-		{
-			switch (baseFeatureID)
-			{
+		if (baseClass == XmlEntityMappings_2_2.class) {
+			switch (baseFeatureID) {
 				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING;
 				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__REPLICATION_PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING;
 				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__ROUND_ROBIN_PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING;
@@ -1236,11 +1191,9 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlEntityMappings_2_3.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__TENANT_DISCRIMINATORS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATORS;
+		if (baseClass == XmlEntityMappings_2_3.class) {
+			switch (baseFeatureID) {
+				case EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__TENANT_DISCRIMINATOR_COLUMNS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS;
 				case EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__NAMED_STORED_FUNCTION_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_FUNCTION_QUERIES;
 				case EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_FUNCTION_QUERIES;
 				case EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
@@ -1249,10 +1202,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlConvertersHolder.class)
-		{
-			switch (baseFeatureID)
-			{
+		if (baseClass == XmlConvertersHolder.class) {
+			switch (baseFeatureID) {
 				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__OBJECT_TYPE_CONVERTERS;
@@ -1260,10 +1211,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlQueryContainer.class)
-		{
-			switch (baseFeatureID)
-			{
+		if (baseClass == XmlQueryContainer.class) {
+			switch (baseFeatureID) {
 				case EclipseLinkOrmPackage.XML_QUERY_CONTAINER__NAMED_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES;
 				default: return -1;
 			}
@@ -1329,7 +1278,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 			buildCatalogTranslator(),
 			buildAccessTranslator(),
 			buildAccessMethodsTranslator(),
-			XmlTenantDiscriminator.buildTranslator(EclipseLink2_3.TENANT_DISCRIMINATOR, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntityMappings_2_3_TenantDiscriminators()),
+			XmlTenantDiscriminatorColumn.buildTranslator(EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntityMappings_2_3_TenantDiscriminatorColumns()),
 			XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_Converters()),
 			XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_TypeConverters()),
 			XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_ObjectTypeConverters()),

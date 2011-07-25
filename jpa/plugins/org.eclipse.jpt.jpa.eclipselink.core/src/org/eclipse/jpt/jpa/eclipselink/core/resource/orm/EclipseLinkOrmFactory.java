@@ -45,16 +45,13 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 */
 	public static EclipseLinkOrmFactory init()
 	{
-		try
-		{
+		try {
 			EclipseLinkOrmFactory theEclipseLinkOrmFactory = (EclipseLinkOrmFactory)EPackage.Registry.INSTANCE.getEFactory("jpt.eclipselink.orm.xmi"); 
-			if (theEclipseLinkOrmFactory != null)
-			{
+			if (theEclipseLinkOrmFactory != null) {
 				return theEclipseLinkOrmFactory;
 			}
 		}
-		catch (Exception exception)
-		{
+		catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
 		return new EclipseLinkOrmFactory();
@@ -79,8 +76,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	@Override
 	public EObject create(EClass eClass)
 	{
-		switch (eClass.getClassifierID())
-		{
+		switch (eClass.getClassifierID()) {
 			case EclipseLinkOrmPackage.XML_ACCESS_METHODS: return (EObject)createXmlAccessMethods();
 			case EclipseLinkOrmPackage.XML_ADDITIONAL_CRITERIA: return (EObject)createXmlAdditionalCriteria();
 			case EclipseLinkOrmPackage.XML_ARRAY: return (EObject)createXmlArray();
@@ -144,7 +140,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_STRUCTURE: return (EObject)createXmlStructure();
 			case EclipseLinkOrmPackage.XML_TABLE: return (EObject)createXmlTable();
 			case EclipseLinkOrmPackage.XML_TABLE_GENERATOR: return (EObject)createXmlTableGenerator();
-			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR: return (EObject)createXmlTenantDiscriminator();
+			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN: return (EObject)createXmlTenantDiscriminatorColumn();
 			case EclipseLinkOrmPackage.XML_TIME_OF_DAY: return (EObject)createXmlTimeOfDay();
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
 			case EclipseLinkOrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
@@ -166,8 +162,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue)
 	{
-		switch (eDataType.getClassifierID())
-		{
+		switch (eDataType.getClassifierID()) {
 			case EclipseLinkOrmPackage.CACHE_COORDINATION_TYPE:
 				return createCacheCoordinationTypeFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.CACHE_TYPE:
@@ -195,8 +190,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue)
 	{
-		switch (eDataType.getClassifierID())
-		{
+		switch (eDataType.getClassifierID()) {
 			case EclipseLinkOrmPackage.CACHE_COORDINATION_TYPE:
 				return convertCacheCoordinationTypeToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.CACHE_TYPE:
@@ -826,10 +820,9 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlTenantDiscriminator createXmlTenantDiscriminator()
-	{
-		XmlTenantDiscriminator xmlTenantDiscriminator = new XmlTenantDiscriminator();
-		return xmlTenantDiscriminator;
+	public XmlTenantDiscriminatorColumn createXmlTenantDiscriminatorColumn() {
+		XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn = new XmlTenantDiscriminatorColumn();
+		return xmlTenantDiscriminatorColumn;
 	}
 
 	/**

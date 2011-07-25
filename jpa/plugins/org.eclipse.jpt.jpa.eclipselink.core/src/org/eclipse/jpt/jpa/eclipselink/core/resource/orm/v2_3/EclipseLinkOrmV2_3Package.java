@@ -239,13 +239,13 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public static final int XML_ENTITY_MAPPINGS_23 = 2;
 
 	/**
-	 * The feature id for the '<em><b>Tenant Discriminators</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS_23__TENANT_DISCRIMINATORS = 0;
+	public static final int XML_ENTITY_MAPPINGS_23__TENANT_DISCRIMINATOR_COLUMNS = 0;
 
 	/**
 	 * The feature id for the '<em><b>Named Stored Function Queries</b></em>' containment reference list.
@@ -441,13 +441,13 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_23 = 8;
 
 	/**
-	 * The feature id for the '<em><b>Tenant Discriminators</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_23__TENANT_DISCRIMINATORS = 0;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_23__TENANT_DISCRIMINATOR_COLUMNS = 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Persistence Unit Defaults 23</em>' class.
@@ -516,23 +516,23 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public static final int XML_STRUCT_23_FEATURE_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3 <em>Xml Tenant Discriminator 23</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3 <em>Xml Tenant Discriminator Column 23</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlTenantDiscriminator_2_3()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlTenantDiscriminatorColumn_2_3()
 	 * @generated
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_23 = 12;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23 = 12;
 
 	/**
-	 * The number of structural features of the '<em>Xml Tenant Discriminator 23</em>' class.
+	 * The number of structural features of the '<em>Xml Tenant Discriminator Column 23</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_23_FEATURE_COUNT = 0;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23_FEATURE_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3 <em>Xml Attributes 23</em>}' class.
@@ -726,7 +726,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlTenantDiscriminator_2_3EClass = null;
+	private EClass xmlTenantDiscriminatorColumn_2_3EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1190,16 +1190,15 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3#getTenantDiscriminators <em>Tenant Discriminators</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3#getTenantDiscriminatorColumns <em>Tenant Discriminator Columns</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Tenant Discriminators</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3#getTenantDiscriminators()
+	 * @return the meta object for the containment reference list '<em>Tenant Discriminator Columns</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3#getTenantDiscriminatorColumns()
 	 * @see #getXmlEntityMappings_2_3()
 	 * @generated
 	 */
-	public EReference getXmlEntityMappings_2_3_TenantDiscriminators()
-	{
+	public EReference getXmlEntityMappings_2_3_TenantDiscriminatorColumns() {
 		return (EReference)xmlEntityMappings_2_3EClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1294,16 +1293,15 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPersistenceUnitDefaults_2_3#getTenantDiscriminators <em>Tenant Discriminators</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPersistenceUnitDefaults_2_3#getTenantDiscriminatorColumns <em>Tenant Discriminator Columns</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Tenant Discriminators</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPersistenceUnitDefaults_2_3#getTenantDiscriminators()
+	 * @return the meta object for the containment reference list '<em>Tenant Discriminator Columns</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPersistenceUnitDefaults_2_3#getTenantDiscriminatorColumns()
 	 * @see #getXmlPersistenceUnitDefaults_2_3()
 	 * @generated
 	 */
-	public EReference getXmlPersistenceUnitDefaults_2_3_TenantDiscriminators()
-	{
+	public EReference getXmlPersistenceUnitDefaults_2_3_TenantDiscriminatorColumns() {
 		return (EReference)xmlPersistenceUnitDefaults_2_3EClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1351,16 +1349,15 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3 <em>Xml Tenant Discriminator 23</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3 <em>Xml Tenant Discriminator Column 23</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Tenant Discriminator 23</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3
+	 * @return the meta object for class '<em>Xml Tenant Discriminator Column 23</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3
 	 * @generated
 	 */
-	public EClass getXmlTenantDiscriminator_2_3()
-	{
-		return xmlTenantDiscriminator_2_3EClass;
+	public EClass getXmlTenantDiscriminatorColumn_2_3() {
+		return xmlTenantDiscriminatorColumn_2_3EClass;
 	}
 
 
@@ -1512,7 +1509,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		createEReference(xmlEntity_2_3EClass, XML_ENTITY_23__STRUCT);
 
 		xmlEntityMappings_2_3EClass = createEClass(XML_ENTITY_MAPPINGS_23);
-		createEReference(xmlEntityMappings_2_3EClass, XML_ENTITY_MAPPINGS_23__TENANT_DISCRIMINATORS);
+		createEReference(xmlEntityMappings_2_3EClass, XML_ENTITY_MAPPINGS_23__TENANT_DISCRIMINATOR_COLUMNS);
 		createEReference(xmlEntityMappings_2_3EClass, XML_ENTITY_MAPPINGS_23__NAMED_STORED_FUNCTION_QUERIES);
 		createEReference(xmlEntityMappings_2_3EClass, XML_ENTITY_MAPPINGS_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES);
 		createEReference(xmlEntityMappings_2_3EClass, XML_ENTITY_MAPPINGS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES);
@@ -1536,7 +1533,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		xmlNamedStoredFunctionQuery_2_3EClass = createEClass(XML_NAMED_STORED_FUNCTION_QUERY_23);
 
 		xmlPersistenceUnitDefaults_2_3EClass = createEClass(XML_PERSISTENCE_UNIT_DEFAULTS_23);
-		createEReference(xmlPersistenceUnitDefaults_2_3EClass, XML_PERSISTENCE_UNIT_DEFAULTS_23__TENANT_DISCRIMINATORS);
+		createEReference(xmlPersistenceUnitDefaults_2_3EClass, XML_PERSISTENCE_UNIT_DEFAULTS_23__TENANT_DISCRIMINATOR_COLUMNS);
 
 		xmlPlsqlRecord_2_3EClass = createEClass(XML_PLSQL_RECORD_23);
 
@@ -1544,7 +1541,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 		xmlStruct_2_3EClass = createEClass(XML_STRUCT_23);
 
-		xmlTenantDiscriminator_2_3EClass = createEClass(XML_TENANT_DISCRIMINATOR_23);
+		xmlTenantDiscriminatorColumn_2_3EClass = createEClass(XML_TENANT_DISCRIMINATOR_COLUMN_23);
 
 		xmlAttributes_2_3EClass = createEClass(XML_ATTRIBUTES_23);
 		createEReference(xmlAttributes_2_3EClass, XML_ATTRIBUTES_23__STRUCTURES);
@@ -1608,7 +1605,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		initEReference(getXmlEntity_2_3_Struct(), this.getXmlStruct_2_3(), null, "struct", null, 0, 1, XmlEntity_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityMappings_2_3EClass, XmlEntityMappings_2_3.class, "XmlEntityMappings_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEntityMappings_2_3_TenantDiscriminators(), this.getXmlTenantDiscriminator_2_3(), null, "tenantDiscriminators", null, 0, -1, XmlEntityMappings_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntityMappings_2_3_TenantDiscriminatorColumns(), this.getXmlTenantDiscriminatorColumn_2_3(), null, "tenantDiscriminatorColumns", null, 0, -1, XmlEntityMappings_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntityMappings_2_3_NamedStoredFunctionQueries(), this.getXmlNamedStoredFunctionQuery_2_3(), null, "namedStoredFunctionQueries", null, 0, -1, XmlEntityMappings_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntityMappings_2_3_NamedPlsqlStoredFunctionQueries(), this.getXmlNamedPlsqlStoredFunctionQuery_2_3(), null, "namedPlsqlStoredFunctionQueries", null, 0, -1, XmlEntityMappings_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntityMappings_2_3_NamedPlsqlStoredProcedureQueries(), this.getXmlNamedPlsqlStoredProcedureQuery_2_3(), null, "namedPlsqlStoredProcedureQueries", null, 0, -1, XmlEntityMappings_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1632,7 +1629,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		initEClass(xmlNamedStoredFunctionQuery_2_3EClass, XmlNamedStoredFunctionQuery_2_3.class, "XmlNamedStoredFunctionQuery_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlPersistenceUnitDefaults_2_3EClass, XmlPersistenceUnitDefaults_2_3.class, "XmlPersistenceUnitDefaults_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlPersistenceUnitDefaults_2_3_TenantDiscriminators(), this.getXmlTenantDiscriminator_2_3(), null, "tenantDiscriminators", null, 0, -1, XmlPersistenceUnitDefaults_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPersistenceUnitDefaults_2_3_TenantDiscriminatorColumns(), this.getXmlTenantDiscriminatorColumn_2_3(), null, "tenantDiscriminatorColumns", null, 0, -1, XmlPersistenceUnitDefaults_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlPlsqlRecord_2_3EClass, XmlPlsqlRecord_2_3.class, "XmlPlsqlRecord_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1640,7 +1637,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 		initEClass(xmlStruct_2_3EClass, XmlStruct_2_3.class, "XmlStruct_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(xmlTenantDiscriminator_2_3EClass, XmlTenantDiscriminator_2_3.class, "XmlTenantDiscriminator_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(xmlTenantDiscriminatorColumn_2_3EClass, XmlTenantDiscriminatorColumn_2_3.class, "XmlTenantDiscriminatorColumn_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlAttributes_2_3EClass, XmlAttributes_2_3.class, "XmlAttributes_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlAttributes_2_3_Structures(), this.getXmlStructure_2_3(), null, "structures", null, 0, -1, XmlAttributes_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1877,12 +1874,12 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		public static final EClass XML_ENTITY_MAPPINGS_23 = eINSTANCE.getXmlEntityMappings_2_3();
 
 		/**
-		 * The meta object literal for the '<em><b>Tenant Discriminators</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference XML_ENTITY_MAPPINGS_23__TENANT_DISCRIMINATORS = eINSTANCE.getXmlEntityMappings_2_3_TenantDiscriminators();
+		public static final EReference XML_ENTITY_MAPPINGS_23__TENANT_DISCRIMINATOR_COLUMNS = eINSTANCE.getXmlEntityMappings_2_3_TenantDiscriminatorColumns();
 
 		/**
 		 * The meta object literal for the '<em><b>Named Stored Function Queries</b></em>' containment reference list feature.
@@ -1935,12 +1932,12 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		public static final EClass XML_PERSISTENCE_UNIT_DEFAULTS_23 = eINSTANCE.getXmlPersistenceUnitDefaults_2_3();
 
 		/**
-		 * The meta object literal for the '<em><b>Tenant Discriminators</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference XML_PERSISTENCE_UNIT_DEFAULTS_23__TENANT_DISCRIMINATORS = eINSTANCE.getXmlPersistenceUnitDefaults_2_3_TenantDiscriminators();
+		public static final EReference XML_PERSISTENCE_UNIT_DEFAULTS_23__TENANT_DISCRIMINATOR_COLUMNS = eINSTANCE.getXmlPersistenceUnitDefaults_2_3_TenantDiscriminatorColumns();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3 <em>Xml Plsql Record 23</em>}' class.
@@ -1973,14 +1970,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		public static final EClass XML_STRUCT_23 = eINSTANCE.getXmlStruct_2_3();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3 <em>Xml Tenant Discriminator 23</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3 <em>Xml Tenant Discriminator Column 23</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlTenantDiscriminator_2_3()
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlTenantDiscriminatorColumn_2_3()
 		 * @generated
 		 */
-		public static final EClass XML_TENANT_DISCRIMINATOR_23 = eINSTANCE.getXmlTenantDiscriminator_2_3();
+		public static final EClass XML_TENANT_DISCRIMINATOR_COLUMN_23 = eINSTANCE.getXmlTenantDiscriminatorColumn_2_3();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3 <em>Xml Attributes 23</em>}' class.

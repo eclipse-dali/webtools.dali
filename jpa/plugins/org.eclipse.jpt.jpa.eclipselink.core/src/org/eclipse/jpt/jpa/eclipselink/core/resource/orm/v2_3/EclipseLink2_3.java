@@ -26,7 +26,7 @@ public interface EclipseLink2_3
 	String COMPOSITE_MEMBER = "composite-member";
 
 	String MULTITENANT = "multitenant";
-		String TENANT_DISCRIMINATOR = "tenant-discriminator";
+		String TENANT_DISCRIMINATOR_COLUMN = "tenant-discriminator-column";
 		String MULTITENANT__TYPE = "type";
 	String MULTITENANT_TYPE = "multiltenant-type";
 	String NAMED_STORED_FUNCTION_QUERY = "named-stored-function-query";
