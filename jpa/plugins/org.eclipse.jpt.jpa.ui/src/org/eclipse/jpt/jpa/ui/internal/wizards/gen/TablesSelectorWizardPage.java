@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@
 package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.lang.reflect.InvocationTargetException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +18,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -49,6 +55,7 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -68,7 +75,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
-class TablesSelectorWizardPage extends WizardPage{
+class TablesSelectorWizardPage extends WizardPage {
 
 	private static final int TABLE_COLUMN_INDEX = 0;
 	private JpaProject jpaProject;
@@ -80,7 +87,10 @@ class TablesSelectorWizardPage extends WizardPage{
 	private CheckboxTableViewer tableTable;
 	private Button updatePersistenceXmlCheckBox;
 
+	private WorkspaceJob getTablesJob;
 	protected final ResourceManager resourceManager;
+
+	// ********** constructors **********
 	
 	TablesSelectorWizardPage(JpaProject jpaProject, ResourceManager resourceManager) {
 		super("TablesSelectorWizardPage"); //$NON-NLS-1$
@@ -105,22 +115,6 @@ class TablesSelectorWizardPage extends WizardPage{
 
 	ConnectionProfile connectionProfileNamed(String profileName) {
 		return JptJpaDbPlugin.getConnectionProfileFactory().buildConnectionProfile(profileName);
-	}
-
-	Schema getSchema(){
-		return this.schema;
-	}
-
-	void setSchema(Schema s){
-		this.schema = s;
-	}
-
-	private Collection<Table> possibleTables() {
-		Schema schema = this.getSchema();
-		if (schema != null && schema.getName() != null) {
-			return CollectionTools.collection(schema.getTables());
-		}
-		return Collections.<Table> emptyList();
 	}
 
 	public void createControl(Composite parent) {
@@ -173,7 +167,7 @@ class TablesSelectorWizardPage extends WizardPage{
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.END;
 		restoreBtn.setLayoutData(gridData);
-		
+
 		this.updateSelectionState(databaseGroup.getSelectedSchema());
 		this.getHelpSystem().setHelp(this.tableTable.getControl(), JpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
 		this.setControl(composite);
@@ -203,7 +197,36 @@ class TablesSelectorWizardPage extends WizardPage{
 		else
 			return prevPage;
 	}
+	
+	public Schema getDefaultSchema() {
+		return this.jpaProject.getDefaultDbSchema() ;
+	}
 
+	// ********** private methods **********
+
+	private Schema getSchema() {
+		return this.schema;
+	}
+
+	private void setSchema(Schema s) {
+		this.schema = s;
+	}
+
+	private Collection<Table> getTables(Schema schema) {
+		if(this.getTablesJobIsRunning()) {
+			return Collections.<Table> emptyList();
+		}
+		return CollectionTools.collection(schema.getTables());
+	}
+
+	private Collection<Table> possibleTables() {
+		Schema schema = this.getSchema();
+		if(schema != null && schema.getName() != null) {
+			return this.getTables(schema);
+		}
+		return Collections.<Table> emptyList();
+	}
+	
 	private DatabaseGroup createDatabaseGroup(Composite parent, int widthHint) {
 		DatabaseGroup dbGroup = new DatabaseGroup(this.getContainer(), jpaProject, parent, resourceManager, widthHint);
 		/**
@@ -355,19 +378,18 @@ class TablesSelectorWizardPage extends WizardPage{
 		});
 	}
 
-
 	private void addColumnLayoutData(TableLayoutComposite layout) {
 		layout.addColumnData(new ColumnWeightData(50, true));
 	}
 
-	void editEntityNameIfPossible(){
+	private void editEntityNameIfPossible() {
 		Object[] selected = ((IStructuredSelection) this.tableTable.getSelection()).toArray();
 		if (selected.length != 1) {
 			return;
 		}
 	}
 
-	void handleTablesListSelectionChanged(SelectionChangedEvent event) {
+	private void handleTablesListSelectionChanged(SelectionChangedEvent event) {
 		doStatusUpdate();
 	}
 
@@ -379,11 +401,7 @@ class TablesSelectorWizardPage extends WizardPage{
 		return new TableTableContentProvider();
 	}
 	
-	public Schema getDefaultSchema() {
-		return this.jpaProject.getDefaultDbSchema() ;
-	}
-	
-	Collection<Table> getSelectedTables() {
+	private Collection<Table> getSelectedTables() {
 		ArrayList<Table> selectedTables = new ArrayList<Table>();
 		for (Object selectedTable : this.tableTable.getCheckedElements())
 			selectedTables.add((Table) selectedTable);
@@ -394,12 +412,70 @@ class TablesSelectorWizardPage extends WizardPage{
 		return (this.tableTable != null) ? (this.getSelectedTables().size() > 0) : false;
 	}
 
-	void updateTablesListViewer(Collection<Table> possibleTables) {
+	private void updateTablesListViewer(Collection<Table> possibleTables) {
 		if (this.tableTable != null) {
 			this.initTablesSelectionControl(possibleTables);
 		}
 	}
 
+	private boolean tableInitialized() {
+		return (this.tableTable != null) && (this.tableTable.getTable().getItemCount() > 0);
+	}
+
+	private boolean getTablesJobIsRunning() {
+		return this.getTablesJob != null;
+	}
+
+	private WorkspaceJob buildGetTablesJob(final Schema schema) {
+		final Collection<Table> tables = new ArrayList<Table>();
+
+		WorkspaceJob workspaceJob = new WorkspaceJob(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_jobName) {
+
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
+				if(monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
+				SubMonitor subMonitor = SubMonitor.convert(monitor, 
+					JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_taskName, 75);
+				try {
+					subMonitor.beginTask(schema.getContainer().getName(), 100);
+					subMonitor.subTask(
+						NLS.bind(
+							JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_getTables_subTaskName, 
+							schema.getName()));
+					subMonitor.worked(20);
+
+					tables.addAll(CollectionTools.collection(schema.getTables()));
+					
+					subMonitor.worked(95);
+				}
+				catch(OperationCanceledException e) {
+					return Status.CANCEL_STATUS;
+				}
+				finally {
+					subMonitor.done();
+				}
+				return Status.OK_STATUS;
+			}
+		};
+
+		workspaceJob.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(final IJobChangeEvent event) {
+				
+				 Display.getDefault().asyncExec(new Runnable() {
+		               public void run() {
+		            	   updateTablesListViewer(tables);
+		               }
+				 });
+				event.getJob().removeJobChangeListener(this);
+				getTablesJob = null;
+			}
+		});
+		return workspaceJob;
+	}
+	
 	/**
 	 * Update the status line and the OK button according to the given status
 	 */
@@ -409,19 +485,19 @@ class TablesSelectorWizardPage extends WizardPage{
 		}else{
 			setPageComplete(true);
 			try{
-				getContainer().run(false, false, new IRunnableWithProgress(){
+				getContainer().run(false, false, new IRunnableWithProgress() {
 					public void run( final IProgressMonitor monitor ) 
 				    	throws InvocationTargetException, InterruptedException
 				    {
-						monitor.beginTask("Updating", 10);
+						monitor.beginTask(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_statusUpdate_taskName, 10);
 				
 						Collection<Table> ret = getSelectedTables();
 						ArrayList<String> tableNames = new ArrayList<String>();
-						for( Table t : ret ){
+						for(Table t : ret) {
 							tableNames.add(t.getName());
 						}
 						Schema schema = getSchema();
-						if( schema == null ){
+						if(schema == null) {
 							return ;
 						}
 						customizer.setSchema(schema);
@@ -437,69 +513,27 @@ class TablesSelectorWizardPage extends WizardPage{
 		}
 	}
 
-	// ********** inner classes **********
-	private class TableTableLabelProvider extends LabelProvider implements ITableLabelProvider {
-
-		TableTableLabelProvider() {
-			super();
-		}
-
-		@Override
-		public String getText(Object element) {
-			return ((Table) element).getName();
-		}
-
-		public Image getColumnImage(Object element, int columnIndex) {
-			return null;
-		}
-
-		public String getColumnText(Object element, int columnIndex) {
-			if (element == null) {
-				return null;
-			}
-			switch (columnIndex) {
-				case TABLE_COLUMN_INDEX:
-					return ((Table) element).getName();
-
-			}
-			throw new IllegalArgumentException("invalid column index: " + columnIndex);// $NON-NLS-1$
-		}
-
-	}
-
-
-	private class TableTableContentProvider implements IStructuredContentProvider {
-
-		TableTableContentProvider() {
-			super();
-		}
-
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {	}
-
-		public void dispose() {}
-
-		public Object[] getElements(Object inputElement) {
-			return ((Collection<?>) inputElement).toArray();
-		}
-
-	}
-
 	private void updateSelectionState(final Schema schema) {
 		if(schema ==null)
 			return;
 		this.jpaProject.setUserOverrideDefaultSchema( schema.getIdentifier());
-		
-		updateTablesListViewer(CollectionTools.collection(schema.getTables()));
+
+		if( ! this.getTablesJobIsRunning() && ! this.tableInitialized()) {
+			this.getTablesJob = this.buildGetTablesJob(schema);
+			this.getTablesJob.schedule();
+		}
+		else {
+			this.updateTablesListViewer(this.getTables(schema));
+		}
 
 		//Create the ORMGenCustomizer
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) getWizard();
-		customizer = wizard.createORMGenCustomizer( schema );
+		customizer = wizard.createORMGenCustomizer(schema);
 
-		if( this.tableTable!=null && this.updatePersistenceXmlCheckBox!=null && customizer != null  ){
+		if(this.tableTable!=null && this.updatePersistenceXmlCheckBox!=null && customizer != null) {
 			restoreWizardState();
 		}
         doStatusUpdate();
-
 	}
 
 	private boolean restoreWizardState(){
@@ -553,5 +587,51 @@ class TablesSelectorWizardPage extends WizardPage{
     
 	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
+	}
+
+	// ********** inner classes **********
+	private class TableTableLabelProvider extends LabelProvider implements ITableLabelProvider {
+
+		TableTableLabelProvider() {
+			super();
+		}
+
+		@Override
+		public String getText(Object element) {
+			return ((Table) element).getName();
+		}
+
+		public Image getColumnImage(Object element, int columnIndex) {
+			return null;
+		}
+
+		public String getColumnText(Object element, int columnIndex) {
+			if (element == null) {
+				return null;
+			}
+			switch (columnIndex) {
+				case TABLE_COLUMN_INDEX:
+					return ((Table) element).getName();
+
+			}
+			throw new IllegalArgumentException("invalid column index: " + columnIndex);// $NON-NLS-1$
+		}
+
+	}
+
+
+	private class TableTableContentProvider implements IStructuredContentProvider {
+
+		TableTableContentProvider() {
+			super();
+		}
+
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {	}
+
+		public void dispose() {}
+
+		public Object[] getElements(Object inputElement) {
+			return ((Collection<?>) inputElement).toArray();
+		}
 	}
 }

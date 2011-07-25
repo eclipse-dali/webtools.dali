@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,6 +31,12 @@ public class JptUiEntityGenMessages {
 	public static String GenerateEntitiesWizard_tableSelectPage_updatePersistenceXml;
 	public static String GenerateEntitiesWizard_tableSelectPage_tables;
 	public static String GenerateEntitiesWizard_tableSelectPage_tableColumn;
+	
+	public static String GenerateEntitiesWizard_tableSelectPage_getTables_jobName;
+	public static String GenerateEntitiesWizard_tableSelectPage_getTables_taskName;
+	public static String GenerateEntitiesWizard_tableSelectPage_getTables_subTaskName;
+	public static String GenerateEntitiesWizard_tableSelectPage_statusUpdate_taskName;
+
 	//Database connection group
 	public static String connection;
 	public static String addConnectionLink;
