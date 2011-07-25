@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3#getTenantDiscriminators <em>Tenant Discriminators</em>}</li>
+ *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3#getTenantDiscriminatorColumns <em>Tenant Discriminator Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3#getNamedStoredFunctionQueries <em>Named Stored Function Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3#getNamedPlsqlStoredFunctionQueries <em>Named Plsql Stored Function Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntityMappings_2_3#getNamedPlsqlStoredProcedureQueries <em>Named Plsql Stored Procedure Queries</em>}</li>
@@ -39,20 +39,20 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable;
 public interface XmlEntityMappings_2_3 extends JpaEObject
 {
 	/**
-	 * Returns the value of the '<em><b>Tenant Discriminators</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3}.
+	 * Returns the value of the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Tenant Discriminators</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Tenant Discriminator Columns</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Tenant Discriminators</em>' containment reference list.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEntityMappings_2_3_TenantDiscriminators()
+	 * @return the value of the '<em>Tenant Discriminator Columns</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEntityMappings_2_3_TenantDiscriminatorColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<XmlTenantDiscriminator_2_3> getTenantDiscriminators();
+	EList<XmlTenantDiscriminatorColumn_2_3> getTenantDiscriminatorColumns();
 
 	/**
 	 * Returns the value of the '<em><b>Named Stored Function Queries</b></em>' containment reference list.

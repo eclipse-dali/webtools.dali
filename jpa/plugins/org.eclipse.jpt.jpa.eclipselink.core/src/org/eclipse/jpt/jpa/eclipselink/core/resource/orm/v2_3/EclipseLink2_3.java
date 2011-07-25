@@ -41,8 +41,8 @@ public interface EclipseLink2_3
 	String STRUCT = "struct";
 		String STRUCT__NAME = "name";
 	String STRUCTURE = "structure";
-	String TENANT_DISCRIMINATOR = "tenant-discriminator";
-		String TENANT_DISCRIMINATOR__NAME = "name";
+	String TENANT_DISCRIMINATOR_COLUMN = "tenant-discriminator-column";
+		String TENANT_DISCRIMINATOR_COLUMN__NAME = "name";
 
 
 }

@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
 
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminator_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -28,11 +28,11 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminator()
+ * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminatorColumn()
  * @model kind="class"
  * @generated
  */
-public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTenantDiscriminator_2_3
+public class XmlTenantDiscriminatorColumn extends AbstractJpaEObject implements XmlTenantDiscriminatorColumn_2_3
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -58,7 +58,7 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlTenantDiscriminator()
+	protected XmlTenantDiscriminatorColumn()
 	{
 		super();
 	}
@@ -71,7 +71,7 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 	@Override
 	protected EClass eStaticClass()
 	{
-		return EclipseLinkOrmPackage.Literals.XML_TENANT_DISCRIMINATOR;
+		return EclipseLinkOrmPackage.Literals.XML_TENANT_DISCRIMINATOR_COLUMN;
 	}
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -83,7 +83,7 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminator_2_3_Name()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminatorColumn_2_3_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -93,7 +93,7 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminator#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -105,7 +105,7 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__NAME, oldName, name));
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR__NAME:
+			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__NAME:
 				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -134,7 +134,7 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR__NAME:
+			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__NAME:
 				setName((String)newValue);
 				return;
 		}
@@ -151,7 +151,7 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR__NAME:
+			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__NAME:
 				setName(NAME_EDEFAULT);
 				return;
 		}
@@ -168,7 +168,7 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR__NAME:
+			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
@@ -197,7 +197,7 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 		return new SimpleTranslator(
 			elementName, 
 			structuralFeature,
-			EclipseLinkOrmPackage.eINSTANCE.getXmlTenantDiscriminator(),
+			EclipseLinkOrmPackage.eINSTANCE.getXmlTenantDiscriminatorColumn(),
 			buildTranslatorChildren());
 	}
 
@@ -208,6 +208,6 @@ public class XmlTenantDiscriminator extends AbstractJpaEObject implements XmlTen
 	}
 
 	protected static Translator buildNameTranslator() {
-		return new Translator(EclipseLink2_3.TENANT_DISCRIMINATOR__NAME, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlTenantDiscriminator_2_3_Name(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN__NAME, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlTenantDiscriminatorColumn_2_3_Name(), Translator.DOM_ATTRIBUTE);
 	}
 } // XmlTenantDiscriminator

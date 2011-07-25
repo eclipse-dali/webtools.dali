@@ -252,7 +252,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlStructure" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping #//v2_3/XmlStructure_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTable" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlTable #//v2_2/XmlTable_2_2"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTableGenerator" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlTableGenerator #//v2_2/XmlTableGenerator_2_2"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlTenantDiscriminator" eSuperTypes="#//v2_3/XmlTenantDiscriminator_2_3"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTenantDiscriminatorColumn" eSuperTypes="#//v2_3/XmlTenantDiscriminatorColumn_2_3"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTimeOfDay">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="hour" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="minute" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
@@ -694,8 +694,8 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings_2_3" abstract="true"
         interface="true">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="tenantDiscriminators"
-          upperBound="-1" eType="#//v2_3/XmlTenantDiscriminator_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="tenantDiscriminatorColumns"
+          upperBound="-1" eType="#//v2_3/XmlTenantDiscriminatorColumn_2_3" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="namedStoredFunctionQueries"
           upperBound="-1" eType="#//v2_3/XmlNamedStoredFunctionQuery_2_3" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="namedPlsqlStoredFunctionQueries"
@@ -740,8 +740,8 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults_2_3" abstract="true"
         interface="true">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="tenantDiscriminators"
-          upperBound="-1" eType="#//v2_3/XmlTenantDiscriminator_2_3" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="tenantDiscriminatorColumns"
+          upperBound="-1" eType="#//v2_3/XmlTenantDiscriminatorColumn_2_3" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlPlsqlRecord_2_3" abstract="true"
         interface="true">
@@ -754,8 +754,8 @@
     <eClassifiers xsi:type="ecore:EClass" name="XmlStruct_2_3" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlTenantDiscriminator_2_3" abstract="true"
-        interface="true">
+    <eClassifiers xsi:type="ecore:EClass" name="XmlTenantDiscriminatorColumn_2_3"
+        abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlStructure_2_3" abstract="true"

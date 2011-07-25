@@ -2944,13 +2944,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ENTITY_MAPPINGS__UNION_PARTITIONING = OrmPackage.XML_ENTITY_MAPPINGS_FEATURE_COUNT + 8;
 	/**
-	 * The feature id for the '<em><b>Tenant Discriminators</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATORS = OrmPackage.XML_ENTITY_MAPPINGS_FEATURE_COUNT + 9;
+	public static final int XML_ENTITY_MAPPINGS__TENANT_DISCRIMINATOR_COLUMNS = OrmPackage.XML_ENTITY_MAPPINGS_FEATURE_COUNT + 9;
 	/**
 	 * The feature id for the '<em><b>Named Stored Function Queries</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -5700,13 +5700,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS_METHODS = OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT + 0;
 	/**
-	 * The feature id for the '<em><b>Tenant Discriminators</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATORS = OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT + 1;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS__TENANT_DISCRIMINATOR_COLUMNS = OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT + 1;
 	/**
 	 * The number of structural features of the '<em>Xml Persistence Unit Defaults</em>' class.
 	 * <!-- begin-user-doc -->
@@ -6476,14 +6476,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_TABLE_GENERATOR_FEATURE_COUNT = OrmPackage.XML_TABLE_GENERATOR_FEATURE_COUNT + 1;
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminator <em>Xml Tenant Discriminator</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn <em>Xml Tenant Discriminator Column</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminator
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminator()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminatorColumn()
 	 * @generated
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR = 78;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN = 78;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6491,15 +6491,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR__NAME = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_23__NAME;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__NAME = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__NAME;
 	/**
-	 * The number of structural features of the '<em>Xml Tenant Discriminator</em>' class.
+	 * The number of structural features of the '<em>Xml Tenant Discriminator Column</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_FEATURE_COUNT = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_23_FEATURE_COUNT + 0;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_FEATURE_COUNT = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Hour</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -7454,7 +7454,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlTenantDiscriminatorEClass = null;
+	private EClass xmlTenantDiscriminatorColumnEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -9766,16 +9766,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminator <em>Xml Tenant Discriminator</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn <em>Xml Tenant Discriminator Column</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Tenant Discriminator</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminator
+	 * @return the meta object for class '<em>Xml Tenant Discriminator Column</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn
 	 * @generated
 	 */
-	public EClass getXmlTenantDiscriminator()
+	public EClass getXmlTenantDiscriminatorColumn()
 	{
-		return xmlTenantDiscriminatorEClass;
+		return xmlTenantDiscriminatorColumnEClass;
 	}
 
 	/**
@@ -10433,7 +10433,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		xmlTableGeneratorEClass = createEClass(XML_TABLE_GENERATOR);
 
-		xmlTenantDiscriminatorEClass = createEClass(XML_TENANT_DISCRIMINATOR);
+		xmlTenantDiscriminatorColumnEClass = createEClass(XML_TENANT_DISCRIMINATOR_COLUMN);
 
 		xmlTimeOfDayEClass = createEClass(XML_TIME_OF_DAY);
 		createEAttribute(xmlTimeOfDayEClass, XML_TIME_OF_DAY__HOUR);
@@ -10658,7 +10658,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlTableEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlTable_2_2());
 		xmlTableGeneratorEClass.getESuperTypes().add(theOrmPackage.getXmlTableGenerator());
 		xmlTableGeneratorEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlTableGenerator_2_2());
-		xmlTenantDiscriminatorEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlTenantDiscriminator_2_3());
+		xmlTenantDiscriminatorColumnEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlTenantDiscriminatorColumn_2_3());
 		xmlTransformationEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
 		xmlTransformationEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlTransformation_2_1());
 		xmlTransformationEClass.getESuperTypes().add(this.getXmlAttributeMapping());
@@ -10918,7 +10918,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		initEClass(xmlTableGeneratorEClass, XmlTableGenerator.class, "XmlTableGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(xmlTenantDiscriminatorEClass, XmlTenantDiscriminator.class, "XmlTenantDiscriminator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(xmlTenantDiscriminatorColumnEClass, XmlTenantDiscriminatorColumn.class, "XmlTenantDiscriminatorColumn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlTimeOfDayEClass, XmlTimeOfDay.class, "XmlTimeOfDay", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlTimeOfDay_Hour(), theXMLTypePackage.getIntObject(), "hour", null, 0, 1, XmlTimeOfDay.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -12377,14 +12377,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EClass XML_TABLE_GENERATOR = eINSTANCE.getXmlTableGenerator();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminator <em>Xml Tenant Discriminator</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn <em>Xml Tenant Discriminator Column</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminator
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminator()
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminatorColumn()
 		 * @generated
 		 */
-		public static final EClass XML_TENANT_DISCRIMINATOR = eINSTANCE.getXmlTenantDiscriminator();
+		public static final EClass XML_TENANT_DISCRIMINATOR_COLUMN = eINSTANCE.getXmlTenantDiscriminatorColumn();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTimeOfDay <em>Xml Time Of Day</em>}' class.

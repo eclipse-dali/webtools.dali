@@ -144,7 +144,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_STRUCTURE: return (EObject)createXmlStructure();
 			case EclipseLinkOrmPackage.XML_TABLE: return (EObject)createXmlTable();
 			case EclipseLinkOrmPackage.XML_TABLE_GENERATOR: return (EObject)createXmlTableGenerator();
-			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR: return (EObject)createXmlTenantDiscriminator();
+			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN: return (EObject)createXmlTenantDiscriminatorColumn();
 			case EclipseLinkOrmPackage.XML_TIME_OF_DAY: return (EObject)createXmlTimeOfDay();
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
 			case EclipseLinkOrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
@@ -826,10 +826,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlTenantDiscriminator createXmlTenantDiscriminator()
+	public XmlTenantDiscriminatorColumn createXmlTenantDiscriminatorColumn()
 	{
-		XmlTenantDiscriminator xmlTenantDiscriminator = new XmlTenantDiscriminator();
-		return xmlTenantDiscriminator;
+		XmlTenantDiscriminatorColumn xmlTenantDiscriminatorColumn = new XmlTenantDiscriminatorColumn();
+		return xmlTenantDiscriminatorColumn;
 	}
 
 	/**

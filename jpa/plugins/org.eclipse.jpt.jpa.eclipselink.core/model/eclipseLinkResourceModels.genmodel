@@ -250,7 +250,7 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlStructure"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTable"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTableGenerator"/>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTenantDiscriminator"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTenantDiscriminatorColumn"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTimeOfDay">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/hour"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/minute"/>
@@ -552,7 +552,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntity_2_3/struct"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlEntityMappings_2_3">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntityMappings_2_3/tenantDiscriminators"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntityMappings_2_3/tenantDiscriminatorColumns"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntityMappings_2_3/namedStoredFunctionQueries"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntityMappings_2_3/namedPlsqlStoredFunctionQueries"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntityMappings_2_3/namedPlsqlStoredProcedureQueries"/>
@@ -580,7 +580,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlNamedStoredFunctionQuery_2_3/name"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlPersistenceUnitDefaults_2_3">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlPersistenceUnitDefaults_2_3/tenantDiscriminators"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlPersistenceUnitDefaults_2_3/tenantDiscriminatorColumns"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlPlsqlRecord_2_3">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlPlsqlRecord_2_3/name"/>
@@ -591,8 +591,8 @@
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStruct_2_3">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlStruct_2_3/name"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminator_2_3">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminator_2_3/name"/>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminatorColumn_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminatorColumn_2_3/name"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStructure_2_3"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlElementCollection_2_3">
