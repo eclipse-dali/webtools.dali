@@ -9,10 +9,10 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -34,6 +34,7 @@ import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.StandardJavaElementContentProvider;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -68,6 +69,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -79,10 +81,10 @@ import org.osgi.framework.Bundle;
  *  ClassesGeneratorWizardPage
  */
 public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
-	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.jpa.eclipselink.ui";   //$NON-NLS-1$
-	static public String XML_FILTER = "*.xml";   //$NON-NLS-1$
-	static public String BINDINGS_FILE_FILTER = "*.xjb;*.xml;*.xbd";   //$NON-NLS-1$
-	static public JaxbPlatformGroupDescription ECLIPSELINK_PLATFORM_GROUP 
+	static public final String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.jpa.eclipselink.ui";   //$NON-NLS-1$
+	static public final String XML_FILTER = "*.xml";   //$NON-NLS-1$
+	static public final String[] bindingdFilesFilterExtensions = {".xjb",".xml",".xbd"}; //$NON-NLS-1$
+	static public final JaxbPlatformGroupDescription ECLIPSELINK_PLATFORM_GROUP 
 			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatformGroup("eclipselink");   //$NON-NLS-1$
 
 	public static final String HELP_CONTEXT_ID = "org.eclipse.jpt.ui.configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
@@ -134,6 +136,147 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	
 	private void setUsesMoxy(boolean usesMoxy){
 		this.usesMoxy = usesMoxy;
+	}
+	
+	// ********** overrides **********
+
+	@Override
+	protected IStatus packageChanged() {
+		IStatus status = super.packageChanged(); 
+		IPackageFragment packageFragment = getPackageFragment();
+		if(!status.matches(IStatus.ERROR)) {
+			this.targetPackage = packageFragment.getElementName();
+		}
+		return status;
+	}			
+	
+	@Override
+	protected IStatus containerChanged() {
+		IStatus status = super.containerChanged();
+		String srcFolder = getPackageFragmentRootText();
+		if( !status.matches(IStatus.ERROR) ){
+				this.targetFolder = srcFolder.substring(srcFolder.indexOf("/") + 1);
+		}
+		return status;
+	}
+	
+	@Override
+	protected void handleFieldChanged(String fieldName) {
+		super.handleFieldChanged(fieldName);
+		if(this.fContainerStatus.matches(IStatus.ERROR)) {
+			this.updateStatus(fContainerStatus);
+		}
+		else if( ! this.fPackageStatus.matches(IStatus.OK) ) {
+			this.updateStatus(fPackageStatus);
+		} 
+		else {
+			this.updateStatus(Status.OK_STATUS);
+		}
+		this.validateProjectClasspath();
+	}
+	
+	/**
+	 * Override setVisible to insure that our more important warning
+	 * message about classpath problems is displayed to the user first.
+	 */
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if(visible) {
+			this.initContainerPage(((ClassesGeneratorWizard)this.getWizard()).getJavaProject());
+
+			if(this.projectPlatformIsJaxb()) {
+				this.setUsesMoxy(this.projectJaxbPlatformIsEclipseLink());
+				this.usesMoxyCheckBox.setVisible(false);
+			}
+			else {
+				// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
+				this.setUsesMoxy((this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath())); 
+		
+				// checkbox is visible only if jpt.eclipselink.ui plugin is available
+				// and EclipseLink MOXy is not on the classpath
+				this.usesMoxyCheckBox.setVisible(this.jptEclipseLinkBundleExists() && ! this.moxyIsOnClasspath());
+			}
+			this.validateProjectClasspath();
+
+			String schemaName = ((ClassesGeneratorWizard) getWizard()).getLocalSchemaUri().lastSegment();
+			this.setTitle(NLS.bind(JptJaxbUiMessages.ClassesGeneratorWizardPage_title, schemaName));
+		}
+	}
+    
+	/** 
+	 * Override to allow selection of source folder in current project only
+	 * @see org.eclipse.jdt.ui.wizards.NewContainerWizardPage#chooseContainer()
+	 * Only 1 line in this code is different from the parent
+	 */
+	@Override
+	protected IPackageFragmentRoot chooseContainer() {
+		Class<?>[] acceptedClasses = new Class[] { IPackageFragmentRoot.class, IJavaProject.class };
+		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, false) {
+			@Override
+			public boolean isSelectedValid(Object element) {
+				try {
+					if(element instanceof IJavaProject) {
+						IJavaProject jproject= (IJavaProject)element;
+						IPath path= jproject.getProject().getFullPath();
+						return (jproject.findPackageFragmentRoot(path) != null);
+					} 
+					else if(element instanceof IPackageFragmentRoot) {
+						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
+					}
+					return true;
+				} 
+				catch (JavaModelException e) {
+					JptJaxbUiPlugin.log(e); // just log, no UI in validation
+				}
+				return false;
+			}
+		};
+
+		acceptedClasses= new Class[] { IJavaModel.class, IPackageFragmentRoot.class, IJavaProject.class };
+		ViewerFilter filter= new TypedViewerFilter(acceptedClasses) {
+			@Override
+			public boolean select(Viewer viewer, Object parent, Object element) {
+				if(element instanceof IPackageFragmentRoot) {
+					try {
+						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
+					} 
+					catch (JavaModelException e) {
+						JptJaxbUiPlugin.log(e.getStatus()); // just log, no UI in validation
+						return false;
+					}
+				}
+				return super.select(viewer, parent, element);
+			}
+		};
+
+		StandardJavaElementContentProvider provider= new StandardJavaElementContentProvider();
+		ILabelProvider labelProvider= new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_DEFAULT);
+		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(getShell(), labelProvider, provider);
+		dialog.setValidator(validator);
+		dialog.setComparator(new JavaElementComparator());
+		dialog.setTitle(JptJaxbUiMessages.ClassesGeneratorWizardPage_sourceFolderSelectionDialog_title);
+		dialog.setMessage(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseSourceFolderDialog_desc);
+		dialog.addFilter(filter);
+		//set the java project as the input instead of the workspace like the NewContainerWizardPage was doing
+		//******************************************************//
+		dialog.setInput(this.getJavaProject());     			//
+		//******************************************************//
+		dialog.setInitialSelection(getPackageFragmentRoot());
+		dialog.setHelpAvailable(false);
+
+		if(dialog.open() == Window.OK) {
+			Object element= dialog.getFirstResult();
+			if(element instanceof IJavaProject) {
+				IJavaProject jproject= (IJavaProject)element;
+				return jproject.getPackageFragmentRoot(jproject.getProject());
+			}
+			else if(element instanceof IPackageFragmentRoot) {
+				return (IPackageFragmentRoot)element;
+			}
+			return null;
+		}
+		return null;
 	}
 
 	// ********** internal methods **********
@@ -305,147 +448,8 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	private void displayWarning(String message) {
 		this.setMessage(message, WARNING);
 	}
-	
-	// ********** overrides **********
 
-	@Override
-	protected IStatus packageChanged() {
-		IStatus status = super.packageChanged(); 
-		IPackageFragment packageFragment = getPackageFragment();
-		if(!status.matches(IStatus.ERROR)) {
-			this.targetPackage = packageFragment.getElementName();
-		}
-		return status;
-	}			
-	
-	@Override
-	protected IStatus containerChanged() {
-		IStatus status = super.containerChanged();
-		String srcFolder = getPackageFragmentRootText();
-		if( !status.matches(IStatus.ERROR) ){
-				this.targetFolder = srcFolder.substring(srcFolder.indexOf("/") + 1);
-		}
-		return status;
-	}
-	
-	@Override
-	protected void handleFieldChanged(String fieldName) {
-		super.handleFieldChanged(fieldName);
-		if(this.fContainerStatus.matches(IStatus.ERROR)) {
-			this.updateStatus(fContainerStatus);
-		}
-		else if( ! this.fPackageStatus.matches(IStatus.OK) ) {
-			this.updateStatus(fPackageStatus);
-		} 
-		else {
-			this.updateStatus(Status.OK_STATUS);
-		}
-		this.validateProjectClasspath();
-	}
-	
-	/**
-	 * Override setVisible to insure that our more important warning
-	 * message about classpath problems is displayed to the user first.
-	 */
-	@Override
-	public void setVisible(boolean visible) {
-		super.setVisible(visible);
-		if(visible) {
-			this.initContainerPage(((ClassesGeneratorWizard)this.getWizard()).getJavaProject());
-
-			if(this.projectPlatformIsJaxb()) {
-				this.setUsesMoxy(this.projectJaxbPlatformIsEclipseLink());
-				this.usesMoxyCheckBox.setVisible(false);
-			}
-			else {
-				// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
-				this.setUsesMoxy((this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath())); 
-		
-				// checkbox is visible only if jpt.eclipselink.ui plugin is available
-				// and EclipseLink MOXy is not on the classpath
-				this.usesMoxyCheckBox.setVisible(this.jptEclipseLinkBundleExists() && ! this.moxyIsOnClasspath());
-			}
-			this.validateProjectClasspath();
-
-			String schemaName = ((ClassesGeneratorWizard) getWizard()).getLocalSchemaUri().lastSegment();
-			this.setTitle(NLS.bind(JptJaxbUiMessages.ClassesGeneratorWizardPage_title, schemaName));
-		}
-	}
-    
-	/** 
-	 * Override to allow selection of source folder in current project only
-	 * @see org.eclipse.jdt.ui.wizards.NewContainerWizardPage#chooseContainer()
-	 * Only 1 line in this code is different from the parent
-	 */
-	@Override
-	protected IPackageFragmentRoot chooseContainer() {
-		Class<?>[] acceptedClasses = new Class[] { IPackageFragmentRoot.class, IJavaProject.class };
-		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, false) {
-			@Override
-			public boolean isSelectedValid(Object element) {
-				try {
-					if(element instanceof IJavaProject) {
-						IJavaProject jproject= (IJavaProject)element;
-						IPath path= jproject.getProject().getFullPath();
-						return (jproject.findPackageFragmentRoot(path) != null);
-					} 
-					else if(element instanceof IPackageFragmentRoot) {
-						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
-					}
-					return true;
-				} 
-				catch (JavaModelException e) {
-					JptJaxbUiPlugin.log(e); // just log, no UI in validation
-				}
-				return false;
-			}
-		};
-
-		acceptedClasses= new Class[] { IJavaModel.class, IPackageFragmentRoot.class, IJavaProject.class };
-		ViewerFilter filter= new TypedViewerFilter(acceptedClasses) {
-			@Override
-			public boolean select(Viewer viewer, Object parent, Object element) {
-				if(element instanceof IPackageFragmentRoot) {
-					try {
-						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
-					} 
-					catch (JavaModelException e) {
-						JptJaxbUiPlugin.log(e.getStatus()); // just log, no UI in validation
-						return false;
-					}
-				}
-				return super.select(viewer, parent, element);
-			}
-		};
-
-		StandardJavaElementContentProvider provider= new StandardJavaElementContentProvider();
-		ILabelProvider labelProvider= new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_DEFAULT);
-		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(getShell(), labelProvider, provider);
-		dialog.setValidator(validator);
-		dialog.setComparator(new JavaElementComparator());
-		dialog.setTitle(JptJaxbUiMessages.ClassesGeneratorWizardPage_sourceFolderSelectionDialog_title);
-		dialog.setMessage(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseSourceFolderDialog_desc);
-		dialog.addFilter(filter);
-		//set the java project as the input instead of the workspace like the NewContainerWizardPage was doing
-		//******************************************************//
-		dialog.setInput(this.getJavaProject());     			//
-		//******************************************************//
-		dialog.setInitialSelection(getPackageFragmentRoot());
-		dialog.setHelpAvailable(false);
-
-		if(dialog.open() == Window.OK) {
-			Object element= dialog.getFirstResult();
-			if(element instanceof IJavaProject) {
-				IJavaProject jproject= (IJavaProject)element;
-				return jproject.getPackageFragmentRoot(jproject.getProject());
-			}
-			else if(element instanceof IPackageFragmentRoot) {
-				return (IPackageFragmentRoot)element;
-			}
-			return null;
-		}
-		return null;
-	}
+	// ********** inner class **********
 	
 	// ********** SettingsGroup class **********
 
@@ -591,7 +595,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			gridData.horizontalAlignment = GridData.FILL;
 			gridData.verticalAlignment = GridData.BEGINNING;
 			buttonComposite.setLayoutData(gridData);
-			// Add buttons
+			// Add button
 			Button addButton = new Button(buttonComposite, SWT.PUSH);
 			addButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_addButton);
 			gridData =  new GridData();
@@ -602,15 +606,14 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 				public void widgetDefaultSelected(SelectionEvent e) {}
 
 				public void widgetSelected(SelectionEvent e) {
-
-					ArrayList<String> filePaths = promptBindingsFiles();
-					for(String filePath : filePaths) {
+					String filePath = addBindingsFileDialog();
+					if( ! StringTools.stringIsEmpty(filePath)) {
 						addBindingsFile(filePath, tableDataModel);
+						tableViewer.refresh();
 					}
-					tableViewer.refresh();
 				}
 			});
-			// Remove buttons
+			// Remove button
 			Button removeButton = new Button(buttonComposite, SWT.PUSH);
 			removeButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_removeButton);
 			gridData =  new GridData();
@@ -635,6 +638,18 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		}
 
 		// ********** internal methods **********
+		
+		private String  addBindingsFileDialog() {
+			PromptBindingsFilesDialog dialog = new PromptBindingsFilesDialog(getShell());
+			
+			// opens the dialog - just returns if the user cancels it
+			if(dialog.open() == Window.CANCEL) {
+				return null;
+			}
+			
+			String location = dialog.getLocation();
+			return location;
+		}
 
 		private String makeRelativeToProjectPath(String filePath) {
 			Path path = new Path(filePath);
@@ -642,8 +657,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			return relativePath.toOSString();
 		}
 
-		private void addBindingsFile(String filePath, final ArrayList<String> tableDataModel) {
-			String relativePath = this.makeRelativeToProjectPath(filePath);
+		private void addBindingsFile(String relativePath, final ArrayList<String> tableDataModel) {
 			if( ! tableDataModel.contains(relativePath)) {
 				tableDataModel.add(relativePath);
 			}
@@ -676,31 +690,14 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			return dialog.open();
 		}
 
-		private ArrayList<String> promptBindingsFiles() {
-			String projectPath= getJavaProject().getProject().getLocation().toString();
-
-			FileDialog dialog = new FileDialog(getShell(), SWT.MULTI);
-			dialog.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile);
-			dialog.setFilterPath(projectPath);
-			dialog.setFilterExtensions(new String[] {BINDINGS_FILE_FILTER});
-
-			dialog.open();
-			String path = dialog.getFilterPath();
-			String[] fileNames = dialog.getFileNames();
-			ArrayList<String> results = new ArrayList<String>(fileNames.length);
-			for(String fileName : fileNames) {
-				results.add(path + File.separator + fileName);
-			}
-			return results;
-		}
-
 		private void addColumnsData(TableLayoutComposite layout) {
 			layout.addColumnData(new ColumnWeightData(50, true));
 		}
 		
 	}
 
-	// ********** inner class **********
+	// ********** TableLabelProvider **********
+	
 	private class TableLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
@@ -711,9 +708,12 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			return (String)element;
 		}
 	}
+
+	// ********** TableContentProvider **********
 	
 	private class TableContentProvider implements IStructuredContentProvider {
 
+		// ********** constructor **********
 		TableContentProvider() {
 			super();
 		}
@@ -724,6 +724,56 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		
 		public Object[] getElements(Object inputElement) {
 			return ((Collection<?>) inputElement).toArray();
+		}
+	}
+
+	// ********** PromptBindingsFilesDialog **********
+	
+	private class PromptBindingsFilesDialog extends TrayDialog {
+		
+		private SelectFileOrXMLCatalogIdPanel locationPanel;
+		
+		private String location;
+
+		// ********** constructor **********
+		public PromptBindingsFilesDialog(Shell shell) {
+			super(shell);
+		}
+		
+		@Override
+		protected void configureShell(Shell newShell) {
+			super.configureShell(newShell);
+			newShell.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile);
+		}
+		
+		@Override
+		protected Control createDialogArea(Composite parent) {
+			Composite composite = (Composite) super.createDialogArea(parent);
+			
+			this.locationPanel = new SelectFileOrXMLCatalogIdPanel(composite, StructuredSelection.EMPTY);
+			this.locationPanel.setFilterExtensions(bindingdFilesFilterExtensions);
+			this.locationPanel.update();
+			this.locationPanel.setVisibleHelper(true);
+			
+			return composite;
+		}
+		
+		@Override
+		protected boolean isResizable() {
+			return true;
+		}
+		
+		@Override
+		protected void okPressed() {
+			IFile file = this.locationPanel.getFile();
+			if (file != null) {
+				this.location = file.getProjectRelativePath().toOSString();
+			}
+			super.okPressed();
+		}
+		
+		public String getLocation() {
+			return this.location;
 		}
 	}
 }
