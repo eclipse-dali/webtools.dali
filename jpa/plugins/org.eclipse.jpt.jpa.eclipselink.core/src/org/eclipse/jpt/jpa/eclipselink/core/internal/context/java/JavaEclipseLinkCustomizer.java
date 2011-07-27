@@ -167,7 +167,10 @@ public class JavaEclipseLinkCustomizer
 	protected void validateCustomizerClass(List<IMessage> messages,CompilationUnit astRoot) {
 		IJavaProject javaProject = getPersistenceUnit().getJpaProject().getJavaProject();
 		EclipseLinkCustomizerAnnotation annotation = this.getCustomizerAnnotation();
-		if (annotation != null && annotation.getValue() != null) {
+		if (annotation != null && annotation.getValue() != null && 
+				//if the type cannot be resolved there is no need to perform the following validation,
+				//JDT will note the error in the source
+				JDTTools.findType(javaProject, annotation.getValue()) != null) {
 			if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, this.getFullyQualifiedCustomizerClass())) {
 				messages.add(
 						DefaultEclipseLinkJpaValidationMessages.buildMessage(

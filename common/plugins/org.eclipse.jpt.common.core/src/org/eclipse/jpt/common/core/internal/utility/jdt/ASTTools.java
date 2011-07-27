@@ -123,7 +123,7 @@ public class ASTTools {
 	 * type binding.
 	 */
 	public static ITypeBinding resolveTypeBinding(Expression expression) {
-		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
+		if (expression != null && expression.getNodeType() == ASTNode.TYPE_LITERAL) {
 			return ((TypeLiteral) expression).getType().resolveBinding();
 		}
 		return null;
@@ -135,7 +135,7 @@ public class ASTTools {
 	 * The result may include <code>null</code> elements.
 	 */
 	public static Iterable<ITypeBinding> resolveTypeBindings(Expression expression) {
-		return (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) ?
+		return (expression != null && expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) ?
 				resolveTypeBindings((ArrayInitializer) expression) :
 				EmptyIterable.<ITypeBinding>instance();
 	}

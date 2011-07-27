@@ -281,21 +281,23 @@ public final class JDTTools {
 		if (javaProject != null && className != null) {
 			boolean hasDefinedConstructor = false;
 			IType type = findType(javaProject, className);
-			try {
-				for (IMethod method : type.getMethods()) {
-					if (method.isConstructor()) {
-						if ((method.getNumberOfParameters() == 0) && (Flags.isPublic(method.getFlags()))) {
-							return true;
+			if (type != null) {
+				try {
+					for (IMethod method : type.getMethods()) {
+						if (method.isConstructor()) {
+							if ((method.getNumberOfParameters() == 0) && (Flags.isPublic(method.getFlags()))) {
+								return true;
+							}
+							hasDefinedConstructor = true;
 						}
-						hasDefinedConstructor = true;
 					}
+					//When there's no defined constructor, the default constructor is in place.
+					if (!hasDefinedConstructor) {
+						return true;
+					}
+				} catch (JavaModelException ex) {
+					JptCommonCorePlugin.log(ex);
 				}
-				//When there's no defined constructor, the default constructor is in place.
-				if (!hasDefinedConstructor) {
-					return true;
-				}
-			} catch (JavaModelException ex) {
-				JptCommonCorePlugin.log(ex);
 			}
 		}
 		return false;
