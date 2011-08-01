@@ -42,7 +42,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
-import org.eclipse.jpt.jaxb.core.context.XmlMixedMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
@@ -65,7 +64,6 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementMapp
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementRefMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementsMapping;
-import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlMixedMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlNs;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
@@ -196,10 +194,6 @@ public abstract class AbstractJaxbFactory
 	
 	public XmlElementsMapping buildJavaXmlElementsMapping(JaxbPersistentAttribute parent) {
 		return new GenericJavaXmlElementsMapping(parent);
-	}
-	
-	public XmlMixedMapping buildJavaXmlMixedMapping(JaxbPersistentAttribute parent) {
-		return new GenericJavaXmlMixedMapping(parent);
 	}
 	
 	public XmlValueMapping buildJavaXmlValueMapping(JaxbPersistentAttribute parent) {

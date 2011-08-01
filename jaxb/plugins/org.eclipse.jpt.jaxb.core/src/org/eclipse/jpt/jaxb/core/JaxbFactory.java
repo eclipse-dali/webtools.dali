@@ -38,7 +38,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
-import org.eclipse.jpt.jaxb.core.context.XmlMixedMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
@@ -144,8 +143,6 @@ public interface JaxbFactory  {
 	XmlElementRefsMapping buildJavaXmlElementRefsMapping(JaxbPersistentAttribute parent);
 	
 	XmlElementsMapping buildJavaXmlElementsMapping(JaxbPersistentAttribute parent);
-	
-	XmlMixedMapping buildJavaXmlMixedMapping(JaxbPersistentAttribute parent);
 	
 	JaxbAttributeMapping buildJavaXmlTransientMapping(JaxbPersistentAttribute parent);
 	
