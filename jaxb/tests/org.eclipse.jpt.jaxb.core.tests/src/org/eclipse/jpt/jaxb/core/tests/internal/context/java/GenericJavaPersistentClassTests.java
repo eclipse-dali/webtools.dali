@@ -624,14 +624,14 @@ public class GenericJavaPersistentClassTests
 
 		assertEquals(persistentClass, childPersistentClass.getSuperClass());
 
-		//This test will change when we no longer depend on there being an @XmlType annotation for something to be persistent
+		//test that the superClass is not null even when it is unannotated
 		AnnotatedElement annotatedElement = this.annotatedElement(persistentClass.getJavaResourceType());
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlTypeAnnotation.ANNOTATION_NAME);
 			}
 		});
-		assertNull(childPersistentClass.getSuperClass());
+		assertEquals(persistentClass, childPersistentClass.getSuperClass());
 	}
 
 	public void testModifyAccessOrder() throws Exception {

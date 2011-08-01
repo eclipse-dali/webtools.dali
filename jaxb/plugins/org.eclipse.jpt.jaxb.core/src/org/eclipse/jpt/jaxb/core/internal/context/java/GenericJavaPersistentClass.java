@@ -206,7 +206,7 @@ public class GenericJavaPersistentClass
 		}
 		visited.add(resourceType);
 		JaxbClass spc = this.getClass(typeName);
-		return (spc != null && resourceType.isMapped()) ? spc : this.getSuperClass(resourceType.getSuperclassQualifiedName(), visited);  // recurse
+		return (spc != null) ? spc : this.getSuperClass(resourceType.getSuperclassQualifiedName(), visited);  // recurse
 	}
 	
 	protected JaxbClass getClass(String fullyQualifiedTypeName) {
