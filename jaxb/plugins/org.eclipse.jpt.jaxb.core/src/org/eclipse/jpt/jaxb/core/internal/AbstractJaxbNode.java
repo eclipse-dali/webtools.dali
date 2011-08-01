@@ -371,7 +371,7 @@ public abstract class AbstractJaxbNode
 			return this.contextElements.indexOf(contextElement);
 		}
 
-		public C contextElementAt(int index) {
+		public C getContextElement(int index) {
 			return this.contextElements.elementAt(index);
 		}
 
@@ -414,7 +414,7 @@ public abstract class AbstractJaxbNode
 			int index = 0;
 			for (R resourceElement : resourceElements) {
 				if (this.getContextElementsSize() > index) {
-					if (this.contextElementAt(index) != resourceElement) {
+					if (this.getContextElement(index) != resourceElement) {
 						this.addContextElement(index, resourceElement);
 					}
 				}
@@ -458,7 +458,7 @@ public abstract class AbstractJaxbNode
 			return this.contextElements.indexOf(contextElement);
 		}
 
-		public C contextElementAt(int index) {
+		public C getContextElement(int index) {
 			return this.contextElements.elementAt(index);
 		}
 

@@ -9,16 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -26,14 +23,12 @@ import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
@@ -125,7 +120,6 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.Inheritance;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
@@ -161,15 +155,11 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected boolean tableIsUndefined;
 
 	protected final ReadOnlyTable.Owner secondaryTableOwner;
-	protected final Vector<OrmSecondaryTable> specifiedSecondaryTables = new Vector<OrmSecondaryTable>();
-	protected final SpecifiedSecondaryTableContainerAdapter specifiedSecondaryTableContainerAdapter = new SpecifiedSecondaryTableContainerAdapter();
-
-	protected final Vector<OrmVirtualSecondaryTable> virtualSecondaryTables = new Vector<OrmVirtualSecondaryTable>();
-	protected final VirtualSecondaryTableContainerAdapter virtualSecondaryTableContainerAdapter = new VirtualSecondaryTableContainerAdapter();
+	protected final ContextListContainer<OrmSecondaryTable, XmlSecondaryTable> specifiedSecondaryTableContainer;
+	protected final ContextListContainer<OrmVirtualSecondaryTable, JavaSecondaryTable> virtualSecondaryTableContainer;
 
 	protected final PrimaryKeyJoinColumnOwner primaryKeyJoinColumnOwner;
-	protected final Vector<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns = new Vector<OrmPrimaryKeyJoinColumn>();
-	protected final SpecifiedPrimaryKeyJoinColumnContainerAdapter specifiedPrimaryKeyJoinColumnContainerAdapter = new SpecifiedPrimaryKeyJoinColumnContainerAdapter();
+	protected final ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
 
 	// this is the default if there are Java columns
 	protected final Vector<OrmVirtualPrimaryKeyJoinColumn> virtualPrimaryKeyJoinColumns = new Vector<OrmVirtualPrimaryKeyJoinColumn>();
@@ -205,9 +195,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.idClassReference = this.buildIdClassReference();
 		this.table = this.buildTable();
 		this.secondaryTableOwner = this.buildSecondaryTableOwner();
-		this.initializeSpecifiedSecondaryTables();
+		this.specifiedSecondaryTableContainer = this.buildSpecifiedSecondaryTableContainer();
+		this.virtualSecondaryTableContainer = this.buildVirtualSecondaryTableContainer();
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
-		this.initializeSpecifiedPrimaryKeyJoinColumns();
+		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
 		this.specifiedInheritanceStrategy = this.buildSpecifiedInheritanceStrategy();
 		this.specifiedDiscriminatorValue = xmlEntity.getDiscriminatorValue();
 		this.discriminatorColumn = this.buildDiscriminatorColumn();
@@ -505,50 +496,42 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** secondary tables **********
 
-	public ListIterator<ReadOnlySecondaryTable> secondaryTables() {
-		return this.getSecondaryTables().iterator();
-	}
-
-	protected ListIterable<ReadOnlySecondaryTable> getSecondaryTables() {
-		return this.specifiedSecondaryTables.isEmpty() ?
+	public ListIterable<ReadOnlySecondaryTable> getSecondaryTables() {
+		return this.getSpecifiedSecondaryTablesSize() == 0 ?
 			this.getReadOnlyVirtualSecondaryTables() :
 			this.getReadOnlySpecifiedSecondaryTables();
 	}
 
-	public int secondaryTablesSize() {
-		return this.specifiedSecondaryTables.isEmpty() ?
-			this.virtualSecondaryTables.size() :
-			this.specifiedSecondaryTables.size();
+	public int getSecondaryTablesSize() {
+		return this.getSpecifiedSecondaryTablesSize() == 0 ?
+			this.getVirtualSecondaryTablesSize() :
+				this.getSpecifiedSecondaryTablesSize();
 	}
 
 
 	// ********** specified secondary tables **********
 
-	public ListIterator<OrmSecondaryTable> specifiedSecondaryTables() {
-		return this.getSpecifiedSecondaryTables().iterator();
-	}
-
-	protected ListIterable<OrmSecondaryTable> getSpecifiedSecondaryTables() {
-		return new LiveCloneListIterable<OrmSecondaryTable>(this.specifiedSecondaryTables);
+	public ListIterable<OrmSecondaryTable> getSpecifiedSecondaryTables() {
+		return this.specifiedSecondaryTableContainer.getContextElements();
 	}
 
 	protected ListIterable<ReadOnlySecondaryTable> getReadOnlySpecifiedSecondaryTables() {
-		return new LiveCloneListIterable<ReadOnlySecondaryTable>(this.specifiedSecondaryTables);
+		return new SuperListIterableWrapper<ReadOnlySecondaryTable>(this.getSpecifiedSecondaryTables());
 	}
 
-	public int specifiedSecondaryTablesSize() {
-		return this.specifiedSecondaryTables.size();
+	public int getSpecifiedSecondaryTablesSize() {
+		return this.specifiedSecondaryTableContainer.getContextElementsSize();
 	}
 
 	public OrmSecondaryTable addSpecifiedSecondaryTable() {
-		return this.addSpecifiedSecondaryTable(this.specifiedSecondaryTables.size());
+		return this.addSpecifiedSecondaryTable(this.getSpecifiedSecondaryTablesSize());
 	}
 
 	/**
 	 * no state check
 	 */
 	protected OrmSecondaryTable addSpecifiedSecondaryTable_() {
-		return this.addSpecifiedSecondaryTable_(this.specifiedSecondaryTables.size());
+		return this.addSpecifiedSecondaryTable_(this.getSpecifiedSecondaryTablesSize());
 	}
 
 	/**
@@ -566,7 +549,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 */
 	protected OrmSecondaryTable addSpecifiedSecondaryTable_(int index) {
 		XmlSecondaryTable xmlSecondaryTable = this.buildXmlSecondaryTable();
-		OrmSecondaryTable secondaryTable =  this.addSpecifiedSecondaryTable_(index, xmlSecondaryTable);
+		OrmSecondaryTable secondaryTable = this.specifiedSecondaryTableContainer.addContextElement(index, xmlSecondaryTable);
 		this.xmlTypeMapping.getSecondaryTables().add(index, xmlSecondaryTable);
 		return secondaryTable;
 	}
@@ -576,27 +559,17 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	public void removeSpecifiedSecondaryTable(SecondaryTable secondaryTable) {
-		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTables.indexOf(secondaryTable));
+		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTableContainer.indexOfContextElement((OrmSecondaryTable) secondaryTable));
 	}
 
 	public void removeSpecifiedSecondaryTable(int index) {
-		this.removeSpecifiedSecondaryTable_(index);
+		this.specifiedSecondaryTableContainer.removeContextElement(index);
 		this.xmlTypeMapping.getSecondaryTables().remove(index);
 	}
 
-	protected void removeSpecifiedSecondaryTable_(int index) {
-		this.removeItemFromList(index, this.specifiedSecondaryTables, SPECIFIED_SECONDARY_TABLES_LIST);
-	}
-
 	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.specifiedSecondaryTables, SPECIFIED_SECONDARY_TABLES_LIST);
+		this.specifiedSecondaryTableContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlTypeMapping.getSecondaryTables().move(targetIndex, sourceIndex);
-	}
-
-	protected void initializeSpecifiedSecondaryTables() {
-		for (XmlSecondaryTable xmlTable : this.getXmlSecondaryTables()) {
-			this.specifiedSecondaryTables.add(this.buildSpecifiedSecondaryTable(xmlTable));
-		}
 	}
 
 	protected OrmSecondaryTable buildSpecifiedSecondaryTable(XmlSecondaryTable xmlSecondaryTable) {
@@ -604,80 +577,64 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected void clearSpecifiedSecondaryTables() {
-		this.clearList(this.specifiedSecondaryTables, SPECIFIED_SECONDARY_TABLES_LIST);
+		this.specifiedSecondaryTableContainer.clearContextList();
 		this.xmlTypeMapping.getSecondaryTables().clear();
 	}
 
 	protected void syncSpecifiedSecondaryTables() {
-		ContextContainerTools.synchronizeWithResourceModel(this.specifiedSecondaryTableContainerAdapter);
+		this.specifiedSecondaryTableContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlSecondaryTable> getXmlSecondaryTables() {
+	protected ListIterable<XmlSecondaryTable> getXmlSecondaryTables() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlSecondaryTable>(this.xmlTypeMapping.getSecondaryTables());
+		return new LiveCloneListIterable<XmlSecondaryTable>(this.xmlTypeMapping.getSecondaryTables());
 	}
 
-	protected void moveSpecifiedSecondaryTable_(int index, OrmSecondaryTable secondaryTable) {
-		this.moveItemInList(index, secondaryTable, this.specifiedSecondaryTables, SPECIFIED_SECONDARY_TABLES_LIST);
-	}
-
-	protected OrmSecondaryTable addSpecifiedSecondaryTable_(int index, XmlSecondaryTable xmlSecondaryTable) {
-		OrmSecondaryTable secondaryTable = this.buildSpecifiedSecondaryTable(xmlSecondaryTable);
-		this.addItemToList(index, secondaryTable, this.specifiedSecondaryTables, SPECIFIED_SECONDARY_TABLES_LIST);
-		return secondaryTable;
-	}
-
-	protected void removeSpecifiedSecondaryTable_(OrmSecondaryTable secondaryTable) {
-		this.removeSpecifiedSecondaryTable_(this.specifiedSecondaryTables.indexOf(secondaryTable));
+	protected ContextListContainer<OrmSecondaryTable, XmlSecondaryTable> buildSpecifiedSecondaryTableContainer() {
+		return new SpecifiedSecondaryTableContainer();
 	}
 
 	/**
-	 * specified secondary table container adapter
+	 * specified secondary table container
 	 */
-	protected class SpecifiedSecondaryTableContainerAdapter
-		implements ContextContainerTools.Adapter<OrmSecondaryTable, XmlSecondaryTable>
+	protected class SpecifiedSecondaryTableContainer
+		extends ContextListContainer<OrmSecondaryTable, XmlSecondaryTable>
 	{
-		public Iterable<OrmSecondaryTable> getContextElements() {
-			return AbstractOrmEntity.this.getSpecifiedSecondaryTables();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return SPECIFIED_SECONDARY_TABLES_LIST;
 		}
-		public Iterable<XmlSecondaryTable> getResourceElements() {
+		@Override
+		protected OrmSecondaryTable buildContextElement(XmlSecondaryTable resourceElement) {
+			return AbstractOrmEntity.this.buildSpecifiedSecondaryTable(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlSecondaryTable> getResourceElements() {
 			return AbstractOrmEntity.this.getXmlSecondaryTables();
 		}
-		public XmlSecondaryTable getResourceElement(OrmSecondaryTable contextElement) {
+		@Override
+		protected XmlSecondaryTable getResourceElement(OrmSecondaryTable contextElement) {
 			return contextElement.getXmlTable();
-		}
-		public void moveContextElement(int index, OrmSecondaryTable element) {
-			AbstractOrmEntity.this.moveSpecifiedSecondaryTable_(index, element);
-		}
-		public void addContextElement(int index, XmlSecondaryTable resourceElement) {
-			AbstractOrmEntity.this.addSpecifiedSecondaryTable_(index, resourceElement);
-		}
-		public void removeContextElement(OrmSecondaryTable element) {
-			AbstractOrmEntity.this.removeSpecifiedSecondaryTable_(element);
 		}
 	}
 
 
 	// ********** virtual secondary tables **********
 
-	public ListIterator<OrmVirtualSecondaryTable> virtualSecondaryTables() {
-		return this.getVirtualSecondaryTables().iterator();
-	}
-
-	protected ListIterable<OrmVirtualSecondaryTable> getVirtualSecondaryTables() {
-		return new LiveCloneListIterable<OrmVirtualSecondaryTable>(this.virtualSecondaryTables);
+	public ListIterable<OrmVirtualSecondaryTable> getVirtualSecondaryTables() {
+		return this.virtualSecondaryTableContainer.getContextElements();
 	}
 
 	protected ListIterable<ReadOnlySecondaryTable> getReadOnlyVirtualSecondaryTables() {
-		return new LiveCloneListIterable<ReadOnlySecondaryTable>(this.virtualSecondaryTables);
+		return new SuperListIterableWrapper<ReadOnlySecondaryTable>(this.getVirtualSecondaryTables());
 	}
 
-	public int virtualSecondaryTablesSize() {
-		return this.virtualSecondaryTables.size();
+	public int getVirtualSecondaryTablesSize() {
+		return this.virtualSecondaryTableContainer.getContextElementsSize();
 	}
 
 	protected void clearVirtualSecondaryTables() {
-		this.clearList(this.virtualSecondaryTables, VIRTUAL_SECONDARY_TABLES_LIST);
+		this.virtualSecondaryTableContainer.clearContextList();
 	}
 
 	/**
@@ -688,27 +645,25 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * @see #getJavaSecondaryTablesForVirtuals()
 	 */
 	protected void updateVirtualSecondaryTables() {
-		ContextContainerTools.update(this.virtualSecondaryTableContainerAdapter);
+		this.virtualSecondaryTableContainer.update();
 	}
 
-	protected Iterable<JavaSecondaryTable> getJavaSecondaryTablesForVirtuals() {
-		if (this.specifiedSecondaryTables.size() > 0) {
-			return EmptyIterable.instance();
+	protected ListIterable<JavaSecondaryTable> getJavaSecondaryTablesForVirtuals() {
+		if (this.getSpecifiedSecondaryTablesSize() > 0) {
+			return EmptyListIterable.instance();
 		}
 		JavaEntity javaEntity = this.getJavaTypeMappingForDefaults();
 		return (javaEntity == null) ?
-				EmptyIterable.<JavaSecondaryTable>instance() :
-				CollectionTools.iterable(javaEntity.secondaryTables());
+				EmptyListIterable.<JavaSecondaryTable>instance() :
+				javaEntity.getSecondaryTables();
 	}
 
 	protected void moveVirtualSecondaryTable(int index, OrmVirtualSecondaryTable secondaryTable) {
-		this.moveItemInList(index, secondaryTable, this.virtualSecondaryTables, VIRTUAL_SECONDARY_TABLES_LIST);
+		this.virtualSecondaryTableContainer.moveContextElement(index, secondaryTable);
 	}
 
 	protected OrmVirtualSecondaryTable addVirtualSecondaryTable(int index, JavaSecondaryTable javaSecondaryTable) {
-		OrmVirtualSecondaryTable secondaryTable = this.buildVirtualSecondaryTable(javaSecondaryTable);
-		this.addItemToList(index, secondaryTable, this.virtualSecondaryTables, VIRTUAL_SECONDARY_TABLES_LIST);
-		return secondaryTable;
+		return this.virtualSecondaryTableContainer.addContextElement(index, javaSecondaryTable);
 	}
 
 	protected OrmVirtualSecondaryTable buildVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
@@ -716,32 +671,34 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected void removeVirtualSecondaryTable(OrmVirtualSecondaryTable secondaryTable) {
-		this.removeItemFromList(secondaryTable, this.virtualSecondaryTables, VIRTUAL_SECONDARY_TABLES_LIST);
+		this.virtualSecondaryTableContainer.removeContextElement(secondaryTable);
+	}
+
+	protected ContextListContainer<OrmVirtualSecondaryTable, JavaSecondaryTable> buildVirtualSecondaryTableContainer() {
+		return new VirtualSecondaryTableContainer();
 	}
 
 	/**
-	 * virtual secondary table container adapter
+	 * virtual secondary table container
 	 */
-	protected class VirtualSecondaryTableContainerAdapter
-		implements ContextContainerTools.Adapter<OrmVirtualSecondaryTable, JavaSecondaryTable>
+	protected class VirtualSecondaryTableContainer
+		extends ContextListContainer<OrmVirtualSecondaryTable, JavaSecondaryTable>
 	{
-		public Iterable<OrmVirtualSecondaryTable> getContextElements() {
-			return AbstractOrmEntity.this.getVirtualSecondaryTables();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return SPECIFIED_SECONDARY_TABLES_LIST;
 		}
-		public Iterable<JavaSecondaryTable> getResourceElements() {
+		@Override
+		protected OrmVirtualSecondaryTable buildContextElement(JavaSecondaryTable resourceElement) {
+			return AbstractOrmEntity.this.buildVirtualSecondaryTable(resourceElement);
+		}
+		@Override
+		protected ListIterable<JavaSecondaryTable> getResourceElements() {
 			return AbstractOrmEntity.this.getJavaSecondaryTablesForVirtuals();
 		}
-		public JavaSecondaryTable getResourceElement(OrmVirtualSecondaryTable contextElement) {
+		@Override
+		protected JavaSecondaryTable getResourceElement(OrmVirtualSecondaryTable contextElement) {
 			return contextElement.getOverriddenTable();
-		}
-		public void moveContextElement(int index, OrmVirtualSecondaryTable element) {
-			AbstractOrmEntity.this.moveVirtualSecondaryTable(index, element);
-		}
-		public void addContextElement(int index, JavaSecondaryTable resourceElement) {
-			AbstractOrmEntity.this.addVirtualSecondaryTable(index, resourceElement);
-		}
-		public void removeContextElement(OrmVirtualSecondaryTable element) {
-			AbstractOrmEntity.this.removeVirtualSecondaryTable(element);
 		}
 	}
 
@@ -754,7 +711,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * all (implying they are defined in XML).
 	 */
 	public boolean secondaryTablesAreDefinedInXml() {
-		return this.virtualSecondaryTables.isEmpty();
+		return this.getVirtualSecondaryTablesSize() == 0;
 	}
 
 	public void setSecondaryTablesAreDefinedInXml(boolean defineInXml) {
@@ -777,8 +734,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * before calling {@link #addSpecifiedSecondaryTable()}.
 	 */
 	protected void specifySecondaryTablesInXml() {
-		Iterable<OrmVirtualSecondaryTable> oldVirtualSecondaryTables = new SnapshotCloneIterable<OrmVirtualSecondaryTable>(this.virtualSecondaryTables);
-		for (OrmVirtualSecondaryTable oldVirtualSecondaryTable : oldVirtualSecondaryTables) {
+		for (OrmVirtualSecondaryTable oldVirtualSecondaryTable : getVirtualSecondaryTables()) {
 			this.addSpecifiedSecondaryTable_().initializeFrom(oldVirtualSecondaryTable);
 		}
 		// the virtual secondary tables will be cleared during the update
@@ -804,20 +760,16 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** primary key join columns **********
 
-	public ListIterator<ReadOnlyPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
-		return this.getPrimaryKeyJoinColumns().iterator();
-	}
-
-	protected ListIterable<ReadOnlyPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
-		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ?
+	public ListIterable<ReadOnlyPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
+		return this.getSpecifiedPrimaryKeyJoinColumnsSize() == 0 ?
 				this.getDefaultPrimaryKeyJoinColumns() :
 				this.getReadOnlySpecifiedPrimaryKeyJoinColumns();
 	}
 
-	public int primaryKeyJoinColumnsSize() {
-		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ?
-				this.defaultPrimaryKeyJoinColumnsSize() :
-				this.specifiedPrimaryKeyJoinColumnsSize();
+	public int getPrimaryKeyJoinColumnsSize() {
+		return this.getSpecifiedPrimaryKeyJoinColumnsSize() == 0 ?
+				this.getDefaultPrimaryKeyJoinColumnsSize() :
+				this.getSpecifiedPrimaryKeyJoinColumnsSize();
 	}
 
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlPkJoinColumn) {
@@ -827,31 +779,27 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** specified primary key join columns **********
 
-	public ListIterator<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
-		return this.getSpecifiedPrimaryKeyJoinColumns().iterator();
-	}
-
-	protected ListIterable<OrmPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
-		return new LiveCloneListIterable<OrmPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
+	public ListIterable<OrmPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
+		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElements();
 	}
 
 	protected ListIterable<ReadOnlyPrimaryKeyJoinColumn> getReadOnlySpecifiedPrimaryKeyJoinColumns() {
-		return new LiveCloneListIterable<ReadOnlyPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
+		return new SuperListIterableWrapper<ReadOnlyPrimaryKeyJoinColumn>(this.getSpecifiedPrimaryKeyJoinColumns());
 	}
 
-	public int specifiedPrimaryKeyJoinColumnsSize() {
-		return this.specifiedPrimaryKeyJoinColumns.size();
+	public int getSpecifiedPrimaryKeyJoinColumnsSize() {
+		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElementsSize();
 	}
 
 	public OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn() {
-		return this.addSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.size());
+		return this.addSpecifiedPrimaryKeyJoinColumn(this.getSpecifiedPrimaryKeyJoinColumnsSize());
 	}
 
 	public OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
 		this.clearDefaultPrimaryKeyJoinColumns(); // could leave for update?
 
 		XmlPrimaryKeyJoinColumn xmlPkJoinColumn = this.buildXmlPrimaryKeyJoinColumn();
-		OrmPrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn_(index, xmlPkJoinColumn);
+		OrmPrimaryKeyJoinColumn pkJoinColumn = this.specifiedPrimaryKeyJoinColumnContainer.addContextElement(index, xmlPkJoinColumn);
 		this.xmlTypeMapping.getPrimaryKeyJoinColumns().add(index, xmlPkJoinColumn);
 		return pkJoinColumn;
 	}
@@ -861,20 +809,16 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(PrimaryKeyJoinColumn primaryKeyJoinColumn) {
-		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.indexOf(primaryKeyJoinColumn));
+		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumnContainer.indexOfContextElement((OrmPrimaryKeyJoinColumn) primaryKeyJoinColumn));
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
-		this.removeSpecifiedPrimaryKeyJoinColumn_(index);
+		this.specifiedPrimaryKeyJoinColumnContainer.removeContextElement(index);
 		this.xmlTypeMapping.getPrimaryKeyJoinColumns().remove(index);
 	}
 
-	protected void removeSpecifiedPrimaryKeyJoinColumn_(int index) {
-		this.removeItemFromList(index, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
-	}
-
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+		this.specifiedPrimaryKeyJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlTypeMapping.getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
 	}
 
@@ -882,76 +826,54 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
-	protected void initializeSpecifiedPrimaryKeyJoinColumns() {
-		for (XmlPrimaryKeyJoinColumn xmlPkJoinColumn : this.getXmlPrimaryKeyJoinColumns()) {
-			this.specifiedPrimaryKeyJoinColumns.add(this.buildPrimaryKeyJoinColumn(xmlPkJoinColumn));
-		}
-	}
-
 	protected void syncSpecifiedPrimaryKeyJoinColumns() {
-		ContextContainerTools.synchronizeWithResourceModel(this.specifiedPrimaryKeyJoinColumnContainerAdapter);
+		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlPrimaryKeyJoinColumn> getXmlPrimaryKeyJoinColumns() {
+	protected ListIterable<XmlPrimaryKeyJoinColumn> getXmlPrimaryKeyJoinColumns() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlPrimaryKeyJoinColumn>(this.xmlTypeMapping.getPrimaryKeyJoinColumns());
+		return new LiveCloneListIterable<XmlPrimaryKeyJoinColumn>(this.xmlTypeMapping.getPrimaryKeyJoinColumns());
 	}
 
-	protected void moveSpecifiedPrimaryKeyJoinColumn_(int index, OrmPrimaryKeyJoinColumn pkJoinColumn) {
-		this.moveItemInList(index, pkJoinColumn, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
-	}
-
-	protected OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn_(int index, XmlPrimaryKeyJoinColumn xmlPkJoinColumn) {
-		OrmPrimaryKeyJoinColumn pkJoinColumn = this.buildPrimaryKeyJoinColumn(xmlPkJoinColumn);
-		this.addItemToList(index, pkJoinColumn, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
-		return pkJoinColumn;
-	}
-
-	protected void removeSpecifiedPrimaryKeyJoinColumn_(OrmPrimaryKeyJoinColumn pkJoinColumn) {
-		this.removeSpecifiedPrimaryKeyJoinColumn_(this.specifiedPrimaryKeyJoinColumns.indexOf(pkJoinColumn));
+	protected ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildSpecifiedPrimaryKeyJoinColumnContainer() {
+		return new SpecifiedPrimaryKeyJoinColumnContainer();
 	}
 
 	/**
-	 * specified primary key join column container adapter
+	 * specified primary key join column container
 	 */
-	protected class SpecifiedPrimaryKeyJoinColumnContainerAdapter
-		implements ContextContainerTools.Adapter<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn>
+	protected class SpecifiedPrimaryKeyJoinColumnContainer
+		extends ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn>
 	{
-		public Iterable<OrmPrimaryKeyJoinColumn> getContextElements() {
-			return AbstractOrmEntity.this.getSpecifiedPrimaryKeyJoinColumns();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST;
 		}
-		public Iterable<XmlPrimaryKeyJoinColumn> getResourceElements() {
+		@Override
+		protected OrmPrimaryKeyJoinColumn buildContextElement(XmlPrimaryKeyJoinColumn resourceElement) {
+			return AbstractOrmEntity.this.buildPrimaryKeyJoinColumn(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlPrimaryKeyJoinColumn> getResourceElements() {
 			return AbstractOrmEntity.this.getXmlPrimaryKeyJoinColumns();
 		}
-		public XmlPrimaryKeyJoinColumn getResourceElement(OrmPrimaryKeyJoinColumn contextElement) {
+		@Override
+		protected XmlPrimaryKeyJoinColumn getResourceElement(OrmPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getXmlColumn();
-		}
-		public void moveContextElement(int index, OrmPrimaryKeyJoinColumn element) {
-			AbstractOrmEntity.this.moveSpecifiedPrimaryKeyJoinColumn_(index, element);
-		}
-		public void addContextElement(int index, XmlPrimaryKeyJoinColumn resourceElement) {
-			AbstractOrmEntity.this.addSpecifiedPrimaryKeyJoinColumn_(index, resourceElement);
-		}
-		public void removeContextElement(OrmPrimaryKeyJoinColumn element) {
-			AbstractOrmEntity.this.removeSpecifiedPrimaryKeyJoinColumn_(element);
 		}
 	}
 
 
 	// ********** default primary key join columns **********
 
-	public ListIterator<ReadOnlyPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
-		return this.getDefaultPrimaryKeyJoinColumns().iterator();
-	}
-
-	protected ListIterable<ReadOnlyPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns() {
+	public ListIterable<ReadOnlyPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns() {
 		int virtualSize = this.virtualPrimaryKeyJoinColumns.size();
 		return (virtualSize != 0) ?
 				this.getReadOnlyVirtualPrimaryKeyJoinColumns() :
 				this.getReadOnlyDefaultPrimaryKeyJoinColumns();
 	}
 
-	public int defaultPrimaryKeyJoinColumnsSize() {
+	public int getDefaultPrimaryKeyJoinColumnsSize() {
 		int virtualSize = this.virtualPrimaryKeyJoinColumns.size();
 		return (virtualSize != 0) ?
 				virtualSize :
@@ -982,12 +904,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * Otherwise, there is a single, spec-defined, default pk join column.
 	 */
 	protected void updateDefaultPrimaryKeyJoinColumns() {
-		if (this.specifiedPrimaryKeyJoinColumns.size() > 0) {
+		if (this.getSpecifiedPrimaryKeyJoinColumnsSize() > 0) {
 			// specified/java/default => specified
 			this.clearDefaultPrimaryKeyJoinColumns();
 		} else {
 			// specified
-			if (this.defaultPrimaryKeyJoinColumnsSize() == 0) {
+			if (this.getDefaultPrimaryKeyJoinColumnsSize() == 0) {
 				if (this.javaPrimaryKeyJoinColumnsWillBeDefaults()) {
 					// specified => java
 					this.initializeVirtualPrimaryKeyJoinColumns();
@@ -1030,7 +952,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 */
 	protected boolean javaPrimaryKeyJoinColumnsWillBeDefaults() {
 		JavaEntity javaEntity = this.getJavaTypeMappingForDefaults();
-		return (javaEntity != null) && (javaEntity.primaryKeyJoinColumnsSize() > 0);
+		return (javaEntity != null) && (javaEntity.getPrimaryKeyJoinColumnsSize() > 0);
 	}
 
 
@@ -1067,7 +989,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * @see #javaPrimaryKeyJoinColumnsWillBeDefaults()
 	 */
 	protected Iterable<JavaPrimaryKeyJoinColumn> getJavaPrimaryKeyJoinColumnsForVirtuals() {
-		return CollectionTools.iterable(this.getJavaTypeMappingForDefaults().primaryKeyJoinColumns());
+		return this.getJavaTypeMappingForDefaults().getPrimaryKeyJoinColumns();
 	}
 
 	protected void moveVirtualPrimaryKeyJoinColumn(int index, OrmVirtualPrimaryKeyJoinColumn pkJoinColumn) {
@@ -1716,32 +1638,32 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * Return whether the type is abstract; false if no java type exists.
 	 */
 	protected boolean isAbstract() {
-		JavaResourcePersistentType jrpt = this.getJavaResourcePersistentType();
-		return (jrpt != null) && jrpt.isAbstract();
+		JavaResourceType jrt = this.getJavaResourceType();
+		return (jrt != null) && jrt.isAbstract();
 	}
 
 	/**
 	 * Return whether the entity's type is abstract.
 	 */
 	protected boolean isFinal() {
-		JavaResourcePersistentType jrpt = this.getJavaResourcePersistentType();
-		return (jrpt != null) && jrpt.isFinal();
+		JavaResourceType jrt = this.getJavaResourceType();
+		return (jrt != null) && jrt.isFinal();
 	}
 
 	/**
 	 * Return whether the entity's type is a member of another type.
 	 */
 	protected boolean isMember() {
-		JavaResourcePersistentType jrpt = this.getJavaResourcePersistentType();
-		return (jrpt != null) && jrpt.isMemberType();
+		JavaResourceType jrt = this.getJavaResourceType();
+		return (jrt != null) && jrt.isMemberType();
 	}
 
 	/**
 	 * Return whether the entity's type is static.
 	 */
 	protected boolean isStatic() {
-		JavaResourcePersistentType jrpt = this.getJavaResourcePersistentType();
-		return (jrpt != null) && jrpt.isStatic();
+		JavaResourceType jrt = this.getJavaResourceType();
+		return (jrt != null) && jrt.isStatic();
 	}
 
 
@@ -2180,16 +2102,16 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
 		}
 
-		public int joinColumnsSize() {
-			return AbstractOrmEntity.this.primaryKeyJoinColumnsSize();
+		public int getJoinColumnsSize() {
+			return AbstractOrmEntity.this.getPrimaryKeyJoinColumnsSize();
 		}
 
 		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
-			return CollectionTools.contains(AbstractOrmEntity.this.defaultPrimaryKeyJoinColumns(), joinColumn);
+			return CollectionTools.contains(AbstractOrmEntity.this.getDefaultPrimaryKeyJoinColumns(), joinColumn);
 		}
 
 		public String getDefaultColumnName() {
-			if (this.joinColumnsSize() != 1) {
+			if (this.getJoinColumnsSize() != 1) {
 				return null;
 			}
 			Entity parentEntity = AbstractOrmEntity.this.getParentEntity();

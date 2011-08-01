@@ -10,11 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
-
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -29,7 +31,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlIdClassContainer;
@@ -203,7 +204,7 @@ public class GenericOrmIdClassReference
 	 * @see #syncIdClass()
 	 */
 	protected void updateIdClass() {
-		JavaResourcePersistentType resourceIdClass = this.resolveJavaResourceIdClass();
+		JavaResourceType resourceIdClass = this.resolveJavaResourceIdClass();
 		if (resourceIdClass == null) {
 			if (this.idClass != null) {
 				this.idClass.dispose();
@@ -213,7 +214,7 @@ public class GenericOrmIdClassReference
 			if (this.idClass == null) {
 				this.setIdClass(this.buildIdClass(resourceIdClass));
 			} else {
-				if (this.idClass.getResourcePersistentType() == resourceIdClass) {
+				if (this.idClass.getJavaResourceType() == resourceIdClass) {
 					this.idClass.update();
 				} else {
 					this.idClass.dispose();
@@ -225,16 +226,20 @@ public class GenericOrmIdClassReference
 
 	// TODO I'm not sure we should be go to the entity mappings to resolve
 	// our name if it is taken from the Java ID class reference...
-	protected JavaResourcePersistentType resolveJavaResourceIdClass() {
+	protected JavaResourceType resolveJavaResourceIdClass() {
 		String idClassName = this.getIdClassName();
 		if (idClassName == null) {
 			return null;
 		}
-		JavaResourcePersistentType jrpt = this.getEntityMappings().resolveJavaResourcePersistentType(idClassName);
-		return (jrpt == null) ? null : (jrpt.isMapped() ? null : jrpt);
+		JavaResourceAbstractType jrat = this.getEntityMappings().resolveJavaResourceType(idClassName);
+		if (jrat == null || jrat.getKind() != Kind.TYPE) {
+			return null;
+		}
+		JavaResourceType jrt = (JavaResourceType) jrat;
+		return jrt.isAnnotatedWith(getJpaProject().getTypeMappingAnnotations()) ? null : jrt;
 	}
 
-	protected JavaPersistentType buildIdClass(JavaResourcePersistentType resourceIdClass) {
+	protected JavaPersistentType buildIdClass(JavaResourceType resourceIdClass) {
 		return this.getJpaFactory().buildJavaPersistentType(this, resourceIdClass);
 	}
 
@@ -328,13 +333,13 @@ public class GenericOrmIdClassReference
 	protected void validateIdClass(List<IMessage> messages, IReporter reporter) {
 		IJavaProject javaProject = getJpaProject().getJavaProject();
 		if (this.isSpecified()) {
-			JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(this.getIdClassName());
-			if ((jrpt != null) && (jrpt.isMapped())) {
+			JavaResourceType jrt = (JavaResourceType) getJpaProject().getJavaResourceType(this.getIdClassName(), Kind.TYPE);
+			if ((jrt != null) && (jrt.isAnnotatedWith(getJpaProject().getTypeMappingAnnotations()))) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_VALID,
-								new String[] {jrpt.getName()}, 
+								new String[] {jrt.getName()}, 
 								this,
 								this.getValidationTextRange()
 						)

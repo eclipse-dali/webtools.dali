@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject.Config;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -53,7 +54,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
@@ -95,8 +95,8 @@ public class EclipseLink2_0JpaFactory
 	// ********** Java Context Model **********
 
 	@Override
-	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourcePersistentType jrpt) {
-		return new GenericJavaPersistentType2_0(owner, jrpt);
+	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourceType jrt) {
+		return new GenericJavaPersistentType2_0(owner, jrt);
 	}
 	
 	@Override

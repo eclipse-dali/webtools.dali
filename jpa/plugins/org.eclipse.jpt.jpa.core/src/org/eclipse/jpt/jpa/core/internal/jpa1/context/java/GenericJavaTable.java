@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaTable;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
 
 /**
@@ -30,20 +30,20 @@ public class GenericJavaTable
 	@Override
 	public TableAnnotation getTableAnnotation() {
 		// TODO get the NullTableAnnotation from the resource model or build it here in the context model??
-		return (TableAnnotation) this.getResourcePersistentType().getNonNullAnnotation(this.getAnnotationName());
+		return (TableAnnotation) this.getJavaResourceType().getNonNullAnnotation(this.getAnnotationName());
 	}
 
 	@Override
 	protected void removeTableAnnotation() {
-		this.getResourcePersistentType().removeAnnotation(this.getAnnotationName());
+		this.getJavaResourceType().removeAnnotation(this.getAnnotationName());
 	}
 
 	protected String getAnnotationName() {
 		return TableAnnotation.ANNOTATION_NAME;
 	}
 
-	protected JavaResourcePersistentType getResourcePersistentType() {
-		return this.getEntity().getPersistentType().getResourcePersistentType();
+	protected JavaResourceType getJavaResourceType() {
+		return this.getEntity().getPersistentType().getJavaResourceType();
 	}
 
 

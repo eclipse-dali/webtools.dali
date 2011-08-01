@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -130,8 +129,7 @@ abstract class JpaManagedTypeProvider implements IManagedTypeProvider {
 
 	private Map<String, IManagedType> buildManagedTypes() {
 		Map<String, IManagedType> managedTypes = new HashMap<String, IManagedType>();
-		for (Iterator<? extends PersistentType> iter = persistenceTypes(); iter.hasNext(); ) {
-			PersistentType persistentType = iter.next();
+		for (PersistentType persistentType : persistenceTypes()) {
 			if (persistentType != null) {
 				managedTypes.put(persistentType.getMapping().getName(), buildManagedType(persistentType));
 			}
@@ -238,7 +236,7 @@ abstract class JpaManagedTypeProvider implements IManagedTypeProvider {
 	 *
 	 * @return The managed types that are defined only in the provider
 	 */
-	abstract Iterator<? extends PersistentType> persistenceTypes();
+	abstract Iterable<? extends PersistentType> persistenceTypes();
 
 	private static class EntityCollector implements IManagedTypeVisitor {
 

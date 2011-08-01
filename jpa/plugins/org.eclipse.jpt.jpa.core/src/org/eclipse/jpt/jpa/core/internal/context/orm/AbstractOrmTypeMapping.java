@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -40,7 +41,6 @@ import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
@@ -186,9 +186,9 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		return this.getPersistentType().getJavaPersistentType();
 	}
 
-	protected JavaResourcePersistentType getJavaResourcePersistentType() {
+	protected JavaResourceType getJavaResourceType() {
 		JavaPersistentType javaType = this.getJavaPersistentType();
-		return (javaType == null) ? null : javaType.getResourcePersistentType();
+		return (javaType == null) ? null : javaType.getJavaResourceType();
 	}
 
 	public boolean isMapped() {
@@ -245,7 +245,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public Iterator<AttributeMapping> attributeMappings() {
-		return new TransformationIterator<OrmReadOnlyPersistentAttribute, AttributeMapping>(this.getPersistentType().attributes()) {
+		return new TransformationIterator<OrmReadOnlyPersistentAttribute, AttributeMapping>(this.getPersistentType().getAttributes()) {
 			@Override
 			protected AttributeMapping transform(OrmReadOnlyPersistentAttribute attribute) {
 				return attribute.getMapping();
@@ -467,7 +467,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	protected JptValidator buildTypeMappingValidator() {
-		return new GenericTypeMappingValidator(this, this.getJavaResourcePersistentType(), this.buildTextRangeResolver());
+		return new GenericTypeMappingValidator(this, this.getJavaResourceType(), this.buildTextRangeResolver());
 	}
 
 	protected TypeMappingTextRangeResolver buildTextRangeResolver() {

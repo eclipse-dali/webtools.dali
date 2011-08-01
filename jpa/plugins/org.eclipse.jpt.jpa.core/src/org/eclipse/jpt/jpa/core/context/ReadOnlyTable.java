@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -101,9 +101,9 @@ public interface ReadOnlyTable
 
 	// ********** unique constraints **********
 
-	ListIterator<? extends ReadOnlyUniqueConstraint> uniqueConstraints();
+	ListIterable<? extends ReadOnlyUniqueConstraint> getUniqueConstraints();
 		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraints"; //$NON-NLS-1$
-	int uniqueConstraintsSize();
+	int getUniqueConstraintsSize();
 	ReadOnlyUniqueConstraint getUniqueConstraint(int index);
 
 

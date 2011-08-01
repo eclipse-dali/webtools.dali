@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -65,13 +64,13 @@ import org.eclipse.jdt.ui.actions.FormatAllAction;
 import org.eclipse.jdt.ui.actions.OrganizeImportsAction;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
@@ -182,15 +181,15 @@ public class JPAEditorUtil {
 
     
     public static String getAttributeTypeName(JavaPersistentAttribute at) {
-    	return getAttributeTypeName(at.getResourcePersistentAttribute());
+    	return getAttributeTypeName(at.getResourceAttribute());
     }    
     
-    public static String getAttributeTypeName(JavaResourcePersistentAttribute at) {
+    public static String getAttributeTypeName(JavaResourceAttribute at) {
     	return at.getTypeName();
     }        
     
-    public static List<String> getAttributeTypeTypeNames(JavaResourcePersistentAttribute at) {
-    	ListIterator<String> tt = at.typeTypeArgumentNames();
+    public static List<String> getAttributeTypeTypeNames(JavaResourceAttribute at) {
+    	ListIterator<String> tt = at.getTypeTypeArgumentNames().iterator();
     	if ((tt == null) || !tt.hasNext()) 
     		return null;
     	LinkedList<String> res = new LinkedList<String>();
@@ -200,13 +199,13 @@ public class JPAEditorUtil {
     }
     
     public static String getAttributeTypeNameWithGenerics(JavaPersistentAttribute at) {
-    	return getAttributeTypeNameWithGenerics(at.getResourcePersistentAttribute());
+    	return getAttributeTypeNameWithGenerics(at.getResourceAttribute());
     }
 
     
-    public static String getAttributeTypeNameWithGenerics(JavaResourcePersistentAttribute at) {
+    public static String getAttributeTypeNameWithGenerics(JavaResourceAttribute at) {
     	StringBuilder res = new StringBuilder(getAttributeTypeName(at));
-    	ListIterator<String> it = at.typeTypeArgumentNames();
+    	ListIterator<String> it = at.getTypeTypeArgumentNames().iterator();
     	if ((it != null) && it.hasNext()) {
 	    	res.append('<');
 	    	res.append(createCommaSeparatedListOfFullTypeNames(it));
@@ -821,6 +820,7 @@ public class JPAEditorUtil {
 											   final boolean selfOnly) {
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(cs);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				List<Anchor> anchorsFrom = getAnchors(cs);
 				for (Anchor anchorFrom : anchorsFrom) {
@@ -963,8 +963,8 @@ public class JPAEditorUtil {
 		int TXT_HEIGHT = 8;
 		double location = dcr.getLocation();
 		RelEndDir relEndDir = (location < 0.5) ? 
-				JPAEditorUtil.getConnectionStartDir((FreeFormConnection)c) :
-					JPAEditorUtil.getConnectionEndDir((FreeFormConnection)c);
+				JPAEditorUtil.getConnectionStartDir(c) :
+					JPAEditorUtil.getConnectionEndDir(c);
 		Text txt = (Text)dcr.getGraphicsAlgorithm();
 		int TXT_WIDTH = txt.getValue().length() * 6;
 		boolean isCardinality = JPAEditorConstants.CARDINALITY_LABELS.contains(txt.getValue()); 
@@ -1339,11 +1339,9 @@ public class JPAEditorUtil {
 	static private HashSet<String> getEntityNames(JpaProject jpaProject) {
 		HashSet<String> names = new HashSet<String>();
 		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().
-												getPersistence().persistenceUnits();
+												getPersistence().getPersistenceUnits().iterator();
 		PersistenceUnit pu = lit.next();
-		Iterator<ClassRef> li = pu.classRefs();			
-		while(li.hasNext()) {
-			ClassRef cf = li.next();
+		for (ClassRef cf : pu.getClassRefs()) {
 			names.add(cf.getClassName());
 		}
 		return names;
@@ -1352,11 +1350,9 @@ public class JPAEditorUtil {
 	static private HashSet<String> getEntitySimpleNames(JpaProject jpaProject) {
 		HashSet<String> names = new HashSet<String>();
 		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().
-												getPersistence().persistenceUnits();
-		PersistenceUnit pu = lit.next();
-		Iterator<ClassRef> li = pu.classRefs();			
-		while(li.hasNext()) {
-			ClassRef cf = li.next();
+												getPersistence().getPersistenceUnits().iterator();
+		PersistenceUnit pu = lit.next();			
+		for (ClassRef cf : pu.getClassRefs()) {
 			names.add(JPAEditorUtil.returnSimpleName(cf.getClassName()).toLowerCase(Locale.ENGLISH));
 		}
 		return names;

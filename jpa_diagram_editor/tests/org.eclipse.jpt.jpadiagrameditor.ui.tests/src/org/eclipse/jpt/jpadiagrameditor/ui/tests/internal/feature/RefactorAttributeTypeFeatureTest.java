@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,11 +26,9 @@ import java.util.List;
 
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -92,7 +90,7 @@ public class RefactorAttributeTypeFeatureTest {
 		assertTrue(lst.contains("@Id"));
 		String typeName1 = JPAEditorUtil.getAttributeTypeName(at);
 		assertEquals("int", typeName1);
-		String typeName2 = JPAEditorUtil.getAttributeTypeName(at.getResourcePersistentAttribute());
+		String typeName2 = JPAEditorUtil.getAttributeTypeName(at.getResourceAttribute());
 		assertEquals("int", typeName2);		
 	}
 	

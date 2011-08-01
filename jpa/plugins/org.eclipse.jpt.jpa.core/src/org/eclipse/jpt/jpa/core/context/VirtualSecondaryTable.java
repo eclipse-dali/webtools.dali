@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Virtual secondary table
@@ -23,8 +23,8 @@ import java.util.ListIterator;
 public interface VirtualSecondaryTable
 	extends VirtualTable, ReadOnlySecondaryTable
 {
-	ListIterator<? extends VirtualPrimaryKeyJoinColumn> primaryKeyJoinColumns();
-	ListIterator<? extends VirtualPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
+	ListIterable<? extends VirtualPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<? extends VirtualPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
 	VirtualPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 
 	SecondaryTable getOverriddenTable();

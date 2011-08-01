@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProject.Config;
@@ -57,7 +58,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
@@ -99,8 +99,8 @@ public class GenericJpaFactory2_0
 	// ********** Java Context Model **********
 
 	@Override
-	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourcePersistentType jrpt) {
-		return new GenericJavaPersistentType2_0(owner, jrpt);
+	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourceType jrt) {
+		return new GenericJavaPersistentType2_0(owner, jrt);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 
 /**
  * <ul>
@@ -42,8 +41,8 @@ public abstract class SourceCompleteColumnAnnotation
 	protected Integer scale;
 
 
-	protected SourceCompleteColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		super(parent, member, daa);
+	protected SourceCompleteColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.lengthDeclarationAdapter = this.buildLengthDeclarationAdapter();
 		this.lengthAdapter = this.buildLengthAdapter();
 		this.precisionDeclarationAdapter = this.buildPrecisionDeclarationAdapter();
@@ -190,33 +189,4 @@ public abstract class SourceCompleteColumnAnnotation
 				(this.scale == null);
 	}
 
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.lengthDeclarationAdapter = this.buildLengthDeclarationAdapter();
-		this.lengthAdapter = this.buildLengthAdapter();
-		this.precisionDeclarationAdapter = this.buildPrecisionDeclarationAdapter();
-		this.precisionAdapter = this.buildPrecisionAdapter();
-		this.scaleDeclarationAdapter = this.buildScaleDeclarationAdapter();
-		this.scaleAdapter = this.buildScaleAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		map.put(LENGTH_PROPERTY, this.length);
-		this.length = null;
-		map.put(PRECISION_PROPERTY, this.precision);
-		this.precision = null;
-		map.put(SCALE_PROPERTY, this.scale);
-		this.scale = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		this.setLength((Integer) map.get(LENGTH_PROPERTY));
-		this.setPrecision((Integer) map.get(PRECISION_PROPERTY));
-		this.setScale((Integer) map.get(SCALE_PROPERTY));
-	}
 }

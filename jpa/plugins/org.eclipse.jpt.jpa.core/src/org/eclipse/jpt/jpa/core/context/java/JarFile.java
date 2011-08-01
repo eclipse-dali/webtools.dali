@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -45,13 +44,13 @@ public interface JarFile
 	 * Return the JAR file's Java persistent types.
 	 * Return only the types that are annotated with JPA annotations.
 	 */
-	Iterator<JavaPersistentType> javaPersistentTypes();
+	Iterable<JavaPersistentType> getJavaPersistentTypes();
 		String JAVA_PERSISTENT_TYPES_COLLECTION = "javaPersistentTypes"; //$NON-NLS-1$
 
 	/**
 	 * Return the size of the JAR file's Java persistent types.
 	 */
-	int javaPersistentTypesSize();
+	int getJavaPersistentTypesSize();
 
 
 	// ********** validation **********

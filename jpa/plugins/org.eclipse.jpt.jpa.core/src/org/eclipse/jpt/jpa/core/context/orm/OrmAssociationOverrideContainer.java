@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
@@ -32,12 +32,12 @@ public interface OrmAssociationOverrideContainer
 	extends AssociationOverrideContainer, OrmOverrideContainer
 {
 	// covariant overrides
-	ListIterator<OrmReadOnlyAssociationOverride> overrides();
+	ListIterable<OrmReadOnlyAssociationOverride> getOverrides();
 	OrmReadOnlyAssociationOverride getOverrideNamed(String name);
-	ListIterator<OrmAssociationOverride> specifiedOverrides();
+	ListIterable<OrmAssociationOverride> getSpecifiedOverrides();
 	OrmAssociationOverride getSpecifiedOverride(int index);
 	OrmAssociationOverride getSpecifiedOverrideNamed(String name);
-	ListIterator<OrmVirtualAssociationOverride> virtualOverrides();
+	ListIterable<OrmVirtualAssociationOverride> getVirtualOverrides();
 	OrmVirtualAssociationOverride convertOverrideToVirtual(Override_ specifiedOverride);
 	OrmAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 

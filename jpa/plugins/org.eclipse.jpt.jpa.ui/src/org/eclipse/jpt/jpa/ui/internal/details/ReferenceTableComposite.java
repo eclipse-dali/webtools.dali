@@ -14,6 +14,8 @@ import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -130,13 +132,13 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 	ListValueModel<ReadOnlyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
 		return new ListAspectAdapter<T, ReadOnlyJoinColumn>(getSubjectHolder(), ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterator<ReadOnlyJoinColumn> listIterator_() {
-				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(this.subject.specifiedJoinColumns());
+			protected ListIterable<ReadOnlyJoinColumn> getListIterable() {
+				return new SuperListIterableWrapper<ReadOnlyJoinColumn>(this.subject.getSpecifiedJoinColumns());
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.specifiedJoinColumnsSize();
+				return this.subject.getSpecifiedJoinColumnsSize();
 			}
 		};
 	}
@@ -305,9 +307,9 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		try {
 			if (selected) {
 				referenceTable.convertDefaultJoinColumnToSpecified();
-				setSelectedJoinColumn(referenceTable.specifiedJoinColumns().next());
+				setSelectedJoinColumn(referenceTable.getSpecifiedJoinColumn(0));
 			} else {
-				for (int index = referenceTable.specifiedJoinColumnsSize(); --index >= 0; ) {
+				for (int index = referenceTable.getSpecifiedJoinColumnsSize(); --index >= 0; ) {
 					referenceTable.removeSpecifiedJoinColumn(index);
 				}
 			}
@@ -345,11 +347,11 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		}
 
 		public ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(T subject) {
-			return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.specifiedJoinColumns());
+			return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedJoinColumns());
 		}
 
 		public int specifiedJoinColumnsSize(T subject) {
-			return subject.specifiedJoinColumnsSize();
+			return subject.getSpecifiedJoinColumnsSize();
 		}
 
 		public String getSpecifiedJoinColumnsListPropertyName() {
@@ -416,7 +418,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		@Override
 		protected Boolean transform_(T value) {
 			boolean virtual = ReferenceTableComposite.this.tableIsVirtual(value);
-			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
+			return Boolean.valueOf(! virtual && value.getSpecifiedJoinColumnsSize() > 0);
 		}
 		
 		@Override

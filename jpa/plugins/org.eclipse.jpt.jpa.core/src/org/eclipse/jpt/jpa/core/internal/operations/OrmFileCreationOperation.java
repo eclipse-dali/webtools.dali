@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.operations;
 
-import java.util.Iterator;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -65,8 +64,7 @@ public class OrmFileCreationOperation
 		if (persistence == null) {
 			throw new ExecutionException("persistence.xml does not have a persistence node."); //$NON-NLS-1$
 		}
-		for (Iterator<PersistenceUnit> stream = persistence.persistenceUnits(); stream.hasNext(); ) {
-			PersistenceUnit pUnit = stream.next();
+		for (PersistenceUnit pUnit : persistence.getPersistenceUnits()) {
 			if (pUnitName.equals(pUnit.getName())) {
 				return pUnit;
 			}
@@ -91,8 +89,8 @@ public class OrmFileCreationOperation
 				IPath filePath = container.getFullPath().append(fileName);
 				IProject project = container.getProject();
 				IPath runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, filePath);
-				for (Iterator<MappingFileRef> stream = pUnit.specifiedMappingFileRefs(); stream.hasNext(); ) {
-					if (runtimePath.equals(stream.next().getFileName())) {
+				for (MappingFileRef ref : pUnit.getSpecifiedMappingFileRefs()) {
+					if (runtimePath.equals(ref.getFileName())) {
 						return;
 					}
 				}

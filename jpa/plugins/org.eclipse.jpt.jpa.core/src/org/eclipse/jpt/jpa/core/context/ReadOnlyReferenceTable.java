@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Read-only reference table (i.e. a table that joins with one other table,
@@ -35,23 +35,23 @@ public interface ReadOnlyReferenceTable
 	/**
 	 * Return the reference table's join columns, whether specified or default.
 	 */
-	ListIterator<? extends ReadOnlyJoinColumn> joinColumns();
+	ListIterable<? extends ReadOnlyJoinColumn> getJoinColumns();
 
 	/**
 	 * Return the number of join columns, whether specified or default.
 	 */
-	int joinColumnsSize();
+	int getJoinColumnsSize();
 
 	/**
 	 * Return the reference table's specified join columns.
 	 */
-	ListIterator<? extends ReadOnlyJoinColumn> specifiedJoinColumns();
+	ListIterable<? extends ReadOnlyJoinColumn> getSpecifiedJoinColumns();
 		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumns"; //$NON-NLS-1$
 
 	/**
 	 * Return the number of specified join columns.
 	 */
-	int specifiedJoinColumnsSize();
+	int getSpecifiedJoinColumnsSize();
 
 	/**
 	 * Return whether the reference table has specified join columns.

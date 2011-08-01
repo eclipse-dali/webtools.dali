@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,16 +10,16 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformerAnnotation;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformer
  * org.eclipse.persistence.annotations.WriteTransformer
  */
 abstract class SourceEclipseLinkTransformerAnnotation
-	extends SourceAnnotation<Attribute>
+	extends SourceAnnotation
 	implements EclipseLinkTransformerAnnotation
 {
 	final DeclarationAnnotationElementAdapter<String> transformerClassDeclarationAdapter;
@@ -39,13 +39,13 @@ abstract class SourceEclipseLinkTransformerAnnotation
 	String method;
 
 
-	SourceEclipseLinkTransformerAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
-		super(parent, attribute, daa);
+	SourceEclipseLinkTransformerAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.transformerClassDeclarationAdapter = new ConversionDeclarationAnnotationElementAdapter<String>(daa, this.getTransformerClassElementName(), SimpleTypeStringExpressionConverter.instance());
-		this.transformerClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, this.transformerClassDeclarationAdapter);
+		this.transformerClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, this.transformerClassDeclarationAdapter);
 
 		this.methodDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, this.getMethodElementName());
-		this.methodAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, this.methodDeclarationAdapter);
+		this.methodAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, this.methodDeclarationAdapter);
 	}
 
 	public void initialize(CompilationUnit astRoot) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.java;
 
-import org.eclipse.jpt.jpa.core.JpaAnnotationProvider;
+import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.tests.internal.resource.java.JpaJavaResourceModelTestCase;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaAnnotationDefinitionProvider;
 
@@ -25,8 +25,8 @@ public class EclipseLinkJavaResourceModelTestCase extends JpaJavaResourceModelTe
 	}
 
 	@Override
-	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(
+	protected AnnotationProvider buildAnnotationProvider() {
+		return new JpaAnnotationProvider(
 			GenericJpaAnnotationDefinitionProvider.instance(),
 			EclipseLinkJpaAnnotationDefinitionProvider.instance());
 	}

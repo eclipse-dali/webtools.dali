@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -129,7 +131,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmVirtualOverr
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmVirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.UnsupportedOrmAttributeMapping;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
@@ -197,10 +198,14 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmPersistentAttribute(parent, xmlMapping);
 	}
 	
-	public OrmReadOnlyPersistentAttribute buildVirtualOrmPersistentAttribute(OrmPersistentType parent, JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		return new VirtualOrmPersistentAttribute(parent, javaResourcePersistentAttribute);
+	public OrmReadOnlyPersistentAttribute buildVirtualOrmPersistentField(OrmPersistentType parent, JavaResourceField javaResourceField) {
+		return new VirtualOrmPersistentAttribute(parent, javaResourceField);
 	}
-	
+
+	public OrmReadOnlyPersistentAttribute buildVirtualOrmPersistentProperty(OrmPersistentType parent, JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+		return new VirtualOrmPersistentAttribute(parent, javaResourceGetter, javaResourceSetter);
+	}
+
 	public OrmTable buildOrmTable(OrmEntity parent, Table.Owner owner) {
 		return new GenericOrmTable(parent, owner);
 	}

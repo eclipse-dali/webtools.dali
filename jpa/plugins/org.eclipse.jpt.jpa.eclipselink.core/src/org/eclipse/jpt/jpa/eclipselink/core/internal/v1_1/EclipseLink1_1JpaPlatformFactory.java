@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1;
 
-import org.eclipse.jpt.jpa.core.JpaAnnotationProvider;
+import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaAnnotationDefinitionProvider;
@@ -42,13 +42,13 @@ public class EclipseLink1_1JpaPlatformFactory
 			id,
 			buildJpaVersion(),
 			new EclipseLinkJpaFactory(), 
-			buildJpaAnnotationProvider(),
+			buildAnnotationProvider(),
 			EclipseLink1_1JpaPlatformProvider.instance(), 
 			buildJpaPlatformVariation());
 	}
 	
-	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(
+	protected AnnotationProvider buildAnnotationProvider() {
+		return new JpaAnnotationProvider(
 			GenericJpaAnnotationDefinitionProvider.instance(),
 			EclipseLinkJpaAnnotationDefinitionProvider.instance());
 	}

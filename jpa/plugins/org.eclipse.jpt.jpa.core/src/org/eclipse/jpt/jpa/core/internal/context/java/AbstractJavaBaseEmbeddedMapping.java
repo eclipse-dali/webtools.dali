@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Transformer;
@@ -44,8 +46,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaEmbeddedId
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -245,8 +245,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	protected abstract class AttributeOverrideContainerOwner
 		implements JavaAttributeOverrideContainer2_0.Owner
 	{
-		public JavaResourcePersistentMember getResourcePersistentMember() {
-			return AbstractJavaBaseEmbeddedMapping.this.getResourcePersistentAttribute();
+		public JavaResourceMember getResourceMember() {
+			return AbstractJavaBaseEmbeddedMapping.this.getResourceAttribute();
 		}
 
 		public TypeMapping getTypeMapping() {

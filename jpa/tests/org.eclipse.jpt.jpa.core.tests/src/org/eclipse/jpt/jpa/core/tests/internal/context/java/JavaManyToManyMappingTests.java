@@ -12,6 +12,9 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -38,8 +41,6 @@ import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedIdAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToOneAnnotation;
@@ -299,7 +300,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
@@ -309,19 +310,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
@@ -330,18 +331,18 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping().isDefault());
 	
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
@@ -351,19 +352,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof VersionMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
@@ -373,19 +374,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof IdMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(IdAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedMapping() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
@@ -395,19 +396,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedIdMapping() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
@@ -417,19 +418,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
@@ -439,19 +440,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof TransientMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToOneMapping() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
@@ -461,19 +462,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToManyMapping() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
@@ -483,19 +484,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToOneMapping() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
@@ -505,24 +506,24 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
-		assertNotNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testUpdateSpecifiedTargetEntity() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		ManyToManyAnnotation manyToManyAnnotation = (ManyToManyAnnotation) attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		ManyToManyAnnotation manyToManyAnnotation = (ManyToManyAnnotation) resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		
 		assertNull(manyToManyMapping.getSpecifiedTargetEntity());
 		assertNull(manyToManyAnnotation.getTargetEntity());
@@ -544,12 +545,12 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		
 		assertNull(manyToManyMapping.getSpecifiedTargetEntity());
 		assertNull(manyToMany.getTargetEntity());
@@ -569,12 +570,12 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		
 		assertNull(manyToManyMapping.getSpecifiedFetch());
 		assertNull(manyToMany.getFetch());
@@ -602,12 +603,12 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		
 		assertNull(manyToManyMapping.getSpecifiedFetch());
 		assertNull(manyToMany.getFetch());
@@ -631,12 +632,12 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		
 		assertNull(manyToManyMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 		assertNull(manyToMany.getMappedBy());
@@ -658,12 +659,12 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		
 		assertNull(manyToManyMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 		assertNull(manyToMany.getMappedBy());
@@ -683,25 +684,26 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
-		ManyToManyAnnotation annotation = (ManyToManyAnnotation) resourceAttribute.getAnnotation(JPA.MANY_TO_MANY);
-		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		ManyToManyAnnotation annotation = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
+		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping mapping = (ManyToManyMapping) contextAttribute.getMapping();
 		ManyToManyRelationship rel = mapping.getRelationship();
 		
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertTrue(rel.strategyIsJoinTable());
 		assertFalse(rel.strategyIsMappedBy());
 		
 		rel.setStrategyToMappedBy();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinTable());
 		assertTrue(rel.strategyIsMappedBy());
 		
 		rel.setStrategyToJoinTable();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertTrue(rel.strategyIsJoinTable());
 		assertFalse(rel.strategyIsMappedBy());
@@ -711,41 +713,42 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
-		ManyToManyAnnotation annotation = (ManyToManyAnnotation) resourceAttribute.getAnnotation(JPA.MANY_TO_MANY);
-		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		ManyToManyAnnotation annotation = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
+		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping mapping = (ManyToManyMapping) contextAttribute.getMapping();
 		ManyToManyRelationship rel = mapping.getRelationship();
 		
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertTrue(rel.strategyIsJoinTable());
 		assertFalse(rel.strategyIsMappedBy());
 		
 		annotation.setMappedBy("foo");
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinTable());
 		assertTrue(rel.strategyIsMappedBy());
 		
-		resourceAttribute.addAnnotation(JPA.JOIN_TABLE);
+		resourceField.addAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinTable());
 		assertTrue(rel.strategyIsMappedBy());
 		
 		annotation.setMappedBy(null);
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertTrue(rel.strategyIsJoinTable());
 		assertFalse(rel.strategyIsMappedBy());
 		
-		resourceAttribute.removeAnnotation(JPA.JOIN_TABLE);
+		resourceField.removeAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertTrue(rel.strategyIsJoinTable());
 		assertFalse(rel.strategyIsMappedBy());
@@ -759,7 +762,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
@@ -793,7 +796,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestTargetEntityAddress();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		//targetEntity not in the persistence unit, default still set, handled by validation
@@ -807,7 +810,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		manyToManyMapping.setSpecifiedTargetEntity("foo");
 		assertEquals(PACKAGE_NAME + ".Address", manyToManyMapping.getDefaultTargetEntity());
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		ClassRef addressClassRef = classRefs.next();
 		JavaPersistentType addressPersistentType = addressClassRef.getJavaPersistentType();
@@ -823,7 +826,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 	
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		assertNull(manyToManyMapping.getDefaultTargetEntity());
@@ -835,7 +838,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 	
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		assertNull(manyToManyMapping.getDefaultTargetEntity());
@@ -846,7 +849,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestTargetEntityAddress();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		assertEquals(PACKAGE_NAME + ".Address", manyToManyMapping.getTargetEntity());
@@ -862,7 +865,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithValidManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		//targetEntity not in the persistence unit
@@ -871,7 +874,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		//add targetEntity to the persistence unit, now target entity should resolve
 		createTestTargetEntityAddress();
 		addXmlClassRef(PACKAGE_NAME + ".Address");
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		ClassRef addressClassRef = classRefs.next();
 		TypeMapping addressTypeMapping = addressClassRef.getJavaPersistentType().getMapping();
@@ -895,19 +898,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(manyToManyMapping.getSpecifiedMapKey());
-		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 		
 		//set mapKey in the resource model, verify context model does not change
-		attributeResource.addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertNull(manyToManyMapping.getSpecifiedMapKey());
-		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		MapKeyAnnotation mapKey = (MapKeyAnnotation) resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertNotNull(mapKey);
 				
 		//set mapKey name in the resource model, verify context model updated
@@ -923,38 +926,38 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertNull(mapKey.getName());
 		
 		mapKey.setName("myMapKey");
-		attributeResource.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertNull(manyToManyMapping.getSpecifiedMapKey());
-		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testModifyMapKey() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(manyToManyMapping.getSpecifiedMapKey());
-		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 					
 		//set mapKey  in the context model, verify resource model updated
 		manyToManyMapping.setSpecifiedMapKey("myMapKey");
-		MapKeyAnnotation mapKeyAnnotation = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		MapKeyAnnotation mapKeyAnnotation = (MapKeyAnnotation) resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertEquals("myMapKey", manyToManyMapping.getSpecifiedMapKey());
 		assertEquals("myMapKey", mapKeyAnnotation.getName());
 	
 		//set mapKey to null in the context model
 		manyToManyMapping.setSpecifiedMapKey(null);
 		assertNull(manyToManyMapping.getSpecifiedMapKey());
-		mapKeyAnnotation = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		mapKeyAnnotation = (MapKeyAnnotation) resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertNull(mapKeyAnnotation.getName());
 		manyToManyMapping.setNoMapKey(true);
-		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testCandidateMapKeyNames() throws Exception {
@@ -1003,168 +1006,168 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 				
 		//set orderBy in the resource model, verify context model updated
-		attributeResource.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
-		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("newOrderBy", manyToManyMapping.getOrderable().getSpecifiedOrderBy());
 		assertEquals("newOrderBy", orderBy.getValue());
 	
 		//set orderBy to null in the resource model
-		attributeResource.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertNull(manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testModifyOrderBy() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 				
 		//set mappedBy in the context model, verify resource model updated
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("newOrderBy");
 		assertEquals("newOrderBy", manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		assertEquals("newOrderBy", orderBy.getValue());
 	
 		//set mappedBy to null in the context model
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy(null);
 		assertNull(manyToManyMapping.getOrderable().getSpecifiedOrderBy());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testUpdateNoOrdering()  throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertTrue(manyToManyMapping.getOrderable().isNoOrdering());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 				
 		//set orderBy in the resource model, verify context model updated
-		attributeResource.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertFalse(manyToManyMapping.getOrderable().isNoOrdering());
 		
-		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
 		getJpaProject().synchronizeContextModel();
 		assertFalse(manyToManyMapping.getOrderable().isNoOrdering());
 	
 		//set orderBy to null in the resource model
-		attributeResource.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertTrue(manyToManyMapping.getOrderable().isNoOrdering());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testModifyNoOrdering() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertTrue(manyToManyMapping.getOrderable().isNoOrdering());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 				
 //		manyToManyMapping.setNoOrdering(false); //this does nothing
 //		//set mappedBy in the context model, verify resource model updated
 //		manyToManyMapping.setOrderBy("newOrderBy");
 //		assertEquals("newOrderBy", manyToManyMapping.getOrderBy());
-//		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+//		OrderBy orderBy = (OrderBy) resourceField.annotation(OrderBy.ANNOTATION_NAME);
 //		assertEquals("newOrderBy", orderBy.getValue());
 //	
 //		//set mappedBy to null in the context model
 //		manyToManyMapping.setOrderBy(null);
 //		assertNull(manyToManyMapping.getOrderBy());
-//		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));		
+//		assertNull(resourceField.annotation(OrderBy.ANNOTATION_NAME));		
 	}
 	
 	public void testUpdatePkOrdering() throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertFalse(manyToManyMapping.getOrderable().isPkOrdering());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 				
 		//set orderBy in the resource model, verify context model updated
-		attributeResource.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertTrue(manyToManyMapping.getOrderable().isPkOrdering());
 		
-		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
 		getJpaProject().synchronizeContextModel();
 		assertFalse(manyToManyMapping.getOrderable().isPkOrdering());
 	
 		//set orderBy to null in the resource model
-		attributeResource.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertFalse(manyToManyMapping.getOrderable().isPkOrdering());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testUpdateCustomOrdering()  throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertFalse(manyToManyMapping.getOrderable().isCustomOrdering());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 				
 		//set orderBy in the resource model, verify context model updated
-		attributeResource.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		assertFalse(manyToManyMapping.getOrderable().isCustomOrdering());
 		
-		OrderByAnnotation orderBy = (OrderByAnnotation) attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		orderBy.setValue("newOrderBy");
 		getJpaProject().synchronizeContextModel();
 		assertTrue(manyToManyMapping.getOrderable().isCustomOrdering());
 	
 		//set orderBy to null in the resource model
-		attributeResource.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertFalse(manyToManyMapping.getOrderable().isCustomOrdering());
-		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testDefaultTargetEntityForMap() throws Exception {

@@ -12,8 +12,14 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
@@ -29,13 +35,12 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistentAttribute2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -173,6 +178,18 @@ public abstract class SpecifiedOrmPersistentAttribute
 		return this.getJavaPersistentAttribute();
 	}
 
+	public JavaResourceAttribute getJavaResourceAttribute() {
+		return this.javaPersistentAttribute == null ? null : this.javaPersistentAttribute.getResourceAttribute();
+	}
+
+	public boolean isFor(JavaResourceField javaResourceField) {
+		return getJavaPersistentAttribute() == null ? false : getJavaPersistentAttribute().isFor(javaResourceField);
+	}
+
+	public boolean isFor(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+		return getJavaPersistentAttribute() == null ? false : getJavaPersistentAttribute().isFor(javaResourceGetter, javaResourceSetter);
+	}
+
 	protected void setJavaPersistentAttribute(JavaPersistentAttribute javaPersistentAttribute) {
 		JavaPersistentAttribute old = this.javaPersistentAttribute;
 		this.javaPersistentAttribute = javaPersistentAttribute;
@@ -206,16 +223,32 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 	protected JavaPersistentAttribute getCachedJavaAttribute() {
-		JavaResourcePersistentType javaResourceType = this.getOwningPersistentTypeJavaType().getResourcePersistentType();
-		JavaResourcePersistentAttribute javaResourceAttribute = this.getJavaResourceAttribute(javaResourceType);
-		if (javaResourceAttribute == null) {
-			// nothing in the resource inheritance hierarchy matches our name *and* access type
-			this.cachedJavaPersistentAttribute = null;
-		} else {
-			if ((this.cachedJavaPersistentAttribute == null) ||
-					(this.cachedJavaPersistentAttribute.getResourcePersistentAttribute() != javaResourceAttribute)) {
-				// cache is stale
-				this.cachedJavaPersistentAttribute = this.buildJavaPersistentAttribute(javaResourceAttribute);
+		JavaResourceType javaResourceType = this.getOwningPersistentTypeJavaType().getJavaResourceType();
+		if (getAccess() == AccessType.FIELD) {
+			JavaResourceField javaResourceField = this.getJavaResourceField(javaResourceType);
+			if (javaResourceField == null) {
+				// nothing in the resource inheritance hierarchy matches our name *and* access type
+				this.cachedJavaPersistentAttribute = null;
+			} else {
+				if ((this.cachedJavaPersistentAttribute == null) ||
+						!(this.cachedJavaPersistentAttribute.isFor(javaResourceField))) {
+					// cache is stale
+					this.cachedJavaPersistentAttribute = this.buildJavaPersistentField(javaResourceField);
+				}
+			}
+		}
+		if (getAccess() == AccessType.PROPERTY) {
+			JavaResourceMethod javaResourceGetter = this.getJavaResourceGetter(javaResourceType);
+			JavaResourceMethod javaResourceSetter = AbstractJavaPersistentType.getValidSiblingSetMethod(javaResourceGetter, javaResourceType.getMethods());
+			if (javaResourceGetter == null && javaResourceSetter == null) {
+				// nothing in the resource inheritance hierarchy matches our name *and* access type
+				this.cachedJavaPersistentAttribute = null;
+			} else {
+				if ((this.cachedJavaPersistentAttribute == null) ||
+						!(this.cachedJavaPersistentAttribute.isFor(javaResourceGetter, javaResourceSetter))) {
+					// cache is stale
+					this.cachedJavaPersistentAttribute = this.buildJavaPersistentProperty(javaResourceGetter, javaResourceSetter);
+				}
 			}
 		}
 		return this.cachedJavaPersistentAttribute;
@@ -228,10 +261,10 @@ public abstract class SpecifiedOrmPersistentAttribute
 	 * type does not have a corresponding attribute, search up its inheritance
 	 * hierarchy.
 	 */
-	protected JavaResourcePersistentAttribute getJavaResourceAttribute(JavaResourcePersistentType javaResourceType) {
-		for (JavaResourcePersistentAttribute javaResourceAttribute : this.getJavaResourceAttributes(javaResourceType)) {
-			if (javaResourceAttribute.getName().equals(this.getName())) {
-				return javaResourceAttribute;
+	protected JavaResourceField getJavaResourceField(JavaResourceType javaResourceType) {
+		for (JavaResourceField javaResourceField : this.getJavaResourceFields(javaResourceType)) {
+			if (javaResourceField.getName().equals(this.getName())) {
+				return javaResourceField;
 			}
 		}
 		// climb up inheritance hierarchy
@@ -239,28 +272,74 @@ public abstract class SpecifiedOrmPersistentAttribute
 		if (superclassName == null) {
 			return null;
 		}
-		JavaResourcePersistentType superclass = this.getJpaProject().getJavaResourcePersistentType(superclassName);
+		JavaResourceType superclass = (JavaResourceType) this.getJpaProject().getJavaResourceType(superclassName, Kind.TYPE);
 		if (superclass == null) {
 			return null;
 		}
 		// recurse
-		return this.getJavaResourceAttribute(superclass);
+		return this.getJavaResourceField(superclass);
 	}
 
 	/**
 	 * Return the resource attributes with compatible access types.
 	 */
-	protected Iterable<JavaResourcePersistentAttribute> getJavaResourceAttributes(JavaResourcePersistentType javaResourceType) {
-		return CollectionTools.iterable(javaResourceType.persistableAttributes(this.getAccess().getJavaAccessType()));
+	protected Iterable<JavaResourceField> getJavaResourceFields(JavaResourceType javaResourceType) {
+		return javaResourceType.getFields();
 	}
 
-	protected JavaPersistentAttribute buildJavaPersistentAttribute(JavaResourcePersistentAttribute javaResourceAttribute) {
+	/**
+	 * Search the specified Java resource type for the resource attribute
+	 * corresponding to this <code>orm.xml</code> attribute (i.e. the Java
+	 * resource attribute with the same name). If the specified Java resource
+	 * type does not have a corresponding attribute, search up its inheritance
+	 * hierarchy.
+	 */
+	protected JavaResourceMethod getJavaResourceGetter(JavaResourceType javaResourceType) {
+		for (JavaResourceMethod javaResourceGetter : this.getJavaResourceGetters(javaResourceType)) {
+			if (javaResourceGetter.getName().equals(this.getName())) {
+				return javaResourceGetter;
+			}
+		}
+		// climb up inheritance hierarchy
+		String superclassName = javaResourceType.getSuperclassQualifiedName();
+		if (superclassName == null) {
+			return null;
+		}
+		JavaResourceType superclass = (JavaResourceType) this.getJpaProject().getJavaResourceType(superclassName, Kind.TYPE);
+		if (superclass == null) {
+			return null;
+		}
+		// recurse
+		return this.getJavaResourceGetter(superclass);
+	}
+
+	protected Iterable<JavaResourceMethod> getResourceMethods(final JavaResourceType javaResourceType, Filter<JavaResourceMethod> filter) {
+		return new FilteringIterable<JavaResourceMethod>(javaResourceType.getMethods(), filter);
+	}
+
+	protected Filter<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter(final JavaResourceType javaResourceType) {
+		return new Filter<JavaResourceMethod>() {
+			public boolean accept(JavaResourceMethod resourceMethod) {
+				return AbstractJavaPersistentType.methodIsPersistablePropertyGetter(resourceMethod, javaResourceType.getMethods());
+			}
+		};
+	}
+
+	/**
+	 * Return the resource attributes with compatible access types.
+	 */
+	protected Iterable<JavaResourceMethod> getJavaResourceGetters(JavaResourceType javaResourceType) {
+		return getResourceMethods(javaResourceType, buildPersistablePropertyGetterMethodsFilter(javaResourceType));
+	}
+
+	protected JavaPersistentAttribute buildJavaPersistentField(JavaResourceField javaResourceField) {
 		// pass in our parent orm persistent type as the parent to the cached Java attribute...
-		return this.getJpaFactory().buildJavaPersistentAttribute(this.getOwningPersistentType(), javaResourceAttribute);
+		return this.getJpaFactory().buildJavaPersistentField(this.getOwningPersistentType(), javaResourceField);
 	}
 
-	public JavaResourcePersistentAttribute getJavaResourcePersistentAttribute() {
-		return (this.javaPersistentAttribute == null) ? null : this.javaPersistentAttribute.getResourcePersistentAttribute();
+	protected JavaPersistentAttribute buildJavaPersistentProperty(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+		// pass in our parent orm persistent type as the parent to the cached Java attribute...
+		return this.getJpaFactory().buildJavaPersistentProperty(this.getOwningPersistentType(), javaResourceGetter, javaResourceSetter);
 	}
 
 

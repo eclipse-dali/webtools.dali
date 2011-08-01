@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.wizards;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -36,6 +36,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -57,7 +58,6 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
@@ -516,11 +516,11 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		protected boolean makePersistent() {
 			if (JpaMakePersistentWizardPage.this.isAnnotateInJavaModel()) {
 				PersistenceUnit persistenceUnit = this.getPersistenceUnit();
-				JavaResourcePersistentType persistentType = getJavaResourcePersistentType();
-				persistentType.addAnnotation(getJavaTypeMappingDefinition(this.mappingKey).getAnnotationName());
+				JavaResourceAbstractType type = getJavaResourceType();
+				type.addAnnotation(getJavaTypeMappingDefinition(this.mappingKey).getAnnotationName());
 				if (JpaMakePersistentWizardPage.this.isListInPersistenceXml()) {
 					if (persistenceUnit != null) {
-						persistenceUnit.addSpecifiedClassRef(persistentType.getQualifiedName());
+						persistenceUnit.addSpecifiedClassRef(type.getQualifiedName());
 						return true;
 					}
 				}
@@ -550,8 +550,8 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			throw new IllegalArgumentException("Illegal type mapping key: " + key); //$NON-NLS-1$
 		}
 
-		protected JavaResourcePersistentType getJavaResourcePersistentType() {
-			return getJpaProject().getJavaResourcePersistentType(this.jdtType.getFullyQualifiedName());
+		protected JavaResourceAbstractType getJavaResourceType() {
+			return getJpaProject().getJavaResourceType(this.jdtType.getFullyQualifiedName());
 		}
 
 
@@ -560,7 +560,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			if (p == null) {
 				return null;
 			}
-			Iterator<PersistenceUnit> units = p.persistenceUnits();
+			ListIterator<PersistenceUnit> units = p.getPersistenceUnits().iterator();
 			return units.hasNext() ? units.next() : null;
 		}
 

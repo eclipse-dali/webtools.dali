@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTrackingType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ChangeTrackingType;
@@ -92,15 +92,15 @@ public class JavaEclipseLinkChangeTracking
 	// ********** change tracking annotation **********  
 
 	protected EclipseLinkChangeTrackingAnnotation getChangeTrackingAnnotation() {
-		return (EclipseLinkChangeTrackingAnnotation) this.getResourcePersistentType().getAnnotation(this.getChangeTrackingAnnotationName());
+		return (EclipseLinkChangeTrackingAnnotation) this.getJavaResourceType().getAnnotation(this.getChangeTrackingAnnotationName());
 	}
 
 	protected EclipseLinkChangeTrackingAnnotation addChangeTrackingAnnotation() {
-		return (EclipseLinkChangeTrackingAnnotation) this.getResourcePersistentType().addAnnotation(this.getChangeTrackingAnnotationName());
+		return (EclipseLinkChangeTrackingAnnotation) this.getJavaResourceType().addAnnotation(this.getChangeTrackingAnnotationName());
 	}
 
 	protected void removeChangeTrackingAnnotation() {
-		this.getResourcePersistentType().removeAnnotation(this.getChangeTrackingAnnotationName());
+		this.getJavaResourceType().removeAnnotation(this.getChangeTrackingAnnotationName());
 	}
 
 	protected String getChangeTrackingAnnotationName() {
@@ -123,8 +123,8 @@ public class JavaEclipseLinkChangeTracking
 		return this.getTypeMapping().getPersistentType();
 	}
 
-	protected JavaResourcePersistentType getResourcePersistentType() {
-		return this.getPersistentType().getResourcePersistentType();
+	protected JavaResourceType getJavaResourceType() {
+		return this.getPersistentType().getJavaResourceType();
 	}
 
 

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 
 /**
@@ -56,12 +56,12 @@ public interface ReadOnlyJoinColumnRelationshipStrategy
 	/**
 	 * Return the join columns whether specified or default.
 	 */
-	ListIterator<? extends ReadOnlyJoinColumn> joinColumns();
+	ListIterable<? extends ReadOnlyJoinColumn> getJoinColumns();
 
 	/**
 	 * Return the number of join columns, whether specified and default.
 	 */
-	int joinColumnsSize();
+	int getJoinColumnsSize();
 
 
 	// ********** specified join columns **********
@@ -74,16 +74,16 @@ public interface ReadOnlyJoinColumnRelationshipStrategy
 	/**
 	 * Return the specified join columns.
 	 */
-	ListIterator<? extends ReadOnlyJoinColumn> specifiedJoinColumns();
+	ListIterable<? extends ReadOnlyJoinColumn> getSpecifiedJoinColumns();
 
 	/**
 	 * Return the number of specified join columns.
 	 */
-	int specifiedJoinColumnsSize();
+	int getSpecifiedJoinColumnsSize();
 
 	/**
 	 * Return whether the strategy has any specified join columns.
-	 * (Equivalent to {@link #specifiedJoinColumnsSize()} != 0.)
+	 * (Equivalent to {@link #getSpecifiedJoinColumnsSize()} != 0.)
 	 */
 	boolean hasSpecifiedJoinColumns();
 

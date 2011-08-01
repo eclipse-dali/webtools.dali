@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -27,7 +28,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableTableDescriptionP
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinTableRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 
 public class GenericJavaMappingJoinTableRelationshipStrategy
@@ -42,24 +42,24 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 	// ********** join table annotation **********
 
 	public JoinTableAnnotation getJoinTableAnnotation() {
-		return 	(JoinTableAnnotation) this.getResourcePersistentAttribute().getNonNullAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		return 	(JoinTableAnnotation) this.getResourceAttribute().getNonNullAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 
 	@Override
 	protected JoinTableAnnotation addJoinTableAnnotation() {
-		return (JoinTableAnnotation) this.getResourcePersistentAttribute().addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		return (JoinTableAnnotation) this.getResourceAttribute().addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 
 	@Override
 	protected void removeJoinTableAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 
 
 	// ********** misc **********
 
-	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getRelationship().getMapping().getResourcePersistentAttribute();
+	protected JavaResourceAttribute getResourceAttribute() {
+		return this.getRelationship().getMapping().getResourceAttribute();
 	}
 
 	@Override

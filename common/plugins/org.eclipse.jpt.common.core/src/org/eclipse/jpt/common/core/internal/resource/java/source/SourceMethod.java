@@ -33,8 +33,9 @@ final class SourceMethod
 	extends SourceAttribute<MethodAttribute>
 	implements JavaResourceMethod
 {
-	boolean constructor;
 
+	boolean constructor;
+	
 	private final Vector<String> parameterTypeNames = new Vector<String>();
 
 	/**
@@ -59,9 +60,11 @@ final class SourceMethod
 		return jrm;
 	}
 
+
 	private SourceMethod(JavaResourceType parent, MethodAttribute method){
 		super(parent, method);
 	}
+
 
 	@Override
 	public void initialize(CompilationUnit astRoot) {
@@ -72,12 +75,14 @@ final class SourceMethod
 	}
 
 
-	// ******** overrides ********
+	// ******** JavaResourceAnnotatedElement implementation ********
 
-	@Override
-	protected JavaResourceType getParent() {
-		return (JavaResourceType) super.getParent();
+	public Kind getKind() {
+		return Kind.METHOD;
 	}
+
+
+	// ******** overrides ********
 
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
@@ -118,7 +123,7 @@ final class SourceMethod
 	private boolean buildConstructor(IMethodBinding methodBinding) {
 		return methodBinding == null ? false : methodBinding.isConstructor();
 	}
-	
+
 	public boolean isFor(MethodSignature signature, int occurrence) {
 		return this.annotatedElement.matches(signature, occurrence);
 	}

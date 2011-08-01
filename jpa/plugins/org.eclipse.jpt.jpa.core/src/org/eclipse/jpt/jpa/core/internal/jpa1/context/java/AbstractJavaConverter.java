@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 
 public abstract class AbstractJavaConverter
 	extends AbstractJavaJpaContextNode
@@ -37,12 +37,12 @@ public abstract class AbstractJavaConverter
 		return this.getParent();
 	}
 
-	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getAttributeMapping().getResourcePersistentAttribute();
+	protected JavaResourceAttribute getResourceAttribute() {
+		return this.getAttributeMapping().getResourceAttribute();
 	}
 
 	public Annotation getConverterAnnotation() {
-		return this.getResourcePersistentAttribute().getAnnotation(this.getAnnotationName());
+		return this.getResourceAttribute().getAnnotation(this.getAnnotationName());
 	}
 
 	protected abstract String getAnnotationName();

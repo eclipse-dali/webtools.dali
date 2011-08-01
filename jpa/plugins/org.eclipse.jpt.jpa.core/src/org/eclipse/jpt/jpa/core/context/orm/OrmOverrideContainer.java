@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
@@ -40,12 +40,12 @@ public interface OrmOverrideContainer
 	 * there is simply a list of overrides.
 	 */
 	XmlContextNode getParent();
-	ListIterator<? extends OrmReadOnlyOverride> overrides();
+	ListIterable<? extends OrmReadOnlyOverride> getOverrides();
 	OrmReadOnlyOverride getOverrideNamed(String name);
-	ListIterator<? extends OrmOverride> specifiedOverrides();
+	ListIterable<? extends OrmOverride> getSpecifiedOverrides();
 	OrmOverride getSpecifiedOverride(int index);
 	OrmOverride getSpecifiedOverrideNamed(String name);
-	ListIterator<? extends OrmVirtualOverride> virtualOverrides();
+	ListIterable<? extends OrmVirtualOverride> getVirtualOverrides();
 	OrmVirtualOverride convertOverrideToVirtual(Override_ specifiedOverride);
 	OrmOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 

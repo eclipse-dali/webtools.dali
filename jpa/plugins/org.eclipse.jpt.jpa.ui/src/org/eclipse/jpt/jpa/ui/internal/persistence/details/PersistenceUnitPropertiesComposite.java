@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,8 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.persistence.details;
-
-import java.util.ListIterator;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
@@ -24,6 +22,7 @@ import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -92,13 +91,13 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 	private ListValueModel<PersistenceUnit.Property> buildPropertiesListHolder() {
 		return new ListAspectAdapter<PersistenceUnit, PersistenceUnit.Property>(getSubjectHolder(), PersistenceUnit.PROPERTIES_LIST) {
 			@Override
-			protected ListIterator<PersistenceUnit.Property> listIterator_() {
-				return subject.properties();
+			protected ListIterable<PersistenceUnit.Property> getListIterable() {
+				return subject.getProperties();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.propertiesSize();
+				return subject.getPropertiesSize();
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Container for named queries and/or named native queries.
@@ -33,14 +33,14 @@ public interface QueryContainer
 	/**
 	 * Return the container's named queries.
 	 */
-	<T extends NamedQuery> ListIterator<T> namedQueries();
+	ListIterable<? extends NamedQuery> getNamedQueries();
 
 	String NAMED_QUERIES_LIST = "namedQueries"; //$NON-NLS-1$
 
 	/**
 	 * Return the number of named queries.
 	 */
-	int namedQueriesSize();
+	int getNamedQueriesSize();
 
 	/**
 	 * Add a new named query to the container and return it.
@@ -74,14 +74,14 @@ public interface QueryContainer
 	/**
 	 * Return the container's named native queries.
 	 */
-	<T extends NamedNativeQuery> ListIterator<T> namedNativeQueries();
+	ListIterable<? extends NamedNativeQuery> getNamedNativeQueries();
 
 	String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueries"; //$NON-NLS-1$
 
 	/**
 	 * Return the number of named native queries.
 	 */
-	int namedNativeQueriesSize();
+	int getNamedNativeQueriesSize();
 
 	/**
 	 * Add a new named native query to the container and return it.

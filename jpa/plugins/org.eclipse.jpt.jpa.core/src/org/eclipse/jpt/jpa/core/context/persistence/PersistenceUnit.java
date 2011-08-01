@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
-import java.util.Iterator;
-import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -183,19 +182,19 @@ public interface PersistenceUnit
 	 * Return the persistence unit's list of mapping file refs,
 	 * both specified and implied.
 	 */
-	ListIterator<MappingFileRef> mappingFileRefs();
+	ListIterable<MappingFileRef> getMappingFileRefs();
 
 	/**
 	 * Return the size of the persistence unit's list of mapping file refs,
 	 * both specified and implied.
 	 */
-	int mappingFileRefsSize();
+	int getMappingFileRefsSize();
 
 	/**
 	 * Return all the mapping file refs, both specified and implied,
 	 * containing the specified type.
 	 */
-	Iterator<MappingFileRef> mappingFileRefsContaining(String typeName);
+	Iterable<MappingFileRef> getMappingFileRefsContaining(String typeName);
 
 
 	// ********** specified mapping file refs **********
@@ -209,12 +208,12 @@ public interface PersistenceUnit
 	/**
 	 * Return the persistence unit's list of specified mapping file refs.
 	 */
-	ListIterator<MappingFileRef> specifiedMappingFileRefs();
+	ListIterable<MappingFileRef> getSpecifiedMappingFileRefs();
 
 	/**
 	 * Return the size of the persistence unit's list of specified mapping file refs.
 	 */
-	int specifiedMappingFileRefsSize();
+	int getSpecifiedMappingFileRefsSize();
 
 	/**
 	 * Add a new specified mapping file ref to the persistence unit;
@@ -264,12 +263,12 @@ public interface PersistenceUnit
 	/**
 	 * Return the persistence unit's list of JAR file refs.
 	 */
-	ListIterator<JarFileRef> jarFileRefs();
+	ListIterable<JarFileRef> getJarFileRefs();
 
 	/**
 	 * Return the size of the persistence unit's list of JAR file refs.
 	 */
-	int jarFileRefsSize();
+	int getJarFileRefsSize();
 
 	/**
 	 * Add a new JAR file ref to the persistence unit;
@@ -300,13 +299,13 @@ public interface PersistenceUnit
 	 * Return the persistence unit's list of class refs,
 	 * both specified and implied.
 	 */
-	Iterator<ClassRef> classRefs();
+	Iterable<ClassRef> getClassRefs();
 
 	/**
 	 * Return the size of the persistence unit's list of class refs,
 	 * both specified and implied.
 	 */
-	int classRefsSize();
+	int getClassRefsSize();
 
 
 	// ********** specified class refs **********
@@ -320,12 +319,12 @@ public interface PersistenceUnit
 	/**
 	 * Return the persistence unit's list of specified class refs.
 	 */
-	ListIterator<ClassRef> specifiedClassRefs();
+	ListIterable<ClassRef> getSpecifiedClassRefs();
 
 	/**
 	 * Return the size of the persistence unit's list of specified mapping file refs.
 	 */
-	int specifiedClassRefsSize();
+	int getSpecifiedClassRefsSize();
 
 	/**
 	 * Add a new specified class ref to the persistence unit;
@@ -361,12 +360,12 @@ public interface PersistenceUnit
 	/**
 	 * Return the persistence unit's list of implied class refs.
 	 */
-	Iterator<ClassRef> impliedClassRefs();
+	Iterable<ClassRef> getImpliedClassRefs();
 
 	/**
 	 * Return the size of the persistence unit's list of implied class refs.
 	 */
-	int impliedClassRefsSize();
+	int getImpliedClassRefsSize();
 
 
 	// ********** exclude unlisted classes **********
@@ -415,12 +414,12 @@ public interface PersistenceUnit
 	/**
 	 * Return the persistence unit's list of properties.
 	 */
-	ListIterator<Property> properties();
+	ListIterable<Property> getProperties();
 
 	/**
 	 * Return the size of the persistence unit's list of properties.
 	 */
-	int propertiesSize();
+	int getPropertiesSize();
 
 	/**
 	 * Return the *first* property in the persistence unit's property list with
@@ -440,7 +439,7 @@ public interface PersistenceUnit
 	 * Return the persistence unit's properties with names beginning with the
 	 * specified prefix.
 	 */
-	Iterator<Property> propertiesWithNamePrefix(String propertyNamePrefix);
+	Iterable<Property> getPropertiesWithNamePrefix(String propertyNamePrefix);
 
 	/**
 	 * Add a new property to the persistence unit;
@@ -628,22 +627,14 @@ public interface PersistenceUnit
 	 * whose corresponding mapping file mapping (or mapping file) is marked
 	 * "metadata complete" is ignored.
 	 */
-	// TODO bjv change to getGeneratorNames() etc.
-	Iterator<Generator> generators();
+	Iterable<Generator> getGenerators();
 
 	/**
 	 * Return the number of "active" generators defined within the persistence
 	 * unit's scope.
-	 * @see #generators()
+	 * @see #getGenerators()
 	 */
-	int generatorsSize();
-
-	/**
-	 * Add the specified generator (that is defined elsewhere) to the
-	 * list of generators defined within the persistence unit's scope.
-	 */
-	// TODO bjv remove
-	void addGenerator(Generator generator);
+	int getGeneratorsSize();
 
 	/**
 	 * Return the names of the "active" generators defined in the persistence
@@ -664,17 +655,16 @@ public interface PersistenceUnit
 	 * Return the "active" queries defined within the persistence unit's scope,
 	 * including queries with duplicate names. These are very similar to
 	 * generators.
-	 * @see #generators()
+	 * @see #getGenerators()
 	 */
-	// TODO bjv change to getQueryNames() etc.
-	Iterator<Query> queries();
+	Iterable<Query> getQueries();
 
 	/**
 	 * Return the number of "active" queries defined within the persistence
 	 * unit's scope.
-	 * @see #queries()
+	 * @see #getQueries()
 	 */
-	int queriesSize();
+	int getQueriesSize();
 
 	/**
 	 * Add the specified query (that is defined elsewhere) to the

@@ -11,11 +11,11 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -146,14 +146,14 @@ public interface EntityMappings
 	boolean containsOffset(int textOffset);
 
 	/**
-	 * Return the Java resource persistent type for the specified class name
+	 * Return the Java resource type for the specified class name
 	 * found in the JPA project. First look for one with the specified
 	 * name (since it might be fully qualified). If not found, prepend the
 	 * default package name and try again.
 	 * 
 	 * @see #getPackage()
 	 */
-	JavaResourcePersistentType resolveJavaResourcePersistentType(String className);
+	JavaResourceAbstractType resolveJavaResourceType(String className);
 
 	/**
 	 * Return the persistent type for the specified class name

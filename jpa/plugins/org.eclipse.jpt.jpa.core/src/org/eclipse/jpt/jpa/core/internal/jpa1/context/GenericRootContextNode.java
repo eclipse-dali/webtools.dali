@@ -14,6 +14,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -27,8 +29,6 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXml2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -267,11 +267,11 @@ public class GenericRootContextNode
 		if (persistence == null) {
 			return;  // handled with other validation
 		}
-		if (persistence.persistenceUnitsSize() != 1) {
+		if (persistence.getPersistenceUnitsSize() != 1) {
 			return;  // the context model currently only supports 1 persistence unit
 		}
 
-		PersistenceUnit persistenceUnit = persistence.persistenceUnits().next();
+		PersistenceUnit persistenceUnit = persistence.getPersistenceUnits().iterator().next();
 		HashBag<String> annotatedClassNames = CollectionTools.bag(this.jpaProject.getAnnotatedJavaSourceClassNames());
 		HashBag<String> orphans = annotatedClassNames.clone();
 		for (String annotatedClassName : annotatedClassNames) {
@@ -286,16 +286,16 @@ public class GenericRootContextNode
 		//    with jrpt.getMappingAnnotation().getTextRange()
 		//    (new method #getTextRange() ?)
 		for (String orphan : orphans) {
-			JavaResourcePersistentType jrpt = this.jpaProject.getJavaResourcePersistentType(orphan);
-			JavaResourceCompilationUnit jrcu = jrpt.getJavaResourceCompilationUnit();
-			if (jrpt.isMapped()) {
+			JavaResourceAbstractType jrt = this.jpaProject.getJavaResourceType(orphan);
+			JavaResourceCompilationUnit jrcu = jrt.getJavaResourceCompilationUnit();
+			if (jrt.isAnnotatedWith(this.jpaProject.getTypeMappingAnnotations())) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
-						new String[] {jrpt.getQualifiedName()},
-						jrpt.getFile(),
-						jrpt.getNameTextRange(jrcu.buildASTRoot())
+						new String[] {jrt.getQualifiedName()},
+						jrt.getFile(),
+						jrt.getNameTextRange(jrcu.buildASTRoot())
 					)
 				);
 			}
@@ -304,9 +304,9 @@ public class GenericRootContextNode
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
-						new String[] {jrpt.getName()},
-						jrpt.getFile(),
-						jrpt.getNameTextRange(jrcu.buildASTRoot())
+						new String[] {jrt.getName()},
+						jrt.getFile(),
+						jrt.getNameTextRange(jrcu.buildASTRoot())
 					)
 				);
 			}

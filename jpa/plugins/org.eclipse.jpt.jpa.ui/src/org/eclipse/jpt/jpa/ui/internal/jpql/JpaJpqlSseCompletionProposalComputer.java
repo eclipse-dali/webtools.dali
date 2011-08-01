@@ -14,7 +14,6 @@
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
@@ -35,11 +34,11 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
@@ -177,10 +176,9 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 		return null;
 	}
 
-	private OrmNamedQuery findNamedQuery(QueryContainer container, int offset, int[] position) {
+	private OrmNamedQuery findNamedQuery(OrmQueryContainer container, int offset, int[] position) {
 
-		for (Iterator<OrmNamedQuery> queries = container.namedQueries(); queries.hasNext(); ) {
-			OrmNamedQuery namedQuery = queries.next();
+		for (OrmNamedQuery namedQuery : container.getNamedQueries()) {
 			TextRange textRange = namedQuery.getQueryTextRange();
 
 			if (textRange.touches(offset)) {

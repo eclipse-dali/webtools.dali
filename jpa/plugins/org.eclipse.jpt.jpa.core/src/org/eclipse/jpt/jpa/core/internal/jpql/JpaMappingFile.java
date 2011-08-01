@@ -13,7 +13,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpql;
 
-import java.util.Iterator;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
@@ -59,7 +58,7 @@ public class JpaMappingFile extends JpaManagedTypeProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Iterator<? extends PersistentType> persistenceTypes() {
-		return getPersistentTypeContainer().getPersistentTypes().iterator();
+	protected Iterable<? extends PersistentType> persistenceTypes() {
+		return getPersistentTypeContainer().getPersistentTypes();
 	}
 }

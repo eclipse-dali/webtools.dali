@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,10 +23,8 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 import java.util.WeakHashMap;
-
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -65,6 +63,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
@@ -103,8 +103,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
@@ -342,9 +340,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		Object o = keyToBO.remove(key);
 		if (o instanceof JavaPersistentType) {
 			JavaPersistentType jpt = (JavaPersistentType) o;
-			ListIterator<JavaPersistentAttribute> atts = jpt.attributes();
-			while (atts.hasNext()) {
-				JavaPersistentAttribute at = atts.next();
+			for (JavaPersistentAttribute at : jpt.getAttributes()) {
 				String k = getKeyForBusinessObject(at);
 				remove(k);
 			}
@@ -388,10 +384,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	}
 
 	public Set<IRelation> getRelationsRelatedToEntity(JavaPersistentType jpt) {
-		ListIterator<JavaPersistentAttribute> it = jpt.attributes();
 		HashSet<IRelation> res = new HashSet<IRelation>();
-		while (it.hasNext()) {
-			JavaPersistentAttribute at = it.next();
+		for (JavaPersistentAttribute at : jpt.getAttributes()) {
 			IRelation rel = getRelationRelatedToAttribute(at);
 			if (rel != null)
 				res.add(rel);
@@ -1034,8 +1028,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				if (!JavaResourceCompilationUnit.class.isInstance(jrm))
 					continue;
 				JavaResourceCompilationUnit jrcu = (JavaResourceCompilationUnit)jrm;
-				JavaResourcePersistentType jrpt = jrcu.persistentTypes().next();
-				String name = jrpt.getQualifiedName();
+				JavaResourceAbstractType jrat = jrcu.getPrimaryType();
+				String name = jrat.getQualifiedName();
 				
 				JpaProject jpaProject = jpaFile.getJpaProject();
 				PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
@@ -1051,6 +1045,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					public void run() {
 						TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(cs);
 						ted.getCommandStack().execute(new RecordingCommand(ted) {
+							@Override
 							protected void doExecute() {
 								ft.remove(ctx);
 							}						
@@ -1103,6 +1098,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					public void run() {
 						TransactionalEditingDomain ted = featureProvider.getTransactionalEditingDomain();
 						ted.getCommandStack().execute(new RecordingCommand(ted) {
+							@Override
 							protected void doExecute() {
 								JavaPersistentType jpt = je.getPersistentType(); 
 								updateJPTName(jpt);
@@ -1249,6 +1245,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				
 				TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(cd);
 				ted.getCommandStack().execute(new RecordingCommand(ted) {
+					@Override
 					protected void doExecute() {
 						Text txt = (Text)cd.getGraphicsAlgorithm();
 						txt.setValue(newLabelText);
@@ -1305,7 +1302,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					}
 
 					shapesToRemove.add(atShape);
-					IRelation rel = ((IJPAEditorFeatureProvider) featureProvider).getRelationRelatedToAttribute(at);
+					IRelation rel = featureProvider.getRelationRelatedToAttribute(at);
 					if (rel == null)
 						continue;
 					Connection conn = (Connection) featureProvider.getPictogramElementForBusinessObject(rel);
@@ -1324,7 +1321,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					ft.remove(ctx);
 				}
 				Collection<IRelation> rels = JpaArtifactFactory.instance().produceAllRelations(
-						(JavaPersistentType) event.getSource(), (IJPAEditorFeatureProvider) featureProvider);
+						(JavaPersistentType) event.getSource(), featureProvider);
 				Iterator<IRelation> iter = rels.iterator();
 				while (iter.hasNext()) {
 					IRelation rel = iter.next();
@@ -1405,7 +1402,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 									public void run() {
 										IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-										if ((ModelIntegrationUtil.getProjectByDiagram(diagram.getName()).getProject()).equals((IProject)resource)) {
+										if ((ModelIntegrationUtil.getProjectByDiagram(diagram.getName()).getProject()).equals(resource)) {
 											page.closeEditor(diagramBySelectedProject, false);
 										}
 									}

@@ -107,7 +107,7 @@ public class GenericJavaEmbeddedIdMapping
 		// attribute overrides are in error
 		// (in JPA 1.0, this will obviously never be reached)
 		if (this.derived
-				&& (this.attributeOverrideContainer.specifiedOverridesSize() > 0)) {
+				&& (this.attributeOverrideContainer.getSpecifiedOverridesSize() > 0)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

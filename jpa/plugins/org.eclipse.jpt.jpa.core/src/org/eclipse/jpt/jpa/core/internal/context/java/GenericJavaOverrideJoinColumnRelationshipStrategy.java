@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Iterator;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
@@ -41,8 +41,8 @@ public class GenericJavaOverrideJoinColumnRelationshipStrategy
 	// ********** join column annotations **********
 
 	@Override
-	protected ListIterator<JoinColumnAnnotation> joinColumnAnnotations() {
-		return this.getOverrideAnnotation().joinColumns();
+	protected ListIterable<JoinColumnAnnotation> getJoinColumnAnnotations() {
+		return this.getOverrideAnnotation().getJoinColumns();
 	}
 
 	@Override
@@ -218,8 +218,8 @@ public class GenericJavaOverrideJoinColumnRelationshipStrategy
 			return false;
 		}
 
-		public int joinColumnsSize() {
-			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.joinColumnsSize();
+		public int getJoinColumnsSize() {
+			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.getJoinColumnsSize();
 		}
 
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {

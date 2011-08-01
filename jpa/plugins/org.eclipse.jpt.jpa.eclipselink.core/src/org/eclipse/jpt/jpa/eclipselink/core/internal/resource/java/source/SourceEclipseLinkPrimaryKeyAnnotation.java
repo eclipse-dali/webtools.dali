@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
+ *  Copyright (c) 2010, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -11,26 +11,26 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkPrimaryKeyAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.PrimaryKey
  */
 public class SourceEclipseLinkPrimaryKeyAnnotation
-	extends SourceAnnotation<Type>
+	extends SourceAnnotation
 	implements EclipseLinkPrimaryKeyAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER 
 			= new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
 	
-	public SourceEclipseLinkPrimaryKeyAnnotation(JavaResourcePersistentType parent, Type type) {
-		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceEclipseLinkPrimaryKeyAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
 	

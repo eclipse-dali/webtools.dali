@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.persistence.details;
 
-import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -22,9 +21,10 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
-import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -178,13 +178,13 @@ public abstract class PersistenceUnitMappingFilesComposite
 				getSubjectHolder(), PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST) {
 			
 			@Override
-			protected ListIterator<MappingFileRef> listIterator_() {
-				return this.subject.specifiedMappingFileRefs();
+			protected ListIterable<MappingFileRef> getListIterable() {
+				return this.subject.getSpecifiedMappingFileRefs();
 			}
 			
 			@Override
 			protected int size_() {
-				return this.subject.specifiedMappingFileRefsSize();
+				return this.subject.getSpecifiedMappingFileRefsSize();
 			}
 		};
 	}
@@ -221,8 +221,7 @@ public abstract class PersistenceUnitMappingFilesComposite
 	}
 	
 	private boolean mappingFileRefExists(String fileName) {
-		for ( ListIterator<MappingFileRef> i = getSubject().specifiedMappingFileRefs(); i.hasNext(); ) {
-			MappingFileRef mappingFileRef = i.next();
+		for (MappingFileRef mappingFileRef : getSubject().getSpecifiedMappingFileRefs()) {
 			if( mappingFileRef.getFileName().equals(fileName)) {
 				return true;
 			}

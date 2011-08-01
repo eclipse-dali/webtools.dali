@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * Java discriminator column
@@ -59,12 +59,12 @@ public class GenericJavaDiscriminatorColumn
 
 	@Override
 	public DiscriminatorColumnAnnotation getColumnAnnotation() {
-		return (DiscriminatorColumnAnnotation) this.getResourcePersistentType().getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
+		return (DiscriminatorColumnAnnotation) this.getJavaResourceType().getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	@Override
 	protected void removeColumnAnnotation() {
-		this.getResourcePersistentType().removeAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceType().removeAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
 
 
@@ -169,8 +169,8 @@ public class GenericJavaDiscriminatorColumn
 		return this.getEntity().getPersistentType();
 	}
 
-	protected JavaResourcePersistentType getResourcePersistentType() {
-		return this.getPersistentType().getResourcePersistentType();
+	protected JavaResourceType getJavaResourceType() {
+		return this.getPersistentType().getJavaResourceType();
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -21,6 +20,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -140,13 +141,13 @@ public class QueriesComposite extends Pane<QueryContainer>
 			QueryContainer.NAMED_NATIVE_QUERIES_LIST)
 		{
 			@Override
-			protected ListIterator<NamedNativeQuery> listIterator_() {
-				return this.subject.namedNativeQueries();
+			protected ListIterable<NamedNativeQuery> getListIterable() {
+				return new SuperListIterableWrapper<NamedNativeQuery>(this.subject.getNamedNativeQueries());
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.namedNativeQueriesSize();
+				return this.subject.getNamedNativeQueriesSize();
 			}
 		};
 	}
@@ -166,13 +167,13 @@ public class QueriesComposite extends Pane<QueryContainer>
 			QueryContainer.NAMED_QUERIES_LIST)
 		{
 			@Override
-			protected ListIterator<NamedQuery> listIterator_() {
-				return this.subject.namedQueries();
+			protected ListIterable<NamedQuery> getListIterable() {
+				return new SuperListIterableWrapper<NamedQuery>(this.subject.getNamedQueries());
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.namedQueriesSize();
+				return this.subject.getNamedQueriesSize();
 			}
 		};
 	}
@@ -242,10 +243,10 @@ public class QueriesComposite extends Pane<QueryContainer>
 					int index = -1;
 
 					if (query instanceof NamedQuery) {
-						index = CollectionTools.indexOf(getSubject().namedQueries(), query);
+						index = CollectionTools.indexOf(getSubject().getNamedQueries(), query);
 					}
 					else {
-						index = CollectionTools.indexOf(getSubject().namedNativeQueries(), query);
+						index = CollectionTools.indexOf(getSubject().getNamedNativeQueries(), query);
 					}
 
 					name = NLS.bind(JptUiDetailsMessages.QueriesComposite_displayString, Integer.valueOf(index));

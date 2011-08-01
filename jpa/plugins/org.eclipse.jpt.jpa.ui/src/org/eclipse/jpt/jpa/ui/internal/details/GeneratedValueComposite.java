@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-import java.util.Iterator;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.Filter;
@@ -204,12 +203,12 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 	protected CollectionValueModel<Generator> buildGeneratorsModel_() {
 		return new CollectionAspectAdapter<PersistenceUnit, Generator>(this.buildPersistenceUnitModel(), PersistenceUnit.GENERATORS_COLLECTION) {
 			@Override
-			protected Iterator<Generator> iterator_() {
-				return this.subject.generators();
+			protected Iterable<Generator> getIterable() {
+				return this.subject.getGenerators();
 			}
 			@Override
 			protected int size_() {
-				return this.subject.generatorsSize();
+				return this.subject.getGeneratorsSize();
 			}
 		};
 	}

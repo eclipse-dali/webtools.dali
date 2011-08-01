@@ -171,7 +171,7 @@ public abstract class AbstractPrimaryKeyValidator
 		}
 		for (JavaPersistentAttribute idClassAttribute : 
 				new SubIterableWrapper<ReadOnlyPersistentAttribute, JavaPersistentAttribute>(
-					CollectionTools.iterable(idClass.allAttributes()))) {
+					idClass.getAllAttributes())) {
 			boolean foundMatch = false;
 			for (AttributeMapping attributeMapping : getAttributeMappings(typeMapping())) {
 				if (idClassAttribute.getName().equals(attributeMapping.getName())) {

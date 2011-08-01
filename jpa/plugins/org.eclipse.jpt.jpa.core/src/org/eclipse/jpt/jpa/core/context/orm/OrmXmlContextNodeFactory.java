@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -18,7 +20,6 @@ import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
@@ -99,7 +100,14 @@ public interface OrmXmlContextNodeFactory
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyPersistentAttribute2_0
 	 */
-	OrmReadOnlyPersistentAttribute buildVirtualOrmPersistentAttribute(OrmPersistentType parent, JavaResourcePersistentAttribute javaResourcePersistentAttribute);
+	OrmReadOnlyPersistentAttribute buildVirtualOrmPersistentField(OrmPersistentType parent, JavaResourceField javaResourceField);
+
+	/**
+	 * NB: A factory for a version 1.0 <code>orm.xml</code> in a JPA 2.0 project
+	 * must build objects that implement the appropriate behavior.
+	 * @see org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyPersistentAttribute2_0
+	 */
+	OrmReadOnlyPersistentAttribute buildVirtualOrmPersistentProperty(OrmPersistentType parent, JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter);
 
 	OrmTable buildOrmTable(OrmEntity parent, Table.Owner owner);
 

@@ -10,8 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
@@ -20,7 +21,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -107,7 +107,7 @@ public class GenericJavaIdClassReference
 	 * Return <code>null</code> if the annotation does not exists.
 	 */
 	protected IdClassAnnotation getIdClassAnnotation() {
-		return (IdClassAnnotation) this.getResourcePersistentType().getAnnotation(this.getIdClassAnnotationName());
+		return (IdClassAnnotation) this.getJavaResourceType().getAnnotation(this.getIdClassAnnotationName());
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class GenericJavaIdClassReference
 	}
 
 	protected IdClassAnnotation buildIdClassAnnotation() {
-		return (IdClassAnnotation) this.getResourcePersistentType().addAnnotation(this.getIdClassAnnotationName());
+		return (IdClassAnnotation) this.getJavaResourceType().addAnnotation(this.getIdClassAnnotationName());
 	}
 
 	protected void removeIdClassAnnotationIfUnset() {
@@ -129,7 +129,7 @@ public class GenericJavaIdClassReference
 	}
 
 	protected void removeIdClassAnnotation() {
-		this.getResourcePersistentType().removeAnnotation(this.getIdClassAnnotationName());
+		this.getJavaResourceType().removeAnnotation(this.getIdClassAnnotationName());
 	}
 
 	protected String getIdClassAnnotationName() {
@@ -168,7 +168,7 @@ public class GenericJavaIdClassReference
 	}
 
 	protected void updateIdClass() {
-		JavaResourcePersistentType resourceIdClass = this.resolveResourceIdClass();
+		JavaResourceType resourceIdClass = this.resolveResourceIdClass();
 		if (resourceIdClass == null) {
 			if (this.idClass != null) {
 				this.idClass.dispose();
@@ -178,7 +178,7 @@ public class GenericJavaIdClassReference
 			if (this.idClass == null) {
 				this.setIdClass(this.buildIdClass(resourceIdClass));
 			} else {
-				if (this.idClass.getResourcePersistentType() == resourceIdClass) {
+				if (this.idClass.getJavaResourceType() == resourceIdClass) {
 					this.idClass.update();
 				} else {
 					this.idClass.dispose();
@@ -188,15 +188,18 @@ public class GenericJavaIdClassReference
 		}
 	}
 
-	protected JavaResourcePersistentType resolveResourceIdClass() {
+	protected JavaResourceType resolveResourceIdClass() {
 		if (this.fullyQualifiedIdClassName == null) {
 			return null;
 		} 
-		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.fullyQualifiedIdClassName);
-		return (jrpt == null) ? null : (jrpt.isMapped() ? null : jrpt);
+		JavaResourceType jrt = this.getIdClassJavaResourceType();
+		return (jrt == null) ? null : (jrt.isAnnotatedWith(getJpaProject().getTypeMappingAnnotations()) ? null : jrt);
 	}
 
-	protected JavaPersistentType buildIdClass(JavaResourcePersistentType resourceClass) {
+	protected JavaResourceType getIdClassJavaResourceType() {
+		return (JavaResourceType) this.getJpaProject().getJavaResourceType(this.fullyQualifiedIdClassName, Kind.TYPE);
+	}
+	protected JavaPersistentType buildIdClass(JavaResourceType resourceClass) {
 		return this.getJpaFactory().buildJavaPersistentType(this, resourceClass);
 	}
 
@@ -220,8 +223,8 @@ public class GenericJavaIdClassReference
 		return this.getTypeMapping().getPersistentType();
 	}
 
-	protected JavaResourcePersistentType getResourcePersistentType() {
-		return this.getPersistentType().getResourcePersistentType();
+	protected JavaResourceType getJavaResourceType() {
+		return this.getPersistentType().getJavaResourceType();
 	}
 
 
@@ -247,13 +250,13 @@ public class GenericJavaIdClassReference
 	
 	protected void validateIdClass(List<IMessage> messages, IReporter reporter,	CompilationUnit astRoot) {
 		if (this.isSpecified()) {
-			JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.getFullyQualifiedIdClassName());
-			if ((jrpt != null) && (jrpt.isMapped())) {
+			JavaResourceType jrt = this.getIdClassJavaResourceType();
+			if ((jrt != null) && (jrt.isAnnotatedWith(getJpaProject().getTypeMappingAnnotations()))) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_VALID,
-								new String[] {jrpt.getName()}, 
+								new String[] {jrt.getName()}, 
 								this,
 								this.getValidationTextRange(astRoot)
 						)

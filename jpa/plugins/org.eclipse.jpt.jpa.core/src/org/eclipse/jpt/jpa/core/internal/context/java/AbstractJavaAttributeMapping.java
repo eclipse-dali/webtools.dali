@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
@@ -33,8 +35,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -90,7 +90,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	}
 
 	protected Annotation getAnnotation_() {
-		return this.getResourcePersistentAttribute().getAnnotation(this.getAnnotationName());
+		return this.getResourceAttribute().getAnnotation(this.getAnnotationName());
 	}
 
 	protected abstract String getAnnotationName();
@@ -149,8 +149,8 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		return this.getPersistentAttribute().getOwningTypeMapping();
 	}
 
-	public JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getPersistentAttribute().getResourcePersistentAttribute();
+	public JavaResourceAttribute getResourceAttribute() {
+		return this.getPersistentAttribute().getResourceAttribute();
 	}
 
 	public String getPrimaryKeyColumnName() {

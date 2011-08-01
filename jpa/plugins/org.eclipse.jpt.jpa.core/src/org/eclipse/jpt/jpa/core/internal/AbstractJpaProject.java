@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,11 +40,20 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.Command;
 import org.eclipse.jpt.common.utility.CommandExecutor;
 import org.eclipse.jpt.common.utility.Filter;
@@ -59,7 +67,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
 import org.eclipse.jpt.common.utility.internal.synchronizers.SynchronousSynchronizer;
@@ -72,21 +79,12 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
-import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryPersistentTypeCache;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceTypeCompilationUnit;
+import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackageFragmentRoot;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackageInfoCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentTypeCache;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
@@ -146,9 +144,9 @@ public abstract class AbstractJpaProject
 	protected final Vector<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits = new Vector<JavaResourceCompilationUnit>();
 
 	/**
-	 * The "external" Java resource persistent types (binary). Populated upon demand.
+	 * The "external" Java resource types (binary). Populated upon demand.
 	 */
-	protected final JavaResourcePersistentTypeCache externalJavaResourcePersistentTypeCache;
+	protected final JavaResourceTypeCache externalJavaResourceTypeCache;
 
 	/**
 	 * Resource models notify this listener when they change. A project update
@@ -251,7 +249,7 @@ public abstract class AbstractJpaProject
 		InitialResourceProxyVisitor visitor = this.buildInitialResourceProxyVisitor();
 		visitor.visitProject(this.project);
 
-		this.externalJavaResourcePersistentTypeCache = this.buildExternalJavaResourcePersistentTypeCache();
+		this.externalJavaResourceTypeCache = this.buildExternalJavaResourceTypeCache();
 
 		if (this.isJpa2_0Compatible()) {
 			this.metamodelSourceFolderName = ((JpaProject2_0.Config) config).getMetamodelSourceFolderName();
@@ -271,7 +269,7 @@ public abstract class AbstractJpaProject
 
 		// start listening to this cache once the context model has been built
 		// and all the external types are faulted in
-		this.externalJavaResourcePersistentTypeCache.addResourceModelListener(this.resourceModelListener);
+		this.externalJavaResourceTypeCache.addResourceModelListener(this.resourceModelListener);
 	}
 
 	@Override
@@ -284,8 +282,8 @@ public abstract class AbstractJpaProject
 		return this.project;
 	}
 
-	protected JavaResourcePersistentTypeCache buildExternalJavaResourcePersistentTypeCache() {
-		return new BinaryPersistentTypeCache(this.jpaPlatform.getAnnotationProvider());
+	protected JavaResourceTypeCache buildExternalJavaResourceTypeCache() {
+		return new BinaryTypeCache(this.jpaPlatform.getAnnotationProvider());
 	}
 
 	protected JpaRootContextNode buildRootContextNode() {
@@ -624,11 +622,11 @@ public abstract class AbstractJpaProject
 	}
 
 
-	// ********** external Java resource persistent types (source or binary) **********
+	// ********** external Java resource types (source or binary) **********
 
-	protected JavaResourcePersistentType buildPersistableExternalJavaResourcePersistentType(String typeName) {
+	protected JavaResourceAbstractType buildExternalJavaResourceType(String typeName) {
 		IType jdtType = this.findType(typeName);
-		return (jdtType == null) ? null : this.buildPersistableExternalJavaResourcePersistentType(jdtType);
+		return (jdtType == null) ? null : this.buildExternalJavaResourceType(jdtType);
 	}
 
 	protected IType findType(String typeName) {
@@ -639,28 +637,22 @@ public abstract class AbstractJpaProject
 		}
 	}
 
-	protected JavaResourcePersistentType buildPersistableExternalJavaResourcePersistentType(IType jdtType) {
-		JavaResourcePersistentType jrpt = this.buildExternalJavaResourcePersistentType(jdtType);
-		return ((jrpt != null) && jrpt.isPersistable()) ? jrpt : null;
-	}
-
-	protected JavaResourcePersistentType buildExternalJavaResourcePersistentType(IType jdtType) {
+	protected JavaResourceAbstractType buildExternalJavaResourceType(IType jdtType) {
 		return jdtType.isBinary() ?
-				this.buildBinaryExternalJavaResourcePersistentType(jdtType) :
-				this.buildSourceExternalJavaResourcePersistentType(jdtType);
+				this.buildBinaryExternalJavaResourceType(jdtType) :
+				this.buildSourceExternalJavaResourceType(jdtType);
 	}
 
-	protected JavaResourcePersistentType buildBinaryExternalJavaResourcePersistentType(IType jdtType) {
-		return this.externalJavaResourcePersistentTypeCache.addPersistentType(jdtType);
+	protected JavaResourceAbstractType buildBinaryExternalJavaResourceType(IType jdtType) {
+		return this.externalJavaResourceTypeCache.addType(jdtType);
 	}
 
-	protected JavaResourcePersistentType buildSourceExternalJavaResourcePersistentType(IType jdtType) {
+	protected JavaResourceAbstractType buildSourceExternalJavaResourceType(IType jdtType) {
 		JavaResourceCompilationUnit jrcu = this.getExternalJavaResourceCompilationUnit(jdtType.getCompilationUnit());
 		String jdtTypeName = jdtType.getFullyQualifiedName('.');  // JDT member type names use '$'
-		for (Iterator<JavaResourcePersistentType> stream = jrcu.persistentTypes(); stream.hasNext(); ) {
-			JavaResourcePersistentType jrpt = stream.next();
-			if (jrpt.getQualifiedName().equals(jdtTypeName)) {
-				return jrpt;
+		for (JavaResourceAbstractType jrat : jrcu.getTypes()) {
+			if (jrat.getQualifiedName().equals(jdtTypeName)) {
+				return jrat;
 			}
 		}
 		// we can get here if the project JRE is removed;
@@ -672,8 +664,8 @@ public abstract class AbstractJpaProject
 
 	// ********** external Java resource persistent types (binary) **********
 
-	public JavaResourcePersistentTypeCache getExternalJavaResourcePersistentTypeCache() {
-		return this.externalJavaResourcePersistentTypeCache;
+	public JavaResourceTypeCache getExternalJavaResourceTypeCache() {
+		return this.externalJavaResourceTypeCache;
 	}
 
 
@@ -791,10 +783,10 @@ public abstract class AbstractJpaProject
 	// ********** annotated Java source classes **********
 
 	public Iterable<String> getAnnotatedJavaSourceClassNames() {
-		return new TransformationIterable<JavaResourcePersistentType, String>(this.getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
+		return new TransformationIterable<JavaResourceAbstractType, String>(this.getInternalAnnotatedSourceJavaResourceTypes()) {
 			@Override
-			protected String transform(JavaResourcePersistentType jrpType) {
-				return jrpType.getQualifiedName();
+			protected String transform(JavaResourceAbstractType jraType) {
+				return jraType.getQualifiedName();
 			}
 		};
 	}
@@ -805,11 +797,11 @@ public abstract class AbstractJpaProject
 	 * <code>persistence.xml</code>.
 	 * @see org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools.TypeAdapter)
 	 */
-	protected Iterable<JavaResourcePersistentType> getInternalAnnotatedSourceJavaResourcePersistentTypes() {
-		return new FilteringIterable<JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
+	protected Iterable<JavaResourceAbstractType> getInternalAnnotatedSourceJavaResourceTypes() {
+		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalSourceJavaResourceTypes()) {
 			@Override
-			protected boolean accept(JavaResourcePersistentType jrpType) {
-				return jrpType.isPersistable() && jrpType.isAnnotated();  // i.e. the type is valid and has a valid type annotation
+			protected boolean accept(JavaResourceAbstractType jraType) {
+				return jraType.isAnnotated();  // i.e. the type has a valid type annotation
 			}
 		};
 	}
@@ -821,10 +813,10 @@ public abstract class AbstractJpaProject
 	 * those in JARs referenced in <code>persistence.xml</code>.
 	 */
 	public Iterable<String> getMappedJavaSourceClassNames() {
-		return new TransformationIterable<JavaResourcePersistentType, String>(this.getInternalMappedSourceJavaResourcePersistentTypes()) {
+		return new TransformationIterable<JavaResourceAbstractType, String>(this.getInternalMappedSourceJavaResourceTypes()) {
 			@Override
-			protected String transform(JavaResourcePersistentType jrpType) {
-				return jrpType.getQualifiedName();
+			protected String transform(JavaResourceAbstractType jraType) {
+				return jraType.getQualifiedName();
 			}
 		};
 	}
@@ -835,11 +827,20 @@ public abstract class AbstractJpaProject
 	 * persistent types that are directly part of the JPA project, ignoring
 	 * those in JARs referenced in <code>persistence.xml</code>.
 	 */
-	protected Iterable<JavaResourcePersistentType> getInternalMappedSourceJavaResourcePersistentTypes() {
-		return new FilteringIterable<JavaResourcePersistentType>(this.getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
+	protected Iterable<JavaResourceAbstractType> getInternalMappedSourceJavaResourceTypes() {
+		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalAnnotatedSourceJavaResourceTypes()) {
 			@Override
-			protected boolean accept(JavaResourcePersistentType jrpType) {
-				return jrpType.isMapped();  // i.e. the type is already persistable and annotated
+			protected boolean accept(JavaResourceAbstractType jraType) {
+				return jraType.isAnnotatedWith(getTypeMappingAnnotations());
+			}
+		};
+	}
+
+	public Iterable<String> getTypeMappingAnnotations() {
+		return new TransformationIterable<JavaTypeMappingDefinition, String>(getJpaPlatform().getJavaTypeMappingDefinitions()) {
+			@Override
+			protected String transform(JavaTypeMappingDefinition o) {
+				return o.getAnnotationName();
 			}
 		};
 	}
@@ -849,8 +850,8 @@ public abstract class AbstractJpaProject
 	 * part of the JPA project, ignoring those in JARs referenced in
 	 * <code>persistence.xml</code>
 	 */
-	protected Iterable<JavaResourcePersistentType2_0> getInternalSourceJavaResourcePersistentTypes2_0() {
-		return new SubIterableWrapper<JavaResourcePersistentType, JavaResourcePersistentType2_0>(this.getInternalSourceJavaResourcePersistentTypes());
+	protected Iterable<JavaResourceAbstractType> getInternalSourceJavaResourceTypes() {
+		return new CompositeIterable<JavaResourceAbstractType>(this.getInternalSourceJavaResourceTypeLists());
 	}
 
 	/**
@@ -858,24 +859,11 @@ public abstract class AbstractJpaProject
 	 * part of the JPA project, ignoring those in JARs referenced in
 	 * <code>persistence.xml</code>
 	 */
-	protected Iterable<JavaResourcePersistentType> getInternalSourceJavaResourcePersistentTypes() {
-		return new CompositeIterable<JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypeLists());
-	}
-
-	/**
-	 * Return only those Java resource persistent types that are directly
-	 * part of the JPA project, ignoring those in JARs referenced in
-	 * <code>persistence.xml</code>
-	 */
-	protected Iterable<Iterable<JavaResourcePersistentType>> getInternalSourceJavaResourcePersistentTypeLists() {
-		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourcePersistentType>>(this.getInternalJavaResourceCompilationUnits()) {
+	protected Iterable<Iterable<JavaResourceAbstractType>> getInternalSourceJavaResourceTypeLists() {
+		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourceAbstractType>>(this.getInternalJavaResourceCompilationUnits()) {
 			@Override
-			protected Iterable<JavaResourcePersistentType> transform(final JavaResourceCompilationUnit compilationUnit) {
-				return new Iterable<JavaResourcePersistentType>() {
-					public Iterator<JavaResourcePersistentType> iterator() {
-						return compilationUnit.persistentTypes();  // *all* the types in the compilation unit
-					}
-				};
+			protected Iterable<JavaResourceAbstractType> transform(final JavaResourceCompilationUnit compilationUnit) {
+				return compilationUnit.getTypes();  // *all* the types in the compilation unit
 			}
 		};
 	}
@@ -902,51 +890,42 @@ public abstract class AbstractJpaProject
 
 	// ********** Java resource persistent type look-up **********
 
-	public JavaResourcePersistentType getJavaResourcePersistentType(String typeName) {
-		for (JavaResourcePersistentType jrpType : this.getPersistableJavaResourcePersistentTypes()) {
-			if (jrpType.getQualifiedName().equals(typeName)) {
-				return jrpType;
+	public JavaResourceAbstractType getJavaResourceType(String typeName) {
+		for (JavaResourceAbstractType jraType : this.getJavaResourceTypes()) {
+			if (jraType.getQualifiedName().equals(typeName)) {
+				return jraType;
 			}
 		}
 		// if we don't have a type already, try to build new one from the project classpath
-		return this.buildPersistableExternalJavaResourcePersistentType(typeName);
+		return this.buildExternalJavaResourceType(typeName);
 	}
 
+	public JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind) {
+		JavaResourceAbstractType resourceType = getJavaResourceType(typeName);
+		if (resourceType == null || resourceType.getKind() != kind) {
+			return null;
+		}
+		return resourceType;
+	}
+
+
 	/**
-	 * return *all* the "persistable" Java resource persistent types, including those in JARs referenced in
+	 * return *all* the Java resource persistent types, including those in JARs referenced in
 	 * persistence.xml
-	 * @see org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools.TypeAdapter)
 	 */
-	protected Iterable<JavaResourcePersistentType> getPersistableJavaResourcePersistentTypes() {
-		return new FilteringIterable<JavaResourcePersistentType>(this.getJavaResourcePersistentTypes()) {
-			@Override
-			protected boolean accept(JavaResourcePersistentType jrpType) {
-				return jrpType.isPersistable();
-			}
-		};
+	protected Iterable<JavaResourceAbstractType> getJavaResourceTypes() {
+		return new CompositeIterable<JavaResourceAbstractType>(this.getJavaResourceTypeSets());
 	}
 
 	/**
 	 * return *all* the Java resource persistent types, including those in JARs referenced in
 	 * persistence.xml
 	 */
-	protected Iterable<JavaResourcePersistentType> getJavaResourcePersistentTypes() {
-		return new CompositeIterable<JavaResourcePersistentType>(this.getJavaResourcePersistentTypeSets());
-	}
-
-	/**
-	 * return *all* the Java resource persistent types, including those in JARs referenced in
-	 * persistence.xml
-	 */
-	protected Iterable<Iterable<JavaResourcePersistentType>> getJavaResourcePersistentTypeSets() {
-		return new TransformationIterable<JavaResourceNode.Root, Iterable<JavaResourcePersistentType>>(this.getJavaResourceNodeRoots()) {
+	protected Iterable<Iterable<JavaResourceAbstractType>> getJavaResourceTypeSets() {
+		return new TransformationIterable<JavaResourceNode.Root, Iterable<JavaResourceAbstractType>>(this.getJavaResourceNodeRoots()) {
 			@Override
-			protected Iterable<JavaResourcePersistentType> transform(final JavaResourceNode.Root root) {
-				return new Iterable<JavaResourcePersistentType>() {
-					public Iterator<JavaResourcePersistentType> iterator() {
-						return root.persistentTypes();  // *all* the types held by the root
-					}
-				};
+			protected Iterable<JavaResourceAbstractType> transform(final JavaResourceNode.Root root) {
+				return root.getTypes();  // *all* the types held by the root
 			}
 		};
 	}
@@ -957,7 +936,7 @@ public abstract class AbstractJpaProject
 					this.getInternalJavaResourceCompilationUnits(),
 					this.getInternalJavaResourcePackageFragmentRoots(),
 					this.getExternalJavaResourceCompilationUnits(),
-					Collections.singleton(this.externalJavaResourcePersistentTypeCache)
+					Collections.singleton(this.externalJavaResourceTypeCache)
 				);
 	}
 
@@ -1033,31 +1012,29 @@ public abstract class AbstractJpaProject
 
 	// ********** metamodel **********
 
-	public Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTopLevelTypes() {
+	public Iterable<JavaResourceAbstractType> getGeneratedMetamodelTopLevelTypes() {
 		if (this.metamodelSourceFolderName == null) {
 			return EmptyIterable.instance();
 		}
 		final IPackageFragmentRoot genSourceFolder = this.getMetamodelPackageFragmentRoot();
-		return new FilteringIterable<JavaResourcePersistentType2_0>(this.getInternalSourceJavaResourcePersistentTypes2_0()) {
+		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalSourceJavaResourceTypes()) {
 			@Override
-			protected boolean accept(JavaResourcePersistentType2_0 jrpt) {
-				return jrpt.isGeneratedMetamodelTopLevelType(genSourceFolder);
+			protected boolean accept(JavaResourceAbstractType jrat) {
+				return MetamodelTools.isGeneratedMetamodelTopLevelType(jrat, genSourceFolder);
 			}
 		};
 	}
 
-	public JavaResourcePersistentType2_0 getGeneratedMetamodelTopLevelType(IFile file) {
+	public JavaResourceAbstractType getGeneratedMetamodelTopLevelType(IFile file) {
 		JavaResourceCompilationUnit jrcu = this.getJavaResourceCompilationUnit(file);
 		if (jrcu == null) {
 			return null;  // hmmm...
 		}
-		// TODO add API to JRCU to get top-level persistent type
-		Iterator<JavaResourcePersistentType> types = jrcu.persistentTypes();
-		if ( ! types.hasNext()) {
+		JavaResourceAbstractType primaryType = jrcu.getPrimaryType();
+		if (primaryType == null) {
 			return null;  // no types in the file
 		}
-		JavaResourcePersistentType2_0 jrpt = (JavaResourcePersistentType2_0) types.next();
-		return jrpt.isGeneratedMetamodelTopLevelType() ? jrpt : null;
+		return MetamodelTools.isGeneratedMetamodelTopLevelType(primaryType) ? primaryType : null;
 	}
 
 	protected JavaResourceCompilationUnit getJavaResourceCompilationUnit(IFile file) {
@@ -1688,7 +1665,7 @@ public abstract class AbstractJpaProject
 			return this.removeExternalJavaResourceCompilationUnit(file);
 		}
 		if (contentType.equals(JptCommonCorePlugin.JAR_CONTENT_TYPE)) {
-			return this.externalJavaResourcePersistentTypeCache.removePersistentTypes(file);
+			return this.externalJavaResourceTypeCache.removeTypes(file);
 		}
 		return false;
 	}

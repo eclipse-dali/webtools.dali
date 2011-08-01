@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.VirtualSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 
@@ -25,8 +25,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 public interface OrmVirtualSecondaryTable
 	extends VirtualSecondaryTable, OrmReadOnlyTable
 {
-	ListIterator<OrmVirtualPrimaryKeyJoinColumn> primaryKeyJoinColumns();
-	ListIterator<OrmVirtualPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
+	ListIterable<OrmVirtualPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<OrmVirtualPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
 	OrmVirtualPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 
 	JavaSecondaryTable getOverriddenTable();

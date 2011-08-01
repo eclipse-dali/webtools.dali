@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.java;
 
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.tests.internal.resource.java.JavaResourceModelTestCase;
+import org.eclipse.jpt.common.core.tests.internal.resource.java.JavaResourceModelTestCase;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1.ELJaxb_2_1_PlatformDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.JptJaxbEclipseLinkCoreTestsPlugin;
 

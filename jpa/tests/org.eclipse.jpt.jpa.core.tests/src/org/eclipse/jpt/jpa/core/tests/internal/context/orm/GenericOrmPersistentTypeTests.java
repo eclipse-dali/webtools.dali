@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -194,7 +194,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals("idAttribute", id.getName());
 		
 		
-		Iterator<OrmPersistentAttribute> persistentAttributes = entityPersistentType.specifiedAttributes();
+		Iterator<OrmPersistentAttribute> persistentAttributes = entityPersistentType.getSpecifiedAttributes().iterator();
 		assertEquals("idAttribute", persistentAttributes.next().getName());
 		assertEquals("basicAttribute", persistentAttributes.next().getName());
 		assertEquals("versionAttribute", persistentAttributes.next().getName());
@@ -305,7 +305,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getBasics().add(basic);
 		basic.setName("basicAttribute");
 			
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = entityPersistentType.attributes().next();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = entityPersistentType.getAttributes().iterator().next();
 		assertEquals("basicAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
 		
@@ -313,7 +313,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getEmbeddeds().add(embedded);
 		embedded.setName("embeddedAttribute");
 		
-		Iterator<OrmReadOnlyPersistentAttribute> attributes = entityPersistentType.attributes();
+		Iterator<OrmReadOnlyPersistentAttribute> attributes = entityPersistentType.getAttributes().iterator();
 		ormPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
@@ -326,7 +326,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getVersions().add(version);
 		version.setName("versionAttribute");
 		
-		attributes = entityPersistentType.attributes();
+		attributes = entityPersistentType.getAttributes().iterator();
 		ormPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
@@ -342,7 +342,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getIds().add(id);
 		id.setName("idAttribute");
 		
-		attributes = entityPersistentType.attributes();
+		attributes = entityPersistentType.getAttributes().iterator();
 		ormPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
@@ -361,7 +361,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getTransients().add(transientResource);
 		transientResource.setName("transientAttribute");
 		
-		attributes = entityPersistentType.attributes();
+		attributes = entityPersistentType.getAttributes().iterator();
 		ormPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
@@ -383,7 +383,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getManyToOnes().add(manyToOneResource);
 		manyToOneResource.setName("manyToOneAttribute");
 		
-		attributes = entityPersistentType.attributes();
+		attributes = entityPersistentType.getAttributes().iterator();
 		ormPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
@@ -408,7 +408,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getManyToManys().add(manyToManyResource);
 		manyToManyResource.setName("manyToManyAttribute");
 		
-		attributes = entityPersistentType.attributes();
+		attributes = entityPersistentType.getAttributes().iterator();
 		ormPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
@@ -436,7 +436,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getOneToManys().add(oneToManyResource);
 		oneToManyResource.setName("oneToManyAttribute");
 		
-		attributes = entityPersistentType.attributes();
+		attributes = entityPersistentType.getAttributes().iterator();
 		ormPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
@@ -467,7 +467,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getOneToOnes().add(oneToOneResource);
 		oneToOneResource.setName("oneToOneAttribute");
 		
-		attributes = entityPersistentType.attributes();
+		attributes = entityPersistentType.getAttributes().iterator();
 		ormPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
@@ -502,7 +502,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getEmbeddedIds().add(embeddedIdResource);
 		embeddedIdResource.setName("embeddedIdAttribute");
 		
-		attributes = entityPersistentType.attributes();
+		attributes = entityPersistentType.getAttributes().iterator();
 		ormPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
@@ -545,7 +545,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getOneToManys().remove(0);
 		entity.getAttributes().getOneToOnes().remove(0);
 		entity.getAttributes().getEmbeddedIds().remove(0);
-		assertFalse(entityPersistentType.attributes().hasNext());
+		assertFalse(entityPersistentType.getAttributes().iterator().hasNext());
 		assertNotNull(entity.getAttributes());
 	}
 	
@@ -569,6 +569,6 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertNotNull(javaPersistentAttribute);
 		assertEquals("id", javaPersistentAttribute.getName());
 		assertEquals("test.Employee", javaPersistentAttribute.getOwningPersistentType().getName());
-		assertEquals("test.Model", javaPersistentAttribute.getResourcePersistentAttribute().getParent().getQualifiedName());
+		assertEquals("test.Model", javaPersistentAttribute.getResourceAttribute().getParent().getQualifiedName());
 	}
 }

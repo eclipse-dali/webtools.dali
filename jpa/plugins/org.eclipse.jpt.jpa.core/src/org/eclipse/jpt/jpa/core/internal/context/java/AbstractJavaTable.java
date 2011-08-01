@@ -11,18 +11,14 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
@@ -30,7 +26,6 @@ import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
@@ -69,8 +64,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
-	protected final Vector<JavaUniqueConstraint> uniqueConstraints = new Vector<JavaUniqueConstraint>();
-	protected final UniqueConstraintContainerAdapter uniqueConstraintContainerAdapter = new UniqueConstraintContainerAdapter();
+	protected final ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
 
 
 	protected AbstractJavaTable(JavaJpaContextNode parent, Owner owner) {
@@ -84,7 +78,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		this.specifiedName = this.buildSpecifiedName();
 		this.specifiedSchema = this.buildSpecifiedSchema();
 		this.specifiedCatalog = this.buildSpecifiedCatalog();
-		this.initializeUniqueConstraints();
+		this.uniqueConstraintContainer = this.buildUniqueConstraintContainer();
 	}
 
 
@@ -264,106 +258,82 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 
 
 	// ********** unique constraints **********
-
-	public ListIterator<JavaUniqueConstraint> uniqueConstraints() {
-		return this.getUniqueConstraints().iterator();
+	public ListIterable<JavaUniqueConstraint> getUniqueConstraints() {
+		return this.uniqueConstraintContainer.getContextElements();
 	}
 
-	protected ListIterable<JavaUniqueConstraint> getUniqueConstraints() {
-		return new LiveCloneListIterable<JavaUniqueConstraint>(this.uniqueConstraints);
-	}
-
-	public int uniqueConstraintsSize() {
-		return this.uniqueConstraints.size();
+	public int getUniqueConstraintsSize() {
+		return this.uniqueConstraintContainer.getContextElementsSize();
 	}
 
 	public JavaUniqueConstraint getUniqueConstraint(int index) {
-		return this.uniqueConstraints.get(index);
+		return this.uniqueConstraintContainer.getContextElement(index);
 	}
 
 	public JavaUniqueConstraint addUniqueConstraint() {
-		return this.addUniqueConstraint(this.uniqueConstraints.size());
+		return this.addUniqueConstraint(this.getUniqueConstraintsSize());
 	}
 
 	public JavaUniqueConstraint addUniqueConstraint(int index) {
 		UniqueConstraintAnnotation annotation = this.getTableAnnotation().addUniqueConstraint(index);
-		return this.addUniqueConstraint_(index, annotation);
-	}
-
-	public void removeUniqueConstraint(UniqueConstraint constraint) {
-		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(constraint));
+		return this.uniqueConstraintContainer.addContextElement(index, annotation);
 	}
 
 	public void removeUniqueConstraint(int index) {
 		this.getTableAnnotation().removeUniqueConstraint(index);
-		this.removeTableAnnotationIfUnset();
-		this.removeUniqueConstraint_(index);
+		this.uniqueConstraintContainer.removeContextElement(index);
 	}
 
-	protected void removeUniqueConstraint_(int index) {
-		this.removeItemFromList(index, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
+		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((JavaUniqueConstraint) uniqueConstraint));
 	}
 
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		this.getTableAnnotation().moveUniqueConstraint(targetIndex, sourceIndex);
-		this.moveItemInList(targetIndex, sourceIndex, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		this.uniqueConstraintContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected void initializeUniqueConstraints() {
-		for (Iterator<UniqueConstraintAnnotation> stream = this.getTableAnnotation().uniqueConstraints(); stream.hasNext(); ) {
-			this.uniqueConstraints.add(this.buildUniqueConstraint(stream.next()));
-		}
+	protected void syncUniqueConstraints() {
+		this.uniqueConstraintContainer.synchronizeWithResourceModel();
+	}
+
+	protected void updateUniqueConstraints() {
+		this.uniqueConstraintContainer.update();
 	}
 
 	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation constraintAnnotation) {
 		return this.getJpaFactory().buildJavaUniqueConstraint(this, this, constraintAnnotation);
 	}
 
-	protected void syncUniqueConstraints() {
-		ContextContainerTools.synchronizeWithResourceModel(this.uniqueConstraintContainerAdapter);
+	protected ListIterable<UniqueConstraintAnnotation> getUniqueConstraintAnnotations() {
+		return this.getTableAnnotation().getUniqueConstraints();
 	}
 
-	protected Iterable<UniqueConstraintAnnotation> getUniqueConstraintAnnotations() {
-		return CollectionTools.iterable(this.getTableAnnotation().uniqueConstraints());
-	}
-
-	protected void moveUniqueConstraint_(int index, JavaUniqueConstraint constraint) {
-		this.moveItemInList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-	}
-
-	protected JavaUniqueConstraint addUniqueConstraint_(int index, UniqueConstraintAnnotation constraintAnnotation) {
-		JavaUniqueConstraint constraint = this.buildUniqueConstraint(constraintAnnotation);
-		this.addItemToList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-		return constraint;
-	}
-
-	protected void removeUniqueConstraint_(JavaUniqueConstraint constraint) {
-		this.removeUniqueConstraint_(this.uniqueConstraints.indexOf(constraint));
+	protected ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> buildUniqueConstraintContainer() {
+		return new UniqueConstraintContainer();
 	}
 
 	/**
-	 * unique constraint container adapter
+	 * unique constraint container
 	 */
-	protected class UniqueConstraintContainerAdapter
-		implements ContextContainerTools.Adapter<JavaUniqueConstraint, UniqueConstraintAnnotation>
+	protected class UniqueConstraintContainer
+		extends ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation>
 	{
-		public Iterable<JavaUniqueConstraint> getContextElements() {
-			return AbstractJavaTable.this.getUniqueConstraints();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return UNIQUE_CONSTRAINTS_LIST;
 		}
-		public Iterable<UniqueConstraintAnnotation> getResourceElements() {
+		@Override
+		protected JavaUniqueConstraint buildContextElement(UniqueConstraintAnnotation resourceElement) {
+			return AbstractJavaTable.this.buildUniqueConstraint(resourceElement);
+		}
+		@Override
+		protected ListIterable<UniqueConstraintAnnotation> getResourceElements() {
 			return AbstractJavaTable.this.getUniqueConstraintAnnotations();
 		}
-		public UniqueConstraintAnnotation getResourceElement(JavaUniqueConstraint contextElement) {
+		@Override
+		protected UniqueConstraintAnnotation getResourceElement(JavaUniqueConstraint contextElement) {
 			return contextElement.getUniqueConstraintAnnotation();
-		}
-		public void moveContextElement(int index, JavaUniqueConstraint element) {
-			AbstractJavaTable.this.moveUniqueConstraint_(index, element);
-		}
-		public void addContextElement(int index, UniqueConstraintAnnotation resourceElement) {
-			AbstractJavaTable.this.addUniqueConstraint_(index, resourceElement);
-		}
-		public void removeContextElement(JavaUniqueConstraint element) {
-			AbstractJavaTable.this.removeUniqueConstraint_(element);
 		}
 	}
 
@@ -433,7 +403,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		if (result != null) {
 			return result;
 		}
-		for (JavaUniqueConstraint constraint : CollectionTools.iterable(this.uniqueConstraints())) {
+		for (JavaUniqueConstraint constraint : this.getUniqueConstraints()) {
 			result = constraint.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
@@ -560,7 +530,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		this.setSpecifiedName(oldTable.getSpecifiedName());
 		this.setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
 		this.setSpecifiedSchema(oldTable.getSpecifiedSchema());
-		for (ReadOnlyUniqueConstraint constraint : CollectionTools.iterable(oldTable.uniqueConstraints())) {
+		for (ReadOnlyUniqueConstraint constraint : oldTable.getUniqueConstraints()) {
 			this.addUniqueConstraint().initializeFrom(constraint);
 		}
 	}
@@ -578,4 +548,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	protected String buildQualifiedName() {
 		return NameTools.buildQualifiedDatabaseObjectName(this.getCatalog(), this.getSchema(), this.getName());
 	}
+
+
+
 }

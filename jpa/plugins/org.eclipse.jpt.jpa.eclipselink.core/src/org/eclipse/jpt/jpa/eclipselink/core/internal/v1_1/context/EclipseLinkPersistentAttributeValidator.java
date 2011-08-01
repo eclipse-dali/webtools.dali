@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractPersistentAttributeValidator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -20,9 +19,9 @@ public class EclipseLinkPersistentAttributeValidator
 	extends AbstractPersistentAttributeValidator
 {
 	public EclipseLinkPersistentAttributeValidator(
-		ReadOnlyPersistentAttribute persistentAttribute, JavaPersistentAttribute javaPersistentAttribute, PersistentAttributeTextRangeResolver textRangeResolver)
+		ReadOnlyPersistentAttribute persistentAttribute, PersistentAttributeTextRangeResolver textRangeResolver)
 	{
-		super(persistentAttribute, javaPersistentAttribute, textRangeResolver);
+		super(persistentAttribute, textRangeResolver);
 	}
 
 	/**

@@ -11,13 +11,13 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -105,8 +105,8 @@ public class GenericJavaIdDerivedIdentityStrategy2_0
 		return this.getDerivedIdentity().getMapping();
 	}
 
-	protected JavaResourcePersistentAttribute getResourceAttribute() {
-		return this.getMapping().getPersistentAttribute().getResourcePersistentAttribute();
+	protected JavaResourceAttribute getResourceAttribute() {
+		return this.getMapping().getPersistentAttribute().getResourceAttribute();
 	}
 
 	public boolean isSpecified() {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -56,6 +54,7 @@ class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 		if (ted == null)
 			return;
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				Shape sh = (Shape) pe;
 				Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(sh);
@@ -106,9 +105,7 @@ class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 		updateFeature.addSeparatorsToShape(relationShape);
 		updateFeature.addSeparatorsToShape(basicShape);
 
-		ListIterator<JavaPersistentAttribute> attributeIter = javaPersistentType.attributes();
-		while (attributeIter.hasNext()) {
-			JavaPersistentAttribute attribute = attributeIter.next();
+		for (JavaPersistentAttribute attribute : javaPersistentType.getAttributes()) {
 			updateFeature.addAttributes(entityShape, attribute);
 
 			getFeatureProvider().renewAttributeJoiningStrategyPropertyListener(attribute);
@@ -135,6 +132,7 @@ class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 		compartmentShape.getGraphicsAlgorithm().setHeight(0);
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}

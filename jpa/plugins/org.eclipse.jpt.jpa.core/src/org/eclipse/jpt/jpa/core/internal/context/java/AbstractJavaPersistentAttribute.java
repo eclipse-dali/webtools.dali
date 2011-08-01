@@ -13,9 +13,11 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ClassName;
@@ -29,6 +31,7 @@ import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
@@ -40,7 +43,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -51,9 +53,7 @@ public abstract class AbstractJavaPersistentAttribute
 	extends AbstractJavaJpaContextNode
 	implements JavaPersistentAttribute2_0
 {
-	protected final JavaResourcePersistentAttribute resourcePersistentAttribute;
-
-	protected String name;
+	protected final Accessor accessor;
 
 	protected AccessType defaultAccess;
 	protected AccessType specifiedAccess;
@@ -61,12 +61,25 @@ public abstract class AbstractJavaPersistentAttribute
 	protected JavaAttributeMapping mapping;  // never null
 	protected String defaultMappingKey;
 
-
-	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute resourcePersistentAttribute) {
+	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
 		super(parent);
-		this.resourcePersistentAttribute = resourcePersistentAttribute;
-		this.name = resourcePersistentAttribute.getName();
+		this.accessor = new FieldAccessor(this, resourceField);
+		this.initialize();
+	}
 
+	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		super(parent);
+		this.accessor = new PropertyAccessor(this, resourceGetter, resourceSetter);
+		this.initialize();
+	}
+
+	protected AbstractJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
+		super(parent);
+		this.accessor = accessor;
+		this.initialize();
+	}
+
+	protected void initialize() {
 		// this is determined directly from the resource model
 		this.defaultAccess = this.buildDefaultAccess();
 		this.specifiedAccess = this.buildSpecifiedAccess();
@@ -75,13 +88,11 @@ public abstract class AbstractJavaPersistentAttribute
 		this.mapping = this.buildMapping();
 	}
 
-
 	// ********** synchronize/update **********
 
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setName(this.resourcePersistentAttribute.getName());
 		// this is determined directly from the resource model
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
@@ -94,20 +105,28 @@ public abstract class AbstractJavaPersistentAttribute
 		this.updateMapping();
 	}
 
-
 	// ********** name **********
 
+	/**
+	 * name will not change in java, a new persistent attribute will be built.
+	 */
 	public String getName() {
-		return this.name;
-	}
-
-	protected void setName(String name) {
-		String old = this.name;
-		this.name = name;
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		return this.getResourceAttribute().getName();
 	}
 
 
+	public Accessor getAccessor() {
+		return this.accessor;
+	}
+
+	public boolean isFor(JavaResourceField resourceField) {
+		return this.accessor.isFor(resourceField);
+	}
+
+	public boolean isFor(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		return this.accessor.isFor(resourceGetter, resourceSetter);
+	}
+	
 	// ********** access **********
 
 	public AccessType getAccess() {
@@ -126,8 +145,9 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	protected AccessType buildDefaultAccess() {
-		return this.resourcePersistentAttribute.isField() ? AccessType.FIELD : AccessType.PROPERTY;
+		return getAccessor().getDefaultAccess();
 	}
+
 	public AccessType getSpecifiedAccess() {
 		return this.specifiedAccess;
 	}
@@ -159,7 +179,7 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	protected Access2_0Annotation getAccessAnnotation() {
-		return (Access2_0Annotation) this.resourcePersistentAttribute.getAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		return (Access2_0Annotation) this.getResourceAttribute().getAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 	}
 
 
@@ -269,7 +289,7 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	protected void setMappingAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
-		this.resourcePersistentAttribute.setPrimaryAnnotation(primaryAnnotationName, supportingAnnotationNames);
+		this.getResourceAttribute().setPrimaryAnnotation(primaryAnnotationName, supportingAnnotationNames);
 	}
 
 	protected JavaAttributeMapping buildMapping(JavaAttributeMappingDefinition definition) {
@@ -431,11 +451,11 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	protected TextRange getSelectionTextRange(CompilationUnit astRoot) {
-		return this.resourcePersistentAttribute.getNameTextRange(astRoot);
+		return this.getResourceAttribute().getNameTextRange(astRoot);
 	}
 
 	protected CompilationUnit buildASTRoot() {
-		return this.resourcePersistentAttribute.getJavaResourceCompilationUnit().buildASTRoot();
+		return this.getResourceAttribute().getJavaResourceCompilationUnit().buildASTRoot();
 	}
 
 	public void dispose() {
@@ -494,10 +514,10 @@ public abstract class AbstractJavaPersistentAttribute
 		if (JDTTools.typeIsOtherValidBasicType(typeName)) {
 			return true;
 		}
-		if (this.resourcePersistentAttribute.typeIsEnum()) {
+		if (this.getResourceAttribute().typeIsEnum()) {
 			return true;
 		}
-		if (this.resourcePersistentAttribute.typeIsSubTypeOf(SERIALIZABLE_TYPE_NAME)) {
+		if (this.getResourceAttribute().typeIsSubTypeOf(SERIALIZABLE_TYPE_NAME)) {
 			return true;
 		}
 		return false;
@@ -522,11 +542,11 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public String getMultiReferenceTargetTypeName() {
-		return this.getJpaContainerDefinition().getMultiReferenceTargetTypeName(this.resourcePersistentAttribute);
+		return this.getJpaContainerDefinition().getMultiReferenceTargetTypeName(this.getResourceAttribute());
 	}
 
 	public String getMultiReferenceMapKeyTypeName() {
-		return this.getJpaContainerDefinition().getMultiReferenceMapKeyTypeName(this.resourcePersistentAttribute);
+		return this.getJpaContainerDefinition().getMultiReferenceMapKeyTypeName(this.getResourceAttribute());
 	}
 
 	/**
@@ -557,8 +577,8 @@ public abstract class AbstractJavaPersistentAttribute
 		return this;
 	}
 
-	public JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.resourcePersistentAttribute;
+	public JavaResourceAttribute getResourceAttribute() {
+		return this.accessor.getResourceAttribute();
 	}
 
 	public String getPrimaryKeyColumnName() {
@@ -566,11 +586,11 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public String getTypeName() {
-		return this.resourcePersistentAttribute.getTypeName();
+		return this.getResourceAttribute().getTypeName();
 	}
 
 	public boolean contains(int offset, CompilationUnit astRoot) {
-		TextRange fullTextRange = this.resourcePersistentAttribute.getTextRange(astRoot);
+		TextRange fullTextRange = this.getResourceAttribute().getTextRange(astRoot);
 		// 'fullTextRange' will be null if the attribute no longer exists in the java;
 		// the context model can be out of synch with the resource model
 		// when a selection event occurs before the context model has a
@@ -583,25 +603,9 @@ public abstract class AbstractJavaPersistentAttribute
 		return (typeName == null) ? null : this.getPersistenceUnit().getEmbeddable(typeName);
 	}
 
-	public boolean isField() {
-		return this.resourcePersistentAttribute.isField();
-	}
-
-	public boolean isProperty() {
-		return this.resourcePersistentAttribute.isProperty();
-	}
-
-	public boolean isPublic() {
-		return Modifier.isPublic(this.resourcePersistentAttribute.getModifiers());
-	}
-
-	public boolean isFinal() {
-		return Modifier.isFinal(this.resourcePersistentAttribute.getModifiers());
-	}
-
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.name);
+		sb.append(this.getName());
 	}
 
 
@@ -621,10 +625,10 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	protected void validateAttribute(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.buildAttibuteValidator(astRoot).validate(messages, reporter);
+		this.buildAttributeValidator(astRoot).validate(messages, reporter);
 	}
 
-	protected abstract JptValidator buildAttibuteValidator(CompilationUnit astRoot);
+	protected abstract JptValidator buildAttributeValidator(CompilationUnit astRoot);
 
 	protected PersistentAttributeTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
 		return new JavaPersistentAttributeTextRangeResolver(this, astRoot);
@@ -686,7 +690,7 @@ public abstract class AbstractJavaPersistentAttribute
 	public JpaContainerDefinition getJpaContainerDefinition() {
 		// 'typeName' may include array brackets ("[]")
 		// but not generic type arguments (e.g. "<java.lang.String>")
-		return this.getJpaContainerDefinition(this.resourcePersistentAttribute.getTypeName());
+		return this.getJpaContainerDefinition(this.getResourceAttribute().getTypeName());
 	}
 
 	/**
@@ -763,13 +767,13 @@ public abstract class AbstractJavaPersistentAttribute
 			super(collectionClass, staticMetamodelTypeDeclarationTypeName);
 		}
 
-		public String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 1) ?
-						resourcePersistentAttribute.getTypeTypeArgumentName(0) :
+		public String getMultiReferenceTargetTypeName(JavaResourceAttribute resourceAttribute) {
+			return (resourceAttribute.getTypeTypeArgumentNamesSize() == 1) ?
+				resourceAttribute.getTypeTypeArgumentName(0) :
 						null;
 		}
 
-		public String getMultiReferenceMapKeyTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		public String getMultiReferenceMapKeyTypeName(JavaResourceAttribute resourceAttribute) {
 			return null;
 		}
 
@@ -792,15 +796,15 @@ public abstract class AbstractJavaPersistentAttribute
 			super(mapClass, staticMetamodelTypeDeclarationTypeName);
 		}
 
-		public String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 2) ?
-						resourcePersistentAttribute.getTypeTypeArgumentName(1) :
+		public String getMultiReferenceTargetTypeName(JavaResourceAttribute resourceAttribute) {
+			return (resourceAttribute.getTypeTypeArgumentNamesSize() == 2) ?
+						resourceAttribute.getTypeTypeArgumentName(1) :
 						null;
 		}
 
-		public String getMultiReferenceMapKeyTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 2) ?
-						resourcePersistentAttribute.getTypeTypeArgumentName(0) :
+		public String getMultiReferenceMapKeyTypeName(JavaResourceAttribute resourceAttribute) {
+			return (resourceAttribute.getTypeTypeArgumentNamesSize() == 2) ?
+						resourceAttribute.getTypeTypeArgumentName(0) :
 						null;
 		}
 

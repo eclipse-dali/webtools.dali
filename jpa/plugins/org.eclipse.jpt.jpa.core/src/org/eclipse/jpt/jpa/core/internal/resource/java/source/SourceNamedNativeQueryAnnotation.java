@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,35 +9,34 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
+import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.NestableNamedNativeQueryAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableQueryHintAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 
 /**
  * <code>javax.persistence.NamedNativeQuery</code>
  */
 public final class SourceNamedNativeQueryAnnotation
 	extends SourceQueryAnnotation
-	implements NestableNamedNativeQueryAnnotation
+	implements NamedNativeQueryAnnotation
 {
-	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.NAMED_NATIVE_QUERIES);
 
 	private DeclarationAnnotationElementAdapter<String> resultClassDeclarationAdapter;
 	private AnnotationElementAdapter<String> resultClassAdapter;
@@ -54,9 +53,22 @@ public final class SourceNamedNativeQueryAnnotation
 	private AnnotationElementAdapter<String> resultSetMappingAdapter;
 	private String resultSetMapping;
 
+	public static SourceNamedNativeQueryAnnotation buildSourceNamedNativeQueryAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildNamedNativeQueryDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildNamedNativeQueryAnnotationAdapter(element, idaa);
+		return new SourceNamedNativeQueryAnnotation(
+			parent,
+			element,
+			idaa,
+			iaa);
+	}
 
-	public SourceNamedNativeQueryAnnotation(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, type, daa, annotationAdapter);
+	private SourceNamedNativeQueryAnnotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement element,
+			IndexedDeclarationAnnotationAdapter daa,
+			IndexedAnnotationAdapter annotationAdapter) {
+		super(parent, element, daa, annotationAdapter);
 		this.resultClassDeclarationAdapter = this.buildResultClassDeclarationAdapter();
 		this.resultClassAdapter = this.buildResultClassAdapter();
 		this.resultSetMappingDeclarationAdapter = this.buildResultSetMappingAdapter(daa);
@@ -100,8 +112,8 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	@Override
-	NestableQueryHintAnnotation buildHint(int index) {
-		return SourceQueryHintAnnotation.createNamedNativeQueryQueryHint(this, this.annotatedElement, this.daa, index);
+	QueryHintAnnotation buildHint(int index) {
+		return SourceQueryHintAnnotation.buildNamedNativeQueryQueryHint(this, this.annotatedElement, this.daa, index);
 	}
 
 
@@ -210,41 +222,19 @@ public final class SourceNamedNativeQueryAnnotation
 				(this.resultSetMapping == null);
 	}
 
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.resultClassDeclarationAdapter = this.buildResultClassDeclarationAdapter();
-		this.resultClassAdapter = this.buildResultClassAdapter();
-		this.resultSetMappingDeclarationAdapter = this.buildResultSetMappingAdapter(daa);
-		this.resultSetMappingAdapter = this.buildResultSetMappingAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		map.put(RESULT_CLASS_PROPERTY, this.resultClass);
-		this.resultClass = null;
-		map.put(RESULT_SET_MAPPING_PROPERTY, this.resultSetMapping);
-		this.resultSetMapping = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		this.setResultClass((String) map.get(RESULT_CLASS_PROPERTY));
-		this.setResultSetMapping((String) map.get(RESULT_SET_MAPPING_PROPERTY));
-	}
-
-
 	// ********** static methods **********
 
-	public static SourceNamedNativeQueryAnnotation createNamedNativeQuery(JavaResourceNode parent, Type type) {
-		return new SourceNamedNativeQueryAnnotation(parent, type, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
+	private static IndexedAnnotationAdapter buildNamedNativeQueryAnnotationAdapter(AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+		return new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
 	}
 
-	static SourceNamedNativeQueryAnnotation createNestedNamedNativeQuery(JavaResourceNode parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter, ANNOTATION_NAME);
-		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(type, idaa);
-		return new SourceNamedNativeQueryAnnotation(parent, type, idaa, annotationAdapter);
+	private static IndexedDeclarationAnnotationAdapter buildNamedNativeQueryDeclarationAnnotationAdapter(int index) {
+		IndexedDeclarationAnnotationAdapter idaa = 
+			new CombinationIndexedDeclarationAnnotationAdapter(
+				DECLARATION_ANNOTATION_ADAPTER,
+				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				ANNOTATION_NAME);
+		return idaa;
 	}
 }

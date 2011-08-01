@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Association override container.
@@ -41,12 +41,12 @@ public interface AssociationOverrideContainer
 	ReadOnlyRelationship resolveOverriddenRelationship(String attributeName);
 
 	// covariant overrides
-	ListIterator<? extends ReadOnlyAssociationOverride> overrides();
+	ListIterable<? extends ReadOnlyAssociationOverride> getOverrides();
 	ReadOnlyAssociationOverride getOverrideNamed(String name);
-	ListIterator<? extends AssociationOverride> specifiedOverrides();
+	ListIterable<? extends AssociationOverride> getSpecifiedOverrides();
 	AssociationOverride getSpecifiedOverride(int index);
 	AssociationOverride getSpecifiedOverrideNamed(String name);
-	ListIterator<? extends VirtualAssociationOverride> virtualOverrides();
+	ListIterable<? extends VirtualAssociationOverride> getVirtualOverrides();
 	VirtualAssociationOverride convertOverrideToVirtual(Override_ specifiedOverride);
 	AssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 

@@ -11,14 +11,10 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NameTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -27,7 +23,6 @@ import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable;
@@ -65,8 +60,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
-	protected final Vector<OrmUniqueConstraint> uniqueConstraints = new Vector<OrmUniqueConstraint>();
-	protected final UniqueConstraintContainerAdapter uniqueConstraintContainerAdapter = new UniqueConstraintContainerAdapter();
+	protected final UniqueConstraintContainer uniqueConstraintContainer;
 
 
 	// ********** constructor/initialization **********
@@ -82,7 +76,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 		this.specifiedName = this.buildSpecifiedName();
 		this.specifiedSchema = this.buildSpecifiedSchema();
 		this.specifiedCatalog = this.buildSpecifiedCatalog();
-		this.initializeUniqueContraints();
+		this.uniqueConstraintContainer = new UniqueConstraintContainer();
 	}
 
 
@@ -277,30 +271,26 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 
 	// ********** unique constraints **********
 
-	public ListIterator<OrmUniqueConstraint> uniqueConstraints() {
-		return this.getUniqueConstraints().iterator();
+	public ListIterable<OrmUniqueConstraint> getUniqueConstraints() {
+		return this.uniqueConstraintContainer.getContextElements();
 	}
 
-	protected ListIterable<OrmUniqueConstraint> getUniqueConstraints() {
-		return new LiveCloneListIterable<OrmUniqueConstraint>(this.uniqueConstraints);
-	}
-
-	public int uniqueConstraintsSize() {
-		return this.uniqueConstraints.size();
+	public int getUniqueConstraintsSize() {
+		return this.uniqueConstraintContainer.getContextElementsSize();
 	}
 
 	public OrmUniqueConstraint getUniqueConstraint(int index) {
-		return this.uniqueConstraints.get(index);
+		return this.uniqueConstraintContainer.getContextElement(index);
 	}
 
 	public OrmUniqueConstraint addUniqueConstraint() {
-		return this.addUniqueConstraint(this.uniqueConstraints.size());
+		return this.addUniqueConstraint(this.getUniqueConstraintsSize());
 	}
 
 	public OrmUniqueConstraint addUniqueConstraint(int index) {
 		X xmlTable = this.getXmlTableForUpdate();
 		XmlUniqueConstraint xmlConstraint = this.buildXmlUniqueConstraint();
-		OrmUniqueConstraint constraint = this.addUniqueConstraint_(index, xmlConstraint);
+		OrmUniqueConstraint constraint = this.uniqueConstraintContainer.addContextElement(index, xmlConstraint);
 		xmlTable.getUniqueConstraints().add(index, xmlConstraint);
 		return constraint;
 	}
@@ -309,29 +299,19 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 		return OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 	}
 
-	public void removeUniqueConstraint(UniqueConstraint constraint) {
-		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(constraint));
+	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
+		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((OrmUniqueConstraint) uniqueConstraint));
 	}
 
 	public void removeUniqueConstraint(int index) {
-		this.removeUniqueConstraint_(index);
+		this.uniqueConstraintContainer.removeContextElement(index);
 		this.getXmlTable().getUniqueConstraints().remove(index);
 		this.removeXmlTableIfUnset();
 	}
 
-	protected void removeUniqueConstraint_(int index) {
-		this.removeItemFromList(index, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-	}
-
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		this.uniqueConstraintContainer.moveContextElement(targetIndex, sourceIndex);
 		this.getXmlTable().getUniqueConstraints().move(targetIndex, sourceIndex);
-	}
-
-	protected void initializeUniqueContraints() {
-		for (XmlUniqueConstraint xmlConstraint : this.getXmlUniqueConstraints()) {
-			this.uniqueConstraints.add(this.buildUniqueConstraint(xmlConstraint));
-		}
 	}
 
 	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint xmlConstraint) {
@@ -339,54 +319,37 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	}
 
 	protected void syncUniqueConstraints() {
-		ContextContainerTools.synchronizeWithResourceModel(this.uniqueConstraintContainerAdapter);
+		this.uniqueConstraintContainer.synchronizeWithResourceModel();
 	}
-
-	protected Iterable<XmlUniqueConstraint> getXmlUniqueConstraints() {
+	protected ListIterable<XmlUniqueConstraint> getXmlUniqueConstraints() {
 		X xmlTable = this.getXmlTable();
 		return (xmlTable == null) ?
-				EmptyIterable.<XmlUniqueConstraint>instance() :
+				EmptyListIterable.<XmlUniqueConstraint>instance() :
 				// clone to reduce chance of concurrency problems
-				new LiveCloneIterable<XmlUniqueConstraint>(xmlTable.getUniqueConstraints());
-	}
-
-	protected void moveUniqueConstraint_(int index, OrmUniqueConstraint constraint) {
-		this.moveItemInList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-	}
-
-	protected OrmUniqueConstraint addUniqueConstraint_(int index, XmlUniqueConstraint xmlConstraint) {
-		OrmUniqueConstraint constraint = this.buildUniqueConstraint(xmlConstraint);
-		this.addItemToList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-		return constraint;
-	}
-
-	protected void removeUniqueConstraint_(OrmUniqueConstraint constraint) {
-		this.removeUniqueConstraint_(this.uniqueConstraints.indexOf(constraint));
+				new LiveCloneListIterable<XmlUniqueConstraint>(xmlTable.getUniqueConstraints());
 	}
 
 	/**
-	 * unique constraint container adapter
+	 * unique constraint container
 	 */
-	protected class UniqueConstraintContainerAdapter
-		implements ContextContainerTools.Adapter<OrmUniqueConstraint, XmlUniqueConstraint>
+	protected class UniqueConstraintContainer
+		extends ContextListContainer<OrmUniqueConstraint, XmlUniqueConstraint>
 	{
-		public Iterable<OrmUniqueConstraint> getContextElements() {
-			return AbstractOrmTable.this.getUniqueConstraints();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return UNIQUE_CONSTRAINTS_LIST;
 		}
-		public Iterable<XmlUniqueConstraint> getResourceElements() {
+		@Override
+		protected OrmUniqueConstraint buildContextElement(XmlUniqueConstraint resourceElement) {
+			return AbstractOrmTable.this.buildUniqueConstraint(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlUniqueConstraint> getResourceElements() {
 			return AbstractOrmTable.this.getXmlUniqueConstraints();
 		}
-		public XmlUniqueConstraint getResourceElement(OrmUniqueConstraint contextElement) {
+		@Override
+		protected XmlUniqueConstraint getResourceElement(OrmUniqueConstraint contextElement) {
 			return contextElement.getXmlUniqueConstraint();
-		}
-		public void moveContextElement(int index, OrmUniqueConstraint element) {
-			AbstractOrmTable.this.moveUniqueConstraint_(index, element);
-		}
-		public void addContextElement(int index, XmlUniqueConstraint resourceElement) {
-			AbstractOrmTable.this.addUniqueConstraint_(index, resourceElement);
-		}
-		public void removeContextElement(OrmUniqueConstraint element) {
-			AbstractOrmTable.this.removeUniqueConstraint_(element);
 		}
 	}
 
@@ -516,7 +479,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 		this.setSpecifiedName(oldTable.getSpecifiedName());
 		this.setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
 		this.setSpecifiedSchema(oldTable.getSpecifiedSchema());
-		for (ReadOnlyUniqueConstraint constraint : CollectionTools.iterable(oldTable.uniqueConstraints())) {
+		for (ReadOnlyUniqueConstraint constraint : oldTable.getUniqueConstraints()) {
 			this.addUniqueConstraint().initializeFrom(constraint);
 		}
 	}

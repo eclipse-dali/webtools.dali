@@ -106,7 +106,7 @@ public class EclipseLinkPersistenceUnitTests
 		xmlMappingFileRef.setFileName("META-INF/eclipselink-orm.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
-		assertEquals(1, CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()));
+		assertEquals(1, CollectionTools.size(persistenceUnit.getSpecifiedMappingFileRefs()));
 		
 		assertTrue(eclipseLinkOrmResource.fileExists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
@@ -132,7 +132,7 @@ public class EclipseLinkPersistenceUnitTests
 
 	public void testMappingFileRefs() {
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
-		ListIterator<MappingFileRef> mappingFileRefs = persistenceUnit.mappingFileRefs();
+		ListIterator<MappingFileRef> mappingFileRefs = persistenceUnit.getMappingFileRefs().iterator();
 		
 		assertEquals(persistenceUnit.getImpliedMappingFileRef(), mappingFileRefs.next().getMappingFile().getParent());
 		assertEquals(persistenceUnit.getImpliedEclipseLinkMappingFileRef(), mappingFileRefs.next().getMappingFile().getParent());
@@ -140,7 +140,7 @@ public class EclipseLinkPersistenceUnitTests
 
 	public void testMappingFileRefsSize() {
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
-		assertEquals(2, persistenceUnit.mappingFileRefsSize());
+		assertEquals(2, persistenceUnit.getMappingFileRefsSize());
 	}
 
 	public void testPersistentType() throws Exception {

@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -108,7 +107,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.convertToSpecified();
 		}
 	}
@@ -546,12 +545,12 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertEquals("BAZ", oneToOneResource.getJoinColumns().get(1).getName());
 		assertEquals("FOO", oneToOneResource.getJoinColumns().get(2).getName());
 		
-		ListIterator<OrmJoinColumn> joinColumns = strategy.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = strategy.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
 		
-		joinColumns = strategy.specifiedJoinColumns();
+		joinColumns = strategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -598,7 +597,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		
 		
 		strategy.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<OrmJoinColumn> joinColumns = strategy.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = strategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -609,7 +608,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 
 
 		strategy.moveSpecifiedJoinColumn(0, 1);
-		joinColumns = strategy.specifiedJoinColumns();
+		joinColumns = strategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -626,9 +625,9 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "foo");
-		assertEquals(3, ormPersistentType.virtualAttributesSize());
+		assertEquals(3, ormPersistentType.getVirtualAttributesSize());
 		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("foo", ormOneToOneMapping.getName());
@@ -641,7 +640,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertNull(ormOneToOneMapping.getTargetEntity());
 
 		
-		assertTrue(ormOneToOneMapping.getRelationship().getJoinColumnStrategy().joinColumnsSize() > 0);
+		assertTrue(ormOneToOneMapping.getRelationship().getJoinColumnStrategy().getJoinColumnsSize() > 0);
 		//TODO default joinColumns
 		//assertTrue(ormOneToOneMapping.defaultJoinColumns().hasNext());
 	
@@ -661,8 +660,8 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", oneToOneMapping.getName());
@@ -673,7 +672,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 			getMappedByStrategy().getMappedByAttribute());
 
 		JoinColumn joinColumn = 
-			oneToOneMapping.getRelationship().getJoinColumnStrategy().specifiedJoinColumns().next();
+			oneToOneMapping.getRelationship().getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 		assertEquals("MY_COLUMN", joinColumn.getSpecifiedName());
 		assertEquals("MY_REFERENCED_COLUMN", joinColumn.getSpecifiedReferencedColumnName());
 		assertEquals(Boolean.TRUE, joinColumn.getSpecifiedUnique());
@@ -698,14 +697,14 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals(3, ormPersistentType.virtualAttributesSize());		
+		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 		assertTrue(ormPersistentAttribute.isVirtual());
 			
 		ormPersistentAttribute.convertToSpecified(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		ormPersistentAttribute= ormPersistentType.specifiedAttributes().next();
+		ormPersistentAttribute= ormPersistentType.getSpecifiedAttributes().iterator().next();
 
 		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormOneToOneMapping.getName());
@@ -742,9 +741,9 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 
 		ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "address");
-		assertEquals(2, ormPersistentType.virtualAttributesSize());
+		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
 		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("address", ormOneToOneMapping.getName());
@@ -757,7 +756,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		//TODO default target entity in xml
 		//assertEquals("test.Address", ormOneToOneMapping.getDefaultTargetEntity());
 		
-		assertTrue(ormOneToOneMapping.getRelationship().getJoinColumnStrategy().joinColumnsSize() > 0);
+		assertTrue(ormOneToOneMapping.getRelationship().getJoinColumnStrategy().getJoinColumnsSize() > 0);
 		
 		//TODO default join columns for specified xmlOneToOne mapping
 //		XmlJoinColumn ormJoinColumn = ormOneToOneMapping.defaultJoinColumns().next();
@@ -808,8 +807,8 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertFalse(oneToOneMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof IdMapping);
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 	}
@@ -834,8 +833,8 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertFalse(oneToOneMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof VersionMapping);
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 	}
@@ -860,8 +859,8 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertFalse(oneToOneMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof TransientMapping);
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 	}
@@ -886,8 +885,8 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertFalse(oneToOneMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedMapping);
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 	}
@@ -912,8 +911,8 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertFalse(oneToOneMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 	}
@@ -938,8 +937,8 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertFalse(oneToOneMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToManyMapping);
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 		assertEquals(FetchType.EAGER, ((ManyToManyMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
@@ -972,8 +971,8 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertFalse(oneToOneMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToManyMapping);
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 		assertEquals(FetchType.EAGER, ((OneToManyMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
@@ -1006,8 +1005,8 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertFalse(oneToOneMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToOneMapping);
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 		assertEquals(FetchType.EAGER, ((ManyToOneMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
@@ -1018,7 +1017,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertTrue(((ManyToOneMapping) ormPersistentAttribute.getMapping()).getCascade().isRefresh());
 		assertTrue(((ManyToOneMapping) ormPersistentAttribute.getMapping()).getCascade().isRemove());
 		
-		joinColumn = ((ManyToOneMapping) ormPersistentAttribute.getMapping()).getRelationship().getJoinColumnStrategy().specifiedJoinColumns().next();
+		joinColumn = ((ManyToOneMapping) ormPersistentAttribute.getMapping()).getRelationship().getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 		assertEquals("name", joinColumn.getName());		
 		assertEquals("referenceName", joinColumn.getReferencedColumnName());		
 	}
@@ -1043,8 +1042,8 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertFalse(oneToOneMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof BasicMapping);
 		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
 //TODO	assertEquals(FetchType.EAGER, ((IBasicMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
@@ -1079,12 +1078,12 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertEquals("BAZ", oneToOneResource.getPrimaryKeyJoinColumns().get(1).getName());
 		assertEquals("FOO", oneToOneResource.getPrimaryKeyJoinColumns().get(2).getName());
 		
-		ListIterator<OrmPrimaryKeyJoinColumn> joinColumns = strategy.primaryKeyJoinColumns();
+		ListIterator<OrmPrimaryKeyJoinColumn> joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
 		
-		joinColumns = strategy.primaryKeyJoinColumns();
+		joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -1131,7 +1130,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		
 		
 		strategy.movePrimaryKeyJoinColumn(2, 0);
-		ListIterator<OrmPrimaryKeyJoinColumn> joinColumns = strategy.primaryKeyJoinColumns();
+		ListIterator<OrmPrimaryKeyJoinColumn> joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -1142,7 +1141,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 
 
 		strategy.movePrimaryKeyJoinColumn(0, 1);
-		joinColumns = strategy.primaryKeyJoinColumns();
+		joinColumns = strategy.getPrimaryKeyJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -1165,7 +1164,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		ReadOnlyPersistentAttribute persistentAttribute = ormPersistentType.attributes().next();
+		ReadOnlyPersistentAttribute persistentAttribute = ormPersistentType.getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 

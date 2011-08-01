@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.text.MessageFormat;
 import java.util.List;
-
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
@@ -25,10 +24,11 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.dialog.SelectTypeDialog;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -46,6 +46,7 @@ public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
 		super(fp);
 	}
 
+	@Override
 	public boolean canExecute(ICustomContext context) {
 		return true;
 	}
@@ -69,9 +70,9 @@ public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
 			newTypeName = newTypeName.substring(0, newTypeName.indexOf('<')).trim();
 		
 		getFeatureProvider().addAddIgnore((JavaPersistentType)jpa.getParent(), jpa.getName());
-		JavaResourcePersistentAttribute jrpa = jpa.getResourcePersistentAttribute();
-		getFeatureProvider().addRemoveIgnore((JavaPersistentType)jpa.getParent(), jrpa.getName());
-		boolean isMethodAnnotated = jpa.isProperty();
+		JavaResourceAttribute jra = jpa.getResourceAttribute();
+		getFeatureProvider().addRemoveIgnore((JavaPersistentType)jpa.getParent(), jra.getName());
+		boolean isMethodAnnotated = jra.getKind() == Kind.METHOD;
 
 		List<String> annotations = JpaArtifactFactory.instance().getAnnotationStrings(jpa);
 		JpaArtifactFactory.instance().deleteAttribute((JavaPersistentType)jpa.getParent(), jpa.getName(),
@@ -87,6 +88,7 @@ public class RefactorAttributeTypeFeature extends AbstractCustomFeature {
 				((Shape)pe).getContainer(), (JavaPersistentType)newAt.getParent());
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}

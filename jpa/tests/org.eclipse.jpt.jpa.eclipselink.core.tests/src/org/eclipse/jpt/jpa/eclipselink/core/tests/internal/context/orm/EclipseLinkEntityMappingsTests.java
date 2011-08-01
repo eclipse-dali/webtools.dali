@@ -39,7 +39,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
 		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
-		assertEquals(0, ormContextConverterHolder.customConvertersSize());
+		assertEquals(0, ormContextConverterHolder.getCustomConvertersSize());
 		assertEquals(0, resourceEntityMappings.getConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));		
 		
@@ -49,8 +49,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		resourceConverter.setClassName("Foo");
 		resourceConverter.setName("myConverter");
 		
-		assertEquals(1, ormContextConverterHolder.customConvertersSize());
-		ListIterator<EclipseLinkCustomConverter> ormContextConverters = ormContextConverterHolder.customConverters();
+		assertEquals(1, ormContextConverterHolder.getCustomConvertersSize());
+		ListIterator<? extends EclipseLinkCustomConverter> ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		EclipseLinkCustomConverter ormContextConverter = ormContextConverters.next();
 		assertEquals("Foo", ormContextConverter.getConverterClass());
 		assertEquals("myConverter", ormContextConverter.getName());
@@ -63,8 +63,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		resourceConverter2.setClassName("Foo2");
 		resourceConverter2.setName("myConverter2");
 		
-		assertEquals(2, ormContextConverterHolder.customConvertersSize());
-		ormContextConverters = ormContextConverterHolder.customConverters();
+		assertEquals(2, ormContextConverterHolder.getCustomConvertersSize());
+		ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		ormContextConverter = ormContextConverters.next();
 		assertEquals("Foo2", ormContextConverter.getConverterClass());
 		assertEquals("myConverter2", ormContextConverter.getName());
@@ -77,8 +77,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//move a converter in the resource model, check context model
 		resourceEntityMappings.getConverters().move(0, 1);
 		
-		assertEquals(2, ormContextConverterHolder.customConvertersSize());
-		ormContextConverters = ormContextConverterHolder.customConverters();
+		assertEquals(2, ormContextConverterHolder.getCustomConvertersSize());
+		ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		ormContextConverter = ormContextConverters.next();
 		assertEquals("Foo", ormContextConverter.getConverterClass());
 		assertEquals("myConverter", ormContextConverter.getName());
@@ -91,8 +91,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the resource model, check context model
 		resourceEntityMappings.getConverters().remove(0);
 		
-		assertEquals(1, ormContextConverterHolder.customConvertersSize());
-		ormContextConverters = ormContextConverterHolder.customConverters();
+		assertEquals(1, ormContextConverterHolder.getCustomConvertersSize());
+		ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		ormContextConverter = ormContextConverters.next();
 		assertEquals("Foo2", ormContextConverter.getConverterClass());
 		assertEquals("myConverter2", ormContextConverter.getName());
@@ -102,8 +102,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the resource model, check context model
 		resourceEntityMappings.getConverters().remove(resourceConverter2);
 		
-		assertEquals(0, ormContextConverterHolder.customConvertersSize());
-		assertFalse(ormContextConverterHolder.customConverters().hasNext());
+		assertEquals(0, ormContextConverterHolder.getCustomConvertersSize());
+		assertFalse(ormContextConverterHolder.getCustomConverters().iterator().hasNext());
 		assertEquals(0, resourceEntityMappings.getConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 	}
@@ -114,7 +114,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
 		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
-		assertEquals(0, ormContextConverterHolder.customConvertersSize());
+		assertEquals(0, ormContextConverterHolder.getCustomConvertersSize());
 		assertEquals(0, resourceEntityMappings.getConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));		
 		
@@ -126,8 +126,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, resourceEntityMappings.getConverters().size());
 		assertEquals("Foo", resourceEntityMappings.getConverters().get(0).getClassName());
 		assertEquals("myConverter", resourceEntityMappings.getConverters().get(0).getName());
-		assertEquals(1, ormContextConverterHolder.customConvertersSize());
-		ListIterator<EclipseLinkCustomConverter> ormContextConverters = ormContextConverterHolder.customConverters();
+		assertEquals(1, ormContextConverterHolder.getCustomConvertersSize());
+		ListIterator<? extends EclipseLinkCustomConverter> ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		EclipseLinkCustomConverter ormContextConverter = ormContextConverters.next();
 		assertEquals("Foo", ormContextConverter.getConverterClass());
 		assertEquals("myConverter", ormContextConverter.getName());
@@ -143,8 +143,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals("myConverter2", resourceEntityMappings.getConverters().get(0).getName());
 		assertEquals("Foo", resourceEntityMappings.getConverters().get(1).getClassName());
 		assertEquals("myConverter", resourceEntityMappings.getConverters().get(1).getName());
-		assertEquals(2, ormContextConverterHolder.customConvertersSize());
-		ormContextConverters = ormContextConverterHolder.customConverters();
+		assertEquals(2, ormContextConverterHolder.getCustomConvertersSize());
+		ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		ormContextConverter = ormContextConverters.next();
 		assertEquals("Foo2", ormContextConverter.getConverterClass());
 		assertEquals("myConverter2", ormContextConverter.getName());
@@ -161,8 +161,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals("myConverter", resourceEntityMappings.getConverters().get(0).getName());
 		assertEquals("Foo2", resourceEntityMappings.getConverters().get(1).getClassName());
 		assertEquals("myConverter2", resourceEntityMappings.getConverters().get(1).getName());
-		assertEquals(2, ormContextConverterHolder.customConvertersSize());
-		ormContextConverters = ormContextConverterHolder.customConverters();
+		assertEquals(2, ormContextConverterHolder.getCustomConvertersSize());
+		ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		ormContextConverter = ormContextConverters.next();
 		assertEquals("Foo", ormContextConverter.getConverterClass());
 		assertEquals("myConverter", ormContextConverter.getName());
@@ -177,8 +177,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, resourceEntityMappings.getConverters().size());
 		assertEquals("Foo2", resourceEntityMappings.getConverters().get(0).getClassName());
 		assertEquals("myConverter2", resourceEntityMappings.getConverters().get(0).getName());
-		assertEquals(1, ormContextConverterHolder.customConvertersSize());
-		ormContextConverters = ormContextConverterHolder.customConverters();
+		assertEquals(1, ormContextConverterHolder.getCustomConvertersSize());
+		ormContextConverters = ormContextConverterHolder.getCustomConverters().iterator();
 		ormContextConverter = ormContextConverters.next();
 		assertEquals("Foo2", ormContextConverter.getConverterClass());
 		assertEquals("myConverter2", ormContextConverter.getName());
@@ -187,8 +187,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the context model, check resource model
 		ormContextConverterHolder.removeCustomConverter(contextConverter2);
 		
-		assertEquals(0, ormContextConverterHolder.customConvertersSize());
-		assertFalse(ormContextConverterHolder.customConverters().hasNext());
+		assertEquals(0, ormContextConverterHolder.getCustomConvertersSize());
+		assertFalse(ormContextConverterHolder.getCustomConverters().iterator().hasNext());
 		assertEquals(0, resourceEntityMappings.getConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 	}
@@ -199,7 +199,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
 		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
-		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
+		assertEquals(0, ormContextConverterHolder.getTypeConvertersSize());
 		assertEquals(0, resourceEntityMappings.getTypeConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));	
 		
@@ -209,8 +209,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		resourceTypeConverter.setDataType("Foo");
 		resourceTypeConverter.setName("myTypeConverter");
 		
-		assertEquals(1, ormContextConverterHolder.typeConvertersSize());
-		ListIterator<EclipseLinkTypeConverter> ormContextTypeConverters = ormContextConverterHolder.typeConverters();
+		assertEquals(1, ormContextConverterHolder.getTypeConvertersSize());
+		ListIterator<? extends EclipseLinkTypeConverter> ormContextTypeConverters = ormContextConverterHolder.getTypeConverters().iterator();
 		EclipseLinkTypeConverter ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter", ormContextTypeConverter.getName());
@@ -223,8 +223,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		resourceTypeConverter2.setDataType("Foo2");
 		resourceTypeConverter2.setName("myTypeConverter2");
 		
-		assertEquals(2, ormContextConverterHolder.typeConvertersSize());
-		ormContextTypeConverters = ormContextConverterHolder.typeConverters();
+		assertEquals(2, ormContextConverterHolder.getTypeConvertersSize());
+		ormContextTypeConverters = ormContextConverterHolder.getTypeConverters().iterator();
 		ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo2", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter2", ormContextTypeConverter.getName());
@@ -237,8 +237,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//move a converter in the resource model, check context model
 		resourceEntityMappings.getTypeConverters().move(0, 1);
 		
-		assertEquals(2, ormContextConverterHolder.typeConvertersSize());
-		ormContextTypeConverters = ormContextConverterHolder.typeConverters();
+		assertEquals(2, ormContextConverterHolder.getTypeConvertersSize());
+		ormContextTypeConverters = ormContextConverterHolder.getTypeConverters().iterator();
 		ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter", ormContextTypeConverter.getName());
@@ -251,8 +251,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the resource model, check context model
 		resourceEntityMappings.getTypeConverters().remove(0);
 		
-		assertEquals(1, ormContextConverterHolder.typeConvertersSize());
-		ormContextTypeConverters = ormContextConverterHolder.typeConverters();
+		assertEquals(1, ormContextConverterHolder.getTypeConvertersSize());
+		ormContextTypeConverters = ormContextConverterHolder.getTypeConverters().iterator();
 		ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo2", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter2", ormContextTypeConverter.getName());
@@ -262,8 +262,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the resource model, check context model
 		resourceEntityMappings.getTypeConverters().remove(resourceTypeConverter2);
 		
-		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
-		assertFalse(ormContextConverterHolder.typeConverters().hasNext());
+		assertEquals(0, ormContextConverterHolder.getTypeConvertersSize());
+		assertFalse(ormContextConverterHolder.getTypeConverters().iterator().hasNext());
 		assertEquals(0, resourceEntityMappings.getTypeConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));	
 	}
@@ -274,7 +274,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
 		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
-		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
+		assertEquals(0, ormContextConverterHolder.getTypeConvertersSize());
 		assertEquals(0, resourceEntityMappings.getTypeConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
@@ -286,8 +286,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, resourceEntityMappings.getTypeConverters().size());
 		assertEquals("Foo", resourceEntityMappings.getTypeConverters().get(0).getDataType());
 		assertEquals("myTypeConverter", resourceEntityMappings.getTypeConverters().get(0).getName());
-		assertEquals(1, ormContextConverterHolder.typeConvertersSize());
-		ListIterator<EclipseLinkTypeConverter> ormContextTypeConverters = ormContextConverterHolder.typeConverters();
+		assertEquals(1, ormContextConverterHolder.getTypeConvertersSize());
+		ListIterator<? extends EclipseLinkTypeConverter> ormContextTypeConverters = ormContextConverterHolder.getTypeConverters().iterator();
 		EclipseLinkTypeConverter ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter", ormContextTypeConverter.getName());
@@ -303,8 +303,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals("myTypeConverter2", resourceEntityMappings.getTypeConverters().get(0).getName());
 		assertEquals("Foo", resourceEntityMappings.getTypeConverters().get(1).getDataType());
 		assertEquals("myTypeConverter", resourceEntityMappings.getTypeConverters().get(1).getName());
-		assertEquals(2, ormContextConverterHolder.typeConvertersSize());
-		ormContextTypeConverters = ormContextConverterHolder.typeConverters();
+		assertEquals(2, ormContextConverterHolder.getTypeConvertersSize());
+		ormContextTypeConverters = ormContextConverterHolder.getTypeConverters().iterator();
 		ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo2", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter2", ormContextTypeConverter.getName());
@@ -321,8 +321,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals("myTypeConverter", resourceEntityMappings.getTypeConverters().get(0).getName());
 		assertEquals("Foo2", resourceEntityMappings.getTypeConverters().get(1).getDataType());
 		assertEquals("myTypeConverter2", resourceEntityMappings.getTypeConverters().get(1).getName());
-		assertEquals(2, ormContextConverterHolder.typeConvertersSize());
-		ormContextTypeConverters = ormContextConverterHolder.typeConverters();
+		assertEquals(2, ormContextConverterHolder.getTypeConvertersSize());
+		ormContextTypeConverters = ormContextConverterHolder.getTypeConverters().iterator();
 		ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter", ormContextTypeConverter.getName());
@@ -337,8 +337,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, resourceEntityMappings.getTypeConverters().size());
 		assertEquals("Foo2", resourceEntityMappings.getTypeConverters().get(0).getDataType());
 		assertEquals("myTypeConverter2", resourceEntityMappings.getTypeConverters().get(0).getName());
-		assertEquals(1, ormContextConverterHolder.typeConvertersSize());
-		ormContextTypeConverters = ormContextConverterHolder.typeConverters();
+		assertEquals(1, ormContextConverterHolder.getTypeConvertersSize());
+		ormContextTypeConverters = ormContextConverterHolder.getTypeConverters().iterator();
 		ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo2", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter2", ormContextTypeConverter.getName());
@@ -347,8 +347,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the context model, check resource model
 		ormContextConverterHolder.removeTypeConverter(contextTypeConverter2);
 		
-		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
-		assertFalse(ormContextConverterHolder.typeConverters().hasNext());
+		assertEquals(0, ormContextConverterHolder.getTypeConvertersSize());
+		assertFalse(ormContextConverterHolder.getTypeConverters().iterator().hasNext());
 		assertEquals(0, resourceEntityMappings.getTypeConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 	}
@@ -359,7 +359,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
 		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
-		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
+		assertEquals(0, ormContextConverterHolder.getObjectTypeConvertersSize());
 		assertEquals(0, resourceEntityMappings.getObjectTypeConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));		
 		
@@ -369,8 +369,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		resourceObjectTypeConverter.setDataType("Foo");
 		resourceObjectTypeConverter.setName("myObjectTypeConverter");
 		
-		assertEquals(1, ormContextConverterHolder.objectTypeConvertersSize());
-		ListIterator<EclipseLinkObjectTypeConverter> ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
+		assertEquals(1, ormContextConverterHolder.getObjectTypeConvertersSize());
+		ListIterator<? extends EclipseLinkObjectTypeConverter> ormContextObjectTypeConverters = ormContextConverterHolder.getObjectTypeConverters().iterator();
 		EclipseLinkObjectTypeConverter ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter", ormContextObjectTypeConverter.getName());
@@ -383,8 +383,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		resourceObjectTypeConverter2.setDataType("Foo2");
 		resourceObjectTypeConverter2.setName("myObjectTypeConverter2");
 		
-		assertEquals(2, ormContextConverterHolder.objectTypeConvertersSize());
-		ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
+		assertEquals(2, ormContextConverterHolder.getObjectTypeConvertersSize());
+		ormContextObjectTypeConverters = ormContextConverterHolder.getObjectTypeConverters().iterator();
 		ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo2", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter2", ormContextObjectTypeConverter.getName());
@@ -397,8 +397,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//move a converter in the resource model, check context model
 		resourceEntityMappings.getObjectTypeConverters().move(0, 1);
 		
-		assertEquals(2, ormContextConverterHolder.objectTypeConvertersSize());
-		ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
+		assertEquals(2, ormContextConverterHolder.getObjectTypeConvertersSize());
+		ormContextObjectTypeConverters = ormContextConverterHolder.getObjectTypeConverters().iterator();
 		ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter", ormContextObjectTypeConverter.getName());
@@ -411,8 +411,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the resource model, check context model
 		resourceEntityMappings.getObjectTypeConverters().remove(0);
 		
-		assertEquals(1, ormContextConverterHolder.objectTypeConvertersSize());
-		ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
+		assertEquals(1, ormContextConverterHolder.getObjectTypeConvertersSize());
+		ormContextObjectTypeConverters = ormContextConverterHolder.getObjectTypeConverters().iterator();
 		ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo2", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter2", ormContextObjectTypeConverter.getName());
@@ -422,8 +422,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the resource model, check context model
 		resourceEntityMappings.getObjectTypeConverters().remove(resourceObjectTypeConverter2);
 		
-		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
-		assertFalse(ormContextConverterHolder.objectTypeConverters().hasNext());
+		assertEquals(0, ormContextConverterHolder.getObjectTypeConvertersSize());
+		assertFalse(ormContextConverterHolder.getObjectTypeConverters().iterator().hasNext());
 		assertEquals(0, resourceEntityMappings.getObjectTypeConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));	
 	}
@@ -434,7 +434,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
 		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
-		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
+		assertEquals(0, ormContextConverterHolder.getObjectTypeConvertersSize());
 		assertEquals(0, resourceEntityMappings.getObjectTypeConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
@@ -446,8 +446,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, resourceEntityMappings.getObjectTypeConverters().size());
 		assertEquals("Foo", resourceEntityMappings.getObjectTypeConverters().get(0).getDataType());
 		assertEquals("myObjectTypeConverter", resourceEntityMappings.getObjectTypeConverters().get(0).getName());
-		assertEquals(1, ormContextConverterHolder.objectTypeConvertersSize());
-		ListIterator<EclipseLinkObjectTypeConverter> ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
+		assertEquals(1, ormContextConverterHolder.getObjectTypeConvertersSize());
+		ListIterator<? extends EclipseLinkObjectTypeConverter> ormContextObjectTypeConverters = ormContextConverterHolder.getObjectTypeConverters().iterator();
 		EclipseLinkObjectTypeConverter ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter", ormContextObjectTypeConverter.getName());
@@ -463,8 +463,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals("myObjectTypeConverter2", resourceEntityMappings.getObjectTypeConverters().get(0).getName());
 		assertEquals("Foo", resourceEntityMappings.getObjectTypeConverters().get(1).getDataType());
 		assertEquals("myObjectTypeConverter", resourceEntityMappings.getObjectTypeConverters().get(1).getName());
-		assertEquals(2, ormContextConverterHolder.objectTypeConvertersSize());
-		ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
+		assertEquals(2, ormContextConverterHolder.getObjectTypeConvertersSize());
+		ormContextObjectTypeConverters = ormContextConverterHolder.getObjectTypeConverters().iterator();
 		ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo2", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter2", ormContextObjectTypeConverter.getName());
@@ -481,8 +481,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals("myObjectTypeConverter", resourceEntityMappings.getObjectTypeConverters().get(0).getName());
 		assertEquals("Foo2", resourceEntityMappings.getObjectTypeConverters().get(1).getDataType());
 		assertEquals("myObjectTypeConverter2", resourceEntityMappings.getObjectTypeConverters().get(1).getName());
-		assertEquals(2, ormContextConverterHolder.objectTypeConvertersSize());
-		ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
+		assertEquals(2, ormContextConverterHolder.getObjectTypeConvertersSize());
+		ormContextObjectTypeConverters = ormContextConverterHolder.getObjectTypeConverters().iterator();
 		ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter", ormContextObjectTypeConverter.getName());
@@ -497,8 +497,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, resourceEntityMappings.getObjectTypeConverters().size());
 		assertEquals("Foo2", resourceEntityMappings.getObjectTypeConverters().get(0).getDataType());
 		assertEquals("myObjectTypeConverter2", resourceEntityMappings.getObjectTypeConverters().get(0).getName());
-		assertEquals(1, ormContextConverterHolder.objectTypeConvertersSize());
-		ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
+		assertEquals(1, ormContextConverterHolder.getObjectTypeConvertersSize());
+		ormContextObjectTypeConverters = ormContextConverterHolder.getObjectTypeConverters().iterator();
 		ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo2", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter2", ormContextObjectTypeConverter.getName());
@@ -507,8 +507,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the context model, check resource model
 		ormContextConverterHolder.removeObjectTypeConverter(contextObjectTypeConverter2);
 		
-		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
-		assertFalse(ormContextConverterHolder.objectTypeConverters().hasNext());
+		assertEquals(0, ormContextConverterHolder.getObjectTypeConvertersSize());
+		assertFalse(ormContextConverterHolder.getObjectTypeConverters().iterator().hasNext());
 		assertEquals(0, resourceEntityMappings.getObjectTypeConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 	}
@@ -519,7 +519,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
 		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
-		assertEquals(0, ormContextConverterHolder.structConvertersSize());
+		assertEquals(0, ormContextConverterHolder.getStructConvertersSize());
 		assertEquals(0, resourceEntityMappings.getStructConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));	
 		
@@ -529,8 +529,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		resourceStructConverter.setConverter("Foo");
 		resourceStructConverter.setName("myStructConverter");
 		
-		assertEquals(1, ormContextConverterHolder.structConvertersSize());
-		ListIterator<EclipseLinkStructConverter> ormContextStructConverters = ormContextConverterHolder.structConverters();
+		assertEquals(1, ormContextConverterHolder.getStructConvertersSize());
+		ListIterator<? extends EclipseLinkStructConverter> ormContextStructConverters = ormContextConverterHolder.getStructConverters().iterator();
 		EclipseLinkStructConverter ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter", ormContextStructConverter.getName());
@@ -543,8 +543,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		resourceStructConverter2.setConverter("Foo2");
 		resourceStructConverter2.setName("myStructConverter2");
 		
-		assertEquals(2, ormContextConverterHolder.structConvertersSize());
-		ormContextStructConverters = ormContextConverterHolder.structConverters();
+		assertEquals(2, ormContextConverterHolder.getStructConvertersSize());
+		ormContextStructConverters = ormContextConverterHolder.getStructConverters().iterator();
 		ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo2", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter2", ormContextStructConverter.getName());
@@ -557,8 +557,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//move a converter in the resource model, check context model
 		resourceEntityMappings.getStructConverters().move(0, 1);
 		
-		assertEquals(2, ormContextConverterHolder.structConvertersSize());
-		ormContextStructConverters = ormContextConverterHolder.structConverters();
+		assertEquals(2, ormContextConverterHolder.getStructConvertersSize());
+		ormContextStructConverters = ormContextConverterHolder.getStructConverters().iterator();
 		ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter", ormContextStructConverter.getName());
@@ -571,8 +571,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the resource model, check context model
 		resourceEntityMappings.getStructConverters().remove(0);
 		
-		assertEquals(1, ormContextConverterHolder.structConvertersSize());
-		ormContextStructConverters = ormContextConverterHolder.structConverters();
+		assertEquals(1, ormContextConverterHolder.getStructConvertersSize());
+		ormContextStructConverters = ormContextConverterHolder.getStructConverters().iterator();
 		ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo2", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter2", ormContextStructConverter.getName());
@@ -582,8 +582,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the resource model, check context model
 		resourceEntityMappings.getStructConverters().remove(resourceStructConverter2);
 		
-		assertEquals(0, ormContextConverterHolder.structConvertersSize());
-		assertFalse(ormContextConverterHolder.structConverters().hasNext());
+		assertEquals(0, ormContextConverterHolder.getStructConvertersSize());
+		assertFalse(ormContextConverterHolder.getStructConverters().iterator().hasNext());
 		assertEquals(0, resourceEntityMappings.getStructConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));	
 	}
@@ -594,7 +594,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
 		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
-		assertEquals(0, ormContextConverterHolder.structConvertersSize());
+		assertEquals(0, ormContextConverterHolder.getStructConvertersSize());
 		assertEquals(0, resourceEntityMappings.getStructConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
@@ -606,8 +606,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, resourceEntityMappings.getStructConverters().size());
 		assertEquals("Foo", resourceEntityMappings.getStructConverters().get(0).getConverter());
 		assertEquals("myStructConverter", resourceEntityMappings.getStructConverters().get(0).getName());
-		assertEquals(1, ormContextConverterHolder.structConvertersSize());
-		ListIterator<EclipseLinkStructConverter> ormContextStructConverters = ormContextConverterHolder.structConverters();
+		assertEquals(1, ormContextConverterHolder.getStructConvertersSize());
+		ListIterator<? extends EclipseLinkStructConverter> ormContextStructConverters = ormContextConverterHolder.getStructConverters().iterator();
 		EclipseLinkStructConverter ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter", ormContextStructConverter.getName());
@@ -623,8 +623,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals("myStructConverter2", resourceEntityMappings.getStructConverters().get(0).getName());
 		assertEquals("Foo", resourceEntityMappings.getStructConverters().get(1).getConverter());
 		assertEquals("myStructConverter", resourceEntityMappings.getStructConverters().get(1).getName());
-		assertEquals(2, ormContextConverterHolder.structConvertersSize());
-		ormContextStructConverters = ormContextConverterHolder.structConverters();
+		assertEquals(2, ormContextConverterHolder.getStructConvertersSize());
+		ormContextStructConverters = ormContextConverterHolder.getStructConverters().iterator();
 		ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo2", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter2", ormContextStructConverter.getName());
@@ -641,8 +641,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals("myStructConverter", resourceEntityMappings.getStructConverters().get(0).getName());
 		assertEquals("Foo2", resourceEntityMappings.getStructConverters().get(1).getConverter());
 		assertEquals("myStructConverter2", resourceEntityMappings.getStructConverters().get(1).getName());
-		assertEquals(2, ormContextConverterHolder.structConvertersSize());
-		ormContextStructConverters = ormContextConverterHolder.structConverters();
+		assertEquals(2, ormContextConverterHolder.getStructConvertersSize());
+		ormContextStructConverters = ormContextConverterHolder.getStructConverters().iterator();
 		ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter", ormContextStructConverter.getName());
@@ -657,8 +657,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, resourceEntityMappings.getStructConverters().size());
 		assertEquals("Foo2", resourceEntityMappings.getStructConverters().get(0).getConverter());
 		assertEquals("myStructConverter2", resourceEntityMappings.getStructConverters().get(0).getName());
-		assertEquals(1, ormContextConverterHolder.structConvertersSize());
-		ormContextStructConverters = ormContextConverterHolder.structConverters();
+		assertEquals(1, ormContextConverterHolder.getStructConvertersSize());
+		ormContextStructConverters = ormContextConverterHolder.getStructConverters().iterator();
 		ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo2", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter2", ormContextStructConverter.getName());
@@ -667,8 +667,8 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		//remove a converter from the context model, check resource model
 		ormContextConverterHolder.removeStructConverter(contextStructConverter2);
 		
-		assertEquals(0, ormContextConverterHolder.structConvertersSize());
-		assertFalse(ormContextConverterHolder.structConverters().hasNext());
+		assertEquals(0, ormContextConverterHolder.getStructConvertersSize());
+		assertFalse(ormContextConverterHolder.getStructConverters().iterator().hasNext());
 		assertEquals(0, resourceEntityMappings.getStructConverters().size());
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 	}

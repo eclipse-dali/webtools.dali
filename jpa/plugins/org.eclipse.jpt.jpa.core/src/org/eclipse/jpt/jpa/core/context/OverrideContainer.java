@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import java.util.Iterator;
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
@@ -93,13 +93,12 @@ public interface OverrideContainer
 	/**
 	 * Return the overrides, both <em>specified</em> and <em>virtual</em>.
 	 */
-	// TODO bjv change to an iterable
-	ListIterator<? extends ReadOnlyOverride> overrides();
+	ListIterable<? extends ReadOnlyOverride> getOverrides();
 
 	/**
 	 * Return the number of overrides, both <em>specified</em> and <em>virtual</em>.
 	 */
-	int overridesSize();
+	int getOverridesSize();
 
 	/**
 	 * Return the override with the specified name,
@@ -121,13 +120,13 @@ public interface OverrideContainer
 	 * <em>Specified</em> overrides can be remvoed via
 	 * {@link Override_#convertToVirtual()}.
 	 */
-	ListIterator<? extends Override_> specifiedOverrides();
+	ListIterable<? extends Override_> getSpecifiedOverrides();
 		String SPECIFIED_OVERRIDES_LIST = "specifiedOverrides"; //$NON-NLS-1$
 
 	/**
 	 * Return the number of <em>specified</em> overrides.
 	 */
-	int specifiedOverridesSize();
+	int getSpecifiedOverridesSize();
 
 	/**
 	 * Return the <em>specified</em> override at the specified index.
@@ -157,14 +156,14 @@ public interface OverrideContainer
 	/**
 	 * Return the <em>virtual</em> overrides (i.e. those not <em>specified</em>).
 	 */
-	// TODO change to a collection?
-	ListIterator<? extends VirtualOverride> virtualOverrides();
+	// TODO change to a Iterable instead of ListIterable?
+	ListIterable<? extends VirtualOverride> getVirtualOverrides();
 		String VIRTUAL_OVERRIDES_LIST = "virtualOverrides"; //$NON-NLS-1$
 
 	/**
 	 * Return the number of <em>virtual</em> overrides.
 	 */
-	int virtualOverridesSize();
+	int getVirtualOverridesSize();
 
 	/**
 	 * Convert the specified <em>virtual</em> override to <em>specified</em>.

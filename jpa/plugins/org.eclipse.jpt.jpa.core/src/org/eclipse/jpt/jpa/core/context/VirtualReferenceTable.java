@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Virtual reference table
@@ -23,8 +23,8 @@ import java.util.ListIterator;
 public interface VirtualReferenceTable
 	extends VirtualTable, ReadOnlyReferenceTable
 {
-	ListIterator<? extends VirtualJoinColumn> joinColumns();
-	ListIterator<? extends VirtualJoinColumn> specifiedJoinColumns();
+	ListIterable<? extends VirtualJoinColumn> getJoinColumns();
+	ListIterable<? extends VirtualJoinColumn> getSpecifiedJoinColumns();
 	VirtualJoinColumn getSpecifiedJoinColumn(int index);
 	VirtualJoinColumn getDefaultJoinColumn();
 

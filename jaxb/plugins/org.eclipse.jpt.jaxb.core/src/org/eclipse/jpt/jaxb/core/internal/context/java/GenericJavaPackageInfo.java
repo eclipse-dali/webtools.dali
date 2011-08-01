@@ -15,11 +15,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
@@ -221,9 +223,9 @@ public class GenericJavaPackageInfo
 		this.xmlSchemaTypeContainer.update();
 	}
 
-	@SuppressWarnings("unchecked")
 	protected ListIterable<XmlSchemaTypeAnnotation> getXmlSchemaTypeAnnotations() {
-		return (ListIterable<XmlSchemaTypeAnnotation>) this.resourcePackage.getAnnotations(XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		return new SubListIterableWrapper<NestableAnnotation, XmlSchemaTypeAnnotation>(
+				this.resourcePackage.getAnnotations(XmlSchemaTypeAnnotation.ANNOTATION_NAME));
 	}
 
 
@@ -268,9 +270,9 @@ public class GenericJavaPackageInfo
 		this.xmlJavaTypeAdapterContainer.synchronizeWithResourceModel();
 	}
 
-	@SuppressWarnings("unchecked")
 	protected ListIterable<XmlJavaTypeAdapterAnnotation> getXmlJavaTypeAdapterAnnotations() {
-		return (ListIterable<XmlJavaTypeAdapterAnnotation>) this.resourcePackage.getAnnotations(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		return new SubListIterableWrapper<NestableAnnotation, XmlJavaTypeAdapterAnnotation>(
+				this.resourcePackage.getAnnotations(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME));
 	}
 
 

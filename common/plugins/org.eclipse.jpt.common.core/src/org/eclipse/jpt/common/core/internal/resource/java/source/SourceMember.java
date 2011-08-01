@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -20,7 +21,7 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 
 /**
- * Java source member (annotations)
+ * Java source member (annotations, "persistable")
  */
 abstract class SourceMember<M extends Member>
 	extends SourceAnnotatedElement<M>
@@ -73,18 +74,32 @@ abstract class SourceMember<M extends Member>
 		}
 		for (Annotation annotation : this.getAnnotations()) {
 			if ( ! CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
-				this.annotations.remove(annotation);
+				if (annotationIsValidContainer(annotation.getAnnotationName())) {
+					this.annotationContainers.remove(getAnnotationProvider().getNestableAnnotationName(annotation.getAnnotationName()));
+				}
+				else {
+					this.annotations.remove(annotation);
+				}
 				annotation.removeAnnotation();
 			}
 		}
-		Annotation newPrimaryAnnotation = null;
-		if ((primaryAnnotationName != null) && (this.getAnnotation(primaryAnnotationName) == null)) {
+		//At this point the only thing remaining would be a standalone "nestable" annotation
+		Iterator<AnnotationContainer> containers = this.annotationContainers.values().iterator();
+		for (; containers.hasNext();) {
+			AnnotationContainer container = containers.next();
+			String nestedAnnotatioName = container.getNestedAnnotationName();
+			if ( ! CollectionTools.contains(annotationNames, nestedAnnotatioName)) {
+				containers.remove();
+				container.getNestedAnnotations().iterator().next().removeAnnotation();
+			}
+		}
+
+		Annotation newPrimaryAnnotation = this.getAnnotation(primaryAnnotationName);
+		if ((primaryAnnotationName != null) && (newPrimaryAnnotation == null)) {
 			newPrimaryAnnotation = this.buildAnnotation(primaryAnnotationName);
 			this.annotations.add(newPrimaryAnnotation);
 			newPrimaryAnnotation.newAnnotation();
 		}
-		// fire collection change event after all annotation changes are done
-		this.fireCollectionChanged(ANNOTATIONS_COLLECTION, this.annotations);
 		return newPrimaryAnnotation;
 	}
 

@@ -25,10 +25,11 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedPackage;
  */
 public final class SourcePackage
 	extends SourceAnnotatedElement<AnnotatedPackage>
-	implements JavaResourcePackage {
-	
+	implements JavaResourcePackage
+{
+
 	private String name;
-	
+
 	/**
 	 * construct package info
 	 */
@@ -45,17 +46,24 @@ public final class SourcePackage
 		jrpp.initialize(astRoot);
 		return jrpp;
 	}	
-	
+
 	private SourcePackage(
 			JavaResourceCompilationUnit parent,
 			AnnotatedPackage pack){
 		super(parent, pack);
 	}
-	
+
+
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.name = this.buildName(astRoot);
+	}
+
+	// ******** JavaResourceAnnotatedElement implementation ********
+	
+	public Kind getKind() {
+		return Kind.PACKAGE;
 	}
 
 
@@ -79,7 +87,7 @@ public final class SourcePackage
 		return (binding == null) ? null : binding.getName();
 	}
 
-	
+
 	// ********** Java changes **********
 
 	@Override
@@ -87,11 +95,9 @@ public final class SourcePackage
 		super.synchronizeWith(astRoot);
 		this.syncName(this.buildName(astRoot));
 	}
-	
 
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-
 }

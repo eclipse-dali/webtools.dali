@@ -10,8 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence;
 
 import java.util.List;
-import java.util.ListIterator;
-
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -72,11 +70,7 @@ public class GenericPersistence
 
 	// ********** persistence units **********
 
-	public ListIterator<PersistenceUnit> persistenceUnits() {
-		return this.getPersistenceUnits().iterator();
-	}
-
-	protected ListIterable<PersistenceUnit> getPersistenceUnits() {
+	public ListIterable<PersistenceUnit> getPersistenceUnits() {
 		return (this.persistenceUnit == null) ? EmptyListIterable.<PersistenceUnit>instance() : this.getPersistenceUnits_();
 	}
 
@@ -84,12 +78,12 @@ public class GenericPersistence
 		return new SingleElementListIterable<PersistenceUnit>(this.persistenceUnit);
 	}
 
-	public int persistenceUnitsSize() {
+	public int getPersistenceUnitsSize() {
 		return (this.persistenceUnit == null) ? 0 : 1;
 	}
 
 	public PersistenceUnit addPersistenceUnit() {
-		return this.addPersistenceUnit(this.persistenceUnitsSize());
+		return this.addPersistenceUnit(this.getPersistenceUnitsSize());
 	}
 
 	public PersistenceUnit addPersistenceUnit(int index) {

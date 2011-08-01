@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
@@ -229,7 +228,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		if (entity == null) {
 			return null;
 		}
-		for (ReadOnlyPersistentAttribute attribute : CollectionTools.iterable(entity.getPersistentType().allAttributes())) {
+		for (ReadOnlyPersistentAttribute attribute : entity.getPersistentType().getAllAttributes()) {
 			AttributeMapping mapping = attribute.getMapping();
 			if (this.isOwnedBy(mapping)) {
 				return (RelationshipMapping) mapping;

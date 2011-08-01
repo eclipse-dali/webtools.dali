@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
@@ -20,7 +22,6 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
@@ -181,7 +182,7 @@ public class OrmEclipseLinkEntityImpl
 
 	protected EclipseLinkClassExtractorAnnotation2_1 getClassExtractorAnnotation() {
 		if (this.getJavaTypeMappingForDefaults() != null) {
-			JavaResourcePersistentType jrpt = this.getJavaPersistentType().getResourcePersistentType();
+			JavaResourceType jrpt = this.getJavaPersistentType().getJavaResourceType();
 			return (EclipseLinkClassExtractorAnnotation2_1) jrpt.getAnnotation(EclipseLinkClassExtractorAnnotation2_1.ANNOTATION_NAME);
 		}
 		return null;
@@ -203,7 +204,7 @@ public class OrmEclipseLinkEntityImpl
 		return this.getXmlTypeMapping();
 	}
 
-	protected JavaResourcePersistentType getResourceClassExtractorPersistentType() {
+	protected JavaResourceAbstractType getResourceClassExtractorType() {
 		XmlClassReference classExtractorClassRef = this.getXmlClassExtractor();
 		if (classExtractorClassRef == null) {
 			return null;
@@ -214,16 +215,16 @@ public class OrmEclipseLinkEntityImpl
 			return null;
 		}
 
-		return this.getMappingFileRoot().resolveJavaResourcePersistentType(className);
+		return this.getMappingFileRoot().resolveJavaResourceType(className);
 	}
 
 	protected boolean classExtractorIsFor(String typeName) {
-		JavaResourcePersistentType classExtractorType = this.getResourceClassExtractorPersistentType();
+		JavaResourceAbstractType classExtractorType = this.getResourceClassExtractorType();
 		return (classExtractorType != null) && classExtractorType.getQualifiedName().equals(typeName);
 	}
 
 	protected boolean classExtractorIsIn(IPackageFragment packageFragment) {
-		JavaResourcePersistentType classExtractorType = this.getResourceClassExtractorPersistentType();
+		JavaResourceAbstractType classExtractorType = this.getResourceClassExtractorType();
 		return (classExtractorType != null) && classExtractorType.isIn(packageFragment);
 	}
 
@@ -325,6 +326,6 @@ public class OrmEclipseLinkEntityImpl
 
 	@Override
 	protected JptValidator buildTypeMappingValidator() {
-		return new EclipseLinkTypeMappingValidator(this, getJavaResourcePersistentType(), buildTextRangeResolver());
+		return new EclipseLinkTypeMappingValidator(this, getJavaResourceType(), buildTextRangeResolver());
 	}
 }

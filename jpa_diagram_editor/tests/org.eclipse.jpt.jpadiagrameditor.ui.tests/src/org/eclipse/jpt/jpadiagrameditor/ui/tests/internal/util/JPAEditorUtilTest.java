@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,16 +41,16 @@ import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IPeServiceUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants.ShapeType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.SizePosition;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants.ShapeType;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.eclipse.swt.graphics.Point;
 import org.junit.Test;
@@ -175,7 +175,7 @@ public class JPAEditorUtilTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 		
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("com.test.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.test.Customer");
 		assertNotNull(customerType);
 		
 		ICompilationUnit cu = createCompilationUnitFrom(customerFile);
@@ -233,7 +233,7 @@ public class JPAEditorUtilTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 		
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("com.test.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.test.Customer");
 		assertNotNull(customerType);
 		
 		ICompilationUnit cu = createCompilationUnitFrom(customerFile);
@@ -267,7 +267,7 @@ public class JPAEditorUtilTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 		
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("com.test.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.test.Customer");
 		assertNotNull(customerType);
 		
 		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());

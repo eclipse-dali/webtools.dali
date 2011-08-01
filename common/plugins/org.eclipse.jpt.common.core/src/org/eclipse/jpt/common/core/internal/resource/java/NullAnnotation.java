@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 /**
  * Simplify null annotation classes
  */
-public abstract class NullAnnotation
+public abstract class NullAnnotation<A extends Annotation>
 	extends AbstractJavaResourceNode
 	implements Annotation
 {
@@ -40,11 +40,23 @@ public abstract class NullAnnotation
 		throw new UnsupportedOperationException();
 	}
 
+	public boolean isMappingAnnotation() {
+		return false;
+	}
+
 	public void newAnnotation() {
 		throw new UnsupportedOperationException();
 	}
 
 	public void removeAnnotation() {
+		throw new UnsupportedOperationException();
+	}
+
+	public void moveAnnotation(int index) {
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean isUnset() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -70,8 +82,13 @@ public abstract class NullAnnotation
 	 * Pre-condition: The annotation's parent must be a persistent member
 	 * (type or attribute).
 	 */
-	protected Annotation addAnnotation() {
-		return this.getAnnotatedElement().addAnnotation(this.getAnnotationName());
+	protected A addAnnotation() {
+		return this.addAnnotation_();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected A addAnnotation_() {
+		return (A) this.getAnnotatedElement().addAnnotation(this.getAnnotationName());
 	}
 	
 }

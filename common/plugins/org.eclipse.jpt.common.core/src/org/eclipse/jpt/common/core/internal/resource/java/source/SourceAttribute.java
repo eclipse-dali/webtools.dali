@@ -101,8 +101,17 @@ abstract class SourceAttribute<A extends Attribute>
 	}
 
 	
-	// ******** JavaResourcePersistentAttribute implementation ********
+	// ******** JavaResourceAttribute implementation ********
 	
+	@Override
+	public JavaResourceType getParent() {
+		return (JavaResourceType) super.getParent();
+	}
+
+	public JavaResourceType getResourceType() {
+		return this.getParent();
+	}
+
 	public String getName() {
 		return this.annotatedElement.getAttributeName();
 	}

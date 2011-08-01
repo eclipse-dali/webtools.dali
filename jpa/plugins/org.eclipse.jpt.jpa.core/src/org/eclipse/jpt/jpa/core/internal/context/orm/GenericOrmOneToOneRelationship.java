@@ -197,7 +197,7 @@ public class GenericOrmOneToOneRelationship
 
 	public boolean mayHaveDefaultJoinColumn() {
 		return (this.mappedByStrategy.getMappedByAttribute() == null) &&
-				(this.primaryKeyJoinColumnStrategy.primaryKeyJoinColumnsSize() == 0) &&
+				(this.primaryKeyJoinColumnStrategy.getPrimaryKeyJoinColumnsSize() == 0) &&
 				(this.joinTableStrategy.getJoinTable() == null);
 	}
 

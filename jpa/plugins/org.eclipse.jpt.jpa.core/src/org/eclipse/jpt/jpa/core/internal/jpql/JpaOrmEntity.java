@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpql;
 
-import java.util.ListIterator;
 import java.util.Map;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
@@ -50,8 +49,7 @@ final class JpaOrmEntity extends JpaEntity {
 
 		if (mapping instanceof Entity) {
 			Entity entity = (Entity) mapping;
-			for (ListIterator<NamedQuery> iter = entity.getQueryContainer().namedQueries(); iter.hasNext(); ) {
-				NamedQuery namedQuery = iter.next();
+			for (NamedQuery namedQuery : entity.getQueryContainer().getNamedQueries()) {
 				queries.put(namedQuery.getName(), buildQuery(provider, namedQuery));
 			}
 		}

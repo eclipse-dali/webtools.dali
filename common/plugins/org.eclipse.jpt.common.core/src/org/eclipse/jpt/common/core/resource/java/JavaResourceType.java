@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,7 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
+
 
 /**
  * Java source code or binary class or interface.
@@ -43,6 +44,23 @@ public interface JavaResourceType
 	boolean hasNoArgConstructor();
 		String NO_ARG_CONSTRUCTOR_PROPERTY = "noArgConstructor"; //$NON-NLS-1$
 
+	/**
+	 * Return whether the type has a private no-arg constructor
+	 */
+	boolean hasPrivateNoArgConstructor();
+		String PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY = "privateNoArgConstructor"; //$NON-NLS-1$
+
+	/**
+	 * Return whether the type has any field that have relevant annotations
+	 * on them (which can be used to infer the type's access type).
+	 */
+	boolean hasAnyAnnotatedFields();
+
+	/**
+	 * Return whether the type has any field that have relevant annotations
+	 * on them (which can be used to infer the type's access type).
+	 */
+	boolean hasAnyAnnotatedMethods();
 
 	// ********** fields **********
 

@@ -68,7 +68,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getName());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
+		assertFalse(ormJoinTable.getSpecifiedJoinColumns().iterator().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -126,7 +126,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getReferencedColumnName());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
+		assertFalse(ormJoinTable.getSpecifiedJoinColumns().iterator().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -184,7 +184,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getColumnDefinition());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
+		assertFalse(ormJoinTable.getSpecifiedJoinColumns().iterator().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -242,7 +242,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getTable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
+		assertFalse(ormJoinTable.getSpecifiedJoinColumns().iterator().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -300,7 +300,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, joinColumnResource.getNullable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
+		assertFalse(ormJoinTable.getSpecifiedJoinColumns().iterator().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -358,7 +358,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, joinColumnResource.getUpdatable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
+		assertFalse(ormJoinTable.getSpecifiedJoinColumns().iterator().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -416,7 +416,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, joinColumnResource.getInsertable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
+		assertFalse(ormJoinTable.getSpecifiedJoinColumns().iterator().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -474,7 +474,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, joinColumnResource.getUnique());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
+		assertFalse(ormJoinTable.getSpecifiedJoinColumns().iterator().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	

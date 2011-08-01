@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,15 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalType;
 
@@ -27,7 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.java.TemporalType;
  * javax.persistence.MapKeyTemporal
  */
 public abstract class SourceBaseTemporalAnnotation
-	extends SourceAnnotation<Attribute>
+	extends SourceAnnotation
 	implements TemporalAnnotation
 {
 	protected final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
@@ -35,10 +36,10 @@ public abstract class SourceBaseTemporalAnnotation
 	private TemporalType value;
 
 
-	protected SourceBaseTemporalAnnotation(JavaResourceNode parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
-		super(parent, attribute, daa);
+	protected SourceBaseTemporalAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.valueDeclarationAdapter = new EnumDeclarationAnnotationElementAdapter(daa, getValueElementName());
-		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, this.valueDeclarationAdapter);
+		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, this.valueDeclarationAdapter);
 	}
 
 	public void initialize(CompilationUnit astRoot) {

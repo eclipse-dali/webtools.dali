@@ -13,7 +13,6 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
@@ -73,14 +72,14 @@ public class GenericJavaUniqueConstraint
 	}
 
 	protected void initializeColumnNames() {
-		for (Iterator<String> stream = this.uniqueConstraintAnnotation.columnNames(); stream.hasNext(); ) {
-			this.columnNames.add(stream.next());
+		for (String columnName : this.getResourceColumnNames()) {
+			this.columnNames.add(columnName);
 		}
 	}
 
 	@Override
 	protected Iterable<String> getResourceColumnNames() {
-		return CollectionTools.iterable(this.uniqueConstraintAnnotation.columnNames());
+		return this.uniqueConstraintAnnotation.getColumnNames();
 	}
 
 	// ********** Java completion proposals **********

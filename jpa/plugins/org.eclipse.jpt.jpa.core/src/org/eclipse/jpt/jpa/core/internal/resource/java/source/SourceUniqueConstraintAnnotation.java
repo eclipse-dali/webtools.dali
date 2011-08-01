@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,44 +9,41 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.NestableUniqueConstraintAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
 /**
  * <code>javax.persistence.UniqueConstraint</code>
  */
 public final class SourceUniqueConstraintAnnotation
-	extends SourceAnnotation<Member>
-	implements NestableUniqueConstraintAnnotation
+	extends SourceAnnotation
+	implements UniqueConstraintAnnotation
 {
 	private DeclarationAnnotationElementAdapter<String[]> columnNamesDeclarationAdapter;
 	private AnnotationElementAdapter<String[]> columnNamesAdapter;
 	private final Vector<String> columnNames = new Vector<String>();
 
 
-	public SourceUniqueConstraintAnnotation(JavaResourceNode parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
-		super(parent, member, idaa, new ElementIndexedAnnotationAdapter(member, idaa));
+	public SourceUniqueConstraintAnnotation(JavaResourceNode parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
+		super(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 		this.columnNamesDeclarationAdapter = buildColumnNamesDeclarationAdapter();
 		this.columnNamesAdapter = buildColumnNamesAdapter();
 	}
@@ -67,16 +64,16 @@ public final class SourceUniqueConstraintAnnotation
 	// ********** UniqueConstraintAnnotation implementation **********
 
 	// ***** column names
-	public ListIterator<String> columnNames() {
-		return new CloneListIterator<String>(this.columnNames);
+	public ListIterable<String> getColumnNames() {
+		return new LiveCloneListIterable<String>(this.columnNames);
 	}
 
-	private Iterable<String> getColumnNames() {
-		return new LiveCloneIterable<String>(this.columnNames);
-	}
-
-	public int columnNamesSize() {
+	public int getColumnNamesSize() {
 		return this.columnNames.size();
+	}
+
+	public String columnNameAt(int index) {
+		return this.columnNames.elementAt(index);
 	}
 
 	public void addColumnName(String columnName) {
@@ -144,49 +141,12 @@ public final class SourceUniqueConstraintAnnotation
 	}
 
 
-	// ********** NestableAnnotation implementation **********
-
-	public void moveAnnotation(int newIndex) {
-		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
-	}
-
-
 	// ********** misc **********
 
 	@Override
 	public boolean isUnset() {
 		return super.isUnset() &&
 				this.columnNames.isEmpty();
-	}
-
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.columnNamesDeclarationAdapter = buildColumnNamesDeclarationAdapter();
-		this.columnNamesAdapter = buildColumnNamesAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-
-		List<String> columnNamesState = new ArrayList<String>(this.columnNames.size());
-		for (String columnName : this.getColumnNames()) {
-			columnNamesState.add(columnName);
-		}
-		map.put(COLUMN_NAMES_LIST, columnNamesState);
-		this.columnNames.clear();
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-
-		@SuppressWarnings("unchecked")
-		List<String> columnNamesState = (List<String>) map.get(COLUMN_NAMES_LIST);
-		for (String columnName : columnNamesState) {
-			this.addColumnName(columnName);
-		}
 	}
 
 	@Override

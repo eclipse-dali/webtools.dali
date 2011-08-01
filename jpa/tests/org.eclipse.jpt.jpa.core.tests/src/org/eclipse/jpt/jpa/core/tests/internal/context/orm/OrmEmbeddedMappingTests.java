@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -337,7 +337,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals(3, embeddedResource.getAttributeOverrides().size());		
 		
 		attributeOverrideContainer.moveSpecifiedOverride(2, 0);
-		ListIterator<OrmAttributeOverride> attributeOverrides = attributeOverrideContainer.specifiedOverrides();
+		ListIterator<OrmAttributeOverride> attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
@@ -348,7 +348,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 
 
 		attributeOverrideContainer.moveSpecifiedOverride(0, 1);
-		attributeOverrides = attributeOverrideContainer.specifiedOverrides();
+		attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
@@ -373,39 +373,39 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		embeddedResource.getAttributeOverrides().get(1).setName("BAR");
 		embeddedResource.getAttributeOverrides().get(2).setName("BAZ");
 
-		ListIterator<OrmAttributeOverride> attributeOverrides = attributeOverrideContainer.specifiedOverrides();
+		ListIterator<OrmAttributeOverride> attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 		
 		embeddedResource.getAttributeOverrides().move(2, 0);
-		attributeOverrides = attributeOverrideContainer.specifiedOverrides();
+		attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 
 		embeddedResource.getAttributeOverrides().move(0, 1);
-		attributeOverrides = attributeOverrideContainer.specifiedOverrides();
+		attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 
 		embeddedResource.getAttributeOverrides().remove(1);
-		attributeOverrides = attributeOverrideContainer.specifiedOverrides();
+		attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 
 		embeddedResource.getAttributeOverrides().remove(1);
-		attributeOverrides = attributeOverrideContainer.specifiedOverrides();
+		attributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 		
 		embeddedResource.getAttributeOverrides().remove(0);
-		assertFalse(attributeOverrideContainer.specifiedOverrides().hasNext());
+		assertFalse(attributeOverrideContainer.getSpecifiedOverrides().iterator().hasNext());
 	}
 	
 	
@@ -416,17 +416,17 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "foo");
-		assertEquals(3, ormPersistentType.virtualAttributesSize());
+		assertEquals(3, ormPersistentType.getVirtualAttributesSize());
 		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();
 		OrmAttributeOverrideContainer attributeOverrideContainer = ormEmbeddedMapping.getAttributeOverrideContainer();
 		
 		assertEquals("foo", ormEmbeddedMapping.getName());
 
 		
-		assertFalse(attributeOverrideContainer.specifiedOverrides().hasNext());
-		assertFalse(attributeOverrideContainer.virtualOverrides().hasNext());
+		assertFalse(attributeOverrideContainer.getSpecifiedOverrides().iterator().hasNext());
+		assertFalse(attributeOverrideContainer.getVirtualOverrides().iterator().hasNext());
 	}
 	
 	public void testVirtualAttributeOverrides() throws Exception {
@@ -439,13 +439,13 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute = persistentType.getAttributeNamed("address");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) ormPersistentAttribute.getMapping();
 		JavaAttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
-		assertEquals(4, attributeOverrideContainer.overridesSize());
-		assertEquals(3, attributeOverrideContainer.virtualOverridesSize());
-		assertEquals(1, attributeOverrideContainer.specifiedOverridesSize());
-		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.specifiedOverrides();
+		assertEquals(4, attributeOverrideContainer.getOverridesSize());
+		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
+		assertEquals(1, attributeOverrideContainer.getSpecifiedOverridesSize());
+		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		AttributeOverride attributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("city", attributeOverride.getName());
-		ListIterator<JavaVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.virtualOverrides();
+		ListIterator<JavaVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		JavaVirtualAttributeOverride virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
@@ -454,7 +454,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("zip", virtualOverride.getName());
 		
 		JavaEmbeddedMapping javaEmbeddedMapping = (JavaEmbeddedMapping) ormPersistentAttribute.getJavaPersistentAttribute().getMapping();
-		Column javaAttributeOverrideColumn = javaEmbeddedMapping.getAttributeOverrideContainer().specifiedOverrides().next().getColumn();
+		Column javaAttributeOverrideColumn = javaEmbeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next().getColumn();
 		
 		javaAttributeOverrideColumn.setSpecifiedName("FOO_COLUMN");
 		javaAttributeOverrideColumn.setSpecifiedTable("FOO_TABLE");
@@ -471,10 +471,10 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		javaBasicMapping.getColumn().setSpecifiedName("MY_STATE_COLUMN");
 		embeddedMapping = (JavaEmbeddedMapping) ormPersistentAttribute.getMapping();
 		attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
-		assertEquals(4, attributeOverrideContainer.overridesSize());
-		assertEquals(3, attributeOverrideContainer.virtualOverridesSize());
-		assertEquals(1, attributeOverrideContainer.specifiedOverridesSize());
-		specifiedAttributeOverrides = attributeOverrideContainer.specifiedOverrides();
+		assertEquals(4, attributeOverrideContainer.getOverridesSize());
+		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
+		assertEquals(1, attributeOverrideContainer.getSpecifiedOverridesSize());
+		specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		attributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("city", attributeOverride.getName());
 		assertEquals("FOO_COLUMN", attributeOverride.getColumn().getSpecifiedName());
@@ -488,7 +488,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals(6, attributeOverride.getColumn().getPrecision());
 		assertEquals(7, attributeOverride.getColumn().getScale());
 		
-		virtualAttributeOverrides = attributeOverrideContainer.virtualOverrides();
+		virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
@@ -502,10 +502,10 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		persistentType.getAttributeNamed("address").convertToSpecified();
 		OrmEmbeddedMapping ormMapping = (OrmEmbeddedMapping) persistentType.getAttributeNamed("address").getMapping();
 		OrmAttributeOverrideContainer ormOverrideContainer = ormMapping.getAttributeOverrideContainer();
-		assertEquals(4, ormOverrideContainer.overridesSize());
-		assertEquals(4, ormOverrideContainer.virtualOverridesSize());
-		assertEquals(0, ormOverrideContainer.specifiedOverridesSize());
-		ListIterator<OrmVirtualAttributeOverride> ormVirtualAttributeOverrides = ormOverrideContainer.virtualOverrides();
+		assertEquals(4, ormOverrideContainer.getOverridesSize());
+		assertEquals(4, ormOverrideContainer.getVirtualOverridesSize());
+		assertEquals(0, ormOverrideContainer.getSpecifiedOverridesSize());
+		ListIterator<OrmVirtualAttributeOverride> ormVirtualAttributeOverrides = ormOverrideContainer.getVirtualOverrides().iterator();
 		OrmVirtualAttributeOverride ormVirtualOverride = ormVirtualAttributeOverrides.next();
 		assertEquals("id", ormVirtualOverride.getName());
 		ormVirtualOverride = ormVirtualAttributeOverrides.next();
@@ -528,13 +528,13 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("zip", ormVirtualOverride.getName());
 		
 		//set one of the virtual attribute overrides to specified, verify others are still virtual
-		ormOverrideContainer.virtualOverrides().next().convertToSpecified();
+		ormOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		assertEquals(4, ormOverrideContainer.overridesSize());
-		assertEquals(1, ormOverrideContainer.specifiedOverridesSize());
-		assertEquals(3, ormOverrideContainer.virtualOverridesSize());
-		assertEquals("id", ormOverrideContainer.specifiedOverrides().next().getName());
-		ormVirtualAttributeOverrides = ormOverrideContainer.virtualOverrides();
+		assertEquals(4, ormOverrideContainer.getOverridesSize());
+		assertEquals(1, ormOverrideContainer.getSpecifiedOverridesSize());
+		assertEquals(3, ormOverrideContainer.getVirtualOverridesSize());
+		assertEquals("id", ormOverrideContainer.getSpecifiedOverrides().iterator().next().getName());
+		ormVirtualAttributeOverrides = ormOverrideContainer.getVirtualOverrides().iterator();
 		ormVirtualOverride = ormVirtualAttributeOverrides.next();
 		assertEquals("city", ormVirtualOverride.getName());
 		ormVirtualOverride = ormVirtualAttributeOverrides.next();
@@ -550,25 +550,25 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) ormPersistentAttribute.getMapping();	
 		JavaAttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals("address", embeddedMapping.getName());
 
-		assertEquals(4, attributeOverrideContainer.overridesSize());
-		assertEquals(1, attributeOverrideContainer.specifiedOverridesSize());
-		assertEquals(3, attributeOverrideContainer.virtualOverridesSize());
+		assertEquals(4, attributeOverrideContainer.getOverridesSize());
+		assertEquals(1, attributeOverrideContainer.getSpecifiedOverridesSize());
+		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
 
-		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.specifiedOverrides();
+		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.getSpecifiedOverrides().iterator();
 		JavaAttributeOverride specifiedAttributeOverride = specifiedAttributeOverrides.next();
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, specifiedAttributeOverride.getName());
 		Column column = specifiedAttributeOverride.getColumn();
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getSpecifiedName());
 
 	
-		ListIterator<JavaVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.virtualOverrides();
+		ListIterator<JavaVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		JavaVirtualAttributeOverride virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		VirtualColumn virtualColumn = virtualAttributeOverride.getColumn();
@@ -593,8 +593,8 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", embeddedMapping.getName());
@@ -642,14 +642,14 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 
 		ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "address");
-		assertEquals(2, ormPersistentType.virtualAttributesSize());
+		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
 		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("address", ormEmbeddedMapping.getName());
 
-		assertEquals(0, ormEmbeddedMapping.getAttributeOverrideContainer().specifiedOverridesSize());
+		assertEquals(0, ormEmbeddedMapping.getAttributeOverrideContainer().getSpecifiedOverridesSize());
 		//TODO
 //		assertEquals(4, CollectionTools.size(ormEmbeddedMapping.defaultAttributeOverrides()));
 //		ListIterator<XmlAttributeOverride> ormAttributeOverrides = ormEmbeddedMapping.defaultAttributeOverrides();
@@ -694,14 +694,14 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(embeddedMapping.isDefault());
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().specifiedOverrides().next();
+		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof IdMapping);
 		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
 	}
@@ -715,14 +715,14 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(embeddedMapping.isDefault());
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().specifiedOverrides().next();
+		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof VersionMapping);
 		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
 	}
@@ -736,14 +736,14 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(embeddedMapping.isDefault());
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().specifiedOverrides().next();
+		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof TransientMapping);
 		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
 	}
@@ -757,14 +757,14 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(embeddedMapping.isDefault());
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().specifiedOverrides().next();
+		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof BasicMapping);
 		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
 	}
@@ -778,17 +778,17 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(embeddedMapping.isDefault());
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().specifiedOverrides().next();
+		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedIdMapping);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
-		attributeOverride = ((EmbeddedIdMapping) ormPersistentAttribute.getMapping()).getAttributeOverrideContainer().specifiedOverrides().next();
+		attributeOverride = ((EmbeddedIdMapping) ormPersistentAttribute.getMapping()).getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		assertEquals("override", attributeOverride.getName());
 		assertEquals("OVERRIDE_COLUMN", attributeOverride.getColumn().getSpecifiedName());
 	}
@@ -802,14 +802,14 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(embeddedMapping.isDefault());
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().specifiedOverrides().next();
+		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToOneMapping);
 		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
 	}
@@ -823,14 +823,14 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(embeddedMapping.isDefault());
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().specifiedOverrides().next();
+		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToManyMapping);
 		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
 	}
@@ -844,14 +844,14 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(embeddedMapping.isDefault());
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().specifiedOverrides().next();
+		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToOneMapping);
 		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
 	}
@@ -865,7 +865,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(embeddedMapping.isDefault());
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
-		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().specifiedOverrides().next();
+		AttributeOverride attributeOverride = embeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedMapping.isDefault());
@@ -889,8 +889,8 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		OrmEmbeddedMapping embeddedMapping = (OrmEmbeddedMapping) customerPersistentType.getAttributeNamed("address").getMapping();
 		OrmAttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		
-		assertEquals(3, attributeOverrideContainer.virtualOverridesSize());
-		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.virtualOverrides();
+		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
+		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		OrmVirtualAttributeOverride virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("street", virtualAttributeOverride.getName());
 		virtualAttributeOverride = virtualAttributeOverrides.next();
@@ -902,8 +902,8 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		addressPersistentType.getAttributeNamed("zipCode").convertToSpecified();
 		OrmEmbeddedMapping nestedEmbeddedMapping = (OrmEmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping();
 		OrmAttributeOverrideContainer nestedAttributeOverrideContainer = nestedEmbeddedMapping.getAttributeOverrideContainer();
-		assertEquals(2, nestedAttributeOverrideContainer.virtualOverridesSize());
-		virtualAttributeOverrides = nestedAttributeOverrideContainer.virtualOverrides();
+		assertEquals(2, nestedAttributeOverrideContainer.getVirtualOverridesSize());
+		virtualAttributeOverrides = nestedAttributeOverrideContainer.getVirtualOverrides().iterator();
 		virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("zip", virtualAttributeOverride.getName());
 		virtualAttributeOverride = virtualAttributeOverrides.next();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.jpa2;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 
 /**
  * JPA 2.0 project.
@@ -63,11 +63,11 @@ public interface JpaProject2_0
 	Iterable<String> getJavaSourceFolderNames();
 
 	/**
-	 * Return the JPA project's generated metamodel Java resource persistent
+	 * Return the JPA project's generated metamodel Java resource
 	 * top-level types.
-	 * @see org.eclipse.jpt.jpa.core.internal.resource.java.source.SourcePersistentType#isGeneratedMetamodel(IPackageFragmentRoot)
+	 * @see org.eclipse.jpt.jpa.core.jpa2.MetamodelSychronizer.Tools.isGeneratedMetamodelTopLevelType(JavaResourceAbstractType, IPackageFragmentRoot)
 	 */
-	Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTopLevelTypes();
+	Iterable<JavaResourceAbstractType> getGeneratedMetamodelTopLevelTypes();
 
 	/**
 	 * Return the top-level generated metamodel Java resource persistent type
@@ -80,7 +80,7 @@ public interface JpaProject2_0
 	 *     <code>javax.persistence.metamodel.StaticMetamodel</code> annotation
 	 * <ul>
 	 */
-	JavaResourcePersistentType2_0 getGeneratedMetamodelTopLevelType(IFile file);
+	JavaResourceAbstractType getGeneratedMetamodelTopLevelType(IFile file);
 
 
 	// ********** construction config **********

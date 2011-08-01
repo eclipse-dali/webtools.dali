@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,27 +9,27 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.NestableQueryHintAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 
 /**
  * <code>javax.persistence.QueryHint</code>
  */
 public final class SourceQueryHintAnnotation
-	extends SourceAnnotation<Type>
-	implements NestableQueryHintAnnotation
+	extends SourceAnnotation
+	implements QueryHintAnnotation
 {
 	private DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private AnnotationElementAdapter<String> nameAdapter;
@@ -40,8 +40,24 @@ public final class SourceQueryHintAnnotation
 	private String value;
 
 
-	public SourceQueryHintAnnotation(JavaResourceNode parent, Type type, IndexedDeclarationAnnotationAdapter idaa) {
-		super(parent, type, idaa, new ElementIndexedAnnotationAdapter(type, idaa));
+	static SourceQueryHintAnnotation buildNamedQueryQueryHint(JavaResourceNode parent, AnnotatedElement element,  DeclarationAnnotationAdapter namedQueryAdapter, int index) {
+		return buildNestedSourceQueryHintAnnotation(parent, element, buildNamedQueryQueryHintAnnotationAdapter(namedQueryAdapter, index));
+	}
+
+	static SourceQueryHintAnnotation buildNamedNativeQueryQueryHint(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {
+		return buildNestedSourceQueryHintAnnotation(parent, element, buildNamedNativeQueryQueryHintAnnotationAdapter(namedNativeQueryAdapter, index));
+	}
+	
+	public static SourceQueryHintAnnotation buildNestedSourceQueryHintAnnotation(
+			JavaResourceNode parent, 
+			AnnotatedElement element, 
+			IndexedDeclarationAnnotationAdapter idaa) {
+		
+		return new SourceQueryHintAnnotation(parent, element, idaa);
+	}
+
+	private SourceQueryHintAnnotation(JavaResourceNode parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
+		super(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
 		this.nameAdapter = this.buildNameAdapter();
 		this.valueDeclarationAdapter = this.buildValueDeclarationAdapter();
@@ -134,13 +150,6 @@ public final class SourceQueryHintAnnotation
 	}
 
 
-	// ********** NestableAnnotation implementation **********
-
-	public void moveAnnotation(int newIndex) {
-		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
-	}
-
-
 	// ********** misc **********
 
 	@Override
@@ -151,48 +160,14 @@ public final class SourceQueryHintAnnotation
 	}
 
 	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
-		this.nameAdapter = this.buildNameAdapter();
-		this.valueDeclarationAdapter = this.buildValueDeclarationAdapter();
-		this.valueAdapter = this.buildValueAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		map.put(NAME_PROPERTY, this.name);
-		this.name = null;
-		map.put(VALUE_PROPERTY, this.value);
-		this.value = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		this.setName((String) map.get(NAME_PROPERTY));
-		this.setValue((String) map.get(VALUE_PROPERTY));
-	}
-
-	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
 
 
 	// ********** static methods **********
-
-	static SourceQueryHintAnnotation createNamedQueryQueryHint(JavaResourceNode parent, Type type,  DeclarationAnnotationAdapter namedQueryAdapter, int index) {
-		return new SourceQueryHintAnnotation(parent, type, buildNamedQueryQueryHintAnnotationAdapter(namedQueryAdapter, index));
-	}
-
 	private static IndexedDeclarationAnnotationAdapter buildNamedQueryQueryHintAnnotationAdapter(DeclarationAnnotationAdapter namedQueryAdapter, int index) {
 		return new NestedIndexedDeclarationAnnotationAdapter(namedQueryAdapter, JPA.NAMED_QUERY__HINTS, index, ANNOTATION_NAME);
-	}
-
-	static SourceQueryHintAnnotation createNamedNativeQueryQueryHint(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {
-		return new SourceQueryHintAnnotation(parent, type, buildNamedNativeQueryQueryHintAnnotationAdapter(namedNativeQueryAdapter, index));
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildNamedNativeQueryQueryHintAnnotationAdapter(DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {

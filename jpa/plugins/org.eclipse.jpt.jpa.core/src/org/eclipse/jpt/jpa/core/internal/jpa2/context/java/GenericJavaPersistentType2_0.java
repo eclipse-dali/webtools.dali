@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,16 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.Collection;
-import java.util.ListIterator;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentType2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * JPA 2.0 Java persistent type.
@@ -34,8 +32,8 @@ public class GenericJavaPersistentType2_0
 	protected final MetamodelSourceType.Synchronizer metamodelSynchronizer;
 
 
-	public GenericJavaPersistentType2_0(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
-		super(parent, jrpt);
+	public GenericJavaPersistentType2_0(PersistentType.Owner parent, JavaResourceType jrt) {
+		super(parent, jrt);
 		this.declaringTypeName = this.buildDeclaringTypeName();
 		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
 	}
@@ -47,15 +45,6 @@ public class GenericJavaPersistentType2_0
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
-	}
-
-
-	// ********** attributes **********
-
-	// suppress type-safety warning
-	@Override
-	public ListIterator<JavaPersistentAttribute> attributes() {
-		return super.attributes();
 	}
 
 
@@ -72,7 +61,7 @@ public class GenericJavaPersistentType2_0
 	}
 
 	protected String buildDeclaringTypeName() {
-		return this.resourcePersistentType.getDeclaringTypeName();
+		return this.resourceType.getDeclaringTypeName();
 	}
 
 

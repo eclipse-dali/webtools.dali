@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 
@@ -65,33 +66,33 @@ public class StructConverterAnnotationTests extends EclipseLinkJavaResourceModel
 
 	public void testStructConverterAnnotation() throws Exception {
 		ICompilationUnit cu = this.createTestStructConverter();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		assertNotNull(attributeResource.getAnnotation(EclipseLink.STRUCT_CONVERTER));
+		assertNotNull(resourceField.getAnnotation(EclipseLink.STRUCT_CONVERTER));
 		
-		attributeResource.removeAnnotation(EclipseLink.STRUCT_CONVERTER);
-		assertNull(attributeResource.getAnnotation(EclipseLink.STRUCT_CONVERTER));
+		resourceField.removeAnnotation(EclipseLink.STRUCT_CONVERTER);
+		assertNull(resourceField.getAnnotation(EclipseLink.STRUCT_CONVERTER));
 		
-		attributeResource.addAnnotation(EclipseLink.STRUCT_CONVERTER);
-		assertNotNull(attributeResource.getAnnotation(EclipseLink.STRUCT_CONVERTER));
+		resourceField.addAnnotation(EclipseLink.STRUCT_CONVERTER);
+		assertNotNull(resourceField.getAnnotation(EclipseLink.STRUCT_CONVERTER));
 	}
 
 	public void testGetConverter() throws Exception {
 		ICompilationUnit cu = this.createTestStructConverterWithConverter();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) attributeResource.getAnnotation(EclipseLink.STRUCT_CONVERTER);
+		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLink.STRUCT_CONVERTER);
 		assertEquals("Foo", converter.getConverter());
 	}
 
 	public void testSetConverter() throws Exception {
 		ICompilationUnit cu = this.createTestStructConverterWithConverter();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) attributeResource.getAnnotation(EclipseLink.STRUCT_CONVERTER);
+		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLink.STRUCT_CONVERTER);
 		assertEquals("Foo", converter.getConverter());
 		
 		converter.setConverter("Bar");
@@ -102,10 +103,10 @@ public class StructConverterAnnotationTests extends EclipseLinkJavaResourceModel
 	
 	public void testSetConverterNull() throws Exception {
 		ICompilationUnit cu = this.createTestStructConverterWithConverter();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) attributeResource.getAnnotation(EclipseLink.STRUCT_CONVERTER);
+		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLink.STRUCT_CONVERTER);
 		assertEquals("Foo", converter.getConverter());
 		
 		converter.setConverter(null);
@@ -117,19 +118,19 @@ public class StructConverterAnnotationTests extends EclipseLinkJavaResourceModel
 	
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestStructConverterWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) attributeResource.getAnnotation(EclipseLink.STRUCT_CONVERTER);
+		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLink.STRUCT_CONVERTER);
 		assertEquals("bar", converter.getName());
 	}
 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestStructConverterWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) attributeResource.getAnnotation(EclipseLink.STRUCT_CONVERTER);
+		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLink.STRUCT_CONVERTER);
 		assertEquals("bar", converter.getName());
 		
 		converter.setName("foo");
@@ -140,10 +141,10 @@ public class StructConverterAnnotationTests extends EclipseLinkJavaResourceModel
 	
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestStructConverterWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) attributeResource.getAnnotation(EclipseLink.STRUCT_CONVERTER);
+		EclipseLinkStructConverterAnnotation converter = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLink.STRUCT_CONVERTER);
 		assertEquals("bar", converter.getName());
 		
 		converter.setName(null);

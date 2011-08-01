@@ -9,11 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
+
 
 /**
- * Provides annotation definitions for types and attributes.
- * {@link JpaAnnotationProvider}
+ * Provides annotation definitions and nestable annotation definitions
+ * {@link AnnotationProvider}
  * then uses a collection of these to build annotations.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -28,24 +30,13 @@ import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
 public interface JpaAnnotationDefinitionProvider
 {
 	/**
-	 * Return all annotation definitions which can appear on a type
+	 * Return all annotation definitions
 	 */
-	Iterable<AnnotationDefinition> getTypeAnnotationDefinitions();
-	
-	/**
-	 * Return all annotation definitions which can appear on a type and are used to determine
-	 * whether and how the type is persisted (how it is "mapped").
-	 * This should be a subset of {@link #getTypeAnnotationDefinitions()}.
-	 */
-	Iterable<AnnotationDefinition> getTypeMappingAnnotationDefinitions();
-	
-	/**
-	 * Return all annotation definitions which can appear on an attribute
-	 */
-	Iterable<AnnotationDefinition> getAttributeAnnotationDefinitions();
+	Iterable<AnnotationDefinition> getAnnotationDefinitions();
 
 	/**
-	 * Return all annotation definitions which can appear on a package.
+	 * Return all nestable annotation definitions
 	 */
-	Iterable<AnnotationDefinition> getPackageAnnotationDefinitions();
+	Iterable<NestableAnnotationDefinition> getNestableAnnotationDefinitions();
+
 }

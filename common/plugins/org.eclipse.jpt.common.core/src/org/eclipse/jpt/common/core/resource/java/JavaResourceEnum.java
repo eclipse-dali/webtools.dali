@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,7 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
+
 
 
 /**
@@ -34,9 +35,4 @@ public interface JavaResourceEnum
 	 */
 	Iterable<JavaResourceEnumConstant> getEnumConstants();
 		String ENUM_CONSTANTS_COLLECTION = "enumConstants"; //$NON-NLS-1$
-//
-//	/**
-//	 * Return the type's persistable fields.
-//	 */
-//	Iterable<JavaResourceAttribute> getPersistableFields();
 }

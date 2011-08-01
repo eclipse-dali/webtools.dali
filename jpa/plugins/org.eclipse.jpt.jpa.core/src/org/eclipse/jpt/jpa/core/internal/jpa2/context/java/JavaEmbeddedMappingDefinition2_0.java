@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.context.java.DefaultJavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedMappingDefinition;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AssociationOverridesAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 public class JavaEmbeddedMappingDefinition2_0
 	extends DefaultJavaAttributeMappingDefinitionWrapper
@@ -52,7 +52,7 @@ public class JavaEmbeddedMappingDefinition2_0
 
 	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
 		AssociationOverrideAnnotation.ANNOTATION_NAME,
-		AssociationOverridesAnnotation.ANNOTATION_NAME,
+		JPA.ASSOCIATION_OVERRIDES,
 	};
 	public static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
 

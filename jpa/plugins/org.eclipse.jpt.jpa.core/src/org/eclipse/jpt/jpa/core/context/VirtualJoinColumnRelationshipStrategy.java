@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Virtual join column relationship strategy.
@@ -23,8 +23,8 @@ import java.util.ListIterator;
 public interface VirtualJoinColumnRelationshipStrategy
 	extends ReadOnlyJoinColumnRelationshipStrategy, VirtualRelationshipStrategy
 {
-	ListIterator<? extends VirtualJoinColumn> joinColumns();
-	ListIterator<? extends VirtualJoinColumn> specifiedJoinColumns();
+	ListIterable<? extends VirtualJoinColumn> getJoinColumns();
+	ListIterable<? extends VirtualJoinColumn> getSpecifiedJoinColumns();
 	VirtualJoinColumn getSpecifiedJoinColumn(int index);
 	VirtualJoinColumn getDefaultJoinColumn();
 }

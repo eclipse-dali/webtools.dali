@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,12 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 @SuppressWarnings("nls")
 public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase {
@@ -81,18 +82,18 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertNotNull(column);
 		assertEquals(COLUMN_NAME, column.getName());
 	}
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertNotNull(column);
 		assertNull(column.getName());
 		assertNull(column.getNullable());
@@ -103,9 +104,9 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getName());
@@ -118,33 +119,33 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertEquals(COLUMN_NAME, column.getName());
 		
 		column.setName(null);
 		assertNull(column.getName());
 		
-		column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertNotNull(column);
 		assertSourceContains("@OrderColumn", cu);
 	}
 
 	public void testGetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithColumnDefinition();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertEquals(COLUMN_COLUMN_DEFINITION, column.getColumnDefinition());
 	}
 
 	public void testSetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getColumnDefinition());
@@ -156,25 +157,25 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 
 		
 		column.setColumnDefinition(null);
-		column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertNotNull(column);
 		assertSourceContains("@OrderColumn", cu);
 	}
 	
 	public void testGetNullable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithBooleanElement("nullable");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getNullable());
 	}
 	
 	public void testSetNullable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getNullable());
@@ -185,25 +186,25 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		assertSourceContains("@OrderColumn(nullable = false)", cu);
 		
 		column.setNullable(null);
-		column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertNotNull(column);
 		assertSourceContains("@OrderColumn", cu);
 	}
 
 	public void testGetInsertable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithBooleanElement("insertable");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getInsertable());
 	}
 	
 	public void testSetInsertable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getInsertable());
@@ -214,25 +215,25 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		assertSourceContains("@OrderColumn(insertable = false)", cu);
 		
 		column.setInsertable(null);
-		column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertNotNull(column);
 		assertSourceContains("@OrderColumn", cu);
 	}
 	
 	public void testGetUpdatable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithBooleanElement("updatable");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getUpdatable());
 	}
 	
 	public void testSetUpdatable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getUpdatable());
@@ -244,7 +245,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		
 		column.setUpdatable(null);
 		
-		column = (OrderColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.ORDER_COLUMN);
+		column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertNotNull(column);
 		assertSourceContains("@OrderColumn", cu);
 	}

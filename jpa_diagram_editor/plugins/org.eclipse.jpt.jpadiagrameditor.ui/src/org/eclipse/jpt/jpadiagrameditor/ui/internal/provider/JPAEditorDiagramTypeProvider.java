@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -101,16 +101,16 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
         return toolBehaviorProviders;
     }
     
-    public JPAEditorFeatureProvider getFeatureProvider() {
+    @Override
+	public JPAEditorFeatureProvider getFeatureProvider() {
     	return (JPAEditorFeatureProvider)super.getFeatureProvider();
     }
     
 	public boolean hasToAdd() {
 		JpaProject project = getTargetJPAProject();
-		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().getPersistence().persistenceUnits().next();
+		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().getPersistence().getPersistenceUnits().iterator().next();
 		
-		for (Iterator<ClassRef> classRefs = unit.classRefs(); classRefs.hasNext();) {
-			ClassRef classRef = classRefs.next();
+		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) { 
 				JavaPersistentType jpt = classRef.getJavaPersistentType(); 
 				if (jpt.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
@@ -124,7 +124,8 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 	}
         
     
-    public 	void postInit() {
+    @Override
+	public 	void postInit() {
     	final String jptName = getDiagramEditor().getPartProperty(JPAEditorConstants.OPEN_WHOLE_PERSISTENCE_UNIT_EDITOR_PROPERTY);
 		if (jptName != null) {
 			boolean hasToAdd = hasToAdd(); 
@@ -176,6 +177,7 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 				MessageDialog dialog = new MessageDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 						JPAEditorMessages.JPAEditorDiagramTypeProvider_JPADiagramReadOnlyTitle, null, message,
 						MessageDialog.INFORMATION, new String[] {JPAEditorMessages.BTN_OK, JPAEditorMessages.BTN_CANCEL}, 0) {
+					@Override
 					protected int getShellStyle() {
 						return SWT.TITLE | SWT.BORDER
 							| SWT.APPLICATION_MODAL
@@ -193,6 +195,7 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 						dialog = new MessageDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 								JPAEditorMessages.JPAEditorDiagramTypeProvider_cantMakeDiagramWritableTitle, null, message,
 								MessageDialog.CANCEL, new String[] {JPAEditorMessages.BTN_OK}, 0) {
+							@Override
 							protected int getShellStyle() {
 								return SWT.CLOSE | SWT.TITLE | SWT.BORDER
 									| SWT.APPLICATION_MODAL
@@ -231,6 +234,7 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 				
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(diagram);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				while (iter.hasNext())
 					Graphiti.getPeService().deletePictogramElement(iter.next());
@@ -288,6 +292,7 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 		}		
 	}
 	
+	@Override
 	public JPADiagramEditor getDiagramEditor() {
 		return (JPADiagramEditor)super.getDiagramEditor();
 	}    
@@ -300,6 +305,7 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 		return !isDisposed;
 	}
 	           
+	@Override
 	public void dispose() {
 		super.dispose();
 		setFeatureProvider(null);

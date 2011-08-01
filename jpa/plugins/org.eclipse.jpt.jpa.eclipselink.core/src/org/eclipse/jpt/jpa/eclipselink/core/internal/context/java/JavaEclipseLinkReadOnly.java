@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
@@ -86,15 +86,15 @@ public class JavaEclipseLinkReadOnly
 	// ********** read-only annotation **********
 
 	protected EclipseLinkReadOnlyAnnotation getReadOnlyAnnotation() {
-		return (EclipseLinkReadOnlyAnnotation) this.getResourcePersistentType().getAnnotation(this.getReadOnlyAnnotationName());
+		return (EclipseLinkReadOnlyAnnotation) this.getJavaResourceType().getAnnotation(this.getReadOnlyAnnotationName());
 	}
 
 	protected void addReadOnlyAnnotation() {
-		this.getResourcePersistentType().addAnnotation(this.getReadOnlyAnnotationName());
+		this.getJavaResourceType().addAnnotation(this.getReadOnlyAnnotationName());
 	}
 
 	protected void removeReadOnlyAnnotation() {
-		this.getResourcePersistentType().removeAnnotation(this.getReadOnlyAnnotationName());
+		this.getJavaResourceType().removeAnnotation(this.getReadOnlyAnnotationName());
 	}
 
 	protected String getReadOnlyAnnotationName() {
@@ -117,8 +117,8 @@ public class JavaEclipseLinkReadOnly
 		return this.getTypeMapping().getPersistentType();
 	}
 
-	protected JavaResourcePersistentType getResourcePersistentType() {
-		return this.getTypeMapping().getResourcePersistentType();
+	protected JavaResourceType getJavaResourceType() {
+		return this.getTypeMapping().getJavaResourceType();
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 
 /**
  * Java query container
@@ -30,8 +30,7 @@ public interface JavaQueryContainer
 {
 	// ********** named queries **********
 
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaNamedQuery> namedQueries();
+	ListIterable<JavaNamedQuery> getNamedQueries();
 
 	JavaNamedQuery addNamedQuery();
 
@@ -40,8 +39,7 @@ public interface JavaQueryContainer
 
 	// ********** named native queries **********
 
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaNamedNativeQuery> namedNativeQueries();
+	ListIterable<JavaNamedNativeQuery> getNamedNativeQueries();
 
 	JavaNamedNativeQuery addNamedNativeQuery();
 

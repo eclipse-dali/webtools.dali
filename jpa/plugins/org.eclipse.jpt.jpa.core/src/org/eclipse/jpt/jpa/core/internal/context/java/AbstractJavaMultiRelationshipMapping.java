@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -54,7 +55,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -315,7 +315,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	// ********** map key annotation **********
 
 	protected MapKeyAnnotation getMapKeyAnnotation() {
-		return (MapKeyAnnotation) this.getResourcePersistentAttribute().getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		return (MapKeyAnnotation) this.getResourceAttribute().getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	protected MapKeyAnnotation getMapKeyAnnotationForUpdate() {
@@ -324,11 +324,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected MapKeyAnnotation addMapKeyAnnotation() {
-		return (MapKeyAnnotation) this.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		return (MapKeyAnnotation) this.getResourceAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 
@@ -428,15 +428,15 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected MapKeyClass2_0Annotation getMapKeyClassAnnotation_() {
-		return (MapKeyClass2_0Annotation) this.getResourcePersistentAttribute().getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		return (MapKeyClass2_0Annotation) this.getResourceAttribute().getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 	}
 
 	protected MapKeyClass2_0Annotation addMapKeyClassAnnotation() {
-		return (MapKeyClass2_0Annotation) this.getResourcePersistentAttribute().addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		return (MapKeyClass2_0Annotation) this.getResourceAttribute().addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyClassAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 	}
 
 
@@ -517,7 +517,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected MapKeyColumn2_0Annotation getMapKeyColumnAnnotation_() {
-		return (MapKeyColumn2_0Annotation) this.getResourcePersistentAttribute().getNonNullAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
+		return (MapKeyColumn2_0Annotation) this.getResourceAttribute().getNonNullAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyColumnAnnotation() {
@@ -529,7 +529,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected void removeMapKeyColumnAnnotation_() {
-		this.getResourcePersistentAttribute().removeAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
 	}
 
 
@@ -734,8 +734,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		extends AbstractOwner
 		implements JavaAttributeOverrideContainer2_0.Owner
 	{
-		public JavaResourcePersistentMember getResourcePersistentMember() {
-			return AbstractJavaMultiRelationshipMapping.this.getResourcePersistentAttribute();
+		public JavaResourceAttribute getResourceMember() {
+			return AbstractJavaMultiRelationshipMapping.this.getResourceAttribute();
 		}
 
 		public TypeMapping getOverridableTypeMapping() {

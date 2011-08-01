@@ -16,8 +16,8 @@ import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefiniti
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 public class JavaEmbeddedMappingDefinition
 	implements DefaultJavaAttributeMappingDefinition
@@ -49,7 +49,7 @@ public class JavaEmbeddedMappingDefinition
 	}
 
 	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
-		return persistentAttribute.getResourcePersistentAttribute().getAnnotation(this.getAnnotationName()) != null;
+		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
 	public Iterable<String> getSupportingAnnotationNames() {
@@ -58,7 +58,7 @@ public class JavaEmbeddedMappingDefinition
 
 	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 		AttributeOverrideAnnotation.ANNOTATION_NAME,
-		AttributeOverridesAnnotation.ANNOTATION_NAME,
+		JPA.ATTRIBUTE_OVERRIDES,
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase.DefaultAnnotationWriter;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
@@ -462,7 +461,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity entity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAttributeOverrideContainer overrideContainer = entity.getAttributeOverrideContainer();
 		
-		ListIterator<OrmAttributeOverride> specifiedAttributeOverrides = overrideContainer.specifiedOverrides();
+		ListIterator<OrmAttributeOverride> specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
@@ -470,13 +469,13 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		//add an annotation to the resource model and verify the context model is updated
 		entityResource.getAttributeOverrides().add(0, OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		entityResource.getAttributeOverrides().get(0).setName("FOO");
-		specifiedAttributeOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		entityResource.getAttributeOverrides().add(1, OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		entityResource.getAttributeOverrides().get(1).setName("BAR");
-		specifiedAttributeOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
@@ -484,7 +483,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 
 		entityResource.getAttributeOverrides().add(0, OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		entityResource.getAttributeOverrides().get(0).setName("BAZ");
-		specifiedAttributeOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
@@ -492,25 +491,25 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 	
 		//move an annotation to the resource model and verify the context model is updated
 		entityResource.getAttributeOverrides().move(1, 0);
-		specifiedAttributeOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		entityResource.getAttributeOverrides().remove(0);
-		specifiedAttributeOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	
 		entityResource.getAttributeOverrides().remove(0);
-		specifiedAttributeOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 		
 		entityResource.getAttributeOverrides().remove(0);
-		specifiedAttributeOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAttributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	}
 
@@ -525,8 +524,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 		
-		assertEquals(3, overrideContainer.virtualOverridesSize());
-		VirtualAttributeOverride virtualAttributeOverride = overrideContainer.virtualOverrides().next();
+		assertEquals(3, overrideContainer.getVirtualOverridesSize());
+		VirtualAttributeOverride virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
@@ -541,8 +540,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 
-		assertEquals(3, overrideContainer.virtualOverridesSize());
-		virtualAttributeOverride = overrideContainer.virtualOverrides().next();
+		assertEquals(3, overrideContainer.getVirtualOverridesSize());
+		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
 		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
@@ -551,13 +550,13 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		idMapping.getColumn().setSpecifiedTable(null);
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 
-		virtualAttributeOverride = overrideContainer.virtualOverrides().next();
+		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
 		
 		virtualAttributeOverride.convertToSpecified();
-		assertEquals(2, overrideContainer.virtualOverridesSize());
+		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 	}
 	
 	public void testDefaultAttributeOverridesEntityHierachy() throws Exception {
@@ -571,8 +570,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 
-		assertEquals(3, overrideContainer.virtualOverridesSize());
-		VirtualAttributeOverride virtualAttributeOverride = overrideContainer.virtualOverrides().next();
+		assertEquals(3, overrideContainer.getVirtualOverridesSize());
+		VirtualAttributeOverride virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
@@ -587,8 +586,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 
-		assertEquals(3, overrideContainer.virtualOverridesSize());
-		virtualAttributeOverride = overrideContainer.virtualOverrides().next();
+		assertEquals(3, overrideContainer.getVirtualOverridesSize());
+		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
 		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
@@ -597,13 +596,13 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		idMapping.getColumn().setSpecifiedTable(null);
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 
-		virtualAttributeOverride = overrideContainer.virtualOverrides().next();
+		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
 		
 		virtualAttributeOverride.convertToSpecified();
-		assertEquals(2, overrideContainer.virtualOverridesSize());
+		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 	}
 	
 	public void testSpecifiedAttributeOverridesSize() throws Exception {
@@ -612,7 +611,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		AttributeOverrideContainer overrideContainer = ormEntity.getAttributeOverrideContainer();
 		
-		assertEquals(0, overrideContainer.specifiedOverridesSize());
+		assertEquals(0, overrideContainer.getSpecifiedOverridesSize());
 
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
@@ -622,7 +621,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		entityResource.getAttributeOverrides().get(0).setName("BAR");
 
-		assertEquals(2, overrideContainer.specifiedOverridesSize());
+		assertEquals(2, overrideContainer.getSpecifiedOverridesSize());
 	}
 	
 	public void testDefaultAttributeOverridesSize() throws Exception {
@@ -634,16 +633,16 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		AttributeOverrideContainer overrideContainer = ormEntity.getAttributeOverrideContainer();
 		
-		assertEquals(3, overrideContainer.virtualOverridesSize());
+		assertEquals(3, overrideContainer.getVirtualOverridesSize());
 
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(2, overrideContainer.virtualOverridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(1, overrideContainer.virtualOverridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(1, overrideContainer.getVirtualOverridesSize());
 		
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(0, overrideContainer.virtualOverridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(0, overrideContainer.getVirtualOverridesSize());
 	}
 	
 	public void testAttributeOverridesSize() throws Exception {
@@ -655,19 +654,19 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		AttributeOverrideContainer overrideContainer = ormEntity.getAttributeOverrideContainer();
 		
-		assertEquals(3, overrideContainer.overridesSize());
+		assertEquals(3, overrideContainer.getOverridesSize());
 
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(3, overrideContainer.overridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(3, overrideContainer.getOverridesSize());
 		
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(3, overrideContainer.overridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(3, overrideContainer.getOverridesSize());
 		
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAttributeOverrides().add(0, OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		entityResource.getAttributeOverrides().get(0).setName("bar");
-		assertEquals(4, overrideContainer.overridesSize());
+		assertEquals(4, overrideContainer.getOverridesSize());
 	}
 
 	public void testAttributeOverrideSetVirtual() throws Exception {
@@ -679,8 +678,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		AttributeOverrideContainer overrideContainer = ormEntity.getAttributeOverrideContainer();
 				
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		overrideContainer.virtualOverrides().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
@@ -698,10 +697,10 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAttributeOverrideContainer overrideContainer = ormEntity.getAttributeOverrideContainer();
 		
-		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = overrideContainer.virtualOverrides();
+		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = overrideContainer.getVirtualOverrides().iterator();
 		virtualAttributeOverrides.next();
 		virtualAttributeOverrides.next().convertToSpecified();
-		overrideContainer.virtualOverrides().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
@@ -719,37 +718,37 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAttributeOverrideContainer overrideContainer = ormEntity.getAttributeOverrideContainer();
 				
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		overrideContainer.virtualOverrides().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getAttributeOverrides().size());
 
-		overrideContainer.specifiedOverrides().next().convertToVirtual();
+		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
 		
 		assertEquals("name", entityResource.getAttributeOverrides().get(0).getName());		
 		assertEquals("foo", entityResource.getAttributeOverrides().get(1).getName());
 		assertEquals(2, entityResource.getAttributeOverrides().size());
 		
-		Iterator<OrmAttributeOverride> attributeOverrides = overrideContainer.specifiedOverrides();
+		Iterator<OrmAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("name", attributeOverrides.next().getName());		
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 	
 		
-		overrideContainer.specifiedOverrides().next().convertToVirtual();
+		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
 		assertEquals("foo", entityResource.getAttributeOverrides().get(0).getName());		
 		assertEquals(1, entityResource.getAttributeOverrides().size());
 
-		attributeOverrides = overrideContainer.specifiedOverrides();
+		attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 
 		
-		overrideContainer.specifiedOverrides().next().convertToVirtual();
+		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
 		assertEquals(0, entityResource.getAttributeOverrides().size());
-		attributeOverrides = overrideContainer.specifiedOverrides();
+		attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertFalse(attributeOverrides.hasNext());
 	}
 	
@@ -762,9 +761,9 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAttributeOverrideContainer overrideContainer = ormEntity.getAttributeOverrideContainer();
 
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		overrideContainer.virtualOverrides().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
@@ -772,7 +771,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		
 		
 		overrideContainer.moveSpecifiedOverride(2, 0);
-		ListIterator<OrmAttributeOverride> attributeOverrides = overrideContainer.specifiedOverrides();
+		ListIterator<OrmAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("name", attributeOverrides.next().getName());
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertEquals("id", attributeOverrides.next().getName());
@@ -783,7 +782,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 
 
 		overrideContainer.moveSpecifiedOverride(0, 1);
-		attributeOverrides = overrideContainer.specifiedOverrides();
+		attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("foo", attributeOverrides.next().getName());
 		assertEquals("name", attributeOverrides.next().getName());
 		assertEquals("id", attributeOverrides.next().getName());
@@ -808,39 +807,39 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		entityResource.getAttributeOverrides().add(2, OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		entityResource.getAttributeOverrides().get(2).setName("BAZ");
 			
-		ListIterator<OrmAttributeOverride> attributeOverrides = overrideContainer.specifiedOverrides();
+		ListIterator<OrmAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 		
 		entityResource.getAttributeOverrides().move(2, 0);
-		attributeOverrides = overrideContainer.specifiedOverrides();
+		attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 	
 		entityResource.getAttributeOverrides().move(0, 1);
-		attributeOverrides = overrideContainer.specifiedOverrides();
+		attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 	
 		entityResource.getAttributeOverrides().remove(1);
-		attributeOverrides = overrideContainer.specifiedOverrides();
+		attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 	
 		entityResource.getAttributeOverrides().remove(1);
-		attributeOverrides = overrideContainer.specifiedOverrides();
+		attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 		
 		entityResource.getAttributeOverrides().remove(0);
-		attributeOverrides = overrideContainer.specifiedOverrides();
+		attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertFalse(attributeOverrides.hasNext());
 	}
 
@@ -852,7 +851,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAttributeOverrideContainer overrideContainer = ormEntity.getAttributeOverrideContainer();
 		
-		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = overrideContainer.virtualOverrides();	
+		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = overrideContainer.getVirtualOverrides().iterator();	
 		OrmVirtualAttributeOverride virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertTrue(virtualAttributeOverride.isVirtual());
@@ -866,12 +865,12 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		assertTrue(virtualAttributeOverride.isVirtual());
 		assertFalse(virtualAttributeOverrides.hasNext());
 
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		AttributeOverride specifiedAttributeOverride = overrideContainer.specifiedOverrides().next();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		AttributeOverride specifiedAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertFalse(specifiedAttributeOverride.isVirtual());
 		
 		
-		virtualAttributeOverrides = overrideContainer.virtualOverrides();	
+		virtualAttributeOverrides = overrideContainer.getVirtualOverrides().iterator();	
 		virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("name", virtualAttributeOverride.getName());
 		assertTrue(virtualAttributeOverride.isVirtual());
@@ -930,7 +929,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 		
-		ListIterator<OrmAssociationOverride> specifiedAssociationOverrides = overrideContainer.specifiedOverrides();
+		ListIterator<OrmAssociationOverride> specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
@@ -940,14 +939,14 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		XmlAssociationOverride xmlAssociationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		entityResource.getAssociationOverrides().add(0, xmlAssociationOverride);
 		xmlAssociationOverride.setName("FOO");
-		specifiedAssociationOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
 		xmlAssociationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		entityResource.getAssociationOverrides().add(1, xmlAssociationOverride);
 		xmlAssociationOverride.setName("BAR");
-		specifiedAssociationOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
@@ -956,7 +955,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		xmlAssociationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
 		entityResource.getAssociationOverrides().add(0, xmlAssociationOverride);
 		xmlAssociationOverride.setName("BAZ");
-		specifiedAssociationOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BAZ", specifiedAssociationOverrides.next().getName());
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
@@ -964,26 +963,26 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 	
 		//move an annotation to the resource model and verify the context model is updated
 		entityResource.getAssociationOverrides().move(1, 0);
-		specifiedAssociationOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("FOO", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAZ", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
 		entityResource.getAssociationOverrides().remove(0);
-		specifiedAssociationOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BAZ", specifiedAssociationOverrides.next().getName());
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 	
 		entityResource.getAssociationOverrides().remove(0);
-		specifiedAssociationOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BAR", specifiedAssociationOverrides.next().getName());
 		assertFalse(specifiedAssociationOverrides.hasNext());
 
 		
 		entityResource.getAssociationOverrides().remove(0);
-		specifiedAssociationOverrides = overrideContainer.specifiedOverrides();		
+		specifiedAssociationOverrides = overrideContainer.getSpecifiedOverrides().iterator();		
 		assertFalse(specifiedAssociationOverrides.hasNext());
 	}
 
@@ -999,8 +998,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		assertEquals(FULLY_QUALIFIED_SUB_TYPE_NAME, entityResource.getClassName());
 		assertTrue(entityResource.getAssociationOverrides().isEmpty());
 		
-		assertEquals(4, overrideContainer.virtualOverridesSize());
-		OrmVirtualAssociationOverride virtualAssociationOverride = overrideContainer.virtualOverrides().next();
+		assertEquals(4, overrideContainer.getVirtualOverridesSize());
+		OrmVirtualAssociationOverride virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		
 //
@@ -1013,8 +1012,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 //		assertNull(typeResource.getAnnotation(AssociationOverrideAnnotation.ANNOTATION_NAME));
 //		assertNull(typeResource.getAnnotation(AssociationOverridesAnnotation.ANNOTATION_NAME));
 
-		assertEquals(4, overrideContainer.virtualOverridesSize());
-		virtualAssociationOverride = overrideContainer.virtualOverrides().next();
+		assertEquals(4, overrideContainer.getVirtualOverridesSize());
+		virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", virtualAssociationOverride.getName());
 
 //		//idMapping.getColumn().setSpecifiedName(null);
@@ -1023,11 +1022,11 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 //		assertNull(typeResource.getAnnotation(AssociationOverrideAnnotation.ANNOTATION_NAME));
 //		assertNull(typeResource.getAnnotation(AssociationOverridesAnnotation.ANNOTATION_NAME));
 
-		virtualAssociationOverride = overrideContainer.virtualOverrides().next();
+		virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		
 		virtualAssociationOverride.convertToSpecified();
-		assertEquals(3, overrideContainer.virtualOverridesSize());
+		assertEquals(3, overrideContainer.getVirtualOverridesSize());
 		
 		
 		
@@ -1082,7 +1081,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
-		assertEquals(0, overrideContainer.specifiedOverridesSize());
+		assertEquals(0, overrideContainer.getSpecifiedOverridesSize());
 
 		//add to the resource model and verify the context model is updated
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
@@ -1090,7 +1089,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		entityResource.getAssociationOverrides().add(0, OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		entityResource.getAssociationOverrides().get(0).setName("BAR");
 
-		assertEquals(2, overrideContainer.specifiedOverridesSize());
+		assertEquals(2, overrideContainer.getSpecifiedOverridesSize());
 	}
 	
 	public void testDefaultAssociationOverridesSize() throws Exception {		
@@ -1102,19 +1101,19 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		AssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 		
-		assertEquals(4, overrideContainer.virtualOverridesSize());
+		assertEquals(4, overrideContainer.getVirtualOverridesSize());
 		
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(3, overrideContainer.virtualOverridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(3, overrideContainer.getVirtualOverridesSize());
 		
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(2, overrideContainer.virtualOverridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(1, overrideContainer.virtualOverridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(1, overrideContainer.getVirtualOverridesSize());
 		
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(0, overrideContainer.virtualOverridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(0, overrideContainer.getVirtualOverridesSize());
 	}
 	
 	public void testAssociationOverridesSize() throws Exception {
@@ -1126,19 +1125,19 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		AssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 		
-		assertEquals(4, overrideContainer.overridesSize());
+		assertEquals(4, overrideContainer.getOverridesSize());
 
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(4, overrideContainer.overridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(4, overrideContainer.getOverridesSize());
 		
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		assertEquals(4, overrideContainer.overridesSize());
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		assertEquals(4, overrideContainer.getOverridesSize());
 		
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(0, OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		entityResource.getAssociationOverrides().get(0).setName("bar");
-		assertEquals(5, overrideContainer.overridesSize());
+		assertEquals(5, overrideContainer.getOverridesSize());
 	}
 
 	public void testAssociationOverrideSetVirtual() throws Exception {
@@ -1150,8 +1149,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		AssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 				
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		overrideContainer.virtualOverrides().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
@@ -1169,10 +1168,10 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 		
-		ListIterator<OrmVirtualAssociationOverride> virtualAssociationOverrides = overrideContainer.virtualOverrides();
+		ListIterator<OrmVirtualAssociationOverride> virtualAssociationOverrides = overrideContainer.getVirtualOverrides().iterator();
 		virtualAssociationOverrides.next();
 		virtualAssociationOverrides.next().convertToSpecified();
-		overrideContainer.virtualOverrides().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
@@ -1190,25 +1189,25 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 				
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		overrideContainer.virtualOverrides().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertEquals(2, entityResource.getAssociationOverrides().size());
 
-		overrideContainer.specifiedOverrides().next().convertToVirtual();
+		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
 		
 		assertEquals("address2", entityResource.getAssociationOverrides().get(0).getName());
 		assertEquals(1, entityResource.getAssociationOverrides().size());
 
-		Iterator<OrmAssociationOverride> associationOverrides = overrideContainer.specifiedOverrides();
+		Iterator<OrmAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("address2", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
 		
-		overrideContainer.specifiedOverrides().next().convertToVirtual();
+		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
 		assertEquals(0, entityResource.getAssociationOverrides().size());
-		associationOverrides = overrideContainer.specifiedOverrides();
+		associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertFalse(associationOverrides.hasNext());
 	}
 	
@@ -1221,15 +1220,15 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 		
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		overrideContainer.virtualOverrides().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertEquals(2, entityResource.getAssociationOverrides().size());
 		
 		
 		overrideContainer.moveSpecifiedOverride(1, 0);
-		ListIterator<OrmAssociationOverride> associationOverrides = overrideContainer.specifiedOverrides();
+		ListIterator<OrmAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("address2", associationOverrides.next().getName());
 		assertEquals("address", associationOverrides.next().getName());
 
@@ -1238,7 +1237,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 
 
 		overrideContainer.moveSpecifiedOverride(0, 1);
-		associationOverrides = overrideContainer.specifiedOverrides();
+		associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("address", associationOverrides.next().getName());
 		assertEquals("address2", associationOverrides.next().getName());
 
@@ -1263,39 +1262,39 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		entityResource.getAssociationOverrides().add(2, OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		entityResource.getAssociationOverrides().get(2).setName("BAZ");
 			
-		ListIterator<OrmAssociationOverride> associationOverrides = overrideContainer.specifiedOverrides();
+		ListIterator<OrmAssociationOverride> associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 		
 		entityResource.getAssociationOverrides().move(2, 0);
-		associationOverrides = overrideContainer.specifiedOverrides();
+		associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 	
 		entityResource.getAssociationOverrides().move(0, 1);
-		associationOverrides = overrideContainer.specifiedOverrides();
+		associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 	
 		entityResource.getAssociationOverrides().remove(1);
-		associationOverrides = overrideContainer.specifiedOverrides();
+		associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 	
 		entityResource.getAssociationOverrides().remove(1);
-		associationOverrides = overrideContainer.specifiedOverrides();
+		associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 		
 		entityResource.getAssociationOverrides().remove(0);
-		associationOverrides = overrideContainer.specifiedOverrides();
+		associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertFalse(associationOverrides.hasNext());
 	}
 
@@ -1308,7 +1307,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 		
-		ListIterator<OrmVirtualAssociationOverride> virtualAssociationOverrides = overrideContainer.virtualOverrides();	
+		ListIterator<OrmVirtualAssociationOverride> virtualAssociationOverrides = overrideContainer.getVirtualOverrides().iterator();	
 		OrmVirtualAssociationOverride virtualAssociationOverride = virtualAssociationOverrides.next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		assertTrue(virtualAssociationOverride.isVirtual());
@@ -1326,12 +1325,12 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		assertTrue(virtualAssociationOverride.isVirtual());
 		assertFalse(virtualAssociationOverrides.hasNext());
 
-		overrideContainer.virtualOverrides().next().convertToSpecified();
-		AssociationOverride specifiedAssociationOverride = overrideContainer.specifiedOverrides().next();
+		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		AssociationOverride specifiedAssociationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertFalse(specifiedAssociationOverride.isVirtual());
 		
 		
-		virtualAssociationOverrides = overrideContainer.virtualOverrides();	
+		virtualAssociationOverrides = overrideContainer.getVirtualOverrides().iterator();	
 		virtualAssociationOverride = virtualAssociationOverrides.next();
 		assertEquals("address2", virtualAssociationOverride.getName());
 		assertTrue(virtualAssociationOverride.isVirtual());
@@ -1359,8 +1358,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 
 		OrmAttributeOverrideContainer attributeOverrideContainer = ((OrmEntity) longTimeCustomerPersistentType.getMapping()).getAttributeOverrideContainer();
 		
-		assertEquals(6, attributeOverrideContainer.virtualOverridesSize());
-		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.virtualOverrides();
+		assertEquals(6, attributeOverrideContainer.getVirtualOverridesSize());
+		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		OrmVirtualAttributeOverride virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		virtualAttributeOverride = virtualAttributeOverrides.next();
@@ -1469,8 +1468,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		customerPersistentType.getJavaPersistentType().getAttributeNamed("address").setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmAttributeOverrideContainer attributeOverrideContainer = ((OrmEntity) longTimeCustomerPersistentType.getMapping()).getAttributeOverrideContainer();
 		
-		assertEquals(6, attributeOverrideContainer.virtualOverridesSize());
-		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.virtualOverrides();
+		assertEquals(6, attributeOverrideContainer.getVirtualOverridesSize());
+		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		OrmVirtualAttributeOverride virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		virtualAttributeOverride = virtualAttributeOverrides.next();
@@ -1577,8 +1576,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 
 		OrmAssociationOverrideContainer attributeOverrideContainer = ((OrmEntity) longTimeCustomerPersistentType.getMapping()).getAssociationOverrideContainer();
 		
-		assertEquals(1, attributeOverrideContainer.virtualOverridesSize());
-		ListIterator<OrmVirtualAssociationOverride> virtualAssociationOverrides = attributeOverrideContainer.virtualOverrides();
+		assertEquals(1, attributeOverrideContainer.getVirtualOverridesSize());
+		ListIterator<OrmVirtualAssociationOverride> virtualAssociationOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		OrmVirtualAssociationOverride virtualAssociationOverride = virtualAssociationOverrides.next();
 		assertEquals("address.state", virtualAssociationOverride.getName());
 	}
@@ -1596,8 +1595,8 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 
 		OrmAssociationOverrideContainer attributeOverrideContainer = ((OrmEntity) longTimeCustomerPersistentType.getMapping()).getAssociationOverrideContainer();
 		
-		assertEquals(1, attributeOverrideContainer.virtualOverridesSize());
-		ListIterator<OrmVirtualAssociationOverride> virtualAssociationOverrides = attributeOverrideContainer.virtualOverrides();
+		assertEquals(1, attributeOverrideContainer.getVirtualOverridesSize());
+		ListIterator<OrmVirtualAssociationOverride> virtualAssociationOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		OrmVirtualAssociationOverride virtualAssociationOverride = virtualAssociationOverrides.next();
 		assertEquals("address.state", virtualAssociationOverride.getName());
 	}

@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -83,13 +83,13 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 		return new ListAspectAdapter<ReadOnlyJoinColumnRelationshipStrategy, ReadOnlyJoinColumn>(
 				getSubjectHolder(), ReadOnlyJoinColumnRelationshipStrategy.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterator<ReadOnlyJoinColumn> listIterator_() {
-				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(this.subject.specifiedJoinColumns());
+			protected ListIterable<ReadOnlyJoinColumn> getListIterable() {
+				return new SuperListIterableWrapper<ReadOnlyJoinColumn>(this.subject.getSpecifiedJoinColumns());
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.specifiedJoinColumnsSize();
+				return this.subject.getSpecifiedJoinColumnsSize();
 			}
 		};
 	}
@@ -139,7 +139,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 				}
 				// Remove all the specified join columns
 				else {
-					for (int index = subject.specifiedJoinColumnsSize(); --index >= 0; ) {
+					for (int index = subject.getSpecifiedJoinColumnsSize(); --index >= 0; ) {
 						subject.removeSpecifiedJoinColumn(index);
 					}
 				}

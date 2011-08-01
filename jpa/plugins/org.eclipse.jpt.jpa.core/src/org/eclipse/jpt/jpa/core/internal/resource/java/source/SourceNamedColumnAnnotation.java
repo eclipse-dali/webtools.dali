@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
 
 /**
@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
  * </code>
  */
 public abstract class SourceNamedColumnAnnotation
-	extends SourceAnnotation<Member>
+	extends SourceAnnotation
 	implements NamedColumnAnnotation
 {
 	private DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -47,12 +47,12 @@ public abstract class SourceNamedColumnAnnotation
 	private String columnDefinition;
 
 
-	protected SourceNamedColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		this(parent, member, daa, new ElementAnnotationAdapter(member, daa));
+	protected SourceNamedColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
 	}
 	
-	protected SourceNamedColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, member, daa, annotationAdapter);
+	protected SourceNamedColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, element, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
 		this.nameAdapter = this.buildNameAdapter();
 		this.columnDefinitionDeclarationAdapter = this.buildColumnDefinitionDeclarationAdapter();
@@ -160,31 +160,6 @@ public abstract class SourceNamedColumnAnnotation
 		return super.isUnset() &&
 				(this.name == null) &&
 				(this.columnDefinition == null);
-	}
-
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
-		this.nameAdapter = this.buildNameAdapter();
-		this.columnDefinitionDeclarationAdapter = this.buildColumnDefinitionDeclarationAdapter();
-		this.columnDefinitionAdapter = this.buildColumnDefinitionAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		map.put(NAME_PROPERTY, this.name);
-		this.name = null;
-		map.put(COLUMN_DEFINITION_PROPERTY, this.columnDefinition);
-		this.columnDefinition = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		this.setName((String) map.get(NAME_PROPERTY));
-		this.setColumnDefinition((String) map.get(COLUMN_DEFINITION_PROPERTY));
 	}
 
 	@Override

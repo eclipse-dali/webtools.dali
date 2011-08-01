@@ -10,18 +10,15 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
-import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -45,8 +42,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	protected String query;
 
-	protected final Vector<OrmQueryHint> hints = new Vector<OrmQueryHint>();
-	protected final HintContainerAdapter hintContainerAdapter = new HintContainerAdapter();
+	protected final ContextListContainer<OrmQueryHint, XmlQueryHint> queryHintContainer;
 
 
 	protected AbstractOrmQuery(XmlContextNode parent, X xmlQuery) {
@@ -54,7 +50,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		this.xmlQuery = xmlQuery;
 		this.name = xmlQuery.getName();
 		this.query = this.getUnescapedQuery();
-		this.initializeHints();
+		this.queryHintContainer = this.buildHintContainer();
 	}
 
 	// ********** synchronize/update **********
@@ -129,20 +125,20 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	// ********** hints **********
 
 	public ListIterable<OrmQueryHint> getHints() {
-		return new LiveCloneListIterable<OrmQueryHint>(this.hints);
+		return this.queryHintContainer.getContextElements();
 	}
 
 	public int getHintsSize() {
-		return this.hints.size();
+		return this.queryHintContainer.getContextElementsSize();
 	}
 
 	public OrmQueryHint addHint() {
-		return this.addHint(this.hints.size());
+		return this.addHint(this.getHintsSize());
 	}
 
 	public OrmQueryHint addHint(int index) {
 		XmlQueryHint xmlHint = this.buildXmlQueryHint();
-		OrmQueryHint hint = this.addHint_(index, xmlHint);
+		OrmQueryHint hint = this.queryHintContainer.addContextElement(index, xmlHint);
 		this.xmlQuery.getHints().add(index, xmlHint);
 		return hint;
 	}
@@ -152,27 +148,17 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	public void removeHint(QueryHint hint) {
-		this.removeHint(this.hints.indexOf(hint));
+		this.removeHint(this.queryHintContainer.indexOfContextElement((OrmQueryHint) hint));
 	}
 
 	public void removeHint(int index) {
-		this.removeHint_(index);
+		this.queryHintContainer.removeContextElement(index);
 		this.xmlQuery.getHints().remove(index);
 	}
 
-	protected void removeHint_(int index) {
-		this.removeItemFromList(index, this.hints, HINTS_LIST);
-	}
-
 	public void moveHint(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.hints, HINTS_LIST);
+		this.queryHintContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlQuery.getHints().move(targetIndex, sourceIndex);
-	}
-
-	protected void initializeHints() {
-		for (XmlQueryHint xmlHint : this.getXmlHints()) {
-			this.hints.add(this.buildHint(xmlHint));
-		}
 	}
 
 	protected OrmQueryHint buildHint(XmlQueryHint xmlHint) {
@@ -180,51 +166,39 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	protected void syncHints() {
-		ContextContainerTools.synchronizeWithResourceModel(this.hintContainerAdapter);
+		this.queryHintContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlQueryHint> getXmlHints() {
+	protected ListIterable<XmlQueryHint> getXmlHints() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlQueryHint>(this.xmlQuery.getHints());
+		return new LiveCloneListIterable<XmlQueryHint>(this.xmlQuery.getHints());
 	}
 
-	protected void moveHint_(int index, OrmQueryHint hint) {
-		this.moveItemInList(index, hint, this.hints, HINTS_LIST);
-	}
-
-	protected OrmQueryHint addHint_(int index, XmlQueryHint xmlHint) {
-		OrmQueryHint hint = this.buildHint(xmlHint);
-		this.addItemToList(index, hint, this.hints, HINTS_LIST);
-		return hint;
-	}
-
-	protected void removeHint_(OrmQueryHint hint) {
-		this.removeHint_(this.hints.indexOf(hint));
+	protected ContextListContainer<OrmQueryHint, XmlQueryHint> buildHintContainer() {
+		return new HintContainer();
 	}
 
 	/**
-	 * hint container adapter
+	 * query hint container
 	 */
-	protected class HintContainerAdapter
-		implements ContextContainerTools.Adapter<OrmQueryHint, XmlQueryHint>
+	protected class HintContainer
+		extends ContextListContainer<OrmQueryHint, XmlQueryHint>
 	{
-		public Iterable<OrmQueryHint> getContextElements() {
-			return AbstractOrmQuery.this.getHints();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return HINTS_LIST;
 		}
-		public Iterable<XmlQueryHint> getResourceElements() {
+		@Override
+		protected OrmQueryHint buildContextElement(XmlQueryHint resourceElement) {
+			return AbstractOrmQuery.this.buildHint(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlQueryHint> getResourceElements() {
 			return AbstractOrmQuery.this.getXmlHints();
 		}
-		public XmlQueryHint getResourceElement(OrmQueryHint contextElement) {
+		@Override
+		protected XmlQueryHint getResourceElement(OrmQueryHint contextElement) {
 			return contextElement.getXmlQueryHint();
-		}
-		public void moveContextElement(int index, OrmQueryHint element) {
-			AbstractOrmQuery.this.moveHint_(index, element);
-		}
-		public void addContextElement(int index, XmlQueryHint resourceElement) {
-			AbstractOrmQuery.this.addHint_(index, resourceElement);
-		}
-		public void removeContextElement(OrmQueryHint element) {
-			AbstractOrmQuery.this.removeHint_(element);
 		}
 	}
 

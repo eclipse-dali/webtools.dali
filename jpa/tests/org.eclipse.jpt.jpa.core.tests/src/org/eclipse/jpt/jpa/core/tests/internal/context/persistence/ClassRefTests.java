@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2009 Oracle. 
+ *  Copyright (c) 2007, 2011 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -32,7 +32,7 @@ public class ClassRefTests extends ContextModelTestCase
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		ClassRef classRef = persistenceUnit.specifiedClassRefs().next();
+		ClassRef classRef = persistenceUnit.getSpecifiedClassRefs().iterator().next();
 		
 		// test that class names are initially equal
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
@@ -40,19 +40,19 @@ public class ClassRefTests extends ContextModelTestCase
 		// set xml class name to different name, test equality
 		xmlClassRef.setJavaClass("com.bar.Foo");
 		
-		classRef = persistenceUnit.specifiedClassRefs().next();
+		classRef = persistenceUnit.getSpecifiedClassRefs().iterator().next();
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
 		
 		// set class name to empty string, test equality
 		xmlClassRef.setJavaClass("");
 		
-		classRef = persistenceUnit.specifiedClassRefs().next();
+		classRef = persistenceUnit.getSpecifiedClassRefs().iterator().next();
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
 		
 		// set name back to non empty string, test equality
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		
-		classRef = persistenceUnit.specifiedClassRefs().next();
+		classRef = persistenceUnit.getSpecifiedClassRefs().iterator().next();
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
 	}
 	
@@ -64,7 +64,7 @@ public class ClassRefTests extends ContextModelTestCase
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		ClassRef classRef = persistenceUnit.specifiedClassRefs().next();
+		ClassRef classRef = persistenceUnit.getSpecifiedClassRefs().iterator().next();
 		
 		// test that class names are initially equal
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());

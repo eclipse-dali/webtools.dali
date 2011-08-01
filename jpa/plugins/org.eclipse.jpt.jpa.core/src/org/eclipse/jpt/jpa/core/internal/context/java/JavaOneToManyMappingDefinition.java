@@ -15,8 +15,8 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
@@ -52,7 +52,7 @@ public class JavaOneToManyMappingDefinition
 	}
 
 	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
-		return persistentAttribute.getResourcePersistentAttribute().getAnnotation(this.getAnnotationName()) != null;
+		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
 	public Iterable<String> getSupportingAnnotationNames() {
@@ -64,7 +64,7 @@ public class JavaOneToManyMappingDefinition
 		MapKeyAnnotation.ANNOTATION_NAME,
 		OrderByAnnotation.ANNOTATION_NAME,
 		JoinColumnAnnotation.ANNOTATION_NAME,
-		JoinColumnsAnnotation.ANNOTATION_NAME
+		JPA.JOIN_COLUMNS
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 

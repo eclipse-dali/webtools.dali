@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 
 import org.eclipse.jdt.core.ElementChangedEvent;
@@ -6,22 +15,22 @@ import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.common.core.AnnotationProvider;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NullAnnotationEditFormatter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.common.utility.CommandExecutor;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationProvider;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceTypeCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackageInfoCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 
 
 @SuppressWarnings("nls")
@@ -132,14 +141,14 @@ public class JavaResourceModelTestCase
 		return pkgCu.getPackage();
 	}
 
-	protected JavaResourcePersistentType buildJavaTypeResource(ICompilationUnit cu) {
+	protected JavaResourceType buildJavaResourceType(ICompilationUnit cu) {
 		this.javaResourceCompilationUnit = this.buildJavaResourceCompilationUnit(cu);
 		this.javaResourceCompilationUnit.resolveTypes();
-		return this.hackJavaResourcePersistentType();
+		return this.hackJavaResourceType();
 	}
 
-	protected JavaResourcePersistentType hackJavaResourcePersistentType() {
-		return (JavaResourcePersistentType) ReflectionTools.getFieldValue(this.javaResourceCompilationUnit, "persistentType");
+	protected JavaResourceType hackJavaResourceType() {
+		return (JavaResourceType) ReflectionTools.getFieldValue(this.javaResourceCompilationUnit, "primaryType");
 	}
 
 	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit cu) {
@@ -154,8 +163,8 @@ public class JavaResourceModelTestCase
 		);
 	}
 
-	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(this.annotationDefinitionProvider());
+	protected AnnotationProvider buildAnnotationProvider() {
+		return new JpaAnnotationProvider(this.annotationDefinitionProvider());
 	}
 
 	protected JpaAnnotationDefinitionProvider annotationDefinitionProvider() {

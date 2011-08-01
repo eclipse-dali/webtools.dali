@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,22 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
-import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAssociationOverrideAnnotation;
 
 /**
  * javax.persistence.AssociationOverride
  */
 public abstract class BinaryAssociationOverrideAnnotation
 	extends BinaryOverrideAnnotation
-	implements NestableAssociationOverrideAnnotation
+	implements AssociationOverrideAnnotation
 {
 	private final Vector<JoinColumnAnnotation> joinColumns;
 
@@ -56,20 +55,16 @@ public abstract class BinaryAssociationOverrideAnnotation
 	// ********** AssociationOverrideAnnotation implementation **********
 
 	// ***** join columns
-	public ListIterator<JoinColumnAnnotation> joinColumns() {
-		return new CloneListIterator<JoinColumnAnnotation>(this.joinColumns);
+	public ListIterable<JoinColumnAnnotation> getJoinColumns() {
+		return new LiveCloneListIterable<JoinColumnAnnotation>(this.joinColumns);
 	}
 
-	public int joinColumnsSize() {
+	public int getJoinColumnsSize() {
 		return this.joinColumns.size();
 	}
 
 	public JoinColumnAnnotation joinColumnAt(int index) {
 		return this.joinColumns.get(index);
-	}
-
-	public int indexOfJoinColumn(JoinColumnAnnotation joinColumn) {
-		return this.joinColumns.indexOf(joinColumn);
 	}
 
 	public JoinColumnAnnotation addJoinColumn(int index) {

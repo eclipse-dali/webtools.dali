@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Corresponds to the JPA annotation
@@ -25,7 +26,7 @@ import java.util.ListIterator;
  * @since 2.0
  */
 public interface SecondaryTableAnnotation
-	extends BaseTableAnnotation
+	extends BaseTableAnnotation, NestableAnnotation
 {
 	String ANNOTATION_NAME = JPA.SECONDARY_TABLE;
 
@@ -36,23 +37,18 @@ public interface SecondaryTableAnnotation
 	 * Corresponds to the 'pkJoinColumns' element of the SecondaryTable annotation.
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
-	ListIterator<PrimaryKeyJoinColumnAnnotation> pkJoinColumns();
+	ListIterable<PrimaryKeyJoinColumnAnnotation> getPkJoinColumns();
 		String PK_JOIN_COLUMNS_LIST = "pkJoinColumns"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the 'pkJoinColumns' element of the SecondaryTable annotation.
 	 */
-	int pkJoinColumnsSize();
+	int getPkJoinColumnsSize();
 
 	/**
 	 * Corresponds to the 'pkJoinColumns' element of the SecondaryTable annotation.
 	 */
 	PrimaryKeyJoinColumnAnnotation pkJoinColumnAt(int index);
-
-	/**
-	 * Corresponds to the 'pkJoinColumns' element of the SecondaryTable annotation.
-	 */
-	int indexOfPkJoinColumn(PrimaryKeyJoinColumnAnnotation pkJoinColumn);
 
 	/**
 	 * Corresponds to the 'pkJoinColumns' element of the SecondaryTable annotation.

@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Association;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
@@ -35,10 +37,8 @@ import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -228,7 +228,7 @@ public abstract class AbstractJavaBasicMapping
 	 * <code>null</code>, remove <em>all</em> the converter annotations.
 	 */
 	protected void retainConverterAnnotation(JavaConverter.Adapter converterAdapter) {
-		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
 		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
 			if (adapter != converterAdapter) {
 				adapter.removeConverterAnnotation(resourceAttribute);
@@ -270,7 +270,7 @@ public abstract class AbstractJavaBasicMapping
 	 * adapter. Return <code>null</code> if there are no converter annotations.
 	 */
 	protected Association<JavaConverter.Adapter, Annotation> getConverterAnnotation() {
-		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
 		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
 			Annotation annotation = adapter.getConverterAnnotation(resourceAttribute);
 			if (annotation != null) {
@@ -324,11 +324,11 @@ public abstract class AbstractJavaBasicMapping
 	// ********** JavaColumn.Owner implementation **********
 
 	public ColumnAnnotation getColumnAnnotation() {
-		return (ColumnAnnotation) this.getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) this.getResourceAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeColumnAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	public String getDefaultColumnName() {

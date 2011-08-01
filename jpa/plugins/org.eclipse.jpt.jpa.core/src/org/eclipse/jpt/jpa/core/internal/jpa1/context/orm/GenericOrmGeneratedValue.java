@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.GenerationType;
@@ -165,8 +164,8 @@ public class GenericOrmGeneratedValue
 			return;
 		}
 
-		for (Iterator<Generator> stream = this.getPersistenceUnit().generators(); stream.hasNext(); ) {
-			if (generator.equals(stream.next().getName())) {
+		for (Generator next : this.getPersistenceUnit().getGenerators()) {
+			if (generator.equals(next.getName())) {
 				return;
 			}
 		}

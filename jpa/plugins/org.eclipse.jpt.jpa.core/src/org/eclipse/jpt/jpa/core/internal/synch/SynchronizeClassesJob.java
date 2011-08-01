@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -132,11 +132,11 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		if (persistence == null) {
 			return false;
 		}
-		if (persistence.persistenceUnitsSize() == 0) {
+		if (persistence.getPersistenceUnitsSize() == 0) {
 			return false;
 		}
-		PersistenceUnit persistenceUnit = persistence.persistenceUnits().next();
-		for (MappingFileRef mappingFileRef : CollectionTools.iterable(persistenceUnit.mappingFileRefs())) {
+		PersistenceUnit persistenceUnit = persistence.getPersistenceUnits().iterator().next();
+		for (MappingFileRef mappingFileRef : persistenceUnit.getMappingFileRefs()) {
 			if (mappingFileRef.getPersistentType(fullyQualifiedTypeName) != null) {
 				return true;
 			}

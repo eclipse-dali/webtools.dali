@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,11 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import java.util.ArrayList;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkBasicCollectionAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkBasicMapAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCacheAnnotationDefinition;
@@ -60,42 +61,25 @@ public class EclipseLinkJpaAnnotationDefinitionProvider
 	}
 
 	@Override
-	protected void addTypeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		CollectionTools.addAll(definitions, TYPE_ANNOTATION_DEFINITIONS);
+	protected void addAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+		CollectionTools.addAll(definitions, ANNOTATION_DEFINITIONS);
 	}
 
-	protected static final AnnotationDefinition[] TYPE_ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
+	protected static final AnnotationDefinition[] ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
+		EclipseLinkBasicCollectionAnnotationDefinition.instance(),
+		EclipseLinkBasicMapAnnotationDefinition.instance(),
 		EclipseLinkCacheAnnotationDefinition.instance(),
 		EclipseLinkChangeTrackingAnnotationDefinition.instance(),
+		EclipseLinkConvertAnnotationDefinition.instance(),
 		EclipseLinkConverterAnnotationDefinition.instance(),
 		EclipseLinkCustomizerAnnotationDefinition.instance(),
 		EclipseLinkExistenceCheckingAnnotationDefinition.instance(),
-		EclipseLinkObjectTypeConverterAnnotationDefinition.instance(),
-		EclipseLinkPrimaryKeyAnnotationDefinition.instance(),
-		EclipseLinkReadOnlyAnnotationDefinition.instance(),
-		EclipseLinkStructConverterAnnotationDefinition.instance(),
-		EclipseLinkTypeConverterAnnotationDefinition.instance()
-	};
-
-	@Override
-	protected void addTypeMappingAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		// nothing new for EclipseLink
-	}
-
-	@Override
-	protected void addAttributeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		CollectionTools.addAll(definitions, ATTRIBUTE_ANNOTATION_DEFINITIONS);
-	}
-
-	protected static final AnnotationDefinition[] ATTRIBUTE_ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
-		EclipseLinkBasicCollectionAnnotationDefinition.instance(),
-		EclipseLinkBasicMapAnnotationDefinition.instance(),
-		EclipseLinkConvertAnnotationDefinition.instance(),
-		EclipseLinkConverterAnnotationDefinition.instance(),
 		EclipseLinkJoinFetchAnnotationDefinition.instance(),
 		EclipseLinkMutableAnnotationDefinition.instance(),
 		EclipseLinkObjectTypeConverterAnnotationDefinition.instance(),
+		EclipseLinkPrimaryKeyAnnotationDefinition.instance(),
 		EclipseLinkPrivateOwnedAnnotationDefinition.instance(),
+		EclipseLinkReadOnlyAnnotationDefinition.instance(),
 		EclipseLinkReadTransformerAnnotationDefinition.instance(),
 		EclipseLinkStructConverterAnnotationDefinition.instance(),
 		EclipseLinkTransformationAnnotationDefinition.instance(),
@@ -105,7 +89,7 @@ public class EclipseLinkJpaAnnotationDefinitionProvider
 	};
 
 	@Override
-	protected void addPackageAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		// no package annotations
+	protected void addNestableAnnotationDefinitionsTo(ArrayList<NestableAnnotationDefinition> definitions) {
+		// nothing new for EclipseLink
 	}
 }

@@ -12,8 +12,11 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase.DefaultAnnotationWriter;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
@@ -42,12 +45,8 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToMany2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 
@@ -331,7 +330,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		assertEquals(false, this.getOrphanRemovalOf(oneToManyMapping).isDefaultOrphanRemoval());
 	}
@@ -340,7 +339,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		assertEquals(false, this.getOrphanRemovalOf(oneToManyMapping).isDefaultOrphanRemoval());
 	}
@@ -349,7 +348,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
@@ -364,15 +363,15 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_MANY);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
 		
@@ -383,7 +382,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		this.createTestEntityWithValidOneToManyMappingOrphanRemovalSpecified();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
@@ -394,37 +393,37 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
 		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_MANY);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		
 		assertEquals(Boolean.TRUE, oneToMany.getOrphanRemoval());
 		
 		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(null);
-		assertNotNull(attributeResource.getAnnotation(JPA.ONE_TO_MANY)); 	// .getElement);
+		assertNotNull(resourceField.getAnnotation(JPA.ONE_TO_MANY)); 	// .getElement);
 	}
 	
 	public void testSetSpecifiedOrphanRemoval2() throws Exception {
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
 		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_MANY);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		
 		assertEquals(Boolean.TRUE, oneToMany.getOrphanRemoval());
 		
@@ -432,7 +431,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals(Boolean.TRUE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 
 		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(null);
-		assertNotNull(attributeResource.getAnnotation(JPA.ONE_TO_MANY));
+		assertNotNull(resourceField.getAnnotation(JPA.ONE_TO_MANY));
 		
 		oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 	}
@@ -441,15 +440,15 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		this.createTestEntity();
 		this.addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) attributeResource.getAnnotation(JPA.ONE_TO_MANY);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		OneToMany2_0Annotation oneToMany = (OneToMany2_0Annotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();
 
@@ -461,7 +460,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertSame(oneToManyMapping, persistentAttribute.getMapping());
 		
 		oneToMany.setOrphanRemoval(Boolean.FALSE);
-		attributeResource.setPrimaryAnnotation(null, EmptyIterable.<String>instance());
+		resourceField.setPrimaryAnnotation(null, EmptyIterable.<String>instance());
 		getJpaProject().synchronizeContextModel();
 		
 		assertTrue(persistentAttribute.getMapping().isDefault());
@@ -471,19 +470,19 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		createTestEntityWithOneToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(oneToManyMapping.getSpecifiedMapKey());
-		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 		
 		//set mapKey in the resource model, verify context model does not change
-		attributeResource.addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertNull(oneToManyMapping.getSpecifiedMapKey());
-		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		MapKeyAnnotation mapKey = (MapKeyAnnotation) resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertNotNull(mapKey);
 				
 		//set mapKey name in the resource model, verify context model updated
@@ -501,34 +500,34 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertNull(mapKey.getName());
 		
 		mapKey.setName("myMapKey");
-		attributeResource.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertNull(oneToManyMapping.getSpecifiedMapKey());
-		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testModifyMapKey() throws Exception {
 		createTestEntityWithOneToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(oneToManyMapping.getSpecifiedMapKey());
-		assertNull(attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME));
 					
 		//set mapKey  in the context model, verify resource model updated
 		oneToManyMapping.setSpecifiedMapKey("myMapKey");
-		MapKeyAnnotation mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		MapKeyAnnotation mapKey = (MapKeyAnnotation) resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertEquals("myMapKey", oneToManyMapping.getSpecifiedMapKey());
 		assertEquals("myMapKey", mapKey.getName());
 	
 		//set mapKey to null in the context model
 		oneToManyMapping.setSpecifiedMapKey(null);
 		assertNull(oneToManyMapping.getSpecifiedMapKey());
-		mapKey = (MapKeyAnnotation) attributeResource.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		mapKey = (MapKeyAnnotation) resourceField.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		assertNull(mapKey.getName());
 	}
 	
@@ -585,19 +584,19 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		createTestEntityWithValidGenericMapOneToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
-		assertNull(attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
 		
 		//set mapKey in the resource model, verify context model does not change
-		attributeResource.addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
-		MapKeyClass2_0Annotation mapKeyClassAnnotation = (MapKeyClass2_0Annotation) attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		MapKeyClass2_0Annotation mapKeyClassAnnotation = (MapKeyClass2_0Annotation) resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 		assertNotNull(mapKeyClassAnnotation);
 				
 		//set mapKey name in the resource model, verify context model updated
@@ -613,36 +612,36 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertNull(mapKeyClassAnnotation.getValue());
 		
 		mapKeyClassAnnotation.setValue("myMapKeyClass");
-		attributeResource.removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 
 		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
-		assertNull(attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
 	}
 	
 	public void testModifyMapKeyClass() throws Exception {
 		createTestEntityWithValidGenericMapOneToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
-		assertNull(attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
 					
 		//set mapKey  in the context model, verify resource model updated
 		oneToManyMapping.setSpecifiedMapKeyClass("String");
-		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 		assertEquals("String", oneToManyMapping.getSpecifiedMapKeyClass());
 		assertEquals("String", mapKeyClass.getValue());
 	
 		//set mapKey to null in the context model
 		oneToManyMapping.setSpecifiedMapKeyClass(null);
 		assertNull(oneToManyMapping.getSpecifiedMapKeyClass());
-		assertNull(attributeResource.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME));
 	}
 
 	public void testDefaultMapKeyClass() throws Exception {
@@ -651,7 +650,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		createTestEmbeddableState();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals("java.lang.String", oneToManyMapping.getDefaultMapKeyClass());
@@ -665,7 +664,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		createTestEntityWithValidOneToManyMappingOrphanRemovalSpecified();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(oneToManyMapping.getDefaultMapKeyClass());
@@ -675,7 +674,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		createTestEntityWithValidGenericMapOneToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
 		assertEquals("java.lang.String", oneToManyMapping.getMapKeyClass());
@@ -792,7 +791,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		oneToManyMapping.getRelationship().setStrategyToMappedBy();
 		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("employee");
@@ -805,9 +804,9 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		addressEntity.getTable().setSpecifiedName("MY_PRIMARY_TABLE");
 		assertEquals("MY_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTable());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) attributeResource.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
 		column.setName("foo");
 		getJpaProject().synchronizeContextModel();
 
@@ -822,7 +821,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(oneToManyMapping.getMapKeyColumn().getSpecifiedName());
@@ -832,9 +831,9 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_PRIMARY_TABLE");
 		assertEquals("MY_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTable());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) attributeResource.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
 		column.setName("foo");
 		getJpaProject().synchronizeContextModel();
 
@@ -849,11 +848,11 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		((JoinColumnRelationship) oneToManyMapping.getRelationship()).setStrategyToJoinColumn();
 
-		JoinColumn joinColumn = ((JoinColumnRelationship) oneToManyMapping.getRelationship()).getJoinColumnStrategy().specifiedJoinColumns().next();
+		JoinColumn joinColumn = ((JoinColumnRelationship) oneToManyMapping.getRelationship()).getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 
 		assertEquals("addresses_id", joinColumn.getDefaultName());
 		assertEquals("Address", joinColumn.getDefaultTable());//target table name
@@ -875,7 +874,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		((JoinColumnRelationship) oneToManyMapping.getRelationship()).setStrategyToJoinColumn();
 
@@ -887,9 +886,9 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		addressEntity.getTable().setSpecifiedName("ADDRESS_PRIMARY_TABLE");
 		assertEquals("ADDRESS_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTable());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) attributeResource.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) resourceField.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
 		column.setName("foo");
 		getJpaProject().synchronizeContextModel();
 
@@ -906,7 +905,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 
-		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		((JoinColumnRelationship) oneToManyMapping.getRelationship()).setStrategyToJoinColumn();
 		((Orderable2_0) oneToManyMapping.getOrderable()).setOrderColumnOrdering(true);
@@ -926,38 +925,39 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
-		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceAttribute.getAnnotation(JPA.ONE_TO_MANY);
-		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 mapping = (OneToManyMapping2_0) contextAttribute.getMapping();
 		OneToManyRelationship2_0 rel = (OneToManyRelationship2_0) mapping.getRelationship();
 		
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
 		assertFalse(rel.strategyIsMappedBy());
 		
 		rel.setStrategyToJoinColumn();
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 		assertFalse(rel.strategyIsMappedBy());
 		
 		rel.setStrategyToMappedBy();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 		assertTrue(rel.strategyIsMappedBy());
 		
 		rel.setStrategyToJoinTable();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
@@ -968,14 +968,15 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
-		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceAttribute.getAnnotation(JPA.ONE_TO_MANY);
-		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
+		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 mapping = (OneToManyMapping2_0) contextAttribute.getMapping();
 		OneToManyRelationship2_0 rel = (OneToManyRelationship2_0) mapping.getRelationship();
 		
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
@@ -983,26 +984,26 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		annotation.setMappedBy("foo");
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 		assertTrue(rel.strategyIsMappedBy());
 		
-		resourceAttribute.addAnnotation(JPA.JOIN_TABLE);
+		resourceField.addAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 		assertTrue(rel.strategyIsMappedBy());
 		
-		resourceAttribute.addAnnotation(JPA.JOIN_COLUMN);
+		resourceField.addAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
@@ -1010,26 +1011,26 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		annotation.setMappedBy(null);
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 		assertFalse(rel.strategyIsMappedBy());
 		
-		resourceAttribute.removeAnnotation(JPA.JOIN_TABLE);
+		resourceField.removeAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 		assertFalse(rel.strategyIsMappedBy());
 		
-		resourceAttribute.removeAnnotation(JPA.JOIN_COLUMN);
+		resourceField.removeAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
@@ -1050,42 +1051,42 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
 		
-		ListIterator<JavaAttributeOverride> specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();		
+		ListIterator<JavaAttributeOverride> specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		//add an annotation to the resource model and verify the context model is updated
-		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("FOO");
 		getJpaProject().synchronizeContextModel();
-		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();		
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("FOO", specifiedMapKeyAttributeOverrides.next().getName());
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("value.BAR");
 		getJpaProject().synchronizeContextModel();
-		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();		
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("FOO", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("value.BAR", specifiedMapKeyAttributeOverrides.next().getName());
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 
 
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("key.BAZ");
 		getJpaProject().synchronizeContextModel();
-		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();		
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BAZ", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("value.BAR", specifiedMapKeyAttributeOverrides.next().getName());
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 	
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("key.BLAH");
 		getJpaProject().synchronizeContextModel();
-		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();		
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BLAH", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("BAZ", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedMapKeyAttributeOverrides.next().getName());
@@ -1093,40 +1094,40 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 
 		//move an annotation to the resource model and verify the context model is updated
-		attributeResource.moveAnnotation(1, 0, JPA.ATTRIBUTE_OVERRIDES);
+		resourceField.moveAnnotation(1, 0, JPA.ATTRIBUTE_OVERRIDE);
 		getJpaProject().synchronizeContextModel();
-		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();		
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BAZ", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("BLAH", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("value.BAR", specifiedMapKeyAttributeOverrides.next().getName());
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 
-		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		resourceField.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		getJpaProject().synchronizeContextModel();
-		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();		
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BLAH", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("value.BAR", specifiedMapKeyAttributeOverrides.next().getName());
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 	
-		attributeResource.removeAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		resourceField.removeAnnotation(1, JPA.ATTRIBUTE_OVERRIDE);
 		getJpaProject().synchronizeContextModel();
-		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();		
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("BLAH", specifiedMapKeyAttributeOverrides.next().getName());
 		assertEquals("value.BAR", specifiedMapKeyAttributeOverrides.next().getName());
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 
 		
-		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		resourceField.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		getJpaProject().synchronizeContextModel();
-		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();		
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertEquals("value.BAR", specifiedMapKeyAttributeOverrides.next().getName());
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 
-		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		resourceField.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		getJpaProject().synchronizeContextModel();
-		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();		
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 	}
 
@@ -1144,14 +1145,13 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertEquals("parcels", attributeResource.getName());
-		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertEquals("parcels", resourceField.getName());
+		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
-		assertEquals(4, mapKeyAttributeOverrideContainer.virtualOverridesSize());
-		ReadOnlyAttributeOverride defaultAttributeOverride = mapKeyAttributeOverrideContainer.virtualOverrides().next();
+		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
+		ReadOnlyAttributeOverride defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
 		assertEquals(TYPE_NAME +"_PropertyInfo", defaultAttributeOverride.getColumn().getTable());
@@ -1165,7 +1165,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
 		
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		Embeddable addressEmbeddable = (Embeddable) classRefs.next().getJavaPersistentType().getMapping();
 		
@@ -1181,12 +1181,11 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		cityMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(6));
 		cityMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
-		assertEquals("parcels", attributeResource.getName());
-		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
+		assertEquals("parcels", resourceField.getName());
+		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
 
-		assertEquals(4, mapKeyAttributeOverrideContainer.virtualOverridesSize());
-		defaultAttributeOverride = mapKeyAttributeOverrideContainer.virtualOverrides().next();
+		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
+		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
 		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
@@ -1209,7 +1208,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		cityMapping.getColumn().setSpecifiedLength(null);
 		cityMapping.getColumn().setSpecifiedPrecision(null);
 		cityMapping.getColumn().setSpecifiedScale(null);
-		defaultAttributeOverride = mapKeyAttributeOverrideContainer.virtualOverrides().next();
+		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
 		assertEquals(TYPE_NAME +"_PropertyInfo", defaultAttributeOverride.getColumn().getTable());
@@ -1222,10 +1221,10 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
 		
-		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		annotation.setName("key.city");
 		getJpaProject().synchronizeContextModel();
-		assertEquals(3, mapKeyAttributeOverrideContainer.virtualOverridesSize());
+		assertEquals(3, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		}
 	
 	public void testMapKeyValueSpecifiedAttributeOverridesSize() throws Exception {
@@ -1241,21 +1240,21 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
-		assertEquals(0, mapKeyAttributeOverrideContainer.specifiedOverridesSize());
+		assertEquals(0, mapKeyAttributeOverrideContainer.getSpecifiedOverridesSize());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
-		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("FOO");
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("key.BAR");
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("value.FOO2");
 		getJpaProject().synchronizeContextModel();
 
-		assertEquals(3, mapKeyAttributeOverrideContainer.specifiedOverridesSize());
+		assertEquals(3, mapKeyAttributeOverrideContainer.getSpecifiedOverridesSize());
 	}
 	
 	public void testMapKeyValueAttributeOverridesSize() throws Exception {
@@ -1271,31 +1270,31 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 
 		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
-		assertEquals(4, mapKeyAttributeOverrideContainer.overridesSize());
+		assertEquals(4, mapKeyAttributeOverrideContainer.getOverridesSize());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
-		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("FOO");
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("key.BAR");
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("value.FOO2");
 		getJpaProject().synchronizeContextModel();
 
-		assertEquals(7, mapKeyAttributeOverrideContainer.overridesSize());
+		assertEquals(7, mapKeyAttributeOverrideContainer.getOverridesSize());
 		
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("city");
 		getJpaProject().synchronizeContextModel();
-		assertEquals(7, mapKeyAttributeOverrideContainer.overridesSize());
+		assertEquals(7, mapKeyAttributeOverrideContainer.getOverridesSize());
 		
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("key.state.foo");
 		getJpaProject().synchronizeContextModel();
-		assertEquals(7, mapKeyAttributeOverrideContainer.overridesSize());
+		assertEquals(7, mapKeyAttributeOverrideContainer.getOverridesSize());
 	}
 	
 	public void testMapKeyValueVirtualAttributeOverridesSize() throws Exception {
@@ -1311,32 +1310,32 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
-		assertEquals(4, mapKeyAttributeOverrideContainer.virtualOverridesSize());
+		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		//add an annotation to the resource model and verify the context model is updated
-		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("FOO");
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("key.BAR");
 		getJpaProject().synchronizeContextModel();
 
-		assertEquals(4, mapKeyAttributeOverrideContainer.virtualOverridesSize());
+		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 
 		
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("key.city");
 		getJpaProject().synchronizeContextModel();
-		assertEquals(3, mapKeyAttributeOverrideContainer.virtualOverridesSize());
+		assertEquals(3, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("key.state.foo");
-		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
 		attributeOverride.setName("size");
 		getJpaProject().synchronizeContextModel();
-		assertEquals(2, mapKeyAttributeOverrideContainer.virtualOverridesSize());
+		assertEquals(2, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 	}
 
 	public void testMapKeyValueAttributeOverrideSetVirtual() throws Exception {
@@ -1352,32 +1351,32 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 				
 		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
-		mapKeyAttributeOverrideContainer.virtualOverrides().next().convertToSpecified();
-		mapKeyAttributeOverrideContainer.virtualOverrides().next().convertToSpecified();
+		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		Iterator<NestableAnnotation> attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		Iterator<NestableAnnotation> attributeOverrides = resourceField.getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME).iterator();
 		
 		assertEquals("key.city", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
 		assertEquals("key.state.foo", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
 		assertFalse(attributeOverrides.hasNext());
 		
-		mapKeyAttributeOverrideContainer.specifiedOverrides().next().convertToVirtual();
-		attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
+		attributeOverrides = resourceField.getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME).iterator();
 		assertEquals("key.state.foo", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
 		assertFalse(attributeOverrides.hasNext());
 		
-		mapKeyAttributeOverrideContainer.specifiedOverrides().next().convertToVirtual();
-		attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
+		attributeOverrides = resourceField.getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME).iterator();
 		assertFalse(attributeOverrides.hasNext());
 		
-		Iterator<JavaVirtualAttributeOverride> virtualAttributeOverrides = mapKeyAttributeOverrideContainer.virtualOverrides();
+		Iterator<JavaVirtualAttributeOverride> virtualAttributeOverrides = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator();
 		assertEquals("city", virtualAttributeOverrides.next().getName());
 		assertEquals("state.foo", virtualAttributeOverrides.next().getName());
 		assertEquals("state.address", virtualAttributeOverrides.next().getName());
 		assertEquals("zip", virtualAttributeOverrides.next().getName());
-		assertEquals(4, mapKeyAttributeOverrideContainer.virtualOverridesSize());
+		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 	}
 	
 	
@@ -1394,27 +1393,27 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
-		mapKeyAttributeOverrideContainer.virtualOverrides().next().convertToSpecified();
-		mapKeyAttributeOverrideContainer.virtualOverrides().next().convertToSpecified();
+		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
+		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		ListIterator<JavaAttributeOverride> specifiedOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();
+		ListIterator<JavaAttributeOverride> specifiedOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("city", specifiedOverrides.next().getName());
 		assertEquals("state.foo", specifiedOverrides.next().getName());
 		assertFalse(specifiedOverrides.hasNext());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
-		attributeResource.moveAnnotation(1, 0, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		resourceField.moveAnnotation(1, 0, AttributeOverrideAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
-		Iterator<NestableAnnotation> attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		Iterator<NestableAnnotation> attributeOverrides = resourceField.getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME).iterator();
 
 		assertEquals("key.state.foo", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
 		assertEquals("key.city", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
 		assertFalse(attributeOverrides.hasNext());
 		
-		specifiedOverrides = mapKeyAttributeOverrideContainer.specifiedOverrides();
+		specifiedOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("state.foo", specifiedOverrides.next().getName());
 		assertEquals("city", specifiedOverrides.next().getName());
 		assertFalse(specifiedOverrides.hasNext());

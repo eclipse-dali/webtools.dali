@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Corresponds to the JPA annotations:<ul>
@@ -129,23 +129,18 @@ public interface BaseTableAnnotation
 	 * Corresponds to the 'uniqueConstraints' element of the *Table annotation.
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
-	ListIterator<UniqueConstraintAnnotation> uniqueConstraints();
+	ListIterable<UniqueConstraintAnnotation> getUniqueConstraints();
 		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraints"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the 'uniqueConstraints' element of the *Table annotation.
 	 */
-	int uniqueConstraintsSize();
+	int getUniqueConstraintsSize();
 
 	/**
 	 * Corresponds to the 'uniqueConstraints' element of the *Table annotation.
 	 */
 	UniqueConstraintAnnotation uniqueConstraintAt(int index);
-
-	/**
-	 * Corresponds to the 'uniqueConstraints' element of the *Table annotation.
-	 */
-	int indexOfUniqueConstraint(UniqueConstraintAnnotation uniqueConstraint);
 
 	/**
 	 * Corresponds to the 'uniqueConstraints' element of the *Table annotation.

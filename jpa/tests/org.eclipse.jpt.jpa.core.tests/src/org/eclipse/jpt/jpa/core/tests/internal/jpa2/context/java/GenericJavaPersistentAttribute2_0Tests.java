@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -133,29 +133,29 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		JavaPersistentAttribute id = getJavaPersistentType().getAttributeNamed("id");
 		assertEquals(id.getMappingKey(), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		
-		id.getResourcePersistentAttribute().addAnnotation(JPA.ID);
+		id.getResourceAttribute().addAnnotation(JPA.ID);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(id.getMappingKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		
-		id.getResourcePersistentAttribute().addAnnotation(JPA.ONE_TO_ONE);
+		id.getResourceAttribute().addAnnotation(JPA.ONE_TO_ONE);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(id.getMappingKey(), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertNotNull(id.getResourcePersistentAttribute().getAnnotation(JPA.ID));
+		assertNotNull(id.getResourceAttribute().getAnnotation(JPA.ID));
 		
-		id.getResourcePersistentAttribute().removeAnnotation(JPA.ONE_TO_ONE);
+		id.getResourceAttribute().removeAnnotation(JPA.ONE_TO_ONE);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(id.getMappingKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		
-		id.getResourcePersistentAttribute().addAnnotation(JPA.MANY_TO_ONE);
+		id.getResourceAttribute().addAnnotation(JPA.MANY_TO_ONE);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(id.getMappingKey(), MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertNotNull(id.getResourcePersistentAttribute().getAnnotation(JPA.ID));
+		assertNotNull(id.getResourceAttribute().getAnnotation(JPA.ID));
 		
-		id.getResourcePersistentAttribute().removeAnnotation(JPA.MANY_TO_ONE);
+		id.getResourceAttribute().removeAnnotation(JPA.MANY_TO_ONE);
 		getJpaProject().synchronizeContextModel();
 		assertEquals(id.getMappingKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		
-		id.getResourcePersistentAttribute().setPrimaryAnnotation(null, EmptyIterable.<String>instance());
+		id.getResourceAttribute().setPrimaryAnnotation(null, EmptyIterable.<String>instance());
 		getJpaProject().synchronizeContextModel();
 		assertEquals(id.getMappingKey(), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);	
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
+ *  Copyright (c) 2010, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -11,11 +11,11 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -24,15 +24,15 @@ public abstract class AbstractTypeMappingValidator<T extends TypeMapping>
 {
 	protected T typeMapping;
 
-	protected JavaResourcePersistentType jrpt;
+	protected JavaResourceType jrt;
 
 	protected TypeMappingTextRangeResolver textRangeResolver;
 
 
 	protected AbstractTypeMappingValidator(
-			T typeMapping, JavaResourcePersistentType jrpt, TypeMappingTextRangeResolver textRangeResolver) {
+			T typeMapping, JavaResourceType jrt, TypeMappingTextRangeResolver textRangeResolver) {
 		this.typeMapping = typeMapping;
-		this.jrpt = jrpt;
+		this.jrt = jrt;
 		this.textRangeResolver = textRangeResolver;
 	}
 
@@ -45,38 +45,38 @@ public abstract class AbstractTypeMappingValidator<T extends TypeMapping>
 	protected abstract void validateType(List<IMessage> messages);
 
 	protected boolean isMemberType() {
-		if (this.jrpt == null) {
+		if (this.jrt == null) {
 			return false;
 		}
-		return this.jrpt.isMemberType();
+		return this.jrt.isMemberType();
 	}
 
 	protected boolean isStaticType() {
-		if (this.jrpt == null) {
+		if (this.jrt == null) {
 			return false;
 		}
-		return this.jrpt.isStatic();
+		return this.jrt.isStatic();
 	}
 
 	protected boolean isFinalType() {
-		if (this.jrpt == null) {
+		if (this.jrt == null) {
 			return false;
 		}
-		return this.jrpt.isFinal();
+		return this.jrt.isFinal();
 	}
 
 	protected boolean hasPrivateNoArgConstructor() {
-		if (this.jrpt == null) {
+		if (this.jrt == null) {
 			return false;
 		}
-		return this.jrpt.hasPrivateNoArgConstructor();
+		return this.jrt.hasPrivateNoArgConstructor();
 	}
 
 	protected boolean hasNoArgConstructor() {
-		if (this.jrpt == null) {
+		if (this.jrt == null) {
 			return false;
 		}
-		return this.jrpt.hasNoArgConstructor();
+		return this.jrt.hasNoArgConstructor();
 	}
 
 	protected IMessage buildTypeMessage(String msgID) {

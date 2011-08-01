@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Primary key join column relationship strategy.
@@ -37,16 +37,16 @@ public interface PrimaryKeyJoinColumnRelationshipStrategy
 	/**
 	 * Return the strategy's primary key join columns.
 	 */
-	ListIterator<? extends PrimaryKeyJoinColumn> primaryKeyJoinColumns();
+	ListIterable<? extends PrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 	
 	/**
 	 * Return the number of primary key join columns.
 	 */
-	int primaryKeyJoinColumnsSize();
+	int getPrimaryKeyJoinColumnsSize();
 	
 	/**
 	 * Return whether the relationship has any primary key join columns.
-	 * (Equivalent to {@link #primaryKeyJoinColumnsSize()} == 0.)
+	 * (Equivalent to {@link #getPrimaryKeyJoinColumnsSize()} == 0.)
 	 */
 	boolean hasPrimaryKeyJoinColumns();
 

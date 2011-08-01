@@ -14,7 +14,6 @@
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -184,8 +183,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 			if (typeMapping instanceof JavaEntity) {
 				JavaEntity entity = (JavaEntity) typeMapping;
 
-				for (Iterator<JavaNamedQuery> queries = entity.getQueryContainer().namedQueries(); queries.hasNext(); ) {
-					JavaNamedQuery namedQuery = queries.next();
+				for (JavaNamedQuery namedQuery : entity.getQueryContainer().getNamedQueries()) {
 					TextRange textRange = namedQuery.getQueryAnnotation().getQueryTextRange(astRoot);
 
 					if ((textRange != null) && textRange.includes(tokenStart)) {

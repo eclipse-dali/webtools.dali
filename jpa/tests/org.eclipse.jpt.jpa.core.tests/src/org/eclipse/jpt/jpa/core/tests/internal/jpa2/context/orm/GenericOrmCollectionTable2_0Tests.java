@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -145,7 +145,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(TYPE_NAME + "_projects", virtualCollectionTable.getName());
 		assertNull(virtualCollectionTable.getSpecifiedCatalog());
 		assertNull(virtualCollectionTable.getSpecifiedSchema());
-		assertEquals(0, virtualCollectionTable.specifiedJoinColumnsSize());
+		assertEquals(0, virtualCollectionTable.getSpecifiedJoinColumnsSize());
 		JoinColumn virtualJoinColumn = virtualCollectionTable.getDefaultJoinColumn();
 		assertEquals(TYPE_NAME + "_id", virtualJoinColumn.getDefaultName());
 		assertEquals("id", virtualJoinColumn.getDefaultReferencedColumnName());
@@ -163,8 +163,8 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		assertEquals("FOO", virtualCollectionTable.getSpecifiedName());
 		assertEquals("CATALOG", virtualCollectionTable.getSpecifiedCatalog());
 		assertEquals("SCHEMA", virtualCollectionTable.getSpecifiedSchema());
-		assertEquals(1, virtualCollectionTable.specifiedJoinColumnsSize());
-		virtualJoinColumn = virtualCollectionTable.specifiedJoinColumns().next();
+		assertEquals(1, virtualCollectionTable.getSpecifiedJoinColumnsSize());
+		virtualJoinColumn = virtualCollectionTable.getSpecifiedJoinColumns().iterator().next();
 		assertEquals("NAME", virtualJoinColumn.getSpecifiedName());
 		assertEquals("REFERENCED_NAME", virtualJoinColumn.getSpecifiedReferencedColumnName());
 	}
@@ -345,12 +345,12 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		assertEquals("BAZ", resourceCollectionTable.getJoinColumns().get(1).getName());
 		assertEquals("FOO", resourceCollectionTable.getJoinColumns().get(2).getName());
 		
-		ListIterator<OrmJoinColumn> joinColumns = ormCollectionTable.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
 		
-		joinColumns = ormCollectionTable.specifiedJoinColumns();
+		joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -401,7 +401,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		
 		
 		ormCollectionTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<OrmJoinColumn> joinColumns = ormCollectionTable.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -412,7 +412,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 
 
 		ormCollectionTable.moveSpecifiedJoinColumn(0, 1);
-		joinColumns = ormCollectionTable.specifiedJoinColumns();
+		joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -441,39 +441,39 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		resourceCollectionTable.getJoinColumns().get(1).setName("BAR");
 		resourceCollectionTable.getJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmJoinColumn> joinColumns = ormCollectionTable.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		resourceCollectionTable.getJoinColumns().move(2, 0);
-		joinColumns = ormCollectionTable.specifiedJoinColumns();
+		joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		resourceCollectionTable.getJoinColumns().move(0, 1);
-		joinColumns = ormCollectionTable.specifiedJoinColumns();
+		joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		resourceCollectionTable.getJoinColumns().remove(1);
-		joinColumns = ormCollectionTable.specifiedJoinColumns();
+		joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		resourceCollectionTable.getJoinColumns().remove(1);
-		joinColumns = ormCollectionTable.specifiedJoinColumns();
+		joinColumns = ormCollectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		resourceCollectionTable.getJoinColumns().remove(0);
-		assertFalse(ormCollectionTable.specifiedJoinColumns().hasNext());
+		assertFalse(ormCollectionTable.getSpecifiedJoinColumns().iterator().hasNext());
 	}
 
 	public void testUniqueConstraints() throws Exception {
@@ -486,7 +486,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		resourceElementCollection.setCollectionTable(OrmFactory.eINSTANCE.createXmlCollectionTable());
 		XmlCollectionTable resourceCollectionTable = resourceElementCollection.getCollectionTable();
 		
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 		
 		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
@@ -497,7 +497,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		resourceCollectionTable.getUniqueConstraints().add(0, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "bar");
 		
-		uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertTrue(uniqueConstraints.hasNext());
 		assertEquals("bar", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("foo", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -514,7 +514,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		resourceElementCollection.setCollectionTable(OrmFactory.eINSTANCE.createXmlCollectionTable());
 		XmlCollectionTable resourceCollectionTable = resourceElementCollection.getCollectionTable();
 		
-		assertEquals(0,  ormCollectionTable.uniqueConstraintsSize());
+		assertEquals(0,  ormCollectionTable.getUniqueConstraintsSize());
 		
 		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		resourceCollectionTable.getUniqueConstraints().add(0, uniqueConstraintResource);
@@ -524,7 +524,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		resourceCollectionTable.getUniqueConstraints().add(1, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "bar");
 		
-		assertEquals(2,  ormCollectionTable.uniqueConstraintsSize());
+		assertEquals(2,  ormCollectionTable.getUniqueConstraintsSize());
 	}
 
 	public void testAddUniqueConstraint() throws Exception {
@@ -594,7 +594,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
 		assertFalse(uniqueConstraintResources.hasNext());
 		
-		Iterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		Iterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
@@ -605,7 +605,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));		
 		assertFalse(uniqueConstraintResources.hasNext());
 
-		uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertFalse(uniqueConstraints.hasNext());
 
@@ -613,7 +613,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		ormCollectionTable.removeUniqueConstraint(0);
 		uniqueConstraintResources = resourceCollectionTable.getUniqueConstraints().listIterator();
 		assertFalse(uniqueConstraintResources.hasNext());
-		uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -635,7 +635,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		
 		
 		ormCollectionTable.moveUniqueConstraint(2, 0);
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -647,7 +647,7 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 
 
 		ormCollectionTable.moveUniqueConstraint(0, 1);
-		uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -681,39 +681,39 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
 
 		
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		resourceCollectionTable.getUniqueConstraints().move(2, 0);
-		uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		resourceCollectionTable.getUniqueConstraints().move(0, 1);
-		uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		resourceCollectionTable.getUniqueConstraints().remove(1);
-		uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		resourceCollectionTable.getUniqueConstraints().remove(1);
-		uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		resourceCollectionTable.getUniqueConstraints().remove(0);
-		uniqueConstraints = ormCollectionTable.uniqueConstraints();
+		uniqueConstraints = ormCollectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 	}
 
@@ -721,23 +721,23 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		createTestEntityWithValidElementCollection();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmReadOnlyPersistentAttribute virtualAttribute = ormPersistentType.attributes().next();
+		OrmReadOnlyPersistentAttribute virtualAttribute = ormPersistentType.getAttributes().iterator().next();
 		assertTrue(virtualAttribute.isVirtual());
 		
 		ElementCollectionMapping2_0 virtualElementCollectionMapping = (ElementCollectionMapping2_0) virtualAttribute.getMapping();
 		CollectionTable2_0 virtualCollectionTable = virtualElementCollectionMapping.getCollectionTable();
 		
-		ListIterator<UniqueConstraint> uniqueConstraints = (ListIterator<UniqueConstraint>) virtualCollectionTable.uniqueConstraints();
+		ListIterator<? extends UniqueConstraint> uniqueConstraints = virtualCollectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
-		JavaElementCollectionMapping2_0 javaElementCollectionMapping2_0 = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 javaElementCollectionMapping2_0 = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 javaCollectionTable = javaElementCollectionMapping2_0.getCollectionTable();
 		
 		javaCollectionTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		javaCollectionTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		javaCollectionTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
 
-		uniqueConstraints = (ListIterator<UniqueConstraint>) virtualCollectionTable.uniqueConstraints();
+		uniqueConstraints = virtualCollectionTable.getUniqueConstraints().iterator();
 		assertTrue(uniqueConstraints.hasNext());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -746,8 +746,8 @@ public class GenericOrmCollectionTable2_0Tests extends Generic2_0ContextModelTes
 		
 		virtualAttribute.convertToSpecified();
 		
-		virtualElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentType.attributes().next().getMapping();
-		assertEquals(0,  virtualElementCollectionMapping.getCollectionTable().uniqueConstraintsSize());
+		virtualElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentType.getAttributes().iterator().next().getMapping();
+		assertEquals(0,  virtualElementCollectionMapping.getCollectionTable().getUniqueConstraintsSize());
 	}
 
 }

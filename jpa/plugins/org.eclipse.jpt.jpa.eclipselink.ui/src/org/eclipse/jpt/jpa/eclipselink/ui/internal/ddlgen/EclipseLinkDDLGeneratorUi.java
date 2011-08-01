@@ -9,8 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen;
 
-import java.util.Iterator;
-
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,6 +21,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -62,7 +61,7 @@ public class EclipseLinkDDLGeneratorUi
 	
 	protected void generate() {
 
-		PersistenceUnit persistenceUnit = this.getPersistenceUnits().next(); // Take the first persistenceUnit
+		PersistenceUnit persistenceUnit = this.getPersistenceUnits().iterator().next(); // Take the first persistenceUnit
 		String puName = persistenceUnit.getName();
 
 		GenerateDDLWizard wizard = new GenerateDDLWizard(this.project);
@@ -108,8 +107,8 @@ public class EclipseLinkDDLGeneratorUi
 		return this.project.getJpaPlatform();
 	}
 	
-	protected Iterator<PersistenceUnit> getPersistenceUnits() {
-		return this.getPersistence().persistenceUnits();
+	protected ListIterable<PersistenceUnit> getPersistenceUnits() {
+		return this.getPersistence().getPersistenceUnits();
 	}
 
 	protected Persistence getPersistence() {

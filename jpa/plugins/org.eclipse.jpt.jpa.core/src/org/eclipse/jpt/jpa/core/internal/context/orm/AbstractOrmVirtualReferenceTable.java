@@ -10,20 +10,16 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.VirtualReferenceTable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -31,16 +27,16 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReadOnlyReferen
 	extends AbstractOrmVirtualTable<T>
 	implements VirtualReferenceTable
 {
-	protected final Vector<OrmVirtualJoinColumn> specifiedJoinColumns = new Vector<OrmVirtualJoinColumn>();
-	protected final SpecifiedJoinColumnContainerAdapter specifiedJoinColumnContainerAdapter = new SpecifiedJoinColumnContainerAdapter();
+	protected final ContextListContainer<OrmVirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;
 	protected final OrmReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected OrmVirtualJoinColumn defaultJoinColumn;
 
 
-	protected AbstractOrmVirtualReferenceTable(XmlContextNode parent, Owner owner) {
-		super(parent, owner);
+	protected AbstractOrmVirtualReferenceTable(XmlContextNode parent, Owner owner, T overridenTable) {
+		super(parent, owner, overridenTable);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
 
@@ -56,86 +52,78 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReadOnlyReferen
 
 	// ********** join columns **********
 
-	public ListIterator<OrmVirtualJoinColumn> joinColumns() {
-		return this.getJoinColumns().iterator();
-	}
-
-	protected ListIterable<OrmVirtualJoinColumn> getJoinColumns() {
+	public ListIterable<OrmVirtualJoinColumn> getJoinColumns() {
 		return this.hasSpecifiedJoinColumns() ? this.getSpecifiedJoinColumns() : this.getDefaultJoinColumns();
 	}
 
-	public int joinColumnsSize() {
-		return this.hasSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.getDefaultJoinColumnsSize();
+	public int getJoinColumnsSize() {
+		return this.hasSpecifiedJoinColumns() ? this.getSpecifiedJoinColumnsSize() : this.getDefaultJoinColumnsSize();
 	}
 
 
 	// ********** specified join columns **********
 
-	public ListIterator<OrmVirtualJoinColumn> specifiedJoinColumns() {
-		return this.getSpecifiedJoinColumns().iterator();
+	public ListIterable<OrmVirtualJoinColumn> getSpecifiedJoinColumns() {
+		return this.specifiedJoinColumnContainer.getContextElements();
 	}
 
-	protected ListIterable<OrmVirtualJoinColumn> getSpecifiedJoinColumns() {
-		return new LiveCloneListIterable<OrmVirtualJoinColumn>(this.specifiedJoinColumns);
-	}
-
-	public int specifiedJoinColumnsSize() {
-		return this.specifiedJoinColumns.size();
+	public int getSpecifiedJoinColumnsSize() {
+		return this.specifiedJoinColumnContainer.getContextElementsSize();
 	}
 
 	public boolean hasSpecifiedJoinColumns() {
-		return this.specifiedJoinColumns.size() != 0;
+		return this.getSpecifiedJoinColumnsSize() != 0;
 	}
 
 	public OrmVirtualJoinColumn getSpecifiedJoinColumn(int index) {
-		return this.specifiedJoinColumns.get(index);
+		return this.specifiedJoinColumnContainer.getContextElement(index);
 	}
 
 	protected void updateSpecifiedJoinColumns() {
-		ContextContainerTools.update(this.specifiedJoinColumnContainerAdapter);
+		this.specifiedJoinColumnContainer.update();
 	}
 
-	protected Iterable<ReadOnlyJoinColumn> getOverriddenJoinColumns() {
-		return CollectionTools.iterable(this.getOverriddenTable().specifiedJoinColumns());
+	protected ListIterable<ReadOnlyJoinColumn> getOverriddenJoinColumns() {
+		return new SuperListIterableWrapper<ReadOnlyJoinColumn>(this.getOverriddenTable().getSpecifiedJoinColumns());
 	}
 
 	protected void moveSpecifiedJoinColumn(int index, OrmVirtualJoinColumn joinColumn) {
-		this.moveItemInList(index, joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
+		this.specifiedJoinColumnContainer.moveContextElement(index, joinColumn);
 	}
 
 	protected OrmVirtualJoinColumn addSpecifiedJoinColumn(int index, ReadOnlyJoinColumn joinColumn) {
-		OrmVirtualJoinColumn virtualJoinColumn = this.buildJoinColumn(joinColumn);
-		this.addItemToList(index, virtualJoinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
-		return virtualJoinColumn;
+		return this.specifiedJoinColumnContainer.addContextElement(index, joinColumn);
 	}
 
 	protected void removeSpecifiedJoinColumn(OrmVirtualJoinColumn joinColumn) {
-		this.removeItemFromList(joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
+		this.specifiedJoinColumnContainer.removeContextElement(joinColumn);
+	}
+
+	protected ContextListContainer<OrmVirtualJoinColumn, ReadOnlyJoinColumn> buildSpecifiedJoinColumnContainer() {
+		return new SpecifiedJoinColumnContainer();
 	}
 
 	/**
-	 * specified join column container adapter
+	 * specified join column container
 	 */
-	protected class SpecifiedJoinColumnContainerAdapter
-		implements ContextContainerTools.Adapter<OrmVirtualJoinColumn, ReadOnlyJoinColumn>
+	protected class SpecifiedJoinColumnContainer
+		extends ContextListContainer<OrmVirtualJoinColumn, ReadOnlyJoinColumn>
 	{
-		public Iterable<OrmVirtualJoinColumn> getContextElements() {
-			return AbstractOrmVirtualReferenceTable.this.getSpecifiedJoinColumns();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return SPECIFIED_JOIN_COLUMNS_LIST;
 		}
-		public Iterable<ReadOnlyJoinColumn> getResourceElements() {
+		@Override
+		protected OrmVirtualJoinColumn buildContextElement(ReadOnlyJoinColumn resourceElement) {
+			return AbstractOrmVirtualReferenceTable.this.buildJoinColumn(resourceElement);
+		}
+		@Override
+		protected ListIterable<ReadOnlyJoinColumn> getResourceElements() {
 			return AbstractOrmVirtualReferenceTable.this.getOverriddenJoinColumns();
 		}
-		public ReadOnlyJoinColumn getResourceElement(OrmVirtualJoinColumn contextElement) {
+		@Override
+		protected ReadOnlyJoinColumn getResourceElement(OrmVirtualJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
-		}
-		public void moveContextElement(int index, OrmVirtualJoinColumn element) {
-			AbstractOrmVirtualReferenceTable.this.moveSpecifiedJoinColumn(index, element);
-		}
-		public void addContextElement(int index, ReadOnlyJoinColumn element) {
-			AbstractOrmVirtualReferenceTable.this.addSpecifiedJoinColumn(index, element);
-		}
-		public void removeContextElement(OrmVirtualJoinColumn element) {
-			AbstractOrmVirtualReferenceTable.this.removeSpecifiedJoinColumn(element);
 		}
 	}
 

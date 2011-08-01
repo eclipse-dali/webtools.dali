@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -148,16 +148,16 @@ public class PackageGenerator {
 				}
 				PersistenceUnit persistenceUnit;
 				// create a persistence unit if one doesn't already exist
-				if (persistence.persistenceUnitsSize() == 0) {
+				if (persistence.getPersistenceUnitsSize() == 0) {
 					persistenceUnit = persistence.addPersistenceUnit();
 					persistenceUnit.setName(PackageGenerator.this.jpaProject.getName());
 				} else {
 					// we only support one persistence unit - take the first one
-					persistenceUnit = persistence.persistenceUnits().next();
+					persistenceUnit = persistence.getPersistenceUnits().iterator().next();
 				}
 				for (Iterator<String> stream = genClasses.iterator(); stream.hasNext();) {
 					String className = stream.next();
-					if (CollectionTools.isEmpty(persistenceUnit.mappingFileRefsContaining(className)) && !persistenceUnit.specifiesPersistentType(className)) {
+					if (CollectionTools.isEmpty(persistenceUnit.getMappingFileRefsContaining(className)) && !persistenceUnit.specifiesPersistentType(className)) {
 						persistenceUnit.addSpecifiedClassRef(className);
 					}
 				}

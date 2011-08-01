@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -24,7 +27,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNullAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
@@ -99,25 +101,25 @@ public class EclipseLinkOrmPersistentAttributeTests
 		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(2, ormPersistentType.virtualAttributesSize());
+		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
 		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		assertEquals("id", ormPersistentAttribute.getName());
 		assertTrue(ormPersistentAttribute.isVirtual());
 		ormPersistentAttribute.convertToSpecified();
 		
-		assertEquals(1, ormPersistentType.virtualAttributesSize());
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
 		
-		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		ormPersistentAttribute.convertToSpecified();
 		
-		assertEquals(0, ormPersistentType.virtualAttributesSize());
-		assertEquals(2, ormPersistentType.specifiedAttributesSize());
-		Iterator<OrmPersistentAttribute> specifiedAttributes = ormPersistentType.specifiedAttributes();
+		assertEquals(0, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(2, ormPersistentType.getSpecifiedAttributesSize());
+		Iterator<OrmPersistentAttribute> specifiedAttributes = ormPersistentType.getSpecifiedAttributes().iterator();
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
@@ -131,29 +133,29 @@ public class EclipseLinkOrmPersistentAttributeTests
 		createTestTypeNullAttributeMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(3, ormPersistentType.virtualAttributesSize());
+		assertEquals(3, ormPersistentType.getVirtualAttributesSize());
 		
 		//take a virtual mapping with a mapping type and make it specified
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		assertEquals("address", ormPersistentAttribute.getName());
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof GenericJavaNullAttributeMapping);
 		ormPersistentAttribute.convertToSpecified(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
-		assertEquals(2, ormPersistentType.virtualAttributesSize());
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
 		assertEquals(specifiedOrmPersistentAttribute.getMappingKey(), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof OrmEclipseLinkOneToOneMapping);
 		
-		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		ormPersistentAttribute.convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		
-		assertEquals(1, ormPersistentType.virtualAttributesSize());
-		assertEquals(2, ormPersistentType.specifiedAttributesSize());
-		Iterator<OrmPersistentAttribute> specifiedAttributes = ormPersistentType.specifiedAttributes();
+		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(2, ormPersistentType.getSpecifiedAttributesSize());
+		Iterator<OrmPersistentAttribute> specifiedAttributes = ormPersistentType.getSpecifiedAttributes().iterator();
 		
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
@@ -169,27 +171,27 @@ public class EclipseLinkOrmPersistentAttributeTests
 		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(2, ormPersistentType.virtualAttributesSize());
+		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
 		
-		ormPersistentType.virtualAttributes().next().convertToSpecified();
-		ormPersistentType.virtualAttributes().next().convertToSpecified();
+		ormPersistentType.getVirtualAttributes().iterator().next().convertToSpecified();
+		ormPersistentType.getVirtualAttributes().iterator().next().convertToSpecified();
 
-		assertEquals(0, ormPersistentType.virtualAttributesSize());
-		assertEquals(2, ormPersistentType.specifiedAttributesSize());
-		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		assertEquals(0, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(2, ormPersistentType.getSpecifiedAttributesSize());
+		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
 		
 		specifiedOrmPersistentAttribute.convertToVirtual();
-		assertEquals(1, ormPersistentType.virtualAttributesSize());
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
+		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		
-		specifiedOrmPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		specifiedOrmPersistentAttribute.convertToVirtual();
-		assertEquals(2, ormPersistentType.virtualAttributesSize());
-		assertEquals(0, ormPersistentType.specifiedAttributesSize());
+		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(0, ormPersistentType.getSpecifiedAttributesSize());
 		
-		Iterator<OrmReadOnlyPersistentAttribute> virtualAttributes = ormPersistentType.virtualAttributes();
+		Iterator<OrmReadOnlyPersistentAttribute> virtualAttributes = ormPersistentType.getVirtualAttributes().iterator();
 		OrmReadOnlyPersistentAttribute virtualAttribute = virtualAttributes.next();		
 		assertEquals("id", virtualAttribute.getName());
 		virtualAttribute = virtualAttributes.next();		
@@ -200,31 +202,31 @@ public class EclipseLinkOrmPersistentAttributeTests
 		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(2, ormPersistentType.virtualAttributesSize());
+		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
 		
-		ormPersistentType.virtualAttributes().next().convertToSpecified();
-		ormPersistentType.virtualAttributes().next().convertToSpecified();
+		ormPersistentType.getVirtualAttributes().iterator().next().convertToSpecified();
+		ormPersistentType.getVirtualAttributes().iterator().next().convertToSpecified();
 
 		
-		ormPersistentType.specifiedAttributes().next().getMapping().setName("noJavaAttribute");
-		assertEquals(1, ormPersistentType.virtualAttributesSize());
-		assertEquals(2, ormPersistentType.specifiedAttributesSize());
+		ormPersistentType.getSpecifiedAttributes().iterator().next().getMapping().setName("noJavaAttribute");
+		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(2, ormPersistentType.getSpecifiedAttributesSize());
 		
 		
-		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		specifiedOrmPersistentAttribute.convertToVirtual();
-		assertEquals(1, ormPersistentType.virtualAttributesSize());
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
+		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		
-		assertEquals("id", ormPersistentType.virtualAttributes().next().getName());
-		assertEquals("name", ormPersistentType.specifiedAttributes().next().getName());
+		assertEquals("id", ormPersistentType.getVirtualAttributes().iterator().next().getName());
+		assertEquals("name", ormPersistentType.getSpecifiedAttributes().iterator().next().getName());
 	}
 	
 	public void testVirtualMappingTypeWhenMetadataComplete()  throws Exception {
 		createTestEntityIdMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		assertEquals("id", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 		assertEquals("FOO", ((IdMapping) ormPersistentAttribute.getMapping()).getColumn().getName());
@@ -242,7 +244,7 @@ public class EclipseLinkOrmPersistentAttributeTests
 		createTestEntityOneToOneMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		assertEquals("address", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 		
@@ -265,10 +267,10 @@ public class EclipseLinkOrmPersistentAttributeTests
 		//virtual orm attribute, access type matches java : FIELD, name matches java
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
-		JavaResourcePersistentAttribute javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
-		assertTrue(javaResourcePersistentAttribute.isField());
-		assertEquals("id", javaResourcePersistentAttribute.getName());
-		assertEquals(javaPersistentType.getResourcePersistentType().persistableFields().next(), javaResourcePersistentAttribute);
+		JavaResourceAttribute javaResourceAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute();
+		assertTrue(javaResourceAttribute.getKind() == Kind.FIELD);
+		assertEquals("id", javaResourceAttribute.getName());
+		assertEquals(javaPersistentType.getJavaResourceType().getFields().iterator().next(), javaResourceAttribute);
 		
 		
 		//specified orm attribute, access type matches java : FIELD, name matches java
@@ -280,17 +282,24 @@ public class EclipseLinkOrmPersistentAttributeTests
 	
 		
 		//virtual orm attribute, java access type FIELD, orm access type PROPERTY, name matches java
-		//verify the property java resource persistent attribute is used in orm.
+		//verify both the property java resource attribute and the field java resource attribute are used in orm
+		//because the field is annotated and property is specified
 		((OrmPersistentAttribute) ormPersistentAttribute).convertToVirtual();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");		
 		ormPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
-		assertNotSame(ormPersistentAttribute, ormPersistentType.getAttributeNamed("id"));
-		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
+		ListIterator<OrmReadOnlyPersistentAttribute> attributes = ormPersistentType.getAttributes().iterator();
+		OrmReadOnlyPersistentAttribute idFieldAttribute = attributes.next();
+		OrmReadOnlyPersistentAttribute idPropertyAttribute = attributes.next();
+		assertEquals(ormPersistentAttribute, idFieldAttribute);
+		assertNotSame(ormPersistentAttribute, idPropertyAttribute);
+		ormPersistentAttribute = idPropertyAttribute;
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
-		javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
-		assertTrue(javaResourcePersistentAttribute.isProperty());
-		assertEquals("id", javaResourcePersistentAttribute.getName());
-		assertEquals(javaPersistentType.getResourcePersistentType().persistableProperties().next(), javaResourcePersistentAttribute);
+		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
+		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getJavaPersistentAttribute().getAccess());
+		assertEquals(AccessType.FIELD, idFieldAttribute.getJavaPersistentAttribute().getAccess());
+		javaResourceAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourceAttribute();
+		assertEquals("id", javaResourceAttribute.getName());
+		assertEquals(javaPersistentType.getJavaResourceType().getMethods().iterator().next(), javaResourceAttribute);
 		
 		
 		ormPersistentType.setSpecifiedAccess(null);//default access will be field

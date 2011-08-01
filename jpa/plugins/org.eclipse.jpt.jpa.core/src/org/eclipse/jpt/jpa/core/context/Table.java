@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * <ul>
@@ -36,7 +36,7 @@ public interface Table
 
 	void setSpecifiedCatalog(String value);
 
-	ListIterator<? extends UniqueConstraint> uniqueConstraints();
+	ListIterable<? extends UniqueConstraint> getUniqueConstraints();
 	UniqueConstraint getUniqueConstraint(int index);
 	UniqueConstraint addUniqueConstraint();
 	UniqueConstraint addUniqueConstraint(int index);

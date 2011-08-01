@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
@@ -238,7 +237,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 		if (entity == null) {
 			return null;
 		}
-		for (ReadOnlyPersistentAttribute attribute : CollectionTools.iterable(entity.getPersistentType().allAttributes())) {
+		for (ReadOnlyPersistentAttribute attribute : entity.getPersistentType().getAllAttributes()) {
 			AttributeMapping mapping = attribute.getMapping();
 			if (this.isOwnedBy(mapping)) {
 				return (RelationshipMapping) mapping;

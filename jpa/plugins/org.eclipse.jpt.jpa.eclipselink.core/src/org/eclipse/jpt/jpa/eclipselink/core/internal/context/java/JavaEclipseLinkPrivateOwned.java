@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
 
@@ -76,15 +76,15 @@ public class JavaEclipseLinkPrivateOwned
 	// ********** private owned annotation **********
 
 	protected EclipseLinkPrivateOwnedAnnotation getPrivateOwnedAnnotation() {
-		return (EclipseLinkPrivateOwnedAnnotation) this.getResourcePersistentAttribute().getAnnotation(this.getPrivateOwnedAnnotationName());
+		return (EclipseLinkPrivateOwnedAnnotation) this.getResourceAttribute().getAnnotation(this.getPrivateOwnedAnnotationName());
 	}
 
 	protected EclipseLinkPrivateOwnedAnnotation addPrivateOwnedAnnotation() {
-		return (EclipseLinkPrivateOwnedAnnotation) this.getResourcePersistentAttribute().addAnnotation(this.getPrivateOwnedAnnotationName());
+		return (EclipseLinkPrivateOwnedAnnotation) this.getResourceAttribute().addAnnotation(this.getPrivateOwnedAnnotationName());
 	}
 
 	protected void removePrivateOwnedAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(this.getPrivateOwnedAnnotationName());
+		this.getResourceAttribute().removeAnnotation(this.getPrivateOwnedAnnotationName());
 	}
 
 	protected String getPrivateOwnedAnnotationName() {
@@ -103,8 +103,8 @@ public class JavaEclipseLinkPrivateOwned
 		return this.getParent();
 	}
 
-	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getAttributeMapping().getResourcePersistentAttribute();
+	protected JavaResourceAttribute getResourceAttribute() {
+		return this.getAttributeMapping().getResourceAttribute();
 	}
 
 

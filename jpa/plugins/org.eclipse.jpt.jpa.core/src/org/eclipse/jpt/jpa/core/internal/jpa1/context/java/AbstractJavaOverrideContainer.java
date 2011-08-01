@@ -11,14 +11,17 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
@@ -42,9 +45,6 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -115,16 +115,12 @@ public abstract class AbstractJavaOverrideContainer<
 
 	// ********** overrides **********
 
-	public ListIterator<R> overrides() {
-		return this.getOverrides().iterator();
-	}
-
 	@SuppressWarnings("unchecked")
-	protected ListIterable<R> getOverrides() {
+	public ListIterable<R> getOverrides() {
 		return new CompositeListIterable<R>(this.getReadOnlySpecifiedOverrides(), this.getReadOnlyVirtualOverrides());
 	}
 
-	public int overridesSize() {
+	public int getOverridesSize() {
 		return this.specifiedOverrides.size() + this.virtualOverrides.size();
 	}
 
@@ -220,11 +216,7 @@ public abstract class AbstractJavaOverrideContainer<
 
 	// ********** specified overrides **********
 
-	public ListIterator<S> specifiedOverrides() {
-		return this.getSpecifiedOverrides().iterator();
-	}
-
-	protected ListIterable<S> getSpecifiedOverrides() {
+	public ListIterable<S> getSpecifiedOverrides() {
 		return new LiveCloneListIterable<S>(this.specifiedOverrides);
 	}
 
@@ -235,7 +227,7 @@ public abstract class AbstractJavaOverrideContainer<
 		return (ListIterable<R>) this.getSpecifiedOverrides();
 	}
 
-	public int specifiedOverridesSize() {
+	public int getSpecifiedOverridesSize() {
 		return this.specifiedOverrides.size();
 	}
 
@@ -264,7 +256,7 @@ public abstract class AbstractJavaOverrideContainer<
 	@SuppressWarnings("unchecked")
 	protected A buildOverrideAnnotation(int index) {
 		int annotationIndex = this.calculateNewAnnotationIndex(index);
-		return (A) this.getResourcePersistentMember().addAnnotation(annotationIndex, this.getOverrideAnnotationName(), this.getOverrideContainerAnnotationName());
+		return (A) this.getResourceMember().addAnnotation(annotationIndex, this.getOverrideAnnotationName());
 	}
 
 	protected int calculateNewAnnotationIndex(int index) {
@@ -295,8 +287,6 @@ public abstract class AbstractJavaOverrideContainer<
 
 	protected abstract String getOverrideAnnotationName();
 
-	protected abstract String getOverrideContainerAnnotationName();
-
 	protected void removeSpecifiedOverride(S override) {
 		this.removeSpecifiedOverride(this.specifiedOverrides.indexOf(override));
 	}
@@ -308,7 +298,7 @@ public abstract class AbstractJavaOverrideContainer<
 
 	protected void removeOverrideAnnotation(int index) {
 		int annotationIndex = this.translateToAnnotationIndex(index);
-		this.getResourcePersistentMember().removeAnnotation(annotationIndex, this.getOverrideAnnotationName(), this.getOverrideContainerAnnotationName());
+		this.getResourceMember().removeAnnotation(annotationIndex, this.getOverrideAnnotationName());
 	}
 
 	protected void removeSpecifiedOverride_(int index) {
@@ -323,7 +313,7 @@ public abstract class AbstractJavaOverrideContainer<
 	protected void moveOverrideAnnotation(int targetIndex, int sourceIndex) {
 		int targetAnnotationIndex = this.translateToAnnotationIndex(targetIndex);
 		int sourceAnnotationIndex = this.translateToAnnotationIndex(sourceIndex);
-		this.getResourcePersistentMember().moveAnnotation(targetAnnotationIndex, sourceAnnotationIndex, this.getOverrideContainerAnnotationName());
+		this.getResourceMember().moveAnnotation(targetAnnotationIndex, sourceAnnotationIndex, this.getOverrideAnnotationName());
 	}
 
 	protected abstract S buildSpecifiedOverride(A overrideAnnotation);
@@ -346,20 +336,18 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	protected Iterable<A> getOverrideAnnotations() {
-		return new SubIterableWrapper<NestableAnnotation, A>(
-				CollectionTools.iterable(this.overrideAnnotations())
-			);
+		return new SubIterableWrapper<NestableAnnotation, A>((this.overrideAnnotations()));
 	}
 
-	protected Iterator<NestableAnnotation> overrideAnnotations() {
-		return (this.owner == null) ? EmptyIterator.<NestableAnnotation>instance() : this.overrideAnnotations_();
+	protected Iterable<NestableAnnotation> overrideAnnotations() {
+		return (this.owner == null) ? EmptyIterable.<NestableAnnotation>instance() : this.overrideAnnotations_();
 	}
 
 	/**
 	 * pre-condition: {@link #owner} is not <code>null</code>
 	 */
-	protected Iterator<NestableAnnotation> overrideAnnotations_() {
-		return this.getResourcePersistentMember().annotations(this.getOverrideAnnotationName(), this.getOverrideContainerAnnotationName());
+	protected Iterable<NestableAnnotation> overrideAnnotations_() {
+		return this.getResourceMember().getAnnotations(this.getOverrideAnnotationName());
 	}
 
 	protected void moveSpecifiedOverride_(int index, S override) {
@@ -406,15 +394,11 @@ public abstract class AbstractJavaOverrideContainer<
 
 	// ********** virtual overrides **********
 
-	public ListIterator<V> virtualOverrides() {
-		return this.getVirtualOverrides().iterator();
-	}
-
-	protected ListIterable<V> getVirtualOverrides() {
+	public ListIterable<V> getVirtualOverrides() {
 		return new LiveCloneListIterable<V>(this.virtualOverrides);
 	}
 
-	public int virtualOverridesSize() {
+	public int getVirtualOverridesSize() {
 		return this.virtualOverrides.size();
 	}
 
@@ -504,8 +488,8 @@ public abstract class AbstractJavaOverrideContainer<
 		return this.owner.getTypeMapping();
 	}
 
-	protected JavaResourcePersistentMember getResourcePersistentMember() {
-		return this.owner.getResourcePersistentMember();
+	protected JavaResourceMember getResourceMember() {
+		return this.owner.getResourceMember();
 	}
 
 	public TypeMapping getOverridableTypeMapping() {
@@ -604,8 +588,7 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	protected Annotation getValidationAnnotation() {
-		JavaResourcePersistentMember resourceMember = this.getResourcePersistentMember();
-		Annotation annotation = resourceMember.getAnnotation(this.getOverrideContainerAnnotationName());
-		return (annotation != null) ? annotation : resourceMember.getAnnotation(this.getOverrideAnnotationName());
+		JavaResourceMember resourceMember = this.getResourceMember();
+		return resourceMember.getAnnotation(this.getOverrideAnnotationName());
 	}
 }

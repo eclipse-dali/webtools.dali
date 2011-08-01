@@ -13,9 +13,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpql;
 
-import java.util.Iterator;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -59,10 +58,10 @@ public final class JpaPersistenceUnit extends JpaManagedTypeProvider {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Iterator<ClassRef> javaClassRefs() {
-		return new CompositeIterator<ClassRef>(
-			getPersistentTypeContainer().specifiedClassRefs(),
-			getPersistentTypeContainer().impliedClassRefs()
+	private Iterable<ClassRef> javaClassRefs() {
+		return new CompositeIterable<ClassRef>(
+			getPersistentTypeContainer().getSpecifiedClassRefs(),
+			getPersistentTypeContainer().getImpliedClassRefs()
 		);
 	}
 
@@ -70,8 +69,8 @@ public final class JpaPersistenceUnit extends JpaManagedTypeProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	Iterator<? extends PersistentType> persistenceTypes() {
-		return new TransformationIterator<ClassRef, PersistentType>(javaClassRefs()) {
+	Iterable<? extends PersistentType> persistenceTypes() {
+		return new TransformationIterable<ClassRef, PersistentType>(javaClassRefs()) {
 			@Override
 			protected PersistentType transform(ClassRef classRef) {
 				return classRef.getJavaPersistentType();

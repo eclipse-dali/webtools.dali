@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
-import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 
@@ -74,20 +73,16 @@ public final class BinaryJoinTableAnnotation
 	// ********** JoinTableAnnotation implementation **********
 
 	// ***** join columns
-	public ListIterator<JoinColumnAnnotation> joinColumns() {
-		return new CloneListIterator<JoinColumnAnnotation>(this.joinColumns);
+	public ListIterable<JoinColumnAnnotation> getJoinColumns() {
+		return new LiveCloneListIterable<JoinColumnAnnotation>(this.joinColumns);
 	}
 
-	public int joinColumnsSize() {
+	public int getJoinColumnsSize() {
 		return this.joinColumns.size();
 	}
 
 	public JoinColumnAnnotation joinColumnAt(int index) {
 		return this.joinColumns.get(index);
-	}
-
-	public int indexOfJoinColumn(JoinColumnAnnotation joinColumn) {
-		return this.joinColumns.indexOf(joinColumn);
 	}
 
 	public JoinColumnAnnotation addJoinColumn(int index) {
@@ -118,20 +113,16 @@ public final class BinaryJoinTableAnnotation
 
 
 	// ***** inverse join columns
-	public ListIterator<JoinColumnAnnotation> inverseJoinColumns() {
-		return new CloneListIterator<JoinColumnAnnotation>(this.inverseJoinColumns);
+	public ListIterable<JoinColumnAnnotation> getInverseJoinColumns() {
+		return new LiveCloneListIterable<JoinColumnAnnotation>(this.inverseJoinColumns);
 	}
 
-	public int inverseJoinColumnsSize() {
+	public int getInverseJoinColumnsSize() {
 		return this.inverseJoinColumns.size();
 	}
 
 	public JoinColumnAnnotation inverseJoinColumnAt(int index) {
 		return this.inverseJoinColumns.get(index);
-	}
-
-	public int indexOfInverseJoinColumn(JoinColumnAnnotation joinColumn) {
-		return this.inverseJoinColumns.indexOf(joinColumn);
 	}
 
 	public JoinColumnAnnotation addInverseJoinColumn(int index) {

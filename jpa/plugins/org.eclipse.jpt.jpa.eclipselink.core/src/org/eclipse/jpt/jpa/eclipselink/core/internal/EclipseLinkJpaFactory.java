@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
@@ -24,7 +27,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
@@ -64,10 +66,20 @@ public class EclipseLinkJpaFactory
 	// ********** Java Context Model overrides **********
 
 	@Override
-	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
-		return new JavaEclipseLinkPersistentAttribute(parent, jrpa);
+	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
+		return new JavaEclipseLinkPersistentAttribute(parent, accessor);
 	}
-	
+
+	@Override
+	public JavaPersistentAttribute buildJavaPersistentField(PersistentType parent, JavaResourceField resourceField) {
+		return new JavaEclipseLinkPersistentAttribute(parent, resourceField);
+	}
+
+	@Override
+	public JavaPersistentAttribute buildJavaPersistentProperty(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		return new JavaEclipseLinkPersistentAttribute(parent, resourceGetter, resourceSetter);
+	}
+
 	@Override
 	public JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent) {
 		return new JavaEclipseLinkBasicMapping(parent);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -46,11 +46,11 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
-		OrmAttributeOverride ormAttributeOverride = overrideContainer.specifiedOverrides().next();
+		OrmAttributeOverride ormAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		
 		assertNull(ormAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());
-		assertTrue(overrideContainer.overrides().hasNext());
+		assertTrue(overrideContainer.getOverrides().iterator().hasNext());
 		assertFalse(entityResource.getAttributeOverrides().isEmpty());
 		
 		//set name in the resource model, verify context model updated
@@ -68,7 +68,7 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("FOO", attributeOverrideResource.getName());
 
 		entityResource.getAttributeOverrides().remove(0);
-		assertFalse(overrideContainer.overrides().hasNext());
+		assertFalse(overrideContainer.getOverrides().iterator().hasNext());
 		assertTrue(entityResource.getAttributeOverrides().isEmpty());
 	}
 	
@@ -80,7 +80,7 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
-		OrmAttributeOverride ormAttributeOverride = overrideContainer.specifiedOverrides().next();
+		OrmAttributeOverride ormAttributeOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 
 		assertNull(ormAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());

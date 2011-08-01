@@ -13,9 +13,9 @@ import java.util.List;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
@@ -120,15 +120,15 @@ public class JavaEclipseLinkCustomizer
 	// ********** customizer annotation **********
 
 	protected EclipseLinkCustomizerAnnotation getCustomizerAnnotation() {
-		return (EclipseLinkCustomizerAnnotation) this.getResourcePersistentType().getAnnotation(this.getCustomizerAnnotationName());
+		return (EclipseLinkCustomizerAnnotation) this.getJavaResourceType().getAnnotation(this.getCustomizerAnnotationName());
 	}
 
 	protected EclipseLinkCustomizerAnnotation addCustomizerAnnotation() {
-		return (EclipseLinkCustomizerAnnotation) this.getResourcePersistentType().addAnnotation(this.getCustomizerAnnotationName());
+		return (EclipseLinkCustomizerAnnotation) this.getJavaResourceType().addAnnotation(this.getCustomizerAnnotationName());
 	}
 
 	protected void removeCustomizerAnnotation() {
-		this.getResourcePersistentType().removeAnnotation(this.getCustomizerAnnotationName());
+		this.getJavaResourceType().removeAnnotation(this.getCustomizerAnnotationName());
 	}
 
 	protected String getCustomizerAnnotationName() {
@@ -147,8 +147,8 @@ public class JavaEclipseLinkCustomizer
 		return this.getParent();
 	}
 
-	protected JavaResourcePersistentType getResourcePersistentType() {
-		return this.getTypeMapping().getResourcePersistentType();
+	protected JavaResourceType getJavaResourceType() {
+		return this.getTypeMapping().getJavaResourceType();
 	}
 
 	public char getCustomizerClassEnclosingTypeSeparator() {

@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
@@ -36,8 +38,6 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericTypeMappingValidator;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -70,8 +70,8 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return this.getParent();
 	}
 
-	public JavaResourcePersistentType getResourcePersistentType() {
-		return this.getPersistentType().getResourcePersistentType();
+	public JavaResourceType getJavaResourceType() {
+		return this.getPersistentType().getJavaResourceType();
 	}
 
 	public String getName() {
@@ -165,7 +165,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** attribute mappings **********
 
 	public Iterator<JavaAttributeMapping> attributeMappings() {
-		return new TransformationIterator<JavaPersistentAttribute, JavaAttributeMapping>(this.getPersistentType().attributes()) {
+		return new TransformationIterator<JavaPersistentAttribute, JavaAttributeMapping>(this.getPersistentType().getAttributes()) {
 			@Override
 			protected JavaAttributeMapping transform(JavaPersistentAttribute attribute) {
 				return attribute.getMapping();
@@ -279,7 +279,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
-		return new GenericTypeMappingValidator(this, this.getResourcePersistentType(), buildTextRangeResolver(astRoot));
+		return new GenericTypeMappingValidator(this, this.getJavaResourceType(), buildTextRangeResolver(astRoot));
 	}
 
 	protected TypeMappingTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {

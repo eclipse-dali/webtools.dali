@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -89,16 +88,12 @@ public abstract class AbstractOrmOverrideContainer<
 
 	// ********** overrides **********
 
-	public ListIterator<R> overrides() {
-		return this.getOverrides().iterator();
-	}
-
 	@SuppressWarnings("unchecked")
-	protected ListIterable<R> getOverrides() {
+	public ListIterable<R> getOverrides() {
 		return new CompositeListIterable<R>(this.getReadOnlySpecifiedOverrides(), this.getReadOnlyVirtualOverrides());
 	}
 
-	public int overridesSize() {
+	public int getOverridesSize() {
 		return this.specifiedOverrides.size() + this.virtualOverrides.size();
 	}
 
@@ -183,11 +178,7 @@ public abstract class AbstractOrmOverrideContainer<
 
 	// ********** specified overrides **********
 
-	public ListIterator<S> specifiedOverrides() {
-		return this.getSpecifiedOverrides().iterator();
-	}
-
-	protected ListIterable<S> getSpecifiedOverrides() {
+	public ListIterable<S> getSpecifiedOverrides() {
 		return new LiveCloneListIterable<S>(this.specifiedOverrides);
 	}
 
@@ -198,7 +189,7 @@ public abstract class AbstractOrmOverrideContainer<
 		return (ListIterable<R>) this.getSpecifiedOverrides();
 	}
 
-	public int specifiedOverridesSize() {
+	public int getSpecifiedOverridesSize() {
 		return this.specifiedOverrides.size();
 	}
 
@@ -311,11 +302,7 @@ public abstract class AbstractOrmOverrideContainer<
 
 	// ********** virtual overrides **********
 
-	public ListIterator<V> virtualOverrides() {
-		return this.getVirtualOverrides().iterator();
-	}
-
-	protected ListIterable<V> getVirtualOverrides() {
+	public ListIterable<V> getVirtualOverrides() {
 		return new LiveCloneListIterable<V>(this.virtualOverrides);
 	}
 
@@ -326,7 +313,7 @@ public abstract class AbstractOrmOverrideContainer<
 		return (ListIterable<R>) this.getVirtualOverrides();
 	}
 
-	public int virtualOverridesSize() {
+	public int getVirtualOverridesSize() {
 		return this.virtualOverrides.size();
 	}
 

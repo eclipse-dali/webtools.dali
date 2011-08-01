@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -26,8 +28,6 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaConverter;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -138,7 +138,7 @@ public class JavaEclipseLinkConvert
 			if ((this.converter == null) || (this.converter.getType() != converterType)) {
 				JavaEclipseLinkConverter.Adapter converterAdapter = this.getConverterAdapter(converterType);
 				this.retainConverterAnnotation(converterAdapter);
-				this.setConverter_(converterAdapter.buildNewConverter(this.getResourcePersistentAttribute(), this));
+				this.setConverter_(converterAdapter.buildNewConverter(this.getResourceAttribute(), this));
 			}
 		}
 	}
@@ -154,7 +154,7 @@ public class JavaEclipseLinkConvert
 	}
 
 	protected JavaEclipseLinkConverter<?> buildConverter_() {
-		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
 		for (JavaEclipseLinkConverter.Adapter adapter : this.getConverterAdapters()) {
 			JavaEclipseLinkConverter<?> javaConverter = adapter.buildConverter(resourceAttribute, this);
 			if (javaConverter != null) {
@@ -170,7 +170,7 @@ public class JavaEclipseLinkConvert
 	 * <code>null</code>, remove <em>all</em> the converter annotations.
 	 */
 	protected void retainConverterAnnotation(JavaEclipseLinkConverter.Adapter converterAdapter) {
-		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
 		for (JavaEclipseLinkConverter.Adapter adapter : this.getConverterAdapters()) {
 			if (adapter != converterAdapter) {
 				adapter.removeConverterAnnotation(resourceAttribute);
@@ -209,7 +209,7 @@ public class JavaEclipseLinkConvert
 	 * converter annotations.
 	 */
 	protected Association<JavaEclipseLinkConverter.Adapter, EclipseLinkNamedConverterAnnotation> getEclipseLinkConverterAnnotation() {
-		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
 		for (JavaEclipseLinkConverter.Adapter adapter : this.getConverterAdapters()) {
 			EclipseLinkNamedConverterAnnotation annotation = adapter.getConverterAnnotation(resourceAttribute);
 			if (annotation != null) {

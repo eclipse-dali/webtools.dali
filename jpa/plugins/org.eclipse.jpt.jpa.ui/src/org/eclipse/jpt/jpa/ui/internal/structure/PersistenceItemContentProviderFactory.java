@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,13 @@
 package org.eclipse.jpt.jpa.ui.internal.structure;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
@@ -87,12 +86,12 @@ public class PersistenceItemContentProviderFactory
 			return new ListCollectionValueModelAdapter<PersistenceUnit>(
 			new ListAspectAdapter<Persistence, PersistenceUnit>(Persistence.PERSISTENCE_UNITS_LIST, getModel()) {
 				@Override
-				protected ListIterator<PersistenceUnit> listIterator_() {
-					return subject.persistenceUnits();
+				protected ListIterable<PersistenceUnit> getListIterable() {
+					return subject.getPersistenceUnits();
 				}
 				@Override
 				protected int size_() {
-					return subject.persistenceUnitsSize();
+					return subject.getPersistenceUnitsSize();
 				}
 			});
 		}
@@ -123,12 +122,12 @@ public class PersistenceItemContentProviderFactory
 						PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
 						getModel()) {
 					@Override
-					protected ListIterator<MappingFileRef> listIterator_() {
-						return subject.specifiedMappingFileRefs();
+					protected ListIterable<MappingFileRef> getListIterable() {
+						return subject.getSpecifiedMappingFileRefs();
 					}
 					@Override
 					protected int size_() {
-						return subject.specifiedMappingFileRefsSize();
+						return subject.getSpecifiedMappingFileRefsSize();
 					}
 				};
 			
@@ -148,12 +147,12 @@ public class PersistenceItemContentProviderFactory
 						PersistenceUnit.SPECIFIED_CLASS_REFS_LIST,
 						getModel()) {
 					@Override
-					protected ListIterator<ClassRef> listIterator_() {
-						return subject.specifiedClassRefs();
+					protected ListIterable<ClassRef> getListIterable() {
+						return subject.getSpecifiedClassRefs();
 					}
 					@Override
 					protected int size_() {
-						return subject.specifiedClassRefsSize();
+						return subject.getSpecifiedClassRefsSize();
 					}
 				};
 			ListValueModel<ClassRef> impliedClassCvm = 
@@ -162,12 +161,12 @@ public class PersistenceItemContentProviderFactory
 							PersistenceUnit.IMPLIED_CLASS_REFS_COLLECTION,
 							getModel()) {
 						@Override
-						protected Iterator<ClassRef> iterator_() {
-							return subject.impliedClassRefs();
+						protected Iterable<ClassRef> getIterable() {
+							return subject.getImpliedClassRefs();
 						}
 						@Override
 						protected int size_() {
-							return subject.impliedClassRefsSize();
+							return subject.getImpliedClassRefsSize();
 						}
 					});
 			ListValueModel<JarFileRef> jarFileCvm =
@@ -175,12 +174,12 @@ public class PersistenceItemContentProviderFactory
 						PersistenceUnit.JAR_FILE_REFS_LIST,
 						getModel()) {
 					@Override
-					protected ListIterator<JarFileRef> listIterator_() {
-						return subject.jarFileRefs();
+					protected ListIterable<JarFileRef> getListIterable() {
+						return subject.getJarFileRefs();
 					}
 					@Override
 					protected int size_() {
-						return subject.jarFileRefsSize();
+						return subject.getJarFileRefsSize();
 					}
 				};
 			List<ListValueModel<? extends JpaStructureNode>> list = new ArrayList<ListValueModel<? extends JpaStructureNode>>(4);

@@ -191,8 +191,8 @@ public class GenericOrmCollectionTable2_0
 			return GenericOrmCollectionTable2_0.this.getPersistentAttribute();
 		}
 
-		public int joinColumnsSize() {
-			return GenericOrmCollectionTable2_0.this.joinColumnsSize();
+		public int getJoinColumnsSize() {
+			return GenericOrmCollectionTable2_0.this.getJoinColumnsSize();
 		}
 
 		protected OrmElementCollectionMapping2_0 getElementCollectionMapping() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
@@ -25,10 +27,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
+import org.eclipse.jpt.jpa.core.internal.context.java.FieldAccessor;
+import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
@@ -256,7 +259,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		ClassRef classRef = classRefs.next();
 		
@@ -273,7 +276,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		ClassRef classRef = classRefs.next();
 		
@@ -290,7 +293,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		ClassRef classRef = classRefs.next();
 		
@@ -307,7 +310,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		ClassRef classRef = classRefs.next();
 		JavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
@@ -326,7 +329,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
 
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		ClassRef classRef = classRefs.next();
 		JavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
@@ -441,7 +444,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		ClassRef classRef = classRefs.next();
 		JavaPersistentType rootJavaPersistentType = classRef.getJavaPersistentType();
 		
@@ -460,7 +463,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		//as the superPersistentType because of impliedClassRefs and changes for bug 190317
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		JavaPersistentType javaPersistentType = classRefs.next().getJavaPersistentType();
 		
 		assertNotNull(javaPersistentType.getSuperPersistentType());
@@ -475,7 +478,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild2");
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		ClassRef classRef = classRefs.next();
 		JavaPersistentType rootJavaPersistentType = classRef.getJavaPersistentType();
 		
@@ -494,7 +497,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild2");
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		JavaPersistentType rootJavaPersistentType = classRefs.next().getJavaPersistentType();
 		JavaPersistentType childJavaPersistentType = classRefs.next().getJavaPersistentType();
 		
@@ -512,7 +515,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild2");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		JavaPersistentType childJavaPersistentType = classRefs.next().getJavaPersistentType();
 		JavaPersistentType rootJavaPersistentType = classRefs.next().getJavaPersistentType();
 		
@@ -558,8 +561,8 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 
 		getJavaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		assertNotNull(typeResource.getAnnotation(EntityAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		assertNotNull(resourceType.getAnnotation(EntityAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 	}
@@ -572,8 +575,8 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 
 		getJavaPersistentType().setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		assertNotNull(typeResource.getAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		assertNotNull(resourceType.getAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 	}
@@ -586,8 +589,8 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 
 		getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.getAnnotation(EntityAnnotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		assertNull(resourceType.getAnnotation(EntityAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 	}
@@ -598,7 +601,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 		
-		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		resourceType.setPrimaryAnnotation(EmbeddableAnnotation.ANNOTATION_NAME, EmptyIterable.<String>instance());
 		this.getJpaProject().synchronizeContextModel();
 				
@@ -611,7 +614,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, getJavaPersistentType().getMappingKey());
 		
-		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		resourceType.setPrimaryAnnotation(EntityAnnotation.ANNOTATION_NAME, EmptyIterable.<String>instance());
 		this.getJpaProject().synchronizeContextModel();
 
@@ -631,7 +634,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	public void testAttributes() throws Exception {
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
+		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
 		
 		assertEquals("id", attributes.next().getName());
 		assertFalse(attributes.hasNext());
@@ -641,10 +644,17 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedFieldAndMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
+		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
 		
-		assertEquals("id", attributes.next().getName());
-		assertEquals("name", attributes.next().getName());
+		JavaPersistentAttribute attribute = attributes.next();
+		assertEquals("id", attribute.getName());
+		assertTrue(attribute.getAccessor() instanceof FieldAccessor);
+		attribute = attributes.next();
+		assertEquals("name", attribute.getName());
+		assertTrue(attribute.getAccessor() instanceof FieldAccessor);
+		attribute = attributes.next();
+		assertEquals("id", attribute.getName());
+		assertTrue(attribute.getAccessor() instanceof PropertyAccessor);
 		assertFalse(attributes.hasNext());
 	}
 	
@@ -652,14 +662,14 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(1, getJavaPersistentType().attributesSize());
+		assertEquals(1, getJavaPersistentType().getAttributesSize());
 	}
 	
 	public void testAttributesSize2() throws Exception {
 		createTestEntityAnnotatedFieldAndMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(2, getJavaPersistentType().attributesSize());
+		assertEquals(3, getJavaPersistentType().getAttributesSize());
 	}
 	
 	public void testAttributeNamed() throws Exception {
@@ -688,7 +698,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		ICompilationUnit testType = createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
+		Iterator<JavaPersistentAttribute> attributes = getJavaPersistentType().getAttributes().iterator();
 		JavaPersistentAttribute idAttribute = attributes.next();
 		JavaPersistentAttribute nameAttribute = attributes.next();
 		
@@ -699,7 +709,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		IField idField = testType.findPrimaryType().getField("id");
 		idField.rename("id2", false, null);
 		
-		attributes = getJavaPersistentType().attributes();
+		attributes = getJavaPersistentType().getAttributes().iterator();
 		JavaPersistentAttribute nameAttribute2 = attributes.next();
 		JavaPersistentAttribute id2Attribute = attributes.next();
 
@@ -755,5 +765,136 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 			}
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Entity2.java", sourceWriter);
+	}
+
+
+	public void testGetAccessNoAttributesAnnotated() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
+		
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
+		assertEquals(AccessType.FIELD, javaPersistentType.getDefaultAccess());
+		assertNull(javaPersistentType.getSpecifiedAccess());
+	}
+	
+	public void testGetAccessFieldsAnnotated() throws Exception {
+		createTestEntityAnnotatedField();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
+		
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
+		assertEquals(AccessType.FIELD, javaPersistentType.getDefaultAccess());
+		assertNull(javaPersistentType.getSpecifiedAccess());
+	}
+	
+	public void testGetAccessMethodsAnnotated() throws Exception {
+		createTestEntityAnnotatedMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
+		
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getDefaultAccess());
+		assertNull(javaPersistentType.getSpecifiedAccess());
+	}
+	
+	public void testGetAccessFieldsAndMethodsAnnotated() throws Exception {
+		createTestEntityAnnotatedFieldAndMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
+		
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
+		assertEquals(AccessType.FIELD, javaPersistentType.getDefaultAccess());
+		assertNull(javaPersistentType.getSpecifiedAccess());
+	}
+	
+	public void testGetAccessNonPersistableMethodAnnotated() throws Exception {
+		createTestEntityAnnotatedNonPersistableMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
+		
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getDefaultAccess());
+		assertNull(javaPersistentType.getSpecifiedAccess());
+	}
+	
+	public void testGetAccessPersistableMethodAndNonPersistableFieldAnnotated() throws Exception {
+		createTestEntityAnnotatedPersistableMethodNonPersistableField();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
+		
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
+		assertEquals(AccessType.FIELD, javaPersistentType.getDefaultAccess());
+		assertNull(javaPersistentType.getSpecifiedAccess());
+	}
+	
+	public void testGetAccessNoPersistableFieldsAnnotated() throws Exception {
+		createTestEntityNoPersistableFields();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
+		
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
+		assertEquals(AccessType.FIELD, javaPersistentType.getDefaultAccess());
+		assertNull(javaPersistentType.getSpecifiedAccess());
+	}
+	
+	private ICompilationUnit createTestEntityAnnotatedNonPersistableMethod() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			@Override
+			public void appendGetNameMethodAnnotationTo(StringBuilder sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityAnnotatedPersistableMethodNonPersistableField() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.COLUMN);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Column");
+				sb.append("    private transient int notPersistable;").append(CR);
+				sb.append(CR);
+
+			}
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
+				sb.append("@Column");
+			}
+		});
+	}
+
+	private ICompilationUnit createTestEntityNoPersistableFields() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			@Override
+			public void appendMemberTypeTo(StringBuilder sb) {
+				sb.delete(sb.indexOf("private int id;"), sb.indexOf("private int id;") + "private int id;".length());
+				sb.delete(sb.indexOf("private String name;"), sb.indexOf("private String name;") + "private String name;".length());
+			}
+		});
 	}
 }

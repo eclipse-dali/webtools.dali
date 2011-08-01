@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Used by many-to-many and one-to-many mappings.
@@ -41,9 +41,9 @@ public interface JoinTable
 	 */
 	void convertDefaultInverseJoinColumnToSpecified();
 
-	ListIterator<? extends JoinColumn> inverseJoinColumns();
+	ListIterable<? extends JoinColumn> getInverseJoinColumns();
 
-	ListIterator<? extends JoinColumn> specifiedInverseJoinColumns();
+	ListIterable<? extends JoinColumn> getSpecifiedInverseJoinColumns();
 
 	JoinColumn getSpecifiedInverseJoinColumn(int index);
 

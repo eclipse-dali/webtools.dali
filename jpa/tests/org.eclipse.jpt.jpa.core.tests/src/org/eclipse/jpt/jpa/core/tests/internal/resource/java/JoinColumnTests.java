@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,11 @@ package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 
 @SuppressWarnings("nls")
@@ -109,18 +110,18 @@ public class JoinColumnTests extends JpaJavaResourceModelTestCase {
 
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 		assertNotNull(column);
 		assertEquals(COLUMN_NAME, column.getName());
 	}
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 		assertNotNull(column);
 		assertNull(column.getName());
 		assertNull(column.getNullable());
@@ -134,9 +135,9 @@ public class JoinColumnTests extends JpaJavaResourceModelTestCase {
 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getName());
@@ -149,9 +150,9 @@ public class JoinColumnTests extends JpaJavaResourceModelTestCase {
 	
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertEquals(COLUMN_NAME, column.getName());
 		
@@ -163,17 +164,17 @@ public class JoinColumnTests extends JpaJavaResourceModelTestCase {
 	
 	public void testGetTable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithTable();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 		assertEquals(COLUMN_TABLE, column.getTable());
 	}
 
 	public void testSetTable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getTable());
@@ -190,17 +191,17 @@ public class JoinColumnTests extends JpaJavaResourceModelTestCase {
 	
 	public void testGetReferencedColumnName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithReferencedColumnName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 		assertEquals(COLUMN_REFERENCED_COLUMN_NAME, column.getReferencedColumnName());
 	}
 
 	public void testSetReferencedColumnName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getReferencedColumnName());
@@ -217,17 +218,17 @@ public class JoinColumnTests extends JpaJavaResourceModelTestCase {
 
 	public void testGetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithColumnDefinition();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 		assertEquals(COLUMN_COLUMN_DEFINITION, column.getColumnDefinition());
 	}
 
 	public void testSetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getColumnDefinition());
@@ -244,18 +245,18 @@ public class JoinColumnTests extends JpaJavaResourceModelTestCase {
 
 	public void testGetUnique() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("unique");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getUnique());
 	}
 	
 	public void testSetUnique() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getUnique());
@@ -271,18 +272,18 @@ public class JoinColumnTests extends JpaJavaResourceModelTestCase {
 	
 	public void testGetNullable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("nullable");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getNullable());
 	}
 	
 	public void testSetNullable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getNullable());
@@ -298,18 +299,18 @@ public class JoinColumnTests extends JpaJavaResourceModelTestCase {
 
 	public void testGetInsertable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("insertable");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getInsertable());
 	}
 	
 	public void testSetInsertable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getInsertable());
@@ -325,18 +326,18 @@ public class JoinColumnTests extends JpaJavaResourceModelTestCase {
 	
 	public void testGetUpdatable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("updatable");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getUpdatable());
 	}
 	
 	public void testSetUpdatable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getAnnotation(JPA.JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JoinColumnAnnotation column = (JoinColumnAnnotation) resourceField.getAnnotation(0, JPA.JOIN_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getUpdatable());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,11 @@ package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 @SuppressWarnings("nls")
 public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
@@ -94,16 +94,16 @@ public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
 
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorColumnWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		assertNotNull(column);
 		assertEquals(COLUMN_NAME, column.getName());
 	}
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		assertNotNull(column);
 		assertNull(column.getName());
 		assertNull(column.getDiscriminatorType());
@@ -112,8 +112,8 @@ public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getName());
@@ -126,8 +126,8 @@ public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
 	
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorColumnWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		assertEquals(COLUMN_NAME, column.getName());
 		
@@ -139,15 +139,15 @@ public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
 
 	public void testGetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorColumnWithColumnDefinition();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		assertEquals(COLUMN_COLUMN_DEFINITION, column.getColumnDefinition());
 	}
 
 	public void testSetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getColumnDefinition());
@@ -164,16 +164,16 @@ public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
 
 	public void testGetLength() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithIntElement("length");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		assertEquals(Integer.valueOf(5), column.getLength());
 	}
 	
 	public void testSetLength() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		assertNotNull(column);
 		assertNull(column.getLength());
@@ -189,15 +189,15 @@ public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
 	
 	public void testGetDiscriminatorType() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorColumnWithDiscriminatorType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 		assertEquals(DiscriminatorType.CHAR, column.getDiscriminatorType());
 	}
 	
 	public void testSetDiscriminatorType() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		DiscriminatorColumnAnnotation column = (DiscriminatorColumnAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_COLUMN);
 
 		assertNull(column.getDiscriminatorType());
 

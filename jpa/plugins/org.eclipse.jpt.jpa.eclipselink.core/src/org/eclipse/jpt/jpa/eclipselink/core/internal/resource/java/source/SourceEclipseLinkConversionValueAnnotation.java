@@ -9,28 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.NestableEclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 
 /**
  * <code>org.eclipse.persistence.annotations.ConversionValue</code>
  */
 final class SourceEclipseLinkConversionValueAnnotation
-	extends SourceAnnotation<Member>
-	implements NestableEclipseLinkConversionValueAnnotation
+	extends SourceAnnotation
+	implements EclipseLinkConversionValueAnnotation
 {
 	private DeclarationAnnotationElementAdapter<String> dataValueDeclarationAdapter;
 	private AnnotationElementAdapter<String> dataValueAdapter;
@@ -41,10 +38,17 @@ final class SourceEclipseLinkConversionValueAnnotation
 	private AnnotationElementAdapter<String> objectValueAdapter;
 	private String objectValue;
 	private TextRange objectValueTextRange;
+	
+	public static SourceEclipseLinkConversionValueAnnotation buildNestedSourceConversionValueAnnotation(
+			JavaResourceNode parent, 
+			AnnotatedElement element, 
+			IndexedDeclarationAnnotationAdapter idaa) {
+		
+		return new SourceEclipseLinkConversionValueAnnotation(parent, element, idaa);
+	}
 
-
-	SourceEclipseLinkConversionValueAnnotation(EclipseLinkObjectTypeConverterAnnotation parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
-		super(parent, member, idaa, new ElementIndexedAnnotationAdapter(member, idaa));
+	private SourceEclipseLinkConversionValueAnnotation(JavaResourceNode parent, AnnotatedElement element, IndexedDeclarationAnnotationAdapter idaa) {
+		super(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
 		this.dataValueDeclarationAdapter = this.buildDataValueDeclarationAdapter();
 		this.dataValueAdapter = this.buildDataValueAdapter();
 		this.objectValueDeclarationAdapter = this.buildObjectValueDeclarationAdapter();
@@ -149,13 +153,6 @@ final class SourceEclipseLinkConversionValueAnnotation
 	}
 
 
-	//************ NestableAnnotation implementation
-
-	public void moveAnnotation(int newIndex) {
-		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
-	}
-
-
 	// ********** misc **********
 
 	@Override
@@ -166,45 +163,10 @@ final class SourceEclipseLinkConversionValueAnnotation
 	}
 
 	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.dataValueDeclarationAdapter = this.buildDataValueDeclarationAdapter();
-		this.dataValueAdapter = this.buildDataValueAdapter();
-		this.objectValueDeclarationAdapter = this.buildObjectValueDeclarationAdapter();
-		this.objectValueAdapter = this.buildObjectValueAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		map.put(DATA_VALUE_PROPERTY, this.dataValue);
-		this.dataValue = null;
-		map.put(OBJECT_VALUE_PROPERTY, this.objectValue);
-		this.objectValue = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		this.setDataValue((String) map.get(DATA_VALUE_PROPERTY));
-		this.setObjectValue((String) map.get(OBJECT_VALUE_PROPERTY));
-	}
-
-	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.dataValue);
 		sb.append("=>"); //$NON-NLS-1$
 		sb.append(this.objectValue);
 	}
 
-
-	// ********** static methods **********
-
-	static NestableEclipseLinkConversionValueAnnotation createConversionValue(EclipseLinkObjectTypeConverterAnnotation parent, Member member, DeclarationAnnotationAdapter daa, int index) {
-		return new SourceEclipseLinkConversionValueAnnotation(parent, member, buildConversionValueAnnotationAdapter(daa, index));
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildConversionValueAnnotationAdapter(DeclarationAnnotationAdapter daa, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(daa, EclipseLink.OBJECT_TYPE_CONVERTER__CONVERSION_VALUES, index, ANNOTATION_NAME);
-	}
 }

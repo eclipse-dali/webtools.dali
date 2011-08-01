@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
@@ -39,12 +39,12 @@ public interface JavaAssociationOverrideContainer
 	ReadOnlyOverrideRelationship getOverrideRelationship(String overrideName);
 
 	// covariant overrides
-	ListIterator<JavaReadOnlyAssociationOverride> overrides();
+	ListIterable<JavaReadOnlyAssociationOverride> getOverrides();
 	JavaReadOnlyAssociationOverride getOverrideNamed(String name);
-	ListIterator<JavaAssociationOverride> specifiedOverrides();
+	ListIterable<JavaAssociationOverride> getSpecifiedOverrides();
 	JavaAssociationOverride getSpecifiedOverride(int index);
 	JavaAssociationOverride getSpecifiedOverrideNamed(String name);
-	ListIterator<JavaVirtualAssociationOverride> virtualOverrides();
+	ListIterable<JavaVirtualAssociationOverride> getVirtualOverrides();
 	JavaVirtualAssociationOverride convertOverrideToVirtual(Override_ specifiedOverride);
 	JavaAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 

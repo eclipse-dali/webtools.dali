@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * Java cacheable
@@ -116,7 +116,7 @@ public class GenericJavaCacheable2_0
 	 * Return <code>null</code> if the annotation does not exists.
 	 */
 	protected Cacheable2_0Annotation getCacheableAnnotation() {
-		return (Cacheable2_0Annotation) this.getResourcePersistentType().getAnnotation(this.getCacheableAnnotationName());
+		return (Cacheable2_0Annotation) this.getJavaResourceType().getAnnotation(this.getCacheableAnnotationName());
 	}
 
 	/**
@@ -128,11 +128,11 @@ public class GenericJavaCacheable2_0
 	}
 
 	protected Cacheable2_0Annotation buildCacheableAnnotation() {
-		return (Cacheable2_0Annotation) this.getResourcePersistentType().addAnnotation(this.getCacheableAnnotationName());
+		return (Cacheable2_0Annotation) this.getJavaResourceType().addAnnotation(this.getCacheableAnnotationName());
 	}
 
 	protected void removeCacheableAnnotation() {
-		this.getResourcePersistentType().removeAnnotation(this.getCacheableAnnotationName());
+		this.getJavaResourceType().removeAnnotation(this.getCacheableAnnotationName());
 	}
 
 	protected String getCacheableAnnotationName() {
@@ -151,8 +151,8 @@ public class GenericJavaCacheable2_0
 		return this.getParent();
 	}
 
-	protected JavaResourcePersistentType getResourcePersistentType() {
-		return this.getCacheableHolder().getResourcePersistentType();
+	protected JavaResourceType getJavaResourceType() {
+		return this.getCacheableHolder().getJavaResourceType();
 	}
 
 

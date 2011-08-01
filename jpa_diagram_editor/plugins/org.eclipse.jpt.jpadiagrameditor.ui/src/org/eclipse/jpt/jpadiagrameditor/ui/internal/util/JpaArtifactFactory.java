@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,6 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -49,7 +48,15 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.refactoring.RenameSupport;
 import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
@@ -69,22 +76,14 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedIdAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAttributeOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
@@ -156,7 +155,7 @@ public class JpaArtifactFactory {
 		
 		JavaPersistentAttribute attr = (JavaPersistentAttribute) ownerJPT
 				.resolveAttribute(ownerAttibute.getName());
-		attr.getResourcePersistentAttribute().setPrimaryAnnotation("javax.persistence.OneToOne", new ArrayListIterable<String>());	//$NON-NLS-1$
+		attr.getResourceAttribute().setPrimaryAnnotation("javax.persistence.OneToOne", new ArrayListIterable<String>());	//$NON-NLS-1$
 		if (direction == JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL) {
 			JpaArtifactFactory.instance().refreshEntityModel(null, referencedJPT);
 			JavaPersistentAttribute attr2 = (JavaPersistentAttribute) referencedJPT.resolveAttribute(referencedAttribute.getName());
@@ -234,7 +233,7 @@ public class JpaArtifactFactory {
 			
 		}
 		if (isMap)
-			singleSideAttibute.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+			singleSideAttibute.getResourceAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		if (direction == JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL) {
 			if(manySideJPT.getAttributeNamed(manySideAttribute.getName()) == null){
 				   refreshEntityModel(fp, manySideJPT);
@@ -262,23 +261,20 @@ public class JpaArtifactFactory {
 		if (ids.length == 1) {
 			if (isSimpleId(ids[0])) {
 				JoinColumnAnnotation an = (JoinColumnAnnotation) jpa
-						.getResourcePersistentAttribute().addAnnotation(
+						.getResourceAttribute().addAnnotation(0, 
 								JoinColumnAnnotation.ANNOTATION_NAME);
 				String idColName = getColumnName(ids[0]);
 				an.setName(tableName + "_" + idColName); //$NON-NLS-1$
 				an.setReferencedColumnName(idColName);
 			} else {
 				Hashtable<String, String> atNameToColName = getOverriddenColNames(ids[0]);
-				JoinColumnsAnnotation an = (JoinColumnsAnnotation) jpa
-						.getResourcePersistentAttribute().addAnnotation(
-								JoinColumnsAnnotation.ANNOTATION_NAME);
 				PersistenceUnit pu = getPersistenceUnit(jpt);
 				String embeddableTypeName = ids[0].getTypeName();
 				Embeddable emb = pu.getEmbeddable(embeddableTypeName);
 				Iterator<AttributeMapping> amIt = emb.allAttributeMappings();
 				while (amIt.hasNext()) {
 					AttributeMapping am = amIt.next();
-					NestableJoinColumnAnnotation jc = an.addNestedAnnotation();
+					JoinColumnAnnotation jc = (JoinColumnAnnotation) jpa.getResourceAttribute().addAnnotation(jpa.getResourceAttribute().getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME), JoinColumnAnnotation.ANNOTATION_NAME);
 					JavaPersistentAttribute at = (JavaPersistentAttribute) am
 							.getPersistentAttribute();
 					String idColName = atNameToColName.get(at.getName());
@@ -289,11 +285,8 @@ public class JpaArtifactFactory {
 				}
 			}
 		} else {
-			JoinColumnsAnnotation an = (JoinColumnsAnnotation) jpa
-					.getResourcePersistentAttribute().addAnnotation(
-							JoinColumnsAnnotation.ANNOTATION_NAME);
 			for (JavaPersistentAttribute idAt : ids) {
-				NestableJoinColumnAnnotation jc = an.addNestedAnnotation();
+				JoinColumnAnnotation jc = (JoinColumnAnnotation) jpa.getResourceAttribute().addAnnotation( jpa.getResourceAttribute().getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME), JoinColumnAnnotation.ANNOTATION_NAME);
 				String idColName = getColumnName(idAt);
 				jc.setName(tableName + "_" + idColName); //$NON-NLS-1$
 				jc.setReferencedColumnName(idColName);
@@ -305,7 +298,7 @@ public class JpaArtifactFactory {
 			JavaPersistentAttribute embIdAt) {
 		Hashtable<String, String> res = new Hashtable<String, String>();
 		AttributeOverrideAnnotation aon = (AttributeOverrideAnnotation) embIdAt
-				.getResourcePersistentAttribute().getAnnotation(
+				.getResourceAttribute().getAnnotation(0, 
 						AttributeOverrideAnnotation.ANNOTATION_NAME);
 		if (aon != null) {
 			ColumnAnnotation colAn = aon.getColumn();
@@ -317,18 +310,9 @@ public class JpaArtifactFactory {
 			res.put(aon.getName(), colName);
 			return res;
 		}
-		AttributeOverridesAnnotation aosn = (AttributeOverridesAnnotation) embIdAt
-				.getResourcePersistentAttribute().getAnnotation(
-						AttributeOverridesAnnotation.ANNOTATION_NAME);
-		if (aosn == null)
-			return res;
-		Iterable<NestableAttributeOverrideAnnotation> it = aosn
-				.getNestedAnnotations();
-		if (it == null)
-			return res;
-		Iterator<NestableAttributeOverrideAnnotation> iter = it.iterator();
-		while (iter.hasNext()) {
-			NestableAttributeOverrideAnnotation an = iter.next();
+		Iterable<AttributeOverrideAnnotation> it = new SubListIterableWrapper<NestableAnnotation, AttributeOverrideAnnotation>(
+			embIdAt.getResourceAttribute().getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		for (AttributeOverrideAnnotation an : it) {
 			ColumnAnnotation colAn = an.getColumn();
 			if (colAn == null)
 				continue;
@@ -371,7 +355,7 @@ public class JpaArtifactFactory {
 			return;
 		a.setMappedBy(manySideAttribute.getName());
 		if (isMap)
-			singleSideAttibute.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+			singleSideAttibute.getResourceAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 	
 	public void addManyToManyBidirectionalRelation(IFeatureProvider fp, JavaPersistentType jpt1, 
@@ -403,7 +387,7 @@ public class JpaArtifactFactory {
 		resolvedOwnerSideAttribute
 				.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		if (isMap)
-			resolvedOwnerSideAttribute.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+			resolvedOwnerSideAttribute.getResourceAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		
 		if (direction == JPAEditorConstants.RELATION_TYPE_BIDIRECTIONAL) {
 			JpaArtifactFactory.instance().refreshEntityModel(null, inverseSideJPT);
@@ -433,7 +417,7 @@ public class JpaArtifactFactory {
 				return;
 			a.setMappedBy(ownerSideAttribute.getName());	
 			if (isMap)
-				resolvedInverseSideAttribute.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+				resolvedInverseSideAttribute.getResourceAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 		}		
 		
 	}
@@ -499,9 +483,7 @@ public class JpaArtifactFactory {
 													   String fullyQualifiedTypeName) {
 		
 		PersistenceUnit unit = getPersistenceUnit(jpaProject);
-		Iterator<ClassRef> it = unit.classRefs();
-		while (it.hasNext()) {
-			ClassRef ref = it.next();
+		for (ClassRef ref : unit.getClassRefs()) {
 			JavaPersistentType jpt = ref.getJavaPersistentType(); 
 			if ((jpt != null) && jpt.getName().equals(fullyQualifiedTypeName)) {
 				return ref.getJavaPersistentType();
@@ -518,7 +500,7 @@ public class JpaArtifactFactory {
 	public String getEntityName(JavaPersistentType jpt) {
 		if (jpt == null)
 			return "";	//$NON-NLS-1$
-		JavaResourcePersistentType jrpt = convertJPTToJRPT(jpt);
+		JavaResourceType jrpt = convertJPTToJRT(jpt);
 		if (jrpt == null) 
 			return "";	//$NON-NLS-1$
 		
@@ -534,7 +516,7 @@ public class JpaArtifactFactory {
 	public boolean hasNameAnnotation(JavaPersistentType jpt) {
 		if (jpt == null)
 			return false;
-		JavaResourcePersistentType jrpt = convertJPTToJRPT(jpt);
+		JavaResourceType jrpt = convertJPTToJRT(jpt);
 		if (jrpt == null)
 			return false;
 		JavaEntity mapping = (JavaEntity) jpt.getMapping();
@@ -704,7 +686,7 @@ public class JpaArtifactFactory {
 	}
 	
 	public void refreshEntityModel(IFeatureProvider fp, JavaPersistentType jpt) {
-		if(convertJPTToJRPT(jpt) == null)
+		if(convertJPTToJRT(jpt) == null)
 			return;
 		if (fp == null) {
 			jpt.update();
@@ -949,7 +931,7 @@ public class JpaArtifactFactory {
 				new String[0]);
 		if (!getAttributeMethod.exists()) {
 			JavaPersistentAttribute jpa = jpt.getAttributeNamed(attributeName);
-			String typeName = jpa.getResourcePersistentAttribute().getTypeName();
+			String typeName = jpa.getResourceAttribute().getTypeName();
 			if ("boolean".equals(typeName)) {										//$NON-NLS-1$
 				getterPrefix = "is";												//$NON-NLS-1$
 				methodName = getterPrefix + attrNameWithCapitalLetter; 				
@@ -1041,10 +1023,9 @@ public class JpaArtifactFactory {
 		ICompilationUnit ijl = fp.getCompilationUnit(jpt);
 		IType type = null;
 		type = ijl.findPrimaryType();
-		Iterator<String> it = jpt.attributeNames();
 		Set<String> attrNames = new HashSet<String>();
-		while (it.hasNext()) {
-			attrNames.add(it.next());
+		for (String name : jpt.getAttributeNames()) {
+			attrNames.add(name);
 		}		
 		String name = null;
 		for (int i = 1; i < 10000000; i++) {
@@ -1078,13 +1059,12 @@ public class JpaArtifactFactory {
 	}
 		
 	public Annotation[] getAnnotations(JavaPersistentAttribute persistentAttribite) {	
-		JavaResourcePersistentAttribute jrpt = persistentAttribite.getResourcePersistentAttribute();
-		Annotation[] res = new Annotation[jrpt.annotationsSize()];
+		JavaResourceAttribute jrpt = persistentAttribite.getResourceAttribute();
+		Annotation[] res = new Annotation[jrpt.getAnnotationsSize()];
 		                                  //mappingAnnotationsSize() + jrpt.supportingAnnotationsSize()];
-		Iterator<Annotation> it = jrpt.annotations();
 		int c = 0;
-		while (it.hasNext()) {
-			res[c] = it.next();
+		for (Annotation annotation : jrpt.getAnnotations()) {
+			res[c] = annotation;
 			c++;
 		}
 		/*
@@ -1100,11 +1080,11 @@ public class JpaArtifactFactory {
 	public HashSet<String> getAnnotationNames(
 			JavaPersistentAttribute persistentAttribite) {
 		
-		JavaResourcePersistentAttribute jrpt = persistentAttribite.getResourcePersistentAttribute();
+		JavaResourceAttribute jrpt = persistentAttribite.getResourceAttribute();
 		HashSet<String> res = new HashSet<String>();
-		Iterator<Annotation> it = jrpt.annotations();
-		while (it.hasNext())
-			res.add(JPAEditorUtil.returnSimpleName(it.next().getAnnotationName()));
+		for (Annotation annotation : jrpt.getAnnotations()) {
+			res.add(JPAEditorUtil.returnSimpleName(annotation.getAnnotationName()));
+		}
 		/*
 		it = jrpt.supportingAnnotations();
 		while (it.hasNext()) 
@@ -1117,12 +1097,10 @@ public class JpaArtifactFactory {
 			JavaPersistentAttribute persistentAttribite) {
 		
 		JavaPersistentType jpt = (JavaPersistentType)persistentAttribite.getParent();
-		CompilationUnit jdtCU = jpt.getResourcePersistentType().getJavaResourceCompilationUnit().buildASTRoot();
-		JavaResourcePersistentAttribute jrpt = persistentAttribite.getResourcePersistentAttribute();
+		CompilationUnit jdtCU = jpt.getJavaResourceType().getJavaResourceCompilationUnit().buildASTRoot();
+		JavaResourceAttribute jrpt = persistentAttribite.getResourceAttribute();
 		List<String> res = new LinkedList<String>();
-		Iterator<Annotation> it = jrpt.annotations();
-		while (it.hasNext()) {
-			Annotation an = it.next();
+		for (Annotation an : jrpt.getAnnotations()) {
 			org.eclipse.jdt.core.dom.Annotation jdtAn = an.getAstAnnotation(jdtCU);
 			res.add(jdtAn.toString());
 		}
@@ -1180,10 +1158,8 @@ public class JpaArtifactFactory {
 	private Collection<IRelation> produceRelations(
 			JavaPersistentType newJPT, IJPAEditorFeatureProvider fp) {
 		
-		ListIterator<JavaPersistentAttribute> it = newJPT.attributes();
 		HashSet<IRelation> res = new HashSet<IRelation>();
-		while (it.hasNext()) {
-			JavaPersistentAttribute at = it.next();
+		for (JavaPersistentAttribute at : newJPT.getAttributes()) {
 			IRelation rel = produceRelation(at, fp);
 			if (rel != null)
 				res.add(rel);
@@ -1207,8 +1183,8 @@ public class JpaArtifactFactory {
 			JavaPersistentAttribute persistentAttribite,
 			IJPAEditorFeatureProvider fp) {
 		
-		JavaResourcePersistentAttribute jrpa = persistentAttribite
-				.getResourcePersistentAttribute();
+		JavaResourceAttribute jrpa = persistentAttribite
+				.getResourceAttribute();
 		
 		IRelation res = null;
 		Annotation[] ans = getAnnotations(persistentAttribite);
@@ -1230,15 +1206,13 @@ public class JpaArtifactFactory {
 			JavaPersistentType jpt2, IJPAEditorFeatureProvider fp) {
 		
 		Collection<IRelation> resSet = new HashSet<IRelation>();
-		ListIterator<JavaPersistentAttribute> it = jpt1.attributes();
 		IRelation res = null;
-		while (it.hasNext()) {
-			JavaPersistentAttribute at = it.next();
+		for (JavaPersistentAttribute at : jpt1.getAttributes()) {
 			IResource r = at.getParent().getResource();
 			if (!r.exists())
 				throw new RuntimeException();
 			try {
-				JavaResourcePersistentAttribute jrpa = at.getResourcePersistentAttribute();
+				JavaResourceAttribute jrpa = at.getResourceAttribute();
 				Annotation[] ans = this.getAnnotations(at);
 				for (Annotation an : ans) {
 					String annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName());
@@ -1424,10 +1398,10 @@ public class JpaArtifactFactory {
 				continue;
 			JavaResourceCompilationUnit jrcu = (JavaResourceCompilationUnit)rm;
 			//CSN #130859 2010
-			if(!jrcu.persistentTypes().hasNext())
+			JavaResourceAbstractType jrt = jrcu.getPrimaryType();
+			if (jrt == null)
 				continue;
-			JavaResourcePersistentType jrpt = jrcu.persistentTypes().next();
-			String name = jrpt.getQualifiedName();
+			String name = jrt.getQualifiedName();
 			JavaPersistentType jpt1 = (JavaPersistentType) pu
 					.getPersistentType(name);
 			if (jpt1 == null)
@@ -1448,9 +1422,7 @@ public class JpaArtifactFactory {
 			JavaPersistentType relJPT) {
 
 		Set<JavaPersistentAttribute> res = new HashSet<JavaPersistentAttribute>();
-		ListIterator<JavaPersistentAttribute> attIt = relJPT.attributes();
-		while (attIt.hasNext()) {
-			JavaPersistentAttribute at = attIt.next();
+		for (JavaPersistentAttribute at : relJPT.getAttributes()) {
 			IResource r = at.getParent().getResource();
 			if (!r.exists())
 				throw new RuntimeException();
@@ -1459,7 +1431,7 @@ public class JpaArtifactFactory {
 			for (Annotation an : ans) {
 				annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName()); 
 				if (JPAEditorConstants.RELATION_ANNOTATIONS.contains(annotationName)) {
-					String relTypeName = getRelTypeName((RelationshipMappingAnnotation)an, at.getResourcePersistentAttribute());
+					String relTypeName = getRelTypeName((RelationshipMappingAnnotation)an, at.getResourceAttribute());
 					if (!relTypeName.equals(jpt.getName()))
 						continue;
 					res.add(at);
@@ -1506,9 +1478,9 @@ public class JpaArtifactFactory {
 		PersistenceUnit pu = null;
 		JavaPersistentAttribute oldAt = jpt.getAttributeNamed(oldName);
 		fp.addAddIgnore((JavaPersistentType)oldAt.getParent(), newName);
-		JavaResourcePersistentAttribute jrpa = oldAt
-				.getResourcePersistentAttribute();
-		fp.addRemoveIgnore((JavaPersistentType)oldAt.getParent(), jrpa.getName());
+		JavaResourceAttribute jra = oldAt
+				.getResourceAttribute();
+		fp.addRemoveIgnore((JavaPersistentType)oldAt.getParent(), jra.getName());
 		IRelation rel = fp.getRelationRelatedToAttribute(oldAt);
 		String inverseJPAName = null;
 		JavaPersistentType inverseJPT = null;
@@ -1756,18 +1728,16 @@ public class JpaArtifactFactory {
 		
 		JavaPersistentType jpt = (JavaPersistentType)jpa.getParent();
 		JpaArtifactFactory.instance().refreshEntityModel(null, jpt);
-		ListIterator<JavaPersistentAttribute> attIt = relJPT.attributes();
-		while (attIt.hasNext())	{
-			JavaPersistentAttribute relEntAt = attIt.next();
+		for (JavaPersistentAttribute relEntAt : relJPT.getAttributes())	{
 			IResource r = relEntAt.getParent().getResource();
 			if (!r.exists())
 				throw new RuntimeException();
-			JavaResourcePersistentAttribute relJRPA = relEntAt.getResourcePersistentAttribute();
+			JavaResourceAttribute relJRA = relEntAt.getResourceAttribute();
 			Annotation[] ans = this.getAnnotations(relEntAt);
 			for (Annotation an : ans) {
 				String annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName());
 				if (JPAEditorConstants.RELATION_ANNOTATIONS.contains(annotationName)) {
-					String relTypeName = getRelTypeName((RelationshipMappingAnnotation)an, relJRPA);					
+					String relTypeName = getRelTypeName((RelationshipMappingAnnotation)an, relJRA);					
 					if (!relTypeName.equals(jpt.getName())) 
 						continue;														
 					JavaAttributeMapping mp = relEntAt.getMapping();
@@ -2074,7 +2044,7 @@ public class JpaArtifactFactory {
 		this.refreshEntityModel(null, jpt);
 		PersistentAttribute at = jpt.getAttributeNamed(attributeName);
 		if (at == null) {
-			jpt.getResourcePersistentType().synchronizeWith(jpt.getResourcePersistentType().getJavaResourceCompilationUnit().buildASTRoot());
+			jpt.getJavaResourceType().synchronizeWith(jpt.getJavaResourceType().getJavaResourceCompilationUnit().buildASTRoot());
 			jpt.update();
 		}
 		int c = 0;
@@ -2100,10 +2070,10 @@ public class JpaArtifactFactory {
 		return exists;
 	}
 		
-	public JavaResourcePersistentType convertJPTToJRPT(JavaPersistentType jpt) {
+	public JavaResourceType convertJPTToJRT(JavaPersistentType jpt) {
 		if (jpt == null) 
 			return null;
-		return jpt.getJpaProject().getJavaResourcePersistentType(jpt.getName());
+		return (JavaResourceType) jpt.getJpaProject().getJavaResourceType(jpt.getName(), Kind.TYPE);
 	}
 	
 	public PersistenceUnit getPersistenceUnit(JpaFile jpaFile) {
@@ -2117,7 +2087,7 @@ public class JpaArtifactFactory {
 		if(project.getRootContextNode().getPersistenceXml() == null)
 			return null;
 		return project.getRootContextNode().getPersistenceXml().getPersistence()
-				.persistenceUnits().next();
+				.getPersistenceUnits().iterator().next();
 	}
 	
 	public PersistenceUnit getPersistenceUnit(JavaPersistentType jpt) {
@@ -2125,11 +2095,11 @@ public class JpaArtifactFactory {
 	}
 	
 	public boolean isMethodAnnotated(JavaPersistentAttribute attr) {
-		return !attr.getResourcePersistentAttribute().isField();
+		return attr.getResourceAttribute().getKind() == Kind.METHOD;
 	}
 	
 	public boolean isMethodAnnotated(JavaPersistentType jpt) {
-		ListIterator<JavaPersistentAttribute> li = jpt.attributes();
+		ListIterator<JavaPersistentAttribute> li = jpt.getAttributes().iterator();
 		if (!li.hasNext())
 			return false;
 		return (isMethodAnnotated(li.next()));
@@ -2148,10 +2118,10 @@ public class JpaArtifactFactory {
 	public String getTableName(JavaPersistentType jpt) {
 		if (jpt == null)
 			return null; 
-		JavaResourcePersistentType jrpt = convertJPTToJRPT(jpt);
-		if (jrpt == null)
+		JavaResourceType jrt = convertJPTToJRT(jpt);
+		if (jrt == null)
 			return null; 
-		TableAnnotation tan = (TableAnnotation)jrpt.getAnnotation("javax.persistence.Table"); //$NON-NLS-1$
+		TableAnnotation tan = (TableAnnotation)jrt.getAnnotation("javax.persistence.Table"); //$NON-NLS-1$
 		String tableName = null;
 		if (tan == null){
 			tableName = JPAEditorUtil.returnSimpleName(jpt.getName());
@@ -2167,11 +2137,11 @@ public class JpaArtifactFactory {
 	public void setTableName(JavaPersistentType jpt, String tableName) {
 		if (jpt == null)
 			return; 
-		JavaResourcePersistentType jrpt = convertJPTToJRPT(jpt);
-		if (jrpt == null) {
+		JavaResourceType jrt = convertJPTToJRT(jpt);
+		if (jrt == null) {
 			return; 
 		}
-		TableAnnotation ta = (TableAnnotation)jrpt.getAnnotation("javax.persistence.Table");	//$NON-NLS-1$
+		TableAnnotation ta = (TableAnnotation)jrt.getAnnotation("javax.persistence.Table");	//$NON-NLS-1$
 		if (ta != null) 
 			ta.setName(tableName);		
 	}
@@ -2249,16 +2219,16 @@ public class JpaArtifactFactory {
 	}
 	
 	private String getRelTypeName(RelationshipMappingAnnotation an,
-			JavaResourcePersistentAttribute jrpa) {
+			JavaResourceAttribute jra) {
 		String relTypeName = null;
 		try {
-			boolean isMap = jrpa.getTypeName().equals("java.util.Map");	//$NON-NLS-1$
-			relTypeName = jrpa.getTypeTypeArgumentName(isMap ? 1 : 0);
+			boolean isMap = jra.getTypeName().equals("java.util.Map");	//$NON-NLS-1$
+			relTypeName = jra.getTypeTypeArgumentName(isMap ? 1 : 0);
 		} catch (Exception e) {}
 		if (relTypeName == null) 
 			relTypeName = an.getFullyQualifiedTargetEntityClassName();												
 		if (relTypeName == null) 
-			relTypeName = JPAEditorUtil.getAttributeTypeName(jrpa);							
+			relTypeName = JPAEditorUtil.getAttributeTypeName(jra);							
 		return relTypeName;
 	}
 		
@@ -2267,7 +2237,7 @@ public class JpaArtifactFactory {
 	}
 	
 	public String getIdType(JavaPersistentType jpt) {
-		IdClassAnnotation an = (IdClassAnnotation)jpt.getResourcePersistentType().getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		IdClassAnnotation an = (IdClassAnnotation)jpt.getJavaResourceType().getAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (an != null)
 			return an.getFullyQualifiedClassName();
 		JavaPersistentAttribute[] ids = getIds(jpt);
@@ -2279,10 +2249,8 @@ public class JpaArtifactFactory {
 	}
 	
 	public JavaPersistentAttribute[] getIds(JavaPersistentType jpt) {
-		ListIterator<JavaPersistentAttribute> attribsIter = jpt.attributes();
 		ArrayList<JavaPersistentAttribute> res = new ArrayList<JavaPersistentAttribute>();
-		while (attribsIter.hasNext()) {
-			JavaPersistentAttribute at = attribsIter.next();
+		for (JavaPersistentAttribute at : jpt.getAttributes()) {
 			if (isId(at))
 				res.add(at);
 		}
@@ -2295,19 +2263,19 @@ public class JpaArtifactFactory {
 	}
 	
 	public boolean isSimpleId(JavaPersistentAttribute jpa) {
-		IdAnnotation an = (IdAnnotation)jpa.getResourcePersistentAttribute().getAnnotation(IdAnnotation.ANNOTATION_NAME);
+		IdAnnotation an = (IdAnnotation)jpa.getResourceAttribute().getAnnotation(IdAnnotation.ANNOTATION_NAME);
 		return (an != null);
 	}
 	
 	public boolean isEmbeddedId(JavaPersistentAttribute jpa) {
-		EmbeddedIdAnnotation an = (EmbeddedIdAnnotation)jpa.getResourcePersistentAttribute().getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME);
+		EmbeddedIdAnnotation an = (EmbeddedIdAnnotation)jpa.getResourceAttribute().getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME);
 		return (an != null);
 	}	
 	
 	public String getColumnName(JavaPersistentAttribute jpa) {
 		String columnName= null;
 		ColumnAnnotation an = (ColumnAnnotation)jpa.
-									getResourcePersistentAttribute().
+									getResourceAttribute().
 										getAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 		if (an != null) 
 			columnName = an.getName();

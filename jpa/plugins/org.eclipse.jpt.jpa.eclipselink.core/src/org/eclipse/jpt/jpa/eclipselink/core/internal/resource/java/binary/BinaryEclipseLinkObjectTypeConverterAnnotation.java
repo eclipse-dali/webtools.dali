@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
-import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
@@ -32,7 +31,7 @@ public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 	private final Vector<EclipseLinkConversionValueAnnotation> conversionValues;
 
 
-	public BinaryEclipseLinkObjectTypeConverterAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public BinaryEclipseLinkObjectTypeConverterAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.defaultObjectValue = this.buildDefaultObjectValue();
 		this.conversionValues = this.buildConversionValues();
@@ -95,20 +94,16 @@ public final class BinaryEclipseLinkObjectTypeConverterAnnotation
 	}
 
 	// ***** conversion values
-	public ListIterator<EclipseLinkConversionValueAnnotation> conversionValues() {
-		return new CloneListIterator<EclipseLinkConversionValueAnnotation>(this.conversionValues);
+	public ListIterable<EclipseLinkConversionValueAnnotation> getConversionValues() {
+		return new LiveCloneListIterable<EclipseLinkConversionValueAnnotation>(this.conversionValues);
 	}
 
-	public int conversionValuesSize() {
+	public int getConversionValuesSize() {
 		return this.conversionValues.size();
 	}
 
 	public EclipseLinkConversionValueAnnotation conversionValueAt(int index) {
 		return this.conversionValues.get(index);
-	}
-
-	public int indexOfConversionValue(EclipseLinkConversionValueAnnotation conversionValue) {
-		return this.conversionValues.indexOf(conversionValue);
 	}
 
 	public EclipseLinkConversionValueAnnotation addConversionValue(int index) {

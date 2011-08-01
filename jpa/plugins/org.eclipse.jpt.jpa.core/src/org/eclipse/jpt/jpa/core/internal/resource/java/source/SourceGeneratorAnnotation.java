@@ -10,23 +10,24 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NumberIntegerExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 
 /**
  * javax.persistence.SequenceGenerator
  * javax.persistence.TableGenerator
  */
 abstract class SourceGeneratorAnnotation
-	extends SourceAnnotation<Member>
+	extends SourceAnnotation
 	implements GeneratorAnnotation
 {
 	final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -43,8 +44,8 @@ abstract class SourceGeneratorAnnotation
 	Integer allocationSize;
 
 
-	SourceGeneratorAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		super(parent, member, daa);
+	SourceGeneratorAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.nameDeclarationAdapter = this.getNameAdapter();
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
 		this.initialValueDeclarationAdapter = this.getInitialValueAdapter();

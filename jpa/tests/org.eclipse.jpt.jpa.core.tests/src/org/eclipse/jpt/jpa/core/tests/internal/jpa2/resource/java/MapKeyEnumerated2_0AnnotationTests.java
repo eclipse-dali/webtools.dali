@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,13 +11,15 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.EnumType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 @SuppressWarnings("nls")
 public class MapKeyEnumerated2_0AnnotationTests extends JavaResourceModel2_0TestCase {
@@ -54,28 +56,28 @@ public class MapKeyEnumerated2_0AnnotationTests extends JavaResourceModel2_0Test
 
 	public void testMapKeyEnumerated() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyEnumerated();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
+		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
 		assertNotNull(enumerated);
 	}
 	
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyEnumeratedWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
+		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
 		assertEquals(EnumType.ORDINAL, enumerated.getValue());
 	}
 	
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyEnumerated();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 
-		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
+		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_ENUMERATED);
 
 		enumerated.setValue(EnumType.STRING);
 		

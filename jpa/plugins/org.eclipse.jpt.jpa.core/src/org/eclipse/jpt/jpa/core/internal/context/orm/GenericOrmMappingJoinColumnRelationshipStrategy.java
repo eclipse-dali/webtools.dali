@@ -156,8 +156,8 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 			return GenericOrmMappingJoinColumnRelationshipStrategy.this.defaultJoinColumn == joinColumn;
 		}
 
-		public int joinColumnsSize() {
-			return GenericOrmMappingJoinColumnRelationshipStrategy.this.joinColumnsSize();
+		public int getJoinColumnsSize() {
+			return GenericOrmMappingJoinColumnRelationshipStrategy.this.getJoinColumnsSize();
 		}
 
 		public TextRange getValidationTextRange() {

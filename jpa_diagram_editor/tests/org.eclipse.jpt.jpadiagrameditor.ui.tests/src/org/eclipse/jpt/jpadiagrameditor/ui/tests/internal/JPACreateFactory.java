@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * <copyright>
+ *
+ * Copyright (c) 2005, 2011 SAP AG.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Stefan Dimov - initial API, implementation and documentation
+ *
+ * </copyright>
+ *
+ *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal;
 
 import java.io.ByteArrayInputStream;
@@ -5,10 +20,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -27,6 +40,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -41,7 +55,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -221,13 +234,13 @@ public class JPACreateFactory {
 			throw new NullPointerException("The persistence XML is not created");
 		
 		IFile entity1 = createEntityInProject(jpaProject.getProject(), packageStrings, name);
-		JavaResourcePersistentType jrpt = jpaProject.getJavaResourcePersistentType(fullyQualifiedName);
+		JavaResourceAbstractType jrpt = jpaProject.getJavaResourceType(fullyQualifiedName);
 		cnt = 0;
 		while((jrpt == null) && (cnt < 100)) {
 			try {
 				Thread.sleep(250);
 			} catch (Exception e) {} 
-			jrpt = jpaProject.getJavaResourcePersistentType(fullyQualifiedName);
+			jrpt = jpaProject.getJavaResourceType(fullyQualifiedName);
 			cnt++;
 		}
 		if (jrpt == null)
@@ -549,8 +562,7 @@ public class JPACreateFactory {
 		}
 		for (JpaStructureNode node : getRootNodes(jpaFile)) {
 			PersistentType entity = (PersistentType) node;
-			for (Iterator<ReadOnlyPersistentAttribute> k = entity.allAttributes(); k.hasNext(); ) {
-				ReadOnlyPersistentAttribute attribute = k.next();
+			for (ReadOnlyPersistentAttribute attribute : entity.getAllAttributes()) {
 				result.add(attribute);
 			}
 		}

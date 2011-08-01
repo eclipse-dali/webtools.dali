@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Corresponds to the JPA annotation
@@ -36,23 +36,18 @@ public interface JoinTableAnnotation
 	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
-	ListIterator<JoinColumnAnnotation> inverseJoinColumns();
+	ListIterable<JoinColumnAnnotation> getInverseJoinColumns();
 		String INVERSE_JOIN_COLUMNS_LIST = "inverseJoinColumns"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
 	 */
-	int inverseJoinColumnsSize();
+	int getInverseJoinColumnsSize();
 
 	/**
 	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
 	 */
 	JoinColumnAnnotation inverseJoinColumnAt(int index);
-
-	/**
-	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
-	 */
-	int indexOfInverseJoinColumn(JoinColumnAnnotation joinColumn);
 
 	/**
 	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.

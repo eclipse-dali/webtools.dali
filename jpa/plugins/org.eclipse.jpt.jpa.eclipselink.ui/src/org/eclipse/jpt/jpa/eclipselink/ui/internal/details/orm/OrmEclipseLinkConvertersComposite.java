@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -21,6 +20,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -220,16 +221,16 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 		Class<? extends EclipseLinkConverter> converterType = dialog.getConverterType();
 		EclipseLinkConverter converter;
 		if (converterType == EclipseLinkCustomConverter.class) {
-			converter = this.getSubject().addCustomConverter(getSubject().customConvertersSize());
+			converter = this.getSubject().addCustomConverter(getSubject().getCustomConvertersSize());
 		}
 		else if (converterType == EclipseLinkObjectTypeConverter.class) {
-			converter = this.getSubject().addObjectTypeConverter(getSubject().objectTypeConvertersSize());
+			converter = this.getSubject().addObjectTypeConverter(getSubject().getObjectTypeConvertersSize());
 		}
 		else if (converterType == EclipseLinkStructConverter.class) {
-			converter = this.getSubject().addStructConverter(getSubject().structConvertersSize());
+			converter = this.getSubject().addStructConverter(getSubject().getStructConvertersSize());
 		}
 		else if (converterType == EclipseLinkTypeConverter.class) {
-			converter = this.getSubject().addTypeConverter(getSubject().typeConvertersSize());
+			converter = this.getSubject().addTypeConverter(getSubject().getTypeConvertersSize());
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -285,13 +286,13 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 			OrmEclipseLinkConverterContainer.CUSTOM_CONVERTERS_LIST)
 		{
 			@Override
-			protected ListIterator<EclipseLinkCustomConverter> listIterator_() {
-				return this.subject.customConverters();
+			protected ListIterable<EclipseLinkCustomConverter> getListIterable() {
+				return new SuperListIterableWrapper<EclipseLinkCustomConverter>(this.subject.getCustomConverters());
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.customConvertersSize();
+				return this.subject.getCustomConvertersSize();
 			}
 		};
 	}
@@ -302,13 +303,13 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 			OrmEclipseLinkConverterContainer.OBJECT_TYPE_CONVERTERS_LIST)
 		{
 			@Override
-			protected ListIterator<EclipseLinkObjectTypeConverter> listIterator_() {
-				return this.subject.objectTypeConverters();
+			protected ListIterable<EclipseLinkObjectTypeConverter> getListIterable() {
+				return new SuperListIterableWrapper<EclipseLinkObjectTypeConverter>(this.subject.getObjectTypeConverters());
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.objectTypeConvertersSize();
+				return this.subject.getObjectTypeConvertersSize();
 			}
 		};
 	}
@@ -319,13 +320,13 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 			OrmEclipseLinkConverterContainer.STRUCT_CONVERTERS_LIST)
 		{
 			@Override
-			protected ListIterator<EclipseLinkStructConverter> listIterator_() {
-				return this.subject.structConverters();
+			protected ListIterable<EclipseLinkStructConverter> getListIterable() {
+				return new SuperListIterableWrapper<EclipseLinkStructConverter>(this.subject.getStructConverters());
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.structConvertersSize();
+				return this.subject.getStructConvertersSize();
 			}
 		};
 	}
@@ -336,13 +337,13 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 			OrmEclipseLinkConverterContainer.TYPE_CONVERTERS_LIST)
 		{
 			@Override
-			protected ListIterator<EclipseLinkTypeConverter> listIterator_() {
-				return this.subject.typeConverters();
+			protected ListIterable<EclipseLinkTypeConverter> getListIterable() {
+				return new SuperListIterableWrapper<EclipseLinkTypeConverter>(this.subject.getTypeConverters());
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.typeConvertersSize();
+				return this.subject.getTypeConvertersSize();
 			}
 		};
 	}
@@ -402,7 +403,7 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 	//we at least need to check typeconverters, converters, structconverters, and objectypeconverters, on this particular
 	//object.  or we need to give a warning about the case where you are overriding or an error if it's not an override?
 	private Iterator<String> converterNames() {
-		return new TransformationIterator<EclipseLinkCustomConverter, String>(getSubject().customConverters()) {
+		return new TransformationIterator<EclipseLinkCustomConverter, String>(getSubject().getCustomConverters()) {
 			@Override
 			protected String transform(EclipseLinkCustomConverter next) {
 				return next.getName();

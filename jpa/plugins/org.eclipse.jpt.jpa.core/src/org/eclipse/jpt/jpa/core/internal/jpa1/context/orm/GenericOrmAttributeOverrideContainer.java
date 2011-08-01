@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
@@ -59,7 +58,7 @@ public class GenericOrmAttributeOverrideContainer
 	}
 
 	public void initializeFrom(OrmAttributeOverrideContainer oldContainer) {
-		for (OrmAttributeOverride oldOverride : CollectionTools.iterable(oldContainer.specifiedOverrides())) {
+		for (OrmAttributeOverride oldOverride : oldContainer.getSpecifiedOverrides()) {
 			this.addSpecifiedOverride().initializeFrom(oldOverride);
 		}
 	}

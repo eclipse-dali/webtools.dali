@@ -54,12 +54,12 @@ public class GenericJavaCollectionTable2_0
 
 	@Override
 	public CollectionTable2_0Annotation getTableAnnotation() {
-		return (CollectionTable2_0Annotation) this.getElementCollectionMapping().getResourcePersistentAttribute().getNonNullAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		return (CollectionTable2_0Annotation) this.getElementCollectionMapping().getResourceAttribute().getNonNullAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 	}
 
 	@Override
 	protected void removeTableAnnotation() {
-		this.getElementCollectionMapping().getResourcePersistentAttribute().removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		this.getElementCollectionMapping().getResourceAttribute().removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 	}
 
 
@@ -167,8 +167,8 @@ public class GenericJavaCollectionTable2_0
 			return GenericJavaCollectionTable2_0.this.getElementCollectionMapping().getPersistentAttribute();
 		}
 
-		public int joinColumnsSize() {
-			return GenericJavaCollectionTable2_0.this.joinColumnsSize();
+		public int getJoinColumnsSize() {
+			return GenericJavaCollectionTable2_0.this.getJoinColumnsSize();
 		}
 
 		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,12 +11,13 @@ package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.EnumType;
 import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 @SuppressWarnings("nls")
 public class EnumeratedTests extends JpaJavaResourceModelTestCase {
@@ -53,28 +54,28 @@ public class EnumeratedTests extends JpaJavaResourceModelTestCase {
 
 	public void testEnumerated() throws Exception {
 		ICompilationUnit cu = this.createTestEnumerated();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getAnnotation(JPA.ENUMERATED);
+		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) resourceField.getAnnotation(JPA.ENUMERATED);
 		assertNotNull(enumerated);
 	}
 	
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestEnumeratedWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getAnnotation(JPA.ENUMERATED);
+		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) resourceField.getAnnotation(JPA.ENUMERATED);
 		assertEquals(EnumType.ORDINAL, enumerated.getValue());
 	}
 	
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestEnumerated();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 
-		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) attributeResource.getAnnotation(JPA.ENUMERATED);
+		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) resourceField.getAnnotation(JPA.ENUMERATED);
 
 		enumerated.setValue(EnumType.STRING);
 		

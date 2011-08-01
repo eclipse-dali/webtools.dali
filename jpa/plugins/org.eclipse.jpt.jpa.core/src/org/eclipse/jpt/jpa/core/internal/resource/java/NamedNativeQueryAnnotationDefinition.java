@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,28 +10,27 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryNamedNativeQueryAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNamedNativeQueryAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
  * javax.persistence.NamedNativeQuery
  */
 public final class NamedNativeQueryAnnotationDefinition
-	implements AnnotationDefinition
+	implements NestableAnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new NamedNativeQueryAnnotationDefinition();
+	private static final NestableAnnotationDefinition INSTANCE = new NamedNativeQueryAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AnnotationDefinition instance() {
+	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
@@ -42,20 +41,23 @@ public final class NamedNativeQueryAnnotationDefinition
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return SourceNamedNativeQueryAnnotation.createNamedNativeQuery(parent, (Type) annotatedElement);
+	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+		return SourceNamedNativeQueryAnnotation.buildSourceNamedNativeQueryAnnotation(parent, annotatedElement, index);
 	}
 
-	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
 		return new BinaryNamedNativeQueryAnnotation(parent, jdtAnnotation);
 	}
 
-	public String getAnnotationName() {
-		return NamedNativeQueryAnnotation.ANNOTATION_NAME;
+	public String getNestableAnnotationName() {
+		return JPA.NAMED_NATIVE_QUERY;
 	}
 
+	public String getContainerAnnotationName() {
+		return JPA.NAMED_NATIVE_QUERIES;
+	}
+
+	public String getElementName() {
+		return JPA.NAMED_NATIVE_QUERIES__VALUE;
+	}
 }

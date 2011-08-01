@@ -10,20 +10,16 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualTable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -38,6 +34,8 @@ public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 {
 	protected final Owner owner;
 
+	protected final T overriddenTable;
+
 	protected String specifiedName;
 	protected String defaultName;
 
@@ -47,13 +45,14 @@ public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
-	protected final Vector<OrmVirtualUniqueConstraint> uniqueConstraints = new Vector<OrmVirtualUniqueConstraint>();
-	protected final UniqueConstraintContainerAdapter uniqueConstraintContainerAdapter = new UniqueConstraintContainerAdapter();
+	protected final ContextListContainer<OrmVirtualUniqueConstraint, ReadOnlyUniqueConstraint> uniqueConstraintContainer;
 
 
-	protected AbstractOrmVirtualTable(XmlContextNode parent, Owner owner) {
+	protected AbstractOrmVirtualTable(XmlContextNode parent, Owner owner, T overridenTable) {
 		super(parent);
 		this.owner = owner;
+		this.overriddenTable = overridenTable;
+		this.uniqueConstraintContainer = this.buildUniqueConstraintContainer();
 	}
 
 
@@ -81,7 +80,9 @@ public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 	/**
 	 * This should never return <code>null</code>.
 	 */
-	public abstract T getOverriddenTable();
+	public T getOverriddenTable() {
+		return this.overriddenTable;
+	}
 
 
 	// ********** name **********
@@ -185,38 +186,32 @@ public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 
 	// ********** unique constraints **********
 
-	public ListIterator<OrmVirtualUniqueConstraint> uniqueConstraints() {
-		return this.getUniqueConstraints().iterator();
+	public ListIterable<OrmVirtualUniqueConstraint> getUniqueConstraints() {
+		return this.uniqueConstraintContainer.getContextElements();
 	}
 
-	protected ListIterable<OrmVirtualUniqueConstraint> getUniqueConstraints() {
-		return new LiveCloneListIterable<OrmVirtualUniqueConstraint>(this.uniqueConstraints);
-	}
-
-	public int uniqueConstraintsSize() {
-		return this.uniqueConstraints.size();
+	public int getUniqueConstraintsSize() {
+		return this.uniqueConstraintContainer.getContextElementsSize();
 	}
 
 	public OrmVirtualUniqueConstraint getUniqueConstraint(int index) {
-		return this.uniqueConstraints.get(index);
+		return this.uniqueConstraintContainer.getContextElement(index);
 	}
 
 	protected void updateUniqueConstraints() {
-		ContextContainerTools.update(this.uniqueConstraintContainerAdapter);
+		this.uniqueConstraintContainer.update();
 	}
 
-	protected Iterable<ReadOnlyUniqueConstraint> getOverriddenUniqueConstraints() {
-		return CollectionTools.iterable(this.getOverriddenTable().uniqueConstraints());
+	protected ListIterable<ReadOnlyUniqueConstraint> getOverriddenUniqueConstraints() {
+		return new SuperListIterableWrapper<ReadOnlyUniqueConstraint>(this.getOverriddenTable().getUniqueConstraints());
 	}
 
 	protected void moveUniqueConstraint(int index, OrmVirtualUniqueConstraint constraint) {
-		this.moveItemInList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		this.uniqueConstraintContainer.moveContextElement(index, constraint);
 	}
 
 	protected OrmVirtualUniqueConstraint addUniqueConstraint(int index, ReadOnlyUniqueConstraint uniqueConstraint) {
-		OrmVirtualUniqueConstraint virtualConstraint = this.buildUniqueConstraint(uniqueConstraint);
-		this.addItemToList(index, virtualConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-		return virtualConstraint;
+		return this.uniqueConstraintContainer.addContextElement(index, uniqueConstraint);
 	}
 
 	protected OrmVirtualUniqueConstraint buildUniqueConstraint(ReadOnlyUniqueConstraint uniqueConstraint) {
@@ -224,32 +219,34 @@ public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 	}
 
 	protected void removeUniqueConstraint(OrmVirtualUniqueConstraint constraint) {
-		this.removeItemFromList(constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		this.uniqueConstraintContainer.removeContextElement(constraint);
+	}
+
+	protected ContextListContainer<OrmVirtualUniqueConstraint, ReadOnlyUniqueConstraint> buildUniqueConstraintContainer() {
+		return new UniqueConstraintContainer();
 	}
 
 	/**
-	 * unique constraint container adapter
+	 * unique constraint container
 	 */
-	protected class UniqueConstraintContainerAdapter
-		implements ContextContainerTools.Adapter<OrmVirtualUniqueConstraint, ReadOnlyUniqueConstraint>
+	protected class UniqueConstraintContainer
+		extends ContextListContainer<OrmVirtualUniqueConstraint, ReadOnlyUniqueConstraint>
 	{
-		public Iterable<OrmVirtualUniqueConstraint> getContextElements() {
-			return AbstractOrmVirtualTable.this.getUniqueConstraints();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return UNIQUE_CONSTRAINTS_LIST;
 		}
-		public Iterable<ReadOnlyUniqueConstraint> getResourceElements() {
+		@Override
+		protected OrmVirtualUniqueConstraint buildContextElement(ReadOnlyUniqueConstraint resourceElement) {
+			return AbstractOrmVirtualTable.this.buildUniqueConstraint(resourceElement);
+		}
+		@Override
+		protected ListIterable<ReadOnlyUniqueConstraint> getResourceElements() {
 			return AbstractOrmVirtualTable.this.getOverriddenUniqueConstraints();
 		}
-		public ReadOnlyUniqueConstraint getResourceElement(OrmVirtualUniqueConstraint contextElement) {
+		@Override
+		protected ReadOnlyUniqueConstraint getResourceElement(OrmVirtualUniqueConstraint contextElement) {
 			return contextElement.getOverriddenUniqueConstraint();
-		}
-		public void moveContextElement(int index, OrmVirtualUniqueConstraint element) {
-			AbstractOrmVirtualTable.this.moveUniqueConstraint(index, element);
-		}
-		public void addContextElement(int index, ReadOnlyUniqueConstraint resourceElement) {
-			AbstractOrmVirtualTable.this.addUniqueConstraint(index, resourceElement);
-		}
-		public void removeContextElement(OrmVirtualUniqueConstraint element) {
-			AbstractOrmVirtualTable.this.removeUniqueConstraint(element);
 		}
 	}
 

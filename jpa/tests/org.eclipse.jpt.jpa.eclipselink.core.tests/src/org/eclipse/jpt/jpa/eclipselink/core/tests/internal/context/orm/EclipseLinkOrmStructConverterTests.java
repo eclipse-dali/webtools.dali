@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -163,7 +163,7 @@ public class EclipseLinkOrmStructConverterTests
 		
 		//set metadata-complete, test virtual mapping
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		ormPersistentAttribute2 = ormPersistentType.virtualAttributes().next();
+		ormPersistentAttribute2 = ormPersistentType.getVirtualAttributes().iterator().next();
 		virtualBasicMapping = (BasicMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(virtualBasicMapping.getConverter().getType());

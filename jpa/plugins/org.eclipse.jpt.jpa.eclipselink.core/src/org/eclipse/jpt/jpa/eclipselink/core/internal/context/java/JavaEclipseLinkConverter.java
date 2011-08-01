@@ -11,13 +11,13 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -179,7 +179,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 		 * This is used to build a converter during construction of the
 		 * converter's parent.
 		 */
-		JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(JavaResourcePersistentMember javaResourcePersistentMember, JavaJpaContextNode parent);
+		JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(JavaResourceMember javaResourceMember, JavaJpaContextNode parent);
 
 		/**
 		 * Return the adapter's converter annotation for the specified Java
@@ -193,7 +193,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 		 * 
 		 * @see #buildConverter(EclipseLinkNamedConverterAnnotation, JavaJpaContextNode)
 		 */
-		EclipseLinkNamedConverterAnnotation getConverterAnnotation(JavaResourcePersistentMember javaResourcePersistentMember);
+		EclipseLinkNamedConverterAnnotation getConverterAnnotation(JavaResourceMember javaResourceMember);
 
 		/**
 		 * Build a converter using the specified converter annotation.
@@ -208,13 +208,13 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 		 * Build a new converter and, if necessary, its corresponding converter
 		 * annotation.
 		 */
-		JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildNewConverter(JavaResourcePersistentMember javaResourcePersistentMember, JavaJpaContextNode parent);
+		JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildNewConverter(JavaResourceMember javaResourceMember, JavaJpaContextNode parent);
 
 		/**
 		 * Remove the adapter's converter annotation from the specified
 		 * Java resource persistent member.
 		 */
-		void removeConverterAnnotation(JavaResourcePersistentMember javaResourcePersistentMember);
+		void removeConverterAnnotation(JavaResourceMember javaResourceMember);
 	}
 
 
@@ -223,32 +223,32 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	public abstract static class AbstractAdapter
 		implements JavaEclipseLinkConverter.Adapter
 	{
-		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(JavaResourcePersistentMember member, JavaJpaContextNode parent) {
+		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(JavaResourceMember member, JavaJpaContextNode parent) {
 			EclipseLinkNamedConverterAnnotation annotation = this.getConverterAnnotation(member);
 			return (annotation == null) ? null : this.buildConverter(annotation, parent);
 		}
 
-		public EclipseLinkNamedConverterAnnotation getConverterAnnotation(JavaResourcePersistentMember member) {
+		public EclipseLinkNamedConverterAnnotation getConverterAnnotation(JavaResourceMember member) {
 			return (EclipseLinkNamedConverterAnnotation) member.getAnnotation(this.getAnnotationName());
 		}
 
 		protected abstract String getAnnotationName();
 
-		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildNewConverter(JavaResourcePersistentMember member, JavaJpaContextNode parent) {
+		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildNewConverter(JavaResourceMember member, JavaJpaContextNode parent) {
 			return this.buildConverter(this.buildConverterAnnotationIfNecessary(member), parent);
 		}
 
-		protected EclipseLinkNamedConverterAnnotation buildConverterAnnotationIfNecessary(JavaResourcePersistentMember member) {
+		protected EclipseLinkNamedConverterAnnotation buildConverterAnnotationIfNecessary(JavaResourceMember member) {
 			// the annotation may already be present, after we remove the other converter annotations
 			EclipseLinkNamedConverterAnnotation annotation = this.getConverterAnnotation(member);
 			return (annotation != null) ? annotation : this.buildConverterAnnotation(member);
 		}
 
-		protected EclipseLinkNamedConverterAnnotation buildConverterAnnotation(JavaResourcePersistentMember member) {
+		protected EclipseLinkNamedConverterAnnotation buildConverterAnnotation(JavaResourceMember member) {
 			return (EclipseLinkNamedConverterAnnotation) member.addAnnotation(this.getAnnotationName());
 		}
 
-		public void removeConverterAnnotation(JavaResourcePersistentMember member) {
+		public void removeConverterAnnotation(JavaResourceMember member) {
 			member.removeAnnotation(this.getAnnotationName());
 		}
 

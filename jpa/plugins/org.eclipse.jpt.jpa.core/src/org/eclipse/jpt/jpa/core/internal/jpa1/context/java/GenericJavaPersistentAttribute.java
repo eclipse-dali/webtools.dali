@@ -10,11 +10,12 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericPersistentAttributeValidator;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
  * Generic Java persistent attribute
@@ -23,14 +24,22 @@ public class GenericJavaPersistentAttribute
 	extends AbstractJavaPersistentAttribute
 {
 
-	public GenericJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
-		super(parent, jrpa);
+	public GenericJavaPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
+		super(parent, resourceField);
+	}
+
+	public GenericJavaPersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		super(parent, resourceGetter, resourceSetter);
+	}
+
+	public GenericJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
+		super(parent, accessor);
 	}
 
 	// ********** validation **********
 
 	@Override
-	protected JptValidator buildAttibuteValidator(CompilationUnit astRoot) {
-		return new GenericPersistentAttributeValidator(this, this, this.buildTextRangeResolver(astRoot));
+	protected JptValidator buildAttributeValidator(CompilationUnit astRoot) {
+		return getAccessor().buildAttributeValidator(this, this.buildTextRangeResolver(astRoot));
 	}
 }

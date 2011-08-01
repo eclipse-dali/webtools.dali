@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,15 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryInheritanceAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceInheritanceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.resource.java.InheritanceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * javax.persistence.Inheritance
@@ -44,19 +42,18 @@ public final class InheritanceAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceInheritanceAnnotation((JavaResourcePersistentType) parent, (Type) annotatedElement);
+		return new SourceInheritanceAnnotation(parent, annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullInheritanceAnnotation((JavaResourcePersistentType) parent);
+		return new NullInheritanceAnnotation(parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryInheritanceAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
+		return new BinaryInheritanceAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
 		return InheritanceAnnotation.ANNOTATION_NAME;
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * Context Java persistent type.
@@ -33,8 +33,7 @@ public interface JavaPersistentType
 
 	JavaTypeMapping getMapping();
 	
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaPersistentAttribute> attributes();
+	ListIterable<JavaPersistentAttribute> getAttributes();
 		String ATTRIBUTES_LIST = "attributes"; //$NON-NLS-1$
 	
 	JavaPersistentAttribute getAttributeNamed(String attributeName);
@@ -50,7 +49,7 @@ public interface JavaPersistentType
 	/**
 	 * Return the Java resource persistent type.
 	 */
-	JavaResourcePersistentType getResourcePersistentType();
+	JavaResourceType getJavaResourceType();
 	
-	JavaPersistentAttribute getAttributeFor(JavaResourcePersistentAttribute javaResourcePersistentAttribute);
+	JavaPersistentAttribute getAttributeFor(JavaResourceAttribute javaResourceAttribute);
 }

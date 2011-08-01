@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 @SuppressWarnings("nls")
 public class DiscriminatorValueTests extends JpaJavaResourceModelTestCase {
@@ -51,25 +51,25 @@ public class DiscriminatorValueTests extends JpaJavaResourceModelTestCase {
 
 	public void testDiscriminatorValue() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 	
-		DiscriminatorValueAnnotation discriminatorValue = (DiscriminatorValueAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_VALUE);
+		DiscriminatorValueAnnotation discriminatorValue = (DiscriminatorValueAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_VALUE);
 		assertNotNull(discriminatorValue);
 	}
 	
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorValueWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		DiscriminatorValueAnnotation discriminatorValue = (DiscriminatorValueAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_VALUE);
+		DiscriminatorValueAnnotation discriminatorValue = (DiscriminatorValueAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_VALUE);
 		assertEquals("discriminator", discriminatorValue.getValue());
 	}
 	
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestDiscriminatorValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		DiscriminatorValueAnnotation discriminatorValue = (DiscriminatorValueAnnotation) typeResource.getAnnotation(JPA.DISCRIMINATOR_VALUE);
+		DiscriminatorValueAnnotation discriminatorValue = (DiscriminatorValueAnnotation) resourceType.getAnnotation(JPA.DISCRIMINATOR_VALUE);
 
 		discriminatorValue.setValue("foo");
 		

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 
 /**
  * Corresponds to the EclipseLink annotation
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.java.Annotation;
  * @since 2.1
  */
 public interface EclipseLinkConversionValueAnnotation
-	extends Annotation
+	extends NestableAnnotation
 {
 	String ANNOTATION_NAME = EclipseLink.CONVERSION_VALUE;
 

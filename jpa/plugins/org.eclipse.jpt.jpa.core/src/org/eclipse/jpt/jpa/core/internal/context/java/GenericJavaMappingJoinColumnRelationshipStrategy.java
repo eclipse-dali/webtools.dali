@@ -11,9 +11,11 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterators.SubIteratorWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.SuperIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
@@ -33,11 +35,7 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinColumnRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JoinColumnsAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericJavaMappingJoinColumnRelationshipStrategy
@@ -63,43 +61,39 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 	// ********** join column annotations **********
 
 	@Override
-	protected Iterator<JoinColumnAnnotation> joinColumnAnnotations() {
-		return new SuperIteratorWrapper<JoinColumnAnnotation>(this.nestableJoinColumnAnnotations());
+	protected ListIterable<JoinColumnAnnotation> getJoinColumnAnnotations() {
+		return new SubListIterableWrapper<NestableAnnotation, JoinColumnAnnotation>(this.getNestableJoinColumnAnnotations());
 	}
 
-	protected Iterator<NestableJoinColumnAnnotation> nestableJoinColumnAnnotations() {
-		return new SubIteratorWrapper<NestableAnnotation, NestableJoinColumnAnnotation>(this.nestableJoinColumnAnnotations_());
-	}
-
-	protected Iterator<NestableAnnotation> nestableJoinColumnAnnotations_() {
-		return this.getResourcePersistentAttribute().annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+	protected ListIterable<NestableAnnotation> getNestableJoinColumnAnnotations() {
+		return this.getResourceAttribute().getAnnotations(JoinColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	@Override
 	protected JoinColumnAnnotation addJoinColumnAnnotation(int index) {
-		return (JoinColumnAnnotation) this.getResourcePersistentAttribute().addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		return (JoinColumnAnnotation) this.getResourceAttribute().addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	@Override
 	protected void removeJoinColumnAnnotation(int index) {
-		this.getResourcePersistentAttribute().removeAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	@Override
 	protected void moveJoinColumnAnnotation(int targetIndex, int sourceIndex) {
-		this.getResourcePersistentAttribute().moveAnnotation(targetIndex, sourceIndex, JoinColumnsAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().moveAnnotation(targetIndex, sourceIndex, JoinColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	@Override
 	protected JoinColumnAnnotation buildNullJoinColumnAnnotation() {
-		return new NullJoinColumnAnnotation(this.getResourcePersistentAttribute());
+		return new NullJoinColumnAnnotation(this.getResourceAttribute());
 	}
 
 
 	// ********** misc **********
 
-	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getRelationship().getMapping().getResourcePersistentAttribute();
+	protected JavaResourceAttribute getResourceAttribute() {
+		return this.getRelationship().getMapping().getResourceAttribute();
 	}
 
 	@Override
@@ -215,8 +209,8 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 			return GenericJavaMappingJoinColumnRelationshipStrategy.this.defaultJoinColumn == joinColumn;
 		}
 
-		public int joinColumnsSize() {
-			return GenericJavaMappingJoinColumnRelationshipStrategy.this.joinColumnsSize();
+		public int getJoinColumnsSize() {
+			return GenericJavaMappingJoinColumnRelationshipStrategy.this.getJoinColumnsSize();
 		}
 
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {

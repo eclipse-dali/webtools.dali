@@ -26,6 +26,9 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 public interface JavaResourceAttribute
 	extends JavaResourceMember
 {
+	JavaResourceType getParent();
+
+	JavaResourceType getResourceType();
 
 	/**
 	 * Return whether the attribute's type implements or extends the specified

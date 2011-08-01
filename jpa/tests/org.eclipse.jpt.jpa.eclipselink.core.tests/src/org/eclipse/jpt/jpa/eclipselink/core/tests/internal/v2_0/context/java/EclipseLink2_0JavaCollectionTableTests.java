@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase.DefaultAnnotationWriter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
@@ -23,8 +25,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 
@@ -75,21 +75,21 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedName());
 		assertNull(resourceCollectionTable);
 		
 		
 		//set name in the resource model, verify context model updated
-		attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
-		resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		resourceCollectionTable.setName("FOO");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedName());
@@ -106,37 +106,37 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		assertEquals("FOO", collectionTable.getSpecifiedName());
 		assertEquals("FOO", resourceCollectionTable.getName());
 
-		attributeResource.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedName());
-		assertNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable3 = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTable2_0Annotation resourceCollectionTable3 = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedName());
 		assertNull(resourceCollectionTable3);
 	
 		//set name in the context model, verify resource model modified
 		collectionTable.setSpecifiedName("foo");
-		resourceCollectionTable3 = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceCollectionTable3 = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		assertEquals("foo", collectionTable.getSpecifiedName());
 		assertEquals("foo", resourceCollectionTable3.getName());
 		
 		//set name to null in the context model
 		collectionTable.setSpecifiedName(null);
 		assertNull(collectionTable.getSpecifiedName());
-		assertNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 	}
 	
 	public void testDefaultName() throws Exception {
@@ -144,19 +144,19 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
 		assertEquals(TYPE_NAME + "_projects", collectionTable.getDefaultName());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 
 		//add the collection table annotation, verify default collection table name is the same
-		attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		assertEquals(TYPE_NAME + "_projects", collectionTable.getDefaultName());
-		assertNotNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 		
 		//set the entity name, verify default collection table name updates
 		getJavaEntity().setSpecifiedName("Foo");
@@ -167,21 +167,21 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedSchema());
 		assertNull(resourceCollectionTable);
 		
 		
 		//set schema in the resource model, verify context model updated
-		attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
-		resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		resourceCollectionTable.setSchema("FOO");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedSchema());
@@ -198,58 +198,58 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		assertEquals("FOO", collectionTable.getSpecifiedSchema());
 		assertEquals("FOO", resourceCollectionTable.getSchema());
 
-		attributeResource.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedSchema());
-		assertNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 	}
 	
 	public void testModifySpecifiedSchema() throws Exception {
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedSchema());
 		assertNull(resourceCollectionTable);
 	
 		//set schema in the context model, verify resource model modified
 		collectionTable.setSpecifiedSchema("foo");
-		resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		assertEquals("foo", collectionTable.getSpecifiedSchema());
 		assertEquals("foo", resourceCollectionTable.getSchema());
 		
 		//set schema to null in the context model
 		collectionTable.setSpecifiedSchema(null);
 		assertNull(collectionTable.getSpecifiedSchema());
-		assertNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 	}
 
 	public void testUpdateSpecifiedCatalog() throws Exception {
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedCatalog());
 		assertNull(resourceCollectionTable);
 		
 		
 		//set catalog in the resource model, verify context model updated
-		attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
-		resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		resourceCollectionTable.setCatalog("FOO");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("FOO", collectionTable.getSpecifiedCatalog());
@@ -266,54 +266,54 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		assertEquals("FOO", collectionTable.getSpecifiedCatalog());
 		assertEquals("FOO", resourceCollectionTable.getCatalog());
 
-		attributeResource.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		assertNull(collectionTable.getSpecifiedCatalog());
-		assertNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 	}
 	
 	public void testModifySpecifiedCatalog() throws Exception {
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTable2_0Annotation resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		
 		assertNull(collectionTable.getSpecifiedCatalog());
 		assertNull(resourceCollectionTable);
 	
 		//set catalog in the context model, verify resource model modified
 		collectionTable.setSpecifiedCatalog("foo");
-		resourceCollectionTable = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		resourceCollectionTable = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		assertEquals("foo", collectionTable.getSpecifiedCatalog());
 		assertEquals("foo", resourceCollectionTable.getCatalog());
 		
 		//set catalog to null in the context model
 		collectionTable.setSpecifiedCatalog(null);
 		assertNull(collectionTable.getSpecifiedCatalog());
-		assertNull(attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME));
 	}
 
 	public void testAddSpecifiedJoinColumn() throws Exception {
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
 		
 		JoinColumn joinColumn = collectionTable.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
-		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 
 		assertEquals("FOO", joinTableResource.joinColumnAt(0).getName());
 		
@@ -330,12 +330,12 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		assertEquals("BAZ", joinTableResource.joinColumnAt(1).getName());
 		assertEquals("FOO", joinTableResource.joinColumnAt(2).getName());
 		
-		ListIterator<JavaJoinColumn> joinColumns = collectionTable.specifiedJoinColumns();
+		ListIterator<JavaJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
 		
-		joinColumns = collectionTable.specifiedJoinColumns();
+		joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -345,52 +345,52 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		collectionTable.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		collectionTable.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
 		collectionTable.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
-		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
-		assertEquals(3, joinTableResource.joinColumnsSize());
+		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		assertEquals(3, joinTableResource.getJoinColumnsSize());
 		
 		collectionTable.removeSpecifiedJoinColumn(0);
-		assertEquals(2, joinTableResource.joinColumnsSize());
+		assertEquals(2, joinTableResource.getJoinColumnsSize());
 		assertEquals("BAR", joinTableResource.joinColumnAt(0).getName());
 		assertEquals("BAZ", joinTableResource.joinColumnAt(1).getName());
 
 		collectionTable.removeSpecifiedJoinColumn(0);
-		assertEquals(1, joinTableResource.joinColumnsSize());
+		assertEquals(1, joinTableResource.getJoinColumnsSize());
 		assertEquals("BAZ", joinTableResource.joinColumnAt(0).getName());
 		
 		collectionTable.removeSpecifiedJoinColumn(0);
-		assertEquals(0, joinTableResource.joinColumnsSize());
+		assertEquals(0, joinTableResource.getJoinColumnsSize());
 	}
 	
 	public void testMoveSpecifiedJoinColumn() throws Exception {
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		collectionTable.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		collectionTable.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
 		collectionTable.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
-		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
-		assertEquals(3, joinTableResource.joinColumnsSize());
+		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		assertEquals(3, joinTableResource.getJoinColumnsSize());
 		
 		
 		collectionTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<JavaJoinColumn> joinColumns = collectionTable.specifiedJoinColumns();
+		ListIterator<JavaJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -401,7 +401,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 
 
 		collectionTable.moveSpecifiedJoinColumn(0, 1);
-		joinColumns = collectionTable.specifiedJoinColumns();
+		joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -415,13 +415,13 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		CollectionTable2_0Annotation joinTableResource = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 	
 		joinTableResource.addJoinColumn(0);
 		joinTableResource.addJoinColumn(1);
@@ -432,7 +432,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		joinTableResource.joinColumnAt(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 	
-		ListIterator<JavaJoinColumn> joinColumns = collectionTable.specifiedJoinColumns();
+		ListIterator<JavaJoinColumn> joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -440,7 +440,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		
 		joinTableResource.moveJoinColumn(2, 0);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = collectionTable.specifiedJoinColumns();
+		joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -448,7 +448,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 	
 		joinTableResource.moveJoinColumn(0, 1);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = collectionTable.specifiedJoinColumns();
+		joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -456,20 +456,20 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 	
 		joinTableResource.removeJoinColumn(1);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = collectionTable.specifiedJoinColumns();
+		joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 	
 		joinTableResource.removeJoinColumn(1);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = collectionTable.specifiedJoinColumns();
+		joinColumns = collectionTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		joinTableResource.removeJoinColumn(0);
 		getJpaProject().synchronizeContextModel();
-		assertFalse(collectionTable.specifiedJoinColumns().hasNext());
+		assertFalse(collectionTable.getSpecifiedJoinColumns().iterator().hasNext());
 	}
 	
 	public void testGetDefaultJoinColumn() {
@@ -480,80 +480,80 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		assertEquals(0, collectionTable.specifiedJoinColumnsSize());
+		assertEquals(0, collectionTable.getSpecifiedJoinColumnsSize());
 		
 		collectionTable.addSpecifiedJoinColumn(0);
-		assertEquals(1, collectionTable.specifiedJoinColumnsSize());
+		assertEquals(1, collectionTable.getSpecifiedJoinColumnsSize());
 		
 		collectionTable.removeSpecifiedJoinColumn(0);
-		assertEquals(0, collectionTable.specifiedJoinColumnsSize());
+		assertEquals(0, collectionTable.getSpecifiedJoinColumnsSize());
 	}
 
 	public void testUniqueConstraints() throws Exception {
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "bar");
 		getJpaProject().synchronizeContextModel();
 		
-		uniqueConstraints = collectionTable.uniqueConstraints();
+		uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertTrue(uniqueConstraints.hasNext());
 		assertEquals("bar", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("foo", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
-	public void testUniqueConstraintsSize() throws Exception {
+	public void testgetUniqueConstraintsSize() throws Exception {
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
-		assertEquals(0,  collectionTable.uniqueConstraintsSize());
+		assertEquals(0,  collectionTable.getUniqueConstraintsSize());
 
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		joinTableAnnotation.addUniqueConstraint(1).addColumnName(0, "bar");
 
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(2,  collectionTable.uniqueConstraintsSize());
+		assertEquals(2,  collectionTable.getUniqueConstraintsSize());
 	}
 
 	public void testAddUniqueConstraint() throws Exception {
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "BAR");
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
-		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = joinTableAnnotation.uniqueConstraints();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = joinTableAnnotation.getUniqueConstraints().iterator();
 		
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNameAt(0));
+		assertEquals("BAR", uniqueConstraints.next().columnNameAt(0));
+		assertEquals("FOO", uniqueConstraints.next().columnNameAt(0));
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -561,20 +561,20 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		collectionTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
-		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = joinTableAnnotation.uniqueConstraints();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = joinTableAnnotation.getUniqueConstraints().iterator();
 		
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNameAt(0));
+		assertEquals("FOO", uniqueConstraints.next().columnNameAt(0));
+		assertEquals("BAR", uniqueConstraints.next().columnNameAt(0));
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -582,45 +582,45 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		collectionTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		collectionTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		
-		assertEquals(3, joinTableAnnotation.uniqueConstraintsSize());
+		assertEquals(3, joinTableAnnotation.getUniqueConstraintsSize());
 
 		collectionTable.removeUniqueConstraint(1);
 		
-		ListIterator<UniqueConstraintAnnotation> uniqueConstraintAnnotations = joinTableAnnotation.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraintAnnotations.next().columnNames().next());		
-		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
+		ListIterator<UniqueConstraintAnnotation> uniqueConstraintAnnotations = joinTableAnnotation.getUniqueConstraints().iterator();
+		assertEquals("FOO", uniqueConstraintAnnotations.next().columnNameAt(0));		
+		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNameAt(0));
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 		
-		Iterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
+		Iterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		
 		collectionTable.removeUniqueConstraint(1);
-		uniqueConstraintAnnotations = joinTableAnnotation.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraintAnnotations.next().columnNames().next());		
+		uniqueConstraintAnnotations = joinTableAnnotation.getUniqueConstraints().iterator();
+		assertEquals("FOO", uniqueConstraintAnnotations.next().columnNameAt(0));		
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 
-		uniqueConstraints = collectionTable.uniqueConstraints();
+		uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertFalse(uniqueConstraints.hasNext());
 
 		
 		collectionTable.removeUniqueConstraint(0);
-		uniqueConstraintAnnotations = joinTableAnnotation.uniqueConstraints();
+		uniqueConstraintAnnotations = joinTableAnnotation.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraintAnnotations.hasNext());
-		uniqueConstraints = collectionTable.uniqueConstraints();
+		uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -628,52 +628,52 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		collectionTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		collectionTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) attributeResource.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.getAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 		
-		assertEquals(3, joinTableAnnotation.uniqueConstraintsSize());
+		assertEquals(3, joinTableAnnotation.getUniqueConstraintsSize());
 		
 		
 		collectionTable.moveUniqueConstraint(2, 0);
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
-		ListIterator<UniqueConstraintAnnotation> uniqueConstraintAnnotations = joinTableAnnotation.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraintAnnotations.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraintAnnotations.next().columnNames().next());
+		ListIterator<UniqueConstraintAnnotation> uniqueConstraintAnnotations = joinTableAnnotation.getUniqueConstraints().iterator();
+		assertEquals("BAR", uniqueConstraintAnnotations.next().columnNameAt(0));
+		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNameAt(0));
+		assertEquals("FOO", uniqueConstraintAnnotations.next().columnNameAt(0));
 
 
 		collectionTable.moveUniqueConstraint(0, 1);
-		uniqueConstraints = collectionTable.uniqueConstraints();
+		uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
-		uniqueConstraintAnnotations = joinTableAnnotation.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraintAnnotations.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraintAnnotations.next().columnNames().next());
+		uniqueConstraintAnnotations = joinTableAnnotation.getUniqueConstraints().iterator();
+		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNameAt(0));
+		assertEquals("BAR", uniqueConstraintAnnotations.next().columnNameAt(0));
+		assertEquals("FOO", uniqueConstraintAnnotations.next().columnNameAt(0));
 	}
 	
 	public void testUpdateUniqueConstraints() throws Exception {
 		createTestEntityWithElementCollection();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) resourceField.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
 	
 		joinTableAnnotation.addUniqueConstraint(0).addColumnName("FOO");
 		joinTableAnnotation.addUniqueConstraint(1).addColumnName("BAR");
@@ -681,7 +681,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		getJpaProject().synchronizeContextModel();
 
 		
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -689,7 +689,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		
 		joinTableAnnotation.moveUniqueConstraint(2, 0);
 		getJpaProject().synchronizeContextModel();
-		uniqueConstraints = collectionTable.uniqueConstraints();
+		uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -697,7 +697,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 	
 		joinTableAnnotation.moveUniqueConstraint(0, 1);
 		getJpaProject().synchronizeContextModel();
-		uniqueConstraints = collectionTable.uniqueConstraints();
+		uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -705,20 +705,20 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 	
 		joinTableAnnotation.removeUniqueConstraint(1);
 		getJpaProject().synchronizeContextModel();
-		uniqueConstraints = collectionTable.uniqueConstraints();
+		uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.removeUniqueConstraint(1);
 		getJpaProject().synchronizeContextModel();
-		uniqueConstraints = collectionTable.uniqueConstraints();
+		uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableAnnotation.removeUniqueConstraint(0);
 		getJpaProject().synchronizeContextModel();
-		uniqueConstraints = collectionTable.uniqueConstraints();
+		uniqueConstraints = collectionTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 	}
 }

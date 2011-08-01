@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Join column relationship strategy.
@@ -37,12 +37,12 @@ public interface JoinColumnRelationshipStrategy
 
 	// ********** join columns **********
 
-	ListIterator<? extends JoinColumn> joinColumns();
+	ListIterable<? extends JoinColumn> getJoinColumns();
 
 
 	// ********** specified join columns **********
 
-	ListIterator<? extends JoinColumn> specifiedJoinColumns();
+	ListIterable<? extends JoinColumn> getSpecifiedJoinColumns();
 	JoinColumn getSpecifiedJoinColumn(int index);
 
 	/**

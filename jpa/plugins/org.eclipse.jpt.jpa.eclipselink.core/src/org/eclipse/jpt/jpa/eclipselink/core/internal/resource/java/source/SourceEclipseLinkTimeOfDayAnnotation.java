@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,16 +10,16 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NumberIntegerExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAn
  * org.eclipse.persistence.annotations.TimeOfDay
  */
 public final class SourceEclipseLinkTimeOfDayAnnotation
-	extends SourceAnnotation<Type>
+	extends SourceAnnotation
 	implements EclipseLinkTimeOfDayAnnotation
 {
 	private final DeclarationAnnotationElementAdapter<Integer> hourDeclarationAdapter;
@@ -47,16 +47,16 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	private Integer millisecond;
 
 
-	public SourceEclipseLinkTimeOfDayAnnotation(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa) {
-		super(parent, type, daa);
+	public SourceEclipseLinkTimeOfDayAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.hourDeclarationAdapter = buildHourAdapter(daa);
-		this.hourAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, this.hourDeclarationAdapter);
+		this.hourAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(element, this.hourDeclarationAdapter);
 		this.minuteDeclarationAdapter = buildMinuteAdapter(daa);
-		this.minuteAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, this.minuteDeclarationAdapter);
+		this.minuteAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(element, this.minuteDeclarationAdapter);
 		this.secondDeclarationAdapter = buildSecondAdapter(daa);
-		this.secondAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, this.secondDeclarationAdapter);
+		this.secondAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(element, this.secondDeclarationAdapter);
 		this.millisecondDeclarationAdapter = buildMillisecondAdapter(daa);
-		this.millisecondAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, this.millisecondDeclarationAdapter);
+		this.millisecondAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(element, this.millisecondDeclarationAdapter);
 	}
 
 	public String getAnnotationName() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,13 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 @SuppressWarnings("nls")
 public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase {
@@ -106,21 +108,25 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 			}
 		});
 	}
+	
+	private MapKeyJoinColumn2_0Annotation mapKeyJoinColumnAt(int index, JavaResourceMember resourceMember) {
+		return (MapKeyJoinColumn2_0Annotation) resourceMember.getAnnotation(index, JPA2_0.MAP_KEY_JOIN_COLUMN);
+	}
 
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 		assertNotNull(column);
 		assertEquals(COLUMN_NAME, column.getName());
 	}
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 		assertNotNull(column);
 		assertNull(column.getName());
 		assertNull(column.getNullable());
@@ -134,9 +140,9 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getName());
@@ -149,9 +155,9 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 	
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertEquals(COLUMN_NAME, column.getName());
 		
@@ -163,17 +169,17 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 	
 	public void testGetTable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithTable();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 		assertEquals(COLUMN_TABLE, column.getTable());
 	}
 
 	public void testSetTable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getTable());
@@ -190,17 +196,17 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 	
 	public void testGetReferencedColumnName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithReferencedColumnName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 		assertEquals(COLUMN_REFERENCED_COLUMN_NAME, column.getReferencedColumnName());
 	}
 
 	public void testSetReferencedColumnName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getReferencedColumnName());
@@ -217,17 +223,17 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 
 	public void testGetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithColumnDefinition();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 		assertEquals(COLUMN_COLUMN_DEFINITION, column.getColumnDefinition());
 	}
 
 	public void testSetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getColumnDefinition());
@@ -244,18 +250,18 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 
 	public void testGetUnique() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("unique");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertEquals(Boolean.TRUE, column.getUnique());
 	}
 	
 	public void testSetUnique() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getUnique());
@@ -271,18 +277,18 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 	
 	public void testGetNullable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("nullable");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertEquals(Boolean.TRUE, column.getNullable());
 	}
 	
 	public void testSetNullable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getNullable());
@@ -298,18 +304,18 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 
 	public void testGetInsertable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("insertable");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertEquals(Boolean.TRUE, column.getInsertable());
 	}
 	
 	public void testSetInsertable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getInsertable());
@@ -325,18 +331,18 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 	
 	public void testGetUpdatable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumnWithBooleanElement("updatable");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertEquals(Boolean.TRUE, column.getUpdatable());
 	}
 	
 	public void testSetUpdatable() throws Exception {
 		ICompilationUnit cu = this.createTestJoinColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		MapKeyJoinColumn2_0Annotation column = (MapKeyJoinColumn2_0Annotation) attributeResource.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		MapKeyJoinColumn2_0Annotation column = this.mapKeyJoinColumnAt(0, resourceField);
 
 		assertNotNull(column);
 		assertNull(column.getUpdatable());

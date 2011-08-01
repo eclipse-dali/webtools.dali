@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,15 +10,17 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumArrayDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
@@ -26,7 +28,6 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
  * javax.persistence.ManyToMany
@@ -35,7 +36,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
  * javax.persistence.OneToOne
  */
 abstract class SourceRelationshipMappingAnnotation
-	extends SourceAnnotation<Attribute>
+	extends SourceAnnotation
 	implements RelationshipMapping2_0Annotation
 {
 	final DeclarationAnnotationElementAdapter<String> targetEntityDeclarationAdapter;
@@ -59,14 +60,14 @@ abstract class SourceRelationshipMappingAnnotation
 	private static final CascadeType[] EMPTY_CASCADE_TYPE_ARRAY = new CascadeType[0];
 
 
-	SourceRelationshipMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
-		super(parent, attribute, daa);
+	SourceRelationshipMappingAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.targetEntityDeclarationAdapter = this.getTargetEntityAdapter();
 		this.targetEntityAdapter = this.buildAnnotationElementAdapter(this.targetEntityDeclarationAdapter);
 		this.fetchDeclarationAdapter = this.getFetchAdapter();
 		this.fetchAdapter = this.buildAnnotationElementAdapter(this.fetchDeclarationAdapter);
 		this.cascadeDeclarationAdapter = this.getCascadeAdapter();
-		this.cascadeAdapter = new AnnotatedElementAnnotationElementAdapter<String[]>(attribute, this.cascadeDeclarationAdapter);
+		this.cascadeAdapter = new AnnotatedElementAnnotationElementAdapter<String[]>(element, this.cascadeDeclarationAdapter);
 	}
 
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {

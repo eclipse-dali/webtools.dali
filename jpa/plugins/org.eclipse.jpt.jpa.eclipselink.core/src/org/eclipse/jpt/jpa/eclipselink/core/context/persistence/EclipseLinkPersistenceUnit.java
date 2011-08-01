@@ -219,17 +219,17 @@ public class EclipseLinkPersistenceUnit
 	// ********** mapping file refs **********
 
 	@Override
-	protected ListIterable<MappingFileRef> getMappingFileRefs() {
+	public ListIterable<MappingFileRef> getMappingFileRefs() {
 		return (this.impliedEclipseLinkMappingFileRef == null) ?
 				super.getMappingFileRefs() :
 				new CompositeListIterable<MappingFileRef>(super.getMappingFileRefs(), this.impliedEclipseLinkMappingFileRef);
 	}
 
 	@Override
-	public int mappingFileRefsSize() {
+	public int getMappingFileRefsSize() {
 		return (this.impliedEclipseLinkMappingFileRef == null) ?
-				super.mappingFileRefsSize() :
-				super.mappingFileRefsSize() + 1;
+				super.getMappingFileRefsSize() :
+				super.getMappingFileRefsSize() + 1;
 	}
 
 
@@ -454,7 +454,7 @@ public class EclipseLinkPersistenceUnit
 			else if (typeMapping instanceof EclipseLinkJavaTypeMapping) {
 				this.addConvertersTo(((EclipseLinkJavaTypeMapping) typeMapping).getConverterContainer(), converterList);
 			}
-			for (ReadOnlyPersistentAttribute persistentAttribute : CollectionTools.iterable(persistentType.attributes())) {
+			for (ReadOnlyPersistentAttribute persistentAttribute : persistentType.getAttributes()) {
 				AttributeMapping attributeMapping = persistentAttribute.getMapping();
 				if (attributeMapping instanceof ConvertibleMapping) {
 					Converter converter = ((ConvertibleMapping) attributeMapping).getConverter();
@@ -470,10 +470,10 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected void addConvertersTo(OrmEclipseLinkConverterContainer converterContainer, ArrayList<EclipseLinkConverter> converterList) {
-		CollectionTools.addAll(converterList, converterContainer.customConverters());
-		CollectionTools.addAll(converterList, converterContainer.objectTypeConverters());
-		CollectionTools.addAll(converterList, converterContainer.structConverters());
-		CollectionTools.addAll(converterList, converterContainer.typeConverters());
+		CollectionTools.addAll(converterList, converterContainer.getCustomConverters());
+		CollectionTools.addAll(converterList, converterContainer.getObjectTypeConverters());
+		CollectionTools.addAll(converterList, converterContainer.getStructConverters());
+		CollectionTools.addAll(converterList, converterContainer.getTypeConverters());
 	}
 
 	protected void addConvertersTo(JavaEclipseLinkConverterContainer converterContainer, ArrayList<EclipseLinkConverter> converterList) {
@@ -856,7 +856,7 @@ public class EclipseLinkPersistenceUnit
 	 * Returns all Shared Cache Properties, including Entity and default.
 	 */
 	private Iterable<Property> getSharedCacheProperties() {
-		return CollectionTools.iterable(this.propertiesWithNamePrefix(Caching.ECLIPSELINK_SHARED_CACHE));
+		return this.getPropertiesWithNamePrefix(Caching.ECLIPSELINK_SHARED_CACHE);
 	}
 
 	/**
@@ -885,8 +885,7 @@ public class EclipseLinkPersistenceUnit
 	 * excluding Entity which name equals "default".
 	 */
 	private Iterable<Property> getEntityPropertiesWithPrefix(String prefix) {
-	   return new FilteringIterable<Property>(
-		   				CollectionTools.iterable(this.propertiesWithNamePrefix(prefix))) {
+	   return new FilteringIterable<Property>(this.getPropertiesWithNamePrefix(prefix)) {
 	      @Override
 	      protected boolean accept(Property next) {
 				return ! next.getName().endsWith("default"); //$NON-NLS-1$
@@ -910,7 +909,7 @@ public class EclipseLinkPersistenceUnit
 	 * Returns all Session Customizer Properties.
 	 */
 	private Iterable<Property> getSessionCustomizerProperties() {
-		return CollectionTools.iterable(this.propertiesWithNamePrefix(Customization.ECLIPSELINK_SESSION_CUSTOMIZER));
+		return this.getPropertiesWithNamePrefix(Customization.ECLIPSELINK_SESSION_CUSTOMIZER);
 	}
 
 	/**

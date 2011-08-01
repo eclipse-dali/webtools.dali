@@ -14,8 +14,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpql;
 
 import java.util.HashMap;
-import java.util.ListIterator;
 import java.util.Map;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.persistence.jpa.jpql.spi.IEntity;
@@ -91,14 +91,13 @@ abstract class JpaEntity extends JpaManagedType
 
 	void initializeQueries(Map<String, IQuery> queries) {
 		JpaManagedTypeProvider provider = getProvider();
-		for (ListIterator<NamedQuery> iter = namedQueries(); iter.hasNext(); ) {
-			NamedQuery namedQuery = iter.next();
+		for (NamedQuery namedQuery : getNamedQueries()) {
 			queries.put(namedQuery.getName(), buildQuery(provider, namedQuery));
 		}
 	}
 
-	private ListIterator<NamedQuery> namedQueries() {
-		return getManagedType().getQueryContainer().namedQueries();
+	private ListIterable<? extends NamedQuery> getNamedQueries() {
+		return getManagedType().getQueryContainer().getNamedQueries();
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -87,13 +87,12 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 	private ListValueModel<JavaSecondaryTable> buildSecondaryTablesListHolder() {
 		return new ListAspectAdapter<JavaEntity, JavaSecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
 			@Override
-			protected ListIterator<JavaSecondaryTable> listIterator_() {
-				return this.subject.specifiedSecondaryTables();
+			protected ListIterable<JavaSecondaryTable> getListIterable() {
+				return this.subject.getSpecifiedSecondaryTables();
 			}
-
 			@Override
 			protected int size_() {
-				return this.subject.specifiedSecondaryTablesSize();
+				return this.subject.getSpecifiedSecondaryTablesSize();
 			}
 		};
 	}

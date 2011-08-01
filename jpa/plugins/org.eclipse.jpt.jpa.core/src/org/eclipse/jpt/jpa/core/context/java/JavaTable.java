@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
 
@@ -30,7 +30,7 @@ public interface JavaTable
 {
 	BaseTableAnnotation getTableAnnotation();
 
-	ListIterator<JavaUniqueConstraint> uniqueConstraints();
+	ListIterable<JavaUniqueConstraint> getUniqueConstraints();
 	JavaUniqueConstraint getUniqueConstraint(int index);
 	JavaUniqueConstraint addUniqueConstraint();
 	JavaUniqueConstraint addUniqueConstraint(int index);

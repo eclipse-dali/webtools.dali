@@ -17,8 +17,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAttributeOverrideAnnotation;
 
 /**
  * Java attribute override container
@@ -29,7 +27,7 @@ public class GenericJavaAttributeOverrideContainer
 			JavaReadOnlyAttributeOverride,
 			JavaAttributeOverride,
 			JavaVirtualAttributeOverride,
-			NestableAttributeOverrideAnnotation
+			AttributeOverrideAnnotation
 		>
 	implements JavaAttributeOverrideContainer2_0
 {
@@ -52,12 +50,7 @@ public class GenericJavaAttributeOverrideContainer
 	}
 
 	@Override
-	protected String getOverrideContainerAnnotationName() {
-		return AttributeOverridesAnnotation.ANNOTATION_NAME;
-	}
-
-	@Override
-	protected JavaAttributeOverride buildSpecifiedOverride(NestableAttributeOverrideAnnotation overrideAnnotation) {
+	protected JavaAttributeOverride buildSpecifiedOverride(AttributeOverrideAnnotation overrideAnnotation) {
 		return this.getJpaFactory().buildJavaAttributeOverride(this, overrideAnnotation);
 	}
 

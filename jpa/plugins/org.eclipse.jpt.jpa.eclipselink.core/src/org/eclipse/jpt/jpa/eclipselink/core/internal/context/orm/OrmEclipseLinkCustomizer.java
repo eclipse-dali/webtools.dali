@@ -14,13 +14,13 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
@@ -143,7 +143,7 @@ public class OrmEclipseLinkCustomizer
 		this.getXmlCustomizerHolder().setCustomizer(null);
 	}
 
-	protected JavaResourcePersistentType getResourceCustomizerPersistentType() {
+	protected JavaResourceAbstractType getResourceCustomizerType() {
 		XmlClassReference customizerClassRef = this.getXmlCustomizerClassRef();
 		if (customizerClassRef == null) {
 			return null;
@@ -154,7 +154,7 @@ public class OrmEclipseLinkCustomizer
 			return null;
 		}
 
-		return this.getEntityMappings().resolveJavaResourcePersistentType(className);
+		return this.getEntityMappings().resolveJavaResourceType(className);
 	}
 
 
@@ -187,16 +187,16 @@ public class OrmEclipseLinkCustomizer
 	}
 
 	protected EntityMappings getEntityMappings() {
-		return (EntityMappings) this.getMappingFileRoot();
+		return this.getMappingFileRoot();
 	}
 
 	protected boolean isFor(String typeName) {
-		JavaResourcePersistentType customizerType = this.getResourceCustomizerPersistentType();
+		JavaResourceAbstractType customizerType = this.getResourceCustomizerType();
 		return (customizerType != null) && customizerType.getQualifiedName().equals(typeName);
 	}
 
 	protected boolean isIn(IPackageFragment packageFragment) {
-		JavaResourcePersistentType customizerType = this.getResourceCustomizerPersistentType();
+		JavaResourceAbstractType customizerType = this.getResourceCustomizerType();
 		return (customizerType != null) && customizerType.isIn(packageFragment);
 	}
 

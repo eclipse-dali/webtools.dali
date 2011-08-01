@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Reference table (i.e. a table that joins with one other table,
@@ -36,9 +36,9 @@ public interface ReferenceTable
 	 */
 	void convertDefaultJoinColumnToSpecified();
 
-	ListIterator<? extends JoinColumn> joinColumns();
+	ListIterable<? extends JoinColumn> getJoinColumns();
 
-	ListIterator<? extends JoinColumn> specifiedJoinColumns();
+	ListIterable<? extends JoinColumn> getSpecifiedJoinColumns();
 
 	JoinColumn getSpecifiedJoinColumn(int index);
 

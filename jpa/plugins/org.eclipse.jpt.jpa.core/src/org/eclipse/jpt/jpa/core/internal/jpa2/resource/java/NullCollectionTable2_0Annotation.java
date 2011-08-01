@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
-import java.util.ListIterator;
-
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullBaseTableAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 
 /**
@@ -33,20 +32,16 @@ public final class NullCollectionTable2_0Annotation
 	}
 	
 	// ***** join columns
-	public ListIterator<JoinColumnAnnotation> joinColumns() {
-		return EmptyListIterator.instance();
+	public ListIterable<JoinColumnAnnotation> getJoinColumns() {
+		return EmptyListIterable.instance();
 	}
 	
-	public int joinColumnsSize() {
+	public int getJoinColumnsSize() {
 		return 0;
 	}
 	
 	public JoinColumnAnnotation joinColumnAt(int index) {
 		return null;
-	}
-	
-	public int indexOfJoinColumn(JoinColumnAnnotation joinColumn) {
-		throw new UnsupportedOperationException();
 	}
 	
 	public JoinColumnAnnotation addJoinColumn(int index) {

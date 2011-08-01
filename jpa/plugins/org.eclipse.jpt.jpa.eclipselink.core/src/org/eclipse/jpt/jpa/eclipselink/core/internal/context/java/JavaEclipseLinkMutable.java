@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
@@ -119,15 +119,15 @@ public class JavaEclipseLinkMutable
 	// ********** mutable annotation **********
 
 	protected EclipseLinkMutableAnnotation getMutableAnnotation() {
-		return (EclipseLinkMutableAnnotation) this.getResourcePersistentAttribute().getAnnotation(this.getMutableAnnotationName());
+		return (EclipseLinkMutableAnnotation) this.getResourceAttribute().getAnnotation(this.getMutableAnnotationName());
 	}
 
 	protected EclipseLinkMutableAnnotation addMutableAnnotation() {
-		return (EclipseLinkMutableAnnotation) this.getResourcePersistentAttribute().addAnnotation(this.getMutableAnnotationName());
+		return (EclipseLinkMutableAnnotation) this.getResourceAttribute().addAnnotation(this.getMutableAnnotationName());
 	}
 
 	protected void removeMutableAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(this.getMutableAnnotationName());
+		this.getResourceAttribute().removeAnnotation(this.getMutableAnnotationName());
 	}
 
 	protected String getMutableAnnotationName() {
@@ -146,8 +146,8 @@ public class JavaEclipseLinkMutable
 		return this.getParent();
 	}
 
-	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getAttributeMapping().getResourcePersistentAttribute();
+	protected JavaResourceAttribute getResourceAttribute() {
+		return this.getAttributeMapping().getResourceAttribute();
 	}
 
 	protected JavaEclipseLinkPersistentAttribute getPersistentAttribute() {

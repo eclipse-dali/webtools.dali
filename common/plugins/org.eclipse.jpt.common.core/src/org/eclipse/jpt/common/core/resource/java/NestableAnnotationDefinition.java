@@ -50,5 +50,5 @@ public interface NestableAnnotationDefinition
 	 * Build and return an annotation for the specified JDT annotation
 	 * on the specified annotated element.
 	 */
-	Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation);
+	NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index);
 }

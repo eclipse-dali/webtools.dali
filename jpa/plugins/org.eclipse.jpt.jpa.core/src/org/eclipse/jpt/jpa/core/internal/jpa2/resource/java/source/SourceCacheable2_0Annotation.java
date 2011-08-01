@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,26 +10,25 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * javax.persistence.Cacheable
  */
 public final class SourceCacheable2_0Annotation
-	extends SourceAnnotation<Member>
+	extends SourceAnnotation
 	implements Cacheable2_0Annotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -39,9 +38,9 @@ public final class SourceCacheable2_0Annotation
 	private Boolean value;
 
 
-	public SourceCacheable2_0Annotation(JavaResourcePersistentType parent, Type type) {
-		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, VALUE_ADAPTER);
+	public SourceCacheable2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(element, VALUE_ADAPTER);
 	}
 
 	public String getAnnotationName() {

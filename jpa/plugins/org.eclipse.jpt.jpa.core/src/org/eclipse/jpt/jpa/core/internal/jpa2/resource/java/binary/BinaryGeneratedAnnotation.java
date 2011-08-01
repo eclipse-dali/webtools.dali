@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary;
 
-import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryAnnotation;
+import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * javax.annotation.Generated
@@ -30,7 +29,7 @@ public final class BinaryGeneratedAnnotation
 	private String comments;
 
 
-	public BinaryGeneratedAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
+	public BinaryGeneratedAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.values = this.buildValues();
 		this.date = this.buildDate();
@@ -58,11 +57,11 @@ public final class BinaryGeneratedAnnotation
 	// ********** GeneratedAnnotation implementation **********
 
 	// ***** values
-	public ListIterator<String> values() {
-		return new CloneListIterator<String>(this.values);
+	public ListIterable<String> getValues() {
+		return new LiveCloneListIterable<String>(this.values);
 	}
 
-	public int valuesSize() {
+	public int getValuesSize() {
 		return this.values.size();
 	}
 

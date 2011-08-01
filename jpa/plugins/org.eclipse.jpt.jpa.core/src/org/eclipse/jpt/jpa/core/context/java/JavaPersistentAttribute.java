@@ -10,11 +10,13 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
  * Context Java persistent <em>attribute</em> (field or property).
@@ -41,9 +43,26 @@ public interface JavaPersistentAttribute
 	// ********** misc **********
 
 	/**
-	 * Return the corresponding <em>resource</em> persistent attribute.
+	 * Return the accessor(field/property) for the attribute
 	 */
-	JavaResourcePersistentAttribute getResourcePersistentAttribute();
+	Accessor getAccessor();
+
+	/**
+	 * Return the corresponding <em>resource</em> attribute. 
+	 * This is the attribute (field/method) that is annotated.
+	 * @see Accessor#getResourceAttribute()
+	 */
+	JavaResourceAttribute getResourceAttribute();
+
+	/**
+	 * @see Accessor#isFor(JavaResourceField)
+	 */
+	boolean isFor(JavaResourceField resourceField);
+
+	/**
+	 * @see Accessor#isFor(JavaResourceMethod, JavaResourceMethod)
+	 */
+	boolean isFor(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
 
 	/**
 	 * Return whether the attribute contains the given offset into its Java
@@ -56,29 +75,6 @@ public interface JavaPersistentAttribute
 	 * attribute's type. Return <code>null</code> if it is not found.
 	 */
 	Embeddable getEmbeddable();
-
-	/**
-	 * Return whether the attribute is a field (as opposed to a property).
-	 */
-	boolean isField();
-
-	/**
-	 * Return whether the attribute is a property (as opposed to a field).
-	 */
-	boolean isProperty();
-
-	/**
-	 * Return whether the attribute is <code>public</code>,
-	 * which is problematic for fields.
-	 */
-	boolean isPublic();
-
-	/**
-	 * Return whether the attribute is <code>final</code>,
-	 * which is problematic.
-	 */
-	boolean isFinal();
-
 
 	// ********** type **********
 
@@ -127,8 +123,8 @@ public interface JavaPersistentAttribute
 		String getTypeName();
 		boolean isContainer();
 		boolean isMap();
-		String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
-		String getMultiReferenceMapKeyTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute);
+		String getMultiReferenceTargetTypeName(JavaResourceAttribute resourceAttribute);
+		String getMultiReferenceMapKeyTypeName(JavaResourceAttribute resourceAttribute);
 		String getMetamodelContainerFieldTypeName();
 		String getMetamodelContainerFieldMapKeyTypeName(CollectionMapping mapping);
 
@@ -150,10 +146,10 @@ public interface JavaPersistentAttribute
 			public boolean isMap() {
 				return false;
 			}
-			public String getMultiReferenceTargetTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+			public String getMultiReferenceTargetTypeName(JavaResourceAttribute resourceAttribute) {
 				return null;
 			}
-			public String getMultiReferenceMapKeyTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+			public String getMultiReferenceMapKeyTypeName(JavaResourceAttribute resourceAttribute) {
 				return null;
 			}
 			public String getMetamodelContainerFieldTypeName() {

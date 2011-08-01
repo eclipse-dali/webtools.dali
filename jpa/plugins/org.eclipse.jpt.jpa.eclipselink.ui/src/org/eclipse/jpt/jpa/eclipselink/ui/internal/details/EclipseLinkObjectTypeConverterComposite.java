@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -23,6 +22,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -324,13 +325,13 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 	private ListValueModel<EclipseLinkConversionValue> buildConversionValuesListHolder() {
 		return new ListAspectAdapter<EclipseLinkObjectTypeConverter, EclipseLinkConversionValue>(getSubjectHolder(), EclipseLinkObjectTypeConverter.CONVERSION_VALUES_LIST) {
 			@Override
-			protected ListIterator<EclipseLinkConversionValue> listIterator_() {
-				return this.subject.conversionValues();
+			protected ListIterable<EclipseLinkConversionValue> getListIterable() {
+				return new SuperListIterableWrapper<EclipseLinkConversionValue>(this.subject.getConversionValues());
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.conversionValuesSize();
+				return this.subject.getConversionValuesSize();
 			}
 		};
 	}

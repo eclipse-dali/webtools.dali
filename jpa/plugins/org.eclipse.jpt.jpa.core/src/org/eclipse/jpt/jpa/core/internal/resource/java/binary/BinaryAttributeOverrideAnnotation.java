@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,18 +10,18 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullAttributeOverrideColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAttributeOverrideAnnotation;
 
 /**
  * javax.persistence.AttributeOverride
  */
 public final class BinaryAttributeOverrideAnnotation
 	extends BinaryOverrideAnnotation
-	implements NestableAttributeOverrideAnnotation
+	implements AttributeOverrideAnnotation
 {
 	private ColumnAnnotation column;
 	private final ColumnAnnotation nullColumn;

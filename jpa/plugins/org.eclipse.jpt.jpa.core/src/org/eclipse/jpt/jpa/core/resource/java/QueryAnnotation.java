@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Common protocol among:<ul>
@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 2.2
  */
 public interface QueryAnnotation
-	extends Annotation
+	extends NestableAnnotation
 {
 	// ********** name **********
 
@@ -81,23 +81,18 @@ public interface QueryAnnotation
 	 * Corresponds to the 'hints' element of the *Query annotation.
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
-	ListIterator<QueryHintAnnotation> hints();
+	ListIterable<QueryHintAnnotation> getHints();
 		String HINTS_LIST = "hints"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the 'hints' element of the *Query annotation.
 	 */
-	int hintsSize();
+	int getHintsSize();
 
 	/**
 	 * Corresponds to the 'hints' element of the *Query annotation.
 	 */
 	QueryHintAnnotation hintAt(int index);
-	
-	/**
-	 * Corresponds to the 'hints' element of the *Query annotation.
-	 */
-	int indexOfHint(QueryHintAnnotation hint);
 	
 	/**
 	 * Corresponds to the 'hints' element of the *Query annotation.

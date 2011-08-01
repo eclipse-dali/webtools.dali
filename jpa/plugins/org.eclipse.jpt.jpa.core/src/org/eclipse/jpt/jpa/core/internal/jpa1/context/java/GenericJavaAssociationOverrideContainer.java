@@ -26,8 +26,6 @@ import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AssociationOverridesAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAssociationOverrideAnnotation;
 
 /**
  * Java attribute override container
@@ -38,7 +36,7 @@ public class GenericJavaAssociationOverrideContainer
 			JavaReadOnlyAssociationOverride,
 			JavaAssociationOverride,
 			JavaVirtualAssociationOverride,
-			NestableAssociationOverrideAnnotation
+			AssociationOverrideAnnotation
 		>
 	implements JavaAssociationOverrideContainer2_0
 {
@@ -82,12 +80,7 @@ public class GenericJavaAssociationOverrideContainer
 	}
 
 	@Override
-	protected String getOverrideContainerAnnotationName() {
-		return AssociationOverridesAnnotation.ANNOTATION_NAME;
-	}
-
-	@Override
-	protected JavaAssociationOverride buildSpecifiedOverride(NestableAssociationOverrideAnnotation overrideAnnotation) {
+	protected JavaAssociationOverride buildSpecifiedOverride(AssociationOverrideAnnotation overrideAnnotation) {
 		return this.getJpaFactory().buildJavaAssociationOverride(this, overrideAnnotation);
 	}
 

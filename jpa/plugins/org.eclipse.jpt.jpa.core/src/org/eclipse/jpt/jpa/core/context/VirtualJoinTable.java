@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Used by association overrides.
@@ -25,8 +25,8 @@ public interface VirtualJoinTable
 {
 	VirtualJoinTableRelationshipStrategy getParent();
 
-	ListIterator<? extends VirtualJoinColumn> inverseJoinColumns();
-	ListIterator<? extends VirtualJoinColumn> specifiedInverseJoinColumns();
+	ListIterable<? extends VirtualJoinColumn> getInverseJoinColumns();
+	ListIterable<? extends VirtualJoinColumn> getSpecifiedInverseJoinColumns();
 	VirtualJoinColumn getSpecifiedInverseJoinColumn(int index);
 	VirtualJoinColumn getDefaultInverseJoinColumn();
 

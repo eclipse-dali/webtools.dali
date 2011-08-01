@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,10 +18,12 @@ import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationWritablePropertyValueModel;
@@ -222,12 +224,12 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		return new ListAspectAdapter<AssociationOverrideContainer, VirtualAssociationOverride>(containerHolder, OverrideContainer.VIRTUAL_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<VirtualAssociationOverride> listIterator_() {
-				return new SuperListIteratorWrapper<VirtualAssociationOverride>(this.subject.virtualOverrides());
+				return new SuperListIteratorWrapper<VirtualAssociationOverride>(this.subject.getVirtualOverrides());
 			}
 			
 			@Override
 			protected int size_() {
-				return this.subject.virtualOverridesSize();
+				return this.subject.getVirtualOverridesSize();
 			}
 		};
 	}
@@ -236,12 +238,12 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		return new ListAspectAdapter<AttributeOverrideContainer, VirtualAttributeOverride>(containerHolder, OverrideContainer.VIRTUAL_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<VirtualAttributeOverride> listIterator_() {
-				return new SuperListIteratorWrapper<VirtualAttributeOverride>(this.subject.virtualOverrides());
+				return new SuperListIteratorWrapper<VirtualAttributeOverride>(this.subject.getVirtualOverrides());
 			}
 			
 			@Override
 			protected int size_() {
-				return this.subject.virtualOverridesSize();
+				return this.subject.getVirtualOverridesSize();
 			}
 		};
 	}
@@ -368,12 +370,12 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		return new ListAspectAdapter<AssociationOverrideContainer, AssociationOverride>(containerHolder, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AssociationOverride> listIterator_() {
-				return new SuperListIteratorWrapper<AssociationOverride>(this.subject.specifiedOverrides());
+				return new SuperListIteratorWrapper<AssociationOverride>(this.subject.getSpecifiedOverrides());
 			}
 			
 			@Override
 			protected int size_() {
-				return this.subject.specifiedOverridesSize();
+				return this.subject.getSpecifiedOverridesSize();
 			}
 		};
 	}
@@ -381,13 +383,13 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	private ListValueModel<AttributeOverride> buildSpecifiedAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
 		return new ListAspectAdapter<AttributeOverrideContainer, AttributeOverride>(containerHolder, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
 			@Override
-			protected ListIterator<AttributeOverride> listIterator_() {
-				return new SuperListIteratorWrapper<AttributeOverride>(this.subject.specifiedOverrides());
+			protected ListIterable<AttributeOverride> getListIterable() {
+				return new SuperListIterableWrapper<AttributeOverride>(this.subject.getSpecifiedOverrides());
 			}
 			
 			@Override
 			protected int size_() {
-				return this.subject.specifiedOverridesSize();
+				return this.subject.getSpecifiedOverridesSize();
 			}
 		};
 	}

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.context.ICreateContext;
@@ -118,6 +116,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		return (pictograms == null) || (pictograms.length == 0);
 	}
 
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}
@@ -309,10 +308,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			String attributeAnnotations) {
 		List<JavaPersistentAttribute> attributes = new ArrayList<JavaPersistentAttribute>();
 
-		ListIterator<JavaPersistentAttribute> attributesIterator = jpt
-				.attributes();
-		while (attributesIterator.hasNext()) {
-			JavaPersistentAttribute attribute = attributesIterator.next();
+		for (JavaPersistentAttribute attribute : jpt.getAttributes()) {
 			HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(attribute);
 			if (annotations.contains(attributeAnnotations)) {
 				attributes.add(attribute);
@@ -324,9 +320,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	private void addBasicAttributes(ContainerShape containerShape, JavaPersistentType jpt){
 		List<JavaPersistentAttribute> attributes = new ArrayList<JavaPersistentAttribute>();
 		
-		ListIterator<JavaPersistentAttribute> attributesIterator = jpt.attributes();
-		while(attributesIterator.hasNext()){
-			JavaPersistentAttribute attribute = attributesIterator.next();
+		for (JavaPersistentAttribute attribute : jpt.getAttributes()){
 			HashSet<String> annotations = JpaArtifactFactory.instance().getAnnotationNames(attribute);
 			if(!(annotations.contains(JPAEditorConstants.ANNOTATION_ID))&& !(annotations.contains(JPAEditorConstants.ANNOTATION_EMBEDDED_ID)) && !(annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_MANY)) && 
 					!(annotations.contains(JPAEditorConstants.ANNOTATION_MANY_TO_ONE)) && !(annotations.contains(JPAEditorConstants.ANNOTATION_ONE_TO_MANY))&&

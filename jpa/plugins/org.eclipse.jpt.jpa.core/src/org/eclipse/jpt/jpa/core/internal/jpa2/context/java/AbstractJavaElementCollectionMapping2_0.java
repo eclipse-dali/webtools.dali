@@ -15,6 +15,9 @@ import java.util.List;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Association;
@@ -96,11 +99,8 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -443,11 +443,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected ColumnAnnotation getValueColumnAnnotation() {
-		return (ColumnAnnotation) this.getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) this.getResourceAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void removeValueColumnAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 
@@ -484,7 +484,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	 * <code>null</code>, remove <em>all</em> the converter annotations.
 	 */
 	protected void retainConverterAnnotation(JavaConverter.Adapter converterAdapter) {
-		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
 		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
 			if (adapter != converterAdapter) {
 				adapter.removeConverterAnnotation(resourceAttribute);
@@ -526,7 +526,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	 * adapter. Return <code>null</code> if there are no converter annotations.
 	 */
 	protected Association<JavaConverter.Adapter, Annotation> getConverterAnnotation() {
-		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
 		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
 			Annotation annotation = adapter.getConverterAnnotation(resourceAttribute);
 			if (annotation != null) {
@@ -761,7 +761,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	// ********** map key annotation **********
 
 	protected MapKeyAnnotation getMapKeyAnnotation() {
-		return (MapKeyAnnotation) this.getResourcePersistentAttribute().getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		return (MapKeyAnnotation) this.getResourceAttribute().getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	protected MapKeyAnnotation getMapKeyAnnotationForUpdate() {
@@ -770,11 +770,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected MapKeyAnnotation addMapKeyAnnotation() {
-		return (MapKeyAnnotation) this.getResourcePersistentAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		return (MapKeyAnnotation) this.getResourceAttribute().addAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
@@ -871,15 +871,15 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	// ********** map key class annotation **********
 
 	protected MapKeyClass2_0Annotation getMapKeyClassAnnotation() {
-		return (MapKeyClass2_0Annotation) this.getResourcePersistentAttribute().getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		return (MapKeyClass2_0Annotation) this.getResourceAttribute().getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 	}
 
 	protected MapKeyClass2_0Annotation addMapKeyClassAnnotation() {
-		return (MapKeyClass2_0Annotation) this.getResourcePersistentAttribute().addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		return (MapKeyClass2_0Annotation) this.getResourceAttribute().addAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyClassAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 	}
 
 
@@ -898,11 +898,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected MapKeyColumn2_0Annotation getMapKeyColumnAnnotation() {
-		return (MapKeyColumn2_0Annotation) this.getResourcePersistentAttribute().getNonNullAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
+		return (MapKeyColumn2_0Annotation) this.getResourceAttribute().getNonNullAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
 	}
 
 	protected void removeMapKeyColumnAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
 	}
 
 
@@ -1320,8 +1320,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	 */
 	protected abstract class AbstractOwner
 	{
-		public JavaResourcePersistentMember getResourcePersistentMember() {
-			return AbstractJavaElementCollectionMapping2_0.this.getResourcePersistentAttribute();
+		public JavaResourceMember getResourceMember() {
+			return AbstractJavaElementCollectionMapping2_0.this.getResourceAttribute();
 		}
 
 		public TypeMapping getTypeMapping() {

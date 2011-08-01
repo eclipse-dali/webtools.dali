@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -41,6 +40,15 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.ui.actions.SelectionDispatchAction;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
@@ -48,9 +56,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.AddEntityContext;
@@ -59,12 +64,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPASolver;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
-import org.eclipse.jpt.common.core.JptResourceModel;
-import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
-import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
-import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
-import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
 
@@ -79,6 +78,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		super(fp);
 	}
 	
+	@Override
 	public boolean isAvailable(IContext context) {
     	if (!(context instanceof ICustomContext))
     		return false;
@@ -104,6 +104,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		return false;
 	}
 	
+	@Override
 	public boolean canExecute(ICustomContext context) {
 		return true;
 	}
@@ -134,6 +135,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pict);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				remapEntity(oldName, pict, pu, rename, lsnr, getFeatureProvider());
 			}
@@ -157,6 +159,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		JPASolver.ignoreEvents = false;		
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pict);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				remapEntity(oldName, pict, pu, true, lsnr, getFeatureProvider());
 			}
@@ -231,10 +234,12 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 	
 	
 	
+	@Override
 	protected Diagram getDiagram() {
 		return getFeatureProvider().getDiagramTypeProvider().getDiagram();
 	}	
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}
@@ -278,8 +283,8 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 			if (!JavaResourceCompilationUnit.class.isInstance(rm))
 				return;
 			JavaResourceCompilationUnit jrcu = (JavaResourceCompilationUnit)rm;
-			JavaResourcePersistentType jrpt = jrcu.persistentTypes().next();			
-			newJptName = jrpt.getQualifiedName();
+			JavaResourceAbstractType jrt = jrcu.getPrimaryType();		
+			newJptName = jrt.getQualifiedName();
 			s.release();
 			if ((ats == null) || hasNameAnnotation)
 				return;

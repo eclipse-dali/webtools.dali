@@ -10,20 +10,17 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.Iterator;
-import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaGenerator;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
@@ -57,8 +54,7 @@ public class GenericJavaTableGenerator
 	protected String specifiedPkColumnValue;
 	protected String defaultPkColumnValue;
 
-	protected final Vector<JavaUniqueConstraint> uniqueConstraints = new Vector<JavaUniqueConstraint>();
-	protected final UniqueConstraintContainerAdapter uniqueConstraintContainerAdapter = new UniqueConstraintContainerAdapter();
+	protected final UniqueConstraintContainer uniqueConstraintContainer;
 
 
 	// ********** constructor **********
@@ -71,7 +67,7 @@ public class GenericJavaTableGenerator
 		this.specifiedPkColumnName = generatorAnnotation.getPkColumnName();
 		this.specifiedValueColumnName = generatorAnnotation.getValueColumnName();
 		this.specifiedPkColumnValue = generatorAnnotation.getPkColumnValue();
-		this.initializeUniqueConstraints();
+		this.uniqueConstraintContainer = new UniqueConstraintContainer();
 	}
 
 
@@ -334,97 +330,79 @@ public class GenericJavaTableGenerator
 
 
 	// ********** unique constraints **********
-
-	public Iterable<JavaUniqueConstraint> getUniqueConstraints() {
-		return new LiveCloneIterable<JavaUniqueConstraint>(this.uniqueConstraints);
+	public ListIterable<JavaUniqueConstraint> getUniqueConstraints() {
+		return this.uniqueConstraintContainer.getContextElements();
 	}
 
 	public int getUniqueConstraintsSize() {
-		return this.uniqueConstraints.size();
+		return this.uniqueConstraintContainer.getContextElementsSize();
+	}
+
+	public JavaUniqueConstraint getUniqueConstraint(int index) {
+		return this.uniqueConstraintContainer.getContextElement(index);
 	}
 
 	public JavaUniqueConstraint addUniqueConstraint() {
-		return this.addUniqueConstraint(this.uniqueConstraints.size());
+		return this.addUniqueConstraint(this.getUniqueConstraintsSize());
 	}
 
 	public JavaUniqueConstraint addUniqueConstraint(int index) {
-		UniqueConstraintAnnotation constraintAnnotation = this.generatorAnnotation.addUniqueConstraint(index);
-		return this.addUniqueConstraint_(index, constraintAnnotation);
-	}
-
-	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
-		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(uniqueConstraint));
+		UniqueConstraintAnnotation annotation = this.getGeneratorAnnotation().addUniqueConstraint(index);
+		return this.uniqueConstraintContainer.addContextElement(index, annotation);
 	}
 
 	public void removeUniqueConstraint(int index) {
-		this.generatorAnnotation.removeUniqueConstraint(index);
-		this.removeUniqueConstraint_(index);
+		this.getGeneratorAnnotation().removeUniqueConstraint(index);
+		this.uniqueConstraintContainer.removeContextElement(index);
 	}
 
-	protected void removeUniqueConstraint_(int index) {
-		this.removeItemFromList(index, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
+		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((JavaUniqueConstraint) uniqueConstraint));
 	}
 
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
-		this.generatorAnnotation.moveUniqueConstraint(targetIndex, sourceIndex);
-		this.moveItemInList(targetIndex, sourceIndex, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		this.getGeneratorAnnotation().moveUniqueConstraint(targetIndex, sourceIndex);
+		this.uniqueConstraintContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected void initializeUniqueConstraints() {
-		for (Iterator<UniqueConstraintAnnotation> stream = this.generatorAnnotation.uniqueConstraints(); stream.hasNext(); ) {
-			this.uniqueConstraints.add(this.buildUniqueConstraint(stream.next()));
-		}
+	protected void syncUniqueConstraints() {
+		this.uniqueConstraintContainer.synchronizeWithResourceModel();
+	}
+
+	protected void updateUniqueConstraints() {
+		this.uniqueConstraintContainer.synchronizeWithResourceModel();
 	}
 
 	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation constraintAnnotation) {
 		return this.getJpaFactory().buildJavaUniqueConstraint(this, this, constraintAnnotation);
 	}
 
-	protected void syncUniqueConstraints() {
-		ContextContainerTools.synchronizeWithResourceModel(this.uniqueConstraintContainerAdapter);
+	protected ListIterable<UniqueConstraintAnnotation> getUniqueConstraintAnnotations() {
+		return this.getGeneratorAnnotation().getUniqueConstraints();
 	}
 
-	protected Iterable<UniqueConstraintAnnotation> getUniqueConstraintAnnotations() {
-		return CollectionTools.iterable(this.generatorAnnotation.uniqueConstraints());
-	}
-
-	protected void moveUniqueConstraint_(int index, JavaUniqueConstraint uniqueConstraint) {
-		this.moveItemInList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-	}
-
-	protected JavaUniqueConstraint addUniqueConstraint_(int index, UniqueConstraintAnnotation constraintAnnotation) {
-		JavaUniqueConstraint constraint = this.buildUniqueConstraint(constraintAnnotation);
-		this.addItemToList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-		return constraint;
-	}
-
-	protected void removeUniqueConstraint_(JavaUniqueConstraint uniqueConstraint) {
-		this.removeUniqueConstraint_(this.uniqueConstraints.indexOf(uniqueConstraint));
-	}
 
 	/**
-	 * unique constraint container adapter
+	 * unique constraint container
 	 */
-	protected class UniqueConstraintContainerAdapter
-		implements ContextContainerTools.Adapter<JavaUniqueConstraint, UniqueConstraintAnnotation>
+	protected class UniqueConstraintContainer
+		extends ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation>
 	{
-		public Iterable<JavaUniqueConstraint> getContextElements() {
-			return GenericJavaTableGenerator.this.getUniqueConstraints();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return UNIQUE_CONSTRAINTS_LIST;
 		}
-		public Iterable<UniqueConstraintAnnotation> getResourceElements() {
+		@Override
+		protected JavaUniqueConstraint buildContextElement(UniqueConstraintAnnotation resourceElement) {
+			return GenericJavaTableGenerator.this.buildUniqueConstraint(resourceElement);
+		}
+		@Override
+		protected ListIterable<UniqueConstraintAnnotation> getResourceElements() {
 			return GenericJavaTableGenerator.this.getUniqueConstraintAnnotations();
 		}
-		public UniqueConstraintAnnotation getResourceElement(JavaUniqueConstraint contextElement) {
+		@Override
+		protected UniqueConstraintAnnotation getResourceElement(JavaUniqueConstraint contextElement) {
 			return contextElement.getUniqueConstraintAnnotation();
-		}
-		public void moveContextElement(int index, JavaUniqueConstraint element) {
-			GenericJavaTableGenerator.this.moveUniqueConstraint_(index, element);
-		}
-		public void addContextElement(int index, UniqueConstraintAnnotation resourceElement) {
-			GenericJavaTableGenerator.this.addUniqueConstraint_(index, resourceElement);
-		}
-		public void removeContextElement(JavaUniqueConstraint element) {
-			GenericJavaTableGenerator.this.removeUniqueConstraint_(element);
 		}
 	}
 

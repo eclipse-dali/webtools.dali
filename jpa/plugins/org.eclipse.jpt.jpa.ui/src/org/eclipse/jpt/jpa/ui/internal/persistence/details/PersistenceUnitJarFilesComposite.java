@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.persistence.details;
 
-import java.util.ListIterator;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -19,7 +18,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -141,13 +140,13 @@ public abstract class PersistenceUnitJarFilesComposite
 	private ListValueModel<JarFileRef> buildListHolder() {
 		return new ListAspectAdapter<PersistenceUnit, JarFileRef>(getSubjectHolder(), PersistenceUnit.JAR_FILE_REFS_LIST) {
 			@Override
-			protected ListIterator<JarFileRef> listIterator_() {
-				return this.subject.jarFileRefs();
+			protected ListIterable<JarFileRef> getListIterable() {
+				return this.subject.getJarFileRefs();
 			}
 			
 			@Override
 			protected int size_() {
-				return this.subject.jarFileRefsSize();
+				return this.subject.getJarFileRefsSize();
 			}
 		};
 	}
@@ -220,7 +219,7 @@ public abstract class PersistenceUnitJarFilesComposite
 	}
 	
 	private boolean jarFileRefExists(String fileName) {
-		for (JarFileRef each : CollectionTools.iterable(getSubject().jarFileRefs())) {
+		for (JarFileRef each : getSubject().getJarFileRefs()) {
 			if (each.getFileName().equals(fileName)) {
 				return true;
 			}

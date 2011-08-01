@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,11 @@
 package org.eclipse.jpt.jpa.core.jpa2;
 
 import java.io.Serializable;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
 
 /**
  * JPA 2.0 Canonical Metamodel synchronizer.
@@ -25,7 +30,7 @@ import java.io.Serializable;
  * <code>javax.persistence.metamodel.StaticMetamodel</code>
  * and <code>javax.annotation.Generated</code>
  * will be added to the Canonical Metamodel
- * (see {@link org.eclipse.jpt.jpa.core.internal.resource.java.source.SourcePersistentType#isGeneratedMetamodel()}).
+ * (see {@link MetamodelTools#isGeneratedMetamodelTopLevelType(JavaResourceAbstractType, IPackageFragmentRoot)}).
  * Once the JPA project's context model is constructed, a new Canonical
  * Metamodel is generated and merged with the classes already present in the
  * metamodel source folder.
@@ -49,6 +54,14 @@ import java.io.Serializable;
  * @since 2.3
  */
 public interface MetamodelSynchronizer {
+
+	/**
+	 * The value used to tag a generated type:
+	 * <pre>
+	 * &#64;javax.annotation.Generated(value="Dali", date="2009-11-23T13:56:06.171-0500")
+	 * </pre>
+	 */
+	String METAMODEL_GENERATED_ANNOTATION_VALUE = "Dali"; //$NON-NLS-1$
 
 	void initializeMetamodel();
 
@@ -90,4 +103,75 @@ public interface MetamodelSynchronizer {
 		}
 	}
 
+	final class MetamodelTools {
+
+		/**
+		 * The type must be:<ul>
+		 * <li>in the specified source folder
+		 * <li>a top-level type
+		 * <li>annotated with <code>&#64;javax.annotation.Generated</code> with
+		 *     the appropriate <code>value</code> and <code>date</code>
+		 * <li>either itself or one of its nested types annotated with
+		 *     <code>&#64;javax.persistence.metamodel.StaticMetamodel</code>
+		 * </ul>
+		 */
+		public static boolean isGeneratedMetamodelTopLevelType(JavaResourceAbstractType jrat, IPackageFragmentRoot sourceFolder) {
+			if ( ! jrat.isIn(sourceFolder)) {
+				return false;
+			}
+			return isGeneratedMetamodelTopLevelType(jrat);
+		}
+
+		/**
+		 * The type must be:<ul>
+		 * <li>a top-level type
+		 * <li>annotated with <code>&#64;javax.annotation.Generated</code> with
+		 *     the appropriate <code>value</code> and <code>date</code>
+		 * <li>either itself or one of its nested types annotated with
+		 *     <code>&#64;javax.persistence.metamodel.StaticMetamodel</code>
+		 * </ul>
+		 */
+		public static boolean isGeneratedMetamodelTopLevelType(JavaResourceAbstractType jrat) {
+			if ( ! isGenerated(jrat)) {
+				return false;
+			}
+			// if we get here we know we have a top-level type, since only top-level
+			// types are annotated @Generated; now see if anything is a metamodel
+			return isMetamodel(jrat);
+		}
+
+		/**
+		 * The type must be annotated with
+		 * <code>&#64;javax.annotation.Generated</code> with the appropriate
+		 * <code>value</code> and <code>date</code>.
+		 */
+		public static boolean isGenerated(JavaResourceAbstractType jrat) {
+			GeneratedAnnotation generatedAnnotation = (GeneratedAnnotation) jrat.getAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
+			if (generatedAnnotation == null) {
+				return false;
+			}
+			if (generatedAnnotation.getValuesSize() != 1) {
+				return false;
+			}
+			if ( ! generatedAnnotation.getValue(0).equals(METAMODEL_GENERATED_ANNOTATION_VALUE)) {
+				return false;
+			}
+			if (StringTools.stringIsEmpty(generatedAnnotation.getDate())) {
+				return false;
+			}
+			return true;
+		}
+		
+		public static boolean isMetamodel(JavaResourceAbstractType jrat) {
+			// if we get here we know we have a top-level type, since only top-level
+			// types are annotated @Generated; now see if anything is a metamodel
+			for (JavaResourceAbstractType type : jrat.getAllTypes()) {
+				if (type.getAnnotation(StaticMetamodelAnnotation.ANNOTATION_NAME) != null) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+	}
 }

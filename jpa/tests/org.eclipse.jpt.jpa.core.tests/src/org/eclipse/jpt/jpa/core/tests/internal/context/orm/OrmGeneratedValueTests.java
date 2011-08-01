@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -104,11 +104,11 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 		createTestEntity();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		OrmReadOnlyPersistentAttribute ormIdAttribute = ormPersistentType.virtualAttributes().next();
+		OrmReadOnlyPersistentAttribute ormIdAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		IdMapping ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
 		assertEquals(null, ormIdMapping.getGeneratedValue());
 		
-		IdMapping javaIdMapping = (IdMapping) ormPersistentType.getJavaPersistentType().attributes().next().getMapping();
+		IdMapping javaIdMapping = (IdMapping) ormPersistentType.getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		GeneratedValue javaGeneratedValue = javaIdMapping.addGeneratedValue();
 		javaGeneratedValue.setSpecifiedGenerator("Foo");
 		javaGeneratedValue.setSpecifiedStrategy(GenerationType.SEQUENCE);
@@ -119,7 +119,7 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 		assertEquals(GenerationType.SEQUENCE, javaGeneratedValue.getSpecifiedStrategy());
 		
 		ormIdAttribute.convertToSpecified();
-		ormIdAttribute = ormPersistentType.specifiedAttributes().next();
+		ormIdAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
 		assertEquals(null, ormIdMapping.getGeneratedValue());
 		assertEquals("Foo", javaGeneratedValue.getSpecifiedGenerator());

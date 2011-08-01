@@ -12,6 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -40,12 +43,9 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.IdMapping2_0;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -147,14 +147,14 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	protected GeneratedValueAnnotation buildGeneratedValueAnnotation() {
-		return (GeneratedValueAnnotation) this.getResourcePersistentAttribute().addAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
+		return (GeneratedValueAnnotation) this.getResourceAttribute().addAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeGeneratedValue() {
 		if (this.generatedValue == null) {
 			throw new IllegalStateException("generated value does not exist"); //$NON-NLS-1$
 		}
-		this.getResourcePersistentAttribute().removeAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 		this.setGeneratedValue(null);
 	}
 
@@ -164,7 +164,7 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	protected GeneratedValueAnnotation getGeneratedValueAnnotation() {
-		return (GeneratedValueAnnotation) this.getResourcePersistentAttribute().getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
+		return (GeneratedValueAnnotation) this.getResourceAttribute().getAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 	}
 
 	protected JavaGeneratedValue buildGeneratedValue(GeneratedValueAnnotation generatedValueAnnotation) {
@@ -227,7 +227,7 @@ public abstract class AbstractJavaIdMapping
 	 * <code>null</code>, remove <em>all</em> the converter annotations.
 	 */
 	protected void retainConverterAnnotation(JavaConverter.Adapter converterAdapter) {
-		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
 		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
 			if (adapter != converterAdapter) {
 				adapter.removeConverterAnnotation(resourceAttribute);
@@ -269,7 +269,7 @@ public abstract class AbstractJavaIdMapping
 	 * adapter. Return <code>null</code> if there are no converter annotations.
 	 */
 	protected Association<JavaConverter.Adapter, Annotation> getConverterAnnotation() {
-		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
 		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
 			Annotation annotation = adapter.getConverterAnnotation(resourceAttribute);
 			if (annotation != null) {
@@ -341,7 +341,7 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	protected boolean columnIsSpecified() {
-		return this.getResourcePersistentAttribute().getAnnotation(ColumnAnnotation.ANNOTATION_NAME) != null;
+		return this.getResourceAttribute().getAnnotation(ColumnAnnotation.ANNOTATION_NAME) != null;
 	}
 
 	@Override
@@ -352,19 +352,19 @@ public abstract class AbstractJavaIdMapping
 
 	// ********** JavaGeneratorContainer implementation **********
 
-	public JavaResourcePersistentMember getResourceAnnotatedElement() {
-		return this.getResourcePersistentAttribute();
+	public JavaResourceMember getResourceAnnotatedElement() {
+		return this.getResourceAttribute();
 	}
 
 
 	// ********** JavaColumn.Owner implementation **********
 
 	public ColumnAnnotation getColumnAnnotation() {
-		return (ColumnAnnotation) this.getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) this.getResourceAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeColumnAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	public String getDefaultColumnName() {

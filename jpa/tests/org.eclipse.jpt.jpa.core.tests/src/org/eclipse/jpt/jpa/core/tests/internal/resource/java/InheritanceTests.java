@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,11 @@ package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.InheritanceType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 @SuppressWarnings("nls")
 public class InheritanceTests extends JpaJavaResourceModelTestCase {
@@ -52,25 +52,25 @@ public class InheritanceTests extends JpaJavaResourceModelTestCase {
 
 	public void testInheritance() throws Exception {
 		ICompilationUnit cu = this.createTestInheritance();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		InheritanceAnnotation inheritance = (InheritanceAnnotation) typeResource.getAnnotation(JPA.INHERITANCE);
+		InheritanceAnnotation inheritance = (InheritanceAnnotation) resourceType.getAnnotation(JPA.INHERITANCE);
 		assertNotNull(inheritance);
 	}
 	
 	public void testGetStrategy() throws Exception {
 		ICompilationUnit cu = this.createTestInheritanceWithStrategy();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		InheritanceAnnotation inheritance = (InheritanceAnnotation) typeResource.getAnnotation(JPA.INHERITANCE);
+		InheritanceAnnotation inheritance = (InheritanceAnnotation) resourceType.getAnnotation(JPA.INHERITANCE);
 		assertEquals(InheritanceType.JOINED, inheritance.getStrategy());
 	}
 	
 	public void testSetStrategy() throws Exception {
 		ICompilationUnit cu = this.createTestInheritance();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		InheritanceAnnotation inheritance = (InheritanceAnnotation) typeResource.getAnnotation(JPA.INHERITANCE);
+		InheritanceAnnotation inheritance = (InheritanceAnnotation) resourceType.getAnnotation(JPA.INHERITANCE);
 		inheritance.setStrategy(InheritanceType.TABLE_PER_CLASS);
 		
 		assertSourceContains("@Inheritance(strategy = TABLE_PER_CLASS)", cu);

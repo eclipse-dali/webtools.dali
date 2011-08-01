@@ -11,11 +11,11 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder;
@@ -67,15 +67,15 @@ public class OrmEclipseLinkTypeConverter
 	}
 
 	protected boolean dataTypeIsFor(String typeName) {
-		return this.typeIsFor(this.getDataTypeJavaResourcePersistentType(), typeName);
+		return this.typeIsFor(this.getDataTypeJavaResourceType(), typeName);
 	}
 
 	protected boolean dataTypeIsIn(IPackageFragment packageFragment) {
-		return this.typeIsIn(this.getDataTypeJavaResourcePersistentType(), packageFragment);
+		return this.typeIsIn(this.getDataTypeJavaResourceType(), packageFragment);
 	}
 
-	protected JavaResourcePersistentType getDataTypeJavaResourcePersistentType() {
-		return this.getMappingFileRoot().resolveJavaResourcePersistentType(this.dataType);
+	protected JavaResourceAbstractType getDataTypeJavaResourceType() {
+		return this.getMappingFileRoot().resolveJavaResourceType(this.dataType);
 	}
 
 
@@ -97,15 +97,15 @@ public class OrmEclipseLinkTypeConverter
 	}
 
 	protected boolean objectTypeIsFor(String typeName) {
-		return this.typeIsFor(this.getObjectTypeJavaResourcePersistentType(), typeName);
+		return this.typeIsFor(this.getObjectTypeJavaResourceType(), typeName);
 	}
 
 	protected boolean objectTypeIsIn(IPackageFragment packageFragment) {
-		return this.typeIsIn(this.getObjectTypeJavaResourcePersistentType(), packageFragment);
+		return this.typeIsIn(this.getObjectTypeJavaResourceType(), packageFragment);
 	}
 
-	protected JavaResourcePersistentType getObjectTypeJavaResourcePersistentType() {
-		return this.getMappingFileRoot().resolveJavaResourcePersistentType(this.objectType);
+	protected JavaResourceAbstractType getObjectTypeJavaResourceType() {
+		return this.getMappingFileRoot().resolveJavaResourceType(this.objectType);
 	}
 
 
@@ -197,11 +197,11 @@ public class OrmEclipseLinkTypeConverter
 		return EclipseLinkTypeConverter.class;
 	}
 
-	protected boolean typeIsFor(JavaResourcePersistentType type, String typeName) {
+	protected boolean typeIsFor(JavaResourceAbstractType type, String typeName) {
 		return (type != null) && type.getQualifiedName().equals(typeName);
 	}
 
-	protected boolean typeIsIn(JavaResourcePersistentType type, IPackageFragment packageFragment) {
+	protected boolean typeIsIn(JavaResourceAbstractType type, IPackageFragment packageFragment) {
 		return (type != null) && type.isIn(packageFragment);
 	}
 

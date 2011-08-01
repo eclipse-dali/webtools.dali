@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
@@ -44,12 +44,12 @@ public interface OrmEclipseLinkConverterContainer
 	 * Return a list iterator of the custom converters.
 	 * This will not be null.
 	 */
-	<T extends EclipseLinkCustomConverter> ListIterator<T> customConverters();
+	ListIterable<? extends EclipseLinkCustomConverter> getCustomConverters();
 
 	/**
 	 * Return the number of custom converters.
 	 */
-	int customConvertersSize();
+	int getCustomConvertersSize();
 
 	/**
 	 * Add a custom converter to the converter holder, return the object representing it.
@@ -80,12 +80,12 @@ public interface OrmEclipseLinkConverterContainer
 	 * Return a list iterator of the object type converters.
 	 * This will not be null.
 	 */
-	<T extends EclipseLinkObjectTypeConverter> ListIterator<T> objectTypeConverters();
+	ListIterable<? extends EclipseLinkObjectTypeConverter> getObjectTypeConverters();
 
 	/**
 	 * Return the number of object type converters.
 	 */
-	int objectTypeConvertersSize();
+	int getObjectTypeConvertersSize();
 
 	/**
 	 * Add a object type converter to the converter holder, return the object representing it.
@@ -116,12 +116,12 @@ public interface OrmEclipseLinkConverterContainer
 	 * Return a list iterator of the struct converters.
 	 * This will not be null.
 	 */
-	<T extends EclipseLinkStructConverter> ListIterator<T> structConverters();
+	ListIterable<? extends EclipseLinkStructConverter> getStructConverters();
 
 	/**
 	 * Return the number of struct converters.
 	 */
-	int structConvertersSize();
+	int getStructConvertersSize();
 
 	/**
 	 * Add a struct converter to the converter holder, return the object representing it.
@@ -152,12 +152,12 @@ public interface OrmEclipseLinkConverterContainer
 	 * Return a list iterator of the type converters.
 	 * This will not be null.
 	 */
-	<T extends EclipseLinkTypeConverter> ListIterator<T> typeConverters();
+	ListIterable<? extends EclipseLinkTypeConverter> getTypeConverters();
 
 	/**
 	 * Return the number of type converters.
 	 */
-	int typeConvertersSize();
+	int getTypeConvertersSize();
 
 	/**
 	 * Add a type converter to the converter holder, return the object representing it.

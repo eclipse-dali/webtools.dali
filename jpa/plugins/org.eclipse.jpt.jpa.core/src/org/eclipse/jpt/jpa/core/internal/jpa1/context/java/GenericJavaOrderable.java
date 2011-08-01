@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -30,7 +31,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -329,7 +329,7 @@ public class GenericJavaOrderable
 	// ********** order by annotation **********
 
 	protected OrderByAnnotation getOrderByAnnotation() {
-		return (OrderByAnnotation) this.getResourcePersistentAttribute().getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		return (OrderByAnnotation) this.getResourceAttribute().getAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 
 	protected OrderByAnnotation getOrderByAnnotationForUpdate() {
@@ -338,18 +338,18 @@ public class GenericJavaOrderable
 	}
 
 	protected OrderByAnnotation addOrderByAnnotation() {
-		return (OrderByAnnotation) this.getResourcePersistentAttribute().addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		return (OrderByAnnotation) this.getResourceAttribute().addAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void removeOrderByAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 	}
 
 
 	// ********** order column annotation **********
 
 	protected OrderColumn2_0Annotation getOrderColumnAnnotation() {
-		return (OrderColumn2_0Annotation) this.getResourcePersistentAttribute().getAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
+		return (OrderColumn2_0Annotation) this.getResourceAttribute().getAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
 	}
 
 	/**
@@ -360,7 +360,7 @@ public class GenericJavaOrderable
 	}
 
 	protected OrderColumn2_0Annotation addOrderColumnAnnotation() {
-		return (OrderColumn2_0Annotation) this.getResourcePersistentAttribute().addAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
+		return (OrderColumn2_0Annotation) this.getResourceAttribute().addAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
 	}
 
 	protected void removeOrderColumnAnnotation() {
@@ -370,7 +370,7 @@ public class GenericJavaOrderable
 	}
 
 	protected void removeOrderColumnAnnotation_() {
-		this.getResourcePersistentAttribute().removeAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
 	}
 
 
@@ -389,8 +389,8 @@ public class GenericJavaOrderable
 		return this.getAttributeMapping().getPersistentAttribute();
 	}
 
-	public JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getPersistentAttribute().getResourcePersistentAttribute();
+	public JavaResourceAttribute getResourceAttribute() {
+		return this.getPersistentAttribute().getResourceAttribute();
 	}
 
 	// JPA 2.0 only

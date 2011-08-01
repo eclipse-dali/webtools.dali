@@ -247,20 +247,20 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		
 		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
-		assertEquals(0, ormIdMapping.getPersistenceUnit().generatorsSize());
+		assertEquals(0, ormIdMapping.getPersistenceUnit().getGeneratorsSize());
 		
 		idResource.setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGenerator());
 		assertNotNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNotNull(idResource.getSequenceGenerator());
-		assertEquals(1, ormIdMapping.getPersistenceUnit().generatorsSize());
+		assertEquals(1, ormIdMapping.getPersistenceUnit().getGeneratorsSize());
 		
 		ormIdMapping.getGeneratorContainer().getSequenceGenerator().setName("foo");
-		assertEquals(1, ormIdMapping.getPersistenceUnit().generatorsSize());
+		assertEquals(1, ormIdMapping.getPersistenceUnit().getGeneratorsSize());
 				
 		idResource.setSequenceGenerator(null);
 		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
-		assertEquals(0, ormIdMapping.getPersistenceUnit().generatorsSize());
+		assertEquals(0, ormIdMapping.getPersistenceUnit().getGeneratorsSize());
 	}
 	
 	public void testAddTableGenerator() throws Exception {
@@ -321,20 +321,20 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		assertNull(idResource.getTableGenerator());
-		assertEquals(0, ormIdMapping.getPersistenceUnit().generatorsSize());
+		assertEquals(0, ormIdMapping.getPersistenceUnit().getGeneratorsSize());
 		
 		idResource.setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGenerator());		
 		assertNotNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		assertNotNull(idResource.getTableGenerator());
-		assertEquals(1, ormIdMapping.getPersistenceUnit().generatorsSize());
+		assertEquals(1, ormIdMapping.getPersistenceUnit().getGeneratorsSize());
 		
 		ormIdMapping.getGeneratorContainer().getTableGenerator().setName("foo");
-		assertEquals(1, ormIdMapping.getGeneratorContainer().getPersistenceUnit().generatorsSize());
+		assertEquals(1, ormIdMapping.getGeneratorContainer().getPersistenceUnit().getGeneratorsSize());
 
 		idResource.setTableGenerator(null);
 		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		assertNull(idResource.getTableGenerator());
-		assertEquals(0, ormIdMapping.getPersistenceUnit().generatorsSize());
+		assertEquals(0, ormIdMapping.getPersistenceUnit().getGeneratorsSize());
 	}
 
 	public void testAddGeneratedValue() throws Exception {
@@ -412,9 +412,9 @@ public class OrmIdMappingTests extends ContextModelTestCase
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		ormPersistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "foo");
-		assertEquals(2, ormPersistentType.virtualAttributesSize());
+		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
 		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("foo", ormIdMapping.getName());
@@ -458,8 +458,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 	public void testVirtualMappingMetadataCompleteFalse() throws Exception {
 		createTestEntityIdMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		assertEquals(2, ormPersistentType.virtualAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		assertEquals(2, ormPersistentType.getVirtualAttributesSize());		
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 		
 		IdMapping idMapping = (IdMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", idMapping.getName());
@@ -508,7 +508,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		createTestEntityIdMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals(2, ormPersistentType.virtualAttributesSize());		
+		assertEquals(2, ormPersistentType.getVirtualAttributesSize());		
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
@@ -542,9 +542,9 @@ public class OrmIdMappingTests extends ContextModelTestCase
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		ormPersistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
-		assertEquals(1, ormPersistentType.virtualAttributesSize());
+		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
 		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("id", ormIdMapping.getName());
@@ -595,8 +595,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof BasicMapping);
 		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 		assertEquals("FOO", ((BasicMapping) ormPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
@@ -615,8 +615,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof VersionMapping);
 		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 		assertEquals("FOO", ((VersionMapping) ormPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
@@ -652,8 +652,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedMapping);
 		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
@@ -688,8 +688,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToOneMapping);
 		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
@@ -707,8 +707,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToManyMapping);
 		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
@@ -726,8 +726,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToOneMapping);
 		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
@@ -745,8 +745,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertFalse(idMapping.isDefault());
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
+		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToManyMapping);
 		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}	

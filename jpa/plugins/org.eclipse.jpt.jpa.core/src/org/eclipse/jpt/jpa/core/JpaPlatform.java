@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
@@ -88,7 +89,7 @@ public interface JpaPlatform
 	 * Return an annotation provider responsible for determining what Java
 	 * annotations are supported and constructing java resource model objects.
 	 */
-	JpaAnnotationProvider getAnnotationProvider();
+	AnnotationProvider getAnnotationProvider();
 
 	/**
 	 * Return a formatter that can clean up the Java annotations added to source

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -74,7 +74,7 @@ public interface JavaResourceAnnotatedElement
 	 */
 	// TODO tie the singular and plural annotations together so we can generate
 	// a validation error when both are specified
-	ListIterable<? extends NestableAnnotation> getAnnotations(String nestableAnnotationName);
+	ListIterable<NestableAnnotation> getAnnotations(String nestableAnnotationName);
 	
 	/**
 	 * Return the number of nestable annotations with the specified name.
@@ -135,9 +135,68 @@ public interface JavaResourceAnnotatedElement
 	 * annotations.
 	 */
 	boolean isAnnotated();
+
+	/**
+	 * Return whether the underlying JDT member is annotated with any of the given annotations.
+	 */
+	boolean isAnnotatedWith(Iterable<String> annotationNames);
+
+	/**
+	 * Return the element kind
+	 */
+	Kind getKind();
 	
 	/**
 	 * Return the text range for the member's name.
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
+	
+	
+	/**
+	 * The kind of java element.
+	 */
+	public enum Kind {
+		
+		/**
+		 * Represents an annotatable package.
+		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} PACKAGE may safely be cast as a 
+		 * {@link JavaResourcePackage}
+		 */
+		PACKAGE,
+		
+		/**
+		 * Represents a class or interface.
+		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} TYPE may safely be cast as a 
+		 * {@link JavaResourceType}
+		 */
+		TYPE,
+		
+		/**
+		 * Represents an enum.
+		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} ENUM may safely be cast as a 
+		 * {@link JavaResourceEnum}
+		 */
+		ENUM,
+		
+		/**
+		 * Represents a method.
+		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} METHOD may safely be cast as a 
+		 * {@link JavaResourceMethod}
+		 */
+		METHOD,
+		
+		/**
+		 * Represents a type field.
+		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} FIELD may safely be cast as a 
+		 * {@link JavaResourceField}
+		 */
+		FIELD,
+		
+		/**
+		 * Represents an enum constant.
+		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} ENUM_CONSTANT may safely be cast as a 
+		 * {@link JavaResourceEnumConstant}
+		 */
+		ENUM_CONSTANT;
+	}
 }

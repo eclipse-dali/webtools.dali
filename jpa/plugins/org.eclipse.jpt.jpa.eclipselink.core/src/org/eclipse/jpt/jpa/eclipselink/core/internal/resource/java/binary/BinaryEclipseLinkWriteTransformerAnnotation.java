@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.NullEclipseLinkWriteTransformerColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkWriteTransformerAnnotation;
@@ -30,7 +30,7 @@ public class BinaryEclipseLinkWriteTransformerAnnotation
 	private final ColumnAnnotation nullColumn;
 
 
-	public BinaryEclipseLinkWriteTransformerAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
+	public BinaryEclipseLinkWriteTransformerAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.column = this.buildColumn();
 		this.nullColumn = this.buildNullColumn();

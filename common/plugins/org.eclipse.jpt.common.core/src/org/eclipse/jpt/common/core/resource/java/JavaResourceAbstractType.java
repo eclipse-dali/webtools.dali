@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 
 /**
@@ -58,18 +59,14 @@ public interface JavaResourceAbstractType
 	 */
 	boolean isMemberType();
 		String MEMBER_TYPE_PROPERTY = "memberType"; //$NON-NLS-1$
-	
-	/**
-	 * Return whether the type is annotated with any annotations that determine whether and 
-	 * how the type is persisted
-	 */
-	boolean isMapped();
 
 	boolean isIn(IPackageFragment packageFragment);
 
+	boolean isIn(IPackageFragmentRoot sourceFolder);
+
 
 	/**
-	 * Return the immediately nested types (children).
+	 * Return the immediately nested types (classes or interfaces, not enums or annotations) (children).
 	 */
 	Iterable<JavaResourceType> getTypes();
 		String TYPES_COLLECTION = "types"; //$NON-NLS-1$
@@ -91,30 +88,5 @@ public interface JavaResourceAbstractType
 	 * etc.
 	 */
 	Iterable<JavaResourceEnum> getAllEnums();
-	
-	/**
-	 * Return the kind of java type this corresponds to
-	 */
-	Kind getKind();
-	
-	
-	/**
-	 * The kind of java type.
-	 */
-	public enum Kind {
-		
-		/**
-		 * Represents a class or interface.
-		 * An {@link JavaResourceAbstractType} of {@link Kind} TYPE may safely be cast as a 
-		 * {@link JavaResourceType}
-		 */
-		TYPE,
-		
-		/**
-		 * Represents an enum.
-		 * An {@link JavaResourceAbstractType} of {@link Kind} ENUM may safely be cast as a 
-		 * {@link JavaResourceEnum}
-		 */
-		ENUM
-	}
+
 }

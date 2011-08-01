@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -87,7 +87,7 @@ public class JavaEclipseLinkConverterContainerImpl
 		if (this.customConverter == null) {
 			throw new IllegalStateException("custom converter is null"); //$NON-NLS-1$
 		}
-		this.getCustomConverterAdapter().removeConverterAnnotation(this.getResourcePersistentType());
+		this.getCustomConverterAdapter().removeConverterAnnotation(this.getJavaResourceType());
 		this.setCustomConverter_(null);
 	}
 
@@ -102,7 +102,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected void syncCustomConverter() {
-		EclipseLinkNamedConverterAnnotation annotation = this.getCustomConverterAdapter().getConverterAnnotation(this.getResourcePersistentType());
+		EclipseLinkNamedConverterAnnotation annotation = this.getCustomConverterAdapter().getConverterAnnotation(this.getJavaResourceType());
 		if (annotation == null) {
 			if (this.customConverter != null) {
 				this.setCustomConverter_(null);
@@ -141,7 +141,7 @@ public class JavaEclipseLinkConverterContainerImpl
 		if (this.objectTypeConverter == null) {
 			throw new IllegalStateException("object type converter is null"); //$NON-NLS-1$
 		}
-		this.getObjectTypeConverterAdapter().removeConverterAnnotation(this.getResourcePersistentType());
+		this.getObjectTypeConverterAdapter().removeConverterAnnotation(this.getJavaResourceType());
 		this.setObjectTypeConverter_(null);
 	}
 
@@ -156,7 +156,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected void syncObjectTypeConverter() {
-		EclipseLinkNamedConverterAnnotation annotation = this.getObjectTypeConverterAdapter().getConverterAnnotation(this.getResourcePersistentType());
+		EclipseLinkNamedConverterAnnotation annotation = this.getObjectTypeConverterAdapter().getConverterAnnotation(this.getJavaResourceType());
 		if (annotation == null) {
 			if (this.objectTypeConverter != null) {
 				this.setObjectTypeConverter_(null);
@@ -195,7 +195,7 @@ public class JavaEclipseLinkConverterContainerImpl
 		if (this.structConverter == null) {
 			throw new IllegalStateException("struct converter is null"); //$NON-NLS-1$
 		}
-		this.getStructConverterAdapter().removeConverterAnnotation(this.getResourcePersistentType());
+		this.getStructConverterAdapter().removeConverterAnnotation(this.getJavaResourceType());
 		this.setStructConverter_(null);
 	}
 
@@ -210,7 +210,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected void syncStructConverter() {
-		EclipseLinkNamedConverterAnnotation annotation = this.getStructConverterAdapter().getConverterAnnotation(this.getResourcePersistentType());
+		EclipseLinkNamedConverterAnnotation annotation = this.getStructConverterAdapter().getConverterAnnotation(this.getJavaResourceType());
 		if (annotation == null) {
 			if (this.structConverter != null) {
 				this.setStructConverter_(null);
@@ -249,7 +249,7 @@ public class JavaEclipseLinkConverterContainerImpl
 		if (this.typeConverter == null) {
 			throw new IllegalStateException("type converter is null"); //$NON-NLS-1$
 		}
-		this.getTypeConverterAdapter().removeConverterAnnotation(this.getResourcePersistentType());
+		this.getTypeConverterAdapter().removeConverterAnnotation(this.getJavaResourceType());
 		this.setTypeConverter_(null);
 	}
 
@@ -264,7 +264,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected void syncTypeConverter() {
-		EclipseLinkNamedConverterAnnotation annotation = this.getTypeConverterAdapter().getConverterAnnotation(this.getResourcePersistentType());
+		EclipseLinkNamedConverterAnnotation annotation = this.getTypeConverterAdapter().getConverterAnnotation(this.getJavaResourceType());
 		if (annotation == null) {
 			if (this.typeConverter != null) {
 				this.setTypeConverter_(null);
@@ -295,13 +295,13 @@ public class JavaEclipseLinkConverterContainerImpl
 		return this.getParent();
 	}
 
-	protected JavaResourcePersistentType getResourcePersistentType() {
-		return this.getTypeMapping().getResourcePersistentType();
+	protected JavaResourceType getJavaResourceType() {
+		return this.getTypeMapping().getJavaResourceType();
 	}
 
 	@SuppressWarnings("unchecked")
 	protected <C extends JavaEclipseLinkConverter<?>> C buildConverter(C.Adapter adapter) {
-		return (C) adapter.buildConverter(this.getResourcePersistentType(), this);
+		return (C) adapter.buildConverter(this.getJavaResourceType(), this);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -311,7 +311,7 @@ public class JavaEclipseLinkConverterContainerImpl
 
 	@SuppressWarnings("unchecked")
 	protected <C extends JavaEclipseLinkConverter<?>> C buildNewConverter(C.Adapter adapter) {
-		return (C) adapter.buildNewConverter(this.getResourcePersistentType(), this);
+		return (C) adapter.buildNewConverter(this.getJavaResourceType(), this);
 	}
 
 
@@ -328,7 +328,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getResourcePersistentType().getTextRange(astRoot);
+		TextRange textRange = this.getJavaResourceType().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange(astRoot);
 	}
 }

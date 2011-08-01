@@ -175,8 +175,8 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 			return false;
 		}
 
-		public int joinColumnsSize() {
-			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.joinColumnsSize();
+		public int getJoinColumnsSize() {
+			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getJoinColumnsSize();
 		}
 
 		public TextRange getValidationTextRange() {

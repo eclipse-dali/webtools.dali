@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.orm;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -80,7 +79,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.convertToSpecified();
 		}
 	}
@@ -105,7 +104,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.convertToSpecified();
 		}
 	}
@@ -241,7 +240,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.convertToSpecified();
 		}
 	}
@@ -500,7 +499,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		ReadOnlyPersistentAttribute persistentAttribute = ormPersistentType.attributes().next();
+		ReadOnlyPersistentAttribute persistentAttribute = ormPersistentType.getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
@@ -546,7 +545,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		ReadOnlyPersistentAttribute persistentAttribute = ormPersistentType.attributes().next();
+		ReadOnlyPersistentAttribute persistentAttribute = ormPersistentType.getAttributes().iterator().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
@@ -642,8 +641,8 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertEquals(TYPE_NAME + "_Address", virtualJoinTable.getDefaultName());
 		assertNull(virtualJoinTable.getSpecifiedCatalog());
 		assertNull(virtualJoinTable.getSpecifiedSchema());
-		assertEquals(0, virtualJoinTable.specifiedJoinColumnsSize());
-		assertEquals(0, virtualJoinTable.specifiedInverseJoinColumnsSize());
+		assertEquals(0, virtualJoinTable.getSpecifiedJoinColumnsSize());
+		assertEquals(0, virtualJoinTable.getSpecifiedInverseJoinColumnsSize());
 		JoinColumn ormJoinColumn = virtualJoinTable.getDefaultJoinColumn();
 		assertEquals(TYPE_NAME + "_Address", ormJoinColumn.getDefaultTable());
 		assertEquals(TYPE_NAME + "_id", ormJoinColumn.getDefaultName());
@@ -667,12 +666,12 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertEquals("FOO", virtualJoinTable.getSpecifiedName());
 		assertEquals("CATALOG", virtualJoinTable.getSpecifiedCatalog());
 		assertEquals("SCHEMA", virtualJoinTable.getSpecifiedSchema());
-		assertEquals(1, virtualJoinTable.specifiedJoinColumnsSize());
-		assertEquals(1, virtualJoinTable.specifiedInverseJoinColumnsSize());
-		ormJoinColumn = virtualJoinTable.specifiedJoinColumns().next();
+		assertEquals(1, virtualJoinTable.getSpecifiedJoinColumnsSize());
+		assertEquals(1, virtualJoinTable.getSpecifiedInverseJoinColumnsSize());
+		ormJoinColumn = virtualJoinTable.getSpecifiedJoinColumns().iterator().next();
 		assertEquals("NAME", ormJoinColumn.getSpecifiedName());
 		assertEquals("REFERENCED_NAME", ormJoinColumn.getSpecifiedReferencedColumnName());
-		inverseOrmJoinColumn = virtualJoinTable.specifiedInverseJoinColumns().next();
+		inverseOrmJoinColumn = virtualJoinTable.getSpecifiedInverseJoinColumns().iterator().next();
 		assertEquals("INVERSE_NAME", inverseOrmJoinColumn.getSpecifiedName());
 		assertEquals("INVERSE_REFERENCED_NAME", inverseOrmJoinColumn.getSpecifiedReferencedColumnName());
 	}
@@ -910,8 +909,8 @@ public class GenericOrmOneToOneMapping2_0Tests
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
+		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
 
 		OneToOneMapping2_0 virtualOneToOneMapping = (OneToOneMapping2_0) virtualPersistentAttribute.getMapping();	
 		assertEquals("address", virtualOneToOneMapping.getName());
@@ -922,7 +921,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 			getMappedByStrategy().getMappedByAttribute());
 
 		JoinColumn virtualJoinColumn = 
-			virtualOneToOneMapping.getRelationship().getJoinColumnStrategy().specifiedJoinColumns().next();
+			virtualOneToOneMapping.getRelationship().getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 		assertEquals("MY_COLUMN", virtualJoinColumn.getSpecifiedName());
 		assertEquals("MY_REFERENCED_COLUMN", virtualJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals(Boolean.TRUE, virtualJoinColumn.getSpecifiedUnique());
@@ -950,14 +949,14 @@ public class GenericOrmOneToOneMapping2_0Tests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals(3, ormPersistentType.virtualAttributesSize());		
+		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
 		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, virtualPersistentAttribute.getMappingKey());
 		assertTrue(virtualPersistentAttribute.isVirtual());
 
 		virtualPersistentAttribute.convertToSpecified(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 
 		OneToOneMapping2_0 ormOneToOneMapping = (OneToOneMapping2_0) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormOneToOneMapping.getName());

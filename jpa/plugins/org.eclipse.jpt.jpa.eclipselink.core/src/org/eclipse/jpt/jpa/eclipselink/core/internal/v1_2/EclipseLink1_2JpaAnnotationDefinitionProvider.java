@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,11 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.v1_2;
 
 import java.util.ArrayList;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
 
 /**
  * Provides annotations for 1.2 EclipseLink platform
@@ -40,22 +41,12 @@ public class EclipseLink1_2JpaAnnotationDefinitionProvider
 	}
 
 	@Override
-	protected void addTypeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+	protected void addAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
 		definitions.add(Access2_0AnnotationDefinition.instance());
 	}
 
 	@Override
-	protected void addTypeMappingAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+	protected void addNestableAnnotationDefinitionsTo(ArrayList<NestableAnnotationDefinition> definitions) {
 		// nothing new for EclipseLink 1.2
-	}
-
-	@Override
-	protected void addAttributeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		// nothing new for EclipseLink 1.2
-	}
-
-	@Override
-	protected void addPackageAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		// no package annotations
 	}
 }

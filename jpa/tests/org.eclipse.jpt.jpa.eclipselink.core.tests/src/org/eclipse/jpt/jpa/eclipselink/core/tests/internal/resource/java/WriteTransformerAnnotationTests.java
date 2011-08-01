@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,11 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkWriteTransformerAnnotation;
 
@@ -80,33 +81,33 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 
 	public void testWriteTransformerAnnotation() throws Exception {
 		ICompilationUnit cu = this.createTestWriteTransformer();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		assertNotNull(attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER));
+		assertNotNull(resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER));
 		
-		attributeResource.removeAnnotation(EclipseLink.WRITE_TRANSFORMER)	;
-		assertNull(attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER));
+		resourceField.removeAnnotation(EclipseLink.WRITE_TRANSFORMER)	;
+		assertNull(resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER));
 		
-		attributeResource.addAnnotation(EclipseLink.WRITE_TRANSFORMER);
-		assertNotNull(attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER));
+		resourceField.addAnnotation(EclipseLink.WRITE_TRANSFORMER);
+		assertNotNull(resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER));
 	}
 
 	public void testGetTransformerClass() throws Exception {
 		ICompilationUnit cu = this.createTestWriteTransformerWithTransformerClass();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
+		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
 		assertEquals("Foo", writeTransformer.getTransformerClass());
 	}
 
 	public void testSetTransformerClass() throws Exception {
 		ICompilationUnit cu = this.createTestWriteTransformerWithTransformerClass();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
+		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
 		assertEquals("Foo", writeTransformer.getTransformerClass());
 		
 		writeTransformer.setTransformerClass("Bar");
@@ -117,10 +118,10 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 	
 	public void testSetTransformerClassNull() throws Exception {
 		ICompilationUnit cu = this.createTestWriteTransformerWithTransformerClass();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
+		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
 		assertEquals("Foo", writeTransformer.getTransformerClass());
 		
 		writeTransformer.setTransformerClass(null);
@@ -132,19 +133,19 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 	
 	public void testGetMethod() throws Exception {
 		ICompilationUnit cu = this.createTestWriteTransformerWithMethod();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
+		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
 		assertEquals("transformerMethod", writeTransformer.getMethod());
 	}
 
 	public void testSetMethod() throws Exception {
 		ICompilationUnit cu = this.createTestWriteTransformerWithMethod();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
+		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
 		assertEquals("transformerMethod", writeTransformer.getMethod());
 		
 		writeTransformer.setMethod("foo");
@@ -155,10 +156,10 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 	
 	public void testSetMethodNull() throws Exception {
 		ICompilationUnit cu = this.createTestWriteTransformerWithMethod();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
+		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
 		assertEquals("transformerMethod", writeTransformer.getMethod());
 		
 		writeTransformer.setMethod(null);
@@ -171,20 +172,20 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 	
 	public void testGetColumn() throws Exception {
 		ICompilationUnit cu = this.createTestWriteTransformerWithColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
+		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
 		assertNotNull(writeTransformer.getColumn());
 		assertEquals("FOO", writeTransformer.getColumn().getName());
 	}
 
 	public void testAddColumn() throws Exception {
 		ICompilationUnit cu = this.createTestWriteTransformerWithMethod();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
+		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
 		assertNull(writeTransformer.getColumn());
 		
 		writeTransformer.addColumn();
@@ -199,10 +200,10 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 	
 	public void testRemoveColumn() throws Exception {
 		ICompilationUnit cu = this.createTestWriteTransformerWithColumn();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) attributeResource.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
+		EclipseLinkWriteTransformerAnnotation writeTransformer = (EclipseLinkWriteTransformerAnnotation) resourceField.getAnnotation(EclipseLink.WRITE_TRANSFORMER);
 		assertNotNull(writeTransformer.getColumn());
 		assertEquals("FOO", writeTransformer.getColumn().getName());
 		

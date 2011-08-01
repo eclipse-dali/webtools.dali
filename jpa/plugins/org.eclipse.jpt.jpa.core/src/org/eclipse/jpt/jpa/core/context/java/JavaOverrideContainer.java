@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 
 /**
  * Java attribute or association override container
@@ -43,12 +43,12 @@ public interface JavaOverrideContainer
 	Iterable<String> getOverrideNames();
 
 	// covariant overrides
-	ListIterator<? extends JavaReadOnlyOverride> overrides();
+	ListIterable<? extends JavaReadOnlyOverride> getOverrides();
 	JavaReadOnlyOverride getOverrideNamed(String name);
-	ListIterator<? extends JavaOverride> specifiedOverrides();
+	ListIterable<? extends JavaOverride> getSpecifiedOverrides();
 	JavaOverride getSpecifiedOverride(int index);
 	JavaOverride getSpecifiedOverrideNamed(String name);
-	ListIterator<? extends JavaVirtualOverride> virtualOverrides();
+	ListIterable<? extends JavaVirtualOverride> getVirtualOverrides();
 	JavaVirtualOverride convertOverrideToVirtual(Override_ specifiedOverride);
 	JavaOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
@@ -58,7 +58,7 @@ public interface JavaOverrideContainer
 	interface Owner
 		extends OverrideContainer.Owner
 	{
-		JavaResourcePersistentMember getResourcePersistentMember();
+		JavaResourceMember getResourceMember();
 
 		TextRange getValidationTextRange(CompilationUnit astRoot);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,44 +9,40 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Vector;
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationContainer;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAssociationOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableJoinColumnAnnotation;
 
 /**
  * <code>javax.persistence.AssociationOverride</code>
  */
 public abstract class SourceAssociationOverrideAnnotation
 	extends SourceOverrideAnnotation
-	implements NestableAssociationOverrideAnnotation
+	implements AssociationOverrideAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ASSOCIATION_OVERRIDES);
 
-	private final Vector<NestableJoinColumnAnnotation> joinColumns = new Vector<NestableJoinColumnAnnotation>();
 	private final JoinColumnsAnnotationContainer joinColumnsContainer = new JoinColumnsAnnotationContainer();
 
+	
 
-	protected SourceAssociationOverrideAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, member, daa, annotationAdapter);
+	protected SourceAssociationOverrideAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, element, daa, annotationAdapter);
 	}
+
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
@@ -55,13 +51,13 @@ public abstract class SourceAssociationOverrideAnnotation
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		AnnotationContainerTools.initialize(this.joinColumnsContainer, astRoot);
+		this.joinColumnsContainer.initialize(this.getAstAnnotation(astRoot));
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
-		AnnotationContainerTools.synchronize(this.joinColumnsContainer, astRoot);
+		this.joinColumnsContainer.synchronize(this.getAstAnnotation(astRoot));
 	}
 
 	
@@ -75,171 +71,87 @@ public abstract class SourceAssociationOverrideAnnotation
 
 	// ********** AssociationOverrideAnnotation implementation **********
 
-	// ***** join columns
-	public ListIterator<JoinColumnAnnotation> joinColumns() {
-		return new CloneListIterator<JoinColumnAnnotation>(this.joinColumns);
+	// **************** join columns *************************************************
+
+	public ListIterable<JoinColumnAnnotation> getJoinColumns() {
+		return this.joinColumnsContainer.getNestedAnnotations();
 	}
 
-	Iterable<NestableJoinColumnAnnotation> getNestableJoinColumns() {
-		return new LiveCloneIterable<NestableJoinColumnAnnotation>(this.joinColumns);
+	public int getJoinColumnsSize() {
+		return this.joinColumnsContainer.getNestedAnnotationsSize();
 	}
 
-	public int joinColumnsSize() {
-		return this.joinColumns.size();
+	public JoinColumnAnnotation joinColumnAt(int index) {
+		return this.joinColumnsContainer.nestedAnnotationAt(index);
 	}
 
-	public NestableJoinColumnAnnotation joinColumnAt(int index) {
-		return this.joinColumns.get(index);
+	public JoinColumnAnnotation addJoinColumn(int index) {
+		return this.joinColumnsContainer.addNestedAnnotation(index);
 	}
 
-	public int indexOfJoinColumn(JoinColumnAnnotation joinColumn) {
-		return this.joinColumns.indexOf(joinColumn);
+	private JoinColumnAnnotation buildJoinColumn(int index) {
+		return SourceJoinColumnAnnotation.buildNestedSourceJoinColumnAnnotation(
+				this, this.annotatedElement, this.buildJoinColumnIndexedDeclarationAnnotationAdapter(index));
 	}
 
-	private NestableJoinColumnAnnotation addJoinColumn() {
-		return this.addJoinColumn(this.joinColumns.size());
-	}
-
-	public NestableJoinColumnAnnotation addJoinColumn(int index) {
-		return (NestableJoinColumnAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.joinColumnsContainer);
-	}
-
-	NestableJoinColumnAnnotation addJoinColumn_() {
-		return this.addJoinColumn_(this.joinColumns.size());
-	}
-
-	private NestableJoinColumnAnnotation addJoinColumn_(int index) {
-		NestableJoinColumnAnnotation joinColumn = this.buildJoinColumn(index);
-		this.joinColumns.add(index, joinColumn);
-		return joinColumn;
-	}
-
-	void syncAddJoinColumn(Annotation astAnnotation) {
-		int index = this.joinColumns.size();
-		NestableJoinColumnAnnotation joinColumn = this.addJoinColumn_(index);
-		joinColumn.initialize((CompilationUnit) astAnnotation.getRoot());
-		this.fireItemAdded(JOIN_COLUMNS_LIST, index, joinColumn);
-	}
-
-	private NestableJoinColumnAnnotation buildJoinColumn(int index) {
-		return SourceJoinColumnAnnotation.createAssociationOverrideJoinColumn(this.daa, this, this.annotatedElement, index);
-	}
-
-	void joinColumnAdded(int index, NestableJoinColumnAnnotation joinColumn) {
-		this.fireItemAdded(JOIN_COLUMNS_LIST, index, joinColumn);
+	private IndexedDeclarationAnnotationAdapter buildJoinColumnIndexedDeclarationAnnotationAdapter(int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(
+				this.daa, JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
 	}
 
 	public void moveJoinColumn(int targetIndex, int sourceIndex) {
-		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.joinColumnsContainer);
-	}
-
-	NestableJoinColumnAnnotation moveJoinColumn_(int targetIndex, int sourceIndex) {
-		return CollectionTools.move(this.joinColumns, targetIndex, sourceIndex).get(targetIndex);
+		this.joinColumnsContainer.moveNestedAnnotation(targetIndex, sourceIndex);
 	}
 
 	public void removeJoinColumn(int index) {
-		AnnotationContainerTools.removeNestedAnnotation(index, this.joinColumnsContainer);
+		this.joinColumnsContainer.removeNestedAnnotation(index);
 	}
-
-	NestableJoinColumnAnnotation removeJoinColumn_(int index) {
-		return this.joinColumns.remove(index);
-	}
-
-	void syncRemoveJoinColumns(int index) {
-		this.removeItemsFromList(index, this.joinColumns, JOIN_COLUMNS_LIST);
-	}
-
-
-	// ********** join column container **********
-
+	
 	/**
-	 * adapt the AnnotationContainer interface to the override's join columns
+	 * adapt the AnnotationContainer interface to the association override's join columns
 	 */
-	class JoinColumnsAnnotationContainer
-		implements AnnotationContainer<NestableJoinColumnAnnotation> 
+	class JoinColumnsAnnotationContainer 
+		extends AnnotationContainer<JoinColumnAnnotation>
 	{
-		public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
-			return SourceAssociationOverrideAnnotation.this.getAstAnnotation(astRoot);
+		@Override
+		protected String getAnnotationsPropertyName() {
+			return JOIN_COLUMNS_LIST;
 		}
-
-		public String getElementName() {
+		@Override
+		protected String getElementName() {
 			return JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS;
 		}
-
-		public String getNestedAnnotationName() {
-			return JoinColumnAnnotation.ANNOTATION_NAME;
-		}
-
-		public Iterable<NestableJoinColumnAnnotation> getNestedAnnotations() {
-			return SourceAssociationOverrideAnnotation.this.getNestableJoinColumns();
-		}
-
-		public int getNestedAnnotationsSize() {
-			return SourceAssociationOverrideAnnotation.this.joinColumnsSize();
-		}
-
-		public NestableJoinColumnAnnotation addNestedAnnotation() {
-			return SourceAssociationOverrideAnnotation.this.addJoinColumn_();
-		}
-
-		public void syncAddNestedAnnotation(Annotation astAnnotation) {
-			SourceAssociationOverrideAnnotation.this.syncAddJoinColumn(astAnnotation);
-		}
-
-		public NestableJoinColumnAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
-			return SourceAssociationOverrideAnnotation.this.moveJoinColumn_(targetIndex, sourceIndex);
-		}
-
-		public NestableJoinColumnAnnotation removeNestedAnnotation(int index) {
-			return SourceAssociationOverrideAnnotation.this.removeJoinColumn_(index);
-		}
-
-		public void syncRemoveNestedAnnotations(int index) {
-			SourceAssociationOverrideAnnotation.this.syncRemoveJoinColumns(index);
-		}
-
 		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
+		protected String getNestedAnnotationName() {
+			return JPA.JOIN_COLUMN;
+		}
+		@Override
+		protected JoinColumnAnnotation buildNestedAnnotation(int index) {
+			return SourceAssociationOverrideAnnotation.this.buildJoinColumn(index);
 		}
 	}
-
 
 	// ********** misc **********
 
 	@Override
 	public boolean isUnset() {
 		return super.isUnset() &&
-				this.joinColumns.isEmpty();
+				this.joinColumnsContainer.isEmpty();
 	}
 
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
+	// ********** static methods **********
+
+	protected static IndexedAnnotationAdapter buildAssociationOverrideAnnotationAdapter(AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+		return new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
 	}
 
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-
-		List<Map<String, Object>> joinColumnsState = this.buildStateList(this.joinColumns.size());
-		for (NestableJoinColumnAnnotation joinColumn : this.getNestableJoinColumns()) {
-			Map<String, Object> joinColumnState = new HashMap<String, Object>();
-			joinColumn.storeOn(joinColumnState);
-			joinColumnsState.add(joinColumnState);
-		}
-		map.put(JOIN_COLUMNS_LIST, joinColumnsState);
-		this.joinColumns.clear();
-	}
-
-	@Override
-	public void restoreFrom(Map<String,Object> map) {
-		super.restoreFrom(map);
-
-		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> joinColumnsState = (List<Map<String, Object>>) map.get(JOIN_COLUMNS_LIST);
-		for (Map<String, Object> joinColumnState : joinColumnsState) {
-			this.addJoinColumn().restoreFrom(joinColumnState);
-		}
+	protected static IndexedDeclarationAnnotationAdapter buildAssociationOverrideDeclarationAnnotationAdapter(int index) {
+		IndexedDeclarationAnnotationAdapter idaa = 
+			new CombinationIndexedDeclarationAnnotationAdapter(
+				DECLARATION_ANNOTATION_ADAPTER,
+				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				ANNOTATION_NAME);
+		return idaa;
 	}
 }

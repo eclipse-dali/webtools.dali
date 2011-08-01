@@ -43,6 +43,8 @@ public interface AnnotationProvider {
 
 	String getNestableAnnotationName(String containerAnnotationName);
 
+	String getContainerAnnotationName(String nestableAnnotationName);
+
 	String getNestableElementName(String nestableAnnotationName);
 
 	/**
@@ -65,6 +67,13 @@ public interface AnnotationProvider {
 	 * @see #getAnnotationNames()
 	 */
 	Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation);
+
+	/**
+	 * Build a nestable annotation for the specified JDT annotation and index.
+	 * Throw an IllegalArgumentException if the specified annotation is unsupported.
+	 * @see #getNestableAnnotationNames()
+	 */
+	NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index);
 
 	/**
 	 * Build a null annotation with the specified name.

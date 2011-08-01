@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
 
@@ -27,16 +27,16 @@ public interface OrmVirtualJoinTable
 {
 	OrmVirtualJoinTableRelationshipStrategy getParent();
 
-	ListIterator<OrmVirtualUniqueConstraint> uniqueConstraints();
+	ListIterable<OrmVirtualUniqueConstraint> getUniqueConstraints();
 	OrmVirtualUniqueConstraint getUniqueConstraint(int index);
 
-	ListIterator<OrmVirtualJoinColumn> joinColumns();
-	ListIterator<OrmVirtualJoinColumn> specifiedJoinColumns();
+	ListIterable<OrmVirtualJoinColumn> getJoinColumns();
+	ListIterable<OrmVirtualJoinColumn> getSpecifiedJoinColumns();
 	OrmVirtualJoinColumn getSpecifiedJoinColumn(int index);
 	OrmVirtualJoinColumn getDefaultJoinColumn();
 
-	ListIterator<OrmVirtualJoinColumn> inverseJoinColumns();
-	ListIterator<OrmVirtualJoinColumn> specifiedInverseJoinColumns();
+	ListIterable<OrmVirtualJoinColumn> getInverseJoinColumns();
+	ListIterable<OrmVirtualJoinColumn> getSpecifiedInverseJoinColumns();
 	OrmVirtualJoinColumn getSpecifiedInverseJoinColumn(int index);
 	OrmVirtualJoinColumn getDefaultInverseJoinColumn();
 

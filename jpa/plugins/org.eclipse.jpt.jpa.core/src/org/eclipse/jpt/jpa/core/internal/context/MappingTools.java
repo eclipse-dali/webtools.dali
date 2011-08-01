@@ -140,7 +140,7 @@ public final class MappingTools {
 	 * @see #buildJoinTableDefaultName(ReadOnlyRelationship)
 	 */
 	public static String buildJoinColumnDefaultName(ReadOnlyJoinColumn joinColumn, ReadOnlyJoinColumn.Owner owner) {
-		if (owner.joinColumnsSize() != 1) {
+		if (owner.getJoinColumnsSize() != 1) {
 			return null;
 		}
 		String prefix = owner.getAttributeName();
@@ -188,7 +188,7 @@ public final class MappingTools {
 		if (targetEntity == null) {
 			return null;
 		}
-		for (ReadOnlyPersistentAttribute attribute : CollectionTools.iterable(targetEntity.getPersistentType().allAttributes())) {
+		for (ReadOnlyPersistentAttribute attribute : targetEntity.getPersistentType().getAllAttributes()) {
 			if (attribute.getMapping().isOwnedBy(relationshipMapping)) {
 				return attribute.getName();
 			}
@@ -204,7 +204,7 @@ public final class MappingTools {
 	 * We are assuming that the primary key column is defined by the mappings instead of the database.
 	 */
 	public static String buildJoinColumnDefaultReferencedColumnName(ReadOnlyJoinColumn.Owner joinColumnOwner) {
-		if (joinColumnOwner.joinColumnsSize() != 1) {
+		if (joinColumnOwner.getJoinColumnsSize() != 1) {
 			return null;
 		}
 		Entity targetEntity = joinColumnOwner.getRelationshipTarget();
@@ -218,8 +218,7 @@ public final class MappingTools {
 		if ((attributeName == null) || (persistentType == null)) {
 			return null;
 		}
-		for (Iterator<ReadOnlyPersistentAttribute> stream = persistentType.allAttributes(); stream.hasNext(); ) {
-			ReadOnlyPersistentAttribute persAttribute = stream.next();
+		for (ReadOnlyPersistentAttribute persAttribute : persistentType.getAllAttributes()) {
 			if (attributeName.equals(persAttribute.getName())) {
 				if (persAttribute.getMapping() instanceof ColumnMapping) {
 					return (ColumnMapping) persAttribute.getMapping();
@@ -370,8 +369,7 @@ public final class MappingTools {
 
 	public static String getPrimaryKeyColumnName(Entity entity) {
 		String pkColumnName = null;
-		for (Iterator<ReadOnlyPersistentAttribute> stream = entity.getPersistentType().allAttributes(); stream.hasNext(); ) {
-			ReadOnlyPersistentAttribute attribute = stream.next();
+		for (ReadOnlyPersistentAttribute attribute : entity.getPersistentType().getAllAttributes()) {
 			String current = attribute.getPrimaryKeyColumnName();
 			if (current != null) {
 				// 229423 - if the attribute is a primary key, but it has an attribute override,

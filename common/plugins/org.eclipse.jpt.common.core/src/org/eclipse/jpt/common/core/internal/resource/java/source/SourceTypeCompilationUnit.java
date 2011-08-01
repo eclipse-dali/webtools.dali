@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,7 +40,7 @@ public final class SourceTypeCompilationUnit
 	 * the constructor in a package class (which is what all top-level,
 	 * non-primary classes must be).
 	 */
-	private JavaResourceAbstractType type;	
+	private JavaResourceAbstractType primaryType;	
 
 
 	// ********** construction **********
@@ -51,21 +51,21 @@ public final class SourceTypeCompilationUnit
 			AnnotationEditFormatter annotationEditFormatter,
 			CommandExecutor modifySharedDocumentCommandExecutor) {
 		super(compilationUnit, annotationProvider, annotationEditFormatter, modifySharedDocumentCommandExecutor);  // the compilation unit is the root of its sub-tree
-		this.type = this.buildType();
+		this.primaryType = this.buildPrimaryType();
 	}
 
-	private JavaResourceAbstractType buildType() {
+	private JavaResourceAbstractType buildPrimaryType() {
 		this.openCompilationUnit();
 		CompilationUnit astRoot = this.buildASTRoot();
 		this.closeCompilationUnit();
-		return this.buildPersistentType(astRoot);
+		return this.buildPrimaryType(astRoot);
 	}
 
 
 	// ********** JavaResourceNode implementation **********
 
 	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncType(astRoot);
+		this.syncPrimaryType(astRoot);
 	}
 
 
@@ -75,9 +75,9 @@ public final class SourceTypeCompilationUnit
 	 * NB: return *all* the types since we build them all
 	 */
 	public Iterable<JavaResourceAbstractType> getTypes() {
-		return (this.type == null) ?
+		return (this.primaryType == null) ?
 				EmptyIterable.<JavaResourceAbstractType>instance() :
-				new CompositeIterable<JavaResourceAbstractType>(this.type.getAllTypes(), this.type.getAllEnums());
+				new CompositeIterable<JavaResourceAbstractType>(this.primaryType.getAllTypes(), this.primaryType.getAllEnums());
 	}
 	
 	
@@ -91,43 +91,47 @@ public final class SourceTypeCompilationUnit
 	// ********** JavaResourceCompilationUnit implementation **********
 
 	public void resolveTypes() {
-		if (this.type != null) {
-			this.type.resolveTypes(this.buildASTRoot());
+		if (this.primaryType != null) {
+			this.primaryType.resolveTypes(this.buildASTRoot());
 		}
 	}
 
 
-	// ********** persistent type **********
+	// ********** type **********
 
-	private JavaResourceAbstractType buildPersistentType(CompilationUnit astRoot) {
-		AbstractTypeDeclaration td = this.getPrimaryTypeDeclaration(astRoot);
-		return (td == null) ? null : this.buildType(astRoot, td);
+	public JavaResourceAbstractType getPrimaryType() {
+		return this.primaryType;
+	}
+
+	private JavaResourceAbstractType buildPrimaryType(CompilationUnit astRoot) {
+		AbstractTypeDeclaration td = this.getPrimaryTypeOrEnumDeclaration(astRoot);
+		return (td == null) ? null : this.buildPrimaryType(astRoot, td);
 	}
 
 
-	private void syncType(CompilationUnit astRoot) {
-		AbstractTypeDeclaration td = this.getPrimaryTypeDeclaration(astRoot);
+	private void syncPrimaryType(CompilationUnit astRoot) {
+		AbstractTypeDeclaration td = this.getPrimaryTypeOrEnumDeclaration(astRoot);
 		if (td == null) {
-			this.syncType_(null);
+			this.syncPrimaryType_(null);
 		} else {
-			if (this.type == null) {
-				this.syncType_(this.buildType(astRoot, td));
+			if (this.primaryType == null) {
+				this.syncPrimaryType_(this.buildPrimaryType(astRoot, td));
 			} else {
-				this.type.synchronizeWith(astRoot);
+				this.primaryType.synchronizeWith(astRoot);
 			}
 		}
 	}
 
-	private void syncType_(JavaResourceAbstractType astType) {
-		JavaResourceAbstractType old = this.type;
-		this.type = astType;
+	private void syncPrimaryType_(JavaResourceAbstractType astType) {
+		JavaResourceAbstractType old = this.primaryType;
+		this.primaryType = astType;
 		this.firePropertyChanged(TYPES_COLLECTION, old, astType);
 	}
 
 
 	// ********** internal **********
 
-	private JavaResourceAbstractType buildType(CompilationUnit astRoot, AbstractTypeDeclaration typeDeclaration) {
+	private JavaResourceAbstractType buildPrimaryType(CompilationUnit astRoot, AbstractTypeDeclaration typeDeclaration) {
 		if (typeDeclaration.getNodeType() == ASTNode.TYPE_DECLARATION) {
 			return SourceType.newInstance(this, (TypeDeclaration) typeDeclaration, astRoot);
 		}
@@ -139,27 +143,32 @@ public final class SourceTypeCompilationUnit
 
 	/**
 	 * i.e. the type with the same name as the compilation unit;
-	 * return the first class or interface (ignore annotations and enums) with
+	 * return the first class, interface or enum (ignore annotations) with
 	 * the same name as the compilation unit (file);
-	 * NB: this type could be in error if there is an annotation or enum
+	 * NB: this type could be in error if there is an annotation
 	 * with the same name preceding it in the compilation unit
 	 * 
 	 * Return null if the parser did not resolve the type declaration's binding.
 	 * This can occur if the project JRE is removed (bug 225332).
 	 */
-	private AbstractTypeDeclaration getPrimaryTypeDeclaration(CompilationUnit astRoot) {
+	private AbstractTypeDeclaration getPrimaryTypeOrEnumDeclaration(CompilationUnit astRoot) {
 		String primaryTypeName = this.getPrimaryTypeName();
 		for (AbstractTypeDeclaration atd : this.types(astRoot)) {
-			if (this.nodeIsPrimaryTypeDeclaration(atd, primaryTypeName)) {
+			if (this.nodeIsPrimaryTypeOrEnumDeclaration(atd, primaryTypeName)) {
 				return (atd.resolveBinding() == null) ? null : atd;
 			}
 		}
 		return null;
 	}
 
-	private boolean nodeIsPrimaryTypeDeclaration(AbstractTypeDeclaration atd, String primaryTypeName) {
-		return (atd.getNodeType() == ASTNode.TYPE_DECLARATION || atd.getNodeType() == ASTNode.ENUM_DECLARATION) && 
+	private boolean nodeIsPrimaryTypeOrEnumDeclaration(AbstractTypeDeclaration atd, String primaryTypeName) {
+		return this.nodeIsTypeOrEnumDeclaration(atd) && 
 				(atd.getName().getFullyQualifiedName().equals(primaryTypeName));
+	}
+
+	private boolean nodeIsTypeOrEnumDeclaration(AbstractTypeDeclaration atd) {
+		return atd.getNodeType() == ASTNode.TYPE_DECLARATION ||
+				atd.getNodeType() == ASTNode.ENUM_DECLARATION;
 	}
 
 	private String getPrimaryTypeName() {

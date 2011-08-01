@@ -18,19 +18,18 @@ import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumns2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AssociationOverridesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.LobAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OrderByAnnotation;
@@ -66,7 +65,7 @@ public class JavaElementCollectionMappingDefinition2_0
 	}
 
 	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
-		return persistentAttribute.getResourcePersistentAttribute().getAnnotation(this.getAnnotationName()) != null;
+		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
 	public Iterable<String> getSupportingAnnotationNames() {
@@ -75,9 +74,9 @@ public class JavaElementCollectionMappingDefinition2_0
 
 	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 		AssociationOverrideAnnotation.ANNOTATION_NAME,
-		AssociationOverridesAnnotation.ANNOTATION_NAME,
+		JPA.ASSOCIATION_OVERRIDES,
 		AttributeOverrideAnnotation.ANNOTATION_NAME,
-		AttributeOverridesAnnotation.ANNOTATION_NAME,
+		JPA.ATTRIBUTE_OVERRIDES,
 		CollectionTable2_0Annotation.ANNOTATION_NAME,
 		ColumnAnnotation.ANNOTATION_NAME,
 		EnumeratedAnnotation.ANNOTATION_NAME,
@@ -87,7 +86,7 @@ public class JavaElementCollectionMappingDefinition2_0
 		MapKeyColumn2_0Annotation.ANNOTATION_NAME,
 		MapKeyEnumerated2_0Annotation.ANNOTATION_NAME,
 		MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME,
-		MapKeyJoinColumns2_0Annotation.ANNOTATION_NAME,
+		JPA2_0.MAP_KEY_JOIN_COLUMNS,
 		MapKeyTemporal2_0Annotation.ANNOTATION_NAME,
 		OrderByAnnotation.ANNOTATION_NAME,
 		OrderColumn2_0Annotation.ANNOTATION_NAME,

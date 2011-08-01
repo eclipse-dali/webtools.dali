@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Corresponds to the JPA annotation
@@ -34,23 +34,18 @@ public interface AssociationOverrideAnnotation
 	 * Corresponds to the 'joinColumns' element of the AssociationOverride annotation.
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
-	ListIterator<JoinColumnAnnotation> joinColumns();
+	ListIterable<JoinColumnAnnotation> getJoinColumns();
 		String JOIN_COLUMNS_LIST = "joinColumns"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the 'joinColumns' element of the AssociationOverride annotation.
 	 */
-	int joinColumnsSize();
+	int getJoinColumnsSize();
 
 	/**
 	 * Corresponds to the 'joinColumns' element of the AssociationOverride annotation.
 	 */
 	JoinColumnAnnotation joinColumnAt(int index);
-	
-	/**
-	 * Corresponds to the 'joinColumns' element of the AssociationOverride annotation.
-	 */
-	int indexOfJoinColumn(JoinColumnAnnotation joinColumn);
 	
 	/**
 	 * Corresponds to the 'joinColumns' element of the AssociationOverride annotation.

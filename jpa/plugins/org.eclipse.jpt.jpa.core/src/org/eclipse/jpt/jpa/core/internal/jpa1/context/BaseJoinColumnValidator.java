@@ -49,7 +49,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn, 
 	}
 
 	protected void validateJoinColumnName(List<IMessage> messages) {
-		if ((this.column.getSpecifiedName() == null) && (this.joinColumnOwner.joinColumnsSize() > 1)) {
+		if ((this.column.getSpecifiedName() == null) && (this.joinColumnOwner.getJoinColumnsSize() > 1)) {
 			messages.add(this.buildUnspecifiedNameMultipleJoinColumnsMessage());
 		}
 		else if (this.column.getName() != null){
@@ -62,7 +62,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn, 
 	}
 
 	protected void validateReferencedColumnName(List<IMessage> messages) {
-		if ((this.column.getSpecifiedReferencedColumnName() == null) && (this.joinColumnOwner.joinColumnsSize() > 1)) {
+		if ((this.column.getSpecifiedReferencedColumnName() == null) && (this.joinColumnOwner.getJoinColumnsSize() > 1)) {
 			messages.add(this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
 		}
 		//bug 315292 is the reason we are only validating if there is a specified referenced column name

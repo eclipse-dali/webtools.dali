@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
@@ -90,15 +90,15 @@ public class JavaEclipseLinkJoinFetch
 	// ********** join fetch annotation **********
 
 	protected EclipseLinkJoinFetchAnnotation getJoinFetchAnnotation() {
-		return (EclipseLinkJoinFetchAnnotation) this.getResourcePersistentAttribute().getAnnotation(this.getJoinFetchAnnotationName());
+		return (EclipseLinkJoinFetchAnnotation) this.getResourceAttribute().getAnnotation(this.getJoinFetchAnnotationName());
 	}
 
 	protected EclipseLinkJoinFetchAnnotation addJoinFetchAnnotation() {
-		return (EclipseLinkJoinFetchAnnotation) this.getResourcePersistentAttribute().addAnnotation(this.getJoinFetchAnnotationName());
+		return (EclipseLinkJoinFetchAnnotation) this.getResourceAttribute().addAnnotation(this.getJoinFetchAnnotationName());
 	}
 
 	protected void removeJoinFetchAnnotation() {
-		this.getResourcePersistentAttribute().removeAnnotation(this.getJoinFetchAnnotationName());
+		this.getResourceAttribute().removeAnnotation(this.getJoinFetchAnnotationName());
 	}
 
 	protected String getJoinFetchAnnotationName() {
@@ -117,8 +117,8 @@ public class JavaEclipseLinkJoinFetch
 		return this.getParent();
 	}
 
-	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getAttributeMapping().getResourcePersistentAttribute();
+	protected JavaResourceAttribute getResourceAttribute() {
+		return this.getAttributeMapping().getResourceAttribute();
 	}
 
 

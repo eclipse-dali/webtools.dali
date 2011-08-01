@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,19 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * <code>javax.persistence.DiscriminatorColumn</code>
@@ -41,8 +40,8 @@ public final class SourceDiscriminatorColumnAnnotation
 	private Integer length;
 
 
-	public SourceDiscriminatorColumnAnnotation(JavaResourcePersistentType parent, Type type) {
-		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceDiscriminatorColumnAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.discriminatorTypeAdapter = this.buildDiscriminatorTypeAdapter();
 		this.lengthDeclarationAdapter = this.buildLengthDeclarationAdapter();
 		this.lengthAdapter = this.buildLengthAdapter();
@@ -146,30 +145,6 @@ public final class SourceDiscriminatorColumnAnnotation
 		return super.isUnset() &&
 				(this.discriminatorType == null) &&
 				(this.length == null);
-	}
-
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.discriminatorTypeAdapter = this.buildDiscriminatorTypeAdapter();
-		this.lengthDeclarationAdapter = this.buildLengthDeclarationAdapter();
-		this.lengthAdapter = this.buildLengthAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		map.put(DISCRIMINATOR_TYPE_PROPERTY, this.discriminatorType);
-		this.discriminatorType = null;
-		map.put(LENGTH_PROPERTY, this.length);
-		this.length = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		this.setDiscriminatorType((DiscriminatorType) map.get(DISCRIMINATOR_TYPE_PROPERTY));
-		this.setLength((Integer) map.get(LENGTH_PROPERTY));
 	}
 
 

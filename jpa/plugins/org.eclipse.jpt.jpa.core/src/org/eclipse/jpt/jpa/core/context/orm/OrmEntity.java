@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
@@ -46,21 +46,21 @@ public interface OrmEntity
 
 	// ********** secondary tables **********
 
-	ListIterator<ReadOnlySecondaryTable> secondaryTables();	
-	ListIterator<OrmSecondaryTable> specifiedSecondaryTables();
+	ListIterable<ReadOnlySecondaryTable> getSecondaryTables();	
+	ListIterable<OrmSecondaryTable> getSpecifiedSecondaryTables();
 	OrmSecondaryTable addSpecifiedSecondaryTable();
 	OrmSecondaryTable addSpecifiedSecondaryTable(int index);
 
 	/**
 	 * Return the virtual (not specified) secondary tables.
 	 */
-	ListIterator<OrmVirtualSecondaryTable> virtualSecondaryTables();
+	ListIterable<OrmVirtualSecondaryTable> getVirtualSecondaryTables();
 		String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTables"; //$NON-NLS-1$
 	
 	/**
 	 * Return the number of virtual secondary tables.
 	 */
-	int virtualSecondaryTablesSize();
+	int getVirtualSecondaryTablesSize();
 	
 	/**
 	 * Return true if there are no virtual secondary tables on the orm entity.
@@ -80,12 +80,13 @@ public interface OrmEntity
 
 	// ********** primary key join columns **********
 
-	ListIterator<ReadOnlyPrimaryKeyJoinColumn> primaryKeyJoinColumns();
-	ListIterator<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
+	ListIterable<ReadOnlyPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
+	ListIterable<OrmPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
 	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn();
 	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 
-	ListIterator<ReadOnlyPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns();
+	ListIterable<ReadOnlyPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns();
+	int getDefaultPrimaryKeyJoinColumnsSize();
 		String DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST = "defaultPrimaryKeyJoinColumns"; //$NON-NLS-1$
 
 

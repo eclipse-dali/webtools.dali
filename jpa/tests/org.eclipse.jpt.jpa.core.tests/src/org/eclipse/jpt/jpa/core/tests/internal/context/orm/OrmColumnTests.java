@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -619,7 +619,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		createTestEntity();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		Iterator<OrmReadOnlyPersistentAttribute> attributes = ormPersistentType.virtualAttributes();
+		Iterator<OrmReadOnlyPersistentAttribute> attributes = ormPersistentType.getVirtualAttributes().iterator();
 		attributes.next();	
 		
 		//virtual attribute in orm.xml, java attribute has no Column annotation

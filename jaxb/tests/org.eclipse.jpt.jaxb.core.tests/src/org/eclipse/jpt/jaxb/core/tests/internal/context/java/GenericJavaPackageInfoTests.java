@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,11 +16,13 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
@@ -266,9 +268,8 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		assertFalse(xmlSchemaTypes.hasNext());
 	}
 
-	@SuppressWarnings("unchecked")
 	protected Iterator<XmlSchemaTypeAnnotation> getSchemaTypeAnnotations(JavaResourcePackage resourcePackage) {
-		return (Iterator<XmlSchemaTypeAnnotation>) resourcePackage.getAnnotations(JAXB.XML_SCHEMA_TYPE).iterator();
+		return new SubListIterableWrapper<NestableAnnotation, XmlSchemaTypeAnnotation>(resourcePackage.getAnnotations(JAXB.XML_SCHEMA_TYPE)).iterator();
 	}
 
 	public void testAddXmlSchemaType2() throws Exception {
@@ -599,9 +600,8 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		assertFalse(xmlJavaTypeAdapters.hasNext());
 	}
 
-	@SuppressWarnings("unchecked")
 	protected Iterator<XmlJavaTypeAdapterAnnotation> getXmlJavaTypeAdapterAnnotations(JavaResourcePackage resourcePackage) {
-		return (Iterator<XmlJavaTypeAdapterAnnotation>) resourcePackage.getAnnotations(JAXB.XML_JAVA_TYPE_ADAPTER).iterator();
+		return new SubListIterableWrapper<NestableAnnotation, XmlJavaTypeAdapterAnnotation>(resourcePackage.getAnnotations(JAXB.XML_JAVA_TYPE_ADAPTER)).iterator();
 	}
 
 	public void testAddXmlJavaTypeAdapter2() throws Exception {

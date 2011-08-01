@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
+ *  Copyright (c) 2010, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -11,17 +11,17 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context;
 
 import java.util.List;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkMappedSuperclassValidator
 	extends AbstractEclipseLinkTypeMappingValidator<MappedSuperclass>
 {
-	public EclipseLinkMappedSuperclassValidator(MappedSuperclass mappedSuperclass, JavaResourcePersistentType jrpt, TypeMappingTextRangeResolver textRangeResolver) {
-		super(mappedSuperclass, jrpt, textRangeResolver);
+	public EclipseLinkMappedSuperclassValidator(MappedSuperclass mappedSuperclass, JavaResourceType jrt, TypeMappingTextRangeResolver textRangeResolver) {
+		super(mappedSuperclass, jrt, textRangeResolver);
 	}
 
 

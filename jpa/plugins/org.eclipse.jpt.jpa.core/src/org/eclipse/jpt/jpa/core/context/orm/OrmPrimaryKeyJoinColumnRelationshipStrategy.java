@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationshipStrategy;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationshipStrategy
 public interface OrmPrimaryKeyJoinColumnRelationshipStrategy
 	extends OrmRelationshipStrategy, PrimaryKeyJoinColumnRelationshipStrategy
 {
-	ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns();
+	ListIterable<OrmPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 	OrmPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index);
 	OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn();
 	OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index);

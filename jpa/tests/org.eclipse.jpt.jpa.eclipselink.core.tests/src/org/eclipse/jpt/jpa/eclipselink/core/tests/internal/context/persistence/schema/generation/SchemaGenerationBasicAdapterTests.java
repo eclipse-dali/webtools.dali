@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence.schema.generation;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -130,13 +130,13 @@ public class SchemaGenerationBasicAdapterTests extends EclipseLinkPersistenceUni
 	private ListValueModel<PersistenceUnit.Property> buildPropertiesAdapter(PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
 		return new ListAspectAdapter<EclipseLinkPersistenceUnit, PersistenceUnit.Property>(subjectHolder, PersistenceUnit.PROPERTIES_LIST) {
 			@Override
-			protected ListIterator<PersistenceUnit.Property> listIterator_() {
-				return this.subject.properties();
+			protected ListIterable<PersistenceUnit.Property> getListIterable() {
+				return this.subject.getProperties();
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.propertiesSize();
+				return this.subject.getPropertiesSize();
 			}
 		};
 	}

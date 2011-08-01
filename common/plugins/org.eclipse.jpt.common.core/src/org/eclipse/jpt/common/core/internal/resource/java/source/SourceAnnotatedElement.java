@@ -30,9 +30,11 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 
 /**
  * Java source annotated element (annotations)
@@ -77,31 +79,23 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 	/* private */ void addInitialAnnotation(org.eclipse.jdt.core.dom.Annotation node) {
 		String jdtAnnotationName = ASTTools.resolveAnnotation(node);
 		if (jdtAnnotationName != null) {
-			if (this.annotationIsValid(jdtAnnotationName)) {
+			if(this.annotationIsValidContainer(jdtAnnotationName)) {
+				String nestableAnnotationName = this.getNestableAnnotationName(jdtAnnotationName);
+				AnnotationContainer container = new AnnotationContainer(nestableAnnotationName);
+				container.initialize(node);
+				this.annotationContainers.put(nestableAnnotationName, container);
+			}
+			else if (this.annotationIsValid(jdtAnnotationName)) {
 				if (this.selectAnnotationNamed(this.annotations, jdtAnnotationName) == null) { // ignore duplicates
-					// TODO - remove and replace with API post 3.0
-					try {
-						Annotation annotation = this.buildAnnotation(jdtAnnotationName);
-						annotation.initialize((CompilationUnit) node.getRoot());
-						this.annotations.add(annotation);
-					}
-					catch (ClassCastException cce) {
-						// an annotation has been placed on a java member to which it is not been targetted,
-						// and an exception has occurred in the annotation construction/initialization, 
-						// which is expecting only a certain subset of members
-					}
+					Annotation annotation = this.buildAnnotation(jdtAnnotationName);
+					annotation.initialize((CompilationUnit) node.getRoot());
+					this.annotations.add(annotation);
 				}
 			}
 			else if(this.annotationIsValidNestable(jdtAnnotationName)) {
 				AnnotationContainer container = new AnnotationContainer(jdtAnnotationName);
 				container.initializeNestableAnnotation(node);
 				this.annotationContainers.put(jdtAnnotationName, container);
-			}
-			else if(this.annotationIsValidContainer(jdtAnnotationName)) {
-				String nestableAnnotationName = this.getNestableAnnotationName(jdtAnnotationName);
-				AnnotationContainer container = new AnnotationContainer(nestableAnnotationName);
-				container.initialize(node);
-				this.annotationContainers.put(nestableAnnotationName, container);
 			}
 		}
 	}
@@ -121,7 +115,23 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 		return this.annotations.size();
 	}
 
+	protected Iterable<NestableAnnotation> getNestableAnnotations() {
+		return new CompositeIterable<NestableAnnotation>(this.getNestableAnnotationLists());
+	}
+
+	private Iterable<Iterable<NestableAnnotation>> getNestableAnnotationLists() {
+		return new TransformationIterable<AnnotationContainer, Iterable<NestableAnnotation>>(this.annotationContainers.values()) {
+			@Override
+			protected Iterable<NestableAnnotation> transform(AnnotationContainer container) {
+				return container.getNestedAnnotations();
+			}
+		};
+	}
+
 	public Annotation getAnnotation(String annotationName) {
+		if (this.annotationIsValidContainer(annotationName)) {
+			return this.annotationContainers.get(getAnnotationProvider().getNestableAnnotationName(annotationName)).getContainerAnnotation();
+		}
 		return this.selectAnnotationNamed(this.getAnnotations(), annotationName);
 	}
 
@@ -145,6 +155,11 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 		return container == null ? null : container.nestedAnnotationAt(index);
 	}
 
+	public Annotation getContainerAnnotation(String containerAnnotationName) {
+		AnnotationContainer container = this.annotationContainers.get(getAnnotationProvider().getNestableAnnotationName(containerAnnotationName));
+		return container == null ? null : container.getContainerAnnotation();
+	}
+
 	private String getNestableAnnotationName(String containerAnnotationName) {
 		return getAnnotationProvider().getNestableAnnotationName(containerAnnotationName);
 	}
@@ -160,15 +175,6 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 		return annotation;
 	}
 
-	/**
-	 * 1. check for a container annotation;
-	 *     if it is present, add a nested annotation to it
-	 * 2. check for a stand-alone nested annotation;
-	 *     if it is missing, add a stand-alone nested annotation
-	 * 3. if there is an existing stand-alone nested annotation,
-	 *     add a container annotation and move the stand-alone nested annotation to it
-	 *     and add a new nested annotation to it also
-	 */
 	public NestableAnnotation addAnnotation(int index, String nestableAnnotationName) {
 		AnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
 		if (container == null) {
@@ -195,18 +201,19 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 	}
 
 	public void removeAnnotation(int index, String nestableAnnotationName) {
-		this.annotationContainers.get(nestableAnnotationName).removeNestedAnnotation(index);
+		AnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
+		container.removeNestedAnnotation(index);
 	}
 
-	private boolean annotationIsValid(String annotationName) {
+	protected boolean annotationIsValid(String annotationName) {
 		return CollectionTools.contains(this.getValidAnnotationNames(), annotationName);
 	}
 
-	private boolean annotationIsValidContainer(String annotationName) {
+	protected boolean annotationIsValidContainer(String annotationName) {
 		return CollectionTools.contains(this.getValidContainerAnnotationNames(), annotationName);
 	}
 
-	private boolean annotationIsValidNestable(String annotationName) {
+	protected boolean annotationIsValidNestable(String annotationName) {
 		return CollectionTools.contains(this.getValidNestableAnnotationNames(), annotationName);
 	}
 
@@ -269,14 +276,14 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 	/* private */ void addOrSyncAnnotation(org.eclipse.jdt.core.dom.Annotation node, Set<Annotation> annotationsToRemove, Set<AnnotationContainer> containersToRemove) {
 		String jdtAnnotationName = ASTTools.resolveAnnotation(node);
 		if (jdtAnnotationName != null) {
-			if (this.annotationIsValid(jdtAnnotationName)) {
+			if (this.annotationIsValidContainer(jdtAnnotationName)) {
+				this.addOrSyncContainerAnnotation_(node, jdtAnnotationName, containersToRemove);
+			}
+			else if (this.annotationIsValid(jdtAnnotationName)) {
 				this.addOrSyncAnnotation_(node, jdtAnnotationName, annotationsToRemove);
 			}
 			else if(this.annotationIsValidNestable(jdtAnnotationName)) {
 				this.addOrSyncNestableAnnotation_(node, jdtAnnotationName, containersToRemove);
-			}
-			else if(this.annotationIsValidContainer(jdtAnnotationName)) {
-				this.addOrSyncContainerAnnotation_(node, jdtAnnotationName, containersToRemove);
 			}
 		}
 	}
@@ -290,17 +297,9 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 			annotation.synchronizeWith((CompilationUnit) node.getRoot());
 			annotationsToRemove.remove(annotation);
 		} else {
-			// TODO - remove and replace with API post 3.0
-			try {
-				annotation = this.buildAnnotation(jdtAnnotationName);
-				annotation.initialize((CompilationUnit) node.getRoot());
-				this.addItemToCollection(annotation, this.annotations, ANNOTATIONS_COLLECTION);
-			}
-			catch (ClassCastException cce) {
-				// an annotation has been placed on a java member to which it is not been targetted,
-				// and an exception has occurred in the annotation construction/initialization, 
-				// which is expecting only a certain subset of members
-			}
+			annotation = this.buildAnnotation(jdtAnnotationName);
+			annotation.initialize((CompilationUnit) node.getRoot());
+			this.addItemToCollection(annotation, this.annotations, ANNOTATIONS_COLLECTION);
 		}
 	}
 
@@ -344,6 +343,20 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 
 	public boolean isAnnotated() {
 		return ! this.annotations.isEmpty() || ! this.annotationContainers.isEmpty();
+	}
+
+	public boolean isAnnotatedWith(Iterable<String> annotationNames) {
+		for (Annotation annotation : this.getAnnotations()) {
+			if (CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
+				return true;
+			}
+		}
+		for (Annotation annotation : this.getNestableAnnotations()) {
+			if (CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public TextRange getTextRange(CompilationUnit astRoot) {
@@ -458,10 +471,31 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 	{
 		private final String nestableAnnotationName;
 
+		private Annotation containerAnnotation;
+	
 		protected AnnotationContainer(String nestableAnnotationName) {
 			super();
 			this.nestableAnnotationName = nestableAnnotationName;
-		}		
+		}
+
+		@Override
+		public void initialize(org.eclipse.jdt.core.dom.Annotation astContainerAnnotation) {
+			super.initialize(astContainerAnnotation);
+			this.containerAnnotation = this.buildContainerAnnotation(ASTTools.resolveAnnotation(astContainerAnnotation));
+		}
+
+		protected Annotation buildContainerAnnotation(String name) {
+			return getAnnotationProvider().buildAnnotation(SourceAnnotatedElement.this, SourceAnnotatedElement.this.annotatedElement, name);
+		}
+
+		protected Annotation getContainerAnnotation() {
+			return this.containerAnnotation;
+		}
+
+		@Override
+		public void synchronize(org.eclipse.jdt.core.dom.Annotation astContainerAnnotation) {
+			super.synchronize(astContainerAnnotation);
+		}
 
 		/**
 		 * Return the element name of the nested annotations
@@ -500,6 +534,22 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 			else if (this.getNestedAnnotationsSize() == 1) {
 				this.nestedAnnotationAt(0).synchronizeWith((CompilationUnit) standaloneNestableAnnotation.getRoot());
 			}
+		}
+
+		@Override
+		public NestableAnnotation addNestedAnnotation(int index) {
+			if (getNestedAnnotationsSize() == 1 && getContainerAnnotation() == null) {
+				this.containerAnnotation = buildContainerAnnotation(getAnnotationProvider().getContainerAnnotationName(getNestedAnnotationName()));
+			}
+			return super.addNestedAnnotation(index);
+		}
+
+		@Override
+		public NestableAnnotation removeNestedAnnotation(int index) {
+			if (getNestedAnnotationsSize() == 2) {
+				this.containerAnnotation = null;
+			}
+			return super.removeNestedAnnotation(index);
 		}
 
 		@Override

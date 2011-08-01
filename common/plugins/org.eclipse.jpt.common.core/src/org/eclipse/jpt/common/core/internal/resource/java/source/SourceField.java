@@ -35,6 +35,7 @@ final class SourceField
 			int occurrence,
 			JavaResourceCompilationUnit javaResourceCompilationUnit,
 			CompilationUnit astRoot) {
+		
 		FieldAttribute field = new JDTFieldAttribute(
 				declaringType,
 				name,
@@ -46,8 +47,15 @@ final class SourceField
 		jrpa.initialize(astRoot);
 		return jrpa;
 	}
-
+	
+	
 	private SourceField(JavaResourceType parent, FieldAttribute field){
 		super(parent, field);
+	}
+
+	// ******** JavaResourceAnnotatedElement implementation ********
+	
+	public Kind getKind() {
+		return Kind.FIELD;
 	}
 }

@@ -13,6 +13,8 @@ import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -209,7 +211,7 @@ public class JoinTableComposite
 	void addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
 
 		JoinTable subject = (JoinTable) getSubject();
-		int index = subject.specifiedInverseJoinColumnsSize();
+		int index = subject.getSpecifiedInverseJoinColumnsSize();
 
 		JoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
@@ -252,13 +254,13 @@ public class JoinTableComposite
 	ListValueModel<ReadOnlyJoinColumn> buildSpecifiedInverseJoinColumnsListHolder() {
 		return new ListAspectAdapter<ReadOnlyJoinTable, ReadOnlyJoinColumn>(getSubjectHolder(), ReadOnlyJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterator<ReadOnlyJoinColumn> listIterator_() {
-				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(this.subject.specifiedInverseJoinColumns());
+			protected ListIterable<ReadOnlyJoinColumn> getListIterable() {
+				return new SuperListIterableWrapper<ReadOnlyJoinColumn>(this.subject.getSpecifiedInverseJoinColumns());
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.specifiedInverseJoinColumnsSize();
+				return this.subject.getSpecifiedInverseJoinColumnsSize();
 			}
 		};
 	}
@@ -292,7 +294,7 @@ public class JoinTableComposite
 		try {
 			if (selected) {
 				joinTable.convertDefaultInverseJoinColumnToSpecified();
-				setSelectedInverseJoinColumn(joinTable.specifiedInverseJoinColumns().next());
+				setSelectedInverseJoinColumn(joinTable.getSpecifiedInverseJoinColumn(0));
 			} else {
 				joinTable.clearSpecifiedInverseJoinColumns();
 			}
@@ -332,11 +334,11 @@ public class JoinTableComposite
 		}
 
 		public ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(ReadOnlyJoinTable subject) {
-			return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.specifiedInverseJoinColumns());
+			return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedInverseJoinColumns());
 		}
 
 		public int specifiedJoinColumnsSize(ReadOnlyJoinTable subject) {
-			return subject.specifiedInverseJoinColumnsSize();
+			return subject.getSpecifiedInverseJoinColumnsSize();
 		}
 
 		public String getSpecifiedJoinColumnsListPropertyName() {
@@ -399,7 +401,7 @@ public class JoinTableComposite
 		@Override
 		protected Boolean transform_(ReadOnlyJoinTable value) {
 			boolean virtual = JoinTableComposite.this.tableIsVirtual(value);
-			return Boolean.valueOf(! virtual && value.specifiedInverseJoinColumnsSize() > 0);
+			return Boolean.valueOf(! virtual && value.getSpecifiedInverseJoinColumnsSize() > 0);
 		}
 		
 		@Override

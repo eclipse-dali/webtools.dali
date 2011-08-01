@@ -11,8 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase.DefaultAnnotationWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -27,8 +28,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -107,7 +106,7 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmReadOnlyPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
 			each.convertToSpecified();
 		}
 	}
@@ -115,61 +114,58 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 	public void testUpdateDerivedId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentType resourceType = 
-				getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		JavaManyToOneMapping2_0 contextMapping = (JavaManyToOneMapping2_0) contextAttribute.getMapping();
 		
-		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertNotNull(resourceField.getAnnotation(JPA.ID));
 		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
-		resourceAttribute.removeAnnotation(JPA.ID);
+		resourceField.removeAnnotation(JPA.ID);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertNull(resourceField.getAnnotation(JPA.ID));
 		assertFalse(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
-		resourceAttribute.addAnnotation(JPA.ID);
+		resourceField.addAnnotation(JPA.ID);
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertNotNull(resourceField.getAnnotation(JPA.ID));
 		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 	}
 	
 	public void testSetDerivedId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentType resourceType = 
-				getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		JavaManyToOneMapping2_0 contextMapping = (JavaManyToOneMapping2_0) contextAttribute.getMapping();
 		
-		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertNotNull(resourceField.getAnnotation(JPA.ID));
 		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
 		contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().setValue(false);
-		assertNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertNull(resourceField.getAnnotation(JPA.ID));
 		assertFalse(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		
 		contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().setValue(true);
-		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertNotNull(resourceField.getAnnotation(JPA.ID));
 		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 	}
 	
 	public void testUpdateMapsId() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentType resourceType = 
-				getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		JavaManyToOneMapping2_0 contextMapping = (JavaManyToOneMapping2_0) contextAttribute.getMapping();
 		
 		MapsId2_0Annotation annotation = 
-				(MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID);
+				(MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID);
 		annotation.setValue("foo");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("foo", annotation.getValue());
@@ -180,28 +176,27 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		assertEquals("bar", annotation.getValue());
 		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
-		resourceAttribute.removeAnnotation(JPA2_0.MAPS_ID);
+		resourceField.removeAnnotation(JPA2_0.MAPS_ID);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 	
 	public void testSetMapsId() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentType resourceType = 
-				getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("address");
 		JavaManyToOneMapping2_0 contextMapping = (JavaManyToOneMapping2_0) contextAttribute.getMapping();
 		
-		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName("foo");
 		MapsId2_0Annotation annotation = 
-				(MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID);
+				(MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID);
 		assertNotNull(annotation);
 		assertEquals("foo", annotation.getValue());
 		assertEquals("foo", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
@@ -211,43 +206,42 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		assertEquals("bar", contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().setSpecifiedIdAttributeName(null);
-		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
+		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 	
 	public void testMorphMapping() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentType resourceType = 
-				getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("manyToOne");
 		
-		((MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID)).setValue("foo");
+		((MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID)).setValue("foo");
 		getJpaProject().synchronizeContextModel();
 		
-		assertNull(resourceAttribute.getAnnotation(JPA.ID));
+		assertNull(resourceField.getAnnotation(JPA.ID));
 		assertFalse(((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
-		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
-		assertEquals("foo", ((MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID)).getValue());
+		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
+		assertEquals("foo", ((MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID)).getValue());
 		assertEquals("foo", ((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertFalse(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
-		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
-		assertEquals("foo", ((MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID)).getValue());
+		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
+		assertEquals("foo", ((MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID)).getValue());
 		assertEquals("foo", ((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertFalse(((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
-		assertNotNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
-		assertEquals("foo", ((MapsId2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAPS_ID)).getValue());
+		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
+		assertEquals("foo", ((MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID)).getValue());
 		assertEquals("foo", ((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
@@ -256,31 +250,32 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
-		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		ManyToOneRelationship2_0 rel = (ManyToOneRelationship2_0) mapping.getRelationship();
 
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 
 		rel.setStrategyToJoinColumn();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 
 		rel.setStrategyToJoinTable();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
 
 		rel.setStrategyToJoinColumn();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 	}
@@ -289,41 +284,42 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
-		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		ManyToOneRelationship2_0 rel = (ManyToOneRelationship2_0) mapping.getRelationship();
 
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 
-		resourceAttribute.addAnnotation(JPA.JOIN_COLUMN);
+		resourceField.addAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 
-		resourceAttribute.addAnnotation(JPA.JOIN_TABLE);
+		resourceField.addAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNotNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
 
-		resourceAttribute.removeAnnotation(JPA.JOIN_COLUMN);
+		resourceField.removeAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
 
-		resourceAttribute.removeAnnotation(JPA.JOIN_TABLE);
+		resourceField.removeAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
+		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 	}

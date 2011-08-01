@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
  * Java order column
@@ -73,7 +73,7 @@ public class GenericJavaOrderColumn2_0
 	public OrderColumn2_0Annotation getColumnAnnotation() {
 		// hmmmm...
 		return this.isJpa2_0Compatible() ?
-				(OrderColumn2_0Annotation) this.getResourcePersistentAttribute().getNonNullAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME) :
+				(OrderColumn2_0Annotation) this.getResourceAttribute().getNonNullAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME) :
 				this.getNullColumnAnnotation();
 	}
 
@@ -86,13 +86,13 @@ public class GenericJavaOrderColumn2_0
 
 	protected OrderColumn2_0Annotation buildNullColumnAnnotation() {
 		// hmmmm...
-		return (OrderColumn2_0Annotation) OrderColumn2_0AnnotationDefinition.instance().buildNullAnnotation(this.getResourcePersistentAttribute());
+		return (OrderColumn2_0Annotation) OrderColumn2_0AnnotationDefinition.instance().buildNullAnnotation(this.getResourceAttribute());
 	}
 
 	@Override
 	protected void removeColumnAnnotation() {
 		if (this.isJpa2_0Compatible()) {
-			this.getResourcePersistentAttribute().removeAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
+			this.getResourceAttribute().removeAnnotation(OrderColumn2_0Annotation.ANNOTATION_NAME);
 		} else {
 			throw new IllegalStateException();
 		}
@@ -239,8 +239,8 @@ public class GenericJavaOrderColumn2_0
 		return this.getParent();
 	}
 
-	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getOrderable().getResourcePersistentAttribute();
+	protected JavaResourceAttribute getResourceAttribute() {
+		return this.getOrderable().getResourceAttribute();
 	}
 
 	@Override

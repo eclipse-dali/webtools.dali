@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,27 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.ListIterator;
-import java.util.Vector;
-
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationContainer;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.NestableUniqueConstraintAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
@@ -72,12 +63,11 @@ public final class SourceTableGeneratorAnnotation
 	private final AnnotationElementAdapter<String> pkColumnValueAdapter;
 	private String pkColumnValue;
 
-	private final Vector<NestableUniqueConstraintAnnotation> uniqueConstraints = new Vector<NestableUniqueConstraintAnnotation>();
 	private final UniqueConstraintsAnnotationContainer uniqueConstraintsContainer = new UniqueConstraintsAnnotationContainer();
 
 
-	public SourceTableGeneratorAnnotation(JavaResourceNode parent, Member member) {
-		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceTableGeneratorAnnotation(JavaResourceNode parent, AnnotatedElement element) {
+		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.tableAdapter = this.buildAdapter(TABLE_ADAPTER);
 		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);
 		this.schemaAdapter = this.buildAdapter(SCHEMA_ADAPTER);
@@ -99,7 +89,7 @@ public final class SourceTableGeneratorAnnotation
 		this.pkColumnName = this.buildPkColumnName(astRoot);
 		this.valueColumnName = this.buildValueColumnName(astRoot);
 		this.pkColumnValue = this.buildPkColumnValue(astRoot);
-		AnnotationContainerTools.initialize(this.uniqueConstraintsContainer, astRoot);
+		this.uniqueConstraintsContainer.initialize(this.getAstAnnotation(astRoot));
 	}
 
 	@Override
@@ -111,7 +101,7 @@ public final class SourceTableGeneratorAnnotation
 		this.syncPkColumnName(this.buildPkColumnName(astRoot));
 		this.syncValueColumnName(this.buildValueColumnName(astRoot));
 		this.syncPkColumnValue(this.buildPkColumnValue(astRoot));
-		AnnotationContainerTools.synchronize(this.uniqueConstraintsContainer, astRoot);
+		this.uniqueConstraintsContainer.synchronize(this.getAstAnnotation(astRoot));
 	}
 
 	@Override
@@ -327,78 +317,66 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	// ***** unique constraints
-	public ListIterator<UniqueConstraintAnnotation> uniqueConstraints() {
-		return new CloneListIterator<UniqueConstraintAnnotation>(this.uniqueConstraints);
+
+	public ListIterable<UniqueConstraintAnnotation> getUniqueConstraints() {
+		return this.uniqueConstraintsContainer.getNestedAnnotations();
 	}
 
-	Iterable<NestableUniqueConstraintAnnotation> getNestableUniqueConstraints() {
-		return new LiveCloneIterable<NestableUniqueConstraintAnnotation>(this.uniqueConstraints);
+	public int getUniqueConstraintsSize() {
+		return this.uniqueConstraintsContainer.getNestedAnnotationsSize();
 	}
 
-	public int uniqueConstraintsSize() {
-		return this.uniqueConstraints.size();
+	public UniqueConstraintAnnotation uniqueConstraintAt(int index) {
+		return this.uniqueConstraintsContainer.nestedAnnotationAt(index);
 	}
 
-	public NestableUniqueConstraintAnnotation uniqueConstraintAt(int index) {
-		return this.uniqueConstraints.get(index);
+	public UniqueConstraintAnnotation addUniqueConstraint(int index) {
+		return this.uniqueConstraintsContainer.addNestedAnnotation(index);
 	}
 
-	public int indexOfUniqueConstraint(UniqueConstraintAnnotation uniqueConstraint) {
-		return this.uniqueConstraints.indexOf(uniqueConstraint);
+	private UniqueConstraintAnnotation buildUniqueConstraint(int index) {
+		return new SourceUniqueConstraintAnnotation(
+				this, this.annotatedElement, buildUniqueConstraintIndexedDeclarationAnnotationAdapter(index));
 	}
 
-	public NestableUniqueConstraintAnnotation addUniqueConstraint(int index) {
-		return (NestableUniqueConstraintAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.uniqueConstraintsContainer);
-	}
-
-	NestableUniqueConstraintAnnotation addUniqueConstraint_() {
-		return this.addUniqueConstraint_(this.uniqueConstraints.size());
-	}
-
-	private NestableUniqueConstraintAnnotation addUniqueConstraint_(int index) {
-		NestableUniqueConstraintAnnotation uniqueConstraint = this.buildUniqueConstraint(index);
-		this.uniqueConstraints.add(index, uniqueConstraint);
-		return uniqueConstraint;
-	}
-
-	void syncAddUniqueConstraint(Annotation astAnnotation) {
-		int index = this.uniqueConstraints.size();
-		NestableUniqueConstraintAnnotation uniqueConstraint = this.addUniqueConstraint_(index);
-		uniqueConstraint.initialize((CompilationUnit) astAnnotation.getRoot());
-		this.fireItemAdded(UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
-	}
-
-	NestableUniqueConstraintAnnotation buildUniqueConstraint(int index) {
-		return new SourceUniqueConstraintAnnotation(this, this.annotatedElement, buildUniqueConstraintAnnotationAdapter(index));
-	}
-
-	IndexedDeclarationAnnotationAdapter buildUniqueConstraintAnnotationAdapter(int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(this.daa, JPA.TABLE_GENERATOR__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
-	}
-
-	void uniqueConstraintAdded(int index, NestableUniqueConstraintAnnotation constraint) {
-		this.fireItemAdded(UNIQUE_CONSTRAINTS_LIST, index, constraint);
+	private IndexedDeclarationAnnotationAdapter buildUniqueConstraintIndexedDeclarationAnnotationAdapter(int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(
+				this.daa, JPA.TABLE_GENERATOR__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
 
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
-		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.uniqueConstraintsContainer);
-	}
-
-	NestableUniqueConstraintAnnotation moveUniqueConstraint_(int targetIndex, int sourceIndex) {
-		return CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex).get(targetIndex);
+		this.uniqueConstraintsContainer.moveNestedAnnotation(targetIndex, sourceIndex);
 	}
 
 	public void removeUniqueConstraint(int index) {
-		AnnotationContainerTools.removeNestedAnnotation(index, this.uniqueConstraintsContainer);
+		this.uniqueConstraintsContainer.removeNestedAnnotation(index);
+	}
+	
+
+	/**
+	 * adapt the AnnotationContainer interface to the table's unique constraints
+	 */
+	class UniqueConstraintsAnnotationContainer 
+		extends AnnotationContainer<UniqueConstraintAnnotation>
+	{
+		@Override
+		protected String getAnnotationsPropertyName() {
+			return UNIQUE_CONSTRAINTS_LIST;
+		}
+		@Override
+		protected String getElementName() {
+			return JPA.TABLE_GENERATOR__UNIQUE_CONSTRAINTS;
+		}
+		@Override
+		protected String getNestedAnnotationName() {
+			return UniqueConstraintAnnotation.ANNOTATION_NAME;
+		}
+		@Override
+		protected UniqueConstraintAnnotation buildNestedAnnotation(int index) {
+			return SourceTableGeneratorAnnotation.this.buildUniqueConstraint(index);
+		}
 	}
 
-	NestableUniqueConstraintAnnotation removeUniqueConstraint_(int index) {
-		return this.uniqueConstraints.remove(index);
-	}
-
-	void syncRemoveUniqueConstraints(int index) {
-		this.removeItemsFromList(index, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-	}
 
 
 	// ********** static methods **********
@@ -409,62 +387,6 @@ public final class SourceTableGeneratorAnnotation
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildIntegerAdapter(String elementName) {
 		return buildIntegerAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
-	}
-
-
-	// ********** unique constraint container **********
-
-	/**
-	 * adapt the AnnotationContainer interface to the table generator's unique constraints
-	 */
-	class UniqueConstraintsAnnotationContainer
-		implements AnnotationContainer<NestableUniqueConstraintAnnotation> 
-	{
-		public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
-			return SourceTableGeneratorAnnotation.this.getAstAnnotation(astRoot);
-		}
-
-		public String getElementName() {
-			return JPA.TABLE_GENERATOR__UNIQUE_CONSTRAINTS;
-		}
-
-		public String getNestedAnnotationName() {
-			return UniqueConstraintAnnotation.ANNOTATION_NAME;
-		}
-
-		public Iterable<NestableUniqueConstraintAnnotation> getNestedAnnotations() {
-			return SourceTableGeneratorAnnotation.this.getNestableUniqueConstraints();
-		}
-
-		public int getNestedAnnotationsSize() {
-			return SourceTableGeneratorAnnotation.this.uniqueConstraintsSize();
-		}
-
-		public NestableUniqueConstraintAnnotation addNestedAnnotation() {
-			return SourceTableGeneratorAnnotation.this.addUniqueConstraint_();
-		}
-
-		public void syncAddNestedAnnotation(Annotation astAnnotation) {
-			SourceTableGeneratorAnnotation.this.syncAddUniqueConstraint(astAnnotation);
-		}
-
-		public NestableUniqueConstraintAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
-			return SourceTableGeneratorAnnotation.this.moveUniqueConstraint_(targetIndex, sourceIndex);
-		}
-
-		public NestableUniqueConstraintAnnotation removeNestedAnnotation(int index) {
-			return SourceTableGeneratorAnnotation.this.removeUniqueConstraint_(index);
-		}
-
-		public void syncRemoveNestedAnnotations(int index) {
-			SourceTableGeneratorAnnotation.this.syncRemoveUniqueConstraints(index);
-		}
-
-		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
-		}
-
 	}
 
 }

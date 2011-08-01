@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,6 +44,10 @@ public abstract class SourceNode
 
 	public JavaResourceCompilationUnit getJavaResourceCompilationUnit() {
 		return (JavaResourceCompilationUnit) this.getRoot();
+	}
+
+	protected CompilationUnit buildASTRoot() {
+		return this.getJavaResourceCompilationUnit().buildASTRoot();
 	}
 
 	/**
@@ -326,9 +330,17 @@ public abstract class SourceNode
 			this.fireItemsRemoved(index, removedItems);
 		}
 
+		public boolean isEmpty() {
+			return this.nestedAnnotations.isEmpty();
+		}
+
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this);
+		}
+
+		public void toString(StringBuilder sb) {
+			sb.append(this.nestedAnnotations);
 		}
 	}
 }

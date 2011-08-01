@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
  * Java converter
@@ -76,7 +76,7 @@ public interface JavaConverter
 		 * 
 		 * @see #buildConverter(Annotation, JavaAttributeMapping, JpaFactory)
 		 */
-		Annotation getConverterAnnotation(JavaResourcePersistentAttribute javaResourcePersistentAttribute);
+		Annotation getConverterAnnotation(JavaResourceAttribute javaResourceAttribute);
 
 		/**
 		 * Build a converter using the specified converter annotation.
@@ -97,7 +97,7 @@ public interface JavaConverter
 		 * Remove the adapter's converter annotation from the specified
 		 * Java resource persistent member.
 		 */
-		void removeConverterAnnotation(JavaResourcePersistentAttribute javaResourcePersistentAttribute);
+		void removeConverterAnnotation(JavaResourceAttribute javaResourcePersistentAttribute);
 	}
 
 
@@ -107,31 +107,31 @@ public interface JavaConverter
 		implements JavaConverter.Adapter
 	{
 		public JavaConverter buildConverter(JavaAttributeMapping parent, JpaFactory factory) {
-			Annotation annotation = this.getConverterAnnotation(parent.getResourcePersistentAttribute());
+			Annotation annotation = this.getConverterAnnotation(parent.getResourceAttribute());
 			return (annotation == null) ? null : this.buildConverter(annotation, parent, factory);
 		}
 
-		public Annotation getConverterAnnotation(JavaResourcePersistentAttribute attribute) {
+		public Annotation getConverterAnnotation(JavaResourceAttribute attribute) {
 			return attribute.getAnnotation(this.getAnnotationName());
 		}
 
 		protected abstract String getAnnotationName();
 
 		public JavaConverter buildNewConverter(JavaAttributeMapping parent, JpaFactory factory) {
-			return this.buildConverter(this.buildConverterAnnotationIfNecessary(parent.getResourcePersistentAttribute()), parent, factory);
+			return this.buildConverter(this.buildConverterAnnotationIfNecessary(parent.getResourceAttribute()), parent, factory);
 		}
 
-		protected Annotation buildConverterAnnotationIfNecessary(JavaResourcePersistentAttribute attribute) {
+		protected Annotation buildConverterAnnotationIfNecessary(JavaResourceAttribute attribute) {
 			// the annotation may already be present, after we remove the other converter annotations
 			Annotation annotation = this.getConverterAnnotation(attribute);
 			return (annotation != null) ? annotation : this.buildConverterAnnotation(attribute);
 		}
 
-		protected Annotation buildConverterAnnotation(JavaResourcePersistentAttribute attribute) {
+		protected Annotation buildConverterAnnotation(JavaResourceAttribute attribute) {
 			return attribute.addAnnotation(this.getAnnotationName());
 		}
 
-		public void removeConverterAnnotation(JavaResourcePersistentAttribute attribute) {
+		public void removeConverterAnnotation(JavaResourceAttribute attribute) {
 			attribute.removeAnnotation(this.getAnnotationName());
 		}
 

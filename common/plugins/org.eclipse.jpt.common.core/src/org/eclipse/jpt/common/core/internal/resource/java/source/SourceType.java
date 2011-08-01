@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,7 +36,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TreeIterable;
 
 /**
- * Java source type
+ * Java source type (type or interface)
  */
 final class SourceType
 	extends SourceAbstractType<Type>
@@ -48,6 +48,8 @@ final class SourceType
 	private boolean abstract_;  // 'abstract' is a reserved word
 
 	private boolean hasNoArgConstructor;
+
+	private boolean hasPrivateNoArgConstructor;
 
 	private final Vector<JavaResourceType> types;
 
@@ -113,6 +115,7 @@ final class SourceType
 		this.superclassQualifiedName = this.buildSuperclassQualifiedName(binding);
 		this.abstract_ = this.buildAbstract(binding);
 		this.hasNoArgConstructor = this.buildHasNoArgConstructor(binding);
+		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor(binding);
 		this.initializeTypes(astRoot);
 		this.initializeEnums(astRoot);
 		this.initializeFields(astRoot);
@@ -129,6 +132,7 @@ final class SourceType
 		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(binding));
 		this.syncAbstract(this.buildAbstract(binding));
 		this.syncHasNoArgConstructor(this.buildHasNoArgConstructor(binding));
+		this.syncHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor(binding));
 		this.syncTypes(astRoot);
 		this.syncEnums(astRoot);
 		this.syncFields(astRoot);
@@ -234,6 +238,26 @@ final class SourceType
 			}
 		}
 		return null;
+	}
+
+	// ***** private no-arg constructor
+	public boolean hasPrivateNoArgConstructor() {
+		return this.hasPrivateNoArgConstructor;
+	}
+
+	private void syncHasPrivateNoArgConstructor(boolean astHasPrivateNoArgConstructor) {
+		boolean old = this.hasPrivateNoArgConstructor;
+		this.hasPrivateNoArgConstructor = astHasPrivateNoArgConstructor;
+		this.firePropertyChanged(PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY, old, astHasPrivateNoArgConstructor);
+	}
+
+	private boolean buildHasPrivateNoArgConstructor(ITypeBinding binding) {
+		return (binding == null) ? false : typeHasPrivateNoArgConstructor(binding);
+	}
+
+	protected static boolean typeHasPrivateNoArgConstructor(ITypeBinding binding) {
+		IMethodBinding method = findNoArgConstructor(binding);
+		return (method != null) && Modifier.isPrivate(method.getModifiers());
 	}
 
 	// ********** types **********
@@ -484,5 +508,24 @@ final class SourceType
 
 	private JavaResourceMethod buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
 		return SourceMethod.newInstance(this, this.annotatedElement, signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
+	}
+
+
+	public boolean hasAnyAnnotatedFields() {
+		for (JavaResourceField field : this.getFields()) {
+			if (field.isAnnotated()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasAnyAnnotatedMethods() {
+		for (JavaResourceMethod method : this.getMethods()) {
+			if (method.isAnnotated()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

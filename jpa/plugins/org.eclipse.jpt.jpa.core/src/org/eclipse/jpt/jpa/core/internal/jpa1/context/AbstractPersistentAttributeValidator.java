@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -24,18 +23,14 @@ public abstract class AbstractPersistentAttributeValidator
 {
 	protected ReadOnlyPersistentAttribute persistentAttribute;
 
-	protected JavaPersistentAttribute javaPersistentAttribute;
-
 	protected PersistentAttributeTextRangeResolver textRangeResolver;
 
 
 	protected AbstractPersistentAttributeValidator(
-		ReadOnlyPersistentAttribute persistentAttribute, JavaPersistentAttribute javaPersistentAttribute, PersistentAttributeTextRangeResolver textRangeResolver) {
+		ReadOnlyPersistentAttribute persistentAttribute, PersistentAttributeTextRangeResolver textRangeResolver) {
 		this.persistentAttribute = persistentAttribute;
-		this.javaPersistentAttribute = javaPersistentAttribute;
 		this.textRangeResolver = textRangeResolver;
 	}
-
 
 	public final boolean validate(List<IMessage> messages, IReporter reporter) {
 		if (this.persistentAttribute.getMappingKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {

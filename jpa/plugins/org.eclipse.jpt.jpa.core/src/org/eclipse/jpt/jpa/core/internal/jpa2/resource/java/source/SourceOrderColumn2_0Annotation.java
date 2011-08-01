@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
-import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNamedColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
  * <code>javax.persistence.OrderColumn</code>
@@ -44,8 +43,8 @@ public final class SourceOrderColumn2_0Annotation
 	private Boolean updatable;
 
 
-	public SourceOrderColumn2_0Annotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
-		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceOrderColumn2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.nullableDeclarationAdapter = this.buildNullableDeclarationAdapter();
 		this.nullableAdapter = this.buildNullableAdapter();
 		this.insertableDeclarationAdapter = this.buildInsertableDeclarationAdapter();
@@ -210,35 +209,5 @@ public final class SourceOrderColumn2_0Annotation
 				(this.nullable == null) &&
 				(this.insertable == null) &&
 				(this.updatable == null);
-	}
-
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.nullableDeclarationAdapter = this.buildNullableDeclarationAdapter();
-		this.nullableAdapter = this.buildNullableAdapter();
-		this.insertableDeclarationAdapter = this.buildInsertableDeclarationAdapter();
-		this.insertableAdapter = this.buildInsertableAdapter();
-		this.updatableDeclarationAdapter = this.buildUpdatableDeclarationAdapter();
-		this.updatableAdapter = this.buildUpdatableAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		map.put(NULLABLE_PROPERTY, this.nullable);
-		this.nullable = null;
-		map.put(INSERTABLE_PROPERTY, this.insertable);
-		this.insertable = null;
-		map.put(UPDATABLE_PROPERTY, this.updatable);
-		this.updatable = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		this.setNullable((Boolean) map.get(NULLABLE_PROPERTY));
-		this.setInsertable((Boolean) map.get(INSERTABLE_PROPERTY));
-		this.setUpdatable((Boolean) map.get(UPDATABLE_PROPERTY));
 	}
 }

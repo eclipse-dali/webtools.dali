@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -169,10 +169,10 @@ public class JpaRenameMappingFileParticipant
 		if (persistence == null) {
 			return null;
 		}
-		if (persistence.persistenceUnitsSize() != 1) {
+		if (persistence.getPersistenceUnitsSize() != 1) {
 			return null; // the context model currently only supports 1 persistence unit
 		}
-		return persistence.persistenceUnits().next();
+		return persistence.getPersistenceUnits().iterator().next();
 	}
 
 	private void addEdits(TextChange textChange, Iterable<? extends TextEdit> textEdits) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,39 +9,84 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullAttributeOverrideColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAttributeOverrideAnnotation;
 
 /**
  * <code>javax.persistence.AttributeOverride</code>
  */
 public final class SourceAttributeOverrideAnnotation
 	extends SourceOverrideAnnotation
-	implements NestableAttributeOverrideAnnotation
+	implements AttributeOverrideAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ATTRIBUTE_OVERRIDES);
 
 	private ElementAnnotationAdapter columnAdapter;
 	private ColumnAnnotation column;
 	private final ColumnAnnotation nullColumn;
 
+	
+	public static SourceAttributeOverrideAnnotation buildSourceAttributeOverrideAnnotation(
+			JavaResourceNode parent, 
+			AnnotatedElement element) {
+		
+		return new SourceAttributeOverrideAnnotation(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+	}
 
-	public SourceAttributeOverrideAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, member, daa, annotationAdapter);
+	public static SourceAttributeOverrideAnnotation buildSourceAttributeOverrideAnnotation(
+			JavaResourceAnnotatedElement parent, 
+			AnnotatedElement annotatedElement, 
+			int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildAttributeOverrideDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildAttributeOverrideAnnotationAdapter(annotatedElement, idaa);
+		return new SourceAttributeOverrideAnnotation(
+			parent,
+			annotatedElement,
+			idaa,
+			iaa);
+	}
+	
+	public static SourceAttributeOverrideAnnotation buildNestedSourceAttributeOverrideAnnotation(
+			JavaResourceNode parent, 
+			AnnotatedElement element, 
+			IndexedDeclarationAnnotationAdapter idaa) {
+		
+		return new SourceAttributeOverrideAnnotation(parent, element, idaa);
+	}
+	
+	private SourceAttributeOverrideAnnotation(
+			JavaResourceNode parent, 
+			AnnotatedElement element, 
+			DeclarationAnnotationAdapter daa) {
+		
+		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
+	}
+	
+	private SourceAttributeOverrideAnnotation(
+			JavaResourceNode parent, 
+			AnnotatedElement element, 
+			IndexedDeclarationAnnotationAdapter idaa) {
+		
+		this(parent, element, idaa, new ElementIndexedAnnotationAdapter(element, idaa));
+	}
+
+	private SourceAttributeOverrideAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, element, daa, annotationAdapter);
 		this.columnAdapter = this.buildColumnAdapter();
 		this.nullColumn = this.buildNullColumn();
 	}
@@ -140,43 +185,20 @@ public final class SourceAttributeOverrideAnnotation
 				(this.column == null);
 	}
 
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.columnAdapter = this.buildColumnAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		if (this.column != null) {
-			Map<String, Object> columnState = new HashMap<String, Object>();
-			this.column.storeOn(columnState);
-			map.put(COLUMN_PROPERTY, columnState);
-			this.column = null;
-		}
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		@SuppressWarnings("unchecked")
-		Map<String, Object> columnState = (Map<String, Object>) map.get(COLUMN_PROPERTY);
-		if (columnState != null) {
-			this.addColumn().restoreFrom(columnState);
-		}
-	}
-
 
 	// ********** static methods **********
 
-	public static SourceAttributeOverrideAnnotation buildAttributeOverride(JavaResourceNode parent, Member member) {
-		return new SourceAttributeOverrideAnnotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+	protected static IndexedAnnotationAdapter buildAttributeOverrideAnnotationAdapter(AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+		return new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
 	}
 
-	static SourceAttributeOverrideAnnotation buildNestedAttributeOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter, ANNOTATION_NAME);
-		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
-		return new SourceAttributeOverrideAnnotation(parent, member, idaa, annotationAdapter);
+	protected static IndexedDeclarationAnnotationAdapter buildAttributeOverrideDeclarationAnnotationAdapter(int index) {
+		IndexedDeclarationAnnotationAdapter idaa = 
+			new CombinationIndexedDeclarationAnnotationAdapter(
+				DECLARATION_ANNOTATION_ADAPTER,
+				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				ANNOTATION_NAME);
+		return idaa;
 	}
 }

@@ -74,6 +74,6 @@ public interface ReadOnlyBaseJoinColumn
 		 * Return the number of join columns in the owner's list the join
 		 * column belongs to.
 		 */
-		int joinColumnsSize();
+		int getJoinColumnsSize();
 	}
 }

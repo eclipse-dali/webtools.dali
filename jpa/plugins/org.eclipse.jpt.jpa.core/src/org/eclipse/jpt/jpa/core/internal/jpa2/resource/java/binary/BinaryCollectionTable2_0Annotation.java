@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary;
 
-import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryBaseTableAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 
 /**
@@ -31,7 +30,7 @@ public final class BinaryCollectionTable2_0Annotation
 	private final Vector<JoinColumnAnnotation> joinColumns;
 
 
-	public BinaryCollectionTable2_0Annotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
+	public BinaryCollectionTable2_0Annotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.joinColumns = this.buildJoinColumns();
 	}
@@ -73,20 +72,16 @@ public final class BinaryCollectionTable2_0Annotation
 	// ********** CollectionTable2_0Annotation implementation **********
 
 	// ***** join columns
-	public ListIterator<JoinColumnAnnotation> joinColumns() {
-		return new CloneListIterator<JoinColumnAnnotation>(this.joinColumns);
+	public ListIterable<JoinColumnAnnotation> getJoinColumns() {
+		return new LiveCloneListIterable<JoinColumnAnnotation>(this.joinColumns);
 	}
 
-	public int joinColumnsSize() {
+	public int getJoinColumnsSize() {
 		return this.joinColumns.size();
 	}
 
 	public JoinColumnAnnotation joinColumnAt(int index) {
 		return this.joinColumns.get(index);
-	}
-
-	public int indexOfJoinColumn(JoinColumnAnnotation joinColumn) {
-		return this.joinColumns.indexOf(joinColumn);
 	}
 
 	public JoinColumnAnnotation addJoinColumn(int index) {

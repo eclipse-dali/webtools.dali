@@ -53,7 +53,7 @@ public class GenericJpaDatabaseIdentifierAdapter
 		if (p == null) {
 			return null;
 		}
-		Iterator<PersistenceUnit> units = this.getPersistence().persistenceUnits();
+		Iterator<PersistenceUnit> units = this.getPersistence().getPersistenceUnits().iterator();
 		return (PersistenceUnit2_0) (units.hasNext() ? units.next() : null);
 	}
 

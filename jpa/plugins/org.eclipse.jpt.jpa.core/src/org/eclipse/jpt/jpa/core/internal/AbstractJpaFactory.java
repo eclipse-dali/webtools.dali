@@ -12,6 +12,9 @@ package org.eclipse.jpt.jpa.core.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -24,6 +27,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -143,8 +147,6 @@ import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.LobAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
@@ -206,14 +208,22 @@ public abstract class AbstractJpaFactory
 
 	// ********** Java Context Model **********
 	
-	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourcePersistentType jrpt) {
-		return new GenericJavaPersistentType(owner, jrpt);
+	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourceType jrt) {
+		return new GenericJavaPersistentType(owner, jrt);
 	}
-	
-	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
-		return new GenericJavaPersistentAttribute(parent, jrpa);
+
+	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
+		return new GenericJavaPersistentAttribute(parent, accessor);
 	}
-	
+
+	public JavaPersistentAttribute buildJavaPersistentField(PersistentType parent, JavaResourceField resourceField) {
+		return new GenericJavaPersistentAttribute(parent, resourceField);
+	}
+
+	public JavaPersistentAttribute buildJavaPersistentProperty(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		return new GenericJavaPersistentAttribute(parent, resourceGetter, resourceSetter);
+	}
+
 	public JavaTypeMapping buildJavaNullTypeMapping(JavaPersistentType parent) {
 		return new JavaNullTypeMapping(parent);
 	}

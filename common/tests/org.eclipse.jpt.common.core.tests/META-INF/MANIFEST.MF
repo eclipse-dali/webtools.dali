@@ -17,4 +17,5 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="[3.4.0,4.0.0)",
  org.junit;bundle-version="3.8.0"
 Export-Package: org.eclipse.jpt.common.core.tests.internal;x-internal:=true,
  org.eclipse.jpt.common.core.tests.internal.projects;x-internal:=true,
+ org.eclipse.jpt.common.core.tests.internal.resource.java;x-internal:=true,
  org.eclipse.jpt.common.core.tests.internal.utility.jdt;x-internal:=true

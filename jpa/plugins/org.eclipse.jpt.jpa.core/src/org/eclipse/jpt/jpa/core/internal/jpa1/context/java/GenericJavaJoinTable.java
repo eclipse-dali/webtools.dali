@@ -11,16 +11,12 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -37,7 +33,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -59,8 +54,7 @@ public class GenericJavaJoinTable
 	extends GenericJavaReferenceTable<JoinTableAnnotation>
 	implements JavaJoinTable
 {
-	protected final Vector<JavaJoinColumn> specifiedInverseJoinColumns = new Vector<JavaJoinColumn>();
-	protected final SpecifiedInverseJoinColumnContainerAdapter specifiedInverseJoinColumnContainerAdapter = new SpecifiedInverseJoinColumnContainerAdapter();
+	protected final SpecifiedInverseJoinColumnContainer specifiedInverseJoinColumnContainer;
 	protected final JavaReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
 
 	protected JavaJoinColumn defaultInverseJoinColumn;
@@ -69,7 +63,7 @@ public class GenericJavaJoinTable
 	public GenericJavaJoinTable(JavaJoinTableRelationshipStrategy parent, Owner owner) {
 		super(parent, owner);
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
-		this.initializeSpecifiedInverseJoinColumns();
+		this.specifiedInverseJoinColumnContainer = new SpecifiedInverseJoinColumnContainer();
 	}
 
 	@Override
@@ -92,7 +86,7 @@ public class GenericJavaJoinTable
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getSpecifiedInverseJoinColumns());
+		this.updateSpecifiedInverseJoinColumns();
 		this.updateDefaultInverseJoinColumn();
 	}
 
@@ -112,16 +106,12 @@ public class GenericJavaJoinTable
 
 	// ********** inverse join columns **********
 
-	public ListIterator<JavaJoinColumn> inverseJoinColumns() {
-		return this.getInverseJoinColumns().iterator();
-	}
-
-	protected ListIterable<JavaJoinColumn> getInverseJoinColumns() {
+	public ListIterable<JavaJoinColumn> getInverseJoinColumns() {
 		return this.hasSpecifiedInverseJoinColumns() ? this.getSpecifiedInverseJoinColumns() : this.getDefaultInverseJoinColumns();
 	}
 
-	public int inverseJoinColumnsSize() {
-		return this.hasSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumnsSize() : this.defaultInverseJoinColumnsSize();
+	public int getInverseJoinColumnsSize() {
+		return this.hasSpecifiedInverseJoinColumns() ? this.getSpecifiedInverseJoinColumnsSize() : this.defaultInverseJoinColumnsSize();
 	}
 
 	public void convertDefaultInverseJoinColumnToSpecified() {
@@ -131,112 +121,86 @@ public class GenericJavaJoinTable
 
 	// ********** specified inverse join columns **********
 
-	public ListIterator<JavaJoinColumn> specifiedInverseJoinColumns() {
-		return this.getSpecifiedInverseJoinColumns().iterator();
-	}
-
 	public ListIterable<JavaJoinColumn> getSpecifiedInverseJoinColumns() {
-		return new LiveCloneListIterable<JavaJoinColumn>(this.specifiedInverseJoinColumns);
+		return this.specifiedInverseJoinColumnContainer.getContextElements();
 	}
 
-	public int specifiedInverseJoinColumnsSize() {
-		return this.specifiedInverseJoinColumns.size();
+	public int getSpecifiedInverseJoinColumnsSize() {
+		return this.specifiedInverseJoinColumnContainer.getContextElementsSize();
 	}
 
 	public boolean hasSpecifiedInverseJoinColumns() {
-		return this.specifiedInverseJoinColumns.size() != 0;
+		return this.getSpecifiedInverseJoinColumnsSize() != 0;
 	}
 
 	public JavaJoinColumn getSpecifiedInverseJoinColumn(int index) {
-		return this.specifiedInverseJoinColumns.get(index);
+		return this.specifiedInverseJoinColumnContainer.getContextElement(index);
 	}
 
 	public JavaJoinColumn addSpecifiedInverseJoinColumn() {
-		return this.addSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumns.size());
+		return this.addSpecifiedInverseJoinColumn(this.getSpecifiedInverseJoinColumnsSize());
 	}
 
 	public JavaJoinColumn addSpecifiedInverseJoinColumn(int index) {
 		JoinColumnAnnotation annotation = this.getTableAnnotation().addInverseJoinColumn(index);
-		return this.addSpecifiedInverseJoinColumn_(index, annotation);
+		return this.specifiedInverseJoinColumnContainer.addContextElement(index, annotation);
 	}
 
 	public void removeSpecifiedInverseJoinColumn(JoinColumn joinColumn) {
-		this.removeSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumns.indexOf(joinColumn));
+		this.removeSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumnContainer.indexOfContextElement((JavaJoinColumn) joinColumn));
 	}
 
 	public void removeSpecifiedInverseJoinColumn(int index) {
 		this.getTableAnnotation().removeInverseJoinColumn(index);
 		this.removeTableAnnotationIfUnset();
-		this.removeSpecifiedInverseJoinColumn_(index);
-	}
-
-	protected void removeSpecifiedInverseJoinColumn_(int index) {
-		this.removeItemFromList(index, this.specifiedInverseJoinColumns, SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
+		this.specifiedInverseJoinColumnContainer.removeContextElement(index);
 	}
 
 	public void moveSpecifiedInverseJoinColumn(int targetIndex, int sourceIndex) {
 		this.getTableAnnotation().moveInverseJoinColumn(targetIndex, sourceIndex);
-		this.moveItemInList(targetIndex, sourceIndex, this.specifiedInverseJoinColumns, SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
+		this.specifiedInverseJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
 	public void clearSpecifiedInverseJoinColumns() {
 		// for now, we have to remove annotations one at a time...
-		for (int i = this.specifiedInverseJoinColumns.size(); i-- > 0; ) {
+		for (int i = this.getSpecifiedInverseJoinColumnsSize(); i-- > 0; ) {
 			this.removeSpecifiedInverseJoinColumn(i);
 		}
 	}
 
-	protected void initializeSpecifiedInverseJoinColumns() {
-		for (JoinColumnAnnotation joinColumnAnnotation : this.getInverseJoinColumnAnnotations()) {
-			this.specifiedInverseJoinColumns.add(this.buildInverseJoinColumn(joinColumnAnnotation));
-		}
-	}
-
 	protected void syncSpecifiedInverseJoinColumns() {
-		ContextContainerTools.synchronizeWithResourceModel(this.specifiedInverseJoinColumnContainerAdapter);
+		this.specifiedInverseJoinColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<JoinColumnAnnotation> getInverseJoinColumnAnnotations() {
-		return CollectionTools.iterable(this.getTableAnnotation().inverseJoinColumns());
+	protected void updateSpecifiedInverseJoinColumns() {
+		this.specifiedInverseJoinColumnContainer.update();
 	}
 
-	protected void moveSpecifiedInverseJoinColumn_(int index, JavaJoinColumn joinColumn) {
-		this.moveItemInList(index, joinColumn, this.specifiedInverseJoinColumns, SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
-	}
-
-	protected JavaJoinColumn addSpecifiedInverseJoinColumn_(int index, JoinColumnAnnotation joinColumnAnnotation) {
-		JavaJoinColumn joinColumn = this.buildInverseJoinColumn(joinColumnAnnotation);
-		this.addItemToList(index, joinColumn, this.specifiedInverseJoinColumns, SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
-		return joinColumn;
-	}
-
-	protected void removeSpecifiedInverseJoinColumn_(JavaJoinColumn joinColumn) {
-		this.removeSpecifiedInverseJoinColumn_(this.specifiedInverseJoinColumns.indexOf(joinColumn));
+	protected ListIterable<JoinColumnAnnotation> getInverseJoinColumnAnnotations() {
+		return this.getTableAnnotation().getInverseJoinColumns();
 	}
 
 	/**
-	 * specified inverse join column container adapter
+	 * inverse join column container
 	 */
-	protected class SpecifiedInverseJoinColumnContainerAdapter
-		implements ContextContainerTools.Adapter<JavaJoinColumn, JoinColumnAnnotation>
+	protected class SpecifiedInverseJoinColumnContainer
+		extends ContextListContainer<JavaJoinColumn, JoinColumnAnnotation>
 	{
-		public Iterable<JavaJoinColumn> getContextElements() {
-			return GenericJavaJoinTable.this.getSpecifiedInverseJoinColumns();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
 		}
-		public Iterable<JoinColumnAnnotation> getResourceElements() {
+		@Override
+		protected JavaJoinColumn buildContextElement(JoinColumnAnnotation resourceElement) {
+			return GenericJavaJoinTable.this.buildInverseJoinColumn(resourceElement);
+		}
+		@Override
+		protected ListIterable<JoinColumnAnnotation> getResourceElements() {
 			return GenericJavaJoinTable.this.getInverseJoinColumnAnnotations();
 		}
-		public JoinColumnAnnotation getResourceElement(JavaJoinColumn contextElement) {
+		@Override
+		protected JoinColumnAnnotation getResourceElement(JavaJoinColumn contextElement) {
 			return contextElement.getColumnAnnotation();
-		}
-		public void moveContextElement(int index, JavaJoinColumn element) {
-			GenericJavaJoinTable.this.moveSpecifiedInverseJoinColumn_(index, element);
-		}
-		public void addContextElement(int index, JoinColumnAnnotation resourceElement) {
-			GenericJavaJoinTable.this.addSpecifiedInverseJoinColumn_(index, resourceElement);
-		}
-		public void removeContextElement(JavaJoinColumn element) {
-			GenericJavaJoinTable.this.removeSpecifiedInverseJoinColumn_(element);
 		}
 	}
 
@@ -302,14 +266,14 @@ public class GenericJavaJoinTable
 
 	public void initializeFrom(ReadOnlyJoinTable oldTable) {
 		super.initializeFrom(oldTable);
-		for (ReadOnlyJoinColumn joinColumn : CollectionTools.iterable(oldTable.specifiedInverseJoinColumns())) {
+		for (ReadOnlyJoinColumn joinColumn : oldTable.getSpecifiedInverseJoinColumns()) {
 			this.addSpecifiedInverseJoinColumn().initializeFrom(joinColumn);
 		}
 	}
 
 	public void initializeFromVirtual(ReadOnlyJoinTable virtualTable) {
 		super.initializeFromVirtual(virtualTable);
-		for (ReadOnlyJoinColumn joinColumn : CollectionTools.iterable(virtualTable.inverseJoinColumns())) {
+		for (ReadOnlyJoinColumn joinColumn : virtualTable.getInverseJoinColumns()) {
 			this.addSpecifiedInverseJoinColumn().initializeFromVirtual(joinColumn);
 		}
 	}
@@ -335,7 +299,7 @@ public class GenericJavaJoinTable
 		if (result != null) {
 			return result;
 		}
-		for (JavaJoinColumn column : CollectionTools.iterable(this.inverseJoinColumns())) {
+		for (JavaJoinColumn column : this.getInverseJoinColumns()) {
 			result = column.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
@@ -451,8 +415,8 @@ public class GenericJavaJoinTable
 			return GenericJavaJoinTable.this.defaultJoinColumn == joinColumn;
 		}
 
-		public int joinColumnsSize() {
-			return GenericJavaJoinTable.this.joinColumnsSize();
+		public int getJoinColumnsSize() {
+			return GenericJavaJoinTable.this.getJoinColumnsSize();
 		}
 
 		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
@@ -491,8 +455,8 @@ public class GenericJavaJoinTable
 			return GenericJavaJoinTable.this.defaultInverseJoinColumn == joinColumn;
 		}
 
-		public int joinColumnsSize() {
-			return GenericJavaJoinTable.this.inverseJoinColumnsSize();
+		public int getJoinColumnsSize() {
+			return GenericJavaJoinTable.this.getInverseJoinColumnsSize();
 		}
 
 		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {

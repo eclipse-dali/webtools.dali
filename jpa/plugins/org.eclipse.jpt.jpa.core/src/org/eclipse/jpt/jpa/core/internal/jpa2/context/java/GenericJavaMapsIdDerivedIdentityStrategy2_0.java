@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -38,7 +39,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -172,8 +172,8 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		return this.getMapping().getPersistentAttribute();
 	}
 
-	protected JavaResourcePersistentAttribute getResourceAttribute() {
-		return this.getPersistentAttribute().getResourcePersistentAttribute();
+	protected JavaResourceAttribute getResourceAttribute() {
+		return this.getPersistentAttribute().getResourceAttribute();
 	}
 
 	protected Iterable<AttributeMapping> getAllAttributeMappings() {

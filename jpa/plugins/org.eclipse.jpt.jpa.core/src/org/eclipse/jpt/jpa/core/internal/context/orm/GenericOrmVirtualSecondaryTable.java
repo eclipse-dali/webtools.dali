@@ -10,13 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
@@ -29,7 +25,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinColumnValidator;
@@ -44,19 +39,17 @@ public class GenericOrmVirtualSecondaryTable
 	extends AbstractOrmVirtualTable<JavaSecondaryTable>
 	implements OrmVirtualSecondaryTable
 {
-	protected final JavaSecondaryTable overriddenTable;
 
-	protected final Vector<OrmVirtualPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns = new Vector<OrmVirtualPrimaryKeyJoinColumn>();
-	protected final SpecifiedPrimaryKeyJoinColumnContainerAdapter specifiedPrimaryKeyJoinColumnContainerAdapter = new SpecifiedPrimaryKeyJoinColumnContainerAdapter();
+	protected final ContextListContainer<OrmVirtualPrimaryKeyJoinColumn, JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
 	protected final OrmReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected OrmVirtualPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 
 	public GenericOrmVirtualSecondaryTable(OrmEntity parent, Owner owner, JavaSecondaryTable overriddenTable) {
-		super(parent, owner);
-		this.overriddenTable = overriddenTable;
+		super(parent, owner, overriddenTable);
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
+		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
 	}
 
 
@@ -70,96 +63,80 @@ public class GenericOrmVirtualSecondaryTable
 	}
 
 
-	// ********** table **********
-
-	@Override
-	public JavaSecondaryTable getOverriddenTable() {
-		return this.overriddenTable;
-	}
-
-
 	// ********** primary key join columns **********
 
-	public ListIterator<OrmVirtualPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
-		return this.getPrimaryKeyJoinColumns().iterator();
-	}
-
-	protected ListIterable<OrmVirtualPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
+	public ListIterable<OrmVirtualPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
 		return this.hasSpecifiedPrimaryKeyJoinColumns() ? this.getSpecifiedPrimaryKeyJoinColumns() : this.getDefaultPrimaryKeyJoinColumns();
 	}
 
-	public int primaryKeyJoinColumnsSize() {
-		return this.hasSpecifiedPrimaryKeyJoinColumns() ? this.specifiedPrimaryKeyJoinColumnsSize() : this.getDefaultPrimaryKeyJoinColumnsSize();
+	public int getPrimaryKeyJoinColumnsSize() {
+		return this.hasSpecifiedPrimaryKeyJoinColumns() ? this.getSpecifiedPrimaryKeyJoinColumnsSize() : this.getDefaultPrimaryKeyJoinColumnsSize();
 	}
 
 
 	// ********** specified primary key join columns **********
 
-	public ListIterator<OrmVirtualPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
-		return this.getSpecifiedPrimaryKeyJoinColumns().iterator();
+	public ListIterable<OrmVirtualPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
+		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElements();
 	}
 
-	protected ListIterable<OrmVirtualPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
-		return new LiveCloneListIterable<OrmVirtualPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
-	}
-
-	public int specifiedPrimaryKeyJoinColumnsSize() {
-		return this.specifiedPrimaryKeyJoinColumns.size();
+	public int getSpecifiedPrimaryKeyJoinColumnsSize() {
+		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElementsSize();
 	}
 
 	public boolean hasSpecifiedPrimaryKeyJoinColumns() {
-		return this.specifiedPrimaryKeyJoinColumns.size() != 0;
+		return this.getSpecifiedPrimaryKeyJoinColumnsSize() != 0;
 	}
 
 	public OrmVirtualPrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index) {
-		return this.specifiedPrimaryKeyJoinColumns.get(index);
+		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElement(index);
 	}
 
 	protected void updateSpecifiedPrimaryKeyJoinColumns() {
-		ContextContainerTools.update(this.specifiedPrimaryKeyJoinColumnContainerAdapter);
+		this.specifiedPrimaryKeyJoinColumnContainer.update();
 	}
 
-	protected Iterable<JavaPrimaryKeyJoinColumn> getOverriddenPrimaryKeyJoinColumns() {
-		return CollectionTools.iterable(this.getOverriddenTable().specifiedPrimaryKeyJoinColumns());
+	protected ListIterable<JavaPrimaryKeyJoinColumn> getOverriddenPrimaryKeyJoinColumns() {
+		return this.getOverriddenTable().getSpecifiedPrimaryKeyJoinColumns();
 	}
 
 	protected void moveSpecifiedPrimaryKeyJoinColumn(int index, OrmVirtualPrimaryKeyJoinColumn pkJoinColumn) {
-		this.moveItemInList(index, pkJoinColumn, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+		this.specifiedPrimaryKeyJoinColumnContainer.moveContextElement(index, pkJoinColumn);
 	}
 
 	protected OrmVirtualPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index, JavaPrimaryKeyJoinColumn javaColumn) {
-		OrmVirtualPrimaryKeyJoinColumn virtualColumn = this.buildPrimaryKeyJoinColumn(javaColumn);
-		this.addItemToList(index, virtualColumn, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
-		return virtualColumn;
+		return this.specifiedPrimaryKeyJoinColumnContainer.addContextElement(index, javaColumn);
 	}
 
 	protected void removeSpecifiedPrimaryKeyJoinColumn(OrmVirtualPrimaryKeyJoinColumn pkJoinColumn) {
-		this.removeItemFromList(pkJoinColumn, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+		this.specifiedPrimaryKeyJoinColumnContainer.removeContextElement(pkJoinColumn);
+	}
+
+	protected ContextListContainer<OrmVirtualPrimaryKeyJoinColumn, JavaPrimaryKeyJoinColumn> buildSpecifiedPrimaryKeyJoinColumnContainer() {
+		return new SpecifiedPrimaryKeyJoinColumnContainer();
 	}
 
 	/**
-	 * specified primary key join column container adapter
+	 * specified primary key join column container
 	 */
-	protected class SpecifiedPrimaryKeyJoinColumnContainerAdapter
-		implements ContextContainerTools.Adapter<OrmVirtualPrimaryKeyJoinColumn, JavaPrimaryKeyJoinColumn>
+	protected class SpecifiedPrimaryKeyJoinColumnContainer
+		extends ContextListContainer<OrmVirtualPrimaryKeyJoinColumn, JavaPrimaryKeyJoinColumn>
 	{
-		public Iterable<OrmVirtualPrimaryKeyJoinColumn> getContextElements() {
-			return GenericOrmVirtualSecondaryTable.this.getSpecifiedPrimaryKeyJoinColumns();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST;
 		}
-		public Iterable<JavaPrimaryKeyJoinColumn> getResourceElements() {
+		@Override
+		protected OrmVirtualPrimaryKeyJoinColumn buildContextElement(JavaPrimaryKeyJoinColumn resourceElement) {
+			return GenericOrmVirtualSecondaryTable.this.buildPrimaryKeyJoinColumn(resourceElement);
+		}
+		@Override
+		protected ListIterable<JavaPrimaryKeyJoinColumn> getResourceElements() {
 			return GenericOrmVirtualSecondaryTable.this.getOverriddenPrimaryKeyJoinColumns();
 		}
-		public JavaPrimaryKeyJoinColumn getResourceElement(OrmVirtualPrimaryKeyJoinColumn contextElement) {
+		@Override
+		protected JavaPrimaryKeyJoinColumn getResourceElement(OrmVirtualPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
-		}
-		public void moveContextElement(int index, OrmVirtualPrimaryKeyJoinColumn element) {
-			GenericOrmVirtualSecondaryTable.this.moveSpecifiedPrimaryKeyJoinColumn(index, element);
-		}
-		public void addContextElement(int index, JavaPrimaryKeyJoinColumn element) {
-			GenericOrmVirtualSecondaryTable.this.addSpecifiedPrimaryKeyJoinColumn(index, element);
-		}
-		public void removeContextElement(OrmVirtualPrimaryKeyJoinColumn element) {
-			GenericOrmVirtualSecondaryTable.this.removeSpecifiedPrimaryKeyJoinColumn(element);
 		}
 	}
 
@@ -282,7 +259,7 @@ public class GenericOrmVirtualSecondaryTable
 		}
 
 		public String getDefaultColumnName() {
-			if (this.joinColumnsSize() != 1) {
+			if (this.getJoinColumnsSize() != 1) {
 				return null;
 			}
 			Entity parentEntity = this.getEntity().getParentEntity();
@@ -295,8 +272,8 @@ public class GenericOrmVirtualSecondaryTable
 			return GenericOrmVirtualSecondaryTable.this.getDbTable();
 		}
 
-		public int joinColumnsSize() {
-			return GenericOrmVirtualSecondaryTable.this.primaryKeyJoinColumnsSize();
+		public int getJoinColumnsSize() {
+			return GenericOrmVirtualSecondaryTable.this.getPrimaryKeyJoinColumnsSize();
 		}
 
 		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {

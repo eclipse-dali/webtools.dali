@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.persistence.details;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -23,8 +22,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -106,8 +106,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 	}
 	
 	private boolean classRefExists(String className) {
-		for ( ListIterator<ClassRef> i = getSubject().specifiedClassRefs(); i.hasNext(); ) {
-			ClassRef classRef = i.next();
+		for (ClassRef classRef : getSubject().getSpecifiedClassRefs()) {
 			if( classRef.getClassName().equals(className)) {
 				return true;
 			}
@@ -242,13 +241,13 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 	private ListValueModel<ClassRef> buildListHolder() {
 		return new ListAspectAdapter<PersistenceUnit, ClassRef>(getSubjectHolder(), PersistenceUnit.SPECIFIED_CLASS_REFS_LIST) {
 			@Override
-			protected ListIterator<ClassRef> listIterator_() {
-				return subject.specifiedClassRefs();
+			protected ListIterable<ClassRef> getListIterable() {
+				return subject.getSpecifiedClassRefs();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.specifiedClassRefsSize();
+				return subject.getSpecifiedClassRefsSize();
 			}
 		};
 	}

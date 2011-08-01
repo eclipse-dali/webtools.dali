@@ -15,6 +15,7 @@ import java.util.Vector;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -43,7 +44,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
@@ -86,11 +86,9 @@ public abstract class AbstractEntityMappings
 	protected final Vector<OrmPersistentType> persistentTypes = new Vector<OrmPersistentType>();
 	protected final PersistentTypeContainerAdapter persistentTypeContainerAdapter = new PersistentTypeContainerAdapter();
 
-	protected final Vector<OrmSequenceGenerator> sequenceGenerators = new Vector<OrmSequenceGenerator>();
-	protected final SequenceGeneratorContainerAdapter sequenceGeneratorContainerAdapter = new SequenceGeneratorContainerAdapter();
+	protected final ContextListContainer<OrmSequenceGenerator, XmlSequenceGenerator> sequenceGeneratorContainer;
 
-	protected final Vector<OrmTableGenerator> tableGenerators = new Vector<OrmTableGenerator>();
-	protected final TableGeneratorContainerAdapter tableGeneratorContainerAdapter = new TableGeneratorContainerAdapter();
+	protected final ContextListContainer<OrmTableGenerator, XmlTableGenerator> tableGeneratorContainer;
 
 	protected final OrmQueryContainer queryContainer;
 
@@ -109,8 +107,8 @@ public abstract class AbstractEntityMappings
 		this.persistenceUnitMetadata = this.buildPersistenceUnitMetadata();
 
 		this.initializePersistentTypes();
-		this.initializeSequenceGenerators();
-		this.initializeTableGenerators();
+		this.sequenceGeneratorContainer = this.buildSequenceGeneratorContainer();
+		this.tableGeneratorContainer = this.buildTableGeneratorContainer();
 
 		this.queryContainer = this.buildQueryContainer();
 	}
@@ -471,14 +469,14 @@ public abstract class AbstractEntityMappings
 	}
 
 	public PersistentType resolvePersistentType(String className) {
-		return (PersistentType) this.resolvePersistentType(PERSISTENT_TYPE_LOOKUP_ADAPTER, className);
+		return (PersistentType) this.resolveType(PERSISTENT_TYPE_LOOKUP_ADAPTER, className);
 	}
 
-	public JavaResourcePersistentType resolveJavaResourcePersistentType(String className) {
-		return (JavaResourcePersistentType) this.resolvePersistentType(RESOURCE_PERSISTENT_TYPE_LOOKUP_ADAPTER, className);
+	public JavaResourceAbstractType resolveJavaResourceType(String className) {
+		return (JavaResourceAbstractType) this.resolveType(RESOURCE_TYPE_LOOKUP_ADAPTER, className);
 	}
 
-	protected Object resolvePersistentType(PersistentTypeLookupAdapter adapter, String className) {
+	protected Object resolveType(TypeLookupAdapter adapter, String className) {
 		if (className == null) {
 			return null;
 		}
@@ -487,33 +485,33 @@ public abstract class AbstractEntityMappings
 		className = className.replace('$', '.');
 
 		// first try to resolve using only the locally specified name...
-		Object persistentType = adapter.resolvePersistentType(this, className);
-		if (persistentType != null) {
-			return persistentType;
+		Object type = adapter.resolveType(this, className);
+		if (type != null) {
+			return type;
 		}
 
 		// ...then try to resolve by prepending the global package name
 		if (this.getPackage() == null) {
 			return null;
 		}
-		return adapter.resolvePersistentType(this, this.getPackage() + '.' + className);
+		return adapter.resolveType(this, this.getPackage() + '.' + className);
 	}
 
-	protected interface PersistentTypeLookupAdapter {
-		Object resolvePersistentType(EntityMappings entityMappings, String className);
+	protected interface TypeLookupAdapter {
+		Object resolveType(EntityMappings entityMappings, String className);
 	}
 
-	protected static final PersistentTypeLookupAdapter PERSISTENT_TYPE_LOOKUP_ADAPTER =
-		new PersistentTypeLookupAdapter() {
-			public Object resolvePersistentType(EntityMappings entityMappings, String className) {
+	protected static final TypeLookupAdapter PERSISTENT_TYPE_LOOKUP_ADAPTER =
+		new TypeLookupAdapter() {
+			public Object resolveType(EntityMappings entityMappings, String className) {
 				return entityMappings.getPersistenceUnit().getPersistentType(className);
 			}
 		};
 
-	protected static final PersistentTypeLookupAdapter RESOURCE_PERSISTENT_TYPE_LOOKUP_ADAPTER =
-		new PersistentTypeLookupAdapter() {
-			public Object resolvePersistentType(EntityMappings entityMappings, String className) {
-				return entityMappings.getJpaProject().getJavaResourcePersistentType(className);
+	protected static final TypeLookupAdapter RESOURCE_TYPE_LOOKUP_ADAPTER =
+		new TypeLookupAdapter() {
+			public Object resolveType(EntityMappings entityMappings, String className) {
+				return entityMappings.getJpaProject().getJavaResourceType(className);
 			}
 		};
 
@@ -647,20 +645,20 @@ public abstract class AbstractEntityMappings
 	// ********** sequence generators **********
 
 	public ListIterable<OrmSequenceGenerator> getSequenceGenerators() {
-		return new LiveCloneListIterable<OrmSequenceGenerator>(this.sequenceGenerators);
+		return this.sequenceGeneratorContainer.getContextElements();
 	}
 
 	public int getSequenceGeneratorsSize() {
-		return this.sequenceGenerators.size();
+		return this.sequenceGeneratorContainer.getContextElementsSize();
 	}
 
 	public OrmSequenceGenerator addSequenceGenerator() {
-		return this.addSequenceGenerator(this.sequenceGenerators.size());
+		return this.addSequenceGenerator(this.getSequenceGeneratorsSize());
 	}
 
 	public OrmSequenceGenerator addSequenceGenerator(int index) {
 		XmlSequenceGenerator xmlGenerator = this.buildXmlSequenceGenerator();
-		OrmSequenceGenerator sequenceGenerator = this.addSequenceGenerator_(index, xmlGenerator);
+		OrmSequenceGenerator sequenceGenerator = this.sequenceGeneratorContainer.addContextElement(index, xmlGenerator);
 		this.xmlEntityMappings.getSequenceGenerators().add(index, xmlGenerator);
 		return sequenceGenerator;
 	}
@@ -674,75 +672,53 @@ public abstract class AbstractEntityMappings
 	}
 
 	public void removeSequenceGenerator(OrmSequenceGenerator sequenceGenerator) {
-		this.removeSequenceGenerator(this.sequenceGenerators.indexOf(sequenceGenerator));
+		this.removeSequenceGenerator(this.sequenceGeneratorContainer.indexOfContextElement(sequenceGenerator));
 	}
 
 	public void removeSequenceGenerator(int index) {
-		this.removeSequenceGenerator_(index);
+		this.sequenceGeneratorContainer.removeContextElement(index);
 		this.xmlEntityMappings.getSequenceGenerators().remove(index);
 	}
 
-	protected void removeSequenceGenerator_(int index) {
-		this.removeItemFromList(index, this.sequenceGenerators, SEQUENCE_GENERATORS_LIST);
-	}
-
 	public void moveSequenceGenerator(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.sequenceGenerators, SEQUENCE_GENERATORS_LIST);
+		this.sequenceGeneratorContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlEntityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
 	}
 
-	protected void initializeSequenceGenerators() {
-		for (XmlSequenceGenerator sequenceGenerator : this.getXmlSequenceGenerators()) {
-			this.sequenceGenerators.add(this.buildSequenceGenerator(sequenceGenerator));
-		}
-	}
-
 	protected void syncSequenceGenerators() {
-		ContextContainerTools.synchronizeWithResourceModel(this.sequenceGeneratorContainerAdapter);
+		this.sequenceGeneratorContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlSequenceGenerator> getXmlSequenceGenerators() {
+	protected ListIterable<XmlSequenceGenerator> getXmlSequenceGenerators() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlSequenceGenerator>(this.xmlEntityMappings.getSequenceGenerators());
+		return new LiveCloneListIterable<XmlSequenceGenerator>(this.xmlEntityMappings.getSequenceGenerators());
 	}
 
-	protected void moveSequenceGenerator_(int index, OrmSequenceGenerator sequenceGenerator) {
-		this.moveItemInList(index, sequenceGenerator, this.sequenceGenerators, SEQUENCE_GENERATORS_LIST);
-	}
-
-	protected OrmSequenceGenerator addSequenceGenerator_(int index, XmlSequenceGenerator xmlSequenceGenerator) {
-		OrmSequenceGenerator sequenceGenerator = this.buildSequenceGenerator(xmlSequenceGenerator);
-		this.addItemToList(index, sequenceGenerator, this.sequenceGenerators, SEQUENCE_GENERATORS_LIST);
-		return sequenceGenerator;
-	}
-
-	protected void removeSequenceGenerator_(OrmSequenceGenerator sequenceGenerator) {
-		this.removeSequenceGenerator_(this.sequenceGenerators.indexOf(sequenceGenerator));
+	protected ContextListContainer<OrmSequenceGenerator, XmlSequenceGenerator> buildSequenceGeneratorContainer() {
+		return new SequenceGeneratorContainer();
 	}
 
 	/**
-	 * sequence generator container adapter
+	 * sequence generator container
 	 */
-	protected class SequenceGeneratorContainerAdapter
-		implements ContextContainerTools.Adapter<OrmSequenceGenerator, XmlSequenceGenerator>
+	protected class SequenceGeneratorContainer
+		extends ContextListContainer<OrmSequenceGenerator, XmlSequenceGenerator>
 	{
-		public Iterable<OrmSequenceGenerator> getContextElements() {
-			return AbstractEntityMappings.this.getSequenceGenerators();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return SEQUENCE_GENERATORS_LIST;
 		}
-		public Iterable<XmlSequenceGenerator> getResourceElements() {
+		@Override
+		protected OrmSequenceGenerator buildContextElement(XmlSequenceGenerator resourceElement) {
+			return AbstractEntityMappings.this.buildSequenceGenerator(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlSequenceGenerator> getResourceElements() {
 			return AbstractEntityMappings.this.getXmlSequenceGenerators();
 		}
-		public XmlSequenceGenerator getResourceElement(OrmSequenceGenerator contextElement) {
+		@Override
+		protected XmlSequenceGenerator getResourceElement(OrmSequenceGenerator contextElement) {
 			return contextElement.getXmlGenerator();
-		}
-		public void moveContextElement(int index, OrmSequenceGenerator element) {
-			AbstractEntityMappings.this.moveSequenceGenerator_(index, element);
-		}
-		public void addContextElement(int index, XmlSequenceGenerator resourceElement) {
-			AbstractEntityMappings.this.addSequenceGenerator_(index, resourceElement);
-		}
-		public void removeContextElement(OrmSequenceGenerator element) {
-			AbstractEntityMappings.this.removeSequenceGenerator_(element);
 		}
 	}
 
@@ -750,20 +726,20 @@ public abstract class AbstractEntityMappings
 	// ********** table generators **********
 
 	public ListIterable<OrmTableGenerator> getTableGenerators() {
-		return new LiveCloneListIterable<OrmTableGenerator>(this.tableGenerators);
+		return this.tableGeneratorContainer.getContextElements();
 	}
 
 	public int getTableGeneratorsSize() {
-		return this.tableGenerators.size();
+		return this.tableGeneratorContainer.getContextElementsSize();
 	}
 
 	public OrmTableGenerator addTableGenerator() {
-		return this.addTableGenerator(this.tableGenerators.size());
+		return this.addTableGenerator(this.getTableGeneratorsSize());
 	}
 
 	public OrmTableGenerator addTableGenerator(int index) {
 		XmlTableGenerator xmlTableGenerator = this.buildXmlTableGenerator();
-		OrmTableGenerator tableGenerator = this.addTableGenerator_(index, xmlTableGenerator);
+		OrmTableGenerator tableGenerator = this.tableGeneratorContainer.addContextElement(index, xmlTableGenerator);
 		this.xmlEntityMappings.getTableGenerators().add(index, xmlTableGenerator);
 		return tableGenerator;
 	}
@@ -777,75 +753,53 @@ public abstract class AbstractEntityMappings
 	}
 
 	public void removeTableGenerator(OrmTableGenerator tableGenerator) {
-		this.removeTableGenerator(this.tableGenerators.indexOf(tableGenerator));
+		this.removeTableGenerator(this.tableGeneratorContainer.indexOfContextElement(tableGenerator));
 	}
 
 	public void removeTableGenerator(int index) {
-		this.removeTableGenerator_(index);
+		this.tableGeneratorContainer.removeContextElement(index);
 		this.xmlEntityMappings.getTableGenerators().remove(index);
 	}
 
-	protected void removeTableGenerator_(int index) {
-		this.removeItemFromList(index, this.tableGenerators, TABLE_GENERATORS_LIST);
-	}
-
 	public void moveTableGenerator(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.tableGenerators, TABLE_GENERATORS_LIST);
+		this.tableGeneratorContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlEntityMappings.getTableGenerators().move(targetIndex, sourceIndex);
 	}
 
-	protected void initializeTableGenerators() {
-		for (XmlTableGenerator tableGenerator : this.getXmlTableGenerators()) {
-			this.tableGenerators.add(this.buildTableGenerator(tableGenerator));
-		}
-	}
-
 	protected void syncTableGenerators() {
-		ContextContainerTools.synchronizeWithResourceModel(this.tableGeneratorContainerAdapter);
+		this.tableGeneratorContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlTableGenerator> getXmlTableGenerators() {
+	protected ListIterable<XmlTableGenerator> getXmlTableGenerators() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlTableGenerator>(this.xmlEntityMappings.getTableGenerators());
+		return new LiveCloneListIterable<XmlTableGenerator>(this.xmlEntityMappings.getTableGenerators());
 	}
 
-	protected void moveTableGenerator_(int index, OrmTableGenerator tableGenerator) {
-		this.moveItemInList(index, tableGenerator, this.tableGenerators, TABLE_GENERATORS_LIST);
-	}
-
-	protected OrmTableGenerator addTableGenerator_(int index, XmlTableGenerator xmlTableGenerator) {
-		OrmTableGenerator tableGenerator = this.buildTableGenerator(xmlTableGenerator);
-		this.addItemToList(index, tableGenerator, this.tableGenerators, TABLE_GENERATORS_LIST);
-		return tableGenerator;
-	}
-
-	protected void removeTableGenerator_(OrmTableGenerator tableGenerator) {
-		this.removeTableGenerator_(this.tableGenerators.indexOf(tableGenerator));
+	protected ContextListContainer<OrmTableGenerator, XmlTableGenerator> buildTableGeneratorContainer() {
+		return new TableGeneratorContainer();
 	}
 
 	/**
-	 * table generator container adapter
+	 * table generator container
 	 */
-	protected class TableGeneratorContainerAdapter
-		implements ContextContainerTools.Adapter<OrmTableGenerator, XmlTableGenerator>
+	protected class TableGeneratorContainer
+		extends ContextListContainer<OrmTableGenerator, XmlTableGenerator>
 	{
-		public Iterable<OrmTableGenerator> getContextElements() {
-			return AbstractEntityMappings.this.getTableGenerators();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return TABLE_GENERATORS_LIST;
 		}
-		public Iterable<XmlTableGenerator> getResourceElements() {
+		@Override
+		protected OrmTableGenerator buildContextElement(XmlTableGenerator resourceElement) {
+			return AbstractEntityMappings.this.buildTableGenerator(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlTableGenerator> getResourceElements() {
 			return AbstractEntityMappings.this.getXmlTableGenerators();
 		}
-		public XmlTableGenerator getResourceElement(OrmTableGenerator contextElement) {
+		@Override
+		protected XmlTableGenerator getResourceElement(OrmTableGenerator contextElement) {
 			return contextElement.getXmlGenerator();
-		}
-		public void moveContextElement(int index, OrmTableGenerator element) {
-			AbstractEntityMappings.this.moveTableGenerator_(index, element);
-		}
-		public void addContextElement(int index, XmlTableGenerator resourceElement) {
-			AbstractEntityMappings.this.addTableGenerator_(index, resourceElement);
-		}
-		public void removeContextElement(OrmTableGenerator element) {
-			AbstractEntityMappings.this.removeTableGenerator_(element);
 		}
 	}
 

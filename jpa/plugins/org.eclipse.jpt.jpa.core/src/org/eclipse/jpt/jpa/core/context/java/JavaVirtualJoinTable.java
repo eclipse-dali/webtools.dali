@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
 
@@ -27,16 +27,16 @@ public interface JavaVirtualJoinTable
 {
 	JavaVirtualJoinTableRelationshipStrategy getParent();
 
-	ListIterator<JavaVirtualUniqueConstraint> uniqueConstraints();
+	ListIterable<JavaVirtualUniqueConstraint> getUniqueConstraints();
 	JavaVirtualUniqueConstraint getUniqueConstraint(int index);
 
-	ListIterator<JavaVirtualJoinColumn> joinColumns();
-	ListIterator<JavaVirtualJoinColumn> specifiedJoinColumns();
+	ListIterable<JavaVirtualJoinColumn> getJoinColumns();
+	ListIterable<JavaVirtualJoinColumn> getSpecifiedJoinColumns();
 	JavaVirtualJoinColumn getSpecifiedJoinColumn(int index);
 	JavaVirtualJoinColumn getDefaultJoinColumn();
 
-	ListIterator<JavaVirtualJoinColumn> inverseJoinColumns();
-	ListIterator<JavaVirtualJoinColumn> specifiedInverseJoinColumns();
+	ListIterable<JavaVirtualJoinColumn> getInverseJoinColumns();
+	ListIterable<JavaVirtualJoinColumn> getSpecifiedInverseJoinColumns();
 	JavaVirtualJoinColumn getSpecifiedInverseJoinColumn(int index);
 	JavaVirtualJoinColumn getDefaultInverseJoinColumn();
 

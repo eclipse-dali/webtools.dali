@@ -14,12 +14,12 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotati
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.StringExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 
@@ -38,9 +38,9 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	private TextRange converterTextRange;
 
 
-	public SourceEclipseLinkStructConverterAnnotation(JavaResourcePersistentMember parent, Member member) {
-		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.converterAdapter = new AnnotatedElementAnnotationElementAdapter<String>(member, CONVERTER_ADAPTER);
+	public SourceEclipseLinkStructConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		this.converterAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, CONVERTER_ADAPTER);
 	}
 
 	public String getAnnotationName() {

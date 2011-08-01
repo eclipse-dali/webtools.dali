@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
  * </ul>
  */
 abstract class SourceOverrideAnnotation
-	extends SourceAnnotation<Member>  
+	extends SourceAnnotation
 	implements OverrideAnnotation
 {		
 	DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -35,8 +35,8 @@ abstract class SourceOverrideAnnotation
 	String name;
 		
 
-	SourceOverrideAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, member, daa, annotationAdapter);
+	SourceOverrideAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, element, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
 		this.nameAdapter = this.buildNameAdapter();
 	}
@@ -91,18 +91,6 @@ abstract class SourceOverrideAnnotation
 	}
 
 	protected abstract String getNameElementName();
-
-
-	// ********** NestableAnnotation implementation **********
-
-	/**
-	 * Convenience implementation of
-	 * {@link org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation#moveAnnotation(int)}
-	 * used by subclasses.
-	 */
-	public void moveAnnotation(int index) {
-		this.getIndexedAnnotationAdapter().moveAnnotation(index);
-	}
 	
 
 	// ********** misc **********
@@ -111,26 +99,6 @@ abstract class SourceOverrideAnnotation
 	public boolean isUnset() {
 		return super.isUnset() &&
 				(this.name == null);
-	}
-
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
-		this.nameAdapter = this.buildNameAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		map.put(NAME_PROPERTY, this.name);
-		this.name = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		this.setName((String) map.get(NAME_PROPERTY));
 	}
 
 	@Override

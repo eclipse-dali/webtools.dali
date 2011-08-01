@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 
 /**
  * <ul>
@@ -54,12 +53,12 @@ public abstract class SourceBaseColumnAnnotation
 	protected Boolean updatable;
 
 
-	protected SourceBaseColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		this(parent, member, daa, new ElementAnnotationAdapter(member, daa));
+	protected SourceBaseColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
 	}
 	
-	protected SourceBaseColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, member, daa, annotationAdapter);
+	protected SourceBaseColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, element, daa, annotationAdapter);
 		this.tableDeclarationAdapter = this.buildTableDeclarationAdapter();
 		this.tableAdapter = this.buildTableAdapter();
 		this.uniqueDeclarationAdapter = this.buildUniqueDeclarationAdapter();
@@ -290,45 +289,5 @@ public abstract class SourceBaseColumnAnnotation
 				(this.nullable == null) &&
 				(this.insertable == null) &&
 				(this.updatable == null);
-	}
-
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.tableDeclarationAdapter = this.buildTableDeclarationAdapter();
-		this.tableAdapter = this.buildTableAdapter();
-		this.uniqueDeclarationAdapter = this.buildUniqueDeclarationAdapter();
-		this.uniqueAdapter = this.buildUniqueAdapter();
-		this.nullableDeclarationAdapter = this.buildNullableDeclarationAdapter();
-		this.nullableAdapter = this.buildNullableAdapter();
-		this.insertableDeclarationAdapter = this.buildInsertableDeclarationAdapter();
-		this.insertableAdapter = this.buildInsertableAdapter();
-		this.updatableDeclarationAdapter = this.buildUpdatableDeclarationAdapter();
-		this.updatableAdapter = this.buildUpdatableAdapter();
-	}
-
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		map.put(TABLE_PROPERTY, this.table);
-		this.table = null;
-		map.put(UNIQUE_PROPERTY, this.unique);
-		this.unique = null;
-		map.put(NULLABLE_PROPERTY, this.nullable);
-		this.nullable = null;
-		map.put(INSERTABLE_PROPERTY, this.insertable);
-		this.insertable = null;
-		map.put(UPDATABLE_PROPERTY, this.updatable);
-		this.updatable = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		this.setTable((String) map.get(TABLE_PROPERTY));
-		this.setUnique((Boolean) map.get(UNIQUE_PROPERTY));
-		this.setNullable((Boolean) map.get(NULLABLE_PROPERTY));
-		this.setInsertable((Boolean) map.get(INSERTABLE_PROPERTY));
-		this.setUpdatable((Boolean) map.get(UPDATABLE_PROPERTY));
 	}
 }

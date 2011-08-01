@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,16 +10,14 @@
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
 import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
@@ -112,12 +110,12 @@ public class GenericNavigatorItemContentProviderFactory
 										PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
 										getModel()) {
 									@Override
-									protected ListIterator<MappingFileRef> listIterator_() {
-										return subject.specifiedMappingFileRefs();
+									protected ListIterable<MappingFileRef> getListIterable() {
+										return subject.getSpecifiedMappingFileRefs();
 									}
 									@Override
 									protected int size_() {
-										return subject.specifiedMappingFileRefsSize();
+										return subject.getSpecifiedMappingFileRefsSize();
 									}
 								}, MappingFileRef.MAPPING_FILE_PROPERTY)) {
 							@Override
@@ -191,12 +189,12 @@ public class GenericNavigatorItemContentProviderFactory
 			new ListAspectAdapter<PersistenceUnit, ClassRef>(
 				PersistenceUnit.SPECIFIED_CLASS_REFS_LIST, getModel()) {
 					@Override
-					protected ListIterator<ClassRef> listIterator_() {
-						return subject.specifiedClassRefs();
+					protected ListIterable<ClassRef> getListIterable() {
+						return subject.getSpecifiedClassRefs();
 					}
 					@Override
 					protected int size_() {
-						return subject.specifiedClassRefsSize();
+						return subject.getSpecifiedClassRefsSize();
 					}
 			});
 		}
@@ -205,12 +203,12 @@ public class GenericNavigatorItemContentProviderFactory
 			return new CollectionAspectAdapter<PersistenceUnit, ClassRef>(
 				PersistenceUnit.IMPLIED_CLASS_REFS_COLLECTION, getModel()) {
 					@Override
-					protected Iterator<ClassRef> iterator_() {
-						return subject.impliedClassRefs();
+					protected Iterable<ClassRef> getIterable() {
+						return subject.getImpliedClassRefs();
 					}
 					@Override
 					protected int size_() {
-						return subject.impliedClassRefsSize();
+						return subject.getImpliedClassRefsSize();
 					}
 			};
 		}
@@ -242,12 +240,12 @@ public class GenericNavigatorItemContentProviderFactory
 				new ListAspectAdapter<PersistenceUnit, JarFileRef>(
 					PersistenceUnit.JAR_FILE_REFS_LIST, getModel()) {
 						@Override
-						protected ListIterator<JarFileRef> listIterator_() {
-							return subject.jarFileRefs();
+						protected ListIterable<JarFileRef> getListIterable() {
+							return subject.getJarFileRefs();
 						}
 						@Override
 						protected int size_() {
-							return subject.jarFileRefsSize();
+							return subject.getJarFileRefsSize();
 						}
 				});
 		}

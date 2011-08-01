@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -78,8 +78,7 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
         String packageName = Signature.getQualifier(jpt.getName());
 	    PersistenceUnit unit = jpt.getPersistenceUnit();
         
-	    for(Iterator<ClassRef> classRefs = unit.classRefs(); classRefs.hasNext();){
-	    	ClassRef classRef = classRefs.next();
+	    for(ClassRef classRef : unit.getClassRefs()) {
 	    	if(classRef.getClassName().equals(packageName + Signature.C_DOT + value) && !(JPAEditorUtil.getText(jpt).equals(value))){
 		    	return MessageFormat.format(JPAEditorMessages.DirectEditJPAEntityFeature_duplicateEntityName, packageName+value);
 
@@ -101,6 +100,7 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 	    return null;
 	}
 	
+	@Override
 	public void setValue(final String value, IDirectEditingContext context) {
 	    PictogramElement pe = context.getPictogramElement();
 	    ContainerShape csh = ((Shape)pe).getContainer();
@@ -127,6 +127,7 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(alg);
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				((Text) alg).setValue(value);
 			}
@@ -150,13 +151,15 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
             final String attName = newAtName;
 	  		TransactionalEditingDomain tedit = TransactionUtil.getEditingDomain(algo);
 	  		tedit.getCommandStack().execute(new RecordingCommand(tedit) {
-	  			protected void doExecute() {
+	  			@Override
+				protected void doExecute() {
 	  				((Text) algo).setValue(attName);
 	  			}
 	  		});	 
 	    }
 	}
 	
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}	

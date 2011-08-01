@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2009 Oracle. 
+ *  Copyright (c) 2007, 2011 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -25,7 +25,7 @@ public class MappingFileRefTests extends ContextModelTestCase
 	}
 	
 	protected MappingFileRef mappingFileRef() {
-		return getPersistenceUnit().mappingFileRefs().next();
+		return getPersistenceUnit().getMappingFileRefs().iterator().next();
 	}
 	
 	public void testUpdateFileName() {
@@ -36,7 +36,7 @@ public class MappingFileRefTests extends ContextModelTestCase
 		XmlMappingFileRef xmlFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlFileRef.setFileName("foo.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlFileRef);
-		MappingFileRef fileRef = persistenceUnit.specifiedMappingFileRefs().next();
+		MappingFileRef fileRef = persistenceUnit.getSpecifiedMappingFileRefs().iterator().next();
 		
 		// test that file names are initially equal
 		assertEquals(fileRef.getFileName(), xmlFileRef.getFileName());
@@ -70,7 +70,7 @@ public class MappingFileRefTests extends ContextModelTestCase
 		XmlMappingFileRef xmlFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlFileRef.setFileName("foo.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlFileRef);
-		MappingFileRef fileRef = persistenceUnit.specifiedMappingFileRefs().next();
+		MappingFileRef fileRef = persistenceUnit.getSpecifiedMappingFileRefs().iterator().next();
 		
 		// test that file names are initially equal
 		assertEquals(fileRef.getFileName(), xmlFileRef.getFileName());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
@@ -91,9 +91,9 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 	
 	public void testExpiryTimeOfDay() throws Exception {
 		ICompilationUnit cu = this.createTestTimeOfDay();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
 		
 		EclipseLinkTimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
 		
@@ -102,18 +102,18 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 	
 	public void testGetHour() throws Exception {
 		ICompilationUnit cu = this.createTestTimeOfDayWithHour();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
 		EclipseLinkTimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
 		assertEquals(Integer.valueOf(5), timeOfDay.getHour());
 	}
 
 	public void testSetHour() throws Exception {
 		ICompilationUnit cu = this.createTestTimeOfDayWithHour();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
 		EclipseLinkTimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
 		assertEquals(Integer.valueOf(5), timeOfDay.getHour());
 		
@@ -131,18 +131,18 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 	
 	public void testGetMinute() throws Exception {
 		ICompilationUnit cu = this.createTestTimeOfDayWithMinute();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
 		EclipseLinkTimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
 		assertEquals(Integer.valueOf(5), timeOfDay.getMinute());
 	}
 
 	public void testSetMinute() throws Exception {
 		ICompilationUnit cu = this.createTestTimeOfDayWithMinute();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
 		EclipseLinkTimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
 		assertEquals(Integer.valueOf(5), timeOfDay.getMinute());
 		
@@ -160,18 +160,18 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 
 	public void testGetSecond() throws Exception {
 		ICompilationUnit cu = this.createTestTimeOfDayWithSecond();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
 		EclipseLinkTimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
 		assertEquals(Integer.valueOf(5), timeOfDay.getSecond());
 	}
 
 	public void testSetSecond() throws Exception {
 		ICompilationUnit cu = this.createTestTimeOfDayWithSecond();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
 		EclipseLinkTimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
 		assertEquals(Integer.valueOf(5), timeOfDay.getSecond());
 		
@@ -189,18 +189,18 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 	
 	public void testGetMillisecond() throws Exception {
 		ICompilationUnit cu = this.createTestTimeOfDayWithMillisecond();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
 		EclipseLinkTimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
 		assertEquals(Integer.valueOf(5), timeOfDay.getMillisecond());
 	}
 
 	public void testSetMillisecond() throws Exception {
 		ICompilationUnit cu = this.createTestTimeOfDayWithMillisecond();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
 		EclipseLinkTimeOfDayAnnotation timeOfDay = cache.getExpiryTimeOfDay();
 		assertEquals(Integer.valueOf(5), timeOfDay.getMillisecond());
 		

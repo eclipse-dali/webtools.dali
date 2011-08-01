@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -29,7 +30,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -54,7 +54,8 @@ public class GenericClassRef
 
 	/**
 	 * The Java persistent type corresponding to the ref's class name;
-	 * this can be <code>null</code> if the name is invalid.
+	 * this can be <code>null</code> if the className is invalid or
+	 * refers to an enum instead of a class or interface.
 	 */
 	protected JavaPersistentType javaPersistentType;
 
@@ -150,7 +151,7 @@ public class GenericClassRef
 	}
 
 	protected void updateJavaPersistentType() {
-		JavaResourcePersistentType resourceType = this.resolveJavaResourcePersistentType();
+		JavaResourceType resourceType = this.resolveJavaResourceType();
 		if (resourceType == null) {
 			if (this.javaPersistentType != null) {
 				this.javaPersistentType.dispose();
@@ -160,7 +161,7 @@ public class GenericClassRef
 			if (this.javaPersistentType == null) {
 				this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
 			} else {
-				if (this.javaPersistentType.getResourcePersistentType() == resourceType) {
+				if (this.javaPersistentType.getJavaResourceType() == resourceType) {
 					this.javaPersistentType.update();
 				} else {
 					this.javaPersistentType.dispose();
@@ -170,12 +171,12 @@ public class GenericClassRef
 		}
 	}
 
-	protected JavaResourcePersistentType resolveJavaResourcePersistentType() {
+	protected JavaResourceType resolveJavaResourceType() {
 		String javaClassName = this.getJavaClassName();
-		return (javaClassName == null) ? null : this.getJpaProject().getJavaResourcePersistentType(javaClassName);
+		return (javaClassName == null) ? null : (JavaResourceType) this.getJpaProject().getJavaResourceType(javaClassName, Kind.TYPE);
 	}
 
-	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
+	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrpt) {
 		return this.getJpaFactory().buildJavaPersistentType(this, jrpt);
 	}
 
@@ -345,9 +346,8 @@ public class GenericClassRef
 		// i.e. the persistence.xml ref is the only ref - none of the mapping
 		// files reference the same class
 		boolean validateJavaPersistentType = true;
-		for (Iterator<MappingFileRef> stream = this.getPersistenceUnit().mappingFileRefsContaining(this.getJavaClassName()); stream.hasNext(); ) {
+		for (MappingFileRef mappingFileRef : this.getPersistenceUnit().getMappingFileRefsContaining(this.getJavaClassName())) {
 			validateJavaPersistentType = false;
-			MappingFileRef mappingFileRef = stream.next();
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.LOW_SEVERITY,

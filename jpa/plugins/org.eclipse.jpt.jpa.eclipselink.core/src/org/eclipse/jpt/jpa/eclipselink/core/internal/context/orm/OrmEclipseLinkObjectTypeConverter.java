@@ -12,20 +12,16 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
@@ -47,8 +43,8 @@ public class OrmEclipseLinkObjectTypeConverter
 
 	private String objectType;
 
-	private final Vector<OrmEclipseLinkConversionValue> conversionValues = new Vector<OrmEclipseLinkConversionValue>();
-	private final ConversionValueContainerAdapter conversionValueContainerAdapter = new ConversionValueContainerAdapter();
+
+	protected final ContextListContainer<OrmEclipseLinkConversionValue, XmlConversionValue> conversionValueContainer;
 
 	private String defaultObjectValue;
 
@@ -57,7 +53,7 @@ public class OrmEclipseLinkObjectTypeConverter
 		super(parent, xmlConverter);
 		this.dataType = xmlConverter.getDataType();
 		this.objectType = xmlConverter.getObjectType();
-		this.initializeConversionValues();
+		this.conversionValueContainer = this.buildConversionValueContainer();
 		this.defaultObjectValue = xmlConverter.getDefaultObjectValue();
 	}
 
@@ -76,7 +72,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getConversionValues());
+		this.updateConversionValues();
 	}
 
 
@@ -98,15 +94,15 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected boolean dataTypeIsFor(String typeName) {
-		return this.typeIsFor(this.getDataTypeJavaResourcePersistentType(), typeName);
+		return this.typeIsFor(this.getDataTypeJavaResourceType(), typeName);
 	}
 
 	protected boolean dataTypeIsIn(IPackageFragment packageFragment) {
-		return this.typeIsIn(this.getDataTypeJavaResourcePersistentType(), packageFragment);
+		return this.typeIsIn(this.getDataTypeJavaResourceType(), packageFragment);
 	}
 
-	protected JavaResourcePersistentType getDataTypeJavaResourcePersistentType() {
-		return this.getMappingFileRoot().resolveJavaResourcePersistentType(this.getDataType());
+	protected JavaResourceAbstractType getDataTypeJavaResourceType() {
+		return this.getMappingFileRoot().resolveJavaResourceType(this.getDataType());
 	}
 
 
@@ -128,40 +124,35 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected boolean objectTypeIsFor(String typeName) {
-		return this.typeIsFor(this.getObjectTypeJavaResourcePersistentType(), typeName);
+		return this.typeIsFor(this.getObjectTypeJavaResourceType(), typeName);
 	}
 
 	protected boolean objectTypeIsIn(IPackageFragment packageFragment) {
-		return this.typeIsIn(this.getObjectTypeJavaResourcePersistentType(), packageFragment);
+		return this.typeIsIn(this.getObjectTypeJavaResourceType(), packageFragment);
 	}
 
-	protected JavaResourcePersistentType getObjectTypeJavaResourcePersistentType() {
-		return this.getMappingFileRoot().resolveJavaResourcePersistentType(this.getObjectType());
+	protected JavaResourceAbstractType getObjectTypeJavaResourceType() {
+		return this.getMappingFileRoot().resolveJavaResourceType(this.getObjectType());
 	}
 
 
 	// ********** conversion values **********
 
-	@SuppressWarnings("unchecked")
-	public ListIterator<OrmEclipseLinkConversionValue> conversionValues() {
-		return this.getConversionValues().iterator();
-	}
-
 	public ListIterable<OrmEclipseLinkConversionValue> getConversionValues() {
-		return new LiveCloneListIterable<OrmEclipseLinkConversionValue>(this.conversionValues);
+		return this.conversionValueContainer.getContextElements();
 	}
 
-	public int conversionValuesSize() {
-		return this.conversionValues.size();
+	public int getConversionValuesSize() {
+		return this.conversionValueContainer.getContextElementsSize();
 	}
 
 	public OrmEclipseLinkConversionValue addConversionValue() {
-		return this.addConversionValue(this.conversionValues.size());
+		return this.addConversionValue(this.getConversionValuesSize());
 	}
 
 	public OrmEclipseLinkConversionValue addConversionValue(int index) {
 		XmlConversionValue xmlConversionValue = this.buildXmlConversionValue();
-		OrmEclipseLinkConversionValue conversionValue = this.addConversionValue_(index, xmlConversionValue);
+		OrmEclipseLinkConversionValue conversionValue = this.conversionValueContainer.addContextElement(index, xmlConversionValue);
 		this.xmlConverter.getConversionValues().add(index, xmlConversionValue);
 		return conversionValue;
 	}
@@ -171,79 +162,65 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	public void removeConversionValue(EclipseLinkConversionValue conversionValue) {
-		this.removeConversionValue(this.conversionValues.indexOf(conversionValue));
+		this.removeConversionValue(this.conversionValueContainer.indexOfContextElement((OrmEclipseLinkConversionValue) conversionValue));
 	}
 
 	public void removeConversionValue(int index) {
-		this.removeConversionValue_(index);
+		this.conversionValueContainer.removeContextElement(index);
 		this.xmlConverter.getConversionValues().remove(index);
 	}
 
-	protected void removeConversionValue_(int index) {
-		this.removeItemFromList(index, this.conversionValues, CONVERSION_VALUES_LIST);
-	}
-
 	public void moveConversionValue(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.conversionValues, CONVERSION_VALUES_LIST);
+		this.conversionValueContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlConverter.getConversionValues().move(targetIndex, sourceIndex);
 	}
 
-	protected void initializeConversionValues() {
-		for (XmlConversionValue xmlConversionValue : this.getXmlConversionValues()) {
-			this.conversionValues.add(this.buildConversionValue(xmlConversionValue));
-		}
-	}
 
 	protected OrmEclipseLinkConversionValue buildConversionValue(XmlConversionValue xmlConversionValue) {
 		return new OrmEclipseLinkConversionValue(this, xmlConversionValue);
 	}
 
 	protected void syncConversionValues() {
-		ContextContainerTools.synchronizeWithResourceModel(this.conversionValueContainerAdapter);
+		this.conversionValueContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlConversionValue> getXmlConversionValues() {
+	protected void updateConversionValues() {
+		this.conversionValueContainer.update();
+	}
+
+	protected ListIterable<XmlConversionValue> getXmlConversionValues() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlConversionValue>(this.xmlConverter.getConversionValues());
+		return new LiveCloneListIterable<XmlConversionValue>(this.xmlConverter.getConversionValues());
 	}
 
-	protected void moveConversionValue_(int index, OrmEclipseLinkConversionValue conversionValue) {
-		this.moveItemInList(index, conversionValue, this.conversionValues, CONVERSION_VALUES_LIST);
-	}
-
-	protected OrmEclipseLinkConversionValue addConversionValue_(int index, XmlConversionValue xmlConversionValue) {
-		OrmEclipseLinkConversionValue conversionValue = this.buildConversionValue(xmlConversionValue);
-		this.addItemToList(index, conversionValue, this.conversionValues, CONVERSION_VALUES_LIST);
-		return conversionValue;
-	}
-
-	protected void removeConversionValue_(OrmEclipseLinkConversionValue conversionValue) {
-		this.removeConversionValue_(this.conversionValues.indexOf(conversionValue));
+	protected ContextListContainer<OrmEclipseLinkConversionValue, XmlConversionValue> buildConversionValueContainer() {
+		return new ConversionValueContainer();
 	}
 
 	/**
-	 * conversion value container adapter
+	 * conversion value container
 	 */
-	protected class ConversionValueContainerAdapter
-		implements ContextContainerTools.Adapter<OrmEclipseLinkConversionValue, XmlConversionValue>
-	{
-		public Iterable<OrmEclipseLinkConversionValue> getContextElements() {
-			return OrmEclipseLinkObjectTypeConverter.this.getConversionValues();
+	protected class ConversionValueContainer
+			extends ContextListContainer<OrmEclipseLinkConversionValue, XmlConversionValue> {
+		
+		@Override
+		protected String getContextElementsPropertyName() {
+			return CONVERSION_VALUES_LIST;
 		}
-		public Iterable<XmlConversionValue> getResourceElements() {
+		
+		@Override
+		protected OrmEclipseLinkConversionValue buildContextElement(XmlConversionValue resourceElement) {
+			return OrmEclipseLinkObjectTypeConverter.this.buildConversionValue(resourceElement);
+		}
+		
+		@Override
+		protected ListIterable<XmlConversionValue> getResourceElements() {
 			return OrmEclipseLinkObjectTypeConverter.this.getXmlConversionValues();
 		}
-		public XmlConversionValue getResourceElement(OrmEclipseLinkConversionValue contextElement) {
+		
+		@Override
+		protected XmlConversionValue getResourceElement(OrmEclipseLinkConversionValue contextElement) {
 			return contextElement.getXmlConversionValue();
-		}
-		public void moveContextElement(int index, OrmEclipseLinkConversionValue element) {
-			OrmEclipseLinkObjectTypeConverter.this.moveConversionValue_(index, element);
-		}
-		public void addContextElement(int index, XmlConversionValue resourceElement) {
-			OrmEclipseLinkObjectTypeConverter.this.addConversionValue_(index, resourceElement);
-		}
-		public void removeContextElement(OrmEclipseLinkConversionValue element) {
-			OrmEclipseLinkObjectTypeConverter.this.removeConversionValue_(element);
 		}
 	}
 
@@ -260,7 +237,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	public int getDataValuesSize() {
-		return this.conversionValuesSize();
+		return this.getConversionValuesSize();
 	}
 
 
@@ -288,12 +265,12 @@ public class OrmEclipseLinkObjectTypeConverter
 		return EclipseLinkObjectTypeConverter.class;
 	}
 
-	protected boolean typeIsFor(JavaResourcePersistentType persistentType, String typeName) {
-		return (persistentType != null) && persistentType.getQualifiedName().equals(typeName);
+	protected boolean typeIsFor(JavaResourceAbstractType type, String typeName) {
+		return (type != null) && type.getQualifiedName().equals(typeName);
 	}
 
-	protected boolean typeIsIn(JavaResourcePersistentType persistentType, IPackageFragment packageFragment) {
-		return (persistentType != null) && persistentType.isIn(packageFragment);
+	protected boolean typeIsIn(JavaResourceAbstractType type, IPackageFragment packageFragment) {
+		return (type != null) && type.isIn(packageFragment);
 	}
 
 
@@ -409,7 +386,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected HashMap<String, ArrayList<OrmEclipseLinkConversionValue>> mapConversionValuesByDataValue() {
-		HashMap<String, ArrayList<OrmEclipseLinkConversionValue>> map = new HashMap<String, ArrayList<OrmEclipseLinkConversionValue>>(this.conversionValuesSize());
+		HashMap<String, ArrayList<OrmEclipseLinkConversionValue>> map = new HashMap<String, ArrayList<OrmEclipseLinkConversionValue>>(this.getConversionValuesSize());
 		for (OrmEclipseLinkConversionValue conversionValue : this.getConversionValues()) {
 			String dataValue = conversionValue.getDataValue();
 			ArrayList<OrmEclipseLinkConversionValue> list = map.get(dataValue);

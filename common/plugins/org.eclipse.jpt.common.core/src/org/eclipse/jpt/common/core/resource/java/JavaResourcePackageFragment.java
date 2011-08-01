@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
+
+import org.eclipse.jpt.common.core.AnnotationProvider;
+
 
 
 /**
@@ -26,7 +29,9 @@ public interface JavaResourcePackageFragment
 	extends JavaResourceNode
 {
 	/**
-	 * Return the package fragment's class files that contain "persistable" types.
+	 * Return the package fragment's class files that contain "annotated" types.
+	 * Annotated with the annotations we care about, 
+	 * @see AnnotationProvider
 	 */
 	Iterable<JavaResourceClassFile> getClassFiles();
 		String CLASS_FILES_COLLECTION = "classFiles"; //$NON-NLS-1$
@@ -37,9 +42,9 @@ public interface JavaResourcePackageFragment
 	int getClassFilesSize();
 
 	/**
-	 * Return the package fragment's Java persistent types.
-	 * Return only the files that are annotated with JAXB annotations.
+	 * Return the package fragment's Java types.
+	 * This is a convenience method that returns the JavaResourceTypes of the classFiles.
 	 */
-	Iterable<JavaResourceType> getPersistedTypes();
+	Iterable<JavaResourceAbstractType> getTypes();
 
 }

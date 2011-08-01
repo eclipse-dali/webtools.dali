@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
@@ -30,8 +31,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-//import org.eclipse.jpt.jpa.core.internal.SynchronousJpaProjectUpdater;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.junit.Before;
@@ -75,24 +74,24 @@ public class CreateDeleteEntity {
 			cnt++;
 		}
 		assertTrue("Can't obtain persistence object", p != null);
-		assertTrue(persistenceXml.getPersistence().persistenceUnitsSize() == 1);
+		assertTrue(persistenceXml.getPersistence().getPersistenceUnitsSize() == 1);
 		//java.lang.UnsupportedOperationException: No PersistenceUnit in this context
 		//PersistenceUnit persistenceUnit = persistenceXml.getPersistence().getPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceXml.getPersistence().persistenceUnits().next();
+		PersistenceUnit persistenceUnit = persistenceXml.getPersistence().getPersistenceUnits().iterator().next();
 		assertNotNull(persistenceUnit);
-		assertTrue(persistenceUnit.classRefsSize() == 0);
+		assertTrue(persistenceUnit.getClassRefsSize() == 0);
 		IFile entity1 = factory.createEntityInProject(jpaProject.getProject(), new String[]{"com"}, "Entity1");		
 		assertTrue(entity1.exists());
-//		if(jpaProject.getJavaResourcePersistentType("com.Entity1") == null) {			
+//		if(jpaProject.getJavaResourceType("com.Entity1") == null) {			
 //			updater = new SynchronousJpaProjectUpdater(jpaProject);
 //			updater.start();
 //		}
-		JavaResourcePersistentType persistenceType = jpaProject.getJavaResourcePersistentType("com.Entity1");
+		JavaResourceAbstractType persistenceType = jpaProject.getJavaResourceType("com.Entity1");
 		int c = 0;
 		while ((persistenceType == null) && (c < 100)) {
 			Thread.sleep(500);
 			jpaProject.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
-			persistenceType = jpaProject.getJavaResourcePersistentType("com.Entity1");
+			persistenceType = jpaProject.getJavaResourceType("com.Entity1");
 			c++;
 		}
 		assertNotNull(persistenceType);
@@ -109,12 +108,12 @@ public class CreateDeleteEntity {
 //		updater.start();
 		jpaProject.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		JptJpaCorePlugin.rebuildJpaProject(jpaProject.getProject());
-		persistenceType = ((JpaProject)jpaProject).getJavaResourcePersistentType("com.Entity1");
+		persistenceType = jpaProject.getJavaResourceType("com.Entity1");
 		c = 0;
 		while ((persistenceType != null) && (c < 250)) {
 			Thread.sleep(500);
 			jpaProject = JptJpaCorePlugin.getJpaProject(jpaProject.getProject());
-			persistenceType = ((JpaProject)jpaProject).getJavaResourcePersistentType("com.Entity1");
+			persistenceType = jpaProject.getJavaResourceType("com.Entity1");
 			c++;
 		}
 		assertNull(persistenceType);		

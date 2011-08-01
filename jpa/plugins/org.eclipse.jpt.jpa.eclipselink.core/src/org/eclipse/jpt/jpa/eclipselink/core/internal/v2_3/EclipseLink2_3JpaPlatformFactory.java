@@ -9,10 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3;
 
-import org.eclipse.jpt.jpa.core.JpaAnnotationProvider;
+import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
@@ -20,7 +20,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.EclipseLink2_0JpaFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.EclipseLink2_0JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_1.EclipseLink2_1JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_2.EclipseLink2_2JpaPlatformProvider;
 
 
 public class EclipseLink2_3JpaPlatformFactory
@@ -40,7 +39,7 @@ public class EclipseLink2_3JpaPlatformFactory
 			id,
 			buildJpaVersion(),
 			new EclipseLink2_0JpaFactory(), 
-			buildJpaAnnotationProvider(),
+			buildAnnotationProvider(),
 			EclipseLink2_3JpaPlatformProvider.instance(), 
 			buildJpaVariation());
 	}
@@ -53,8 +52,8 @@ public class EclipseLink2_3JpaPlatformFactory
 	}
 	
 	@Override
-	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(
+	protected AnnotationProvider buildAnnotationProvider() {
+		return new JpaAnnotationProvider(
 				Generic2_0JpaAnnotationDefinitionProvider.instance(),
 				EclipseLink2_1JpaAnnotationDefinitionProvider.instance());
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,26 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackageFragmentRoot;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -41,8 +40,7 @@ public class GenericJarFile
 {
 	protected final JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot;
 
-	protected final Vector<JavaPersistentType> javaPersistentTypes = new Vector<JavaPersistentType>();
-	protected final JavaPersistentTypeContainerAdapter javaPersistentTypeContainerAdapter = new JavaPersistentTypeContainerAdapter();
+	protected final ContextCollectionContainer<JavaPersistentType, JavaResourceType> javaPersistentTypeContainer;
 
 
 	// ********** constructor/initialization **********
@@ -50,7 +48,7 @@ public class GenericJarFile
 	public GenericJarFile(JarFileRef parent, JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot) {
 		super(parent);
 		this.jarResourcePackageFragmentRoot = jarResourcePackageFragmentRoot;
-		this.initializeJavaPersistentTypes();
+		this.javaPersistentTypeContainer = this.buildJavaPersistentTypeContainer();
 	}
 
 
@@ -65,7 +63,7 @@ public class GenericJarFile
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getJavaPersistentTypes());
+		this.updateJavaPersistentTypes();
 	}
 
 	public JavaResourcePackageFragmentRoot getJarResourcePackageFragmentRoot() {
@@ -111,80 +109,85 @@ public class GenericJarFile
 		return null;
 	}
 
-	public Iterator<JavaPersistentType> javaPersistentTypes() {
-		return this.getJavaPersistentTypes().iterator();
+	public Iterable<JavaPersistentType> getJavaPersistentTypes() {
+		return this.javaPersistentTypeContainer.getContextElements();
 	}
 
-	protected Iterable<JavaPersistentType> getJavaPersistentTypes() {
-		return new LiveCloneIterable<JavaPersistentType>(this.javaPersistentTypes);
-	}
-
-	public int javaPersistentTypesSize() {
-		return this.javaPersistentTypes.size();
-	}
-
-	protected void initializeJavaPersistentTypes() {
-		for (JavaResourcePersistentType jrpt : this.getJavaResourcePersistentTypes()) {
-			this.javaPersistentTypes.add(this.buildJavaPersistentType(jrpt));
-		}
+	public int getJavaPersistentTypesSize() {
+		return this.javaPersistentTypeContainer.getContextElementsSize();
 	}
 
 	protected void syncJavaPersistentTypes() {
-		ContextContainerTools.synchronizeWithResourceModel(this.javaPersistentTypeContainerAdapter);
+		this.javaPersistentTypeContainer.synchronizeWithResourceModel();
 	}
 
-	protected void addJavaPersistentType(JavaResourcePersistentType jrpt) {
-		JavaPersistentType javaPersistentType = this.buildJavaPersistentType(jrpt);
-		this.addItemToCollection(javaPersistentType, this.javaPersistentTypes, JAVA_PERSISTENT_TYPES_COLLECTION);
+	protected void updateJavaPersistentTypes() {
+		this.javaPersistentTypeContainer.update();
+	}
+
+	protected void addJavaPersistentType(JavaResourceType jrt) {
+		this.javaPersistentTypeContainer.addContextElement(getJavaPersistentTypesSize(), jrt);
 	}
 
 	protected void removeJavaPersistentType(JavaPersistentType javaPersistentType ) {
-		this.removeItemFromCollection(javaPersistentType, this.javaPersistentTypes, JAVA_PERSISTENT_TYPES_COLLECTION);
+		this.javaPersistentTypeContainer.removeContextElement(javaPersistentType);
+	}
+
+	//only accept types, enums aren't valid for JPA
+	protected Iterable<JavaResourceType> getJavaResourceTypes() {
+		return new SubIterableWrapper<JavaResourceAbstractType, JavaResourceType>(
+			new FilteringIterable<JavaResourceAbstractType>(this.getJavaResourceAbstractTypes()) {
+				@Override
+				protected boolean accept(JavaResourceAbstractType o) {
+					return o.getKind() == Kind.TYPE;
+				}
+			});
 	}
 
 	/**
 	 * the resource JAR holds only annotated types, so we can use them all for
 	 * building the context types
 	 */
-	protected Iterable<JavaResourcePersistentType> getJavaResourcePersistentTypes() {
-		return CollectionTools.iterable(this.jarResourcePackageFragmentRoot.persistentTypes());
+	protected Iterable<JavaResourceAbstractType> getJavaResourceAbstractTypes() {
+		return this.jarResourcePackageFragmentRoot.getTypes();
 	}
 
-	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
-		return this.getJpaFactory().buildJavaPersistentType(this, jrpt);
+	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrt) {
+		return this.getJpaFactory().buildJavaPersistentType(this, jrt);
+	}
+
+	protected ContextCollectionContainer<JavaPersistentType, JavaResourceType> buildJavaPersistentTypeContainer() {
+		return new JavaPersistentTypeContainer();
 	}
 
 	/**
-	 * Java persistent type container adapter
+	 * Java persistent type container
 	 */
-	protected class JavaPersistentTypeContainerAdapter
-		implements ContextContainerTools.Adapter<JavaPersistentType, JavaResourcePersistentType>
+	protected class JavaPersistentTypeContainer
+		extends ContextCollectionContainer<JavaPersistentType, JavaResourceType>
 	{
-		public Iterable<JavaPersistentType> getContextElements() {
-			return GenericJarFile.this.getJavaPersistentTypes();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return JAVA_PERSISTENT_TYPES_COLLECTION;
 		}
-		public Iterable<JavaResourcePersistentType> getResourceElements() {
-			return GenericJarFile.this.getJavaResourcePersistentTypes();
+		@Override
+		protected JavaPersistentType buildContextElement(JavaResourceType resourceElement) {
+			return GenericJarFile.this.buildJavaPersistentType(resourceElement);
 		}
-		public JavaResourcePersistentType getResourceElement(JavaPersistentType contextElement) {
-			return contextElement.getResourcePersistentType();
+		@Override
+		protected Iterable<JavaResourceType> getResourceElements() {
+			return GenericJarFile.this.getJavaResourceTypes();
 		}
-		public void moveContextElement(int index, JavaPersistentType element) {
-			// ignore moves - we don't care about the order of the Java persistent types
-		}
-		public void addContextElement(int index, JavaResourcePersistentType resourceElement) {
-			// ignore the index - we don't care about the order of the Java persistent types
-			GenericJarFile.this.addJavaPersistentType(resourceElement);
-		}
-		public void removeContextElement(JavaPersistentType element) {
-			GenericJarFile.this.removeJavaPersistentType(element);
+		@Override
+		protected JavaResourceType getResourceElement(JavaPersistentType contextElement) {
+			return contextElement.getJavaResourceType();
 		}
 	}
 
 
 	// ********** PersistentTypeContainer implementation **********
 
-	public Iterable<? extends PersistentType> getPersistentTypes() {
+	public Iterable<JavaPersistentType> getPersistentTypes() {
 		return this.getJavaPersistentTypes();
 	}
 

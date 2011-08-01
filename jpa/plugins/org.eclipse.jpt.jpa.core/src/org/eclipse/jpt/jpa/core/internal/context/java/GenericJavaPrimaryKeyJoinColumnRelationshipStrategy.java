@@ -11,16 +11,13 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.SubIteratorWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.SuperIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
@@ -33,18 +30,13 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumnRelationshi
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.OneToOnePrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingPrimaryKeyJoinColumnRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestablePrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -53,16 +45,14 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	extends AbstractJavaJpaContextNode
 	implements JavaMappingPrimaryKeyJoinColumnRelationshipStrategy2_0
 {
-	protected final Vector<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns = new Vector<JavaPrimaryKeyJoinColumn>();
-	protected final PrimaryKeyJoinColumnContainerAdapter primaryKeyJoinColumnContainerAdapter;
+	protected final ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> primaryKeyJoinColumnContainer;
 	protected final JavaReadOnlyJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 
 	public GenericJavaPrimaryKeyJoinColumnRelationshipStrategy(JavaPrimaryKeyJoinColumnRelationship parent) {
 		super(parent);
-		this.primaryKeyJoinColumnContainerAdapter = this.buildPrimaryKeyJoinColumnContainerAdapter();
+		this.primaryKeyJoinColumnContainer = this.buildPrimaryKeyJoinColumnContainer();
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
-		this.initializePrimaryKeyJoinColumns();
 	}
 
 
@@ -77,114 +67,84 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getPrimaryKeyJoinColumns());
+		this.updatePrimaryKeyJoinColumns();
 	}
 
 
 	// ********** primary key join columns **********
 
-	public ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
-		return this.getPrimaryKeyJoinColumns().iterator();
-	}
-
 	public ListIterable<JavaPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
-		return new LiveCloneListIterable<JavaPrimaryKeyJoinColumn>(this.primaryKeyJoinColumns);
+		return this.primaryKeyJoinColumnContainer.getContextElements();
 	}
 
-	public int primaryKeyJoinColumnsSize() {
-		return this.primaryKeyJoinColumns.size();
+	public int getPrimaryKeyJoinColumnsSize() {
+		return this.primaryKeyJoinColumnContainer.getContextElementsSize();
 	}
 
 	public boolean hasPrimaryKeyJoinColumns() {
-		return this.primaryKeyJoinColumns.size() != 0;
+		return this.getPrimaryKeyJoinColumnsSize() != 0;
 	}
 
 	public JavaPrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index) {
-		return this.primaryKeyJoinColumns.get(index);
+		return this.primaryKeyJoinColumnContainer.getContextElement(index);
 	}
 
 	public JavaPrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
-		return this.addPrimaryKeyJoinColumn(this.primaryKeyJoinColumns.size());
+		return this.addPrimaryKeyJoinColumn(this.getPrimaryKeyJoinColumnsSize());
 	}
 
 	public JavaPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
 		PrimaryKeyJoinColumnAnnotation annotation = this.addPrimaryKeyJoinColumnAnnotation(index);
-		return this.addPrimaryKeyJoinColumn_(index, annotation);
+		return this.primaryKeyJoinColumnContainer.addContextElement(index, annotation);
 	}
 
 	public void removePrimaryKeyJoinColumn(PrimaryKeyJoinColumn joinColumn) {
-		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumns.indexOf(joinColumn));
+		this.removePrimaryKeyJoinColumn(this.primaryKeyJoinColumnContainer.indexOfContextElement((JavaPrimaryKeyJoinColumn) joinColumn));
 	}
 
 	public void removePrimaryKeyJoinColumn(int index) {
 		this.removePrimaryKeyJoinColumnAnnotation(index);
-		this.removePrimaryKeyJoinColumn_(index);
-	}
-
-	protected void removePrimaryKeyJoinColumn_(int index) {
-		this.removeItemFromList(index, this.primaryKeyJoinColumns, PRIMARY_KEY_JOIN_COLUMNS_LIST);
+		this.primaryKeyJoinColumnContainer.removeContextElement(index);
 	}
 
 	public void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		this.movePrimaryKeyJoinColumnAnnotation(targetIndex, sourceIndex);
-		this.moveItemInList(targetIndex, sourceIndex, this.primaryKeyJoinColumns, PRIMARY_KEY_JOIN_COLUMNS_LIST);
-	}
-
-	protected void initializePrimaryKeyJoinColumns() {
-		for (PrimaryKeyJoinColumnAnnotation annotation : this.getPrimaryKeyJoinColumnAnnotations()) {
-			this.primaryKeyJoinColumns.add(this.buildPrimaryKeyJoinColumn(annotation));
-		}
+		this.primaryKeyJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
 	protected void syncPrimaryKeyJoinColumns() {
-		ContextContainerTools.synchronizeWithResourceModel(this.primaryKeyJoinColumnContainerAdapter);
+		this.primaryKeyJoinColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<PrimaryKeyJoinColumnAnnotation> getPrimaryKeyJoinColumnAnnotations() {
-		return CollectionTools.iterable(this.primaryKeyJoinColumnAnnotations());
+	protected void updatePrimaryKeyJoinColumns() {
+		this.primaryKeyJoinColumnContainer.update();
 	}
 
-	protected void movePrimaryKeyJoinColumn_(int index, JavaPrimaryKeyJoinColumn joinColumn) {
-		this.moveItemInList(index, joinColumn, this.primaryKeyJoinColumns, PRIMARY_KEY_JOIN_COLUMNS_LIST);
-	}
-
-	protected JavaPrimaryKeyJoinColumn addPrimaryKeyJoinColumn_(int index, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation) {
-		JavaPrimaryKeyJoinColumn joinColumn = this.buildPrimaryKeyJoinColumn(pkJoinColumnAnnotation);
-		this.addItemToList(index, joinColumn, this.primaryKeyJoinColumns, PRIMARY_KEY_JOIN_COLUMNS_LIST);
-		return joinColumn;
-	}
-
-	protected void removePrimaryKeyJoinColumn_(JavaPrimaryKeyJoinColumn joinColumn) {
-		this.removePrimaryKeyJoinColumn_(this.primaryKeyJoinColumns.indexOf(joinColumn));
-	}
-
-	protected PrimaryKeyJoinColumnContainerAdapter buildPrimaryKeyJoinColumnContainerAdapter() {
-		return new PrimaryKeyJoinColumnContainerAdapter();
+	protected ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildPrimaryKeyJoinColumnContainer() {
+		return new PrimaryKeyJoinColumnContainer();
 	}
 
 	/**
-	 * primary key join column container adapter
+	 *  primary key join column container
 	 */
-	protected class PrimaryKeyJoinColumnContainerAdapter
-		implements ContextContainerTools.Adapter<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
+	protected class PrimaryKeyJoinColumnContainer
+		extends ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
 	{
-		public Iterable<JavaPrimaryKeyJoinColumn> getContextElements() {
-			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.getPrimaryKeyJoinColumns();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return PRIMARY_KEY_JOIN_COLUMNS_LIST;
 		}
-		public Iterable<PrimaryKeyJoinColumnAnnotation> getResourceElements() {
+		@Override
+		protected JavaPrimaryKeyJoinColumn buildContextElement(PrimaryKeyJoinColumnAnnotation resourceElement) {
+			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.buildPrimaryKeyJoinColumn(resourceElement);
+		}
+		@Override
+		protected ListIterable<PrimaryKeyJoinColumnAnnotation> getResourceElements() {
 			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.getPrimaryKeyJoinColumnAnnotations();
 		}
-		public PrimaryKeyJoinColumnAnnotation getResourceElement(JavaPrimaryKeyJoinColumn contextElement) {
+		@Override
+		protected PrimaryKeyJoinColumnAnnotation getResourceElement(JavaPrimaryKeyJoinColumn contextElement) {
 			return contextElement.getColumnAnnotation();
-		}
-		public void moveContextElement(int index, JavaPrimaryKeyJoinColumn element) {
-			GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.movePrimaryKeyJoinColumn_(index, element);
-		}
-		public void addContextElement(int index, PrimaryKeyJoinColumnAnnotation resourceElement) {
-			GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.addPrimaryKeyJoinColumn_(index, resourceElement);
-		}
-		public void removeContextElement(JavaPrimaryKeyJoinColumn element) {
-			GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.removePrimaryKeyJoinColumn_(element);
 		}
 	}
 
@@ -199,28 +159,24 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 
 	// ********** primary key join column annotations **********
 
-	protected Iterator<PrimaryKeyJoinColumnAnnotation> primaryKeyJoinColumnAnnotations() {
-		return new SuperIteratorWrapper<PrimaryKeyJoinColumnAnnotation>(this.nestablePrimaryKeyJoinColumnAnnotations());
+	protected ListIterable<PrimaryKeyJoinColumnAnnotation> getPrimaryKeyJoinColumnAnnotations() {
+		return new SubListIterableWrapper<NestableAnnotation, PrimaryKeyJoinColumnAnnotation>(this.getNestablePrimaryKeyJoinColumnAnnotations());
 	}
 
-	protected Iterator<NestablePrimaryKeyJoinColumnAnnotation> nestablePrimaryKeyJoinColumnAnnotations() {
-		return new SubIteratorWrapper<NestableAnnotation, NestablePrimaryKeyJoinColumnAnnotation>(this.nestablePrimaryKeyJoinColumnAnnotations_());
-	}
-
-	protected Iterator<NestableAnnotation> nestablePrimaryKeyJoinColumnAnnotations_() {
-		return this.getResourcePersistentAttribute().annotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+	protected ListIterable<NestableAnnotation> getNestablePrimaryKeyJoinColumnAnnotations() {
+		return this.getResourceAttribute().getAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	protected PrimaryKeyJoinColumnAnnotation addPrimaryKeyJoinColumnAnnotation(int index) {
-		return (PrimaryKeyJoinColumnAnnotation) this.getResourcePersistentAttribute().addAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		return (PrimaryKeyJoinColumnAnnotation) this.getResourceAttribute().addAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void removePrimaryKeyJoinColumnAnnotation(int index) {
-		this.getResourcePersistentAttribute().removeAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void movePrimaryKeyJoinColumnAnnotation(int targetIndex, int sourceIndex) {
-		this.getResourcePersistentAttribute().moveAnnotation(targetIndex, sourceIndex, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().moveAnnotation(targetIndex, sourceIndex, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME);
 	}
 
 
@@ -239,8 +195,8 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 		return this.getRelationship().getMapping();
 	}
 
-	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getRelationship().getMapping().getResourcePersistentAttribute();
+	protected JavaResourceAttribute getResourceAttribute() {
+		return this.getRelationship().getMapping().getResourceAttribute();
 	}
 
 	public String getTableName() {
@@ -272,13 +228,13 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 	public void addStrategy() {
-		if (this.primaryKeyJoinColumns.size() == 0) {
+		if (this.getPrimaryKeyJoinColumnsSize() == 0) {
 			this.addPrimaryKeyJoinColumn();
 		}
 	}
 
 	public void removeStrategy() {
-		for (int i = this.primaryKeyJoinColumns.size(); i-- > 0; ) {
+		for (int i = this.getPrimaryKeyJoinColumnsSize(); i-- > 0; ) {
 			this.removePrimaryKeyJoinColumn(i);
 		}
 	}
@@ -381,8 +337,8 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.getValidationTextRange(astRoot);
 		}
 
-		public int joinColumnsSize() {
-			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.primaryKeyJoinColumnsSize();
+		public int getJoinColumnsSize() {
+			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.getPrimaryKeyJoinColumnsSize();
 		}
 
 		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {

@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.SimpleStack;
@@ -30,11 +31,12 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
@@ -99,7 +101,7 @@ public class GenericMetamodelSynchronizer
 	 */
 	protected String buildSource(ICompilationUnit compilationUnit, Map<String, Collection<MetamodelSourceType>> memberTypeTree) throws JavaModelException {
 		IFile file = (IFile) compilationUnit.getResource();
-		JavaResourcePersistentType2_0 genType = this.getJpaProject().getGeneratedMetamodelTopLevelType(file);
+		JavaResourceAbstractType genType = this.getJpaProject().getGeneratedMetamodelTopLevelType(file);
 		if (genType == null) {
 			return null;  // the file exists, but its source is not a generated metamodel top-level class
 		}
@@ -113,7 +115,7 @@ public class GenericMetamodelSynchronizer
 			return newSource;
 		}
 
-		String date = genType.getGeneratedAnnotation().getDate();  // if we get here, this will be non-empty
+		String date = ((GeneratedAnnotation) genType.getAnnotation(GeneratedAnnotation.ANNOTATION_NAME)).getDate();  // if we get here, this will be non-empty
 		int dateBegin = oldSource.indexOf(date);
 		if (dateBegin == -1) {
 			return null;  // hmmm...
@@ -304,7 +306,7 @@ public class GenericMetamodelSynchronizer
 		pw.printAnnotation("javax.annotation.Generated");
 		pw.print('(');
 		pw.print("value=");
-		pw.printStringLiteral(JavaResourcePersistentType2_0.METAMODEL_GENERATED_ANNOTATION_VALUE);
+		pw.printStringLiteral(MetamodelSynchronizer.METAMODEL_GENERATED_ANNOTATION_VALUE);
 		pw.print(", ");
 		pw.print("date=");
 		pw.printStringLiteral(format(new Date()));
@@ -341,8 +343,8 @@ public class GenericMetamodelSynchronizer
 	 */
 	protected boolean printAttributesOn(BodySourceWriter pw) {
 		boolean printed = false;
-		for (Iterator<ReadOnlyPersistentAttribute> stream = this.sourceType.attributes(); stream.hasNext(); ) {
-			this.printAttributeOn(stream.next(), pw);
+		for (ReadOnlyPersistentAttribute att : this.sourceType.getAttributes()) {
+			this.printAttributeOn(att, pw);
 			printed = true;
 		}
 		return printed;

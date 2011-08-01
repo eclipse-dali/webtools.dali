@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,15 +10,17 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2;
 
 import java.util.ArrayList;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.AssociationOverride2_0AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.AssociationOverrides2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.Cacheable2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.CollectionTable2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.ElementCollection2_0AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.GeneratedAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyClass2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyColumn2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyEnumerated2_0AnnotationDefinition;
@@ -26,10 +28,11 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyJoinColumn2_0A
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyJoinColumns2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapKeyTemporal2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.MapsId2_0AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NamedQueries2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NamedQuery2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.SequenceGenerator2_0AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.StaticMetamodelAnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.resource.java.AssociationOverridesAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.AttributeOverrideAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.AttributeOverridesAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.BasicAnnotationDefinition;
@@ -55,6 +58,7 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.MapKeyAnnotationDefinitio
 import org.eclipse.jpt.jpa.core.internal.resource.java.MappedSuperclassAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NamedNativeQueriesAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NamedNativeQueryAnnotationDefinition;
+import org.eclipse.jpt.jpa.core.internal.resource.java.NamedQueriesAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.OneToManyAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.OneToOneAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.OrderByAnnotationDefinition;
@@ -67,7 +71,6 @@ import org.eclipse.jpt.jpa.core.internal.resource.java.TableGeneratorAnnotationD
 import org.eclipse.jpt.jpa.core.internal.resource.java.TemporalAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.TransientAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.VersionAnnotationDefinition;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
 
 /**
  * Support for existing JPA 1.0 annotations, new JPA 2.0 annotations, and
@@ -95,89 +98,55 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 	}
 
 	@Override
-	protected void addTypeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		CollectionTools.addAll(definitions, TYPE_ANNOTATION_DEFINITIONS);
+	protected void addAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+		CollectionTools.addAll(definitions, ANNOTATION_DEFINITIONS);
 	}
 
-	protected static final AnnotationDefinition[] TYPE_ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
-		Access2_0AnnotationDefinition.instance(),
-		AssociationOverride2_0AnnotationDefinition.instance(),
-		AssociationOverrides2_0AnnotationDefinition.instance(),
-		AttributeOverrideAnnotationDefinition.instance(),
+	protected static final AnnotationDefinition[] ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
 		AttributeOverridesAnnotationDefinition.instance(),
-		Cacheable2_0AnnotationDefinition.instance(),
-		DiscriminatorColumnAnnotationDefinition.instance(),
-		DiscriminatorValueAnnotationDefinition.instance(),
-		EmbeddableAnnotationDefinition.instance(),
-		EntityAnnotationDefinition.instance(),
-		IdClassAnnotationDefinition.instance(),
-		InheritanceAnnotationDefinition.instance(),
-		MappedSuperclassAnnotationDefinition.instance(),
-		NamedQuery2_0AnnotationDefinition.instance(),
-		NamedQueries2_0AnnotationDefinition.instance(),
-		NamedNativeQueryAnnotationDefinition.instance(),
-		NamedNativeQueriesAnnotationDefinition.instance(),
-		PrimaryKeyJoinColumnAnnotationDefinition.instance(),
-		PrimaryKeyJoinColumnsAnnotationDefinition.instance(),
-		SecondaryTableAnnotationDefinition.instance(),
-		SecondaryTablesAnnotationDefinition.instance(),
-		SequenceGenerator2_0AnnotationDefinition.instance(),
-		TableAnnotationDefinition.instance(),
-		TableGeneratorAnnotationDefinition.instance()
-	};
-
-	@Override
-	protected void addTypeMappingAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		CollectionTools.addAll(definitions, TYPE_MAPPING_ANNOTATION_DEFINITIONS);
-	}
-
-	protected static final AnnotationDefinition[] TYPE_MAPPING_ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
-		EmbeddableAnnotationDefinition.instance(),
-		EntityAnnotationDefinition.instance(),
-		MappedSuperclassAnnotationDefinition.instance()
-	};
-
-	@Override
-	protected void addAttributeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		CollectionTools.addAll(definitions, ATTRIBUTE_ANNOTATION_DEFINITIONS);
-	}
-
-	protected static final AnnotationDefinition[] ATTRIBUTE_ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
+		AssociationOverridesAnnotationDefinition.instance(),
 		Access2_0AnnotationDefinition.instance(),
-		AssociationOverride2_0AnnotationDefinition.instance(),
-		AssociationOverrides2_0AnnotationDefinition.instance(),
-		AttributeOverrideAnnotationDefinition.instance(),
-		AttributeOverridesAnnotationDefinition.instance(),
 		BasicAnnotationDefinition.instance(),
+		Cacheable2_0AnnotationDefinition.instance(),
 		CollectionTable2_0AnnotationDefinition.instance(),
 		ColumnAnnotationDefinition.instance(),
+		DiscriminatorColumnAnnotationDefinition.instance(),
+		DiscriminatorValueAnnotationDefinition.instance(),
 		ElementCollection2_0AnnotationDefinition.instance(),
+		EmbeddableAnnotationDefinition.instance(),
 		EmbeddedAnnotationDefinition.instance(),
 		EmbeddedIdAnnotationDefinition.instance(),
+		EntityAnnotationDefinition.instance(),
 		EnumeratedAnnotationDefinition.instance(),
+		GeneratedAnnotationDefinition.instance(),
 		GeneratedValueAnnotationDefinition.instance(),
 		IdAnnotationDefinition.instance(),
-		JoinColumnAnnotationDefinition.instance(),
+		IdClassAnnotationDefinition.instance(),
+		InheritanceAnnotationDefinition.instance(),
 		JoinColumnsAnnotationDefinition.instance(),
 		JoinTableAnnotationDefinition.instance(),
 		LobAnnotationDefinition.instance(),
 		ManyToManyAnnotationDefinition.instance(),
 		ManyToOneAnnotationDefinition.instance(),
+		MappedSuperclassAnnotationDefinition.instance(),
 		MapsId2_0AnnotationDefinition.instance(),
 		MapKeyAnnotationDefinition.instance(),
 		MapKeyClass2_0AnnotationDefinition.instance(),
 		MapKeyColumn2_0AnnotationDefinition.instance(),
 		MapKeyEnumerated2_0AnnotationDefinition.instance(),
-		MapKeyJoinColumn2_0AnnotationDefinition.instance(),
 		MapKeyJoinColumns2_0AnnotationDefinition.instance(),
 		MapKeyTemporal2_0AnnotationDefinition.instance(),
+		NamedQueriesAnnotationDefinition.instance(),
+		NamedNativeQueriesAnnotationDefinition.instance(),
 		OneToManyAnnotationDefinition.instance(),
 		OneToOneAnnotationDefinition.instance(),
 		OrderByAnnotationDefinition.instance(),
 		OrderColumn2_0AnnotationDefinition.instance(),
-		PrimaryKeyJoinColumnAnnotationDefinition.instance(),
 		PrimaryKeyJoinColumnsAnnotationDefinition.instance(),
+		SecondaryTablesAnnotationDefinition.instance(),
 		SequenceGenerator2_0AnnotationDefinition.instance(),
+		StaticMetamodelAnnotationDefinition.instance(),
+		TableAnnotationDefinition.instance(),
 		TableGeneratorAnnotationDefinition.instance(),
 		TemporalAnnotationDefinition.instance(),
 		TransientAnnotationDefinition.instance(),
@@ -185,7 +154,18 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 	};
 
 	@Override
-	protected void addPackageAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
-		// no package annotations
+	protected void addNestableAnnotationDefinitionsTo(ArrayList<NestableAnnotationDefinition> definitions) {
+		CollectionTools.addAll(definitions, NESTABLE_ANNOTATION_DEFINITIONS);
 	}
+
+	protected static final NestableAnnotationDefinition[] NESTABLE_ANNOTATION_DEFINITIONS = new NestableAnnotationDefinition[] {
+		AssociationOverride2_0AnnotationDefinition.instance(),
+		AttributeOverrideAnnotationDefinition.instance(),
+		JoinColumnAnnotationDefinition.instance(),
+		MapKeyJoinColumn2_0AnnotationDefinition.instance(),
+		NamedQuery2_0AnnotationDefinition.instance(),
+		NamedNativeQueryAnnotationDefinition.instance(),
+		PrimaryKeyJoinColumnAnnotationDefinition.instance(),
+		SecondaryTableAnnotationDefinition.instance(),
+	};
 }

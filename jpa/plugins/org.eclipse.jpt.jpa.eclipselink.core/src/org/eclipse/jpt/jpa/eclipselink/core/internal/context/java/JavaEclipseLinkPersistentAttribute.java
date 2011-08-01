@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,15 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context.EclipseLinkPersistentAttributeValidator;
 
 /**
@@ -25,8 +27,17 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context.EclipseLinkPer
 public class JavaEclipseLinkPersistentAttribute
 	extends AbstractJavaPersistentAttribute
 {
-	public JavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
-		super(parent, jrpa);
+
+	public JavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
+		super(parent,resourceField);
+	}
+
+	public JavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		super(parent, resourceGetter, resourceSetter);
+	}
+
+	public JavaEclipseLinkPersistentAttribute(PersistentType parent, Accessor accessor) {
+		super(parent, accessor);
 	}
 
 	// ********** mapping **********
@@ -58,19 +69,19 @@ public class JavaEclipseLinkPersistentAttribute
 	 * <code>java.util.Date</code> or <code>java.util.Calendar</code>.
 	 */
 	public boolean typeIsDateOrCalendar() {
-		return this.resourcePersistentAttribute.typeIsSubTypeOf(DATE_TYPE_NAME)
-				|| this.resourcePersistentAttribute.typeIsSubTypeOf(CALENDAR_TYPE_NAME);
+		return this.getResourceAttribute().typeIsSubTypeOf(DATE_TYPE_NAME)
+				|| this.getResourceAttribute().typeIsSubTypeOf(CALENDAR_TYPE_NAME);
 	}
 	protected static final String DATE_TYPE_NAME = java.util.Date.class.getName();
 	protected static final String CALENDAR_TYPE_NAME = java.util.Calendar.class.getName();
 
 	public boolean typeIsSerializable() {
-		return this.resourcePersistentAttribute.typeIsVariablePrimitive()
-				|| this.resourcePersistentAttribute.typeIsSubTypeOf(SERIALIZABLE_TYPE_NAME);
+		return this.getResourceAttribute().typeIsVariablePrimitive()
+				|| this.getResourceAttribute().typeIsSubTypeOf(SERIALIZABLE_TYPE_NAME);
 	}
 
 	public boolean typeIsValidForVariableOneToOne() {
-		return this.resourcePersistentAttribute.typeIsInterface()
+		return this.getResourceAttribute().typeIsInterface()
 				&& this.interfaceIsValidForVariableOneToOne(getTypeName());
 	}
 
@@ -89,7 +100,7 @@ public class JavaEclipseLinkPersistentAttribute
 	// ********** validation **********
 
 	@Override
-	protected JptValidator buildAttibuteValidator(CompilationUnit astRoot) {
-		return new EclipseLinkPersistentAttributeValidator(this, this, buildTextRangeResolver(astRoot));
+	protected JptValidator buildAttributeValidator(CompilationUnit astRoot) {
+		return new EclipseLinkPersistentAttributeValidator(this, buildTextRangeResolver(astRoot));
 	}
 }

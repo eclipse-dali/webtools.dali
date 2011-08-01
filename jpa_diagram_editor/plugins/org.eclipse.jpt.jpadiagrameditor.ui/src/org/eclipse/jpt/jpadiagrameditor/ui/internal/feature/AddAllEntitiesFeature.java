@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -57,10 +57,12 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 		super(fp);
 	}
 
+	@Override
 	public boolean isAvailable(IContext ctx) {
 		return true;
 	}
 	
+	@Override
 	public boolean canExecute(ICustomContext context) {
 		return true;
 	}
@@ -68,7 +70,7 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 	public void execute(ICustomContext context) {
 		Diagram d = getDiagram();
 		JpaProject project = getTargetJPAProject();
-		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().getPersistence().persistenceUnits().next();
+		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().getPersistence().getPersistenceUnits().iterator().next();
 		
 		
 		Point lowestRightestPointOfExistingDiagram = getLowestRightestPoint(d);
@@ -87,8 +89,7 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 		
 		lowerEdges[0] = lowestRightestPointOfExistingDiagram.y + ((lowestRightestPointOfExistingDiagram.y == 0) ? DIST_FROM_EDGE_V : DIST_V);		
 		
-		for (Iterator<ClassRef> classRefs = unit.classRefs(); classRefs.hasNext();) {
-			ClassRef classRef = classRefs.next();
+		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) { // null if
 				JavaPersistentType jpt = classRef.getJavaPersistentType(); 
 				if (jpt.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {

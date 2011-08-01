@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -46,8 +46,7 @@ public interface OrmPersistentType
 	 * <em>virtual</em> attributes are those derived from the corresponding
 	 * Java persistent type.
 	 */
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmReadOnlyPersistentAttribute> attributes();
+	ListIterable<OrmReadOnlyPersistentAttribute> getAttributes();
 
 	OrmReadOnlyPersistentAttribute getAttributeNamed(String attributeName);
 
@@ -59,12 +58,12 @@ public interface OrmPersistentType
 	/**
 	 * Return the persistent type's specified attributes.
 	 */
-	ListIterator<OrmPersistentAttribute> specifiedAttributes();
+	ListIterable<OrmPersistentAttribute> getSpecifiedAttributes();
 
 	/**
 	 * Return the number of the persistent type's specified attributes.
 	 */
-	int specifiedAttributesSize();
+	int getSpecifiedAttributesSize();
 
 	// TODO this is currently only used by tests; remove it and change tests to use
 	// OrmReadOnlyPersistenAttribute.convertToSpecified(String mappingKey)
@@ -80,13 +79,13 @@ public interface OrmPersistentType
 	 * are attributes that exist in the corresponding Java class, but are not
 	 * specified in the <code>orm.xml</code>.
 	 */
-	ListIterator<OrmReadOnlyPersistentAttribute> virtualAttributes();
+	ListIterable<OrmReadOnlyPersistentAttribute> getVirtualAttributes();
 
 	/**
 	 * Return the number of virtual <code>orm.xml</code> persistent attributes.
-	 * @see #virtualAttributes()
+	 * @see #getVirtualAttributes()
 	 */
-	int virtualAttributesSize();
+	int getVirtualAttributesSize();
 
 	/**
 	 * Convert the specified attribute to a virtual attribute. Remove the

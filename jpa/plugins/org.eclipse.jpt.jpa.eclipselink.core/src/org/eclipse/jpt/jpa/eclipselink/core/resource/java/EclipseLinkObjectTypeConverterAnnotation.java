@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.java;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Corresponds to the EclipseLink annotation
@@ -35,23 +35,18 @@ public interface EclipseLinkObjectTypeConverterAnnotation
 	 * Corresponds to the 'conversionValues' element of the ObjectTypeConverter annotation.
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
-	ListIterator<EclipseLinkConversionValueAnnotation> conversionValues();
+	ListIterable<EclipseLinkConversionValueAnnotation> getConversionValues();
 		String CONVERSION_VALUES_LIST = "conversionValues"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the 'conversionValues' element of the ObjectTypeConverter annotation.
 	 */
-	int conversionValuesSize();
+	int getConversionValuesSize();
 	
 	/**
 	 * Corresponds to the 'conversionValues' element of the ObjectTypeConverter annotation.
 	 */
 	EclipseLinkConversionValueAnnotation conversionValueAt(int index);
-	
-	/**
-	 * Corresponds to the 'conversionValues' element of the ObjectTypeConverter annotation.
-	 */
-	int indexOfConversionValue(EclipseLinkConversionValueAnnotation conversionValue);
 	
 	/**
 	 * Corresponds to the 'conversionValues' element of the ObjectTypeConverter annotation.

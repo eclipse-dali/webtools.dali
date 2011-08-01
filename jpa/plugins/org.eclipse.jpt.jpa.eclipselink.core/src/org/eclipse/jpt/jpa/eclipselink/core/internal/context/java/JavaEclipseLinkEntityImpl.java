@@ -149,14 +149,14 @@ public class JavaEclipseLinkEntityImpl
 	}
 
 	protected EclipseLinkClassExtractorAnnotation2_1 getClassExtractorAnnotation() {
-		return (EclipseLinkClassExtractorAnnotation2_1) this.getResourcePersistentType().getAnnotation(EclipseLinkClassExtractorAnnotation2_1.ANNOTATION_NAME);
+		return (EclipseLinkClassExtractorAnnotation2_1) this.getJavaResourceType().getAnnotation(EclipseLinkClassExtractorAnnotation2_1.ANNOTATION_NAME);
 	}
 
 
 	// ********** misc **********
 
 	public boolean usesPrimaryKeyColumns() {
-		return this.getResourcePersistentType().getAnnotation(EclipseLink.PRIMARY_KEY) != null;
+		return this.getJavaResourceType().getAnnotation(EclipseLink.PRIMARY_KEY) != null;
 	}
 
 	public JavaCacheable2_0 getCacheable() {
@@ -187,6 +187,6 @@ public class JavaEclipseLinkEntityImpl
 
 	@Override
 	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
-		return new EclipseLinkTypeMappingValidator(this, this.getResourcePersistentType(), buildTextRangeResolver(astRoot));
+		return new EclipseLinkTypeMappingValidator(this, this.getJavaResourceType(), buildTextRangeResolver(astRoot));
 	}
 }

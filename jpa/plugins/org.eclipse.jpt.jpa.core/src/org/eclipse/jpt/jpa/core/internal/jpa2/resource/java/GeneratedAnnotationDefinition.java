@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,20 +10,15 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary.BinaryGeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source.SourceGeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * javax.annotation.Generated
- * <p>
- * This annotation definition is not really required; it's just here for a bit
- * of consistency....
  */
 public final class GeneratedAnnotationDefinition
 	implements AnnotationDefinition
@@ -46,7 +41,7 @@ public final class GeneratedAnnotationDefinition
 	}
 
 	public GeneratedAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceGeneratedAnnotation((JavaResourcePersistentType) parent, (Type) annotatedElement);
+		return new SourceGeneratedAnnotation(parent, annotatedElement);
 	}
 
 	public GeneratedAnnotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -54,11 +49,10 @@ public final class GeneratedAnnotationDefinition
 	}
 
 	public GeneratedAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryGeneratedAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
+		return new BinaryGeneratedAnnotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
 		return GeneratedAnnotation.ANNOTATION_NAME;
 	}
-
 }

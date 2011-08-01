@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -140,7 +140,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	// ********** misc **********
 
 	public boolean usesPrimaryKeyColumns() {
-		return this.getResourcePersistentType().getAnnotation(EclipseLink.PRIMARY_KEY) != null;
+		return this.getJavaResourceType().getAnnotation(EclipseLink.PRIMARY_KEY) != null;
 	}
 
 	public JavaCacheable2_0 getCacheable() {
@@ -171,6 +171,6 @@ public class JavaEclipseLinkMappedSuperclassImpl
 
 	@Override
 	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
-		return new EclipseLinkMappedSuperclassValidator(this, this.getResourcePersistentType(), this.buildTextRangeResolver(astRoot));
+		return new EclipseLinkMappedSuperclassValidator(this, this.getJavaResourceType(), this.buildTextRangeResolver(astRoot));
 	}
 }

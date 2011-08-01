@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,15 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.Iterator;
-import java.util.Vector;
-
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTableGenerator;
@@ -51,8 +49,7 @@ public class GenericOrmTableGenerator
 	protected String specifiedPkColumnValue;
 	protected String defaultPkColumnValue;
 
-	protected final Vector<OrmUniqueConstraint> uniqueConstraints = new Vector<OrmUniqueConstraint>();
-	protected final UniqueConstraintContainerAdapter uniqueConstraintContainerAdapter = new UniqueConstraintContainerAdapter();
+	protected final ContextListContainer<OrmUniqueConstraint, XmlUniqueConstraint> uniqueConstraintContainer;
 
 
 	// ********** constructor **********
@@ -65,7 +62,7 @@ public class GenericOrmTableGenerator
 		this.specifiedPkColumnName = xmlTableGenerator.getPkColumnName();
 		this.specifiedValueColumnName = xmlTableGenerator.getValueColumnName();
 		this.specifiedPkColumnValue = xmlTableGenerator.getPkColumnValue();
-		this.initializeUniqueContraints();
+		this.uniqueConstraintContainer = new UniqueConstraintContainer();
 	}
 
 
@@ -329,21 +326,21 @@ public class GenericOrmTableGenerator
 
 	// ********** unique constraints **********
 
-	public Iterable<OrmUniqueConstraint> getUniqueConstraints() {
-		return new LiveCloneIterable<OrmUniqueConstraint>(this.uniqueConstraints);
+	public ListIterable<OrmUniqueConstraint> getUniqueConstraints() {
+		return this.uniqueConstraintContainer.getContextElements();
 	}
 
 	public int getUniqueConstraintsSize() {
-		return this.uniqueConstraints.size();
+		return this.uniqueConstraintContainer.getContextElementsSize();
 	}
 
 	public OrmUniqueConstraint addUniqueConstraint() {
-		return this.addUniqueConstraint(this.uniqueConstraints.size());
+		return this.addUniqueConstraint(this.getUniqueConstraintsSize());
 	}
 
 	public OrmUniqueConstraint addUniqueConstraint(int index) {
 		XmlUniqueConstraint xmlConstraint = this.buildXmlUniqueConstraint();
-		OrmUniqueConstraint constraint = this.addUniqueConstraint_(index, xmlConstraint);
+		OrmUniqueConstraint constraint = this.uniqueConstraintContainer.addContextElement(index, xmlConstraint);
 		this.xmlGenerator.getUniqueConstraints().add(index, xmlConstraint);
 		return constraint;
 	}
@@ -353,27 +350,17 @@ public class GenericOrmTableGenerator
 	}
 
 	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
-		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(uniqueConstraint));
+		this.removeUniqueConstraint(this.uniqueConstraintContainer.indexOfContextElement((OrmUniqueConstraint) uniqueConstraint));
 	}
 
 	public void removeUniqueConstraint(int index) {
-		this.removeUniqueConstraint_(index);
+		this.uniqueConstraintContainer.removeContextElement(index);
 		this.xmlGenerator.getUniqueConstraints().remove(index);
 	}
 
-	protected void removeUniqueConstraint_(int index) {
-		this.removeItemFromList(index, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-	}
-
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		this.uniqueConstraintContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlGenerator.getUniqueConstraints().move(targetIndex, sourceIndex);
-	}
-
-	protected void initializeUniqueContraints() {
-		for (XmlUniqueConstraint constraint : this.getXmlUniqueConstraints()) {
-			this.uniqueConstraints.add(this.buildUniqueConstraint(constraint));
-		}
 	}
 
 	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint resourceUniqueConstraint) {
@@ -381,51 +368,39 @@ public class GenericOrmTableGenerator
 	}
 
 	protected void syncUniqueConstraints() {
-		ContextContainerTools.synchronizeWithResourceModel(this.uniqueConstraintContainerAdapter);
+		this.uniqueConstraintContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlUniqueConstraint> getXmlUniqueConstraints() {
+	protected void updateUniqueConstraints() {
+		this.uniqueConstraintContainer.update();
+	}
+
+	protected ListIterable<XmlUniqueConstraint> getXmlUniqueConstraints() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlUniqueConstraint>(this.xmlGenerator.getUniqueConstraints());
-	}
-
-	protected void moveUniqueConstraint_(int index, OrmUniqueConstraint uniqueConstraint) {
-		this.moveItemInList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-	}
-
-	protected OrmUniqueConstraint addUniqueConstraint_(int index, XmlUniqueConstraint xmlConstraint) {
-		OrmUniqueConstraint constraint = this.buildUniqueConstraint(xmlConstraint);
-		this.addItemToList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-		return constraint;
-	}
-
-	protected void removeUniqueConstraint_(OrmUniqueConstraint uniqueConstraint) {
-		this.removeUniqueConstraint_(this.uniqueConstraints.indexOf(uniqueConstraint));
+		return new LiveCloneListIterable<XmlUniqueConstraint>(this.xmlGenerator.getUniqueConstraints());
 	}
 
 	/**
-	 * unique constraint container adapter
+	 * unique constraint container
 	 */
-	protected class UniqueConstraintContainerAdapter
-		implements ContextContainerTools.Adapter<OrmUniqueConstraint, XmlUniqueConstraint>
+	protected class UniqueConstraintContainer
+		extends ContextListContainer<OrmUniqueConstraint, XmlUniqueConstraint>
 	{
-		public Iterable<OrmUniqueConstraint> getContextElements() {
-			return GenericOrmTableGenerator.this.getUniqueConstraints();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return UNIQUE_CONSTRAINTS_LIST;
 		}
-		public Iterable<XmlUniqueConstraint> getResourceElements() {
+		@Override
+		protected OrmUniqueConstraint buildContextElement(XmlUniqueConstraint resourceElement) {
+			return GenericOrmTableGenerator.this.buildUniqueConstraint(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlUniqueConstraint> getResourceElements() {
 			return GenericOrmTableGenerator.this.getXmlUniqueConstraints();
 		}
-		public XmlUniqueConstraint getResourceElement(OrmUniqueConstraint contextElement) {
+		@Override
+		protected XmlUniqueConstraint getResourceElement(OrmUniqueConstraint contextElement) {
 			return contextElement.getXmlUniqueConstraint();
-		}
-		public void moveContextElement(int index, OrmUniqueConstraint element) {
-			GenericOrmTableGenerator.this.moveUniqueConstraint_(index, element);
-		}
-		public void addContextElement(int index, XmlUniqueConstraint resourceElement) {
-			GenericOrmTableGenerator.this.addUniqueConstraint_(index, resourceElement);
-		}
-		public void removeContextElement(OrmUniqueConstraint element) {
-			GenericOrmTableGenerator.this.removeUniqueConstraint_(element);
 		}
 	}
 

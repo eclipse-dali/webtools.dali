@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
+ *  Copyright (c) 2010, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -11,8 +11,8 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkPrimaryKeyAnnotation;
 
 /**
@@ -22,7 +22,7 @@ public class BinaryEclipseLinkPrimaryKeyAnnotation
 	extends BinaryAnnotation
 	implements EclipseLinkPrimaryKeyAnnotation
 {
-	public BinaryEclipseLinkPrimaryKeyAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
+	public BinaryEclipseLinkPrimaryKeyAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 	

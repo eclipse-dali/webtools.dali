@@ -21,7 +21,7 @@ public class JptEclipseLink2_0OrmContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLink2_0OrmElementCollectionMappingTests.class);
 		suite.addTestSuite(EclipseLink2_0OrmEntityTests.class);
 		suite.addTestSuite(EclipseLink2_0OrmManyToManyMappingTests.class);
-		suite.addTestSuite(Eclipselink2_0OrmManyToOneMappingTests.class);
+		suite.addTestSuite(EclipseLink2_0OrmManyToOneMappingTests.class);
 		suite.addTestSuite(EclipseLink2_0OrmMappedSuperclassTests.class);
 		suite.addTestSuite(EclipseLink2_0OrmOneToOneMappingTests.class);
 		suite.addTestSuite(EclipseLink2_0OrmOneToManyMappingTests.class);

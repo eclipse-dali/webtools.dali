@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,13 +26,7 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
-import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -40,6 +34,12 @@ import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
+import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,11 +70,11 @@ public class JpaArtifactFactoryTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 		
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("com.test.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.test.Customer");
 		assertNotNull(customerType);
 		
 		assertTrue(addressFile.exists());
-		JavaResourcePersistentType addressType = jpaProject.getJavaResourcePersistentType("com.test.Address");
+		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.test.Address");
 		assertNotNull(addressType);
 		
 		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
@@ -151,7 +151,7 @@ public class JpaArtifactFactoryTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 		
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("com.test.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.test.Customer");
 		assertNotNull(customerType);
 				
 		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());

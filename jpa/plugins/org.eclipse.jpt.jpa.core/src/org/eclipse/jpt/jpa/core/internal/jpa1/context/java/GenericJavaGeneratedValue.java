@@ -202,8 +202,8 @@ public class GenericJavaGeneratedValue
 			return;
 		}
 
-		for (Iterator<Generator> stream = this.getPersistenceUnit().generators(); stream.hasNext(); ) {
-			if (generator.equals(stream.next().getName())) {
+		for (Generator next : this.getPersistenceUnit().getGenerators()) {
+			if (generator.equals(next.getName())) {
 				return;
 			}
 		}

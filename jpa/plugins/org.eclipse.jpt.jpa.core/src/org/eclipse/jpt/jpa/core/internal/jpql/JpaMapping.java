@@ -14,17 +14,16 @@
 package org.eclipse.jpt.jpa.core.internal.jpql;
 
 import java.lang.annotation.Annotation;
-import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IMappingType;
@@ -81,13 +80,13 @@ final class JpaMapping implements IMapping {
 
 	private ITypeDeclaration[] buildGenericTypeDeclarations() {
 		JavaPersistentAttribute javaPersistentAttribute = mapping.getPersistentAttribute().getJavaPersistentAttribute();
-		JavaResourcePersistentAttribute resource = javaPersistentAttribute.getResourcePersistentAttribute();
+		JavaResourceAttribute resource = javaPersistentAttribute.getResourceAttribute();
 		List<ITypeDeclaration> declarations = CollectionTools.list(buildGenericTypeDeclarations(resource));
 		return declarations.toArray(new ITypeDeclaration[declarations.size()]);
 	}
 
-	private Iterator<ITypeDeclaration> buildGenericTypeDeclarations(JavaResourcePersistentAttribute resource) {
-		return new TransformationIterator<String, ITypeDeclaration>(resource.typeTypeArgumentNames()) {
+	private Iterable<ITypeDeclaration> buildGenericTypeDeclarations(JavaResourceAttribute resource) {
+		return new TransformationIterable<String, ITypeDeclaration>(resource.getTypeTypeArgumentNames()) {
 			@Override
 			protected ITypeDeclaration transform(String next) {
 				return getTypeRepository().getType(next).getTypeDeclaration();
@@ -173,7 +172,7 @@ final class JpaMapping implements IMapping {
 	 * {@inheritDoc}
 	 */
 	public boolean hasAnnotation(Class<? extends Annotation> annotationType) {
-		JavaResourcePersistentAttribute attribute = mapping.getPersistentAttribute().getJavaPersistentAttribute().getResourcePersistentAttribute();
+		JavaResourceAttribute attribute = mapping.getPersistentAttribute().getJavaPersistentAttribute().getResourceAttribute();
 		return attribute.getAnnotation(annotationType.getName()) != null;
 	}
 

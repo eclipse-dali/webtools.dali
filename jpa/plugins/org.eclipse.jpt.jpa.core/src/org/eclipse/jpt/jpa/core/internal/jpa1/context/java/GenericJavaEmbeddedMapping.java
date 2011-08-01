@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -51,7 +52,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableTableDescriptionP
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -224,8 +224,8 @@ public class GenericJavaEmbeddedMapping
 	protected class AssociationOverrideContainerOwner
 		implements JavaAssociationOverrideContainer2_0.Owner
 	{
-		public JavaResourcePersistentMember getResourcePersistentMember() {
-			return GenericJavaEmbeddedMapping.this.getResourcePersistentAttribute();
+		public JavaResourceAttribute getResourceMember() {
+			return GenericJavaEmbeddedMapping.this.getResourceAttribute();
 		}
 
 		public TypeMapping getTypeMapping() {

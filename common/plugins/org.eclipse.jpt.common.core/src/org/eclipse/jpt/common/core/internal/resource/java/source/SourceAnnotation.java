@@ -13,6 +13,8 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
+import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -20,8 +22,10 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 
 /**
  * some common state and behavior for Java source annotations;
@@ -41,16 +45,16 @@ public abstract class SourceAnnotation
 	/**
 	 * constructor for straight member annotation
 	 */
-	protected SourceAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa) {
-		this(parent, annotatedElement, daa, new ElementAnnotationAdapter(annotatedElement, daa));
+	protected SourceAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		this(parent, element, daa, new ElementAnnotationAdapter(element, daa));
 	}
 
 	/**
 	 * constructor for nested annotation (typically)
 	 */
-	protected SourceAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected SourceAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent);
-		this.annotatedElement = annotatedElement;
+		this.annotatedElement = element;
 		this.daa = daa;
 		this.annotationAdapter = annotationAdapter;
 	}
@@ -77,8 +81,36 @@ public abstract class SourceAnnotation
 		this.annotationAdapter.removeAnnotation();
 	}
 
+	public boolean isUnset() {
+		return true;
+	}
+
 
 	// ********** convenience methods **********
+
+	protected DeclarationAnnotationElementAdapter<String> buildStringElementAdapter(String elementName) {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, elementName);
+	}
+
+	protected DeclarationAnnotationElementAdapter<Boolean> buildBooleanElementAdapter(String elementName) {
+		return ConversionDeclarationAnnotationElementAdapter.forBooleans(this.daa, elementName);
+	}
+
+	protected DeclarationAnnotationElementAdapter<Integer> buildIntegerElementAdapter(String elementName) {
+		return ConversionDeclarationAnnotationElementAdapter.forNumbers(this.daa, elementName);
+	}
+
+	protected AnnotationElementAdapter<String> buildStringElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
+	}
+
+	protected AnnotationElementAdapter<Boolean> buildBooleanElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
+		return new AnnotatedElementAnnotationElementAdapter<Boolean>(this.annotatedElement, daea);
+	}
+
+	protected AnnotationElementAdapter<Integer> buildIntegerElementAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
+		return new AnnotatedElementAnnotationElementAdapter<Integer>(this.annotatedElement, daea);
+	}
 
 	/**
 	 * Return the text range corresponding to the annotation.
@@ -144,14 +176,27 @@ public abstract class SourceAnnotation
 		return (astNode == null) ? null : ASTTools.buildTextRange(astNode);
 	}
 
+	
+	//*********** NestableAnnotation implementation ****************
 
+	/**
+	 * convenience implementation of method from NestableAnnotation interface
+	 * for subclasses
+	 */
+	public void moveAnnotation(int newIndex) {
+		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
+	}
+
+	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
+		return (IndexedAnnotationAdapter) this.annotationAdapter;
+	}
 	
 	/**
 	 * A container for nested annotations. The owner of the AnnotationContainer
 	 * needs to call initialize(CompilationUnit) on it.
 	 * @param <T> the type of the resource nestable annotations
 	 */
-	protected abstract class AnnotationContainer<T extends NestableAnnotation> extends SourceNode.AnnotationContainer<T>
+	public abstract class AnnotationContainer<T extends NestableAnnotation> extends SourceNode.AnnotationContainer<T>
 	{
 		protected AnnotationContainer() {
 			super();

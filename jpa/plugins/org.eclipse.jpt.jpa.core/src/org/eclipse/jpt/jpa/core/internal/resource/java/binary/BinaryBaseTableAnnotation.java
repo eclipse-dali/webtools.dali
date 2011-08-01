@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
-import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
 /**
@@ -152,20 +152,17 @@ public abstract class BinaryBaseTableAnnotation
 	}
 
 	// ***** unique constraints
-	public ListIterator<UniqueConstraintAnnotation> uniqueConstraints() {
-		return new CloneListIterator<UniqueConstraintAnnotation>(this.uniqueConstraints);
+
+	public ListIterable<UniqueConstraintAnnotation> getUniqueConstraints() {
+		return new LiveCloneListIterable<UniqueConstraintAnnotation>(this.uniqueConstraints);
 	}
 
-	public int uniqueConstraintsSize() {
+	public int getUniqueConstraintsSize() {
 		return this.uniqueConstraints.size();
 	}
 
 	public UniqueConstraintAnnotation uniqueConstraintAt(int index) {
 		return this.uniqueConstraints.get(index);
-	}
-
-	public int indexOfUniqueConstraint(UniqueConstraintAnnotation uniqueConstraint) {
-		return this.uniqueConstraints.indexOf(uniqueConstraint);
 	}
 
 	public UniqueConstraintAnnotation addUniqueConstraint(int index) {

@@ -132,8 +132,8 @@ public class MappingFileWizard extends Wizard
 				PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
 				if (persistenceXml != null){
 					Persistence persistence = persistenceXml.getPersistence();
-					if (persistence != null && persistence.persistenceUnitsSize() > 0) {
-						return persistence.persistenceUnits().next();
+					if (persistence != null && persistence.getPersistenceUnitsSize() > 0) {
+						return persistence.getPersistenceUnits().iterator().next();
 					}
 				}
 			}

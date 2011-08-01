@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
@@ -41,23 +41,19 @@ public class OrmPrimaryKeyJoinColumnsComposite extends AbstractPrimaryKeyJoinCol
 			OrmEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST)
 		{
 			@Override
-			protected ListIterator<ReadOnlyPrimaryKeyJoinColumn> listIterator_() {
-				return subject.defaultPrimaryKeyJoinColumns();
+			protected ListIterable<ReadOnlyPrimaryKeyJoinColumn> getListIterable() {
+				return subject.getDefaultPrimaryKeyJoinColumns();
 			}
-//TODO defaultPrimaryKeyJoinColumnsSize when I can change the API
-//			@Override
-//			protected int size_() {
-//				return subject.defaultPrimaryKeyJoinColumnsSize();
-//			}
+			@Override
+			protected int size_() {
+				return subject.getDefaultPrimaryKeyJoinColumnsSize();
+			}
 		};
 	}
 	
 	@Override
 	protected void switchDefaultToSpecified() {
-		ListIterator<ReadOnlyPrimaryKeyJoinColumn> defaultJoinColumns = getSubject().defaultPrimaryKeyJoinColumns();
-
-		while (defaultJoinColumns.hasNext()) {
-			ReadOnlyPrimaryKeyJoinColumn defaultJoinColumn = defaultJoinColumns.next();
+		for (ReadOnlyPrimaryKeyJoinColumn defaultJoinColumn : getSubject().getDefaultPrimaryKeyJoinColumns()) {
 			String columnName = defaultJoinColumn.getName();
 			String referencedColumnName = defaultJoinColumn.getReferencedColumnName();
 

@@ -209,8 +209,8 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertEquals(TYPE_NAME + "_Project", virtualJoinTable.getName());
 		assertNull(virtualJoinTable.getSpecifiedCatalog());
 		assertNull(virtualJoinTable.getSpecifiedSchema());
-		assertEquals(0, virtualJoinTable.specifiedJoinColumnsSize());
-		assertEquals(0, virtualJoinTable.specifiedInverseJoinColumnsSize());
+		assertEquals(0, virtualJoinTable.getSpecifiedJoinColumnsSize());
+		assertEquals(0, virtualJoinTable.getSpecifiedInverseJoinColumnsSize());
 		JoinColumn ormJoinColumn = virtualJoinTable.getDefaultJoinColumn();
 //TODO need to test joinColumn defaults here as well as in java and all the relatioship mapping types
 //		assertEquals("id_project_id", ormJoinColumn.getDefaultName());
@@ -235,12 +235,12 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertEquals("FOO", virtualJoinTable.getSpecifiedName());
 		assertEquals("CATALOG", virtualJoinTable.getSpecifiedCatalog());
 		assertEquals("SCHEMA", virtualJoinTable.getSpecifiedSchema());
-		assertEquals(1, virtualJoinTable.specifiedJoinColumnsSize());
-		assertEquals(1, virtualJoinTable.specifiedInverseJoinColumnsSize());
-		ormJoinColumn = virtualJoinTable.specifiedJoinColumns().next();
+		assertEquals(1, virtualJoinTable.getSpecifiedJoinColumnsSize());
+		assertEquals(1, virtualJoinTable.getSpecifiedInverseJoinColumnsSize());
+		ormJoinColumn = virtualJoinTable.getSpecifiedJoinColumns().iterator().next();
 		assertEquals("NAME", ormJoinColumn.getSpecifiedName());
 		assertEquals("REFERENCED_NAME", ormJoinColumn.getSpecifiedReferencedColumnName());
-		inverseOrmJoinColumn = virtualJoinTable.specifiedInverseJoinColumns().next();
+		inverseOrmJoinColumn = virtualJoinTable.getSpecifiedInverseJoinColumns().iterator().next();
 		assertEquals("INVERSE_NAME", inverseOrmJoinColumn.getSpecifiedName());
 		assertEquals("INVERSE_REFERENCED_NAME", inverseOrmJoinColumn.getSpecifiedReferencedColumnName());
 	}
@@ -632,12 +632,12 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", joinTableResource.getJoinColumns().get(1).getName());
 		assertEquals("FOO", joinTableResource.getJoinColumns().get(2).getName());
 		
-		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
 		
-		joinColumns = ormJoinTable.specifiedJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -688,7 +688,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		
 		ormJoinTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -699,7 +699,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 
 
 		ormJoinTable.moveSpecifiedJoinColumn(0, 1);
-		joinColumns = ormJoinTable.specifiedJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -727,39 +727,39 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		joinTableResource.getInverseJoinColumns().get(1).setName("BAR");
 		joinTableResource.getInverseJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.specifiedInverseJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		joinTableResource.getInverseJoinColumns().move(2, 0);
-		joinColumns = ormJoinTable.specifiedInverseJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		joinTableResource.getInverseJoinColumns().move(0, 1);
-		joinColumns = ormJoinTable.specifiedInverseJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		joinTableResource.getInverseJoinColumns().remove(1);
-		joinColumns = ormJoinTable.specifiedInverseJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		joinTableResource.getInverseJoinColumns().remove(1);
-		joinColumns = ormJoinTable.specifiedInverseJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		joinTableResource.getInverseJoinColumns().remove(0);
-		assertFalse(ormJoinTable.specifiedInverseJoinColumns().hasNext());
+		assertFalse(ormJoinTable.getSpecifiedInverseJoinColumns().iterator().hasNext());
 	}
 
 	public void testAddSpecifiedInverseJoinColumn() throws Exception {
@@ -789,12 +789,12 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", joinTableResource.getInverseJoinColumns().get(1).getName());
 		assertEquals("FOO", joinTableResource.getInverseJoinColumns().get(2).getName());
 		
-		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.specifiedInverseJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
 		
-		joinColumns = ormJoinTable.specifiedInverseJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -845,7 +845,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		
 		ormJoinTable.moveSpecifiedInverseJoinColumn(2, 0);
-		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.specifiedInverseJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -856,7 +856,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 
 
 		ormJoinTable.moveSpecifiedInverseJoinColumn(0, 1);
-		joinColumns = ormJoinTable.specifiedInverseJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedInverseJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -884,39 +884,39 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		joinTableResource.getJoinColumns().get(1).setName("BAR");
 		joinTableResource.getJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		joinTableResource.getJoinColumns().move(2, 0);
-		joinColumns = ormJoinTable.specifiedJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		joinTableResource.getJoinColumns().move(0, 1);
-		joinColumns = ormJoinTable.specifiedJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		joinTableResource.getJoinColumns().remove(1);
-		joinColumns = ormJoinTable.specifiedJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		joinTableResource.getJoinColumns().remove(1);
-		joinColumns = ormJoinTable.specifiedJoinColumns();
+		joinColumns = ormJoinTable.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
+		assertFalse(ormJoinTable.getSpecifiedJoinColumns().iterator().hasNext());
 	}
 	
 
@@ -930,7 +930,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTable());
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.uniqueConstraints();
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 		
 		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
@@ -941,7 +941,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		joinTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "bar");
 		
-		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertTrue(uniqueConstraints.hasNext());
 		assertEquals("bar", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("foo", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -958,7 +958,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTable());
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		
-		assertEquals(0,  ormJoinTable.uniqueConstraintsSize());
+		assertEquals(0,  ormJoinTable.getUniqueConstraintsSize());
 		
 		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		joinTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
@@ -968,7 +968,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		joinTableResource.getUniqueConstraints().add(1, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "bar");
 		
-		assertEquals(2,  ormJoinTable.uniqueConstraintsSize());
+		assertEquals(2,  ormJoinTable.getUniqueConstraintsSize());
 	}
 
 	public void testAddUniqueConstraint() throws Exception {
@@ -1038,7 +1038,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
 		assertFalse(uniqueConstraintResources.hasNext());
 		
-		Iterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.uniqueConstraints();
+		Iterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
@@ -1049,7 +1049,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertEquals("FOO", uniqueConstraintResources.next().getColumnNames().get(0));		
 		assertFalse(uniqueConstraintResources.hasNext());
 
-		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertFalse(uniqueConstraints.hasNext());
 
@@ -1057,7 +1057,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		ormJoinTable.removeUniqueConstraint(0);
 		uniqueConstraintResources = joinTableResource.getUniqueConstraints().listIterator();
 		assertFalse(uniqueConstraintResources.hasNext());
-		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -1079,7 +1079,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		
 		ormJoinTable.moveUniqueConstraint(2, 0);
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.uniqueConstraints();
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -1091,7 +1091,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 
 
 		ormJoinTable.moveUniqueConstraint(0, 1);
-		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -1125,39 +1125,39 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
 
 		
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.uniqueConstraints();
+		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableResource.getUniqueConstraints().move(2, 0);
-		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableResource.getUniqueConstraints().move(0, 1);
-		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableResource.getUniqueConstraints().remove(1);
-		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableResource.getUniqueConstraints().remove(1);
-		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableResource.getUniqueConstraints().remove(0);
-		uniqueConstraints = ormJoinTable.uniqueConstraints();
+		uniqueConstraints = ormJoinTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -1166,23 +1166,23 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		createTestEntityWithValidManyToMany();
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		ReadOnlyPersistentAttribute virtualAttribute = ormPersistentType.attributes().next();
+		ReadOnlyPersistentAttribute virtualAttribute = ormPersistentType.getAttributes().iterator().next();
 		ManyToManyMapping virtualManyToManyMapping = (ManyToManyMapping) virtualAttribute.getMapping();
 		JoinTable virtualJoinTable = virtualManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		assertTrue(virtualAttribute.isVirtual());
 		
-		ListIterator<UniqueConstraint> uniqueConstraints = (ListIterator<UniqueConstraint>) virtualJoinTable.uniqueConstraints();
+		ListIterator<? extends UniqueConstraint> uniqueConstraints = virtualJoinTable.getUniqueConstraints().iterator();
 		assertFalse(uniqueConstraints.hasNext());
 
-		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().attributes().next().getMapping();
+		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaJoinTable javaJoinTable = javaManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		javaJoinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		javaJoinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		javaJoinTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
 
-		uniqueConstraints = (ListIterator<UniqueConstraint>) virtualJoinTable.uniqueConstraints();
+		uniqueConstraints = virtualJoinTable.getUniqueConstraints().iterator();
 		assertTrue(uniqueConstraints.hasNext());
 		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
@@ -1190,7 +1190,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraints.hasNext());
 		
 		OrmManyToManyMapping specifiedManyToManyMapping = (OrmManyToManyMapping) ((VirtualOrmPersistentAttribute) virtualAttribute).convertToSpecified().getMapping();
-		assertEquals(0,  specifiedManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().uniqueConstraintsSize());
+		assertEquals(0,  specifiedManyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().getUniqueConstraintsSize());
 	}
 	
 	public void testDefaultName() throws Exception {
@@ -1241,8 +1241,8 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		ormPersistentType.getAttributeNamed("projects").convertToSpecified();
 		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
-		JoinColumn joinColumn = joinTable.joinColumns().next();
-		JoinColumn inverseJoinColumn = joinTable.inverseJoinColumns().next();
+		JoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
+		JoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		
 		//joinTable default name is null because targetEntity is not in the persistence unit
 		assertNull(joinColumn.getDefaultName());
@@ -1305,8 +1305,8 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		ormPersistentType.getAttributeNamed("projects").convertToSpecified();
 		OrmManyToManyMapping manyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("projects").getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
-		JoinColumn joinColumn = joinTable.joinColumns().next();
-		JoinColumn inverseJoinColumn = joinTable.inverseJoinColumns().next();
+		JoinColumn joinColumn = joinTable.getJoinColumns().iterator().next();
+		JoinColumn inverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		
 		//joinTable default name is null because targetEntity is not in the persistence unit
 		assertNull(joinColumn.getDefaultName());

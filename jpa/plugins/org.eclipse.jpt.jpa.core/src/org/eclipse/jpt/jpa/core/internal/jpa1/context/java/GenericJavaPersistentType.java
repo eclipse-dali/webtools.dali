@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * JPA 1.0 Java persistent type.
@@ -21,8 +21,8 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 public class GenericJavaPersistentType
 	extends AbstractJavaPersistentType
 {
-	public GenericJavaPersistentType(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
-		super(parent, jrpt);
+	public GenericJavaPersistentType(PersistentType.Owner parent, JavaResourceType jrt) {
+		super(parent, jrt);
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,15 +17,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
 import org.eclipse.jpt.common.utility.CommandExecutor;
 import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
 import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackageFragmentRoot;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentTypeCache;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
@@ -140,9 +140,9 @@ public interface JpaProject
 	// ********** external Java resource persistent types **********
 
 	/**
-	 * Return the JPA project's external Java resource persistent type cache.
+	 * Return the JPA project's external Java resource type cache.
 	 */
-	JavaResourcePersistentTypeCache getExternalJavaResourcePersistentTypeCache();
+	JavaResourceTypeCache getExternalJavaResourceTypeCache();
 
 
 	// ********** XML resources **********
@@ -191,11 +191,19 @@ public interface JpaProject
 	 */
 	Iterable<String> getMappedJavaSourceClassNames();
 
+	Iterable<String> getTypeMappingAnnotations();
+
 	/**
-	 * Return the Java resource persistent type for the specified type.
+	 * Return the Java resource type for the specified type.
 	 * Return null if invalid or absent.
 	 */
-	JavaResourcePersistentType getJavaResourcePersistentType(String typeName);
+	JavaResourceAbstractType getJavaResourceType(String typeName);
+
+	/**
+	 * Return the {@link JavaResourceAbstractType} with the specified type name and kind.
+	 * Return null if invalid or absent or if the kind does not match.
+	 */
+	JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind);
 
 	/**
 	 * Return the Java resource package for the specified package.

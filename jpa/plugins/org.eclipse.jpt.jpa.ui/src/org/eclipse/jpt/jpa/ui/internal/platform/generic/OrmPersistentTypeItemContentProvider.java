@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
@@ -53,15 +53,15 @@ public class OrmPersistentTypeItemContentProvider
 		return new ListCollectionValueModelAdapter<OrmReadOnlyPersistentAttribute>(
 		new ListAspectAdapter<OrmPersistentType, OrmReadOnlyPersistentAttribute>(OrmPersistentType.SPECIFIED_ATTRIBUTES_LIST, getModel()) {
 			@Override
-			protected ListIterator<OrmReadOnlyPersistentAttribute> listIterator_() {
-				return new SuperListIteratorWrapper<OrmReadOnlyPersistentAttribute>(this.specifiedAttributes());
+			protected ListIterable<OrmReadOnlyPersistentAttribute> getListIterable() {
+				return new SuperListIterableWrapper<OrmReadOnlyPersistentAttribute>(this.getSpecifiedAttributes());
 			}
-			protected ListIterator<OrmPersistentAttribute> specifiedAttributes() {
-				return this.subject.specifiedAttributes();
+			protected ListIterable<OrmPersistentAttribute> getSpecifiedAttributes() {
+				return this.subject.getSpecifiedAttributes();
 			}
 			@Override
 			protected int size_() {
-				return this.subject.specifiedAttributesSize();
+				return this.subject.getSpecifiedAttributesSize();
 			}
 		});
 	}
@@ -70,12 +70,12 @@ public class OrmPersistentTypeItemContentProvider
 		return new ListCollectionValueModelAdapter<OrmReadOnlyPersistentAttribute>(
 		new ListAspectAdapter<OrmPersistentType, OrmReadOnlyPersistentAttribute>(OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST, getModel()) {
 			@Override
-			protected ListIterator<OrmReadOnlyPersistentAttribute> listIterator_() {
-				return subject.virtualAttributes();
+			protected ListIterable<OrmReadOnlyPersistentAttribute> getListIterable() {
+				return this.subject.getVirtualAttributes();
 			}
 			@Override
 			protected int size_() {
-				return subject.virtualAttributesSize();
+				return this.subject.getVirtualAttributesSize();
 			}
 		});
 	}

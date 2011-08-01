@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,10 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -43,12 +46,10 @@ import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToOneAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
@@ -64,7 +65,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneUniDirRela
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
-import org.eclipse.swt.widgets.Display;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -108,7 +108,7 @@ public class CreateRelationsTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("com.test.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.test.Customer");
 		assertNotNull(customerType);
 		
 		
@@ -126,7 +126,7 @@ public class CreateRelationsTest {
 		expect(featureProvider.getCompilationUnit(t1)).andStubReturn(cu1);		
 		
 		assertTrue(addressFile.exists());
-		JavaResourcePersistentType addressType = jpaProject.getJavaResourcePersistentType("com.Address");
+		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.Address");
 		assertNotNull(customerType);
 
 		
@@ -193,7 +193,7 @@ public class CreateRelationsTest {
 		assertEquals("address", rel.getOwnerAttributeName());
 		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		OneToOneAnnotation an = (OneToOneAnnotation)ownerAt.getResourcePersistentAttribute().getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
+		OneToOneAnnotation an = (OneToOneAnnotation)ownerAt.getResourceAttribute().getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 		assertNull(an.getMappedBy());
 	}
@@ -212,13 +212,13 @@ public class CreateRelationsTest {
 		assertEquals("address", rel.getOwnerAttributeName());
 		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		OneToOneAnnotation an = (OneToOneAnnotation)ownerAt.getResourcePersistentAttribute().getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
+		OneToOneAnnotation an = (OneToOneAnnotation)ownerAt.getResourceAttribute().getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 		assertNull(an.getMappedBy());
 				
 		JavaPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
-		an = (OneToOneAnnotation)inverseAt.getResourcePersistentAttribute().getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
+		an = (OneToOneAnnotation)inverseAt.getResourceAttribute().getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 		assertEquals("address", an.getMappedBy());
 		
@@ -238,7 +238,7 @@ public class CreateRelationsTest {
 		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
 		
-		OneToManyAnnotation an = (OneToManyAnnotation)ownerAt.getResourcePersistentAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+		OneToManyAnnotation an = (OneToManyAnnotation)ownerAt.getResourceAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 		assertNull(an.getMappedBy());		
 	}
 	
@@ -256,7 +256,7 @@ public class CreateRelationsTest {
 		assertEquals("address", rel.getOwnerAttributeName());
 		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		ManyToOneAnnotation an = (ManyToOneAnnotation)ownerAt.getResourcePersistentAttribute().getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME);
+		ManyToOneAnnotation an = (ManyToOneAnnotation)ownerAt.getResourceAttribute().getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 	}
 	
@@ -272,13 +272,13 @@ public class CreateRelationsTest {
 		assertEquals("address", rel.getOwnerAttributeName());
 		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		ManyToOneAnnotation an = (ManyToOneAnnotation)ownerAt.getResourcePersistentAttribute().getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME);
+		ManyToOneAnnotation an = (ManyToOneAnnotation)ownerAt.getResourceAttribute().getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 		
 		assertEquals("customer", rel.getInverseAttributeName());
 		JavaPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
-		OneToManyAnnotation an1 = (OneToManyAnnotation)inverseAt.getResourcePersistentAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+		OneToManyAnnotation an1 = (OneToManyAnnotation)inverseAt.getResourceAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 		assertNotNull(an1);
 		assertEquals("address", an1.getMappedBy());
 	}
@@ -295,7 +295,7 @@ public class CreateRelationsTest {
 		assertEquals("address", rel.getOwnerAttributeName());
 		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		ManyToManyAnnotation an = (ManyToManyAnnotation)ownerAt.getResourcePersistentAttribute().getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
+		ManyToManyAnnotation an = (ManyToManyAnnotation)ownerAt.getResourceAttribute().getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 		assertNull(an.getMappedBy());
 	}
@@ -312,13 +312,13 @@ public class CreateRelationsTest {
 		assertEquals("address", rel.getOwnerAttributeName());
 		JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
 		assertNotNull(ownerAt);
-		ManyToManyAnnotation an = (ManyToManyAnnotation)ownerAt.getResourcePersistentAttribute().getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
+		ManyToManyAnnotation an = (ManyToManyAnnotation)ownerAt.getResourceAttribute().getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 		assertNull(an.getMappedBy());
 				
 		JavaPersistentAttribute inverseAt = t2.getAttributeNamed("customer");
 		assertNotNull(inverseAt);
-		an = (ManyToManyAnnotation)inverseAt.getResourcePersistentAttribute().getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
+		an = (ManyToManyAnnotation)inverseAt.getResourceAttribute().getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		assertNotNull(an);
 		assertEquals("address", an.getMappedBy());
 		
@@ -335,7 +335,7 @@ public class CreateRelationsTest {
 			jpa20Project.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 	
 			assertTrue(customerFile.exists());
-			JavaResourcePersistentType customerType = jpa20Project.getJavaResourcePersistentType("com.test.Customer");
+			JavaResourceAbstractType customerType = jpa20Project.getJavaResourceType("com.test.Customer");
 			assertNotNull(customerType);
 					
 			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, customerType.getQualifiedName());
@@ -352,7 +352,7 @@ public class CreateRelationsTest {
 			expect(featureProvider20.getCompilationUnit(t1)).andStubReturn(cu1);
 				
 			assertTrue(addressFile.exists());
-			JavaResourcePersistentType addressType = jpa20Project.getJavaResourcePersistentType("com.Address");
+			JavaResourceAbstractType addressType = jpa20Project.getJavaResourceType("com.Address");
 			assertNotNull(customerType);
 	
 			
@@ -383,10 +383,10 @@ public class CreateRelationsTest {
 			JavaPersistentAttribute ownerAt = t1.getAttributeNamed("address");
 			assertNotNull(ownerAt);
 			
-			Object o1 = ownerAt.getResourcePersistentAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+			Object o1 = ownerAt.getResourceAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 			assertNotNull(o1);
 			
-			Object o2 = ownerAt.getResourcePersistentAttribute().getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
+			Object o2 = ownerAt.getResourceAttribute().getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 			assertNotNull(o2);
 			
 			JoinColumnAnnotation joinColumn = (JoinColumnAnnotation) o2;
@@ -413,7 +413,7 @@ public class CreateRelationsTest {
 			
 			assertTrue(simpleEmployeeFile.exists());
 			assertTrue(employeeFile.exists());
-			JavaResourcePersistentType employeeType = jpa20Project.getJavaResourcePersistentType("com.test.Employee");
+			JavaResourceAbstractType employeeType = jpa20Project.getJavaResourceType("com.test.Employee");
 			assertNotNull(employeeType);
 					
 			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, employeeType.getQualifiedName());
@@ -430,7 +430,7 @@ public class CreateRelationsTest {
 			expect(featureProvider20.getCompilationUnit(t1)).andStubReturn(cu1);
 				
 			assertTrue(projectFile.exists());
-			JavaResourcePersistentType projectType = jpa20Project.getJavaResourcePersistentType("com.Project");
+			JavaResourceAbstractType projectType = jpa20Project.getJavaResourceType("com.Project");
 			assertNotNull(employeeType);
 	
 			
@@ -460,16 +460,13 @@ public class CreateRelationsTest {
 			JavaPersistentAttribute ownerAt = t1.getAttributeNamed("project");
 			assertNotNull(ownerAt);
 			
-			Object o1 = ownerAt.getResourcePersistentAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+			Object o1 = ownerAt.getResourceAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 			assertNotNull(o1);
 			
-			Object o2 = ownerAt.getResourcePersistentAttribute().getAnnotation(JoinColumnsAnnotation.ANNOTATION_NAME);
+			Object o2 = ownerAt.getResourceAttribute().getAnnotation(JPA.JOIN_COLUMNS);
 			assertNotNull(o2);
 			
-			JoinColumnsAnnotation joinColumns = (JoinColumnsAnnotation) o2;
-			assertEquals(2, joinColumns.getNestedAnnotationsSize());
-			assertEquals("javax.persistence.JoinColumn", joinColumns.getNestedAnnotationName());
-			
+			assertEquals(2, ownerAt.getResourceAttribute().getAnnotationsSize(JPA.JOIN_COLUMN));			
 						
 		}
 		
@@ -486,7 +483,7 @@ public class CreateRelationsTest {
 			
 			assertTrue(simpleEmployeeFile.exists());
 			assertTrue(employeeFile.exists());
-			JavaResourcePersistentType employeeType = jpa20Project.getJavaResourcePersistentType("com.test.Employeer");
+			JavaResourceAbstractType employeeType = jpa20Project.getJavaResourceType("com.test.Employeer");
 			assertNotNull(employeeType);
 			
 					
@@ -516,7 +513,7 @@ public class CreateRelationsTest {
 			}
 							
 			assertTrue(projectFile.exists());
-			JavaResourcePersistentType projectType = jpa20Project.getJavaResourcePersistentType("com.Person");
+			JavaResourceAbstractType projectType = jpa20Project.getJavaResourceType("com.Person");
 			assertNotNull(employeeType);
 	
 			
@@ -547,19 +544,17 @@ public class CreateRelationsTest {
 		    JavaPersistentAttribute ownerAt = t1.getAttributeNamed("person");
 			assertNotNull(ownerAt);
 						
-			Object o1 = ownerAt.getResourcePersistentAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
+			Object o1 = ownerAt.getResourceAttribute().getAnnotation(OneToManyAnnotation.ANNOTATION_NAME);
 			assertNotNull(o1);
 			
-			Object o2 = ownerAt.getResourcePersistentAttribute().getAnnotation(JoinColumnsAnnotation.ANNOTATION_NAME);
+			Object o2 = ownerAt.getResourceAttribute().getAnnotation(JPA.JOIN_COLUMNS);
 			assertNotNull(o2);
 			
-			JoinColumnsAnnotation joinColumns = (JoinColumnsAnnotation) o2;
-			assertEquals(1, joinColumns.getNestedAnnotationsSize());
-			assertEquals("javax.persistence.JoinColumn", joinColumns.getNestedAnnotationName());
-			Iterable<NestableJoinColumnAnnotation> nestedAnnotations = joinColumns.getNestedAnnotations();
-			Iterator<NestableJoinColumnAnnotation> nestedIterator = nestedAnnotations.iterator();
+			assertEquals(1,  ownerAt.getResourceAttribute().getAnnotationsSize(JPA.JOIN_COLUMN));
+			Iterable<JoinColumnAnnotation> nestedAnnotations = new SubIterableWrapper<NestableAnnotation, JoinColumnAnnotation>(ownerAt.getResourceAttribute().getAnnotations(JPA.JOIN_COLUMN));
+			Iterator<JoinColumnAnnotation> nestedIterator = nestedAnnotations.iterator();
 			while(nestedIterator.hasNext()){
-				NestableJoinColumnAnnotation joinColumn = nestedIterator.next();
+				JoinColumnAnnotation joinColumn = nestedIterator.next();
 				assertEquals("Employeer_firstName",joinColumn.getName());
 				assertEquals("firstName",joinColumn.getReferencedColumnName());
 			}

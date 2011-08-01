@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -44,7 +45,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -110,7 +110,7 @@ public class CreateRelationAttributesTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("abc.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("abc.Customer");
 		assertNotNull(customerType);
 		
 		
@@ -121,7 +121,7 @@ public class CreateRelationAttributesTest {
 		}
 		
 		assertTrue(addressFile.exists());
-		JavaResourcePersistentType addressType = jpaProject.getJavaResourcePersistentType("abc.Address");
+		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("abc.Address");
 		assertNotNull(customerType);
 
 		
@@ -136,7 +136,7 @@ public class CreateRelationAttributesTest {
 						createCompilationUnitFrom(customerFile),
 						createCompilationUnitFrom(addressFile));
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
-		PersistenceUnit pu = jpaProject.getRootContextNode().getPersistenceXml().getPersistence().persistenceUnits().next();
+		PersistenceUnit pu = jpaProject.getRootContextNode().getPersistenceXml().getPersistence().getPersistenceUnits().iterator().next();
 		t1 = pu.getPersistentType("abc.Customer");
 		assertNotNull(attr);			
 
@@ -153,7 +153,7 @@ public class CreateRelationAttributesTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("com.test.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.test.Customer");
 		assertNotNull(customerType);
 		
 		
@@ -164,7 +164,7 @@ public class CreateRelationAttributesTest {
 		}
 		
 		assertTrue(addressFile.exists());
-		JavaResourcePersistentType addressType = jpaProject.getJavaResourcePersistentType("com.Address");
+		JavaResourceAbstractType addressType = jpaProject.getJavaResourceType("com.Address");
 		assertNotNull(customerType);
 
 		
@@ -204,7 +204,7 @@ public class CreateRelationAttributesTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("com.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.Customer");
 		assertNotNull(customerType);
 		
 		
@@ -215,7 +215,7 @@ public class CreateRelationAttributesTest {
 		}
 		
 		assertTrue(creditCardFile.exists());
-		JavaResourcePersistentType creditCardType = jpaProject.getJavaResourcePersistentType("com.CreditCard");
+		JavaResourceAbstractType creditCardType = jpaProject.getJavaResourceType("com.CreditCard");
 		assertNotNull(creditCardFile);
 
 		
@@ -281,7 +281,7 @@ public class CreateRelationAttributesTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("com.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.Customer");
 		assertNotNull(customerType);
 		
 		
@@ -292,7 +292,7 @@ public class CreateRelationAttributesTest {
 		}
 		
 		assertTrue(phoneFile.exists());
-		JavaResourcePersistentType phoneType = jpaProject.getJavaResourcePersistentType("com.Phone");
+		JavaResourceAbstractType phoneType = jpaProject.getJavaResourceType("com.Phone");
 		assertNotNull(customerType);
 
 		
@@ -335,7 +335,7 @@ public class CreateRelationAttributesTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 
 		assertTrue(cruiseFile.exists());
-		JavaResourcePersistentType cruiseType = jpaProject.getJavaResourcePersistentType("com.Cruise");
+		JavaResourceAbstractType cruiseType = jpaProject.getJavaResourceType("com.Cruise");
 		assertNotNull(cruiseType);
 		
 		
@@ -346,7 +346,7 @@ public class CreateRelationAttributesTest {
 		}
 		
 		assertTrue(reservationFile.exists());
-		JavaResourcePersistentType reservationType= jpaProject.getJavaResourcePersistentType("com.Reservation");
+		JavaResourceAbstractType reservationType= jpaProject.getJavaResourceType("com.Reservation");
 		assertNotNull(reservationFile);
 
 		
@@ -431,7 +431,7 @@ public class CreateRelationAttributesTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 
 		assertTrue(cruiseFile.exists());
-		JavaResourcePersistentType cruiseType = jpaProject.getJavaResourcePersistentType("com.Cruise");
+		JavaResourceAbstractType cruiseType = jpaProject.getJavaResourceType("com.Cruise");
 		assertNotNull(cruiseType);
 			
 		PersistentType manySidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getQualifiedName());
@@ -441,7 +441,7 @@ public class CreateRelationAttributesTest {
 		}
 		
 		assertTrue(shipFile.exists());
-		JavaResourcePersistentType shipType = jpaProject.getJavaResourcePersistentType("com.Ship");
+		JavaResourceAbstractType shipType = jpaProject.getJavaResourceType("com.Ship");
 		assertNotNull(cruiseType);
 
 		
@@ -497,7 +497,7 @@ public class CreateRelationAttributesTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 
 		assertTrue(reservationFile.exists());
-		JavaResourcePersistentType reservationType = jpaProject.getJavaResourcePersistentType("com.Reservation");
+		JavaResourceAbstractType reservationType = jpaProject.getJavaResourceType("com.Reservation");
 		assertNotNull(reservationType);
 		
 		PersistentType ownerSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
@@ -507,7 +507,7 @@ public class CreateRelationAttributesTest {
 		}
 		
 		assertTrue(customerFile.exists());
-		JavaResourcePersistentType customerType = jpaProject.getJavaResourcePersistentType("com.Customer");
+		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.Customer");
 		assertNotNull(customerFile);
 
 		
@@ -570,7 +570,7 @@ public class CreateRelationAttributesTest {
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
 
 		assertTrue(reservationFile.exists());
-		JavaResourcePersistentType reservationType = jpaProject.getJavaResourcePersistentType("com.Reservation");
+		JavaResourceAbstractType reservationType = jpaProject.getJavaResourceType("com.Reservation");
 		assertNotNull(reservationType);
 		
 		PersistentType annotatedPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
@@ -580,7 +580,7 @@ public class CreateRelationAttributesTest {
 		}
 		
 		assertTrue(cabinFile.exists());
-		JavaResourcePersistentType cabinType = jpaProject.getJavaResourcePersistentType("com.Cabin");
+		JavaResourceAbstractType cabinType = jpaProject.getJavaResourceType("com.Cabin");
 		assertNotNull(cabinFile);
 
 		

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -23,7 +24,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
@@ -546,7 +546,7 @@ public class JavaEclipseLinkCachingImpl
 	// ********** cache annotation **********
 
 	protected EclipseLinkCacheAnnotation getCacheAnnotation() {
-		return (EclipseLinkCacheAnnotation) this.getResourcePersistentType().getNonNullAnnotation(this.getCacheAnnotationName());
+		return (EclipseLinkCacheAnnotation) this.getJavaResourceType().getNonNullAnnotation(this.getCacheAnnotationName());
 	}
 
 	protected String getCacheAnnotationName() {
@@ -557,15 +557,15 @@ public class JavaEclipseLinkCachingImpl
 	// ********** existence checking annotation **********
 
 	protected EclipseLinkExistenceCheckingAnnotation getExistenceCheckingAnnotation() {
-		return (EclipseLinkExistenceCheckingAnnotation) this.getResourcePersistentType().getAnnotation(this.getExistenceCheckingAnnotationName());
+		return (EclipseLinkExistenceCheckingAnnotation) this.getJavaResourceType().getAnnotation(this.getExistenceCheckingAnnotationName());
 	}
 
 	protected EclipseLinkExistenceCheckingAnnotation addExistenceCheckingAnnotation() {
-		return (EclipseLinkExistenceCheckingAnnotation) this.getResourcePersistentType().addAnnotation(this.getExistenceCheckingAnnotationName());
+		return (EclipseLinkExistenceCheckingAnnotation) this.getJavaResourceType().addAnnotation(this.getExistenceCheckingAnnotationName());
 	}
 
 	protected void removeExistenceCheckingAnnotation() {
-		this.getResourcePersistentType().removeAnnotation(this.getExistenceCheckingAnnotationName());
+		this.getJavaResourceType().removeAnnotation(this.getExistenceCheckingAnnotationName());
 	}
 
 	protected String getExistenceCheckingAnnotationName() {
@@ -588,8 +588,8 @@ public class JavaEclipseLinkCachingImpl
 		return this.getTypeMapping().getPersistentType();
 	}
 
-	public JavaResourcePersistentType getResourcePersistentType() {
-		return this.getTypeMapping().getResourcePersistentType();
+	public JavaResourceType getJavaResourceType() {
+		return this.getTypeMapping().getJavaResourceType();
 	}
 
 	// ********** validation **********

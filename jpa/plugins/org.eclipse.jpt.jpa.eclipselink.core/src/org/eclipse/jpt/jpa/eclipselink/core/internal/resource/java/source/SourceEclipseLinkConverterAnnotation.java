@@ -15,12 +15,12 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotati
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 
@@ -45,9 +45,9 @@ public final class SourceEclipseLinkConverterAnnotation
 	// we need a flag since the f-q name can be null
 	private boolean fqConverterClassNameStale = true;
 
-	public SourceEclipseLinkConverterAnnotation(JavaResourcePersistentMember parent, Member member) {
-		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.converterClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(member, CONVERTER_CLASS_ADAPTER);
+	public SourceEclipseLinkConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		this.converterClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, CONVERTER_CLASS_ADAPTER);
 	}
 
 	public String getAnnotationName() {

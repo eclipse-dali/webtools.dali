@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.context;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -72,29 +72,29 @@ public interface PersistentType
 	/**
 	 * Return the persistent type's persistent attributes.
 	 */
-	<T extends ReadOnlyPersistentAttribute> ListIterator<T> attributes();
+	ListIterable<? extends ReadOnlyPersistentAttribute> getAttributes();
 
 	/**
 	 * Return the number of the persistent type's persistent attributes.
 	 */
-	int attributesSize();
+	int getAttributesSize();
 
 	/**
 	 * Return the names of the persistent type's persistent attributes.
 	 */
-	Iterator<String> attributeNames();
+	Iterable<String> getAttributeNames();
 
 	/**
 	 * Return all the persistent attributes in the persistent type's
 	 * inheritance hierarchy.
 	 */
-	Iterator<ReadOnlyPersistentAttribute> allAttributes();
+	Iterable<ReadOnlyPersistentAttribute> getAllAttributes();
 
 	/**
 	 * Return the names of all the persistent attributes in the
 	 * persistent type's hierarchy.
 	 */
-	Iterator<String> allAttributeNames();
+	Iterable<String> getAllAttributeNames();
 
 	/**
 	 * Return the persistent attribute with the specified name,

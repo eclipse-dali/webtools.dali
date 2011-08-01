@@ -63,7 +63,7 @@ public interface Query
 	/**
 	 * Return the query's hints.
 	 */
-	<T extends QueryHint> ListIterable<T> getHints();
+	ListIterable<? extends QueryHint> getHints();
 
 	/**
 	 * Return the number of hints.

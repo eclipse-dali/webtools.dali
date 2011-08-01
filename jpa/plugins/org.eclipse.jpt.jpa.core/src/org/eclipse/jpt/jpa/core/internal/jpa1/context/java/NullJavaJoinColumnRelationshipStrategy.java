@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
@@ -41,22 +41,22 @@ public class NullJavaJoinColumnRelationshipStrategy
 
 	// ********** join columns **********
 
-	public ListIterator<JavaJoinColumn> joinColumns() {
-		return EmptyListIterator.<JavaJoinColumn>instance();
+	public ListIterable<JavaJoinColumn> getJoinColumns() {
+		return EmptyListIterable.<JavaJoinColumn>instance();
 	}
 
-	public int joinColumnsSize() {
+	public int getJoinColumnsSize() {
 		return 0;
 	}
 
 
 	// ********** specified join columns **********
 
-	public ListIterator<JavaJoinColumn> specifiedJoinColumns() {
-		return EmptyListIterator.<JavaJoinColumn>instance();
+	public ListIterable<JavaJoinColumn> getSpecifiedJoinColumns() {
+		return EmptyListIterable.<JavaJoinColumn>instance();
 	}
 
-	public int specifiedJoinColumnsSize() {
+	public int getSpecifiedJoinColumnsSize() {
 		return 0;
 	}
 

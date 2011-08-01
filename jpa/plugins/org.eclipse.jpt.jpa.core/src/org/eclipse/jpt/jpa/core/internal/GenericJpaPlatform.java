@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,13 +11,13 @@ package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
-import org.eclipse.jpt.jpa.core.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -47,19 +47,19 @@ public class GenericJpaPlatform
 
 	private final JpaFactory jpaFactory;
 
-	private final JpaAnnotationProvider annotationProvider;
+	private final AnnotationProvider annotationProvider;
 
 	private final JpaPlatformProvider platformProvider;
 
 	private final JpaPlatformVariation jpaVariation;
 
 
-	public GenericJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation) {
+	public GenericJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, AnnotationProvider annotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation) {
 		super();
 		this.id = id;
 		this.jpaVersion = jpaVersion;
 		this.jpaFactory = jpaFactory;
-		this.annotationProvider = jpaAnnotationProvider;
+		this.annotationProvider = annotationProvider;
 		this.jpaVariation = jpaVariation;
 		this.platformProvider = platformProvider;
 	}
@@ -127,7 +127,7 @@ public class GenericJpaPlatform
 
 	// ********** Java annotations **********
 
-	public JpaAnnotationProvider getAnnotationProvider() {
+	public AnnotationProvider getAnnotationProvider() {
 		return this.annotationProvider;
 	}
 

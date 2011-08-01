@@ -35,7 +35,7 @@ public class NullJavaMapKeyColumn2_0
 	// ********** column annotation **********
 
 	public ColumnAnnotation getColumnAnnotation() {
-		return (ColumnAnnotation) this.getParent().getPersistentAttribute().getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) this.getParent().getPersistentAttribute().getResourceAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 

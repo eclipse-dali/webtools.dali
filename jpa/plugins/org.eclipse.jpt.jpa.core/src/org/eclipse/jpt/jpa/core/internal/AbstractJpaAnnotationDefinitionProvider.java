@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,19 +10,16 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import java.util.ArrayList;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
 
 public abstract class AbstractJpaAnnotationDefinitionProvider
 	implements JpaAnnotationDefinitionProvider
 {
-	protected ArrayList<AnnotationDefinition> typeAnnotationDefinitions;
+	protected ArrayList<AnnotationDefinition> annotationDefinitions;
 
-	protected ArrayList<AnnotationDefinition> typeMappingAnnotationDefinitions;
-
-	protected ArrayList<AnnotationDefinition> attributeAnnotationDefinitions;
-
-	private ArrayList<AnnotationDefinition> packageAnnotationDefinitions;
+	protected ArrayList<NestableAnnotationDefinition> nestableAnnotationDefinitions;
 
 
 	protected AbstractJpaAnnotationDefinitionProvider() {
@@ -30,74 +27,40 @@ public abstract class AbstractJpaAnnotationDefinitionProvider
 	}
 
 
-	// ********** type annotation definitions **********
+	// ********** annotation definitions **********
 
-	public synchronized Iterable<AnnotationDefinition> getTypeAnnotationDefinitions() {
-		if (this.typeAnnotationDefinitions == null) {
-			this.typeAnnotationDefinitions = this.buildTypeAnnotationDefinitions();
+	public synchronized Iterable<AnnotationDefinition> getAnnotationDefinitions() {
+		if (this.annotationDefinitions == null) {
+			this.annotationDefinitions = this.buildAnnotationDefinitions();
 		}
-		return this.typeAnnotationDefinitions;
+		return this.annotationDefinitions;
 	}
 
-	protected ArrayList<AnnotationDefinition> buildTypeAnnotationDefinitions() {
+	protected ArrayList<AnnotationDefinition> buildAnnotationDefinitions() {
 		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-		this.addTypeAnnotationDefinitionsTo(definitions);
+		this.addAnnotationDefinitionsTo(definitions);
 		return definitions;
 	}
 
-	protected abstract void addTypeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions);
+	protected abstract void addAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions);
 
 
-	// ********** type mapping annotation definitions **********
+	// ********** nestable annotation definitions **********
 
-	public synchronized Iterable<AnnotationDefinition> getTypeMappingAnnotationDefinitions() {
-		if (this.typeMappingAnnotationDefinitions == null) {
-			this.typeMappingAnnotationDefinitions = this.buildTypeMappingAnnotationDefinitions();
+	public synchronized Iterable<NestableAnnotationDefinition> getNestableAnnotationDefinitions() {
+		if (this.nestableAnnotationDefinitions == null) {
+			this.nestableAnnotationDefinitions = this.buildNestableAnnotationDefinitions();
 		}
-		return this.typeMappingAnnotationDefinitions;
+		return this.nestableAnnotationDefinitions;
 	}
 
-	protected ArrayList<AnnotationDefinition> buildTypeMappingAnnotationDefinitions() {
-		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-		this.addTypeMappingAnnotationDefinitionsTo(definitions);
+	protected ArrayList<NestableAnnotationDefinition> buildNestableAnnotationDefinitions() {
+		ArrayList<NestableAnnotationDefinition> definitions = new ArrayList<NestableAnnotationDefinition>();
+		this.addNestableAnnotationDefinitionsTo(definitions);
 		return definitions;
 	}
 
-	protected abstract void addTypeMappingAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions);
+	protected abstract void addNestableAnnotationDefinitionsTo(ArrayList<NestableAnnotationDefinition> definitions);
 
-
-	// ********** attribute annotation definitions **********
-
-	public synchronized Iterable<AnnotationDefinition> getAttributeAnnotationDefinitions() {
-		if (this.attributeAnnotationDefinitions == null) {
-			this.attributeAnnotationDefinitions = this.buildAttributeAnnotationDefinitions();
-		}
-		return this.attributeAnnotationDefinitions;
-	}
-
-	protected ArrayList<AnnotationDefinition> buildAttributeAnnotationDefinitions() {
-		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-		this.addAttributeAnnotationDefinitionsTo(definitions);
-		return definitions;
-	}
-
-	protected abstract void addAttributeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions);
-
-
-	// ********** package annotation definitions **********
-
-	public synchronized Iterable<AnnotationDefinition> getPackageAnnotationDefinitions() {
-		if (this.packageAnnotationDefinitions == null) {
-			this.packageAnnotationDefinitions = this.buildPackageAnnotationDefinitions();
-		}
-		return this.packageAnnotationDefinitions;
-	}
-
-	protected ArrayList<AnnotationDefinition> buildPackageAnnotationDefinitions() {
-		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-		this.addPackageAnnotationDefinitionsTo(definitions);
-		return definitions;
-	}
-
-	protected abstract void addPackageAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions);
 }
+

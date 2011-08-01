@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
@@ -40,22 +40,22 @@ public class NullOrmJoinColumnRelationshipStrategy
 
 	// ********** join columns **********
 
-	public ListIterator<OrmJoinColumn> joinColumns() {
-		return EmptyListIterator.<OrmJoinColumn>instance();
+	public ListIterable<OrmJoinColumn> getJoinColumns() {
+		return EmptyListIterable.<OrmJoinColumn>instance();
 	}
 
-	public int joinColumnsSize() {
+	public int getJoinColumnsSize() {
 		return 0;
 	}
 
 
 	// ********** specified join columns **********
 
-	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
-		return EmptyListIterator.<OrmJoinColumn>instance();
+	public ListIterable<OrmJoinColumn> getSpecifiedJoinColumns() {
+		return EmptyListIterable.<OrmJoinColumn>instance();
 	}
 
-	public int specifiedJoinColumnsSize() {
+	public int getSpecifiedJoinColumnsSize() {
 		return 0;
 	}
 

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -145,7 +145,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			JPADiagramEditorPlugin.logError("Cannot refresh the project", e1);  //$NON-NLS-1$		 
 		}
 		
-		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().getPersistence().persistenceUnits();		
+		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().getPersistence().getPersistenceUnits().iterator();		
 		PersistenceUnit pu = lit.next();
 		JavaPersistentType jpt = (JavaPersistentType)pu.getPersistentType(entityName);
 
@@ -172,10 +172,12 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 		return new Object[] {};
     }
         
-    public String getCreateImageId() {
+    @Override
+	public String getCreateImageId() {
         return JPAEditorImageProvider.ADD_JPA_ENTITY;
     }
     
+	@Override
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}        

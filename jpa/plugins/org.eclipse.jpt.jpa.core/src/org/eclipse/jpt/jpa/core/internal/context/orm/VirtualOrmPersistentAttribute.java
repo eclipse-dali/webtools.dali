@@ -9,18 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.MethodSignature;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -29,14 +27,10 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.FieldAccessor;
+import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmReadOnlyPersistentAttribute2_0;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -47,7 +41,7 @@ public class VirtualOrmPersistentAttribute
 	extends AbstractOrmXmlContextNode
 	implements OrmReadOnlyPersistentAttribute2_0
 {
-	protected final JavaResourcePersistentAttribute javaResourceAttribute;
+	protected final Accessor javaAccessor;
 
 	/**
 	 * This is an "annotated" Java persistent attribute whose state is
@@ -89,9 +83,23 @@ public class VirtualOrmPersistentAttribute
 	protected JavaAttributeMapping mapping;  // never null
 
 
-	public VirtualOrmPersistentAttribute(OrmPersistentType parent, JavaResourcePersistentAttribute javaResourceAttribute) {
+	public VirtualOrmPersistentAttribute(OrmPersistentType parent, JavaResourceField resourceField) {
 		super(parent);
-		this.javaResourceAttribute = javaResourceAttribute;
+		this.javaAccessor = new FieldAccessor(this, resourceField);
+		this.annotatedJavaAttribute = this.buildAnnotatedJavaAttribute();
+		this.mapping = this.buildMapping();
+	}
+
+	public VirtualOrmPersistentAttribute(OrmPersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		super(parent);
+		this.javaAccessor = new PropertyAccessor(this, resourceGetter, resourceSetter);
+		this.annotatedJavaAttribute = this.buildAnnotatedJavaAttribute();
+		this.mapping = this.buildMapping();
+	}
+
+	public VirtualOrmPersistentAttribute(OrmPersistentType parent, Accessor javaAccessor) {
+		super(parent);
+		this.javaAccessor = javaAccessor;
 		this.annotatedJavaAttribute = this.buildAnnotatedJavaAttribute();
 		this.mapping = this.buildMapping();
 	}
@@ -157,7 +165,7 @@ public class VirtualOrmPersistentAttribute
 
 	public JavaPersistentAttribute resolveJavaPersistentAttribute() {
 		JavaPersistentType javaType = this.getOwningPersistentType().getJavaPersistentType();
-		return (javaType == null) ? null : javaType.getAttributeFor(this.javaResourceAttribute);
+		return (javaType == null) ? null : javaType.getAttributeFor(this.getJavaResourceAttribute());
 	}
 
 	protected JavaPersistentAttribute2_0 getJavaPersistentAttribute2_0() {
@@ -165,7 +173,7 @@ public class VirtualOrmPersistentAttribute
 	}
 
 	protected JavaPersistentAttribute buildAnnotatedJavaAttribute() {
-		return this.buildJavaAttribute(this.javaResourceAttribute);
+		return buildJavaAttribute(this.javaAccessor);
 	}
 
 	protected JavaPersistentAttribute getUnannotatedJavaAttribute() {
@@ -176,21 +184,13 @@ public class VirtualOrmPersistentAttribute
 	}
 
 	protected JavaPersistentAttribute buildUnannotatedJavaAttribute() {
-		return this.buildJavaAttribute(this.buildUnannotatedJavaResourceAttribute());
-	}
-
-	/**
-	 * Build a Java resource attribute that wraps the original Java resource
-	 * attribute and behaves as though it has no annotations. This will cause
-	 * all the settings in the Java <em>context</em> attribute to default.
-	 */
-	protected JavaResourcePersistentAttribute buildUnannotatedJavaResourceAttribute() {
-		return new UnannotatedJavaResourcePersistentAttribute(this.javaResourceAttribute);
-	}
-
-	protected JavaPersistentAttribute buildJavaAttribute(JavaResourcePersistentAttribute jrpa) {
 		// pass in the orm persistent type as the parent...
-		return this.getJpaFactory().buildJavaPersistentAttribute(this.getOwningPersistentType(), jrpa);
+		return this.javaAccessor.buildUnannotatedJavaAttribute(this.getOwningPersistentType());
+	}
+
+	protected JavaPersistentAttribute buildJavaAttribute(Accessor accessor) {
+		// pass in the orm persistent type as the parent...
+		return this.getJpaFactory().buildJavaPersistentAttribute(this.getOwningPersistentType(), accessor);
 	}
 
 	protected void syncLocalJavaAttributes() {
@@ -207,10 +207,21 @@ public class VirtualOrmPersistentAttribute
 		}
 	}
 
-	public JavaResourcePersistentAttribute getJavaResourcePersistentAttribute() {
-		return this.javaResourceAttribute;
+	public Accessor getJavaAccessor() {
+		return this.javaAccessor;
 	}
 
+	public JavaResourceAttribute getJavaResourceAttribute() {
+		return this.javaAccessor.getResourceAttribute();
+	}
+
+	public boolean isFor(JavaResourceField javaResourceField) {
+		return this.javaAccessor.isFor(javaResourceField);
+	}
+
+	public boolean isFor(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+		return this.javaAccessor.isFor(javaResourceGetter, javaResourceSetter);
+	}
 
 	// ********** original Java persistent attribute **********
 
@@ -366,236 +377,5 @@ public class VirtualOrmPersistentAttribute
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
-	}
-
-
-	// ********** unannotated Java resource persistent member **********
-
-	/**
-	 * Wrap another Java resource member and suppress all its annotations.
-	 */
-	protected abstract class UnannotatedJavaResourcePersistentMember<M extends JavaResourcePersistentMember>
-		extends SourceNode
-		implements JavaResourcePersistentMember
-	{
-		protected final M member;
-
-		/**
-		 * these are built as needed
-		 */
-		protected final HashMap<String, Annotation> nullAnnotationsCache = new HashMap<String, Annotation>();
-
-
-		protected UnannotatedJavaResourcePersistentMember(M member) {
-			super(member.getParent());
-			this.member = member;
-		}
-
-		public void initialize(CompilationUnit astRoot) {
-			// NOP
-		}
-
-		public void synchronizeWith(CompilationUnit astRoot) {
-			// NOP
-		}
-
-
-		// ********** annotations **********
-
-		public Iterator<Annotation> annotations() {
-			return EmptyIterator.instance();
-		}
-
-		public int annotationsSize() {
-			return 0;
-		}
-
-		public Annotation getAnnotation(String annotationName) {
-			return null;
-		}
-
-		public synchronized Annotation getNonNullAnnotation(String annotationName) {
-			Annotation annotation = this.nullAnnotationsCache.get(annotationName);
-			if (annotation == null) {
-				annotation = this.buildNullAnnotation(annotationName);
-				this.nullAnnotationsCache.put(annotationName, annotation);
-			}
-			return annotation;
-		}
-
-		protected abstract Annotation buildNullAnnotation(String annotationName);
-
-		public Iterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
-			return EmptyIterator.instance();
-		}
-
-		public Annotation addAnnotation(String annotationName) {
-			throw new UnsupportedOperationException();
-		}
-
-		public NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
-			throw new UnsupportedOperationException();
-		}
-
-		public void moveAnnotation(int targetIndex, int sourceIndex, String containerAnnotationName) {
-			throw new UnsupportedOperationException();
-		}
-
-		public void removeAnnotation(String annotationName) {
-			throw new UnsupportedOperationException();
-		}
-
-		public void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
-			throw new UnsupportedOperationException();
-		}
-
-		public Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
-			throw new UnsupportedOperationException();
-		}
-
-		public void addStandAloneAnnotation(NestableAnnotation standAloneAnnotation) {
-			throw new UnsupportedOperationException();
-		}
-
-
-		// ********** persistable **********
-
-		public boolean isPersistable() {
-			return this.member.isPersistable();
-		}
-
-
-		// ********** misc **********
-
-		public boolean isAnnotated() {
-			return false;
-		}
-
-		public boolean isFinal() {
-			return this.member.isFinal();
-		}
-
-		public boolean isFor(String memberName, int occurrence) {
-			return this.member.isFor(memberName, occurrence);
-		}
-
-		public TextRange getTextRange(CompilationUnit astRoot) {
-			// should never be null
-			return this.member.getTextRange(astRoot);
-		}
-
-		public TextRange getNameTextRange(CompilationUnit astRoot) {
-			// should never be null
-			return this.member.getNameTextRange(astRoot);
-		}
-
-		public void resolveTypes(CompilationUnit astRoot) {
-			// NOP
-		}
-	}
-
-
-	// ********** unannotated Java resource persistent member **********
-
-	protected class UnannotatedJavaResourcePersistentAttribute
-		extends UnannotatedJavaResourcePersistentMember<JavaResourcePersistentAttribute>
-		implements JavaResourcePersistentAttribute
-	{
-		protected UnannotatedJavaResourcePersistentAttribute(JavaResourcePersistentAttribute attribute){
-			super(attribute);
-		}
-
-
-		// ********** annotations **********
-
-		@Override
-		public Annotation buildNullAnnotation(String annotationName) {
-			return (annotationName == null) ? null : this.buildNullAnnotation_(annotationName);
-		}
-
-		private Annotation buildNullAnnotation_(String annotationName) {
-			return this.getAnnotationProvider().buildNullAttributeAnnotation(this, annotationName);
-		}
-
-
-		// ********** delegated behavior **********
-
-		@Override
-		public JavaResourcePersistentType getParent() {
-			return this.member.getParent();
-		}
-
-		public JavaResourcePersistentType getResourcePersistentType() {
-			return this.member.getResourcePersistentType();
-		}
-
-		public String getName() {
-			return this.member.getName();
-		}
-
-		public boolean isFor(MethodSignature signature, int occurrence) {
-			return this.member.isFor(signature, occurrence);
-		}
-
-		public boolean isField() {
-			return this.member.isField();
-		}
-
-		public boolean isProperty() {
-			return this.member.isProperty();
-		}
-
-		public org.eclipse.jpt.jpa.core.resource.java.AccessType getSpecifiedAccess() {
-			return null;
-		}
-
-		public boolean typeIsSubTypeOf(String tn) {
-			return this.member.typeIsSubTypeOf(tn);
-		}
-
-		public boolean typeIsVariablePrimitive() {
-			return this.member.typeIsVariablePrimitive();
-		}
-
-		public int getModifiers() {
-			return this.member.getModifiers();
-		}
-
-		public String getTypeName() {
-			return this.member.getTypeName();
-		}
-
-		public boolean typeIsInterface() {
-			return this.member.typeIsInterface();
-		}
-
-		public boolean typeIsEnum() {
-			return this.member.typeIsEnum();
-		}
-
-		public ListIterator<String> typeSuperclassNames() {
-			return this.member.typeSuperclassNames();
-		}
-
-		public Iterator<String> typeInterfaceNames() {
-			return this.member.typeInterfaceNames();
-		}
-
-		public ListIterator<String> typeTypeArgumentNames() {
-			return this.member.typeTypeArgumentNames();
-		}
-
-		public int typeTypeArgumentNamesSize() {
-			return this.member.typeTypeArgumentNamesSize();
-		}
-
-		public String getTypeTypeArgumentName(int index) {
-			return this.member.getTypeTypeArgumentName(index);
-		}
-
-		@Override
-		public void toString(StringBuilder sb) {
-			sb.append(this.getName());
-		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 
@@ -54,33 +55,33 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 	
 	public void testMutableAnnotation() throws Exception {
 		ICompilationUnit cu = this.createTestMutable();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		assertNotNull(attributeResource.getAnnotation(EclipseLink.MUTABLE));
+		assertNotNull(resourceField.getAnnotation(EclipseLink.MUTABLE));
 		
-		attributeResource.removeAnnotation(EclipseLink.MUTABLE);		
-		assertNull(attributeResource.getAnnotation(EclipseLink.MUTABLE));
+		resourceField.removeAnnotation(EclipseLink.MUTABLE);		
+		assertNull(resourceField.getAnnotation(EclipseLink.MUTABLE));
 		
-		attributeResource.addAnnotation(EclipseLink.MUTABLE);
-		assertNotNull(attributeResource.getAnnotation(EclipseLink.MUTABLE));
+		resourceField.addAnnotation(EclipseLink.MUTABLE);
+		assertNotNull(resourceField.getAnnotation(EclipseLink.MUTABLE));
 	}
 
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestMutableWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getAnnotation(EclipseLink.MUTABLE);
+		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLink.MUTABLE);
 		assertEquals(Boolean.TRUE, mutableAnnotation.getValue());
 	}
 
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestMutableWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getAnnotation(EclipseLink.MUTABLE);
+		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLink.MUTABLE);
 		assertEquals(Boolean.TRUE, mutableAnnotation.getValue());
 		
 		mutableAnnotation.setValue(Boolean.FALSE);
@@ -95,10 +96,10 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 	
 	public void testSetValueNull() throws Exception {
 		ICompilationUnit cu = this.createTestMutableWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getAnnotation(EclipseLink.MUTABLE);
+		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) resourceField.getAnnotation(EclipseLink.MUTABLE);
 		assertEquals(Boolean.TRUE, mutableAnnotation.getValue());
 		
 		mutableAnnotation.setValue(null);

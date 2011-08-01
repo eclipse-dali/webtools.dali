@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,14 @@
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
 import java.util.HashMap;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleIntReference;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
@@ -128,6 +129,15 @@ abstract class SourceAbstractType<A extends AbstractType>
 		return StringTools.stringsAreEqual(packageFragment.getElementName(), this.packageName);
 	}
 
+	// ***** source folder
+	public boolean isIn(IPackageFragmentRoot sourceFolder) {
+		return getSourceFolder().equals(sourceFolder);
+	}
+
+	private IPackageFragmentRoot getSourceFolder() {
+		return (IPackageFragmentRoot) this.getJavaResourceCompilationUnit().getCompilationUnit().getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
+	}
+
 	// ***** declaring type name
 	public String getDeclaringTypeName() {
 		return this.declaringTypeName;
@@ -160,10 +170,6 @@ abstract class SourceAbstractType<A extends AbstractType>
 
 	private boolean buildMemberType(ITypeBinding binding) {
 		return (binding == null) ? false : binding.isMember();
-	}
-
-	public boolean isMapped() {
-		return ! CollectionTools.isEmpty(getAnnotations());
 	}
 
 

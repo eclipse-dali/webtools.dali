@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Used by association overrides.
@@ -33,23 +33,23 @@ public interface ReadOnlyJoinTable
 	/**
 	 * Return the join table's inverse join columns, whether specified or default.
 	 */
-	ListIterator<? extends ReadOnlyJoinColumn> inverseJoinColumns();
+	ListIterable<? extends ReadOnlyJoinColumn> getInverseJoinColumns();
 
 	/**
 	 * Return the number of inverse join columns, whether specified or default.
 	 */
-	int inverseJoinColumnsSize();
+	int getInverseJoinColumnsSize();
 
 	/**
 	 * Return the specified inverse join columns.
 	 */
-	ListIterator<? extends ReadOnlyJoinColumn> specifiedInverseJoinColumns();
+	ListIterable<? extends ReadOnlyJoinColumn> getSpecifiedInverseJoinColumns();
 		String SPECIFIED_INVERSE_JOIN_COLUMNS_LIST = "specifiedInverseJoinColumns"; //$NON-NLS-1$
 
 	/**
 	 * Return the number of specified inverse join columns.
 	 */
-	int specifiedInverseJoinColumnsSize();
+	int getSpecifiedInverseJoinColumnsSize();
 
 	/**
 	 * Return whether the join table has specified inverse join columns.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
@@ -20,7 +19,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
-import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -101,7 +101,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 	void addJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
 
 		SecondaryTable secondaryTable = stateObject.getOwner();
-		int index = secondaryTable.specifiedPrimaryKeyJoinColumnsSize();
+		int index = secondaryTable.getSpecifiedPrimaryKeyJoinColumnsSize();
 
 		PrimaryKeyJoinColumn joinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
@@ -268,13 +268,13 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 	ListValueModel<ReadOnlyPrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
 		return new ListAspectAdapter<ReadOnlySecondaryTable, ReadOnlyPrimaryKeyJoinColumn>(getSubjectHolder(), ReadOnlySecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterator<ReadOnlyPrimaryKeyJoinColumn> listIterator_() {
-				return new SuperListIteratorWrapper<ReadOnlyPrimaryKeyJoinColumn>(subject.specifiedPrimaryKeyJoinColumns());
+			protected ListIterable<ReadOnlyPrimaryKeyJoinColumn> getListIterable() {
+				return new SuperListIterableWrapper<ReadOnlyPrimaryKeyJoinColumn>(subject.getSpecifiedPrimaryKeyJoinColumns());
 			}
 
 			@Override
 			protected int size_() {
-				return subject.specifiedPrimaryKeyJoinColumnsSize();
+				return subject.getSpecifiedPrimaryKeyJoinColumnsSize();
 			}
 		};
 	}
@@ -380,7 +380,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 				}
 			}
 			else {
-				for (int index = secondaryTable.specifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
+				for (int index = secondaryTable.getSpecifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
 					secondaryTable.removeSpecifiedPrimaryKeyJoinColumn(index);
 				}
 			}

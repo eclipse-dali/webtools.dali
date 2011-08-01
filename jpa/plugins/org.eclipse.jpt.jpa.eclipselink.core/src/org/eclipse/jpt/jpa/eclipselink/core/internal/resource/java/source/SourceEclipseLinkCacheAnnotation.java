@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -18,13 +19,12 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotatio
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAn
  * org.eclipse.persistence.annotations.Cache
  */
 public final class SourceEclipseLinkCacheAnnotation
-	extends SourceAnnotation<Type>
+	extends SourceAnnotation
 	implements EclipseLinkCacheAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -77,17 +77,17 @@ public final class SourceEclipseLinkCacheAnnotation
 	private EclipseLinkTimeOfDayAnnotation expiryTimeOfDay;
 
 
-	public SourceEclipseLinkCacheAnnotation(JavaResourcePersistentType parent, Type type) {
-		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.typeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, TYPE_ADAPTER);
-		this.sizeAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, SIZE_ADAPTER);
-		this.sharedAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, SHARED_ADAPTER);
-		this.alwaysRefreshAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, ALWAYS_REFRESH_ADAPTER);
-		this.refreshOnlyIfNewerAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, REFRESH_ONLY_IF_NEWER_ADAPTER);
-		this.disableHitsAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, DISABLE_HITS_ADAPTER);
-		this.coordinationTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, COORDINATION_TYPE_ADAPTER);
-		this.expiryAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, EXPIRY_ADAPTER);
-		this.expiryTimeOfDayAdapter = new ElementAnnotationAdapter(type, EXPIRY_TIME_OF_DAY_ADAPTER);
+	public SourceEclipseLinkCacheAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
+		this.typeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, TYPE_ADAPTER);
+		this.sizeAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(element, SIZE_ADAPTER);
+		this.sharedAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(element, SHARED_ADAPTER);
+		this.alwaysRefreshAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(element, ALWAYS_REFRESH_ADAPTER);
+		this.refreshOnlyIfNewerAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(element, REFRESH_ONLY_IF_NEWER_ADAPTER);
+		this.disableHitsAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(element, DISABLE_HITS_ADAPTER);
+		this.coordinationTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, COORDINATION_TYPE_ADAPTER);
+		this.expiryAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(element, EXPIRY_ADAPTER);
+		this.expiryTimeOfDayAdapter = new ElementAnnotationAdapter(element, EXPIRY_TIME_OF_DAY_ADAPTER);
 	}
 
 	public String getAnnotationName() {

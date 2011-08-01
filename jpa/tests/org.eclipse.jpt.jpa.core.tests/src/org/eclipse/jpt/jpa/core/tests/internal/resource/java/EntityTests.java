@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,10 @@ package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
 
 @SuppressWarnings("nls")
@@ -69,27 +68,27 @@ public class EntityTests extends JpaJavaResourceModelTestCase {
 
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestEntityWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		EntityAnnotation entity = (EntityAnnotation) typeResource.getAnnotation(JPA.ENTITY);
+		EntityAnnotation entity = (EntityAnnotation) resourceType.getAnnotation(JPA.ENTITY);
 		assertTrue(entity != null);
 		assertEquals(ENTITY_NAME, entity.getName());
 	}
 
 	public void testGetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestEntity();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		EntityAnnotation entity = (EntityAnnotation) typeResource.getAnnotation(JPA.ENTITY);
+		EntityAnnotation entity = (EntityAnnotation) resourceType.getAnnotation(JPA.ENTITY);
 		assertTrue(entity != null);
 		assertNull(entity.getName());
 	}
 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestEntity();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		EntityAnnotation entity = (EntityAnnotation) typeResource.getAnnotation(JPA.ENTITY);
+		EntityAnnotation entity = (EntityAnnotation) resourceType.getAnnotation(JPA.ENTITY);
 		assertNull(entity.getName());
 		entity.setName("Foo");
 		assertEquals("Foo", entity.getName());
@@ -99,9 +98,9 @@ public class EntityTests extends JpaJavaResourceModelTestCase {
 	
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestEntityWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		EntityAnnotation entity = (EntityAnnotation) typeResource.getAnnotation(JPA.ENTITY);
+		EntityAnnotation entity = (EntityAnnotation) resourceType.getAnnotation(JPA.ENTITY);
 		assertEquals(ENTITY_NAME, entity.getName());
 		
 		entity.setName(null);
@@ -113,12 +112,12 @@ public class EntityTests extends JpaJavaResourceModelTestCase {
 	
 	public void testMappedSuperclassAndEntity() throws Exception {
 		ICompilationUnit cu = this.createTestMappedSuperclassAndEntity();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
-		JavaResourceNode mappingAnnotation = typeResource.getAnnotation(EntityAnnotation.ANNOTATION_NAME);
-		assertTrue(mappingAnnotation instanceof EntityAnnotation);
+		EntityAnnotation mappingAnnotation = (EntityAnnotation) resourceType.getAnnotation(JPA.ENTITY);
+		assertNotNull(mappingAnnotation);
 		
-		MappedSuperclassAnnotation mappedSuperclass = (MappedSuperclassAnnotation) typeResource.getAnnotation(JPA.MAPPED_SUPERCLASS);
+		MappedSuperclassAnnotation mappedSuperclass = (MappedSuperclassAnnotation) resourceType.getAnnotation(JPA.MAPPED_SUPERCLASS);
 		assertNotNull(mappedSuperclass);
 	}
 

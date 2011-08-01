@@ -10,15 +10,15 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 
@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConver
  * </code>
  */
 abstract class SourceEclipseLinkNamedConverterAnnotation
-	extends SourceAnnotation<Member>
+	extends SourceAnnotation
 	implements EclipseLinkNamedConverterAnnotation
 {
 	final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -44,8 +44,8 @@ abstract class SourceEclipseLinkNamedConverterAnnotation
 
 	// ********** construction/initialization **********
 
-	SourceEclipseLinkNamedConverterAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		super(parent, member, daa);
+	SourceEclipseLinkNamedConverterAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+		super(parent, element, daa);
 		this.nameDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, this.getNameElementName());
 		this.nameAdapter = new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, this.nameDeclarationAdapter);
 	}

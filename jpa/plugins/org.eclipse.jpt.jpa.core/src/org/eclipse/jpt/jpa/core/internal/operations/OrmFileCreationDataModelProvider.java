@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2010  Oracle. 
+ *  Copyright (c) 2008, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.operations;
 
-import java.util.Iterator;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -117,10 +116,10 @@ public class OrmFileCreationDataModelProvider
 		if (persistence == null) {
 			return null;
 		}
-		if (persistence.persistenceUnitsSize() == 0) {
+		if (persistence.getPersistenceUnitsSize() == 0) {
 			return null;
 		}
-		return persistence.persistenceUnits().next();
+		return persistence.getPersistenceUnits().iterator().next();
 	}
 	
 	@Override
@@ -147,7 +146,7 @@ public class OrmFileCreationDataModelProvider
 		}
 		else if (propertyName.equals(PERSISTENCE_UNIT)) {
 			return ArrayTools.array(
-				new TransformationIterator<String, DataModelPropertyDescriptor>(new CompositeIterator<String>(null, persistenceUnitNames())) {
+				new TransformationIterable<String, DataModelPropertyDescriptor>(new CompositeIterable<String>(null, getPersistenceUnitNames())) {
 					@Override
 					protected DataModelPropertyDescriptor transform(String next) {
 						return persistenceUnitPropertyDescriptor(next);
@@ -250,8 +249,7 @@ public class OrmFileCreationDataModelProvider
 		Persistence persistence = 
 			(persistenceXml == null) ? null : persistenceXml.getPersistence();
 		if (persistence != null) {
-			for (Iterator<PersistenceUnit> stream = persistence.persistenceUnits(); stream.hasNext(); ) {
-				PersistenceUnit next = stream.next();
+			for (PersistenceUnit next : persistence.getPersistenceUnits()) {
 				if (pUnitName.equals(next.getName())) {
 					return next;
 				}
@@ -260,17 +258,17 @@ public class OrmFileCreationDataModelProvider
 		return null;
 	}
 	
-	protected Iterator<PersistenceUnit> persistenceUnits() {
+	protected Iterable<PersistenceUnit> getPersistenceUnits() {
 		//only get the persistence units for the selected JpaProject, 
 		//if no jpa project is selected, then no persistence units will be listed in the combo
 		JpaProject jpaProject = getJpaProject();
 		PersistenceXml persistenceXml = (jpaProject == null) ? null : jpaProject.getRootContextNode().getPersistenceXml();
 		Persistence persistence = (persistenceXml == null) ? null : persistenceXml.getPersistence();
-		return (persistence == null) ? EmptyIterator.<PersistenceUnit>instance() : persistence.persistenceUnits();
+		return (persistence == null) ? EmptyIterable.<PersistenceUnit>instance() : persistence.getPersistenceUnits();
 	}
 	
-	protected Iterator<String> persistenceUnitNames() {
-		return new TransformationIterator<PersistenceUnit, String>(persistenceUnits()) {
+	protected Iterable<String> getPersistenceUnitNames() {
+		return new TransformationIterable<PersistenceUnit, String>(getPersistenceUnits()) {
 			@Override
 			protected String transform(PersistenceUnit next) {
 				return next.getName();

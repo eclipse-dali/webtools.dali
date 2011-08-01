@@ -99,11 +99,11 @@ public class JoiningStrategyJoinColumnsComposite
 			}
 
 			public ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(ReadOnlyJoinColumnRelationshipStrategy subject) {
-				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.specifiedJoinColumns());
+				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedJoinColumns());
 			}
 
 			public int specifiedJoinColumnsSize(ReadOnlyJoinColumnRelationshipStrategy subject) {
-				return subject.specifiedJoinColumnsSize();
+				return subject.getSpecifiedJoinColumnsSize();
 			}
 		};
 	}
@@ -172,7 +172,7 @@ public class JoiningStrategyJoinColumnsComposite
 			@Override
 			protected Boolean transform_(ReadOnlyJoinColumnRelationshipStrategy value) {
 				boolean virtual = value.getRelationship().getMapping().getPersistentAttribute().isVirtual();
-				return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
+				return Boolean.valueOf(! virtual && value.getSpecifiedJoinColumnsSize() > 0);
 			}
 		};
 
@@ -219,7 +219,7 @@ public class JoiningStrategyJoinColumnsComposite
 		@Override
 		protected Boolean transform_(ReadOnlyJoinColumnRelationshipStrategy value) {
 			boolean virtual = value.getRelationship().isVirtual();
-			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
+			return Boolean.valueOf(! virtual && value.getSpecifiedJoinColumnsSize() > 0);
 		}
 		
 		@Override

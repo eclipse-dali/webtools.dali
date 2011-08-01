@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Virtual table
@@ -25,6 +25,6 @@ public interface VirtualTable
 {
 	ReadOnlyTable getOverriddenTable();
 
-	ListIterator<? extends VirtualUniqueConstraint> uniqueConstraints();
+	ListIterable<? extends VirtualUniqueConstraint> getUniqueConstraints();
 	VirtualUniqueConstraint getUniqueConstraint(int index);
 }

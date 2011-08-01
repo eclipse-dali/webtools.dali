@@ -50,6 +50,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlIDAnnotationDefinitio
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlIDREFAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlInlineBinaryDataAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlJavaTypeAdapterAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlJavaTypeAdaptersAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlListAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlMimeTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlMixedAnnotationDefinition;
@@ -57,6 +58,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRegistryAnnotationDef
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRootElementAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSchemaAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSchemaTypeAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSchemaTypesAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSeeAlsoAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTypeAnnotationDefinition;
@@ -132,12 +134,14 @@ public class GenericJaxb_2_1_PlatformDefinition
 				XmlIDAnnotationDefinition.instance(),
 				XmlIDREFAnnotationDefinition.instance(),
 				XmlInlineBinaryDataAnnotationDefinition.instance(),
+				XmlJavaTypeAdaptersAnnotationDefinition.instance(),
 				XmlListAnnotationDefinition.instance(),
 				XmlMimeTypeAnnotationDefinition.instance(),
 				XmlMixedAnnotationDefinition.instance(),
 				XmlRegistryAnnotationDefinition.instance(),
 				XmlRootElementAnnotationDefinition.instance(),
 				XmlSchemaAnnotationDefinition.instance(),
+				XmlSchemaTypesAnnotationDefinition.instance(),
 				XmlSeeAlsoAnnotationDefinition.instance(),
 				XmlTransientAnnotationDefinition.instance(),
 				XmlTypeAnnotationDefinition.instance(),

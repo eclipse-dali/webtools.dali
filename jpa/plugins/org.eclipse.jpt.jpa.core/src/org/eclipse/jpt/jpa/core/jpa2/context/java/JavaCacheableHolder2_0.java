@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * Java cacheable holder/parent
@@ -28,6 +28,6 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 public interface JavaCacheableHolder2_0
 	extends CacheableHolder2_0, JavaJpaContextNode
 {
-	JavaResourcePersistentType getResourcePersistentType();
+	JavaResourceType getJavaResourceType();
 	JavaCacheable2_0 getCacheable();
 }

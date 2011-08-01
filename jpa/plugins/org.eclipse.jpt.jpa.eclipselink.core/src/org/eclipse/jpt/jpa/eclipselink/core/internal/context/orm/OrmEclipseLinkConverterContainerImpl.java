@@ -10,18 +10,14 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
@@ -44,32 +40,20 @@ public class OrmEclipseLinkConverterContainerImpl
 {
 	private final XmlConvertersHolder xmlConvertersHolder;
 
-	protected final Vector<OrmEclipseLinkCustomConverter> customConverters = new Vector<OrmEclipseLinkCustomConverter>();
-	protected final CustomConverterContainerAdapter customConverterContainerAdapter;
-
-	protected final Vector<OrmEclipseLinkObjectTypeConverter> objectTypeConverters = new Vector<OrmEclipseLinkObjectTypeConverter>();
-	protected final ObjectTypeConverterContainerAdapter objectTypeConverterContainerAdapter;
-
-	protected final Vector<OrmEclipseLinkStructConverter> structConverters = new Vector<OrmEclipseLinkStructConverter>();
-	protected final StructConverterContainerAdapter structConverterContainerAdapter;
-
-	protected final Vector<OrmEclipseLinkTypeConverter> typeConverters = new Vector<OrmEclipseLinkTypeConverter>();
-	protected final TypeConverterContainerAdapter typeConverterContainerAdapter;
+	protected final ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter> customConverterContainer;
+	protected final ContextListContainer<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter> objectTypeConverterContainer;
+	protected final ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter> structConverterContainer;
+	protected final ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> typeConverterContainer;
 
 
 	public OrmEclipseLinkConverterContainerImpl(XmlContextNode parent, XmlConvertersHolder xmlConvertersHolder) {
 		super(parent);
 		this.xmlConvertersHolder = xmlConvertersHolder;
 
-		this.customConverterContainerAdapter = this.buildCustomConverterContainerAdapter();
-		this.objectTypeConverterContainerAdapter = this.buildObjectTypeConverterContainerAdapter();
-		this.structConverterContainerAdapter = this.buildStructConverterContainerAdapter();
-		this.typeConverterContainerAdapter = this.buildTypeConverterContainerAdapter();
-
-		this.initializeCustomConverters();
-		this.initializeObjectTypeConverters();
-		this.initializeStructConverters();
-		this.initializeTypeConverters();
+		this.customConverterContainer = this.buildCustomConverterContainer();
+		this.objectTypeConverterContainer = this.buildObjectTypeConverterContainer();
+		this.structConverterContainer = this.buildStructConverterContainer();
+		this.typeConverterContainer = this.buildTypeConverterContainer();
 	}
 
 
@@ -96,26 +80,21 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	// ********** custom converters **********
 
-	@SuppressWarnings("unchecked")
-	public ListIterator<OrmEclipseLinkCustomConverter> customConverters() {
-		return this.getCustomConverters().iterator();
-	}
-
 	public ListIterable<OrmEclipseLinkCustomConverter> getCustomConverters() {
-		return new LiveCloneListIterable<OrmEclipseLinkCustomConverter>(this.customConverters);
+		return this.customConverterContainer.getContextElements();
 	}
 
-	public int customConvertersSize() {
-		return this.customConverters.size();
+	public int getCustomConvertersSize() {
+		return this.customConverterContainer.getContextElementsSize();
 	}
 
 	public OrmEclipseLinkCustomConverter addCustomConverter() {
-		return this.addCustomConverter(this.customConverters.size());
+		return this.addCustomConverter(this.getCustomConvertersSize());
 	}
 
 	public OrmEclipseLinkCustomConverter addCustomConverter(int index) {
 		XmlConverter xmlConverter = this.buildXmlCustomConverter();
-		OrmEclipseLinkCustomConverter converter = this.addCustomConverter_(index, xmlConverter);
+		OrmEclipseLinkCustomConverter converter = this.customConverterContainer.addContextElement(index, xmlConverter);
 		this.xmlConvertersHolder.getConverters().add(index, xmlConverter);
 		return converter;
 	}
@@ -125,27 +104,17 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	public void removeCustomConverter(EclipseLinkCustomConverter converter) {
-		this.removeCustomConverter(this.customConverters.indexOf(converter));
+		this.removeCustomConverter(this.customConverterContainer.indexOfContextElement((OrmEclipseLinkCustomConverter) converter));
 	}
 
 	public void removeCustomConverter(int index) {
-		this.removeCustomConverter_(index);
+		this.customConverterContainer.removeContextElement(index);
 		this.xmlConvertersHolder.getConverters().remove(index);
 	}
 
-	protected void removeCustomConverter_(int index) {
-		this.removeItemFromList(index, this.customConverters, CUSTOM_CONVERTERS_LIST);
-	}
-
 	public void moveCustomConverter(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.customConverters, CUSTOM_CONVERTERS_LIST);
+		this.customConverterContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlConvertersHolder.getConverters().move(targetIndex, sourceIndex);
-	}
-
-	protected void initializeCustomConverters() {
-		for (XmlConverter xmlConverter : this.getXmlCustomConverters()) {
-			this.customConverters.add(this.buildCustomConverter(xmlConverter));
-		}
 	}
 
 	protected OrmEclipseLinkCustomConverter buildCustomConverter(XmlConverter xmlConverter) {
@@ -153,81 +122,60 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected void syncCustomConverters() {
-		ContextContainerTools.synchronizeWithResourceModel(this.customConverterContainerAdapter);
+		this.customConverterContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlConverter> getXmlCustomConverters() {
+	protected ListIterable<XmlConverter> getXmlCustomConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlConverter>(this.xmlConvertersHolder.getConverters());
+		return new LiveCloneListIterable<XmlConverter>(this.xmlConvertersHolder.getConverters());
 	}
 
-	protected void moveCustomConverter_(int index, OrmEclipseLinkCustomConverter converter) {
-		this.moveItemInList(index, converter, this.customConverters, CUSTOM_CONVERTERS_LIST);
-	}
-
-	protected OrmEclipseLinkCustomConverter addCustomConverter_(int index, XmlConverter xmlConverter) {
-		OrmEclipseLinkCustomConverter converter = this.buildCustomConverter(xmlConverter);
-		this.addItemToList(index, converter, this.customConverters, CUSTOM_CONVERTERS_LIST);
-		return converter;
-	}
-
-	protected void removeCustomConverter_(OrmEclipseLinkCustomConverter converter) {
-		this.removeCustomConverter_(this.customConverters.indexOf(converter));
-	}
-
-	protected CustomConverterContainerAdapter buildCustomConverterContainerAdapter() {
-		return new CustomConverterContainerAdapter();
+	protected ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter> buildCustomConverterContainer() {
+		return new CustomConverterContainer();
 	}
 
 	/**
-	 * custom converter container adapter
+	 * custom converter container
 	 */
-	protected class CustomConverterContainerAdapter
-		implements ContextContainerTools.Adapter<OrmEclipseLinkCustomConverter, XmlConverter>
+	protected class CustomConverterContainer
+		extends ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter>
 	{
-		public Iterable<OrmEclipseLinkCustomConverter> getContextElements() {
-			return OrmEclipseLinkConverterContainerImpl.this.getCustomConverters();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return CUSTOM_CONVERTERS_LIST;
 		}
-		public Iterable<XmlConverter> getResourceElements() {
+		@Override
+		protected OrmEclipseLinkCustomConverter buildContextElement(XmlConverter resourceElement) {
+			return OrmEclipseLinkConverterContainerImpl.this.buildCustomConverter(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlConverter> getResourceElements() {
 			return OrmEclipseLinkConverterContainerImpl.this.getXmlCustomConverters();
 		}
-		public XmlConverter getResourceElement(OrmEclipseLinkCustomConverter contextElement) {
+		@Override
+		protected XmlConverter getResourceElement(OrmEclipseLinkCustomConverter contextElement) {
 			return contextElement.getXmlConverter();
-		}
-		public void moveContextElement(int index, OrmEclipseLinkCustomConverter element) {
-			OrmEclipseLinkConverterContainerImpl.this.moveCustomConverter_(index, element);
-		}
-		public void addContextElement(int index, XmlConverter resourceElement) {
-			OrmEclipseLinkConverterContainerImpl.this.addCustomConverter_(index, resourceElement);
-		}
-		public void removeContextElement(OrmEclipseLinkCustomConverter element) {
-			OrmEclipseLinkConverterContainerImpl.this.removeCustomConverter_(element);
 		}
 	}
 
 
 	// ********** object type converters **********
 
-	@SuppressWarnings("unchecked")
-	public ListIterator<OrmEclipseLinkObjectTypeConverter> objectTypeConverters() {
-		return this.getObjectTypeConverters().iterator();
-	}
-
 	public ListIterable<OrmEclipseLinkObjectTypeConverter> getObjectTypeConverters() {
-		return new LiveCloneListIterable<OrmEclipseLinkObjectTypeConverter>(this.objectTypeConverters);
+		return this.objectTypeConverterContainer.getContextElements();
 	}
 
-	public int objectTypeConvertersSize() {
-		return this.objectTypeConverters.size();
+	public int getObjectTypeConvertersSize() {
+		return this.objectTypeConverterContainer.getContextElementsSize();
 	}
 
 	public OrmEclipseLinkObjectTypeConverter addObjectTypeConverter() {
-		return this.addObjectTypeConverter(this.objectTypeConverters.size());
+		return this.addObjectTypeConverter(this.getObjectTypeConvertersSize());
 	}
 
 	public OrmEclipseLinkObjectTypeConverter addObjectTypeConverter(int index) {
 		XmlObjectTypeConverter xmlConverter = this.buildXmlObjectTypeConverter();
-		OrmEclipseLinkObjectTypeConverter converter = this.addObjectTypeConverter_(index, xmlConverter);
+		OrmEclipseLinkObjectTypeConverter converter = this.objectTypeConverterContainer.addContextElement(index, xmlConverter);
 		this.xmlConvertersHolder.getObjectTypeConverters().add(index, xmlConverter);
 		return converter;
 	}
@@ -237,27 +185,17 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	public void removeObjectTypeConverter(EclipseLinkObjectTypeConverter converter) {
-		this.removeObjectTypeConverter(this.objectTypeConverters.indexOf(converter));
+		this.removeObjectTypeConverter(this.objectTypeConverterContainer.indexOfContextElement((OrmEclipseLinkObjectTypeConverter) converter));
 	}
 
 	public void removeObjectTypeConverter(int index) {
-		this.removeObjectTypeConverter_(index);
+		this.objectTypeConverterContainer.removeContextElement(index);
 		this.xmlConvertersHolder.getObjectTypeConverters().remove(index);
 	}
 
-	protected void removeObjectTypeConverter_(int index) {
-		this.removeItemFromList(index, this.objectTypeConverters, OBJECT_TYPE_CONVERTERS_LIST);
-	}
-
 	public void moveObjectTypeConverter(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.objectTypeConverters, OBJECT_TYPE_CONVERTERS_LIST);
+		this.objectTypeConverterContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlConvertersHolder.getObjectTypeConverters().move(targetIndex, sourceIndex);
-	}
-
-	protected void initializeObjectTypeConverters() {
-		for (XmlObjectTypeConverter xmlConverter : this.getXmlObjectTypeConverters()) {
-			this.objectTypeConverters.add(this.buildObjectTypeConverter(xmlConverter));
-		}
 	}
 
 	protected OrmEclipseLinkObjectTypeConverter buildObjectTypeConverter(XmlObjectTypeConverter xmlConverter) {
@@ -265,81 +203,59 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected void syncObjectTypeConverters() {
-		ContextContainerTools.synchronizeWithResourceModel(this.objectTypeConverterContainerAdapter);
+		this.objectTypeConverterContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlObjectTypeConverter> getXmlObjectTypeConverters() {
+	protected ListIterable<XmlObjectTypeConverter> getXmlObjectTypeConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlObjectTypeConverter>(this.xmlConvertersHolder.getObjectTypeConverters());
+		return new LiveCloneListIterable<XmlObjectTypeConverter>(this.xmlConvertersHolder.getObjectTypeConverters());
 	}
 
-	protected void moveObjectTypeConverter_(int index, OrmEclipseLinkObjectTypeConverter converter) {
-		this.moveItemInList(index, converter, this.objectTypeConverters, OBJECT_TYPE_CONVERTERS_LIST);
-	}
-
-	protected OrmEclipseLinkObjectTypeConverter addObjectTypeConverter_(int index, XmlObjectTypeConverter xmlConverter) {
-		OrmEclipseLinkObjectTypeConverter converter = this.buildObjectTypeConverter(xmlConverter);
-		this.addItemToList(index, converter, this.objectTypeConverters, OBJECT_TYPE_CONVERTERS_LIST);
-		return converter;
-	}
-
-	protected void removeObjectTypeConverter_(OrmEclipseLinkObjectTypeConverter converter) {
-		this.removeObjectTypeConverter_(this.objectTypeConverters.indexOf(converter));
-	}
-
-	protected ObjectTypeConverterContainerAdapter buildObjectTypeConverterContainerAdapter() {
-		return new ObjectTypeConverterContainerAdapter();
+	protected ContextListContainer<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter> buildObjectTypeConverterContainer() {
+		return new ObjectTypeConverterContainer();
 	}
 
 	/**
-	 * object type converter container adapter
+	 * object type converter container
 	 */
-	protected class ObjectTypeConverterContainerAdapter
-		implements ContextContainerTools.Adapter<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter>
+	protected class ObjectTypeConverterContainer
+		extends ContextListContainer<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter>
 	{
-		public Iterable<OrmEclipseLinkObjectTypeConverter> getContextElements() {
-			return OrmEclipseLinkConverterContainerImpl.this.getObjectTypeConverters();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return OBJECT_TYPE_CONVERTERS_LIST;
 		}
-		public Iterable<XmlObjectTypeConverter> getResourceElements() {
+		@Override
+		protected OrmEclipseLinkObjectTypeConverter buildContextElement(XmlObjectTypeConverter resourceElement) {
+			return OrmEclipseLinkConverterContainerImpl.this.buildObjectTypeConverter(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlObjectTypeConverter> getResourceElements() {
 			return OrmEclipseLinkConverterContainerImpl.this.getXmlObjectTypeConverters();
 		}
-		public XmlObjectTypeConverter getResourceElement(OrmEclipseLinkObjectTypeConverter contextElement) {
+		@Override
+		protected XmlObjectTypeConverter getResourceElement(OrmEclipseLinkObjectTypeConverter contextElement) {
 			return contextElement.getXmlConverter();
 		}
-		public void moveContextElement(int index, OrmEclipseLinkObjectTypeConverter element) {
-			OrmEclipseLinkConverterContainerImpl.this.moveObjectTypeConverter_(index, element);
-		}
-		public void addContextElement(int index, XmlObjectTypeConverter resourceElement) {
-			OrmEclipseLinkConverterContainerImpl.this.addObjectTypeConverter_(index, resourceElement);
-		}
-		public void removeContextElement(OrmEclipseLinkObjectTypeConverter element) {
-			OrmEclipseLinkConverterContainerImpl.this.removeObjectTypeConverter_(element);
-		}
 	}
-
 
 	// ********** struct converters **********
 
-	@SuppressWarnings("unchecked")
-	public ListIterator<OrmEclipseLinkStructConverter> structConverters() {
-		return this.getStructConverters().iterator();
-	}
-
 	public ListIterable<OrmEclipseLinkStructConverter> getStructConverters() {
-		return new LiveCloneListIterable<OrmEclipseLinkStructConverter>(this.structConverters);
+		return this.structConverterContainer.getContextElements();
 	}
 
-	public int structConvertersSize() {
-		return this.structConverters.size();
+	public int getStructConvertersSize() {
+		return this.structConverterContainer.getContextElementsSize();
 	}
 
 	public OrmEclipseLinkStructConverter addStructConverter() {
-		return this.addStructConverter(this.structConverters.size());
+		return this.addStructConverter(this.getStructConvertersSize());
 	}
 
 	public OrmEclipseLinkStructConverter addStructConverter(int index) {
 		XmlStructConverter xmlConverter = this.buildXmlStructConverter();
-		OrmEclipseLinkStructConverter converter = this.addStructConverter_(index, xmlConverter);
+		OrmEclipseLinkStructConverter converter = this.structConverterContainer.addContextElement(index, xmlConverter);
 		this.xmlConvertersHolder.getStructConverters().add(index, xmlConverter);
 		return converter;
 	}
@@ -349,27 +265,17 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	public void removeStructConverter(EclipseLinkStructConverter converter) {
-		this.removeStructConverter(this.structConverters.indexOf(converter));
+		this.removeStructConverter(this.structConverterContainer.indexOfContextElement((OrmEclipseLinkStructConverter) converter));
 	}
 
 	public void removeStructConverter(int index) {
-		this.removeStructConverter_(index);
+		this.structConverterContainer.removeContextElement(index);
 		this.xmlConvertersHolder.getStructConverters().remove(index);
 	}
 
-	protected void removeStructConverter_(int index) {
-		this.removeItemFromList(index, this.structConverters, STRUCT_CONVERTERS_LIST);
-	}
-
 	public void moveStructConverter(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.structConverters, STRUCT_CONVERTERS_LIST);
+		this.structConverterContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlConvertersHolder.getStructConverters().move(targetIndex, sourceIndex);
-	}
-
-	protected void initializeStructConverters() {
-		for (XmlStructConverter xmlConverter : this.getXmlStructConverters()) {
-			this.structConverters.add(this.buildStructConverter(xmlConverter));
-		}
 	}
 
 	protected OrmEclipseLinkStructConverter buildStructConverter(XmlStructConverter xmlConverter) {
@@ -377,81 +283,60 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected void syncStructConverters() {
-		ContextContainerTools.synchronizeWithResourceModel(this.structConverterContainerAdapter);
+		this.structConverterContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlStructConverter> getXmlStructConverters() {
+	protected ListIterable<XmlStructConverter> getXmlStructConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlStructConverter>(this.xmlConvertersHolder.getStructConverters());
+		return new LiveCloneListIterable<XmlStructConverter>(this.xmlConvertersHolder.getStructConverters());
 	}
 
-	protected void moveStructConverter_(int index, OrmEclipseLinkStructConverter converter) {
-		this.moveItemInList(index, converter, this.structConverters, STRUCT_CONVERTERS_LIST);
-	}
-
-	protected OrmEclipseLinkStructConverter addStructConverter_(int index, XmlStructConverter xmlConverter) {
-		OrmEclipseLinkStructConverter converter = this.buildStructConverter(xmlConverter);
-		this.addItemToList(index, converter, this.structConverters, STRUCT_CONVERTERS_LIST);
-		return converter;
-	}
-
-	protected void removeStructConverter_(OrmEclipseLinkStructConverter converter) {
-		this.removeStructConverter_(this.structConverters.indexOf(converter));
-	}
-
-	protected StructConverterContainerAdapter buildStructConverterContainerAdapter() {
-		return new StructConverterContainerAdapter();
+	protected ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter> buildStructConverterContainer() {
+		return new StructConverterContainer();
 	}
 
 	/**
-	 * struct converter container adapter
+	 * struct converter container
 	 */
-	protected class StructConverterContainerAdapter
-		implements ContextContainerTools.Adapter<OrmEclipseLinkStructConverter, XmlStructConverter>
+	protected class StructConverterContainer
+		extends ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter>
 	{
-		public Iterable<OrmEclipseLinkStructConverter> getContextElements() {
-			return OrmEclipseLinkConverterContainerImpl.this.getStructConverters();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return STRUCT_CONVERTERS_LIST;
 		}
-		public Iterable<XmlStructConverter> getResourceElements() {
+		@Override
+		protected OrmEclipseLinkStructConverter buildContextElement(XmlStructConverter resourceElement) {
+			return OrmEclipseLinkConverterContainerImpl.this.buildStructConverter(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlStructConverter> getResourceElements() {
 			return OrmEclipseLinkConverterContainerImpl.this.getXmlStructConverters();
 		}
-		public XmlStructConverter getResourceElement(OrmEclipseLinkStructConverter contextElement) {
+		@Override
+		protected XmlStructConverter getResourceElement(OrmEclipseLinkStructConverter contextElement) {
 			return contextElement.getXmlConverter();
-		}
-		public void moveContextElement(int index, OrmEclipseLinkStructConverter element) {
-			OrmEclipseLinkConverterContainerImpl.this.moveStructConverter_(index, element);
-		}
-		public void addContextElement(int index, XmlStructConverter resourceElement) {
-			OrmEclipseLinkConverterContainerImpl.this.addStructConverter_(index, resourceElement);
-		}
-		public void removeContextElement(OrmEclipseLinkStructConverter element) {
-			OrmEclipseLinkConverterContainerImpl.this.removeStructConverter_(element);
 		}
 	}
 
 
 	// ********** type converters **********
 
-	@SuppressWarnings("unchecked")
-	public ListIterator<OrmEclipseLinkTypeConverter> typeConverters() {
-		return this.getTypeConverters().iterator();
-	}
-
 	public ListIterable<OrmEclipseLinkTypeConverter> getTypeConverters() {
-		return new LiveCloneListIterable<OrmEclipseLinkTypeConverter>(this.typeConverters);
+		return this.typeConverterContainer.getContextElements();
 	}
 
-	public int typeConvertersSize() {
-		return this.typeConverters.size();
+	public int getTypeConvertersSize() {
+		return this.typeConverterContainer.getContextElementsSize();
 	}
 
 	public OrmEclipseLinkTypeConverter addTypeConverter() {
-		return this.addTypeConverter(this.typeConverters.size());
+		return this.addTypeConverter(this.getTypeConvertersSize());
 	}
 
 	public OrmEclipseLinkTypeConverter addTypeConverter(int index) {
 		XmlTypeConverter xmlConverter = this.buildXmlTypeConverter();
-		OrmEclipseLinkTypeConverter converter = this.addTypeConverter_(index, xmlConverter);
+		OrmEclipseLinkTypeConverter converter = this.typeConverterContainer.addContextElement(index, xmlConverter);
 		this.xmlConvertersHolder.getTypeConverters().add(index, xmlConverter);
 		return converter;
 	}
@@ -461,27 +346,17 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	public void removeTypeConverter(EclipseLinkTypeConverter converter) {
-		this.removeTypeConverter(this.typeConverters.indexOf(converter));
+		this.removeTypeConverter(this.typeConverterContainer.indexOfContextElement((OrmEclipseLinkTypeConverter) converter));
 	}
 
 	public void removeTypeConverter(int index) {
-		this.removeTypeConverter_(index);
+		this.typeConverterContainer.removeContextElement(index);
 		this.xmlConvertersHolder.getTypeConverters().remove(index);
 	}
 
-	protected void removeTypeConverter_(int index) {
-		this.removeItemFromList(index, this.typeConverters, TYPE_CONVERTERS_LIST);
-	}
-
 	public void moveTypeConverter(int targetIndex, int sourceIndex) {
-		this.moveItemInList(targetIndex, sourceIndex, this.typeConverters, TYPE_CONVERTERS_LIST);
+		this.typeConverterContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlConvertersHolder.getTypeConverters().move(targetIndex, sourceIndex);
-	}
-
-	protected void initializeTypeConverters() {
-		for (XmlTypeConverter xmlConverter : this.getXmlTypeConverters()) {
-			this.typeConverters.add(this.buildTypeConverter(xmlConverter));
-		}
 	}
 
 	protected OrmEclipseLinkTypeConverter buildTypeConverter(XmlTypeConverter xmlConverter) {
@@ -489,55 +364,39 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected void syncTypeConverters() {
-		ContextContainerTools.synchronizeWithResourceModel(this.typeConverterContainerAdapter);
+		this.typeConverterContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlTypeConverter> getXmlTypeConverters() {
+	protected ListIterable<XmlTypeConverter> getXmlTypeConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneIterable<XmlTypeConverter>(this.xmlConvertersHolder.getTypeConverters());
+		return new LiveCloneListIterable<XmlTypeConverter>(this.xmlConvertersHolder.getTypeConverters());
 	}
 
-	protected void moveTypeConverter_(int index, OrmEclipseLinkTypeConverter converter) {
-		this.moveItemInList(index, converter, this.typeConverters, TYPE_CONVERTERS_LIST);
-	}
-
-	protected OrmEclipseLinkTypeConverter addTypeConverter_(int index, XmlTypeConverter xmlConverter) {
-		OrmEclipseLinkTypeConverter converter = this.buildTypeConverter(xmlConverter);
-		this.addItemToList(index, converter, this.typeConverters, TYPE_CONVERTERS_LIST);
-		return converter;
-	}
-
-	protected void removeTypeConverter_(OrmEclipseLinkTypeConverter converter) {
-		this.removeTypeConverter_(this.typeConverters.indexOf(converter));
-	}
-
-	protected TypeConverterContainerAdapter buildTypeConverterContainerAdapter() {
-		return new TypeConverterContainerAdapter();
+	protected ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> buildTypeConverterContainer() {
+		return new TypeConverterContainer();
 	}
 
 	/**
-	 * type converter container adapter
+	 * type converter container
 	 */
-	protected class TypeConverterContainerAdapter
-		implements ContextContainerTools.Adapter<OrmEclipseLinkTypeConverter, XmlTypeConverter>
+	protected class TypeConverterContainer
+		extends ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter>
 	{
-		public Iterable<OrmEclipseLinkTypeConverter> getContextElements() {
-			return OrmEclipseLinkConverterContainerImpl.this.getTypeConverters();
+		@Override
+		protected String getContextElementsPropertyName() {
+			return TYPE_CONVERTERS_LIST;
 		}
-		public Iterable<XmlTypeConverter> getResourceElements() {
+		@Override
+		protected OrmEclipseLinkTypeConverter buildContextElement(XmlTypeConverter resourceElement) {
+			return OrmEclipseLinkConverterContainerImpl.this.buildTypeConverter(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlTypeConverter> getResourceElements() {
 			return OrmEclipseLinkConverterContainerImpl.this.getXmlTypeConverters();
 		}
-		public XmlTypeConverter getResourceElement(OrmEclipseLinkTypeConverter contextElement) {
+		@Override
+		protected XmlTypeConverter getResourceElement(OrmEclipseLinkTypeConverter contextElement) {
 			return contextElement.getXmlConverter();
-		}
-		public void moveContextElement(int index, OrmEclipseLinkTypeConverter element) {
-			OrmEclipseLinkConverterContainerImpl.this.moveTypeConverter_(index, element);
-		}
-		public void addContextElement(int index, XmlTypeConverter resourceElement) {
-			OrmEclipseLinkConverterContainerImpl.this.addTypeConverter_(index, resourceElement);
-		}
-		public void removeContextElement(OrmEclipseLinkTypeConverter element) {
-			OrmEclipseLinkConverterContainerImpl.this.removeTypeConverter_(element);
 		}
 	}
 

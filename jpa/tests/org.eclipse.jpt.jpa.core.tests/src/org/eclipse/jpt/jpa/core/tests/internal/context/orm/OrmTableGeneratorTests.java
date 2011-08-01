@@ -570,10 +570,10 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		createTestEntity();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		OrmReadOnlyPersistentAttribute virtualAttribute = ormPersistentType.attributes().next();
+		OrmReadOnlyPersistentAttribute virtualAttribute = ormPersistentType.getAttributes().iterator().next();
 		IdMapping virtualIdMapping = (IdMapping) virtualAttribute.getMapping();
 
-		JavaIdMapping javaIdMapping = (JavaIdMapping) ormPersistentType.getJavaPersistentType().attributes().next().getMapping();
+		JavaIdMapping javaIdMapping = (JavaIdMapping) ormPersistentType.getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		JavaTableGenerator javaTableGenerator = javaIdMapping.getGeneratorContainer().addTableGenerator();
 		javaTableGenerator.setName("TABLE_GENERATOR");
 		

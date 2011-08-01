@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,31 +10,29 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
 import java.util.Arrays;
-import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
-import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 
 /**
  * javax.annotation.Generated
  */
 public final class SourceGeneratedAnnotation
-	extends SourceAnnotation<Type>
+	extends SourceAnnotation
 	implements GeneratedAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -52,8 +50,8 @@ public final class SourceGeneratedAnnotation
 	private String comments;
 
 
-	public SourceGeneratedAnnotation(JavaResourcePersistentType parent, Type type) {
-		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceGeneratedAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = this.buildAnnotationElementAdapter(VALUE_ADAPTER);
 		this.dateAdapter = this.buildAdapter(DATE_ADAPTER);
 		this.commentsAdapter = this.buildAdapter(COMMENTS_ADAPTER);
@@ -100,11 +98,11 @@ public final class SourceGeneratedAnnotation
 	// ********** GeneratedAnnotation implementation **********
 
 	// ***** values
-	public ListIterator<String> values() {
-		return new CloneListIterator<String>(this.values);
+	public ListIterable<String> getValues() {
+		return new LiveCloneListIterable<String>(this.values);
 	}
 
-	public int valuesSize() {
+	public int getValuesSize() {
 		return this.values.size();
 	}
 

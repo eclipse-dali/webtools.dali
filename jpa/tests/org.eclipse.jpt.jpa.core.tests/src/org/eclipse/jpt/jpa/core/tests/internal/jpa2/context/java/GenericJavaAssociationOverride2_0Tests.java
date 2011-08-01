@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
@@ -35,7 +37,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.AssociationOverride2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -134,15 +135,15 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		
-		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.virtualOverrides().next();
+		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		javaAssociationOverride = ((VirtualAssociationOverride) javaAssociationOverride).convertToSpecified();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild");
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", Kind.TYPE);
+		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		
 		assertEquals("address", javaAssociationOverride.getName());
 		assertEquals("address", associationOverrideResource.getName());
-		assertTrue(overrideContainer.overrides().hasNext());
+		assertTrue(overrideContainer.getOverrides().iterator().hasNext());
 		
 		//set name in the resource model, verify context model updated
 		associationOverrideResource.setName("FOO");
@@ -153,20 +154,20 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		//set name to null in the resource model
 		associationOverrideResource.setName(null);
 		getJpaProject().synchronizeContextModel();
-		assertEquals(0, overrideContainer.specifiedOverridesSize());
+		assertEquals(0, overrideContainer.getSpecifiedOverridesSize());
 		assertNull(associationOverrideResource.getName());
 		
 		associationOverrideResource.setName("FOO");
 		getJpaProject().synchronizeContextModel();
-		assertEquals(1, overrideContainer.specifiedOverridesSize());
-		javaAssociationOverride = overrideContainer.specifiedOverrides().next();
+		assertEquals(1, overrideContainer.getSpecifiedOverridesSize());
+		javaAssociationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertEquals("FOO", javaAssociationOverride.getName());
 		assertEquals("FOO", associationOverrideResource.getName());
 
-		typeResource.removeAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
+		resourceType.removeAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		getJpaProject().synchronizeContextModel();
-		assertFalse(overrideContainer.specifiedOverrides().hasNext());
-		assertFalse(typeResource.annotations(JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES).hasNext());
+		assertFalse(overrideContainer.getSpecifiedOverrides().iterator().hasNext());
+		assertFalse(resourceType.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator().hasNext());
 	}
 	
 	public void testModifyName() throws Exception {
@@ -176,15 +177,15 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		VirtualAssociationOverride virtualAssociationOverride = overrideContainer.virtualOverrides().next();
+		VirtualAssociationOverride virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		AssociationOverride specifiedAssociationOverride = virtualAssociationOverride.convertToSpecified();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild");
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", Kind.TYPE);
+		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 
 		assertEquals("address", specifiedAssociationOverride.getName());
 		assertEquals("address", associationOverrideResource.getName());
-		assertTrue(overrideContainer.overrides().hasNext());
+		assertTrue(overrideContainer.getOverrides().iterator().hasNext());
 		
 		//set name in the context model, verify resource model modified
 		specifiedAssociationOverride.setName("foo");
@@ -194,7 +195,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		//set name to null in the context model
 		specifiedAssociationOverride.setName(null);
 		assertNull(specifiedAssociationOverride.getName());
-		associationOverrideResource = (AssociationOverrideAnnotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		assertNull(associationOverrideResource.getName());
 	}
 
@@ -205,12 +206,12 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		AssociationOverride specifiedOverride = overrideContainer.virtualOverrides().next().convertToSpecified();
+		AssociationOverride specifiedOverride = overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		JoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnStrategy();
 		
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild");
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", Kind.TYPE);
+		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 
 		
 		JoinColumn joinColumn = joiningStrategy.addSpecifiedJoinColumn(0);
@@ -231,12 +232,12 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		assertEquals("BAZ", associationOverrideResource.joinColumnAt(1).getName());
 		assertEquals("FOO", associationOverrideResource.joinColumnAt(2).getName());
 		
-		ListIterator<JoinColumn> joinColumns = (ListIterator<JoinColumn>) joiningStrategy.specifiedJoinColumns();
+		ListIterator<? extends JoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
 		
-		joinColumns = (ListIterator<JoinColumn>) joiningStrategy.specifiedJoinColumns();
+		joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -249,34 +250,34 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		AssociationOverride javaAssociationOverride = overrideContainer.virtualOverrides().next().convertToSpecified();
+		AssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		JoinColumnRelationshipStrategy joiningStrategy = javaAssociationOverride.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild");
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", Kind.TYPE);
+		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		
-		assertEquals(1, associationOverrideResource.joinColumnsSize());
+		assertEquals(1, associationOverrideResource.getJoinColumnsSize());
 
 		joiningStrategy.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		joiningStrategy.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
 		joiningStrategy.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
-		assertEquals(4, associationOverrideResource.joinColumnsSize());
+		assertEquals(4, associationOverrideResource.getJoinColumnsSize());
 		
 		joiningStrategy.removeSpecifiedJoinColumn(0);
-		assertEquals(3, associationOverrideResource.joinColumnsSize());
+		assertEquals(3, associationOverrideResource.getJoinColumnsSize());
 		assertEquals("BAR", associationOverrideResource.joinColumnAt(0).getName());
 		assertEquals("BAZ", associationOverrideResource.joinColumnAt(1).getName());
 
 		joiningStrategy.removeSpecifiedJoinColumn(0);
-		assertEquals(2, associationOverrideResource.joinColumnsSize());
+		assertEquals(2, associationOverrideResource.getJoinColumnsSize());
 		assertEquals("BAZ", associationOverrideResource.joinColumnAt(0).getName());
 		
 		joiningStrategy.removeSpecifiedJoinColumn(0);
-		assertEquals(1, associationOverrideResource.joinColumnsSize());
+		assertEquals(1, associationOverrideResource.getJoinColumnsSize());
 		
 		joiningStrategy.removeSpecifiedJoinColumn(0);
-		assertEquals(0, associationOverrideResource.joinColumnsSize());
+		assertEquals(0, associationOverrideResource.getJoinColumnsSize());
 	}
 	
 	public void testMoveSpecifiedJoinColumn() throws Exception {
@@ -286,21 +287,21 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		AssociationOverride javaAssociationOverride = overrideContainer.virtualOverrides().next().convertToSpecified();
+		AssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		JoinColumnRelationshipStrategy joiningStrategy = javaAssociationOverride.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild");
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", Kind.TYPE);
+		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		
 		joiningStrategy.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		joiningStrategy.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
 		joiningStrategy.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 				
-		assertEquals(4, associationOverrideResource.joinColumnsSize());
+		assertEquals(4, associationOverrideResource.getJoinColumnsSize());
 		
 		
 		joiningStrategy.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<JoinColumn> joinColumns = (ListIterator<JoinColumn>) joiningStrategy.specifiedJoinColumns();
+		ListIterator<? extends JoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -311,7 +312,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 
 
 		joiningStrategy.moveSpecifiedJoinColumn(0, 1);
-		joinColumns = (ListIterator<JoinColumn>) joiningStrategy.specifiedJoinColumns();
+		joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -328,14 +329,14 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		JavaVirtualAssociationOverride virtualAssociationOverride = overrideContainer.virtualOverrides().next();
+		JavaVirtualAssociationOverride virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		JavaAssociationOverride specifiedAssociationOverride = virtualAssociationOverride.convertToSpecified();
 		JavaJoinColumnRelationshipStrategy joiningStrategy = specifiedAssociationOverride.getRelationship().getJoinColumnStrategy();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild");
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", Kind.TYPE);
+		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		
-		ListIterator<JavaJoinColumn> joinColumns = joiningStrategy.specifiedJoinColumns();
+		ListIterator<JavaJoinColumn> joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		JoinColumn joinColumn = joinColumns.next();
 		assertEquals("address_id", joinColumn.getSpecifiedName());
 		assertEquals("id", joinColumn.getSpecifiedReferencedColumnName());
@@ -349,7 +350,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		associationOverrideResource.joinColumnAt(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 
-		joinColumns = joiningStrategy.specifiedJoinColumns();
+		joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -358,7 +359,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		
 		associationOverrideResource.moveJoinColumn(2, 0);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = joiningStrategy.specifiedJoinColumns();
+		joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -367,7 +368,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 
 		associationOverrideResource.moveJoinColumn(0, 1);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = joiningStrategy.specifiedJoinColumns();
+		joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -376,7 +377,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 
 		associationOverrideResource.removeJoinColumn(1);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = joiningStrategy.specifiedJoinColumns();
+		joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("address_id", joinColumns.next().getName());
@@ -384,19 +385,19 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 
 		associationOverrideResource.removeJoinColumn(1);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = joiningStrategy.specifiedJoinColumns();
+		joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("address_id", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());		
 		
 		associationOverrideResource.removeJoinColumn(0);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = joiningStrategy.specifiedJoinColumns();
+		joinColumns = joiningStrategy.getSpecifiedJoinColumns().iterator();
 		assertEquals("address_id", joinColumns.next().getName());
 
 		associationOverrideResource.removeJoinColumn(0);
 		getJpaProject().synchronizeContextModel();
-		assertFalse(joiningStrategy.specifiedJoinColumns().hasNext());
+		assertFalse(joiningStrategy.getSpecifiedJoinColumns().iterator().hasNext());
 	}
 	
 	public void testGetName() throws Exception {
@@ -404,16 +405,16 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 
-		AssociationOverride specifiedAssociationOverride = overrideContainer.specifiedOverrides().next();
+		AssociationOverride specifiedAssociationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertEquals(ASSOCIATION_OVERRIDE_NAME, specifiedAssociationOverride.getName());
 		
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		
 		associationOverrideResource.setName("FOO");
 		getJpaProject().synchronizeContextModel();
-		specifiedAssociationOverride = overrideContainer.specifiedOverrides().next();
+		specifiedAssociationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertEquals("FOO", specifiedAssociationOverride.getName());
 	}
 	
@@ -422,13 +423,13 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 
-		AssociationOverride specifiedAssociationOverride = overrideContainer.specifiedOverrides().next();
+		AssociationOverride specifiedAssociationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
 		assertEquals(ASSOCIATION_OVERRIDE_NAME, specifiedAssociationOverride.getName());
 		
 		specifiedAssociationOverride.setName("FOO");
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 		
 		assertEquals("FOO", associationOverrideResource.getName());
 	}
@@ -442,9 +443,9 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		Entity entity = getJavaEntity();	
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(1, overrideContainer.virtualOverridesSize());
+		assertEquals(1, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAssociationOverride associationOverride = overrideContainer.virtualOverrides().next();
+		ReadOnlyAssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", associationOverride.getName());
 	}
 	
@@ -457,9 +458,9 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		Entity entity = getJavaEntity();	
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(1, overrideContainer.virtualOverridesSize());
+		assertEquals(1, overrideContainer.getVirtualOverridesSize());
 		
-		ReadOnlyAssociationOverride associationOverride = overrideContainer.virtualOverrides().next();
+		ReadOnlyAssociationOverride associationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertTrue(associationOverride.isVirtual());
 	}
 	
@@ -471,12 +472,12 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.virtualOverrides().next();
+		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		javaAssociationOverride = ((VirtualAssociationOverride) javaAssociationOverride).convertToSpecified();
 		JoinTableRelationshipStrategy joiningStrategy = ((OverrideRelationship2_0) javaAssociationOverride.getRelationship()).getJoinTableStrategy();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild");
-		AssociationOverride2_0Annotation associationOverrideResource = (AssociationOverride2_0Annotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", Kind.TYPE);
+		AssociationOverride2_0Annotation associationOverrideResource = (AssociationOverride2_0Annotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 
 		
 		JoinTable joinTable = joiningStrategy.getJoinTable();
@@ -492,12 +493,12 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.virtualOverrides().next();
+		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		javaAssociationOverride = ((VirtualAssociationOverride) javaAssociationOverride).convertToSpecified();
 		JoinTableRelationshipStrategy joiningStrategy = ((OverrideRelationship2_0) javaAssociationOverride.getRelationship()).getJoinTableStrategy();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild");
-		AssociationOverride2_0Annotation associationOverrideResource = (AssociationOverride2_0Annotation) typeResource.getAnnotation(JPA.ASSOCIATION_OVERRIDE);
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(PACKAGE_NAME + ".AnnotationTestTypeChild", Kind.TYPE);
+		AssociationOverride2_0Annotation associationOverrideResource = (AssociationOverride2_0Annotation) resourceType.getAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
 	
 		associationOverrideResource.getJoinTable().setName("MY_JOIN_TABLE");
 		getJpaProject().synchronizeContextModel();
@@ -513,7 +514,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		associationOverrideResource.getJoinTable().joinColumnAt(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 
-		ListIterator<JoinColumn> joinColumns = (ListIterator<JoinColumn>) joiningStrategy.getJoinTable().specifiedJoinColumns();
+		ListIterator<? extends JoinColumn> joinColumns = joiningStrategy.getJoinTable().getSpecifiedJoinColumns().iterator();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -521,7 +522,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		
 		associationOverrideResource.getJoinTable().moveJoinColumn(2, 0);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = (ListIterator<JoinColumn>) joiningStrategy.getJoinTable().specifiedJoinColumns();
+		joinColumns = joiningStrategy.getJoinTable().getSpecifiedJoinColumns().iterator();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -529,7 +530,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 
 		associationOverrideResource.getJoinTable().moveJoinColumn(0, 1);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = (ListIterator<JoinColumn>) joiningStrategy.getJoinTable().specifiedJoinColumns();
+		joinColumns = joiningStrategy.getJoinTable().getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -537,20 +538,20 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 
 		associationOverrideResource.getJoinTable().removeJoinColumn(1);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = (ListIterator<JoinColumn>) joiningStrategy.getJoinTable().specifiedJoinColumns();
+		joinColumns = joiningStrategy.getJoinTable().getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		associationOverrideResource.getJoinTable().removeJoinColumn(1);
 		getJpaProject().synchronizeContextModel();
-		joinColumns = (ListIterator<JoinColumn>) joiningStrategy.getJoinTable().specifiedJoinColumns();
+		joinColumns = joiningStrategy.getJoinTable().getSpecifiedJoinColumns().iterator();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		associationOverrideResource.getJoinTable().removeJoinColumn(0);
 		getJpaProject().synchronizeContextModel();
-		assertFalse(joiningStrategy.getJoinTable().specifiedJoinColumns().hasNext());
+		assertFalse(joiningStrategy.getJoinTable().getSpecifiedJoinColumns().iterator().hasNext());
 	}	
 	
 	public void testDefaultJoinTableName() throws Exception {
@@ -560,7 +561,7 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaAssociationOverrideContainer overrideContainer = getJavaEntity().getAssociationOverrideContainer();
-		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.virtualOverrides().next();
+		ReadOnlyAssociationOverride javaAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		VirtualOverrideRelationship2_0 rel = (VirtualOverrideRelationship2_0) javaAssociationOverride.getRelationship();
 		VirtualJoinTable joinTable = rel.getJoinTableStrategy().getJoinTable();
 		

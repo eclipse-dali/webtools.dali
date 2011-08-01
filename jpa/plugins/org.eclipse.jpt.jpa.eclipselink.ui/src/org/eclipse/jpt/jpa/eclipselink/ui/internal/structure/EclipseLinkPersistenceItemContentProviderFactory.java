@@ -10,12 +10,11 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.structure;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -65,12 +64,12 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 						PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
 						getModel()) {
 					@Override
-					protected ListIterator<MappingFileRef> listIterator_() {
-						return subject.specifiedMappingFileRefs();
+					protected ListIterable<MappingFileRef> getListIterable() {
+						return subject.getSpecifiedMappingFileRefs();
 					}
 					@Override
 					protected int size_() {
-						return subject.specifiedMappingFileRefsSize();
+						return subject.getSpecifiedMappingFileRefsSize();
 					}
 				});
 			
@@ -102,12 +101,12 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 						PersistenceUnit.SPECIFIED_CLASS_REFS_LIST,
 						getModel()) {
 					@Override
-					protected ListIterator<ClassRef> listIterator_() {
-						return subject.specifiedClassRefs();
+					protected ListIterable<ClassRef> getListIterable() {
+						return subject.getSpecifiedClassRefs();
 					}
 					@Override
 					protected int size_() {
-						return subject.specifiedClassRefsSize();
+						return subject.getSpecifiedClassRefsSize();
 					}
 				});
 			CollectionValueModel<ClassRef> impliedClassCvm = 
@@ -115,12 +114,12 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 						PersistenceUnit.IMPLIED_CLASS_REFS_COLLECTION,
 						getModel()) {
 					@Override
-					protected Iterator<ClassRef> iterator_() {
-						return subject.impliedClassRefs();
+					protected Iterable<ClassRef> getIterable() {
+						return subject.getImpliedClassRefs();
 					}
 					@Override
 					protected int size_() {
-						return subject.impliedClassRefsSize();
+						return subject.getImpliedClassRefsSize();
 					}
 				};
 			List<CollectionValueModel<? extends JpaStructureNode>> list = new ArrayList<CollectionValueModel<? extends JpaStructureNode>>(4);

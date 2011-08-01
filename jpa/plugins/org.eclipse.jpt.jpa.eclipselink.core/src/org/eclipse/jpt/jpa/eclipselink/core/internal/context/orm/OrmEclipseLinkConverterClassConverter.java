@@ -14,12 +14,12 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
@@ -34,7 +34,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 {
 	private String converterClass;
 
-	protected JavaResourcePersistentType converterPersistentType;
+	protected JavaResourceAbstractType converterResourceType;
 
 
 	public OrmEclipseLinkConverterClassConverter(XmlContextNode parent, X xmlConverter, String converterClass) {
@@ -69,8 +69,8 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 		this.firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 
-	protected JavaResourcePersistentType getConverterJavaResourcePersistentType() {
-		return this.getMappingFileRoot().resolveJavaResourcePersistentType(this.converterClass);
+	protected JavaResourceAbstractType getConverterJavaResourceType() {
+		return this.getMappingFileRoot().resolveJavaResourceType(this.converterClass);
 	}
 
 	protected abstract String getXmlConverterClass();
@@ -80,8 +80,8 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 
 	// ********** resource interaction **********
 
-	protected void updateConverterPersistentType() {
-		this.converterPersistentType = this.getConverterJavaResourcePersistentType();
+	protected void updateConverterResourceType() {
+		this.converterResourceType = this.getConverterJavaResourceType();
 	}
 
 
@@ -218,12 +218,12 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	}
 
 	protected boolean isFor(String typeName) {
-		JavaResourcePersistentType converterType = this.getConverterJavaResourcePersistentType();
+		JavaResourceAbstractType converterType = this.getConverterJavaResourceType();
 		return (converterType != null) && converterType.getQualifiedName().equals(typeName);
 	}
 
 	protected boolean isIn(IPackageFragment packageFragment) {
-		JavaResourcePersistentType converterType = this.getConverterJavaResourcePersistentType();
+		JavaResourceAbstractType converterType = this.getConverterJavaResourceType();
 		return (converterType != null) && converterType.isIn(packageFragment);
 	}
 }
