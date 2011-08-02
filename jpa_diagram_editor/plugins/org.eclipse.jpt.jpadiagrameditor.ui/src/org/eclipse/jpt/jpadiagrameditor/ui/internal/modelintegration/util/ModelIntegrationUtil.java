@@ -73,7 +73,7 @@ public class ModelIntegrationUtil {
 	
 	public static IPath createDiagramPath(PersistenceUnit persistenceUnit) throws CoreException {
 	    IProject project = persistenceUnit.getJpaProject().getProject();
-	    String diagramName = persistenceUnit.getName();
+	    String diagramName = persistenceUnit.getJpaProject().getName();
 		IPath newXMIFilePath = getDiagramsFolderPath(project).append(diagramName).addFileExtension(DIAGRAM_FILE_EXTENSION);	
 		IFileSystem fileSystem = EFS.getLocalFileSystem();
 		IFileStore newXMIFile = fileSystem.getStore(newXMIFilePath);
@@ -150,7 +150,7 @@ public class ModelIntegrationUtil {
 										int grid, 
 										boolean snap) throws CoreException {
 		IPath path = createDiagramPath(persistenceUnit);
-		Diagram d = createDiagram(persistenceUnit.getJpaProject().getProject(), path, persistenceUnit.getName(), grid, snap); 
+		Diagram d = createDiagram(persistenceUnit.getJpaProject().getProject(), path, persistenceUnit.getJpaProject().getName(), grid, snap); 
 	    return d;
 	}
 	
