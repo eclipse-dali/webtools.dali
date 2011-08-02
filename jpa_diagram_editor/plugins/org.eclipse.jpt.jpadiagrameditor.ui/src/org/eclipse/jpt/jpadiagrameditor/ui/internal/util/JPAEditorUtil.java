@@ -188,7 +188,8 @@ public class JPAEditorUtil {
     	return at.getTypeName();
     }        
     
-    public static List<String> getAttributeTypeTypeNames(JavaResourceAttribute at) {
+    @SuppressWarnings("restriction")
+	public static List<String> getAttributeTypeTypeNames(JavaResourceAttribute at) {
     	ListIterator<String> tt = at.getTypeTypeArgumentNames().iterator();
     	if ((tt == null) || !tt.hasNext()) 
     		return null;
@@ -203,7 +204,8 @@ public class JPAEditorUtil {
     }
 
     
-    public static String getAttributeTypeNameWithGenerics(JavaResourceAttribute at) {
+    @SuppressWarnings("restriction")
+	public static String getAttributeTypeNameWithGenerics(JavaResourceAttribute at) {
     	StringBuilder res = new StringBuilder(getAttributeTypeName(at));
     	ListIterator<String> it = at.getTypeTypeArgumentNames().iterator();
     	if ((it != null) && it.hasNext()) {
@@ -1336,6 +1338,7 @@ public class JPAEditorUtil {
 		return file;
 	}		
 	
+	@SuppressWarnings("restriction")
 	static private HashSet<String> getEntityNames(JpaProject jpaProject) {
 		HashSet<String> names = new HashSet<String>();
 		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().
@@ -1347,6 +1350,7 @@ public class JPAEditorUtil {
 		return names;
 	}
 	
+	@SuppressWarnings("restriction")
 	static private HashSet<String> getEntitySimpleNames(JpaProject jpaProject) {
 		HashSet<String> names = new HashSet<String>();
 		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().

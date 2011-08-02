@@ -46,7 +46,7 @@ public class CreateDiagramJob extends Job {
 	}
 
 	public CreateDiagramJob(PersistenceUnit persistenceUnit, int grid, boolean snap) {
-		super(MessageFormat.format(JPAEditorMessages.CreateDiagramJob_createDiagramJobName, new Object[] { persistenceUnit.getName()})); 
+		super(MessageFormat.format(JPAEditorMessages.CreateDiagramJob_createDiagramJobName, new Object[] { persistenceUnit.getJpaProject().getName()})); 
 		this.persistenceUnit = persistenceUnit;
 		this.grid = grid;
 		this.snap = snap;
