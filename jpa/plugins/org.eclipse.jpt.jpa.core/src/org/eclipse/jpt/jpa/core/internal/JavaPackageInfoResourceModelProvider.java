@@ -11,10 +11,13 @@ package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
 
@@ -46,12 +49,23 @@ public class JavaPackageInfoResourceModelProvider
 	}
 
 	public JavaResourceCompilationUnit buildResourceModel(JpaProject jpaProject, IFile file) {
-		return new SourcePackageInfoCompilationUnit(
-			JavaCore.createCompilationUnitFrom(file),
-			jpaProject.getJpaPlatform().getAnnotationProvider(),
-			jpaProject.getJpaPlatform().getAnnotationEditFormatter(),
-			jpaProject.getModifySharedDocumentCommandExecutor()
-		);
+		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(file);
+		try {
+			if (compilationUnit.getPackageDeclarations().length > 0){
+				return new SourcePackageInfoCompilationUnit(
+						compilationUnit,
+						jpaProject.getJpaPlatform().getAnnotationProvider(),
+						jpaProject.getJpaPlatform().getAnnotationEditFormatter(),
+						jpaProject.getModifySharedDocumentCommandExecutor());
+			} 
+			//ignore package-info placed in default package as
+			//it doesn't have package declaration and can't hold annotations
+			return null;
+		} catch (JavaModelException e) {
+			JptJpaCorePlugin.log(e);
+			// Ignore -- project is in a bad state. This will get recalled if necessary
+			return null;
+		}
 	}
 
 }
