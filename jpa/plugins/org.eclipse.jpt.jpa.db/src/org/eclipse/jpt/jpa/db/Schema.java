@@ -95,4 +95,8 @@ public interface Schema
 	 * @see #getSortedSequenceIdentifiers()
 	 */
 	Sequence getSequenceForIdentifier(String identifier);
+
+	// ********** sequences **********
+
+	void refresh();
 }

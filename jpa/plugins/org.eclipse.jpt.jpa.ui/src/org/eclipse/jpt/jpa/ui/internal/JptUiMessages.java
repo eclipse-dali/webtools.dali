@@ -54,6 +54,7 @@ public class JptUiMessages {
 	public static String General_revert;
 	public static String General_deselectAll;
 	public static String General_selectAll;
+	public static String General_refresh;
 	public static String GenerateDDLWizard_title;
 	public static String GenerateEntitiesWizard_generateEntities;
 	public static String GenerateEntitiesWizardPage_chooseEntityTable;

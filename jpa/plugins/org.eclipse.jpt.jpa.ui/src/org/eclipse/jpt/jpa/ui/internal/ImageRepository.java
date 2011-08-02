@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -89,6 +89,11 @@ public final class ImageRepository {
 		return getImage(resourceManager, DESELECT_ALL_BUTTON_DESCRIPTOR);
 	}
 	private static final ImageDescriptor DESELECT_ALL_BUTTON_DESCRIPTOR = buildImageDescriptor("buttons/deselect-all.png");
+
+	public static Image getRefreshButtonImage(ResourceManager resourceManager) {
+		return getImage(resourceManager, REFRESH_BUTTON_DESCRIPTOR);
+	}
+	private static final ImageDescriptor REFRESH_BUTTON_DESCRIPTOR = buildImageDescriptor("buttons/refresh.gif");
 
 	public static Image getAddConnectionButtonImage(ResourceManager resourceManager) {
 		return getImage(resourceManager, ADD_CONNECTION_BUTTON_DESCRIPTOR);

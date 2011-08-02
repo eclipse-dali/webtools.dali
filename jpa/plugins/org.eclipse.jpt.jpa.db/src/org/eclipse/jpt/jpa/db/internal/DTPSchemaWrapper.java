@@ -228,6 +228,12 @@ final class DTPSchemaWrapper
 		return this.getDTPDriverAdapter().selectSequenceForIdentifier(this.getSequences(), identifier);
 	}
 
+	// ***** refresh
+	
+	public void refresh() {
+		
+		this.getCatalogObject().refresh();
+	}
 
 	// ********** internal methods **********
 

@@ -274,6 +274,11 @@ class TablesSelectorWizardPage extends WizardPage {
 		doStatusUpdate();
 	}
 
+	private void refreshTables(){
+		this.schema.refresh();
+		this.updateSelectionState(databaseGroup.getSelectedSchema());
+	}
+
 	private void initTablesSelectionControl(Collection<Table> possibleTables) {
 		this.tableTable.setInput(possibleTables);
 	}
@@ -374,6 +379,20 @@ class TablesSelectorWizardPage extends WizardPage {
 
 			public void widgetSelected(SelectionEvent e) {
 				deselectAllTables();
+			}
+		});
+
+		Button refreshTablesButton = new Button(buttonComposite, SWT.PUSH);
+		refreshTablesButton.setToolTipText(JptUiMessages.General_refresh);
+		refreshTablesButton.setImage( ImageRepository.getRefreshButtonImage(this.resourceManager));
+		gridData =  new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		refreshTablesButton.setLayoutData(gridData);
+		refreshTablesButton.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {}
+
+			public void widgetSelected(SelectionEvent e) {
+				refreshTables();
 			}
 		});
 	}
