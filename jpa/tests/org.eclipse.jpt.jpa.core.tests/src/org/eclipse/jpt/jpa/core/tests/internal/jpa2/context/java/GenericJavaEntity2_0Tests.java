@@ -598,13 +598,13 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributes = getJavaEntity().overridableAttributeNames();
+		Iterator<String> overridableAttributes = getJavaEntity().getOverridableAttributeNames().iterator();
 		assertFalse(overridableAttributes.hasNext());
 		
 		
 		getJavaEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		overridableAttributes = getJavaEntity().overridableAttributeNames();		
+		overridableAttributes = getJavaEntity().getOverridableAttributeNames().iterator();		
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
@@ -614,13 +614,13 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributeNames = getJavaEntity().overridableAttributeNames();
+		Iterator<String> overridableAttributeNames = getJavaEntity().getOverridableAttributeNames().iterator();
 		assertFalse(overridableAttributeNames.hasNext());
 		
 		
 		getJavaEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		overridableAttributeNames = getJavaEntity().overridableAttributeNames();
+		overridableAttributeNames = getJavaEntity().getOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
 		assertFalse(overridableAttributeNames.hasNext());
@@ -632,7 +632,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		Iterator<String> overridableAttributes = getJavaEntity().getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());
@@ -645,7 +645,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		Iterator<String> overridableAttributes = getJavaEntity().getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());
@@ -655,7 +655,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		JavaEntity abstractEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
-		overridableAttributes = abstractEntity.allOverridableAttributeNames();
+		overridableAttributes = abstractEntity.getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());
@@ -668,7 +668,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAssociations = getJavaEntity().allOverridableAssociationNames();
+		Iterator<String> overridableAssociations = getJavaEntity().getAllOverridableAssociationNames().iterator();
 		assertEquals("address", overridableAssociations.next());
 		assertEquals("address2", overridableAssociations.next());
 		assertEquals("address3", overridableAssociations.next());
@@ -679,7 +679,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		JavaEntity abstractEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
-		overridableAssociations = abstractEntity.allOverridableAssociationNames();
+		overridableAssociations = abstractEntity.getAllOverridableAssociationNames().iterator();
 		assertEquals("address", overridableAssociations.next());
 		assertEquals("address2", overridableAssociations.next());
 		assertEquals("address3", overridableAssociations.next());
@@ -693,7 +693,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		Iterator<String> overridableAttributes = getJavaEntity().getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());
@@ -706,7 +706,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributeNames = getJavaEntity().allOverridableAttributeNames();
+		Iterator<String> overridableAttributeNames = getJavaEntity().getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
 		assertEquals("foo", overridableAttributeNames.next());
@@ -1171,7 +1171,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<String> overridableAssociations = getJavaEntity().overridableAssociationNames();
+		Iterator<String> overridableAssociations = getJavaEntity().getOverridableAssociationNames().iterator();
 		assertFalse(overridableAssociations.hasNext());
 	}
 
@@ -1179,7 +1179,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<String> overridableAssociationNames = getJavaEntity().overridableAssociationNames();
+		Iterator<String> overridableAssociationNames = getJavaEntity().getOverridableAssociationNames().iterator();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 	
@@ -1190,7 +1190,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<String> overridableAssociationNames = getJavaEntity().allOverridableAssociationNames();
+		Iterator<String> overridableAssociationNames = getJavaEntity().getAllOverridableAssociationNames().iterator();
 		assertEquals("address", overridableAssociationNames.next());
 		assertEquals("address2", overridableAssociationNames.next());
 		assertEquals("address3", overridableAssociationNames.next());
@@ -1204,7 +1204,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Iterator<String> overridableAssociations = getJavaEntity().allOverridableAssociationNames();
+		Iterator<String> overridableAssociations = getJavaEntity().getAllOverridableAssociationNames().iterator();
 		assertEquals("address", overridableAssociations.next());
 		assertEquals("address2", overridableAssociations.next());
 		assertEquals("address3", overridableAssociations.next());

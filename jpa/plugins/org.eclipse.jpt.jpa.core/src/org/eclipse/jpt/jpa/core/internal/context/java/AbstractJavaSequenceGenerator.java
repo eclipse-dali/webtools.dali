@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -104,13 +102,13 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 	 * sequenceName
 	 */
 	@Override
-	protected Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedJavaCompletionProposals(pos, filter, astRoot);
+	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getConnectedJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		if (this.sequenceNameTouches(pos, astRoot)) {
-			return this.getJavaCandidateSequences(filter).iterator();
+			return this.getJavaCandidateSequences(filter);
 		}
 		return null;
 	}

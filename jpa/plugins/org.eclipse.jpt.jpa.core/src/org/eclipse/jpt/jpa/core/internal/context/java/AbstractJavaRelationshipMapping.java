@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
@@ -251,17 +250,17 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 		return this.relationship.isOverridable();
 	}
 
-	public Iterator<String> allTargetEntityAttributeNames() {
-		return new CompositeIterator<String>(this.allTargetEntityAttributeNamesLists());
+	public Iterable<String> getAllTargetEntityAttributeNames() {
+		return new CompositeIterable<String>(this.getAllTargetEntityAttributeNamesLists());
 	}
 
-	protected Iterator<Iterator<String>> allTargetEntityAttributeNamesLists() {
-		return new TransformationIterator<AttributeMapping, Iterator<String>>(this.allTargetEntityAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+	protected Iterable<Iterable<String>> getAllTargetEntityAttributeNamesLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getAllTargetEntityAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
-	protected Iterator<AttributeMapping> allTargetEntityAttributeMappings() {
+	protected Iterable<AttributeMapping> getAllTargetEntityAttributeMappings() {
 		Entity entity = this.getResolvedTargetEntity();
-		return (entity != null) ? entity.allAttributeMappings() : EmptyIterator.<AttributeMapping> instance();
+		return (entity != null) ? entity.getAllAttributeMappings() : EmptyIterable.<AttributeMapping> instance();
 	}
 
 	protected String getTargetEntityIdAttributeName() {
@@ -278,13 +277,13 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.relationship.javaCompletionProposals(pos, filter, astRoot);
+		result = this.relationship.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}

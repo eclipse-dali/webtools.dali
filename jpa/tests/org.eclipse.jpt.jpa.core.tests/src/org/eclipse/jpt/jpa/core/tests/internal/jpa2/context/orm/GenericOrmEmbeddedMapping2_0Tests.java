@@ -1729,6 +1729,6 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Foo");
 
 		EmbeddedMapping2_0 embeddedMapping = (EmbeddedMapping2_0) persistentType.getAttributeNamed("embedded").getMapping();
-		assertFalse(embeddedMapping.allOverridableAttributeMappingNames().hasNext());
+		assertFalse(embeddedMapping.getAllOverridableAttributeMappingNames().iterator().hasNext());
 	}
 }

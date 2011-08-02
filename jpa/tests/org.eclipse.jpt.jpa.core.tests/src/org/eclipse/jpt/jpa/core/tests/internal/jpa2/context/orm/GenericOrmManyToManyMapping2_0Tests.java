@@ -250,7 +250,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -261,12 +261,12 @@ public class GenericOrmManyToManyMapping2_0Tests
 		
 		manyToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertFalse(attributeNames.hasNext());
 		
 		manyToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -296,7 +296,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -307,12 +307,12 @@ public class GenericOrmManyToManyMapping2_0Tests
 		
 		manyToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertFalse(attributeNames.hasNext());
 		
 		manyToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -422,7 +422,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		ManyToManyMapping virtualManyToManyMapping = (ManyToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
 
 		
-		Iterator<String> mapKeyNames = virtualManyToManyMapping.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = virtualManyToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -444,11 +444,11 @@ public class GenericOrmManyToManyMapping2_0Tests
 		ManyToManyMapping virtualManyToManyMapping = (ManyToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
 		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 
-		Iterator<String> mapKeyNames = virtualManyToManyMapping.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = virtualManyToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		javaManyToManyMapping.setSpecifiedTargetEntity("test.Address");
-		mapKeyNames = virtualManyToManyMapping.candidateMapKeyNames();
+		mapKeyNames = virtualManyToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -459,11 +459,11 @@ public class GenericOrmManyToManyMapping2_0Tests
 		
 		ormPersistentType.getAttributeNamed("addresses").convertToSpecified();
 		virtualManyToManyMapping = (OrmManyToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
-		mapKeyNames = virtualManyToManyMapping.candidateMapKeyNames();
+		mapKeyNames = virtualManyToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		virtualManyToManyMapping.setSpecifiedTargetEntity("test.Address");
-		mapKeyNames = virtualManyToManyMapping.candidateMapKeyNames();
+		mapKeyNames = virtualManyToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -473,7 +473,7 @@ public class GenericOrmManyToManyMapping2_0Tests
 		assertFalse(mapKeyNames.hasNext());
 		
 		virtualManyToManyMapping.setSpecifiedTargetEntity("String");
-		mapKeyNames = virtualManyToManyMapping.candidateMapKeyNames();
+		mapKeyNames = virtualManyToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 	}
 	

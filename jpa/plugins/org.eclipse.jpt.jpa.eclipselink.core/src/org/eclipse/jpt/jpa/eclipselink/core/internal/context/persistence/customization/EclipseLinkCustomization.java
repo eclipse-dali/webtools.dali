@@ -10,21 +10,18 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.customization;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Entity;
@@ -512,11 +509,11 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	// ********** SessionCustomizers **********
-	public ListIterator<String> sessionCustomizers(){
-		return new CloneListIterator<String>(this.sessionCustomizers);
+	public ListIterable<String> getSessionCustomizers(){
+		return new LiveCloneListIterable<String>(this.sessionCustomizers);
 	}
 	
-	public int sessionCustomizersSize(){
+	public int getSessionCustomizersSize(){
 		return this.sessionCustomizers.size();
 	}
 
@@ -771,12 +768,12 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	// ****** entities list *******
 
-	public ListIterator<Entity> entities() {
-		return new CloneListIterator<Entity>(this.entities);
+	public ListIterable<Entity> getEntities() {
+		return new LiveCloneListIterable<Entity>(this.entities);
 	}
 
-	public Iterator<String> entityNames() {
-		return new TransformationIterator<Entity, String>(this.entities()) {
+	public Iterable<String> getEntityNames() {
+		return new TransformationIterable<Entity, String>(this.getEntities()) {
 			@Override
 			protected String transform(Entity entity) {
 				return entity.getName();
@@ -784,7 +781,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		};
 	}
 
-	public int entitiesSize() {
+	public int getEntitiesSize() {
 		return this.entities.size();
 	}
 

@@ -10,15 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.SingleElementIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
@@ -193,20 +192,20 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 
 	// ********** embedded mappings **********
 
-	public Iterator<String> allMappingNames() {
-		return new SingleElementIterator<String>(this.getName());
+	public Iterable<String> getAllMappingNames() {
+		return new SingleElementIterable<String>(this.getName());
 	}
 
-	public Iterator<String> allOverridableAttributeMappingNames() {
+	public Iterable<String> getAllOverridableAttributeMappingNames() {
 		return this.isOverridableAttributeMapping() ?
-				new SingleElementIterator<String>(this.getName()) :
-				EmptyIterator.<String>instance();
+				new SingleElementIterable<String>(this.getName()) :
+				EmptyIterable.<String>instance();
 	}
 
-	public Iterator<String> allOverridableAssociationMappingNames() {
+	public Iterable<String> getAllOverridableAssociationMappingNames() {
 		return this.isOverridableAssociationMapping() ?
-				new SingleElementIterator<String>(this.getName()) :
-				EmptyIterator.<String>instance();
+				new SingleElementIterable<String>(this.getName()) :
+				EmptyIterable.<String>instance();
 	}
 
 	public Column resolveOverriddenColumn(String attributeName) {

@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaMultiRelationshipMapping;
@@ -236,8 +235,8 @@ public class NullJavaMapKeyColumn2_0
 		// NOP
 	}
 
-	public Iterator<String> candidateTableNames() {
-		return EmptyIterator.instance();
+	public Iterable<String> getCandidateTableNames() {
+		return EmptyIterable.instance();
 	}
 
 

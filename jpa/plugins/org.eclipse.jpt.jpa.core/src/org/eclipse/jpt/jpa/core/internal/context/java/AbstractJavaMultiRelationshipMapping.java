@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
@@ -18,8 +17,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -564,13 +563,13 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.orderable.javaCompletionProposals(pos, filter, astRoot);
+		result = this.orderable.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -579,12 +578,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return this.javaCandidateMapKeyNames(filter);
 		}
 
-		result = this.mapKeyColumn.javaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyColumn.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.mapKeyAttributeOverrideContainer.javaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyAttributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -597,16 +596,16 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos, astRoot);
 	}
 
-	protected Iterator<String> javaCandidateMapKeyNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateMapKeyNames(filter));
+	protected Iterable<String> javaCandidateMapKeyNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateMapKeyNames(filter));
 	}
 
-	protected Iterator<String> candidateMapKeyNames(Filter<String> filter) {
-		return new FilteringIterator<String>(this.candidateMapKeyNames(), filter);
+	protected Iterable<String> getCandidateMapKeyNames(Filter<String> filter) {
+		return new FilteringIterable<String>(this.getCandidateMapKeyNames(), filter);
 	}
 
-	public Iterator<String> candidateMapKeyNames() {
-		return this.allTargetEntityAttributeNames();
+	public Iterable<String> getCandidateMapKeyNames() {
+		return this.getAllTargetEntityAttributeNames();
 	}
 
 
@@ -682,8 +681,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return this.getRelationshipStrategy().resolveDbTable(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
+		public Iterable<String> getCandidateTableNames() {
+			return EmptyIterable.instance();
 		}
 
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -750,9 +749,9 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
 		}
 
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
-			return (overriddenTypeMapping != null) ? overriddenTypeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
+			return (overriddenTypeMapping != null) ? overriddenTypeMapping.getAllOverridableAttributeNames() : EmptyIterable.<String>instance();
 		}
 
 		protected static final String POSSIBLE_PREFIX = "key"; //$NON-NLS-1$

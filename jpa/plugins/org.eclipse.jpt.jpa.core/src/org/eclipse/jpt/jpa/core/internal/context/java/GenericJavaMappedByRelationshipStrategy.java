@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -17,7 +16,7 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
@@ -171,28 +170,28 @@ public class GenericJavaMappedByRelationshipStrategy
 	// ********** java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		OwnableRelationshipMappingAnnotation annotation = this.getMappingAnnotation();
 		if ((annotation != null) && annotation.mappedByTouches(pos, astRoot)) {
-			result = this.javaCandidateMappedByAttributeNames(filter);
+			result = this.getJavaCandidateMappedByAttributeNames(filter);
 		}
 		return result;
 	}
 
-	public Iterator<String> candidateMappedByAttributeNames() {
-		return this.getRelationshipMapping().allTargetEntityAttributeNames();
+	public Iterable<String> getCandidateMappedByAttributeNames() {
+		return this.getRelationshipMapping().getAllTargetEntityAttributeNames();
 	}
 
-	protected Iterator<String> candidateMappedByAttributeNames(Filter<String> filter) {
-		return new FilteringIterator<String>(this.candidateMappedByAttributeNames(), filter);
+	protected Iterable<String> getCandidateMappedByAttributeNames(Filter<String> filter) {
+		return new FilteringIterable<String>(this.getCandidateMappedByAttributeNames(), filter);
 	}
 
-	protected Iterator<String> javaCandidateMappedByAttributeNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateMappedByAttributeNames(filter));
+	protected Iterable<String> getJavaCandidateMappedByAttributeNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateMappedByAttributeNames(filter));
 	}
 
 

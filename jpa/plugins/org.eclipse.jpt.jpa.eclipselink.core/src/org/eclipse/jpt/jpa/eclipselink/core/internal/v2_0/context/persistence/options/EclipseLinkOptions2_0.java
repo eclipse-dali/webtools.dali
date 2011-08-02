@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,9 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.persistence.options;
 
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.persistence.options.Options2_0;
@@ -181,11 +180,11 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	
 	// ********** ValidationGroupPrePersists **********
 
-	public ListIterator<String> validationGroupPrePersists(){
-		return new CloneListIterator<String>(this.validationGroupPrePersists);
+	public ListIterable<String> getValidationGroupPrePersists(){
+		return new LiveCloneListIterable<String>(this.validationGroupPrePersists);
 	}
 	
-	public int validationGroupPrePersistsSize(){
+	public int getValidationGroupPrePersistsSize(){
 		return this.validationGroupPrePersists.size();
 	}
 
@@ -220,8 +219,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	
 	private String removeValidationGroupPrePersist_(String className){
 
-		for ( ListIterator<String> i = this.validationGroupPrePersists(); i.hasNext();) {
-			String validationGroupPrePersist = i.next();
+		for (String validationGroupPrePersist : this.getValidationGroupPrePersists()) {
 			if(validationGroupPrePersist.equals(className)) {
 				this.validationGroupPrePersists.remove(validationGroupPrePersist);
 				return validationGroupPrePersist;
@@ -237,11 +235,11 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 
 	// ********** ValidationGroupPreUpdates **********
 
-	public ListIterator<String> validationGroupPreUpdates(){
-		return new CloneListIterator<String>(this.validationGroupPreUpdates);
+	public ListIterable<String> getValidationGroupPreUpdates(){
+		return new LiveCloneListIterable<String>(this.validationGroupPreUpdates);
 	}
 	
-	public int validationGroupPreUpdatesSize(){
+	public int getValidationGroupPreUpdatesSize(){
 		return this.validationGroupPreUpdates.size();
 	}
 
@@ -276,8 +274,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	
 	private String removeValidationGroupPreUpdate_(String className){
 
-		for(ListIterator<String> i = this.validationGroupPreUpdates(); i.hasNext();) {
-			String validationGroupPreUpdate = i.next();
+		for(String validationGroupPreUpdate : this.getValidationGroupPreUpdates()) {
 			if(validationGroupPreUpdate.equals(className)) {
 				this.validationGroupPreUpdates.remove(validationGroupPreUpdate);
 				return validationGroupPreUpdate;
@@ -293,11 +290,11 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 
 	// ********** ValidationGroupPreRemoves **********
 
-	public ListIterator<String> validationGroupPreRemoves(){
-		return new CloneListIterator<String>(this.validationGroupPreRemoves);
+	public ListIterable<String> getValidationGroupPreRemoves(){
+		return new LiveCloneListIterable<String>(this.validationGroupPreRemoves);
 	}
 	
-	public int validationGroupPreRemovesSize(){
+	public int getValidationGroupPreRemovesSize(){
 		return this.validationGroupPreRemoves.size();
 	}
 
@@ -332,8 +329,7 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	
 	private String removeValidationGroupPreRemove_(String className){
 
-		for(ListIterator<String> i = this.validationGroupPreRemoves(); i.hasNext();) {
-			String validationGroupPreRemove = i.next();
+		for(String validationGroupPreRemove : this.getValidationGroupPreRemoves()) {
 			if(validationGroupPreRemove.equals(className)) {
 				this.validationGroupPreRemoves.remove(validationGroupPreRemove);
 				return validationGroupPreRemove;

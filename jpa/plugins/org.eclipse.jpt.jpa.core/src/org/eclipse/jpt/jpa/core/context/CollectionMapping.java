@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,8 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
-
-import java.util.Iterator;
 
 /**
  * JPA collection mapping (e.g. 1:m, m:m, element collection)
@@ -69,7 +67,7 @@ public interface CollectionMapping
 	void setCustomMapKey(boolean customMapKey);
 		String CUSTOM_MAP_KEY_PROPERTY = "customMapKey"; //$NON-NLS-1$
 
-	Iterator<String> candidateMapKeyNames();
+	Iterable<String> getCandidateMapKeyNames();
 
 	String getMetamodelFieldMapKeyTypeName();
 }

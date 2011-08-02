@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IJavaProject;
@@ -18,7 +17,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
@@ -26,9 +24,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -934,8 +930,8 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	// ********** embedded mappings **********
 
-	public Iterator<String> candidateMapKeyNames() {
-		return new CompositeIterator<String>(this.allTargetEmbeddableAttributeNamesLists());
+	public Iterable<String> getCandidateMapKeyNames() {
+		return new CompositeIterable<String>(this.getAllTargetEmbeddableAttributeNamesLists());
 	}
 
 	/**
@@ -943,41 +939,41 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	 * embedded mapping's target embeddable type mapping's attribute mappings
 	 * (attribute or association mappings, depending on the specified transformer).
 	 */
-	protected Iterator<Iterator<String>> allTargetEmbeddableAttributeNamesLists() {
-		return new TransformationIterator<AttributeMapping, Iterator<String>>(this.allTargetEmbeddableAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+	protected Iterable<Iterable<String>> getAllTargetEmbeddableAttributeNamesLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getAllTargetEmbeddableAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
-	protected Iterator<AttributeMapping> allTargetEmbeddableAttributeMappings() {
+	protected Iterable<AttributeMapping> getAllTargetEmbeddableAttributeMappings() {
 		Embeddable targetEmbeddable = this.getResolvedTargetEmbeddable();
-		return (targetEmbeddable != null) ? targetEmbeddable.allAttributeMappings() : EmptyIterator.<AttributeMapping> instance();
+		return (targetEmbeddable != null) ? targetEmbeddable.getAllAttributeMappings() : EmptyIterable.<AttributeMapping> instance();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Iterator<String> allMappingNames() {
-		return new CompositeIterator<String>(super.allMappingNames(), this.allEmbeddableAttributeMappingNames());
+	public Iterable<String> getAllMappingNames() {
+		return new CompositeIterable<String>(super.getAllMappingNames(), this.getAllEmbeddableAttributeMappingNames());
 	}
 
-	protected Iterator<String> allEmbeddableAttributeMappingNames() {
-		return this.qualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
-	}
-
-	@Override
-	public Iterator<String> allOverridableAttributeMappingNames() {
-		return this.qualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
+	protected Iterable<String> getAllEmbeddableAttributeMappingNames() {
+		return this.getQualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	@Override
-	public Iterator<String> allOverridableAssociationMappingNames() {
-		return this.qualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
+	public Iterable<String> getAllOverridableAttributeMappingNames() {
+		return this.getQualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
 	}
 
-	protected Iterator<String> qualifiedEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterator<String>> transformer) {
-		return new TransformationIterator<String, String>(this.embeddableOverridableMappingNames(transformer), this.buildQualifierTransformer());
+	@Override
+	public Iterable<String> getAllOverridableAssociationMappingNames() {
+		return this.getQualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
 	}
 
-	protected Iterator<String> embeddableOverridableMappingNames(Transformer<AttributeMapping, Iterator<String>> transformer) {
-		return new CompositeIterator<String>(this.embeddableOverridableMappingNamesLists(transformer));
+	protected Iterable<String> getQualifiedEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
+		return new TransformationIterable<String, String>(this.getEmbeddableOverridableMappingNames(transformer), this.buildQualifierTransformer());
+	}
+
+	protected Iterable<String> getEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
+		return new CompositeIterable<String>(this.getEmbeddableOverridableMappingNamesLists(transformer));
 	}
 
 	/**
@@ -985,8 +981,8 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	 * embedded mapping's target embeddable type mapping's attribute mappings
 	 * (attribute or association mappings, depending on the specified transformer).
 	 */
-	protected Iterator<Iterator<String>> embeddableOverridableMappingNamesLists(Transformer<AttributeMapping, Iterator<String>> transformer) {
-		return new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings(), transformer);
+	protected Iterable<Iterable<String>> getEmbeddableOverridableMappingNamesLists(Transformer<AttributeMapping, Iterable<String>> transformer) {
+		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getEmbeddableAttributeMappings(), transformer);
 	}
 
 	@Override
@@ -1000,7 +996,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return null;
 		}
 		// recurse into the embeddable mappings
-		for (AttributeMapping mapping : CollectionTools.iterable(this.embeddableAttributeMappings())) {
+		for (AttributeMapping mapping : this.getEmbeddableAttributeMappings()) {
 			resolvedMapping = mapping.resolveAttributeMapping(attributeName);
 			if (resolvedMapping != null) {
 				return resolvedMapping;
@@ -1009,11 +1005,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		return null;
 	}
 
-	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
+	protected Iterable<AttributeMapping> getEmbeddableAttributeMappings() {
 		Embeddable targetEmbeddable = this.getResolvedTargetEmbeddable();
 		return ((targetEmbeddable != null) && (targetEmbeddable != this.getTypeMapping())) ?
-				targetEmbeddable.attributeMappings() :
-				EmptyIterator.<AttributeMapping>instance();
+				targetEmbeddable.getAttributeMappings() :
+				EmptyIterable.<AttributeMapping>instance();
 	}
 
 	@Override
@@ -1316,8 +1312,8 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return Tools.valuesAreEqual(table.getName(), tableName) ? table.getDbTable() : null;
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
+		public Iterable<String> getCandidateTableNames() {
+			return EmptyIterable.instance();
 		}
 
 		/**
@@ -1424,9 +1420,9 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
 		}
 
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			TypeMapping typeMapping = this.getOverridableTypeMapping();
-			return (typeMapping != null) ? typeMapping.allOverridableAssociationNames() : EmptyIterator.<String>instance();
+			return (typeMapping != null) ? typeMapping.getAllOverridableAssociationNames() : EmptyIterable.<String>instance();
 		}
 
 		public EList<XmlAssociationOverride> getXmlOverrides() {
@@ -1473,9 +1469,9 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
 		}
 
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
-			return (overriddenTypeMapping != null) ? overriddenTypeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
+			return (overriddenTypeMapping != null) ? overriddenTypeMapping.getAllOverridableAttributeNames() : EmptyIterable.<String>instance();
 		}
 
 		public EList<XmlAttributeOverride> getXmlOverrides() {
@@ -1506,9 +1502,9 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getResolvedMapKeyEmbeddable();
 		}
 
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
-			return (overriddenTypeMapping != null) ? overriddenTypeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
+			return (overriddenTypeMapping != null) ? overriddenTypeMapping.getAllOverridableAttributeNames() : EmptyIterable.<String>instance();
 		}
 
 		public EList<XmlAttributeOverride> getXmlOverrides() {

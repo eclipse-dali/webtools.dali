@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
@@ -193,8 +192,8 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 		/**
 		 * the join column can be on a secondary table
 		 */
-		public Iterator<String> candidateTableNames() {
-			return GenericJavaMappingJoinColumnRelationshipStrategy.this.candidateTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return GenericJavaMappingJoinColumnRelationshipStrategy.this.getCandidateTableNames();
 		}
 
 		public Table resolveDbTable(String tableName) {

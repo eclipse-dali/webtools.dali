@@ -352,7 +352,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -364,12 +364,12 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		oneToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertFalse(attributeNames.hasNext());
 		
 		oneToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -395,7 +395,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -406,12 +406,12 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		oneToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertFalse(attributeNames.hasNext());
 		
 		oneToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -639,7 +639,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		OneToManyMapping2_0 oneToManyMapping2_0 = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
 		Iterator<String> mapKeyNames = 
-			oneToManyMapping2_0.candidateMapKeyNames();
+			oneToManyMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -661,11 +661,11 @@ public class GenericJavaOneToManyMapping2_0Tests
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping2_0 = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
-		Iterator<String> mapKeyNames = oneToManyMapping2_0.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = oneToManyMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		oneToManyMapping2_0.setSpecifiedTargetEntity("Address");
-		mapKeyNames = oneToManyMapping2_0.candidateMapKeyNames();
+		mapKeyNames = oneToManyMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -676,7 +676,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertFalse(mapKeyNames.hasNext());
 		
 		oneToManyMapping2_0.setSpecifiedTargetEntity("String");
-		mapKeyNames = oneToManyMapping2_0.candidateMapKeyNames();
+		mapKeyNames = oneToManyMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 	}
 	

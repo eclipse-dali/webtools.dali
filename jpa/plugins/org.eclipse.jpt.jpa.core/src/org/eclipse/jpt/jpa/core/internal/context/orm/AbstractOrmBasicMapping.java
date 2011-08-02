@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
@@ -343,8 +342,8 @@ public abstract class AbstractOrmBasicMapping<X extends XmlBasic>
 		return this.getTypeMapping().tableNameIsInvalid(tableName);
 	}
 
-	public Iterator<String> candidateTableNames() {
-		return this.getTypeMapping().allAssociatedTableNames();
+	public Iterable<String> getCandidateTableNames() {
+		return this.getTypeMapping().getAllAssociatedTableNames();
 	}
 
 	public XmlColumn getXmlColumn() {

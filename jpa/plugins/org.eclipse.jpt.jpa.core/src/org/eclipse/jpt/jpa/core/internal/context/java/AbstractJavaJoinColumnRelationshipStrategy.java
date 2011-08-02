@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
@@ -260,9 +259,9 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 		return (relationshipTarget == null) ? null : relationshipTarget.getPrimaryDbTable();
 	}
 
-	protected Iterator<String> candidateTableNames() {
+	protected Iterable<String> getCandidateTableNames() {
 		TypeMapping typeMapping = this.getRelationshipSource();
-		return (typeMapping != null) ? typeMapping.allAssociatedTableNames() : EmptyIterator.<String>instance();
+		return (typeMapping != null) ? typeMapping.getAllAssociatedTableNames() : EmptyIterable.<String>instance();
 	}
 
 	public void addStrategy() {
@@ -281,13 +280,13 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (JavaJoinColumn joinColumn : this.getJoinColumns()) {
-			result = joinColumn.javaCompletionProposals(pos, filter, astRoot);
+			result = joinColumn.getJavaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

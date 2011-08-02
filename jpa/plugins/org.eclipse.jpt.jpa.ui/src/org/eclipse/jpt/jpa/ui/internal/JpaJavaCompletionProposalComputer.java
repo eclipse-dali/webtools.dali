@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -143,8 +142,7 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 		CompilationUnit astRoot = ASTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JpaStructureNode structureNode : rootStructureNodes) {
-			for (Iterator<String> stream = ((JavaPersistentType) structureNode).javaCompletionProposals(context.getInvocationOffset(), filter, astRoot); stream.hasNext(); ) {
-				String s = stream.next();
+			for (String s : ((JavaPersistentType) structureNode).getJavaCompletionProposals(context.getInvocationOffset(), filter, astRoot)) {
 				proposals.add(new CompletionProposal(s, tokenStart, tokenEnd - tokenStart + 1, s.length()));
 			}
 		}

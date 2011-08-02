@@ -116,7 +116,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<AttributeMapping> getAllAttributeMappings() {
-		return CollectionTools.collection(this.getPersistentAttribute().getOwningTypeMapping().allAttributeMappings());
+		return CollectionTools.collection(this.getPersistentAttribute().getOwningTypeMapping().getAllAttributeMappings());
 	}
 
 	public Iterable<String> getSortedCandidateIdAttributeNames() {
@@ -168,7 +168,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 				}
 				return new CompositeIterable<AttributeMapping>(
 						mapping,
-						CollectionTools.collection(embeddable.allAttributeMappings())
+						CollectionTools.collection(embeddable.getAllAttributeMappings())
 					);
 			}
 		};

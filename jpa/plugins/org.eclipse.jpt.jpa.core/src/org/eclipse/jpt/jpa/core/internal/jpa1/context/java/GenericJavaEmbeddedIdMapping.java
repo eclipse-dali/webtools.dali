@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -85,10 +84,10 @@ public class GenericJavaEmbeddedIdMapping
 	}
 
 	@Override
-	protected Iterator<String> embeddableOverridableAttributeMappingNames() {
+	protected Iterable<String> getEmbeddableOverridableAttributeMappingNames() {
 		return (this.derived) ?
-			EmptyIterator.<String>instance() :
-			super.embeddableOverridableAttributeMappingNames();
+			EmptyIterable.<String>instance() :
+			super.getEmbeddableOverridableAttributeMappingNames();
 	}
 
 	@Override
@@ -127,15 +126,15 @@ public class GenericJavaEmbeddedIdMapping
 		extends AbstractJavaBaseEmbeddedMapping<EmbeddedIdAnnotation>.AttributeOverrideContainerOwner
 	{
 		@Override
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			return GenericJavaEmbeddedIdMapping.this.isDerived() ?
-					EmptyIterator.<String>instance() :
-					super.allOverridableNames();
+					EmptyIterable.<String>instance() :
+					super.getAllOverridableNames();
 		}
 
 		@Override
-		protected Iterator<String> allOverridableAttributeNames_(TypeMapping overriddenTypeMapping) {
-			return new FilteringIterator<String>(super.allOverridableAttributeNames_(overriddenTypeMapping)) {
+		protected Iterable<String> getAllOverridableAttributeNames_(TypeMapping overriddenTypeMapping) {
+			return new FilteringIterable<String>(super.getAllOverridableAttributeNames_(overriddenTypeMapping)) {
 				@Override
 				protected boolean accept(String attributeName) {
 					return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);

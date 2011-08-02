@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -24,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -31,10 +31,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
@@ -951,33 +947,22 @@ public abstract class AbstractJavaEntity
 	// ********** associated tables **********
 
 	@Override
-	public Iterator<ReadOnlyTable> associatedTables() {
-		return this.getAssociatedTables().iterator();
-	}
-
 	public Iterable<ReadOnlyTable> getAssociatedTables() {
 		return new CompositeIterable<ReadOnlyTable>(this.table, this.getSecondaryTables());
 	}
 
-	@Override
-	public Iterator<ReadOnlyTable> allAssociatedTables() {
-		return new CompositeIterator<ReadOnlyTable>(this.allAssociatedTablesLists());
-	}
 
+	@Override
 	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
-		return CollectionTools.iterable(this.allAssociatedTables());
+		return new CompositeIterable<ReadOnlyTable>(this.allAssociatedTablesLists());
 	}
 
 	// TODO eliminate duplicate tables?
-	protected Iterator<Iterator<ReadOnlyTable>> allAssociatedTablesLists() {
-		return new TransformationIterator<TypeMapping, Iterator<ReadOnlyTable>>(this.inheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
+	protected Iterable<Iterable<ReadOnlyTable>> allAssociatedTablesLists() {
+		return new TransformationIterable<TypeMapping, Iterable<ReadOnlyTable>>(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
 	}
 
 	@Override
-	public Iterator<String> allAssociatedTableNames() {
-		return this.getAllAssociatedTableNames().iterator();
-	}
-
 	public Iterable<String> getAllAssociatedTableNames() {
 		return this.convertToNames(this.getAllAssociatedTables());
 	}
@@ -1095,21 +1080,21 @@ public abstract class AbstractJavaEntity
 	}
 
 	@Override
-	public Iterator<String> overridableAttributeNames() {
+	public Iterable<String> getOverridableAttributeNames() {
 		return this.isTablePerClass() ?
-				super.overridableAttributeNames() :
-				EmptyIterator.<String>instance();
+				super.getOverridableAttributeNames() :
+				EmptyIterable.<String>instance();
 	}
 
 	@Override
-	public Iterator<String> overridableAssociationNames() {
+	public Iterable<String> getOverridableAssociationNames() {
 		return this.isTablePerClass() ?
-				super.overridableAssociationNames() :
-				EmptyIterator.<String>instance();
+				super.getOverridableAssociationNames() :
+				EmptyIterable.<String>instance();
 	}
 
 	public AttributeMapping resolveAttributeMapping(String name) {
-		for (AttributeMapping attributeMapping : CollectionTools.iterable(this.allAttributeMappings())) {
+		for (AttributeMapping attributeMapping : this.getAllAttributeMappings()) {
 			AttributeMapping resolvedMapping = attributeMapping.resolveAttributeMapping(name);
 			if (resolvedMapping != null) {
 				return resolvedMapping;
@@ -1217,40 +1202,40 @@ public abstract class AbstractJavaEntity
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.table.javaCompletionProposals(pos, filter, astRoot);
+		result = this.table.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (JavaSecondaryTable secondaryTable : this.getSecondaryTables()) {
-			result = secondaryTable.javaCompletionProposals(pos, filter, astRoot);
+			result = secondaryTable.getJavaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (JavaPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
-			result = pkJoinColumn.javaCompletionProposals(pos, filter, astRoot);
+			result = pkJoinColumn.getJavaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
-		result = this.attributeOverrideContainer.javaCompletionProposals(pos, filter, astRoot);
+		result = this.attributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.associationOverrideContainer.javaCompletionProposals(pos, filter, astRoot);
+		result = this.associationOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.discriminatorColumn.javaCompletionProposals(pos, filter, astRoot);
+		result = this.discriminatorColumn.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.generatorContainer.javaCompletionProposals(pos, filter, astRoot);
+		result = this.generatorContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -1485,15 +1470,15 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.getOverridableTypeMapping();
 		}
 
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
-			return (overriddenTypeMapping != null) ? this.allOverridableNames_(overriddenTypeMapping) : EmptyIterator.<String>instance();
+			return (overriddenTypeMapping != null) ? this.getAllOverridableNames_(overriddenTypeMapping) : EmptyIterable.<String>instance();
 		}
 
 		/**
 		 * pre-condition: <code>typeMapping</code> is not <code>null</code>
 		 */
-		protected abstract Iterator<String> allOverridableNames_(TypeMapping overriddenTypeMapping);
+		protected abstract Iterable<String> getAllOverridableNames_(TypeMapping overriddenTypeMapping);
 
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
@@ -1507,8 +1492,8 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.resolveDbTable(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return AbstractJavaEntity.this.allAssociatedTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return AbstractJavaEntity.this.getAllAssociatedTableNames();
 		}
 
 		public String getPossiblePrefix() {
@@ -1534,8 +1519,8 @@ public abstract class AbstractJavaEntity
 		implements JavaAttributeOverrideContainer2_0.Owner
 	{
 		@Override
-		protected Iterator<String> allOverridableNames_(TypeMapping overriddenTypeMapping) {
-			return new FilteringIterator<String>(overriddenTypeMapping.allOverridableAttributeNames()) {
+		protected Iterable<String> getAllOverridableNames_(TypeMapping overriddenTypeMapping) {
+			return new FilteringIterable<String>(overriddenTypeMapping.getAllOverridableAttributeNames()) {
 					@Override
 					protected boolean accept(String attributeName) {
 						return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);
@@ -1564,8 +1549,8 @@ public abstract class AbstractJavaEntity
 		implements JavaAssociationOverrideContainer2_0.Owner
 	{
 		@Override
-		protected Iterator<String> allOverridableNames_(TypeMapping overriddenTypeMapping) {
-			return overriddenTypeMapping.allOverridableAssociationNames();
+		protected Iterable<String> getAllOverridableNames_(TypeMapping overriddenTypeMapping) {
+			return overriddenTypeMapping.getAllOverridableAssociationNames();
 		}
 
 		public Relationship resolveOverriddenRelationship(String attributeName) {

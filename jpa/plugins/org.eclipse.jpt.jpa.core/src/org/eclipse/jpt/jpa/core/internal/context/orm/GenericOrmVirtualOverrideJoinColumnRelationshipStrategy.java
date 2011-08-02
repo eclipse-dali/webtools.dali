@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
@@ -290,15 +289,15 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 		return (relationshipTarget == null) ? null : relationshipTarget.getPrimaryDbTable();
 	}
 
-	protected Iterator<String> candidateTableNames() {
+	protected Iterable<String> getCandidateTableNames() {
 		return this.isTargetForeignKey() ?
-				this.targetCandidateTableNames() :
-				this.getRelationship().candidateTableNames();
+				this.getTargetCandidateTableNames() :
+				this.getRelationship().getCandidateTableNames();
 	}
 
-	protected Iterator<String> targetCandidateTableNames() {
+	protected Iterable<String> getTargetCandidateTableNames() {
 		TypeMapping typeMapping = this.getRelationshipMapping().getResolvedTargetEntity();
-		return (typeMapping != null) ? typeMapping.allAssociatedTableNames() : EmptyIterator.<String>instance();
+		return (typeMapping != null) ? typeMapping.getAllAssociatedTableNames() : EmptyIterable.<String>instance();
 	}
 
 	public TextRange getValidationTextRange() {
@@ -359,8 +358,8 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.tableNameIsInvalid(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.candidateTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.getCandidateTableNames();
 		}
 
 		public Table resolveDbTable(String tableName) {

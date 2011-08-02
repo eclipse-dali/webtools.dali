@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 
@@ -21,36 +20,36 @@ public final class AttributeMappingTools
 
 	// ********** all mapping names transformer **********
 
-	public static final Transformer<AttributeMapping, Iterator<String>> ALL_MAPPING_NAMES_TRANSFORMER = new AllMappingNamesTransformer();
+	public static final Transformer<AttributeMapping, Iterable<String>> ALL_MAPPING_NAMES_TRANSFORMER = new AllMappingNamesTransformer();
 	static class AllMappingNamesTransformer
-		implements Transformer<AttributeMapping, Iterator<String>>
+		implements Transformer<AttributeMapping, Iterable<String>>
 	{
-		public Iterator<String> transform(AttributeMapping mapping) {
-			return mapping.allMappingNames();
+		public Iterable<String> transform(AttributeMapping mapping) {
+			return mapping.getAllMappingNames();
 		}
 	}
 
 
 	// ********** all overridable attribute mapping names transformer **********
 
-	public static final Transformer<AttributeMapping, Iterator<String>> ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER = new AllOverridableAttributeMappingNamesTransformer();
+	public static final Transformer<AttributeMapping, Iterable<String>> ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER = new AllOverridableAttributeMappingNamesTransformer();
 	static class AllOverridableAttributeMappingNamesTransformer
-		implements Transformer<AttributeMapping, Iterator<String>>
+		implements Transformer<AttributeMapping, Iterable<String>>
 	{
-		public Iterator<String> transform(AttributeMapping mapping) {
-			return mapping.allOverridableAttributeMappingNames();
+		public Iterable<String> transform(AttributeMapping mapping) {
+			return mapping.getAllOverridableAttributeMappingNames();
 		}
 	}
 
 
 	// ********** all overridable association mapping names transformer **********
 
-	public static final Transformer<AttributeMapping, Iterator<String>> ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER = new AllOverridableAssociationMappingNamesTransformer();
+	public static final Transformer<AttributeMapping, Iterable<String>> ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER = new AllOverridableAssociationMappingNamesTransformer();
 	static class AllOverridableAssociationMappingNamesTransformer
-		implements Transformer<AttributeMapping, Iterator<String>>
+		implements Transformer<AttributeMapping, Iterable<String>>
 	{
-		public Iterator<String> transform(AttributeMapping mapping) {
-			return mapping.allOverridableAssociationMappingNames();
+		public Iterable<String> transform(AttributeMapping mapping) {
+			return mapping.getAllOverridableAssociationMappingNames();
 		}
 	}
 

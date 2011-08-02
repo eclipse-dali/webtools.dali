@@ -442,7 +442,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -454,12 +454,12 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		manyToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertFalse(attributeNames.hasNext());
 		
 		manyToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -485,7 +485,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -496,12 +496,12 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		manyToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertFalse(attributeNames.hasNext());
 		
 		manyToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -590,7 +590,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		ManyToManyMapping manyToManyMapping2_0 = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> mapKeyNames = 
-			manyToManyMapping2_0.candidateMapKeyNames();
+			manyToManyMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -612,11 +612,11 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping manyToManyMapping2_0 = (ManyToManyMapping) persistentAttribute.getMapping();
 
-		Iterator<String> mapKeyNames = manyToManyMapping2_0.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = manyToManyMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		manyToManyMapping2_0.setSpecifiedTargetEntity("Address");
-		mapKeyNames = manyToManyMapping2_0.candidateMapKeyNames();
+		mapKeyNames = manyToManyMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -627,7 +627,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertFalse(mapKeyNames.hasNext());
 		
 		manyToManyMapping2_0.setSpecifiedTargetEntity("String");
-		mapKeyNames = manyToManyMapping2_0.candidateMapKeyNames();
+		mapKeyNames = manyToManyMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 	}
 	

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -152,8 +151,8 @@ public class GenericOrmMappedByRelationshipStrategy
 		}
 	}
 
-	public Iterator<String> candidateMappedByAttributeNames() {
-		return this.getRelationshipMapping().allTargetEntityAttributeNames();
+	public Iterable<String> getCandidateMappedByAttributeNames() {
+		return this.getRelationshipMapping().getAllTargetEntityAttributeNames();
 	}
 
 

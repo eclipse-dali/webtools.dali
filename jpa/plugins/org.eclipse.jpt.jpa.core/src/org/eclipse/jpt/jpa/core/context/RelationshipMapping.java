@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Iterator;
-
 /**
  * JPA relationship (1:1, 1:m, m:1, m:m) mapping.
  * <p>
@@ -56,7 +54,7 @@ public interface RelationshipMapping
 	 * Return all attribute names on the target entity, provided target entity
 	 * resolves
 	 */
-	Iterator<String> allTargetEntityAttributeNames();
+	Iterable<String> getAllTargetEntityAttributeNames();
 	
 	/**
 	 * Return the char to be used for browsing or creating the target entity IType.

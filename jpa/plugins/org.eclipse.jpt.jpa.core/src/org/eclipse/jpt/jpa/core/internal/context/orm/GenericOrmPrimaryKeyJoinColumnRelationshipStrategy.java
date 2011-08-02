@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -266,8 +265,8 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 			return this.getTypeMapping().tableNameIsInvalid(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return this.getTypeMapping().allAssociatedTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return this.getTypeMapping().getAllAssociatedTableNames();
 		}
 
 		public TypeMapping getTypeMapping() {

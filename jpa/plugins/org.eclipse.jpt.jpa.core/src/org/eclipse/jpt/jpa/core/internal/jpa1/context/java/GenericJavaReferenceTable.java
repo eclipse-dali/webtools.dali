@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
@@ -241,13 +240,13 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (JavaJoinColumn column : this.getJoinColumns()) {
-			result = column.javaCompletionProposals(pos, filter, astRoot);
+			result = column.getJavaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
@@ -280,8 +279,8 @@ public abstract class AbstractOrmBaseColumn<X extends AbstractXmlColumn, O exten
 		return this.owner.tableNameIsInvalid(this.getTable());
 	}
 
-	public Iterator<String> candidateTableNames() {
-		return this.owner.candidateTableNames();
+	public Iterable<String> getCandidateTableNames() {
+		return this.owner.getCandidateTableNames();
 	}
 
 

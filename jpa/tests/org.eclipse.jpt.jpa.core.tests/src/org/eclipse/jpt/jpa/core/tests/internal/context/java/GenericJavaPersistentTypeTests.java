@@ -501,7 +501,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType rootJavaPersistentType = classRefs.next().getJavaPersistentType();
 		JavaPersistentType childJavaPersistentType = classRefs.next().getJavaPersistentType();
 		
-		Iterator<PersistentType> inheritanceHierarchy = childJavaPersistentType.inheritanceHierarchy();	
+		Iterator<PersistentType> inheritanceHierarchy = childJavaPersistentType.getInheritanceHierarchy().iterator();	
 		
 		assertEquals(childJavaPersistentType, inheritanceHierarchy.next());
 		assertEquals(rootJavaPersistentType, inheritanceHierarchy.next());
@@ -519,7 +519,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		JavaPersistentType childJavaPersistentType = classRefs.next().getJavaPersistentType();
 		JavaPersistentType rootJavaPersistentType = classRefs.next().getJavaPersistentType();
 		
-		Iterator<PersistentType> inheritanceHierarchy = childJavaPersistentType.inheritanceHierarchy();	
+		Iterator<PersistentType> inheritanceHierarchy = childJavaPersistentType.getInheritanceHierarchy().iterator();	
 		
 		assertEquals(childJavaPersistentType, inheritanceHierarchy.next());
 		assertEquals(rootJavaPersistentType, inheritanceHierarchy.next());

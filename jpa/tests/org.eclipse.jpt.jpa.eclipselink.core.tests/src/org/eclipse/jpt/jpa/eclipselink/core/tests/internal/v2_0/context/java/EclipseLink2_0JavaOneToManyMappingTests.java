@@ -543,7 +543,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		JavaOneToManyMapping javaOneToManyMapping = (JavaOneToManyMapping) getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 
 		Iterator<String> mapKeyNames = 
-			javaOneToManyMapping.candidateMapKeyNames();
+			javaOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -565,11 +565,11 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		JavaOneToManyMapping javaOneToManyMapping = (JavaOneToManyMapping) getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 
-		Iterator<String> mapKeyNames = javaOneToManyMapping.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = javaOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		javaOneToManyMapping.setSpecifiedTargetEntity("test.Address");
-		mapKeyNames = javaOneToManyMapping.candidateMapKeyNames();
+		mapKeyNames = javaOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());

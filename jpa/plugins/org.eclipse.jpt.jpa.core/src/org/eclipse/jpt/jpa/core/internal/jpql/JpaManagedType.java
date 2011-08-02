@@ -15,7 +15,6 @@ package org.eclipse.jpt.jpa.core.internal.jpql;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -72,8 +71,7 @@ abstract class JpaManagedType implements IManagedType {
 
 	private Map<String, IMapping> buildMappings() {
 		Map<String, IMapping> mappings = new HashMap<String, IMapping>();
-		for (Iterator<AttributeMapping> iter = managedType.allAttributeMappings(); iter.hasNext(); ) {
-			AttributeMapping mapping = iter.next();
+		for (AttributeMapping mapping  : managedType.getAllAttributeMappings()) {
 			mappings.put(mapping.getName(), buildMapping(mapping));
 		}
 		return mappings;

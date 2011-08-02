@@ -1043,7 +1043,7 @@ public class GenericOrmPersistentType
 			return null;
 		}
 		// check for circular inheritance
-		return CollectionTools.contains(spt.inheritanceHierarchy(), this) ? null : spt;
+		return CollectionTools.contains(spt.getInheritanceHierarchy(), this) ? null : spt;
 	}
 
 	protected PersistentType buildSuperPersistentType_() {
@@ -1053,16 +1053,8 @@ public class GenericOrmPersistentType
 
 	// ********** inheritance **********
 
-	public Iterator<PersistentType> inheritanceHierarchy() {
-		return this.getInheritanceHierarchy().iterator();
-	}
-
 	public Iterable<PersistentType> getInheritanceHierarchy() {
 		return this.getInheritanceHierarchyOf(this);
-	}
-
-	public Iterator<PersistentType> ancestors() {
-		return this.getAncestors().iterator();
 	}
 
 	public Iterable<PersistentType> getAncestors() {

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -136,10 +135,10 @@ public class GenericJavaOverrideJoinColumnRelationshipStrategy
 	}
 
 	@Override
-	public Iterator<String> candidateTableNames() {
+	public Iterable<String> getCandidateTableNames() {
 		return this.isTargetForeignKey() ?
-				super.candidateTableNames() :
-				this.getRelationship().candidateTableNames();
+				super.getCandidateTableNames() :
+				this.getRelationship().getCandidateTableNames();
 	}
 
 	public String getColumnTableNotValidDescription() {
@@ -202,8 +201,8 @@ public class GenericJavaOverrideJoinColumnRelationshipStrategy
 			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.tableNameIsInvalid(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.candidateTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.getCandidateTableNames();
 		}
 
 		public Table resolveDbTable(String tableName) {

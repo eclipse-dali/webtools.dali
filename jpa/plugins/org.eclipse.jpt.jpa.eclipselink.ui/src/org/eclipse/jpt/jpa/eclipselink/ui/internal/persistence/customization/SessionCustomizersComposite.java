@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2010 Oracle. All rights reserved.
+* Copyright (c) 2008, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -25,6 +24,7 @@ import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
@@ -104,13 +104,13 @@ public class SessionCustomizersComposite extends Pane<Customization>
 	private ListValueModel<String> buildListHolder() {
 		return new ListAspectAdapter<Customization, String>(getSubjectHolder(), Customization.SESSION_CUSTOMIZER_LIST) {
 			@Override
-			protected ListIterator<String> listIterator_() {
-				return subject.sessionCustomizers();
+			protected ListIterable<String> getListIterable() {
+				return subject.getSessionCustomizers();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.sessionCustomizersSize();
+				return subject.getSessionCustomizersSize();
 			}
 		};
 	}

@@ -431,7 +431,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -442,12 +442,12 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		
 		oneToOneMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertFalse(attributeNames.hasNext());
 		
 		oneToOneMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -472,7 +472,7 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -483,12 +483,12 @@ public class EclipseLink2_0JavaOneToOneMappingTests
 		
 		oneToOneMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertFalse(attributeNames.hasNext());
 		
 		oneToOneMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());

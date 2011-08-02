@@ -9,17 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
@@ -141,7 +139,7 @@ public abstract class AbstractOrmOverrideContainer<
 	 * remaining specified overrides.
 	 */
 	protected boolean overrideWillBeVirtual(String overrideName, S specifiedOverrideToBeRemoved) {
-		return CollectionTools.contains(this.possibleVirtualOverrideNames(), overrideName) &&
+		return CollectionTools.contains(this.getPossibleVirtualOverrideNames(), overrideName) &&
 				(this.getSpecifiedOverrideNamed(overrideName, specifiedOverrideToBeRemoved) == null);
 	}
 
@@ -326,11 +324,7 @@ public abstract class AbstractOrmOverrideContainer<
 	 * specified overrides.
 	 */
 	protected Iterable<String> getVirtualOverrideNames() {
-		return CollectionTools.iterable(this.virtualOverrideNames());
-	}
-
-	protected Iterator<String> virtualOverrideNames() {
-		return new FilteringIterator<String>(this.possibleVirtualOverrideNames()) {
+		return new FilteringIterable<String>(this.getPossibleVirtualOverrideNames()) {
 			@Override
 			protected boolean accept(String name) {
 				return AbstractOrmOverrideContainer.this.overrideIsVirtual(name);
@@ -409,24 +403,24 @@ public abstract class AbstractOrmOverrideContainer<
 	 * corresponding Java entity, take the override names directly from the
 	 * type.
 	 */
-	protected Iterator<String> possibleVirtualOverrideNames() {
+	protected Iterable<String> getPossibleVirtualOverrideNames() {
 		if (this.owner == null) {
-			return EmptyIterator.instance();
+			return EmptyIterable.instance();
 		}
 		Iterable<String> javaNames = this.owner.getJavaOverrideNames();
-		return (javaNames != null) ? javaNames.iterator() : this.owner.allOverridableNames();
+		return (javaNames != null) ? javaNames : this.owner.getAllOverridableNames();
 	}
 
-	public Iterator<String> allOverridableNames() {
-		return (this.owner != null) ? this.owner.allOverridableNames() : EmptyIterator.<String>instance();
+	public Iterable<String> getAllOverridableNames() {
+		return (this.owner != null) ? this.owner.getAllOverridableNames() : EmptyIterable.<String>instance();
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
 		return this.owner.tableNameIsInvalid(tableName);
 	}
 
-	public Iterator<String> candidateTableNames() {
-		return this.owner.candidateTableNames();
+	public Iterable<String> getCandidateTableNames() {
+		return this.owner.getCandidateTableNames();
 	}
 
 	public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {

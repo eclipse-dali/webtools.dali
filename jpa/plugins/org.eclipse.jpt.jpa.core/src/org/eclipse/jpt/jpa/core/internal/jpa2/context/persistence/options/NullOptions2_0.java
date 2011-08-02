@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,9 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.options;
 
-import java.util.ListIterator;
 import java.util.Map;
-
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
@@ -87,11 +86,11 @@ public class NullOptions2_0 extends AbstractPersistenceUnitProperties
 
 
 	// ********** ValidationGroupPrePersists **********
-	public ListIterator<String> validationGroupPrePersists() {
-		return EmptyListIterator.instance();
+	public ListIterable<String> getValidationGroupPrePersists() {
+		return EmptyListIterable.instance();
 	}
 	
-	public int validationGroupPrePersistsSize() {
+	public int getValidationGroupPrePersistsSize() {
 		return 0;
 	}
 	
@@ -108,11 +107,11 @@ public class NullOptions2_0 extends AbstractPersistenceUnitProperties
 	}
 
 	// ********** ValidationGroupPreUpdates **********
-	public ListIterator<String> validationGroupPreUpdates() {
-		return EmptyListIterator.instance();
+	public ListIterable<String> getValidationGroupPreUpdates() {
+		return EmptyListIterable.instance();
 	}
 	
-	public int validationGroupPreUpdatesSize() {
+	public int getValidationGroupPreUpdatesSize() {
 		return 0;
 	}
 	
@@ -129,11 +128,11 @@ public class NullOptions2_0 extends AbstractPersistenceUnitProperties
 	}
 
 	// ********** ValidationGroupPreRemoves **********
-	public ListIterator<String> validationGroupPreRemoves() {
-		return EmptyListIterator.instance();
+	public ListIterable<String> getValidationGroupPreRemoves() {
+		return EmptyListIterable.instance();
 	}
 	
-	public int validationGroupPreRemovesSize() {
+	public int getValidationGroupPreRemovesSize() {
 		return 0;
 	}
 	

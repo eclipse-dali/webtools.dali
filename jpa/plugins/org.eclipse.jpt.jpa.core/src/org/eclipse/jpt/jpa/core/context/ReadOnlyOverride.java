@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Iterator;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.db.Table;
@@ -57,7 +56,7 @@ public interface ReadOnlyOverride
 	 * Return the names of tables that are valid for the override's
 	 * column or join column.
 	 */
-	Iterator<String> candidateTableNames();
+	Iterable<String> getCandidateTableNames();
 
 	/**
 	 * Return the database table for the specified table name.

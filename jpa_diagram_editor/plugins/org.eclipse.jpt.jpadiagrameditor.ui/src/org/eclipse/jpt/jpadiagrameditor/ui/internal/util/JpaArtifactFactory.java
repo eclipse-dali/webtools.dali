@@ -271,9 +271,7 @@ public class JpaArtifactFactory {
 				PersistenceUnit pu = getPersistenceUnit(jpt);
 				String embeddableTypeName = ids[0].getTypeName();
 				Embeddable emb = pu.getEmbeddable(embeddableTypeName);
-				Iterator<AttributeMapping> amIt = emb.allAttributeMappings();
-				while (amIt.hasNext()) {
-					AttributeMapping am = amIt.next();
+				for (AttributeMapping am : emb.getAllAttributeMappings()) {
 					JoinColumnAnnotation jc = (JoinColumnAnnotation) jpa.getResourceAttribute().addAnnotation(jpa.getResourceAttribute().getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME), JoinColumnAnnotation.ANNOTATION_NAME);
 					JavaPersistentAttribute at = (JavaPersistentAttribute) am
 							.getPersistentAttribute();

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
@@ -17,9 +16,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
@@ -252,17 +249,17 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		//TODO should we set the fetch type from a BasicMapping??
 	}
 
-	public Iterator<String> allTargetEntityAttributeNames() {
-		return new CompositeIterator<String>(this.allTargetEntityAttributeNamesLists());
+	public Iterable<String> getAllTargetEntityAttributeNames() {
+		return new CompositeIterable<String>(this.getAllTargetEntityAttributeNamesLists());
 	}
 
-	protected Iterator<Iterator<String>> allTargetEntityAttributeNamesLists() {
-		return new TransformationIterator<AttributeMapping, Iterator<String>>(this.allTargetEntityAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+	protected Iterable<Iterable<String>> getAllTargetEntityAttributeNamesLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getAllTargetEntityAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
-	protected Iterator<AttributeMapping> allTargetEntityAttributeMappings() {
+	protected Iterable<AttributeMapping> getAllTargetEntityAttributeMappings() {
 		Entity entity = this.getResolvedTargetEntity();
-		return (entity != null) ? entity.allAttributeMappings() : EmptyIterator.<AttributeMapping>instance();
+		return (entity != null) ? entity.getAllAttributeMappings() : EmptyIterable.<AttributeMapping>instance();
 	}
 
 	protected String getTargetEntityIdAttributeName() {

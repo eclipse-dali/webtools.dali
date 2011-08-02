@@ -228,7 +228,7 @@ public class OrmEclipseLinkConvert1_0Composite extends Pane<EclipseLinkConvert>
 			}
 			@Override
 			protected int size_() {
-				return this.subject.convertersSize();
+				return this.subject.getConvertersSize();
 			}
 		};
 	}

@@ -1536,6 +1536,6 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		//If there is a StackOverflowError you will not be able to get the mapping
 		JavaEmbeddedMapping2_0 embeddedMapping = (JavaEmbeddedMapping2_0) getJavaPersistentType().getAttributeNamed("embedded").getMapping();
-		assertFalse(embeddedMapping.allOverridableAttributeMappingNames().hasNext());
+		assertFalse(embeddedMapping.getAllOverridableAttributeMappingNames().iterator().hasNext());
 	}
 }

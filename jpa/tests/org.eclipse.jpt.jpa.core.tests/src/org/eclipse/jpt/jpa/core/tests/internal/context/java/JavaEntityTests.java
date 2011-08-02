@@ -1096,8 +1096,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTables();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(3, CollectionTools.size(getJavaEntity().associatedTables()));
-		Iterator<ReadOnlyTable> associatedTables = getJavaEntity().associatedTables();
+		assertEquals(3, CollectionTools.size(getJavaEntity().getAssociatedTables()));
+		Iterator<ReadOnlyTable> associatedTables = getJavaEntity().getAssociatedTables().iterator();
 		ReadOnlyTable table1 = associatedTables.next();
 		SecondaryTable table2 = (SecondaryTable) associatedTables.next();
 		SecondaryTable table3 = (SecondaryTable) associatedTables.next();
@@ -1116,8 +1116,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		Entity childEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
 		Entity rootEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
 
-		assertEquals(3, CollectionTools.size(rootEntity.allAssociatedTables()));
-		Iterator<ReadOnlyTable> associatedTables = rootEntity.allAssociatedTables();
+		assertEquals(3, CollectionTools.size(rootEntity.getAllAssociatedTables()));
+		Iterator<ReadOnlyTable> associatedTables = rootEntity.getAllAssociatedTables().iterator();
 		ReadOnlyTable table1 = associatedTables.next();
 		SecondaryTable table2 = (SecondaryTable) associatedTables.next();
 		SecondaryTable table3 = (SecondaryTable) associatedTables.next();
@@ -1127,7 +1127,7 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		//TODO probably want this to be 3, since in this case the child descriptor really uses the
 		//parent table because it is single table inheritance strategy.  Not sure yet how to deal with this.
-		assertEquals(4, CollectionTools.size(childEntity.allAssociatedTables()));
+		assertEquals(4, CollectionTools.size(childEntity.getAllAssociatedTables()));
 	}
 	
 	public void testAssociatedTableNamesIncludingInherited() throws Exception {
@@ -1140,8 +1140,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		Entity childEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
 		Entity rootEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
 		
-		assertEquals(3, CollectionTools.size(rootEntity.allAssociatedTableNames()));
-		Iterator<String> associatedTables = rootEntity.allAssociatedTableNames();
+		assertEquals(3, CollectionTools.size(rootEntity.getAllAssociatedTableNames()));
+		Iterator<String> associatedTables = rootEntity.getAllAssociatedTableNames().iterator();
 		String table1 = associatedTables.next();
 		String table2 = associatedTables.next();
 		String table3 = associatedTables.next();
@@ -1151,7 +1151,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		//TODO probably want this to be 3, since in this case the child descriptor really uses the
 		//parent table because it is single table inheritance strategy.  Not sure yet how to deal with this.
-		assertEquals(4, CollectionTools.size(childEntity.allAssociatedTableNames()));
+		assertEquals(4, CollectionTools.size(childEntity.getAllAssociatedTableNames()));
 	}
 	
 	public void testAddSecondaryTableToResourceModel() throws Exception {
@@ -1695,13 +1695,13 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributes = getJavaEntity().overridableAttributeNames();
+		Iterator<String> overridableAttributes = getJavaEntity().getOverridableAttributeNames().iterator();
 		assertFalse(overridableAttributes.hasNext());
 		
 		
 		getJavaEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		overridableAttributes = getJavaEntity().overridableAttributeNames();		
+		overridableAttributes = getJavaEntity().getOverridableAttributeNames().iterator();		
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
@@ -1711,13 +1711,13 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributeNames = getJavaEntity().overridableAttributeNames();
+		Iterator<String> overridableAttributeNames = getJavaEntity().getOverridableAttributeNames().iterator();
 		assertFalse(overridableAttributeNames.hasNext());
 		
 		
 		getJavaEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		overridableAttributeNames = getJavaEntity().overridableAttributeNames();
+		overridableAttributeNames = getJavaEntity().getOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
 		assertFalse(overridableAttributeNames.hasNext());
@@ -1729,7 +1729,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		Iterator<String> overridableAttributes = getJavaEntity().getAllOverridableAttributeNames().iterator();
 		assertEquals("foo", overridableAttributes.next());
 		assertEquals("basic", overridableAttributes.next());
 		assertEquals("id", overridableAttributes.next());
@@ -1743,7 +1743,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		Iterator<String> overridableAttributes = getJavaEntity().getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());
@@ -1753,7 +1753,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		JavaEntity abstractEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
-		overridableAttributes = abstractEntity.allOverridableAttributeNames();
+		overridableAttributes = abstractEntity.getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());
@@ -1766,7 +1766,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAssociations = getJavaEntity().allOverridableAssociationNames();
+		Iterator<String> overridableAssociations = getJavaEntity().getAllOverridableAssociationNames().iterator();
 		assertEquals("address", overridableAssociations.next());
 		assertEquals("address2", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
@@ -1775,7 +1775,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
 		JavaEntity abstractEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
-		overridableAssociations = abstractEntity.allOverridableAssociationNames();
+		overridableAssociations = abstractEntity.getAllOverridableAssociationNames().iterator();
 		assertEquals("address", overridableAssociations.next());
 		assertEquals("address2", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());
@@ -1787,7 +1787,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		Iterator<String> overridableAttributes = getJavaEntity().getAllOverridableAttributeNames().iterator();
 		assertEquals("foo", overridableAttributes.next());
 		assertEquals("basic", overridableAttributes.next());
 		assertEquals("id", overridableAttributes.next());
@@ -1801,7 +1801,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributeNames = getJavaEntity().allOverridableAttributeNames();
+		Iterator<String> overridableAttributeNames = getJavaEntity().getAllOverridableAttributeNames().iterator();
 		assertEquals("foo", overridableAttributeNames.next());
 		assertEquals("basic", overridableAttributeNames.next());
 		assertEquals("id", overridableAttributeNames.next());
@@ -2320,7 +2320,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<String> overridableAssociationNames = getJavaEntity().overridableAssociationNames();
+		Iterator<String> overridableAssociationNames = getJavaEntity().getOverridableAssociationNames().iterator();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 	
@@ -2330,7 +2330,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Iterator<String> overridableAssociationNames = getJavaEntity().allOverridableAssociationNames();
+		Iterator<String> overridableAssociationNames = getJavaEntity().getAllOverridableAssociationNames().iterator();
 		assertEquals("oneToOne", overridableAssociationNames.next());
 		assertEquals("manyToOne", overridableAssociationNames.next());
 		assertFalse(overridableAssociationNames.hasNext());
@@ -2342,7 +2342,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAssociations = getJavaEntity().allOverridableAssociationNames();
+		Iterator<String> overridableAssociations = getJavaEntity().getAllOverridableAssociationNames().iterator();
 		assertEquals("oneToOne", overridableAssociations.next());
 		assertEquals("manyToOne", overridableAssociations.next());
 		assertFalse(overridableAssociations.hasNext());

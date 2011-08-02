@@ -17,7 +17,6 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
@@ -201,10 +200,8 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 
 	private boolean hasMappedSuperclassPrimaryKeyAttribute(
 			JavaPersistentType jpt) {
-		Iterator<AttributeMapping> iter = ((JavaMappedSuperclass) jpt
-				.getMapping()).allAttributeMappings();
-		while (iter.hasNext()) {
-			AttributeMapping map = iter.next();
+		
+		for (AttributeMapping map : ((JavaMappedSuperclass) jpt.getMapping()).getAllAttributeMappings()) {
 			if (map.getPrimaryKeyColumnName() != null) {
 				return true;
 			}

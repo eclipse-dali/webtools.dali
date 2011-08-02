@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -19,7 +18,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
@@ -389,22 +387,22 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 
 	// ********** UniqueConstraint.Owner implementation **********
 
-	public Iterator<String> candidateUniqueConstraintColumnNames() {
+	public Iterable<String> getCandidateUniqueConstraintColumnNames() {
 		org.eclipse.jpt.jpa.db.Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers().iterator() : EmptyIterator.<String>instance();
+		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String>instance();
 	}
 
 
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (JavaUniqueConstraint constraint : this.getUniqueConstraints()) {
-			result = constraint.javaCompletionProposals(pos, filter, astRoot);
+			result = constraint.getJavaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
@@ -417,19 +415,19 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	 * name, schema, catalog
 	 */
 	@Override
-	protected Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedJavaCompletionProposals(pos, filter, astRoot);
+	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getConnectedJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		if (this.nameTouches(pos, astRoot)) {
-			return this.getJavaCandidateNames(filter).iterator();
+			return this.getJavaCandidateNames(filter);
 		}
 		if (this.schemaTouches(pos, astRoot)) {
-			return this.getJavaCandidateSchemata(filter).iterator();
+			return this.getJavaCandidateSchemata(filter);
 		}
 		if (this.catalogTouches(pos, astRoot)) {
-			return this.getJavaCandidateCatalogs(filter).iterator();
+			return this.getJavaCandidateCatalogs(filter);
 		}
 		return null;
 	}

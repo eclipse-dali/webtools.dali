@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -111,15 +111,15 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 		else if (propertyName.equals(JpaOptions2_0.QUERY_TIMEOUT_PROPERTY))
 			modelValue = this.options.getQueryTimeout();
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY)) {
-			ListIterator<String> iterator = this.options.validationGroupPrePersists();
+			ListIterator<String> iterator = this.options.getValidationGroupPrePersists().iterator();
 			modelValue = this.getFirstElement(iterator);
 		}
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY)) {
-			ListIterator<String> iterator = this.options.validationGroupPreUpdates();
+			ListIterator<String> iterator = this.options.getValidationGroupPreUpdates().iterator();
 			modelValue = this.getFirstElement(iterator);
 		}
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY)) {
-			ListIterator<String> iterator = this.options.validationGroupPreRemoves();
+			ListIterator<String> iterator = this.options.getValidationGroupPreRemoves().iterator();
 			modelValue = this.getFirstElement(iterator);
 		}
 		else
@@ -494,11 +494,11 @@ public class Generic2_0OptionsTests extends Generic2_0PersistenceUnitTests
 	private int getValidationGroupSize(String propertyName) throws NoSuchFieldException {
 		int result = 0;
 		if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_PERSIST_PROPERTY))
-			result =  this.options.validationGroupPrePersistsSize();
+			result =  this.options.getValidationGroupPrePersistsSize();
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_UPDATE_PROPERTY))
-			result =  this.options.validationGroupPreUpdatesSize();
+			result =  this.options.getValidationGroupPreUpdatesSize();
 		else if (propertyName.equals(JpaOptions2_0.VALIDATION_GROUP_PRE_REMOVE_PROPERTY))
-			result =  this.options.validationGroupPreRemovesSize();
+			result =  this.options.getValidationGroupPreRemovesSize();
 		else
 			this.throwMissingDefinition("verifyValidationGroupSize", propertyName);
 		return result;

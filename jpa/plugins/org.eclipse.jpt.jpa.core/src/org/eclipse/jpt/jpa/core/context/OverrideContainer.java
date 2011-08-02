@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -59,7 +58,7 @@ public interface OverrideContainer
 	 * type mapping.
 	 * @see #getOverridableTypeMapping()
 	 */
-	Iterator<String> allOverridableNames();
+	Iterable<String> getAllOverridableNames();
 
 	/**
 	 * Return whether the specified table cannot be explicitly specified
@@ -71,7 +70,7 @@ public interface OverrideContainer
 	 * Return the names of tables that are valid for an override's
 	 * column or join column.
 	 */
-	Iterator<String> candidateTableNames();
+	Iterable<String> getCandidateTableNames();
 
 	/**
 	 * Return the database table for the specified table name.
@@ -187,9 +186,9 @@ public interface OverrideContainer
 		TypeMapping getOverridableTypeMapping();
 
 		/**
-		 * @see OverrideContainer#allOverridableNames()
+		 * @see OverrideContainer#getAllOverridableNames()
 		 */
-		Iterator<String> allOverridableNames();
+		Iterable<String> getAllOverridableNames();
 
 		/**
 		 * @see OverrideContainer#getDefaultTableName()
@@ -207,9 +206,9 @@ public interface OverrideContainer
 		org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName);
 
 		/**
-		 * @see OverrideContainer#candidateTableNames()
+		 * @see OverrideContainer#getCandidateTableNames()
 		 */
-		Iterator<String> candidateTableNames();
+		Iterable<String> getCandidateTableNames();
 
 		JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver);
 

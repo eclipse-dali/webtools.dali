@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -31,9 +32,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterab
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
@@ -1371,29 +1369,21 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** associated tables **********
 
-	public Iterator<ReadOnlyTable> associatedTables() {
-		return this.getAssociatedTables().iterator();
-	}
-
 	public Iterable<ReadOnlyTable> getAssociatedTables() {
 		return new CompositeIterable<ReadOnlyTable>(this.table, this.getSecondaryTables());
-	}
-
-	public Iterator<ReadOnlyTable> allAssociatedTables() {
-		return new CompositeIterator<ReadOnlyTable>(this.allAssociatedTablesLists());
 	}
 
 	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
 		return CollectionTools.iterable(this.allAssociatedTables());
 	}
 
-	// TODO eliminate duplicate tables?
-	protected Iterator<Iterator<ReadOnlyTable>> allAssociatedTablesLists() {
-		return new TransformationIterator<TypeMapping, Iterator<ReadOnlyTable>>(this.inheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
+	public Iterator<ReadOnlyTable> allAssociatedTables() {
+		return new CompositeIterator<ReadOnlyTable>(this.allAssociatedTablesLists());
 	}
 
-	public Iterator<String> allAssociatedTableNames() {
-		return this.getAllAssociatedTableNames().iterator();
+	// TODO eliminate duplicate tables?
+	protected Iterable<Iterable<ReadOnlyTable>> allAssociatedTablesLists() {
+		return new TransformationIterable<TypeMapping, Iterable<ReadOnlyTable>>(this.getInheritanceHierarchy(), TypeMappingTools.ASSOCIATED_TABLES_TRANSFORMER);
 	}
 
 	public Iterable<String> getAllAssociatedTableNames() {
@@ -1540,21 +1530,21 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	@Override
-	public Iterator<String> overridableAttributeNames() {
+	public Iterable<String> getOverridableAttributeNames() {
 		return this.isTablePerClass() ?
-				super.overridableAttributeNames() :
-				EmptyIterator.<String>instance();
+				super.getOverridableAttributeNames() :
+				EmptyIterable.<String>instance();
 	}
 
 	@Override
-	public Iterator<String> overridableAssociationNames() {
+	public Iterable<String> getOverridableAssociationNames() {
 		return this.isTablePerClass() ?
-				super.overridableAssociationNames() :
-				EmptyIterator.<String>instance();
+				super.getOverridableAssociationNames() :
+				EmptyIterable.<String>instance();
 	}
 
 	public AttributeMapping resolveAttributeMapping(String name) {
-		for (AttributeMapping attributeMapping : CollectionTools.iterable(this.allAttributeMappings())) {
+		for (AttributeMapping attributeMapping : this.getAllAttributeMappings()) {
 			AttributeMapping resolvedMapping = attributeMapping.resolveAttributeMapping(name);
 			if (resolvedMapping != null) {
 				return resolvedMapping;
@@ -1946,15 +1936,15 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 		protected abstract JavaOverrideContainer getOverrideContainer(JavaEntity javaEntity);
 
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
-			return (overriddenTypeMapping != null) ? this.allOverridableNames_(overriddenTypeMapping) : EmptyIterator.<String>instance();
+			return (overriddenTypeMapping != null) ? this.getAllOverridableNames_(overriddenTypeMapping) : EmptyIterable.<String>instance();
 		}
 
 		/**
 		 * pre-condition: <code>typeMapping</code> is not <code>null</code>
 		 */
-		protected abstract Iterator<String> allOverridableNames_(TypeMapping overriddenTypeMapping);
+		protected abstract Iterable<String> getAllOverridableNames_(TypeMapping overriddenTypeMapping);
 
 		public String getDefaultTableName() {
 			return AbstractOrmEntity.this.getPrimaryTableName();
@@ -1968,8 +1958,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.resolveDbTable(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return AbstractOrmEntity.this.allAssociatedTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return AbstractOrmEntity.this.getAllAssociatedTableNames();
 		}
 	}
 
@@ -1986,8 +1976,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		}
 
 		@Override
-		protected Iterator<String> allOverridableNames_(TypeMapping overriddenTypeMapping) {
-			return new FilteringIterator<String>(overriddenTypeMapping.allOverridableAttributeNames()) {
+		protected Iterable<String> getAllOverridableNames_(TypeMapping overriddenTypeMapping) {
+			return new FilteringIterable<String>(overriddenTypeMapping.getAllOverridableAttributeNames()) {
 					@Override
 					protected boolean accept(String attributeName) {
 						return ! AttributeOverrideContainerOwner.this.getTypeMapping().attributeIsDerivedId(attributeName);
@@ -2028,8 +2018,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		}
 
 		@Override
-		protected Iterator<String> allOverridableNames_(TypeMapping typeMapping) {
-			return typeMapping.allOverridableAssociationNames();
+		protected Iterable<String> getAllOverridableNames_(TypeMapping typeMapping) {
+			return typeMapping.getAllOverridableAssociationNames();
 		}
 
 		public EList<XmlAssociationOverride> getXmlOverrides() {

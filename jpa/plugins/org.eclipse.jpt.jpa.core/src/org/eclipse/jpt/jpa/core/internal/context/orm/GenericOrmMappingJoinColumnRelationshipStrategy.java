@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -140,8 +139,8 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 			return GenericOrmMappingJoinColumnRelationshipStrategy.this.tableNameIsInvalid(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return GenericOrmMappingJoinColumnRelationshipStrategy.this.candidateTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return GenericOrmMappingJoinColumnRelationshipStrategy.this.getCandidateTableNames();
 		}
 
 		public Table resolveDbTable(String tableName) {

@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -25,6 +24,7 @@ import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -116,7 +116,7 @@ public class EntityListComposite extends Pane<Customization>
 			
 			if( ! this.getSubject().entityExists(entityName)) {
 				this.getSubject().addEntity(entityName);
-				int index = CollectionTools.indexOf(this.getSubject().entityNames(), entityName);
+				int index = CollectionTools.indexOf(this.getSubject().getEntityNames(), entityName);
 				Entity entity = (Entity) listSelectionModel.getListModel().getElementAt(index);
 				listSelectionModel.setSelectedValue(entity);
 				this.entityHolder.setValue(entity);
@@ -182,12 +182,12 @@ public class EntityListComposite extends Pane<Customization>
 		return new ListAspectAdapter<Customization, Entity>(
 				this.getSubjectHolder(), Customization.ENTITIES_LIST) {
 			@Override
-			protected ListIterator<Entity> listIterator_() {
-				return this.subject.entities();
+			protected ListIterable<Entity> getListIterable() {
+				return this.subject.getEntities();
 			}
 			@Override
 			protected int size_() {
-				return this.subject.entitiesSize();
+				return this.subject.getEntitiesSize();
 			}
 		};
 	}

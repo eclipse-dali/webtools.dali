@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -96,10 +95,10 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 	}
 
 	@Override
-	public Iterator<String> candidateTableNames() {
+	public Iterable<String> getCandidateTableNames() {
 		return this.isTargetForeignKey() ?
-				super.candidateTableNames() :
-				this.getRelationship().candidateTableNames();
+				super.getCandidateTableNames() :
+				this.getRelationship().getCandidateTableNames();
 	}
 
 	public String getColumnTableNotValidDescription() {
@@ -159,8 +158,8 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.tableNameIsInvalid(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.candidateTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getCandidateTableNames();
 		}
 
 		public Table resolveDbTable(String tableName) {

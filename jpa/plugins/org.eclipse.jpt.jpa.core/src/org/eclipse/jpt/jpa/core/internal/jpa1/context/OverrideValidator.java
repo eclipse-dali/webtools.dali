@@ -94,7 +94,7 @@ public abstract class OverrideValidator
 	}
 
 	protected boolean validateName(List<IMessage> messages) {
-		if ( ! CollectionTools.contains(this.container.allOverridableNames(), this.override.getName())) {
+		if ( ! CollectionTools.contains(this.container.getAllOverridableNames(), this.override.getName())) {
 			messages.add(this.buildUnresolvedNameMessage());
 			return false;
 		}

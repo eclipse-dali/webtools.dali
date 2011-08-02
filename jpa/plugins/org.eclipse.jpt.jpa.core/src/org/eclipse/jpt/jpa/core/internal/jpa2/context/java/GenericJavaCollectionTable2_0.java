@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
@@ -150,8 +149,8 @@ public class GenericJavaCollectionTable2_0
 		/**
 		 * the join column can only be on the collection table itself
 		 */
-		public Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
+		public Iterable<String> getCandidateTableNames() {
+			return EmptyIterable.instance();
 		}
 
 		public Entity getRelationshipTarget() {

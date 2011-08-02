@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
@@ -323,13 +322,13 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		if (this.tableTouches(pos, astRoot)) {
-			return this.javaCandidateTableNames(filter);
+			return this.getJavaCandidateTableNames(filter);
 		}
 		return null;
 	}
@@ -338,16 +337,16 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		return this.getColumnAnnotation().tableTouches(pos, astRoot);
 	}
 
-	protected Iterator<String> javaCandidateTableNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateTableNames(filter));
+	protected Iterable<String> getJavaCandidateTableNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateTableNames(filter));
 	}
 
-	protected Iterator<String> candidateTableNames(Filter<String> filter) {
-		return new FilteringIterator<String>(this.candidateTableNames(), filter);
+	protected Iterable<String> getCandidateTableNames(Filter<String> filter) {
+		return new FilteringIterable<String>(this.getCandidateTableNames(), filter);
 	}
 
-	public Iterator<String> candidateTableNames() {
-		return this.owner.candidateTableNames();
+	public Iterable<String> getCandidateTableNames() {
+		return this.owner.getCandidateTableNames();
 	}
 
 

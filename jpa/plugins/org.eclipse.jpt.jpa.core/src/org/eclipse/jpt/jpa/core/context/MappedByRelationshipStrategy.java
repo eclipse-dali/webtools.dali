@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Iterator;
-
 /**
  * "Mapped by" relationship strategy
  * <p>
@@ -49,7 +47,7 @@ public interface MappedByRelationshipStrategy
 	/**
 	 * Return the possible attribute names the strategy might use.
 	 */
-	Iterator<String> candidateMappedByAttributeNames();
+	Iterable<String> getCandidateMappedByAttributeNames();
 	
 	/**
 	 * Return whether this strategy's relationship is owned by the given other

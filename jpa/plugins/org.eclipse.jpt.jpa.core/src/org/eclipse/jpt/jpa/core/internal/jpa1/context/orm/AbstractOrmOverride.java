@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
@@ -168,7 +167,7 @@ public abstract class AbstractOrmOverride<C extends OrmOverrideContainer, X exte
 	}
 
 
-	public Iterator<String> candidateTableNames() {
-		return this.getContainer().candidateTableNames();
+	public Iterable<String> getCandidateTableNames() {
+		return this.getContainer().getCandidateTableNames();
 	}
 }

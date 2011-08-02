@@ -995,13 +995,13 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
-		assertEquals(1, CollectionTools.size(entity.associatedTables()));
+		assertEquals(1, CollectionTools.size(entity.getAssociatedTables()));
 		
 		entity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
-		assertEquals(2, CollectionTools.size(entity.associatedTables()));
+		assertEquals(2, CollectionTools.size(entity.getAssociatedTables()));
 	
 		entity.addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
-		assertEquals(3, CollectionTools.size(entity.associatedTables()));
+		assertEquals(3, CollectionTools.size(entity.getAssociatedTables()));
 	}
 	
 	public void testAssociatedTableNamesIncludingInherited() throws Exception {
@@ -1883,13 +1883,13 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		Entity entity = (Entity) persistentType.getMapping();
-		Iterator<String> overridableAttributes = persistentType.getMapping().overridableAttributeNames();
+		Iterator<String> overridableAttributes = persistentType.getMapping().getOverridableAttributeNames().iterator();
 		assertFalse(overridableAttributes.hasNext());
 		
 		
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		overridableAttributes = entity.overridableAttributeNames();		
+		overridableAttributes = entity.getOverridableAttributeNames().iterator();		
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
@@ -1900,12 +1900,12 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		Entity entity = (Entity) persistentType.getMapping();
-		Iterator<String> overridableAttributeNames = persistentType.getMapping().overridableAttributeNames();
+		Iterator<String> overridableAttributeNames = persistentType.getMapping().getOverridableAttributeNames().iterator();
 		
 		
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		overridableAttributeNames = entity.overridableAttributeNames();
+		overridableAttributeNames = entity.getOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
 		assertFalse(overridableAttributeNames.hasNext());
@@ -1918,7 +1918,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);		
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
 	
-		Iterator<String> overridableAttributes = entity.allOverridableAttributeNames();
+		Iterator<String> overridableAttributes = entity.getAllOverridableAttributeNames().iterator();
 		assertEquals("foo", overridableAttributes.next());
 		assertEquals("basic", overridableAttributes.next());
 		assertEquals("id", overridableAttributes.next());
@@ -1934,14 +1934,14 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
 		OrmEntity abstractEntity = (OrmEntity) abstractPersistentType.getMapping();
 	
-		Iterator<String> overridableAttributes = entity.allOverridableAttributeNames();
+		Iterator<String> overridableAttributes = entity.getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
 		
 		
-		overridableAttributes = abstractEntity.allOverridableAttributeNames();
+		overridableAttributes = abstractEntity.getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());

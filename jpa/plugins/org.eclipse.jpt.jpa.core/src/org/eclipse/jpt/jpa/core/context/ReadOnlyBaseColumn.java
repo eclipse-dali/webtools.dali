@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Iterator;
-
 
 /**
  * Read-only
@@ -98,7 +96,7 @@ public interface ReadOnlyBaseColumn
 	/**
 	 * Return a list of table names that are valid for this column
 	 */
-	Iterator<String> candidateTableNames();
+	Iterable<String> getCandidateTableNames();
 
 
 	// ********** owner **********
@@ -119,6 +117,6 @@ public interface ReadOnlyBaseColumn
 		/**
 		 * Return a list of table names that are valid for this column
 		 */
-		Iterator<String> candidateTableNames();
+		Iterable<String> getCandidateTableNames();
 	}
 }

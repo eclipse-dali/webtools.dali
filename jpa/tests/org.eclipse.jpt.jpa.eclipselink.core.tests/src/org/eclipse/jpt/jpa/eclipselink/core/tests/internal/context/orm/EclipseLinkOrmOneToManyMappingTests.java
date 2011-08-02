@@ -523,7 +523,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
 
 		Iterator<String> mapKeyNames = 
-			oneToManyMapping.candidateMapKeyNames();
+			oneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -543,11 +543,11 @@ public class EclipseLinkOrmOneToManyMappingTests
 		OneToManyMapping ormOneToManyMapping = (OneToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
 		JavaOneToManyMapping javaOneToManyMapping = (JavaOneToManyMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 
-		Iterator<String> mapKeyNames = ormOneToManyMapping.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = ormOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		javaOneToManyMapping.setSpecifiedTargetEntity("test.Address");
-		mapKeyNames = ormOneToManyMapping.candidateMapKeyNames();
+		mapKeyNames = ormOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -556,11 +556,11 @@ public class EclipseLinkOrmOneToManyMappingTests
 		
 		ormPersistentType.getAttributeNamed("addresses").convertToSpecified();
 		ormOneToManyMapping = (OneToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
-		mapKeyNames = ormOneToManyMapping.candidateMapKeyNames();
+		mapKeyNames = ormOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		ormOneToManyMapping.setSpecifiedTargetEntity("test.Address");
-		mapKeyNames = ormOneToManyMapping.candidateMapKeyNames();
+		mapKeyNames = ormOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -568,7 +568,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		assertFalse(mapKeyNames.hasNext());
 		
 		ormOneToManyMapping.setSpecifiedTargetEntity("String");
-		mapKeyNames = ormOneToManyMapping.candidateMapKeyNames();
+		mapKeyNames = ormOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 	}
 	

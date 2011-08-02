@@ -9,16 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -294,13 +293,13 @@ public class GenericJavaJoinTable
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (JavaJoinColumn column : this.getInverseJoinColumns()) {
-			result = column.javaCompletionProposals(pos, filter, astRoot);
+			result = column.getJavaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
@@ -356,8 +355,8 @@ public class GenericJavaJoinTable
 		/**
 		 * the join column can only be on the join table itself
 		 */
-		public Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
+		public Iterable<String> getCandidateTableNames() {
+			return EmptyIterable.instance();
 		}
 
 		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {

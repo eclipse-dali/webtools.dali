@@ -114,7 +114,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
-		Iterator<String> overridableAttributeNames = mappedSuperclass.overridableAttributeNames();
+		Iterator<String> overridableAttributeNames = mappedSuperclass.getOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
 		assertFalse(overridableAttributeNames.hasNext());
@@ -125,7 +125,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
-		Iterator<String> overridableAssociationNames = mappedSuperclass.overridableAssociationNames();
+		Iterator<String> overridableAssociationNames = mappedSuperclass.getOverridableAssociationNames().iterator();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 	
@@ -145,7 +145,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
 
-		assertFalse(mappedSuperclass.associatedTables().hasNext());
+		assertFalse(mappedSuperclass.getAssociatedTables().iterator().hasNext());
 	}
 
 	public void testAssociatedTablesIncludingInherited() throws Exception {
@@ -154,7 +154,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
 
-		assertFalse(mappedSuperclass.allAssociatedTables().hasNext());
+		assertFalse(mappedSuperclass.getAllAssociatedTables().iterator().hasNext());
 	}
 	
 	public void testAssociatedTableNamesIncludingInherited() throws Exception {
@@ -163,7 +163,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
 
-		assertFalse(mappedSuperclass.allAssociatedTableNames().hasNext());
+		assertFalse(mappedSuperclass.getAllAssociatedTableNames().iterator().hasNext());
 	}
 	
 	public void testAllOverridableAttributeNames() throws Exception {
@@ -171,7 +171,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
-		Iterator<String> overridableAttributeNames = mappedSuperclass.overridableAttributeNames();
+		Iterator<String> overridableAttributeNames = mappedSuperclass.getOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
 		assertFalse(overridableAttributeNames.hasNext());
@@ -183,7 +183,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
-		Iterator<String> overridableAssociationNames = mappedSuperclass.overridableAssociationNames();
+		Iterator<String> overridableAssociationNames = mappedSuperclass.getOverridableAssociationNames().iterator();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 	

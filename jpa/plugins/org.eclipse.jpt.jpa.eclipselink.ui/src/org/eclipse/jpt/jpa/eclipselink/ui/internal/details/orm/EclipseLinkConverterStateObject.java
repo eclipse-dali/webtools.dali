@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -96,8 +95,8 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	
 	private List<String> names() {
 		List<String> names = new ArrayList<String>();
-		for (Iterator<EclipseLinkConverter> converters = this.pUnit.allConverters(); converters.hasNext();){
-			names.add(converters.next().getName());
+		for (EclipseLinkConverter converter : this.pUnit.getAllConverters()){
+			names.add(converter.getName());
 		}
 		return names ;
 	}

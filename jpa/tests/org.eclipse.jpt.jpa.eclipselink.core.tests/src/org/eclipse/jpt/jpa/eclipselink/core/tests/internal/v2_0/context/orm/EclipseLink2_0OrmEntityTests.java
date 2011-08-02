@@ -340,13 +340,13 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity entity = (OrmEntity) ormPersistentType.getMapping();
 	
-		Iterator<String> overridableAttributes = entity.overridableAttributeNames();
+		Iterator<String> overridableAttributes = entity.getOverridableAttributeNames().iterator();
 		assertFalse(overridableAttributes.hasNext());
 		
 		
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		overridableAttributes = entity.overridableAttributeNames();		
+		overridableAttributes = entity.getOverridableAttributeNames().iterator();		
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
@@ -357,13 +357,13 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity entity = (OrmEntity) ormPersistentType.getMapping();
 	
-		Iterator<String> overridableAttributeNames = entity.overridableAttributeNames();
+		Iterator<String> overridableAttributeNames = entity.getOverridableAttributeNames().iterator();
 		assertFalse(overridableAttributeNames.hasNext());
 		
 		
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		overridableAttributeNames = entity.overridableAttributeNames();
+		overridableAttributeNames = entity.getOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
 		assertFalse(overridableAttributeNames.hasNext());
@@ -375,7 +375,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		Iterator<String> overridableAttributes = getJavaEntity().allOverridableAttributeNames();
+		Iterator<String> overridableAttributes = getJavaEntity().getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());
@@ -389,7 +389,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 	
-		Iterator<String> overridableAttributes = ormEntity.allOverridableAttributeNames();
+		Iterator<String> overridableAttributes = ormEntity.getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());
@@ -397,7 +397,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		
 		
 		OrmEntity abstractEntity = (OrmEntity) ormEntity.getParentEntity();
-		overridableAttributes = abstractEntity.allOverridableAttributeNames();
+		overridableAttributes = abstractEntity.getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertEquals("foo", overridableAttributes.next());
@@ -411,7 +411,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 	
-		Iterator<String> overridableAssociations = ormEntity.allOverridableAssociationNames();
+		Iterator<String> overridableAssociations = ormEntity.getAllOverridableAssociationNames().iterator();
 		assertEquals("address", overridableAssociations.next());
 		assertEquals("address2", overridableAssociations.next());
 		assertEquals("address3", overridableAssociations.next());
@@ -420,7 +420,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		
 		
 		OrmEntity abstractEntity = (OrmEntity) ormEntity.getParentEntity();
-		overridableAssociations = abstractEntity.allOverridableAssociationNames();
+		overridableAssociations = abstractEntity.getAllOverridableAssociationNames().iterator();
 		assertEquals("address", overridableAssociations.next());
 		assertEquals("address2", overridableAssociations.next());
 		assertEquals("address3", overridableAssociations.next());
@@ -448,7 +448,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 	
-		Iterator<String> overridableAttributeNames = ormEntity.allOverridableAttributeNames();
+		Iterator<String> overridableAttributeNames = ormEntity.getAllOverridableAttributeNames().iterator();
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
 		assertEquals("foo", overridableAttributeNames.next());
@@ -886,7 +886,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "test.AnnotationTestTypeChild");
 		OrmEntity entity = (OrmEntity) ormPersistentType.getMapping();
 
-		Iterator<String> overridableAssociationNames = entity.overridableAssociationNames();
+		Iterator<String> overridableAssociationNames = entity.getOverridableAssociationNames().iterator();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 	
@@ -898,7 +898,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 
-		Iterator<String> overridableAssociationNames = ormEntity.allOverridableAssociationNames();
+		Iterator<String> overridableAssociationNames = ormEntity.getAllOverridableAssociationNames().iterator();
 		assertEquals("address", overridableAssociationNames.next());
 		assertEquals("address2", overridableAssociationNames.next());
 		assertEquals("address3", overridableAssociationNames.next());
@@ -913,7 +913,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 	
-		Iterator<String> overridableAssociations = ormEntity.allOverridableAssociationNames();
+		Iterator<String> overridableAssociations = ormEntity.getAllOverridableAssociationNames().iterator();
 		assertEquals("address", overridableAssociations.next());
 		assertEquals("address2", overridableAssociations.next());
 		assertEquals("address3", overridableAssociations.next());

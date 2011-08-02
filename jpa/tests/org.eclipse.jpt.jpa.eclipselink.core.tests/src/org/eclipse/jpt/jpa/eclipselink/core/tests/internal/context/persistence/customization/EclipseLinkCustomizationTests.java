@@ -306,7 +306,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 		else if (propertyName.equals(Customization.PROFILER_PROPERTY))
 			modelValue = this.customization.getProfiler();
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY)) {
-			ListIterator<String> iterator = this.customization.sessionCustomizers();
+			ListIterator<String> iterator = this.customization.getSessionCustomizers().iterator();
 			if(iterator.hasNext()) {
 				modelValue = iterator.next();
 			}

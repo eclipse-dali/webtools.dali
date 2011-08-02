@@ -27,7 +27,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
@@ -181,7 +180,7 @@ public abstract class AbstractJavaOverrideContainer<
 	 * remaining specified overrides.
 	 */
 	protected boolean overrideWillBeVirtual(String overrideName, S specifiedOverrideToBeRemoved) {
-		return CollectionTools.contains(this.allOverridableNames(), overrideName) &&
+		return CollectionTools.contains(this.getAllOverridableNames(), overrideName) &&
 				(this.getSpecifiedOverrideNamed(overrideName, specifiedOverrideToBeRemoved) == null);
 	}
 
@@ -422,7 +421,7 @@ public abstract class AbstractJavaOverrideContainer<
 	}
 
 	protected Iterator<String> virtualOverrideNames() {
-		return new FilteringIterator<String>(this.allOverridableNames()) {
+		return new FilteringIterator<String>(this.getAllOverridableNames()) {
 			@Override
 			protected boolean accept(String name) {
 				return AbstractJavaOverrideContainer.this.overrideIsVirtual(name);
@@ -496,16 +495,16 @@ public abstract class AbstractJavaOverrideContainer<
 		return this.owner.getOverridableTypeMapping();
 	}
 
-	public Iterator<String> allOverridableNames() {
-		return (this.owner != null) ? this.owner.allOverridableNames() : EmptyIterator.<String>instance();
+	public Iterable<String> getAllOverridableNames() {
+		return (this.owner != null) ? this.owner.getAllOverridableNames() : EmptyIterable.<String>instance();
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
 		return this.owner.tableNameIsInvalid(tableName);
 	}
 
-	public Iterator<String> candidateTableNames() {
-		return this.owner.candidateTableNames();
+	public Iterable<String> getCandidateTableNames() {
+		return this.owner.getCandidateTableNames();
 	}
 
 	public Table resolveDbTable(String tableName) {
@@ -552,13 +551,13 @@ public abstract class AbstractJavaOverrideContainer<
 	// ********** code completion **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (R override : this.getOverrides()) {
-			result = override.javaCompletionProposals(pos, filter, astRoot);
+			result = override.getJavaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

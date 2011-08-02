@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -118,48 +117,48 @@ public class TypeMappingTools {
 
 	// ********** attribute mappings transformer **********
 
-	public static final Transformer<TypeMapping, Iterator<AttributeMapping>> ATTRIBUTE_MAPPINGS_TRANSFORMER = new AttributeMappingsTransformer();
+	public static final Transformer<TypeMapping, Iterable<AttributeMapping>> ATTRIBUTE_MAPPINGS_TRANSFORMER = new AttributeMappingsTransformer();
 	static class AttributeMappingsTransformer
-		implements Transformer<TypeMapping, Iterator<AttributeMapping>>
+		implements Transformer<TypeMapping, Iterable<AttributeMapping>>
 	{
-		public Iterator<AttributeMapping> transform(TypeMapping mapping) {
-			return mapping.attributeMappings();
+		public Iterable<AttributeMapping> transform(TypeMapping mapping) {
+			return mapping.getAttributeMappings();
 		}
 	}
 
 
 	// ********** associated tables transformer **********
 
-	public static final Transformer<TypeMapping, Iterator<ReadOnlyTable>> ASSOCIATED_TABLES_TRANSFORMER = new AssociatedTablesTransformer();
+	public static final Transformer<TypeMapping, Iterable<ReadOnlyTable>> ASSOCIATED_TABLES_TRANSFORMER = new AssociatedTablesTransformer();
 	static class AssociatedTablesTransformer
-		implements Transformer<TypeMapping, Iterator<ReadOnlyTable>>
+		implements Transformer<TypeMapping, Iterable<ReadOnlyTable>>
 	{
-		public Iterator<ReadOnlyTable> transform(TypeMapping mapping) {
-			return mapping.associatedTables();
+		public Iterable<ReadOnlyTable> transform(TypeMapping mapping) {
+			return mapping.getAssociatedTables();
 		}
 	}
 
 
 	// ********** overridable attribute names transformer **********
 
-	public static final Transformer<TypeMapping, Iterator<String>> OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER = new OverridableAttributeNamesTransformer();
+	public static final Transformer<TypeMapping, Iterable<String>> OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER = new OverridableAttributeNamesTransformer();
 	static class OverridableAttributeNamesTransformer
-		implements Transformer<TypeMapping, Iterator<String>>
+		implements Transformer<TypeMapping, Iterable<String>>
 	{
-		public Iterator<String> transform(TypeMapping mapping) {
-			return mapping.overridableAttributeNames();
+		public Iterable<String> transform(TypeMapping mapping) {
+			return mapping.getOverridableAttributeNames();
 		}
 	}
 
 
 	// ********** overridable association names transformer **********
 
-	public static final Transformer<TypeMapping, Iterator<String>> OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER = new OverridableAssociationNamesTransformer();
+	public static final Transformer<TypeMapping, Iterable<String>> OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER = new OverridableAssociationNamesTransformer();
 	static class OverridableAssociationNamesTransformer
-		implements Transformer<TypeMapping, Iterator<String>>
+		implements Transformer<TypeMapping, Iterable<String>>
 	{
-		public Iterator<String> transform(TypeMapping mapping) {
-			return mapping.overridableAssociationNames();
+		public Iterable<String> transform(TypeMapping mapping) {
+			return mapping.getOverridableAssociationNames();
 		}
 	}
 

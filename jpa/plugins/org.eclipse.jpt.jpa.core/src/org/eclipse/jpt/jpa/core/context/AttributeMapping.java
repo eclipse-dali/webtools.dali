@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Iterator;
-
 /**
  * JPA attribute mapping.
  * <p>
@@ -118,7 +116,7 @@ public interface AttributeMapping
 	 * <li><code>"embedded.bar"</code>
 	 * </ul>
 	 */
-	Iterator<String> allMappingNames();
+	Iterable<String> getAllMappingNames();
 
 	/**
 	 * This is used to determine the virtual attribute overrides for an
@@ -128,7 +126,7 @@ public interface AttributeMapping
 	 * In a JPA 2.0 project this will include overridable nested attributes.
 	 * @see #isOverridableAttributeMapping()
 	 */
-	Iterator<String> allOverridableAttributeMappingNames();
+	Iterable<String> getAllOverridableAttributeMappingNames();
 
 	/**
 	 * This is used to determine the virtual association overrides for an
@@ -138,7 +136,7 @@ public interface AttributeMapping
 	 * In a JPA 2.0 project this will include overridable nested associations.
 	 * @see #isOverridableAssociationMapping()
 	 */
-	Iterator<String> allOverridableAssociationMappingNames();
+	Iterable<String> getAllOverridableAssociationMappingNames();
 
 	/**
 	 * Return the mapping itself if its name matches the specified name.

@@ -24,7 +24,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -177,7 +176,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<AttributeMapping> getAllAttributeMappings() {
-		return CollectionTools.collection(this.getPersistentAttribute().getOwningTypeMapping().allAttributeMappings());
+		return CollectionTools.collection(this.getPersistentAttribute().getOwningTypeMapping().getAllAttributeMappings());
 	}
 
 	public Iterable<String> getSortedCandidateIdAttributeNames() {
@@ -229,7 +228,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		}
 		return new CompositeIterable<AttributeMapping>(
 				mapping,
-				CollectionTools.collection(embeddable.allAttributeMappings())
+				CollectionTools.collection(embeddable.getAllAttributeMappings())
 			);
 	}
 
@@ -265,19 +264,19 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		if (this.getAnnotation().valueTouches(pos, astRoot)) {
-			result = this.sortedJavaValueChoices(filter);
+			result = this.getSortedJavaValueChoices(filter);
 		}
 		return result;
 	}
 
-	protected Iterator<String> sortedJavaValueChoices(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(new FilteringIterator<String>(this.getSortedCandidateIdAttributeNames(), filter));
+	protected Iterable<String> getSortedJavaValueChoices(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(new FilteringIterable<String>(this.getSortedCandidateIdAttributeNames(), filter));
 	}
 
 

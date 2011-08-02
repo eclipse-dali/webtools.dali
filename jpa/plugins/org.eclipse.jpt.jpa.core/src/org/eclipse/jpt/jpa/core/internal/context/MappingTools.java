@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
-import java.util.Iterator;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -233,8 +231,7 @@ public final class MappingTools {
 		if ((attributeName == null) || (typeMapping == null)) {
 			return null;
 		}
-		for (Iterator<AttributeMapping> stream = typeMapping.allAttributeMappings(); stream.hasNext(); ) {
-			AttributeMapping attributeMapping = stream.next();
+		for (AttributeMapping attributeMapping : typeMapping.getAllAttributeMappings()) {
 			if (attributeName.equals(attributeMapping.getName())) {
 				if (attributeMapping instanceof RelationshipMapping) {
 					return (RelationshipMapping) attributeMapping;
@@ -292,7 +289,7 @@ public final class MappingTools {
 			return null;
 		}
 
-		for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+		for (TypeMapping typeMapping : overridableTypeMapping.getInheritanceHierarchy()) {
 			Column column = typeMapping.resolveOverriddenColumn(attributeName);
 			if (column != null) {
 				return column;
@@ -308,7 +305,7 @@ public final class MappingTools {
 			return null;
 		}
 
-		for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+		for (TypeMapping typeMapping : overridableTypeMapping.getInheritanceHierarchy()) {
 			Relationship relationship = typeMapping.resolveOverriddenRelationship(attributeName);
 			if (relationship != null) {
 				return relationship;

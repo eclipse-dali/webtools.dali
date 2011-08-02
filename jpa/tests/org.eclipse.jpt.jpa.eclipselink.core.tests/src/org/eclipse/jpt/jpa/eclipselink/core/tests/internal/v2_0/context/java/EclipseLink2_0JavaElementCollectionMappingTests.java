@@ -890,7 +890,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		ElementCollectionMapping2_0 elementCollectionMapping2_0 = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
 		Iterator<String> mapKeyNames = 
-			elementCollectionMapping2_0.candidateMapKeyNames();
+			elementCollectionMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
 		assertEquals("state.name", mapKeyNames.next());
@@ -910,11 +910,11 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ElementCollectionMapping2_0 elementCollectionMapping2_0 = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 
-		Iterator<String> mapKeyNames = elementCollectionMapping2_0.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = elementCollectionMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		elementCollectionMapping2_0.setSpecifiedTargetClass("Address");
-		mapKeyNames = elementCollectionMapping2_0.candidateMapKeyNames();
+		mapKeyNames = elementCollectionMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
 		assertEquals("state.name", mapKeyNames.next());
@@ -923,7 +923,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		assertFalse(mapKeyNames.hasNext());
 		
 		elementCollectionMapping2_0.setSpecifiedTargetClass("String");
-		mapKeyNames = elementCollectionMapping2_0.candidateMapKeyNames();
+		mapKeyNames = elementCollectionMapping2_0.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 	}
 	
@@ -2067,6 +2067,6 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		//If there is a StackOverflowError you will not be able to get the mapping
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("elementCollection").getMapping();
-		assertFalse(elementCollectionMapping.allOverridableAttributeMappingNames().hasNext());
+		assertFalse(elementCollectionMapping.getAllOverridableAttributeMappingNames().iterator().hasNext());
 	}
 }

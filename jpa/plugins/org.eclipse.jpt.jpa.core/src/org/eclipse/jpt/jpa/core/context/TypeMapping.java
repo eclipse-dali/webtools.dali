@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Iterator;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.db.Schema;
 
@@ -66,7 +65,7 @@ public interface TypeMapping
 	 * The returned iterator will return elements infinitely if the hierarchy
 	 * has a loop.
 	 */
-	Iterator<TypeMapping> inheritanceHierarchy();
+	Iterable<TypeMapping> getInheritanceHierarchy();
 	
 
 	// ********** tables **********
@@ -89,21 +88,21 @@ public interface TypeMapping
 	 * Return the type mapping's "associated" tables, which includes the primary
 	 * table and the collection of secondary tables.
 	 */
-	Iterator<ReadOnlyTable> associatedTables();
+	Iterable<ReadOnlyTable> getAssociatedTables();
 
 	/**
 	 * Return the type mapping's "associated" tables, which includes the primary
 	 * table and the collection of secondary tables, as well as all inherited
 	 * "associated" tables.
 	 */
-	Iterator<ReadOnlyTable> allAssociatedTables();
+	Iterable<ReadOnlyTable> getAllAssociatedTables();
 
 	/**
 	 * Return the names of the type mapping's "associated" tables, which
 	 * includes the primary table and the collection of secondary tables, as
 	 * well as all the inherited "associated" tables.
 	 */
-	Iterator<String> allAssociatedTableNames();
+	Iterable<String> getAllAssociatedTableNames();
 
 	/**
 	 * Return the resolved <em>associated</em> db table with the specified name;
@@ -130,7 +129,7 @@ public interface TypeMapping
 	/**
 	 * A convenience method for getting the attribute mappings from PersistentType.attributes()
 	 */
-	<T extends AttributeMapping> Iterator<T> attributeMappings();
+	<T extends AttributeMapping> Iterable<T> getAttributeMappings();
 	
 	/**
 	 * Return attribute mappings of a particular mapping type that are declared on this type mapping
@@ -141,7 +140,7 @@ public interface TypeMapping
 	 * Return all the attribute mappings in the type mapping's
 	 * inheritance hierarchy.
 	 */
-	Iterator<AttributeMapping> allAttributeMappings();
+	Iterable<AttributeMapping> getAllAttributeMappings();
 
 	/**
 	 * Return attribute mappings of a particular mapping type that are declared anywhere on this 
@@ -168,13 +167,13 @@ public interface TypeMapping
 	 * Return an Iterator of attribute names that can be overridden by a 
 	 * sub type mapping.
 	 */
-	Iterator<String> overridableAttributeNames();
+	Iterable<String> getOverridableAttributeNames();
 
 	/**
 	 * Return an Iterator of all attribute names that can be overridden in this
 	 * type mapping.
 	 */
-	Iterator<String> allOverridableAttributeNames();
+	Iterable<String> getAllOverridableAttributeNames();
 	
 	/**
 	 * Return the column of the overridable attribute mapping (or attribute
@@ -192,13 +191,13 @@ public interface TypeMapping
 	 * Return an Iterator of associations names that can be overridden in this
 	 * type mapping.
 	 */
-	Iterator<String> overridableAssociationNames();
+	Iterable<String> getOverridableAssociationNames();
 	
 	/**
 	 * Return an Iterator of all associations names that can be overridden in this
 	 * type mapping.
 	 */
-	Iterator<String> allOverridableAssociationNames();
+	Iterable<String> getAllOverridableAssociationNames();
 
 	Relationship resolveOverriddenRelationship(String attributeName);
 

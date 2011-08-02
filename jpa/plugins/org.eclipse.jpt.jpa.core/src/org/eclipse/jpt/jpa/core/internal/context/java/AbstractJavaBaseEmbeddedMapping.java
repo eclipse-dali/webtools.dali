@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
@@ -17,9 +16,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
@@ -117,33 +116,33 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	// ********** embedded mappings **********
 
 	@Override
-	public Iterator<String> allOverridableAttributeMappingNames() {
+	public Iterable<String> getAllOverridableAttributeMappingNames() {
 		return this.isJpa2_0Compatible() ?
-				this.embeddableOverridableAttributeMappingNames() :
-				super.allOverridableAttributeMappingNames();
+				this.getEmbeddableOverridableAttributeMappingNames() :
+				super.getAllOverridableAttributeMappingNames();
 	}
 
-	protected Iterator<String> embeddableOverridableAttributeMappingNames() {
-		return this.qualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
+	protected Iterable<String> getEmbeddableOverridableAttributeMappingNames() {
+		return this.getQualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	@Override
-	public Iterator<String> allOverridableAssociationMappingNames() {
+	public Iterable<String> getAllOverridableAssociationMappingNames() {
 		return this.isJpa2_0Compatible() ?
-				this.embeddableOverridableAssociationMappingNames() :
-				super.allOverridableAssociationMappingNames();
+				this.getEmbeddableOverridableAssociationMappingNames() :
+				super.getAllOverridableAssociationMappingNames();
 	}
 
-	protected Iterator<String> embeddableOverridableAssociationMappingNames() {
-		return this.qualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
+	protected Iterable<String> getEmbeddableOverridableAssociationMappingNames() {
+		return this.getQualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
 	}
 
-	protected Iterator<String> qualifiedEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterator<String>> transformer) {
-		return new TransformationIterator<String, String>(this.embeddableAttributeMappingNames(transformer), this.buildQualifierTransformer());
+	protected Iterable<String> getQualifiedEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
+		return new TransformationIterable<String, String>(this.getEmbeddableAttributeMappingNames(transformer), this.buildQualifierTransformer());
 	}
 
-	protected Iterator<String> embeddableAttributeMappingNames(Transformer<AttributeMapping, Iterator<String>> transformer) {
-		return new CompositeIterator<String>(this.embeddableAttributeMappingNamesLists(transformer));
+	protected Iterable<String> getEmbeddableAttributeMappingNames(Transformer<AttributeMapping, Iterable<String>> transformer) {
+		return new CompositeIterable<String>(this.getEmbeddableAttributeMappingNamesLists(transformer));
 	}
 
 	/**
@@ -151,17 +150,17 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	 * embedded mapping's target embeddable type mapping's attribute mappings
 	 * (attribute or association mappings, depending on the specified transformer).
 	 */
-	protected Iterator<Iterator<String>> embeddableAttributeMappingNamesLists(Transformer<AttributeMapping, Iterator<String>> transformer) {
-		return new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings(), transformer);
+	protected Iterable<Iterable<String>> getEmbeddableAttributeMappingNamesLists(Transformer<AttributeMapping, Iterable<String>> transformer) {
+		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getEmbeddableAttributeMappings(), transformer);
 	}
 
 	/**
 	 * Return the target embeddable's attribute mappings.
 	 */
-	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
+	protected Iterable<AttributeMapping> getEmbeddableAttributeMappings() {
 		return ((this.targetEmbeddable != null) && (this.targetEmbeddable != this.getTypeMapping())) ?
-				this.targetEmbeddable.attributeMappings() :
-				EmptyIterator.<AttributeMapping>instance();
+				this.targetEmbeddable.getAttributeMappings() :
+				EmptyIterable.<AttributeMapping>instance();
 	}
 
 
@@ -190,13 +189,13 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.attributeOverrideContainer.javaCompletionProposals(pos, filter, astRoot);
+		result = this.attributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -257,9 +256,9 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 			return AbstractJavaBaseEmbeddedMapping.this.getTargetEmbeddable();
 		}
 
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
-			return (overriddenTypeMapping != null) ? this.allOverridableAttributeNames_(overriddenTypeMapping) : EmptyIterator.<String>instance();
+			return (overriddenTypeMapping != null) ? this.getAllOverridableAttributeNames_(overriddenTypeMapping) : EmptyIterable.<String>instance();
 		}
 
 		/**
@@ -267,8 +266,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 		 * <p>
 		 * NB: Overridden in {@link GenericJavaEmbeddedIdMapping.AttributeOverrideContainerOwner}
 		 */
-		protected Iterator<String> allOverridableAttributeNames_(TypeMapping overriddenTypeMapping) {
-			return overriddenTypeMapping.allOverridableAttributeNames();
+		protected Iterable<String> getAllOverridableAttributeNames_(TypeMapping overriddenTypeMapping) {
+			return overriddenTypeMapping.getAllOverridableAttributeNames();
 		}
 
 		public Column resolveOverriddenColumn(String attributeName) {
@@ -279,8 +278,8 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 			return this.getTypeMapping().tableNameIsInvalid(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return this.getTypeMapping().allAssociatedTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return this.getTypeMapping().getAllAssociatedTableNames();
 		}
 
 		public Table resolveDbTable(String tableName) {

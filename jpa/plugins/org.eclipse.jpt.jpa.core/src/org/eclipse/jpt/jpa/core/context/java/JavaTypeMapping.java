@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -39,7 +38,7 @@ public interface JavaTypeMapping
 	JavaPersistentType getPersistentType();
 
 	@SuppressWarnings("unchecked")
-	Iterator<JavaAttributeMapping> attributeMappings();
+	Iterable<JavaAttributeMapping> getAttributeMappings();
 
 	@SuppressWarnings("unchecked")
 	Iterable<JavaAttributeMapping> getAttributeMappings(String mappingKey);

@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -347,21 +346,16 @@ public class EclipseLinkPersistenceUnit
 	 * "metadata complete" is ignored.
 	 */
 	// TODO bjv change to getConverterNames() etc.
-	public Iterator<EclipseLinkConverter> allConverters() {
-		return this.getConverters().iterator();
+	public Iterable<EclipseLinkConverter> getAllConverters() {
+		return this.getConverters();
 	}
 
 	public Iterable<EclipseLinkConverter> getConverters() {
 		return new LiveCloneIterable<EclipseLinkConverter>(this.converters);
 	}
 
-	public int convertersSize() {
+	public int getConvertersSize() {
 		return this.converters.size();
-	}
-
-	// TODO bjv remove
-	public void addConverter(EclipseLinkConverter converter) {
-		this.converters.add(converter);
 	}
 
 	/**

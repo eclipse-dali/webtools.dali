@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Iterator;
-
 /**
  * Read-only database unique constraint
  * <p>
@@ -46,6 +44,6 @@ public interface ReadOnlyUniqueConstraint
 	 * All containers must implement this interface.
 	 */
 	interface Owner {
-		Iterator<String> candidateUniqueConstraintColumnNames();
+		Iterable<String> getCandidateUniqueConstraintColumnNames();
 	}
 }

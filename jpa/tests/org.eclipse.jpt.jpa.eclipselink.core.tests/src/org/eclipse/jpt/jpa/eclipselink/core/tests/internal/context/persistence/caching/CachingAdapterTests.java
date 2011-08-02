@@ -159,10 +159,10 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	public void testEntitiesList() throws Exception {
 		// add
 		this.clearEvent();
-		int originalNumberOfEntities = this.caching.entitiesSize();
+		int originalNumberOfEntities = this.caching.getEntitiesSize();
 		
 		this.caching.addEntity(ENTITY_TEST_2);
-		assertEquals("Entity not added", this.caching.entitiesSize(), originalNumberOfEntities + 1);
+		assertEquals("Entity not added", this.caching.getEntitiesSize(), originalNumberOfEntities + 1);
 		
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
@@ -172,7 +172,7 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		// remove
 		this.clearEvent();
 		this.caching.removeEntity(ENTITY_TEST_2);
-		assertEquals("Entity not removed", this.caching.entitiesSize(), originalNumberOfEntities);
+		assertEquals("Entity not removed", this.caching.getEntitiesSize(), originalNumberOfEntities);
 
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.options;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -25,6 +24,7 @@ import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -132,13 +132,13 @@ public class ValidationConfigurationComposite extends Pane<Options2_0>
 	private ListValueModel<String> buildPrePersistListHolder() {
 		return new ListAspectAdapter<Options2_0, String>(getSubjectHolder(), Options2_0.VALIDATION_GROUP_PRE_PERSIST_LIST) {
 			@Override
-			protected ListIterator<String> listIterator_() {
-				return subject.validationGroupPrePersists();
+			protected ListIterable<String> getListIterable() {
+				return subject.getValidationGroupPrePersists();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.validationGroupPrePersistsSize();
+				return subject.getValidationGroupPrePersistsSize();
 			}
 		};
 	}
@@ -209,13 +209,13 @@ public class ValidationConfigurationComposite extends Pane<Options2_0>
 	private ListValueModel<String> buildPreUpdateListHolder() {
 		return new ListAspectAdapter<Options2_0, String>(getSubjectHolder(), Options2_0.VALIDATION_GROUP_PRE_UPDATE_LIST) {
 			@Override
-			protected ListIterator<String> listIterator_() {
-				return subject.validationGroupPreUpdates();
+			protected ListIterable<String> getListIterable() {
+				return subject.getValidationGroupPreUpdates();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.validationGroupPreUpdatesSize();
+				return subject.getValidationGroupPreUpdatesSize();
 			}
 		};
 	}
@@ -286,13 +286,13 @@ public class ValidationConfigurationComposite extends Pane<Options2_0>
 	private ListValueModel<String> buildPreRemoveListHolder() {
 		return new ListAspectAdapter<Options2_0, String>(getSubjectHolder(), Options2_0.VALIDATION_GROUP_PRE_REMOVE_LIST) {
 			@Override
-			protected ListIterator<String> listIterator_() {
-				return subject.validationGroupPreRemoves();
+			protected ListIterable<String> getListIterable() {
+				return subject.getValidationGroupPreRemoves();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.validationGroupPreRemovesSize();
+				return subject.getValidationGroupPreRemovesSize();
 			}
 		};
 	}

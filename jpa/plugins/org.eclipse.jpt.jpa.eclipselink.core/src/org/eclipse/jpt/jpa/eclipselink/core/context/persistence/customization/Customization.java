@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization;
 
-import java.util.Iterator;
-import java.util.ListIterator;
-
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 
@@ -84,8 +82,8 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_DESCRIPTOR_CUSTOMIZER = "eclipselink.descriptor.customizer."; //$NON-NLS-1$
 		static final String DEFAULT_DESCRIPTOR_CUSTOMIZER = null;	// no default
 
-	ListIterator<String> sessionCustomizers();
-	int sessionCustomizersSize();
+	ListIterable<String> getSessionCustomizers();
+	int getSessionCustomizersSize();
 	boolean sessionCustomizerExists(String sessionCustomizerClassName);
 	String addSessionCustomizer(String newSessionCustomizerClassName);
 	void removeSessionCustomizer(String sessionCustomizerClassName);
@@ -95,9 +93,9 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_SESSION_CUSTOMIZER = "eclipselink.session.customizer"; //$NON-NLS-1$
 		String ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME = "org.eclipse.persistence.config.SessionCustomizer"; //$NON-NLS-1$
 
-	ListIterator<Entity> entities();
-	Iterator<String> entityNames();
-	int entitiesSize();
+	ListIterable<Entity> getEntities();
+	Iterable<String> getEntityNames();
+	int getEntitiesSize();
 	boolean entityExists(String entity);
 	Entity addEntity(String entity);
 	void removeEntity(String entity);

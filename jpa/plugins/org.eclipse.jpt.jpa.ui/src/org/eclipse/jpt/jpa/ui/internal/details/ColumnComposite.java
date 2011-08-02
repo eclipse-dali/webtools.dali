@@ -13,7 +13,6 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -236,7 +235,7 @@ public class ColumnComposite
 			@Override
 			protected Iterable<String> getValues_() {
 				ReadOnlyColumn column = this.getSubject();
-				return (column != null) ? CollectionTools.iterable(column.candidateTableNames()) : EmptyIterable.<String> instance();
+				return (column != null) ? column.getCandidateTableNames() : EmptyIterable.<String> instance();
 			}
 			
 			@Override

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -268,7 +267,7 @@ public abstract class AbstractPrimaryKeyValidator
 	 * Return whether an ancestor class has defined any aspect of the primary key
 	 */
 	protected boolean definesPrimaryKeyOnAncestor(TypeMapping typeMapping) {
-		for (TypeMapping each : CollectionTools.iterable(typeMapping.inheritanceHierarchy())) {
+		for (TypeMapping each : typeMapping.getInheritanceHierarchy()) {
 			if (each != typeMapping && definesPrimaryKey(each)) {
 				return true;
 			}
@@ -375,7 +374,7 @@ public abstract class AbstractPrimaryKeyValidator
 	 * Return whether an ancestor class has defined an id class
 	 */
 	protected boolean definesIdClassOnAncestor(TypeMapping typeMapping) {
-		for (TypeMapping each : CollectionTools.iterable(typeMapping.inheritanceHierarchy())) {
+		for (TypeMapping each : typeMapping.getInheritanceHierarchy()) {
 			if (each != typeMapping && definesIdClass(each)) {
 				return true;
 			}
@@ -388,10 +387,9 @@ public abstract class AbstractPrimaryKeyValidator
 	 * or on an ancestor
 	 */
 	protected JavaPersistentType getIdClass(TypeMapping typeMapping) {
-		for (Iterator<TypeMapping> stream = typeMapping.inheritanceHierarchy(); stream.hasNext(); ) {
-			TypeMapping next = stream.next();
-			if (next.getIdClass() != null) {
-				return next.getIdClass();
+		for (TypeMapping each : typeMapping.getInheritanceHierarchy()) {
+			if (each.getIdClass() != null) {
+				return each.getIdClass();
 			}
 		}
 		return null;
@@ -401,7 +399,7 @@ public abstract class AbstractPrimaryKeyValidator
 	// **************** attribute mappings in general *************************
 	
 	protected Iterable<AttributeMapping> getAttributeMappings(TypeMapping typeMapping) {
-		return CollectionTools.collection(typeMapping.allAttributeMappings());
+		return CollectionTools.collection(typeMapping.getAllAttributeMappings());
 	}
 	
 	/**

@@ -766,7 +766,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -775,12 +775,12 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		manyToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertFalse(attributeNames.hasNext());
 		
 		manyToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -972,7 +972,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 
 		Iterator<String> mapKeyNames = 
-			javaManyToManyMapping.candidateMapKeyNames();
+			javaManyToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -991,11 +991,11 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 
-		Iterator<String> mapKeyNames = javaManyToManyMapping.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = javaManyToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		javaManyToManyMapping.setSpecifiedTargetEntity("test.Address");
-		mapKeyNames = javaManyToManyMapping.candidateMapKeyNames();
+		mapKeyNames = javaManyToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());

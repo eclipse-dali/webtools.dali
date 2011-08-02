@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -248,8 +247,8 @@ public class GenericJavaOverrideRelationship
 		return this.getAssociationOverride().tableNameIsInvalid(tableName);
 	}
 
-	public Iterator<String> candidateTableNames() {
-		return this.getAssociationOverride().candidateTableNames();
+	public Iterable<String> getCandidateTableNames() {
+		return this.getAssociationOverride().getCandidateTableNames();
 	}
 
 	public Table resolveDbTable(String tableName) {
@@ -285,13 +284,13 @@ public class GenericJavaOverrideRelationship
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 
-		return this.strategy.javaCompletionProposals(pos, filter, astRoot);
+		return this.strategy.getJavaCompletionProposals(pos, filter, astRoot);
 	}
 
 

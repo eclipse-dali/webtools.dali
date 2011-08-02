@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import java.util.Iterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
@@ -48,16 +47,16 @@ public abstract class AbstractOrmEmbeddable<X extends XmlEmbeddable>
 
 	// ********** tables **********
 
-	public Iterator<ReadOnlyTable> associatedTables() {
-		return EmptyIterator.instance();
+	public Iterable<ReadOnlyTable> getAssociatedTables() {
+		return EmptyIterable.instance();
 	}
 
-	public Iterator<ReadOnlyTable> allAssociatedTables() {
-		return EmptyIterator.instance();
+	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
+		return EmptyIterable.instance();
 	}
 
-	public Iterator<String> allAssociatedTableNames() {
-		return EmptyIterator.instance();
+	public Iterable<String> getAllAssociatedTableNames() {
+		return EmptyIterable.instance();
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {

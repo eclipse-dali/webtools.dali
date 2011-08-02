@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -20,7 +19,6 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Column;
@@ -558,8 +556,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		return DEFAULT_FETCH_TYPE;
 	}
 
-	public Iterator<String> candidateMapKeyNames() {
-		return this.allTargetEntityAttributeNames();
+	public Iterable<String> getCandidateMapKeyNames() {
+		return this.getAllTargetEntityAttributeNames();
 	}
 
 
@@ -703,8 +701,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return this.getRelationshipStrategy().resolveDbTable(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
+		public Iterable<String> getCandidateTableNames() {
+			return EmptyIterable.instance();
 		}
 
 		public TextRange getValidationTextRange() {
@@ -763,9 +761,9 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getResolvedMapKeyEmbeddable();
 		}
 
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			TypeMapping overriddenTypeMapping = this.getOverridableTypeMapping();
-			return (overriddenTypeMapping != null) ? overriddenTypeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
+			return (overriddenTypeMapping != null) ? overriddenTypeMapping.getAllOverridableAttributeNames() : EmptyIterable.<String>instance();
 		}
 
 		protected JavaAttributeOverride getSpecifiedJavaAttributeOverrideNamed(String attributeName) {

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
@@ -36,9 +35,9 @@ public abstract class AbstractJavaJpaContextNode
 		return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
 	}
 	
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		if (this.connectionProfileIsActive()) {
-			Iterator<String> result = this.connectedJavaCompletionProposals(pos, filter, astRoot);
+			Iterable<String> result = this.getConnectedJavaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
@@ -51,10 +50,10 @@ public abstract class AbstractJavaJpaContextNode
 	 * get candidates from the various database tables etc.
 	 * This method should <em>not</em> be cascaded to "child" objects; it should
 	 * only return candidates for the current object. The cascading is
-	 * handled by {@link #javaCompletionProposals(int, Filter, CompilationUnit)}.
+	 * handled by {@link #getJavaCompletionProposals(int, Filter, CompilationUnit)}.
 	 */
 	@SuppressWarnings("unused")
-	protected Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		return null;
 	}
 	

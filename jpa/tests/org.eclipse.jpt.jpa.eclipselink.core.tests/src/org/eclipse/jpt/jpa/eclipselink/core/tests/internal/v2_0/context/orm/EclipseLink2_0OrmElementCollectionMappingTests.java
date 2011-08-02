@@ -784,7 +784,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		ElementCollectionMapping2_0 virtualElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentType.getAttributeNamed("addresses").getMapping();
 
 		Iterator<String> mapKeyNames = 
-			virtualElementCollectionMapping.candidateMapKeyNames();
+			virtualElementCollectionMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
 		assertEquals("state.name", mapKeyNames.next());
@@ -805,11 +805,11 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		ElementCollectionMapping2_0 virtualElementCollectionMapping = (ElementCollectionMapping2_0) attribute.getMapping();
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 
-		Iterator<String> mapKeyNames = virtualElementCollectionMapping.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = virtualElementCollectionMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		javaElementCollectionMapping.setSpecifiedTargetClass("test.Address");
-		mapKeyNames = virtualElementCollectionMapping.candidateMapKeyNames();
+		mapKeyNames = virtualElementCollectionMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
 		assertEquals("state.name", mapKeyNames.next());
@@ -819,11 +819,11 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		
 		attribute.convertToSpecified();
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentType.getAttributeNamed("addresses").getMapping();
-		mapKeyNames = ormElementCollectionMapping.candidateMapKeyNames();
+		mapKeyNames = ormElementCollectionMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		ormElementCollectionMapping.setSpecifiedTargetClass("test.Address");
-		mapKeyNames = ormElementCollectionMapping.candidateMapKeyNames();
+		mapKeyNames = ormElementCollectionMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
 		assertEquals("state.name", mapKeyNames.next());
@@ -832,7 +832,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		assertFalse(mapKeyNames.hasNext());
 		
 		ormElementCollectionMapping.setSpecifiedTargetClass("String");
-		mapKeyNames = ormElementCollectionMapping.candidateMapKeyNames();
+		mapKeyNames = ormElementCollectionMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 	}
 	
@@ -1441,6 +1441,6 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Foo");
 
 		ElementCollectionMapping2_0 mapping = (ElementCollectionMapping2_0) persistentType.getAttributeNamed("elementCollection").getMapping();
-		assertFalse(mapping.allOverridableAttributeMappingNames().hasNext());
+		assertFalse(mapping.getAllOverridableAttributeMappingNames().iterator().hasNext());
 	}
 }

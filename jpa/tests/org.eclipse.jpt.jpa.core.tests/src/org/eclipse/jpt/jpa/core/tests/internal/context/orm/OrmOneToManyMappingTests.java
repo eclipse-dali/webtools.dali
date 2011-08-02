@@ -911,7 +911,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -920,12 +920,12 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		
 		oneToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertFalse(attributeNames.hasNext());
 		
 		oneToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().getCandidateMappedByAttributeNames().iterator();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -947,7 +947,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		
 		OneToManyMapping virtualOneToManyMapping = (OneToManyMapping) ormPersistentType.getAttributeNamed("addresses").getMapping();
 
-		Iterator<String> mapKeyNames = virtualOneToManyMapping.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = virtualOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -968,11 +968,11 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OneToManyMapping virtualOneToManyMapping = (OneToManyMapping) virtualAttribute.getMapping();
 		JavaOneToManyMapping javaOneToManyMapping = (JavaOneToManyMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 
-		Iterator<String> mapKeyNames = virtualOneToManyMapping.candidateMapKeyNames();
+		Iterator<String> mapKeyNames = virtualOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		javaOneToManyMapping.setSpecifiedTargetEntity("test.Address");
-		mapKeyNames = virtualOneToManyMapping.candidateMapKeyNames();
+		mapKeyNames = virtualOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -980,11 +980,11 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(mapKeyNames.hasNext());
 		
 		OrmOneToManyMapping specifiedOneToManyMapping = (OrmOneToManyMapping) virtualAttribute.convertToSpecified().getMapping();
-		mapKeyNames = specifiedOneToManyMapping.candidateMapKeyNames();
+		mapKeyNames = specifiedOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 		
 		specifiedOneToManyMapping.setSpecifiedTargetEntity("test.Address");
-		mapKeyNames = specifiedOneToManyMapping.candidateMapKeyNames();
+		mapKeyNames = specifiedOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals("id", mapKeyNames.next());
 		assertEquals("city", mapKeyNames.next());
 		assertEquals("state", mapKeyNames.next());
@@ -992,7 +992,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(mapKeyNames.hasNext());
 		
 		specifiedOneToManyMapping.setSpecifiedTargetEntity("String");
-		mapKeyNames = specifiedOneToManyMapping.candidateMapKeyNames();
+		mapKeyNames = specifiedOneToManyMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
 	}
 

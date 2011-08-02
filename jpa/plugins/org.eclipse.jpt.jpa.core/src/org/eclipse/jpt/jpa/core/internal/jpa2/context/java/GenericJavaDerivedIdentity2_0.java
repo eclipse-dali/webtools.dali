@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -158,13 +157,13 @@ public class GenericJavaDerivedIdentity2_0
 	// ********** java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		if (this.strategy != null) {
-			result = ((JavaJpaContextNode) this.strategy).javaCompletionProposals(pos, filter, astRoot);
+			result = ((JavaJpaContextNode) this.strategy).getJavaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

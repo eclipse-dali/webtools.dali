@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
@@ -170,13 +169,13 @@ public class GenericJavaJoinColumn
 	// ********** Java completion proposals **********
 
 	@Override
-	protected Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedJavaCompletionProposals(pos, filter, astRoot);
+	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getConnectedJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		if (this.referencedColumnNameTouches(pos, astRoot)) {
-			return this.getJavaCandidateReferencedColumnNames(filter).iterator();
+			return this.getJavaCandidateReferencedColumnNames(filter);
 		}
 		return null;
 	}

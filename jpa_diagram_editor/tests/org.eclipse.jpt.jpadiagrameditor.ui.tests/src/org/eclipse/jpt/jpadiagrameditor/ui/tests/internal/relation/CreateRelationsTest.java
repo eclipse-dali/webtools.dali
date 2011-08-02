@@ -502,13 +502,13 @@ public class CreateRelationsTest {
 			
 			
 			Embeddable emb = JpaArtifactFactory.instance().getPersistenceUnit(t1).getEmbeddable("com.test.EmployeerId");
-			Iterator<AttributeMapping> embIt = emb.allAttributeMappings();
+			Iterator<AttributeMapping> embIt = emb.getAllAttributeMappings().iterator();
 			int c1 = 0;
 			while ((embIt.hasNext() == false) && (c1 < MAX_NUM_OF_ITERATIONS)) {
 				Thread.sleep(200);
 				jpa20Project.update(null);
 				emb.update();
-				embIt = emb.allAttributeMappings();
+				embIt = emb.getAllAttributeMappings().iterator();
 				c1++;
 			}
 							

@@ -9,15 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
@@ -112,14 +110,14 @@ public class GenericJavaEmbeddedMapping
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public Iterator<String> allMappingNames() {
+	public Iterable<String> getAllMappingNames() {
 		return this.isJpa2_0Compatible() ?
-				new CompositeIterator<String>(super.allMappingNames(), this.allEmbeddableAttributeMappingNames()) :
-				super.allMappingNames();
+				new CompositeIterable<String>(super.getAllMappingNames(), this.getAllEmbeddableAttributeMappingNames()) :
+				super.getAllMappingNames();
 	}
 
-	protected Iterator<String> allEmbeddableAttributeMappingNames() {
-		return this.qualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+	protected Iterable<String> getAllEmbeddableAttributeMappingNames() {
+		return this.getQualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	@Override
@@ -137,7 +135,7 @@ public class GenericJavaEmbeddedMapping
 			return null;
 		}
 		// recurse into the embeddable mappings
-		for (AttributeMapping mapping : CollectionTools.iterable(this.embeddableAttributeMappings())) {
+		for (AttributeMapping mapping : this.getEmbeddableAttributeMappings()) {
 			AttributeMapping resolvedMapping = mapping.resolveAttributeMapping(attributeName);
 			if (resolvedMapping != null) {
 				return resolvedMapping;
@@ -186,13 +184,13 @@ public class GenericJavaEmbeddedMapping
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.associationOverrideContainer.javaCompletionProposals(pos, filter, astRoot);
+		result = this.associationOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -236,9 +234,9 @@ public class GenericJavaEmbeddedMapping
 			return GenericJavaEmbeddedMapping.this.getTargetEmbeddable();
 		}
 
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			TypeMapping typeMapping = this.getOverridableTypeMapping();
-			return (typeMapping != null) ? typeMapping.allOverridableAssociationNames() : EmptyIterator.<String>instance();
+			return (typeMapping != null) ? typeMapping.getAllOverridableAssociationNames() : EmptyIterable.<String>instance();
 		}
 
 		public Relationship resolveOverriddenRelationship(String attributeName) {
@@ -249,8 +247,8 @@ public class GenericJavaEmbeddedMapping
 			return this.getTypeMapping().tableNameIsInvalid(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return this.getTypeMapping().allAssociatedTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return this.getTypeMapping().getAllAssociatedTableNames();
 		}
 
 		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {

@@ -88,7 +88,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
-		Iterator<String> overridableAttributeNames = embeddable.overridableAttributeNames();
+		Iterator<String> overridableAttributeNames = embeddable.getOverridableAttributeNames().iterator();
 		assertEquals(overridableAttributeNames.next(), "id");
 		assertEquals(overridableAttributeNames.next(), "name");
 		assertFalse(overridableAttributeNames.hasNext());
@@ -99,7 +99,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
-		Iterator<String> overridableAssociationNames = embeddable.overridableAssociationNames();
+		Iterator<String> overridableAssociationNames = embeddable.getOverridableAssociationNames().iterator();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 	
@@ -137,7 +137,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 
 		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
 
-		assertFalse(embeddable.associatedTables().hasNext());
+		assertFalse(embeddable.getAssociatedTables().iterator().hasNext());
 	}
 
 	public void testAssociatedTablesIncludingInherited() throws Exception {
@@ -146,7 +146,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 
 		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
 
-		assertFalse(embeddable.allAssociatedTables().hasNext());
+		assertFalse(embeddable.getAllAssociatedTables().iterator().hasNext());
 	}
 	
 	public void testAssociatedTableNamesIncludingInherited() throws Exception {
@@ -155,7 +155,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 
 		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
 
-		assertFalse(embeddable.allAssociatedTableNames().hasNext());
+		assertFalse(embeddable.getAllAssociatedTableNames().iterator().hasNext());
 	}
 	
 	//TODO need to create a subclass mappedSuperclass and test this
@@ -164,7 +164,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
-		Iterator<String> overridableAssociationNames = embeddable.overridableAssociationNames();
+		Iterator<String> overridableAssociationNames = embeddable.getOverridableAssociationNames().iterator();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 

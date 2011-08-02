@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
@@ -248,8 +247,8 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends JavaReadOnlyBaseCo
 		return this.owner.tableNameIsInvalid(this.getTable());
 	}
 
-	public Iterator<String> candidateTableNames() {
-		return this.owner.candidateTableNames();
+	public Iterable<String> getCandidateTableNames() {
+		return this.owner.getCandidateTableNames();
 	}
 
 

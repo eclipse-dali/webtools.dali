@@ -9,15 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.SubIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
@@ -117,24 +115,24 @@ public class GenericOrmEmbeddedMapping
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public Iterator<String> allMappingNames() {
+	public Iterable<String> getAllMappingNames() {
 		return this.isJpa2_0Compatible() ?
-				new CompositeIterator<String>(super.allMappingNames(), this.allEmbeddableAttributeMappingNames()) :
-				super.allMappingNames();
+				new CompositeIterable<String>(super.getAllMappingNames(), this.getAllEmbeddableAttributeMappingNames()) :
+				super.getAllMappingNames();
 	}
 
-	protected Iterator<String> allEmbeddableAttributeMappingNames() {
-		return this.qualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+	protected Iterable<String> getAllEmbeddableAttributeMappingNames() {
+		return this.getQualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
-	protected Iterator<RelationshipMapping> allOverridableAssociations() {
+	protected Iterable<RelationshipMapping> allOverridableAssociations() {
 		return (this.targetEmbeddable != null) ?
-				new SubIteratorWrapper<AttributeMapping, RelationshipMapping>(this.allOverridableAssociations_()) :
-				EmptyIterator.<RelationshipMapping>instance();
+				new SubIterableWrapper<AttributeMapping, RelationshipMapping>(this.getAllOverridableAssociations_()) :
+				EmptyIterable.<RelationshipMapping>instance();
 	}
 
-	protected Iterator<AttributeMapping> allOverridableAssociations_() {
-		return new FilteringIterator<AttributeMapping>(this.targetEmbeddable.attributeMappings()) {
+	protected Iterable<AttributeMapping> getAllOverridableAssociations_() {
+		return new FilteringIterable<AttributeMapping>(this.targetEmbeddable.getAttributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping attributeMapping) {
 				return attributeMapping.isOverridableAssociationMapping();
@@ -157,7 +155,7 @@ public class GenericOrmEmbeddedMapping
 			return null;
 		}
 		// recurse into the embeddable mappings
-		for (AttributeMapping mapping : CollectionTools.iterable(this.embeddableAttributeMappings())) {
+		for (AttributeMapping mapping : this.getEmbeddableAttributeMappings()) {
 			AttributeMapping resolvedMapping = mapping.resolveAttributeMapping(attributeName);
 			if (resolvedMapping != null) {
 				return resolvedMapping;
@@ -249,9 +247,9 @@ public class GenericOrmEmbeddedMapping
 			return GenericOrmEmbeddedMapping.this.getTargetEmbeddable();
 		}
 
-		public Iterator<String> allOverridableNames() {
+		public Iterable<String> getAllOverridableNames() {
 			TypeMapping typeMapping = this.getOverridableTypeMapping();
-			return (typeMapping != null) ? typeMapping.allOverridableAssociationNames() : EmptyIterator.<String>instance();
+			return (typeMapping != null) ? typeMapping.getAllOverridableAssociationNames() : EmptyIterable.<String>instance();
 		}
 
 		public Iterable<String> getJavaOverrideNames() {
@@ -270,8 +268,8 @@ public class GenericOrmEmbeddedMapping
 			return this.getTypeMapping().tableNameIsInvalid(tableName);
 		}
 
-		public Iterator<String> candidateTableNames() {
-			return this.getTypeMapping().allAssociatedTableNames();
+		public Iterable<String> getCandidateTableNames() {
+			return this.getTypeMapping().getAllAssociatedTableNames();
 		}
 
 		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {

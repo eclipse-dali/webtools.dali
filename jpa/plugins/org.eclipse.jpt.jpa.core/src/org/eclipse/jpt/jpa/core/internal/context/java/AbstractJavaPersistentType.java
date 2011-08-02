@@ -41,7 +41,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
@@ -158,7 +157,7 @@ public abstract class AbstractJavaPersistentType
 		if (spt == null) {
 			return null;
 		}
-		if (CollectionTools.contains(spt.inheritanceHierarchy(), this)) {
+		if (CollectionTools.contains(spt.getInheritanceHierarchy(), this)) {
 			return null;  // short-circuit in this case, we have circular inheritance
 		}
 		return spt.isMapped() ? spt : spt.getSuperPersistentType();
@@ -871,16 +870,8 @@ public abstract class AbstractJavaPersistentType
 
 	// ********** inheritance **********
 
-	public Iterator<PersistentType> inheritanceHierarchy() {
-		return this.getInheritanceHierarchy().iterator();
-	}
-
 	public Iterable<PersistentType> getInheritanceHierarchy() {
 		return this.getInheritanceHierarchyOf(this);
-	}
-
-	public Iterator<PersistentType> ancestors() {
-		return this.getAncestors().iterator();
 	}
 
 	public Iterable<PersistentType> getAncestors() {
@@ -962,22 +953,22 @@ public abstract class AbstractJavaPersistentType
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		Iterator<String> values = this.mapping.javaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> values = this.mapping.getJavaCompletionProposals(pos, filter, astRoot);
 		if (values != null) {
 			return values;
 		}
 		for (JavaPersistentAttribute attribute : this.getAttributes()) {
-			values = attribute.javaCompletionProposals(pos, filter, astRoot);
+			values = attribute.getJavaCompletionProposals(pos, filter, astRoot);
 			if (values != null) {
 				return values;
 			}
 		}
-		return EmptyIterator.instance();
+		return EmptyIterable.instance();
 	}
 
 

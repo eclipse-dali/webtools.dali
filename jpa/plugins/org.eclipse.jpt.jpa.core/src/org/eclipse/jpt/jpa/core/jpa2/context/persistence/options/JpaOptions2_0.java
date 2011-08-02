@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.persistence.options;
 
-import java.util.ListIterator;
-
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 
 /**
@@ -42,8 +41,8 @@ public interface JpaOptions2_0
 		static final String PERSISTENCE_QUERY_TIMEOUT = "javax.persistence.query.timeout"; //$NON-NLS-1$
 		static final Integer DEFAULT_QUERY_TIMEOUT = Integer.valueOf(5);
 
-	ListIterator<String> validationGroupPrePersists();
-	int validationGroupPrePersistsSize();
+	ListIterable<String> getValidationGroupPrePersists();
+	int getValidationGroupPrePersistsSize();
 	boolean validationGroupPrePersistExists(String validationGroupPrePersistClassName);
 	String addValidationGroupPrePersist(String newValidationGroupPrePersistClassName);
 	void removeValidationGroupPrePersist(String validationGroupPrePersistClassName);
@@ -52,8 +51,8 @@ public interface JpaOptions2_0
 		// Property key
 		static final String PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST = "javax.persistence.validation.group.pre-persist"; //$NON-NLS-1$
 
-	ListIterator<String> validationGroupPreUpdates();
-	int validationGroupPreUpdatesSize();
+	ListIterable<String> getValidationGroupPreUpdates();
+	int getValidationGroupPreUpdatesSize();
 	boolean validationGroupPreUpdateExists(String validationGroupPreUpdateClassName);
 	String addValidationGroupPreUpdate(String newValidationGroupPreUpdateClassName);
 	void removeValidationGroupPreUpdate(String validationGroupPreUpdateClassName);
@@ -62,8 +61,8 @@ public interface JpaOptions2_0
 		// Property key
 		static final String PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE = "javax.persistence.validation.group.pre-update"; //$NON-NLS-1$
 
-	ListIterator<String> validationGroupPreRemoves();
-	int validationGroupPreRemovesSize();
+	ListIterable<String> getValidationGroupPreRemoves();
+	int getValidationGroupPreRemovesSize();
 	boolean validationGroupPreRemoveExists(String validationGroupPreRemoveClassName);
 	String addValidationGroupPreRemove(String newValidationGroupPreRemoveClassName);
 	void removeValidationGroupPreRemove(String validationGroupPreRemoveClassName);

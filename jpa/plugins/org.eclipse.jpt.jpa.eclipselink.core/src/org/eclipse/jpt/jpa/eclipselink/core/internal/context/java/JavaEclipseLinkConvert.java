@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
@@ -22,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -268,13 +267,13 @@ public class JavaEclipseLinkConvert
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		if (this.convertValueTouches(pos, astRoot)) {
-			result = this.javaCandidateConverterNames(filter);
+			result = this.getJavaCandidateConverterNames(filter);
 			if (result != null) {
 				return result;
 			}
@@ -286,16 +285,16 @@ public class JavaEclipseLinkConvert
 		return this.convertAnnotation.valueTouches(pos, astRoot);
 	}
 
-	protected Iterator<String> javaCandidateConverterNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateConverterNames(filter));
+	protected Iterable<String> getJavaCandidateConverterNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateConverterNames(filter));
 	}
 
-	protected Iterator<String> candidateConverterNames(Filter<String> filter) {
-		return new FilteringIterator<String>(this.converterNames(), filter);
+	protected Iterable<String> getCandidateConverterNames(Filter<String> filter) {
+		return new FilteringIterable<String>(this.getConverterNames(), filter);
 	}
 
-	protected Iterator<String> converterNames() {
-		return this.getEclipseLinkPersistenceUnit().getUniqueConverterNames().iterator();
+	protected Iterable<String> getConverterNames() {
+		return this.getEclipseLinkPersistenceUnit().getUniqueConverterNames();
 	}
 
 	protected EclipseLinkPersistenceUnit getEclipseLinkPersistenceUnit() {

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -253,8 +252,8 @@ public class GenericOrmOverrideRelationship
 		return this.getAssociationOverride().tableNameIsInvalid(tableName);
 	}
 
-	public Iterator<String> candidateTableNames() {
-		return this.getAssociationOverride().candidateTableNames();
+	public Iterable<String> getCandidateTableNames() {
+		return this.getAssociationOverride().getCandidateTableNames();
 	}
 
 	public Table resolveDbTable(String tableName) {

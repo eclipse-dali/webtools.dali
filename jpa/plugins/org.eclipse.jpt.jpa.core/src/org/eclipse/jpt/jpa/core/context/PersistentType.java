@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -142,7 +141,7 @@ public interface PersistentType
 	 * The returned iterator will return elements infinitely if the hierarchy
 	 * has a loop.
 	 */
-	Iterator<PersistentType> inheritanceHierarchy();
+	Iterable<PersistentType> getInheritanceHierarchy();
 
 	/**
 	 * Return the persistent type's "persistence" inheritance hierarchy,
@@ -150,7 +149,7 @@ public interface PersistentType
 	 * The returned iterator will return elements infinitely if the hierarchy
 	 * has a loop.
 	 */
-	Iterator<PersistentType> ancestors();
+	Iterable<PersistentType> getAncestors();
 
 
 	// ********** validation **********

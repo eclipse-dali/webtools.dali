@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
@@ -71,8 +70,8 @@ public class MappedByPane
 			new CollectionAspectAdapter<MappedByRelationshipStrategy, String>(
 					getSubjectHolder()) {
 				@Override
-				protected Iterator<String> iterator_() {
-					return this.subject.candidateMappedByAttributeNames();
+				protected Iterable<String> getIterable() {
+					return this.subject.getCandidateMappedByAttributeNames();
 				}
 			},
 			new ICUStringCollator()

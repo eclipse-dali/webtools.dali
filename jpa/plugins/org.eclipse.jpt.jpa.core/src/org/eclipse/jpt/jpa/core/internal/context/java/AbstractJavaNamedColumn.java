@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -210,13 +209,13 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	// ********** Java completion proposals **********
 
 	@Override
-	protected Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedJavaCompletionProposals(pos, filter, astRoot);
+	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getConnectedJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		if (this.nameTouches(pos, astRoot)) {
-			return this.getJavaCandidateNames(filter).iterator();
+			return this.getJavaCandidateNames(filter);
 		}
 		return null;
 	}
