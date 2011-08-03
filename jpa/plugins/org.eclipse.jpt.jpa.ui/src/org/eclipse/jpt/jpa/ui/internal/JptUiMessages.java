@@ -148,10 +148,12 @@ public class JptUiMessages {
 	public static String JpaProblemSeveritiesPage_Info;
 	public static String JpaProblemSeveritiesPage_Warning;
 	public static String SelectJpaOrmMappingFileDialog_newButton;
+	public static String SelectJpaOrmMappingFileDialog_toolTip;
 
 
 	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiMessages.class;
+
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
 	}
