@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,12 +40,6 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 
 public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 {
-	private static final String META_INF = "META-INF";//$NON-NLS-1$
-	private static final String EMPTY = "";//$NON-NLS-1$
-	private static final char SLASH = '/';
-
-	private String xmlName = EMPTY;
-
 	private final IProject project;
 	
 	private Label messageLabel;
@@ -88,22 +82,22 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
         this.treeWidget = treeViewer.getTree();
         return treeViewer;
 	}
+    
 	/**
-     * @return the name of the alternative mapping XML
-     */
-    public String getChosenName() {
-    	String result = EMPTY;
+	 * @param project
+	 * @return the runtime path of the chosen element
+	 */
+	public String getChosenName() {
+		IPath resourcePath = null;
 		Object element = getFirstResult();
-		if (element instanceof IContainer) {
-			IContainer container = (IContainer) element;
-			result = container.getFullPath().toString() + File.separatorChar + this.xmlName;					
+		if(element instanceof IContainer) {
+			resourcePath = ((IContainer) element).getFullPath();
 		} else {
-			IFile f = (IFile) element;
-			result = f.getFullPath().toOSString();
+			resourcePath = ((IFile) element).getFullPath();
 		}
-		result = removeRedundantSegmentFromName(result);
-		return result;
-    }
+		String runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, resourcePath).toOSString();
+		return runtimePath.replace(File.separatorChar, '/');
+	}
 
 	@Override
     /*
@@ -121,18 +115,6 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 		}
 	}
 	
-	/** 
-	 * This method is for internal purposes only
-	 * @param input non formated path to the mapping XML
-	 * @return the formated path to the mapping XML
-	 */
-	private String removeRedundantSegmentFromName(String input) {
-		String output = input.substring(input.indexOf(META_INF));			 
-		output = output.replace(File.separatorChar, SLASH);
-		return output;
-	}
-
-
 	private void openNewMappingFileWizard() {
 		IPath path = MappingFileWizard.createNewMappingFile(new StructuredSelection(this.project), null);
 		if (path != null) {
