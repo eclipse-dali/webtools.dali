@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.CascadeType;
@@ -2552,7 +2553,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	}
 	
 	protected static Translator buildNoncacheableTranslator() {
-		return new Translator(EclipseLink2_2.NONCACHEABLE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlElementCollection_2_2_NonCacheable());
+		return new EmptyTagBooleanTranslator(EclipseLink2_2.NONCACHEABLE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlElementCollection_2_2_NonCacheable());
 	}
 
 	protected static Translator buildCompositeMemberTranslator() {

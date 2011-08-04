@@ -1634,7 +1634,7 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 	}
 
 	protected static Translator buildNoncacheableTranslator() {
-		return new Translator(EclipseLink2_2.NONCACHEABLE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlOneToOne_2_2_NonCacheable());
+		return new EmptyTagBooleanTranslator(EclipseLink2_2.NONCACHEABLE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlOneToOne_2_2_NonCacheable());
 	}
 
     protected static Translator buildPartitionedTranslator() {
