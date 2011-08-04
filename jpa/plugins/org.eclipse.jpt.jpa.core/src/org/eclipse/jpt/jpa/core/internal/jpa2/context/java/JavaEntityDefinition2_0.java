@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,25 +11,23 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaManyToOneMappingDefinition;
+import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaEntityDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaTypeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 
-public class JavaManyToOneMappingDefinition2_0
-	extends JavaAttributeMappingDefinitionWrapper
+public class JavaEntityDefinition2_0
+	extends JavaTypeMappingDefinitionWrapper
 {
-	private static final JavaAttributeMappingDefinition DELEGATE = JavaManyToOneMappingDefinition.instance();
+	private static final JavaTypeMappingDefinition DELEGATE = JavaEntityDefinition.instance();
 
 	// singleton
-	private static final JavaAttributeMappingDefinition INSTANCE = new JavaManyToOneMappingDefinition2_0();
+	private static final JavaTypeMappingDefinition INSTANCE = new JavaEntityDefinition2_0();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaAttributeMappingDefinition instance() {
+	public static JavaTypeMappingDefinition instance() {
 		return INSTANCE;
 	}
 
@@ -37,12 +35,12 @@ public class JavaManyToOneMappingDefinition2_0
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaManyToOneMappingDefinition2_0() {
+	private JavaEntityDefinition2_0() {
 		super();
 	}
 
 	@Override
-	protected JavaAttributeMappingDefinition getDelegate() {
+	protected JavaTypeMappingDefinition getDelegate() {
 		return DELEGATE;
 	}
 
@@ -52,9 +50,7 @@ public class JavaManyToOneMappingDefinition2_0
 	}
 
 	public static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
-		Access2_0Annotation.ANNOTATION_NAME,
-		IdAnnotation.ANNOTATION_NAME,
-		MapsId2_0Annotation.ANNOTATION_NAME
+		Access2_0Annotation.ANNOTATION_NAME
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,11 +27,8 @@ import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaBasicMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddableDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedIdMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEntityDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaMappedSuperclassDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
@@ -39,9 +36,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkOrmResourceModel
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaEntityDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaIdMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaManyToOneMappingDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMappingDefinition;
@@ -126,9 +126,9 @@ public class EclipseLink1_2JpaPlatformProvider
 	// order matches that used by EclipseLink
 	// NB: no EclipseLink-specific mappings
 	protected static final JavaTypeMappingDefinition[] JAVA_TYPE_MAPPING_DEFINITIONS = new JavaTypeMappingDefinition[] {
-		JavaEntityDefinition.instance(),
-		JavaEmbeddableDefinition.instance(),
-		JavaMappedSuperclassDefinition.instance()
+		EclipseLinkJavaEntityDefinition.instance(),
+		EclipseLinkJavaEmbeddableDefinition.instance(),
+		EclipseLinkJavaMappedSuperclassDefinition.instance()
 	};
 
 

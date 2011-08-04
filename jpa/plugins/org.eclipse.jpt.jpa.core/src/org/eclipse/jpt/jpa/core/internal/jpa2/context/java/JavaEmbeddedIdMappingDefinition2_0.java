@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,18 +13,16 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaManyToOneMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedIdMappingDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 
-public class JavaManyToOneMappingDefinition2_0
+public class JavaEmbeddedIdMappingDefinition2_0
 	extends JavaAttributeMappingDefinitionWrapper
 {
-	private static final JavaAttributeMappingDefinition DELEGATE = JavaManyToOneMappingDefinition.instance();
+	private static final JavaAttributeMappingDefinition DELEGATE = JavaEmbeddedIdMappingDefinition.instance();
 
 	// singleton
-	private static final JavaAttributeMappingDefinition INSTANCE = new JavaManyToOneMappingDefinition2_0();
+	private static final JavaAttributeMappingDefinition INSTANCE = new JavaEmbeddedIdMappingDefinition2_0();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +35,7 @@ public class JavaManyToOneMappingDefinition2_0
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaManyToOneMappingDefinition2_0() {
+	private JavaEmbeddedIdMappingDefinition2_0() {
 		super();
 	}
 
@@ -52,9 +50,7 @@ public class JavaManyToOneMappingDefinition2_0
 	}
 
 	public static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
-		Access2_0Annotation.ANNOTATION_NAME,
-		IdAnnotation.ANNOTATION_NAME,
-		MapsId2_0Annotation.ANNOTATION_NAME
+		Access2_0Annotation.ANNOTATION_NAME
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
 

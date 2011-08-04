@@ -55,8 +55,12 @@ import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNullAttributeMapping;
+import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEmbeddedMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
@@ -266,17 +270,22 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
 		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		assertFalse(embeddedMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
-		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -290,6 +299,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		assertFalse(embeddedMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
@@ -297,7 +308,9 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertTrue(persistentAttribute.getMapping().isDefault());
 	
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testDefaultEmbeddedMapping() throws Exception {
@@ -399,6 +412,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		assertFalse(embeddedMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
@@ -406,7 +421,9 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 	
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
@@ -419,6 +436,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		assertFalse(embeddedMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -426,7 +444,9 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
@@ -439,6 +459,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		assertFalse(embeddedMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -446,7 +468,9 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToEmbeddedIdMapping() throws Exception {
@@ -459,6 +483,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		assertFalse(embeddedMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -466,7 +492,9 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToOneMapping() throws Exception {
@@ -479,6 +507,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		assertFalse(embeddedMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -486,7 +516,9 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToOneToManyMapping() throws Exception {
@@ -499,6 +531,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		assertFalse(embeddedMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -507,6 +541,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -519,6 +554,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		assertFalse(embeddedMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -526,7 +563,9 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToManyToManyMapping() throws Exception {
@@ -539,6 +578,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		assertFalse(embeddedMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -546,7 +587,33 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+	}
+
+	public void testMorphToElementCollectionMapping() throws Exception {
+		createTestEntityWithEmbeddedMapping();
+		createEmbeddableType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributeNamed("myEmbedded");
+		JavaEmbeddedMapping embeddedMapping = (JavaEmbeddedMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		resourceField.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE);
+		resourceField.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(embeddedMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof ElementCollectionMapping2_0);
+		
+		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testSpecifiedAttributeOverrides() throws Exception {

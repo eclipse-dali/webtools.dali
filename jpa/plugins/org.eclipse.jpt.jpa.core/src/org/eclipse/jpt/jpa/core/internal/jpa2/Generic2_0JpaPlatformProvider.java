@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,22 +26,22 @@ import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaBasicMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddableDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedIdMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEntityDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaMappedSuperclassDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaVersionMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaBasicMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddableDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedIdMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedMappingDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEntityDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaManyToManyMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaManyToOneMappingDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaMappedSuperclassDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToManyMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToOneMappingDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaVersionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.Generic2_0PersistenceXmlDefinition;
 
@@ -114,9 +114,9 @@ public class Generic2_0JpaPlatformProvider
 
 	// order matches that used by the Reference Implementation (EclipseLink)
 	protected static final JavaTypeMappingDefinition[] JAVA_TYPE_MAPPING_DEFINITIONS = new JavaTypeMappingDefinition[] {
-		JavaEntityDefinition.instance(),
-		JavaEmbeddableDefinition.instance(),
-		JavaMappedSuperclassDefinition.instance()
+		JavaEntityDefinition2_0.instance(),
+		JavaEmbeddableDefinition2_0.instance(),
+		JavaMappedSuperclassDefinition2_0.instance()
 	};
 
 
@@ -130,7 +130,7 @@ public class Generic2_0JpaPlatformProvider
 	// order matches that used by the Reference Implementation (EclipseLink)
 	protected static final DefaultJavaAttributeMappingDefinition[] DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new DefaultJavaAttributeMappingDefinition[] {
 		JavaEmbeddedMappingDefinition2_0.instance(),
-		JavaBasicMappingDefinition.instance()
+		JavaBasicMappingDefinition2_0.instance()
 	};
 
 	@Override
@@ -143,10 +143,10 @@ public class Generic2_0JpaPlatformProvider
 		JavaTransientMappingDefinition.instance(),
 		JavaElementCollectionMappingDefinition2_0.instance(),
 		JavaIdMappingDefinition2_0.instance(),
-		JavaVersionMappingDefinition.instance(),
-		JavaBasicMappingDefinition.instance(),
+		JavaVersionMappingDefinition2_0.instance(),
+		JavaBasicMappingDefinition2_0.instance(),
 		JavaEmbeddedMappingDefinition2_0.instance(),
-		JavaEmbeddedIdMappingDefinition.instance(),
+		JavaEmbeddedIdMappingDefinition2_0.instance(),
 		JavaManyToManyMappingDefinition2_0.instance(),
 		JavaManyToOneMappingDefinition2_0.instance(),
 		JavaOneToManyMappingDefinition2_0.instance(),

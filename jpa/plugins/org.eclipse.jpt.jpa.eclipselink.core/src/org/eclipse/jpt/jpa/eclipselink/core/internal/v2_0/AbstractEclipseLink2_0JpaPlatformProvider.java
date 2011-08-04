@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,32 +25,32 @@ import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddableDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedIdMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEntityDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaMappedSuperclassDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedIdMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkOrmResourceModelProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVariableOneToOneMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmXml1_1Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v1_2.context.orm.EclipseLinkOrmXml1_2Definition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaBasicCollectionMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaBasicMapMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaBasicMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaElementCollectionMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaEmbeddableDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaEntityDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaIdMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaManyToManyMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaManyToOneMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaMappedSuperclassDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaOneToManyMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaOneToOneMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaTransformationMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaVariableOneToOneMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.java.EclipseLinkJavaVersionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.orm.EclipseLinkOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.context.persistence.EclipseLink2_0PersistenceXmlDefinition;
 
@@ -113,9 +113,9 @@ public abstract class AbstractEclipseLink2_0JpaPlatformProvider
 	// order matches that used by EclipseLink
 	// NB: no EclipseLink-specific mappings
 	protected static final JavaTypeMappingDefinition[] JAVA_TYPE_MAPPING_DEFINITIONS = new JavaTypeMappingDefinition[] {
-		JavaEntityDefinition.instance(),
-		JavaEmbeddableDefinition.instance(),
-		JavaMappedSuperclassDefinition.instance()
+		EclipseLinkJavaEntityDefinition2_0.instance(),
+		EclipseLinkJavaEmbeddableDefinition2_0.instance(),
+		EclipseLinkJavaMappedSuperclassDefinition2_0.instance()
 	};
 
 
@@ -132,8 +132,8 @@ public abstract class AbstractEclipseLink2_0JpaPlatformProvider
 		JavaEmbeddedMappingDefinition2_0.instance(),
 		EclipseLinkJavaOneToManyMappingDefinition2_0.instance(),
 		EclipseLinkJavaOneToOneMappingDefinition2_0.instance(),
-		EclipseLinkJavaVariableOneToOneMappingDefinition.instance(),
-		EclipseLinkJavaBasicMappingDefinition.instance()
+		EclipseLinkJavaVariableOneToOneMappingDefinition2_0.instance(),
+		EclipseLinkJavaBasicMappingDefinition2_0.instance()
 	};
 
 	@Override
@@ -144,20 +144,20 @@ public abstract class AbstractEclipseLink2_0JpaPlatformProvider
 	// order matches that used by EclipseLink
 	protected static final JavaAttributeMappingDefinition[] SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new JavaAttributeMappingDefinition[] {
 		JavaTransientMappingDefinition.instance(),
-		EclipseLinkJavaBasicCollectionMappingDefinition.instance(),
-		EclipseLinkJavaBasicMapMappingDefinition.instance(),
+		EclipseLinkJavaBasicCollectionMappingDefinition2_0.instance(),
+		EclipseLinkJavaBasicMapMappingDefinition2_0.instance(),
 		EclipseLinkJavaElementCollectionMappingDefinition2_0.instance(),
 		EclipseLinkJavaIdMappingDefinition2_0.instance(),
-		EclipseLinkJavaVersionMappingDefinition.instance(),
-		EclipseLinkJavaBasicMappingDefinition.instance(),
+		EclipseLinkJavaVersionMappingDefinition2_0.instance(),
+		EclipseLinkJavaBasicMappingDefinition2_0.instance(),
 		JavaEmbeddedMappingDefinition2_0.instance(),
-		JavaEmbeddedIdMappingDefinition.instance(),
-		EclipseLinkJavaTransformationMappingDefinition.instance(),
+		JavaEmbeddedIdMappingDefinition2_0.instance(),
+		EclipseLinkJavaTransformationMappingDefinition2_0.instance(),
 		EclipseLinkJavaManyToManyMappingDefinition2_0.instance(),
 		EclipseLinkJavaManyToOneMappingDefinition2_0.instance(),
 		EclipseLinkJavaOneToManyMappingDefinition2_0.instance(),
 		EclipseLinkJavaOneToOneMappingDefinition2_0.instance(),
-		EclipseLinkJavaVariableOneToOneMappingDefinition.instance()
+		EclipseLinkJavaVariableOneToOneMappingDefinition2_0.instance()
 	};
 
 

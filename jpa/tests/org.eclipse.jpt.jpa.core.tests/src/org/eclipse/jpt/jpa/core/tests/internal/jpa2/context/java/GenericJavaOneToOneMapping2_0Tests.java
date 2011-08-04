@@ -19,12 +19,24 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.BasicMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
+import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
+import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.TransientMapping;
+import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
@@ -32,11 +44,23 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOne2_0Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.EmbeddedIdAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.ManyToOneAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.TransientAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -265,6 +289,257 @@ public class GenericJavaOneToOneMapping2_0Tests
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
 	}
 	
+	public void testMorphToBasicMapping() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToDefault() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping().isDefault());
+	
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToVersionMapping() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof VersionMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToIdMapping() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IdMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToEmbeddedMapping() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToEmbeddedIdMapping() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToTransientMapping() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof TransientMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToManyToOneMapping() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToOneToManyMapping() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToManyToManyMapping() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof ManyToManyMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToElementCollectionMapping() throws Exception {
+		createTestEntityWithValidOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		JoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnStrategy();
+		joinColumns.addSpecifiedJoinColumn(0);
+		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
+		assertFalse(oneToOneMapping.isDefault());
+		
+		persistentAttribute.setMappingKey(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof ElementCollectionMapping2_0);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		assertNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
+		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
+	}
+		
 	public void testUpdateId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

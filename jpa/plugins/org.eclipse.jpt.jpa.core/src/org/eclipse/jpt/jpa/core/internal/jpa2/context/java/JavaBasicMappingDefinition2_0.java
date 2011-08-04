@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,18 +13,16 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.DefaultJavaAttributeMappingDefinitionWrapper;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaBasicMappingDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
-public class JavaEmbeddedMappingDefinition2_0
+public class JavaBasicMappingDefinition2_0
 	extends DefaultJavaAttributeMappingDefinitionWrapper
 {
-	private static final DefaultJavaAttributeMappingDefinition DELEGATE = JavaEmbeddedMappingDefinition.instance();
+	private static final DefaultJavaAttributeMappingDefinition DELEGATE = JavaBasicMappingDefinition.instance();
 
 	// singleton
-	private static final DefaultJavaAttributeMappingDefinition INSTANCE = new JavaEmbeddedMappingDefinition2_0();
+	private static final DefaultJavaAttributeMappingDefinition INSTANCE = new JavaBasicMappingDefinition2_0();
 
 	/**
 	 * Return the singleton.
@@ -37,7 +35,7 @@ public class JavaEmbeddedMappingDefinition2_0
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaEmbeddedMappingDefinition2_0() {
+	private JavaBasicMappingDefinition2_0() {
 		super();
 	}
 
@@ -51,12 +49,10 @@ public class JavaEmbeddedMappingDefinition2_0
 		return COMBINED_SUPPORTING_ANNOTATION_NAMES;
 	}
 
-	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
-		Access2_0Annotation.ANNOTATION_NAME,
-		AssociationOverrideAnnotation.ANNOTATION_NAME,
-		JPA.ASSOCIATION_OVERRIDES,
+	public static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
+		Access2_0Annotation.ANNOTATION_NAME
 	};
-	public static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
+	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
 
 	@SuppressWarnings("unchecked")
 	private static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = new CompositeIterable<String>(
