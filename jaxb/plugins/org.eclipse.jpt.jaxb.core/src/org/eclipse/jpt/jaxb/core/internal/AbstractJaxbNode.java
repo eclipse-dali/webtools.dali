@@ -494,5 +494,10 @@ public abstract class AbstractJaxbNode
 		public void removeContextElement(int index) {
 			AbstractJaxbNode.this.removeItemFromList(index, this.contextElements, this.getContextElementsPropertyName());
 		}
+
+		@Override
+		public void removeContextElement(C contextElement) {
+			AbstractJaxbNode.this.removeItemFromList(contextElement, this.contextElements, this.getContextElementsPropertyName());
+		}
 	}
 }

@@ -568,5 +568,10 @@ public abstract class AbstractJpaNode
 		public C removeContextElement(int index) {
 			return AbstractJpaNode.this.removeItemFromList(index, this.contextElements, this.getContextElementsPropertyName());
 		}
+
+		@Override
+		public void removeContextElement(C contextElement) {
+			this.removeContextElement(this.indexOfContextElement(contextElement));
+		}
 	}
 }
