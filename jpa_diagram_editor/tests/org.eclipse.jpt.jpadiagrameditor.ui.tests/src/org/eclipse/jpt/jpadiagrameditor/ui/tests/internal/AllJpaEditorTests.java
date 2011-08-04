@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal;
 import java.io.File;
 import java.util.NoSuchElementException;
 
+import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.editor.CreateDiagramTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.editor.EditorTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.AddAttributeFeatureTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature.AddJPAEntityFeatureTest;
@@ -45,6 +46,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses( {
+				CreateDiagramTest.class,
 				JPAEditorPreferenceInitializerTest.class,
 	 			JPAEditorPreferencesPageTest.class,
 	 			AddJPAEntityFeatureTest.class,
