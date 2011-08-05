@@ -39,6 +39,7 @@ import org.eclipse.graphiti.internal.features.context.impl.base.PictogramElement
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
 import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.styles.Font;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
@@ -328,9 +329,12 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
         ga = ch.get(0);
         if (!(ga instanceof Text)) 
         	return null;
-        if(((Text)ga).getFont().isItalic()){
-    		return getToolTipForCompartmentShape(ga);
-    	    }
+        Font f = ((Text)ga).getFont();
+        if (f == null)
+        	return "";		//$NON-NLS-1$
+        if(f.isItalic()){
+        	return getToolTipForCompartmentShape(ga);
+    	}
         
         Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
 		if (bo != null) {
