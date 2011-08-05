@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jaxb.core.tests;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Localization: plugin
 Dali-Comment: jdk 1.6 has the javax.xml.bind annotations
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
