@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
@@ -19,6 +18,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -229,13 +229,13 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 	private ListValueModel<ReadOnlyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
 		return new ListAspectAdapter<T, ReadOnlyJoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getSpecifiedJoinColumnsListPropertyName()) {
 			@Override
-			protected ListIterator<ReadOnlyJoinColumn> listIterator_() {
-				return JoinColumnsComposite.this.joinColumnsEditor.specifiedJoinColumns(this.subject);
+			protected ListIterable<ReadOnlyJoinColumn> getListIterable() {
+				return JoinColumnsComposite.this.joinColumnsEditor.getSpecifiedJoinColumns(this.subject);
 			}
 
 			@Override
 			protected int size_() {
-				return JoinColumnsComposite.this.joinColumnsEditor.specifiedJoinColumnsSize(this.subject);
+				return JoinColumnsComposite.this.joinColumnsEditor.getSpecifiedJoinColumnsSize(this.subject);
 			}
 		};
 	}
@@ -299,12 +299,12 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		/**
 		 * Return the spcified join columns from the given subject
 		 */
-		ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(T subject);
+		ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(T subject);
 
 		/**
 		 * Return the number of specified join columns on the given subject
 		 */
-		int specifiedJoinColumnsSize(T subject);
+		int getSpecifiedJoinColumnsSize(T subject);
 
 		/**
 		 * Return the default join column from the given subject or null.

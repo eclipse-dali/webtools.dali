@@ -10,13 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
@@ -346,11 +344,11 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			}
 		}
 
-		public ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(T subject) {
-			return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedJoinColumns());
+		public ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(T subject) {
+			return new SuperListIterableWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedJoinColumns());
 		}
 
-		public int specifiedJoinColumnsSize(T subject) {
+		public int getSpecifiedJoinColumnsSize(T subject) {
 			return subject.getSpecifiedJoinColumnsSize();
 		}
 

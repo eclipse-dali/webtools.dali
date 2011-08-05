@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
-import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
@@ -98,11 +98,11 @@ public class JoiningStrategyJoinColumnsComposite
 				}				
 			}
 
-			public ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(ReadOnlyJoinColumnRelationshipStrategy subject) {
-				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedJoinColumns());
+			public ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(ReadOnlyJoinColumnRelationshipStrategy subject) {
+				return new SuperListIterableWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedJoinColumns());
 			}
 
-			public int specifiedJoinColumnsSize(ReadOnlyJoinColumnRelationshipStrategy subject) {
+			public int getSpecifiedJoinColumnsSize(ReadOnlyJoinColumnRelationshipStrategy subject) {
 				return subject.getSpecifiedJoinColumnsSize();
 			}
 		};

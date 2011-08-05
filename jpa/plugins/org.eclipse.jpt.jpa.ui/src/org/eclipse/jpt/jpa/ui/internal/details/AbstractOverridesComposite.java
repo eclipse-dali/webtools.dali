@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
@@ -24,7 +23,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationWritablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
@@ -223,8 +221,8 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	private ListValueModel<VirtualAssociationOverride> buildDefaultAssociationOverridesListHolder(PropertyValueModel<AssociationOverrideContainer> containerHolder) {
 		return new ListAspectAdapter<AssociationOverrideContainer, VirtualAssociationOverride>(containerHolder, OverrideContainer.VIRTUAL_OVERRIDES_LIST) {
 			@Override
-			protected ListIterator<VirtualAssociationOverride> listIterator_() {
-				return new SuperListIteratorWrapper<VirtualAssociationOverride>(this.subject.getVirtualOverrides());
+			protected ListIterable<VirtualAssociationOverride> getListIterable() {
+				return new SuperListIterableWrapper<VirtualAssociationOverride>(this.subject.getVirtualOverrides());
 			}
 			
 			@Override
@@ -237,8 +235,8 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	private ListValueModel<VirtualAttributeOverride> buildDefaultAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
 		return new ListAspectAdapter<AttributeOverrideContainer, VirtualAttributeOverride>(containerHolder, OverrideContainer.VIRTUAL_OVERRIDES_LIST) {
 			@Override
-			protected ListIterator<VirtualAttributeOverride> listIterator_() {
-				return new SuperListIteratorWrapper<VirtualAttributeOverride>(this.subject.getVirtualOverrides());
+			protected ListIterable<VirtualAttributeOverride> getListIterable() {
+				return new SuperListIterableWrapper<VirtualAttributeOverride>(this.subject.getVirtualOverrides());
 			}
 			
 			@Override
@@ -369,8 +367,8 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	private ListValueModel<AssociationOverride> buildSpecifiedAssociationOverridesListHolder(PropertyValueModel<AssociationOverrideContainer> containerHolder) {
 		return new ListAspectAdapter<AssociationOverrideContainer, AssociationOverride>(containerHolder, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
 			@Override
-			protected ListIterator<AssociationOverride> listIterator_() {
-				return new SuperListIteratorWrapper<AssociationOverride>(this.subject.getSpecifiedOverrides());
+			protected ListIterable<AssociationOverride> getListIterable() {
+				return new SuperListIterableWrapper<AssociationOverride>(this.subject.getSpecifiedOverrides());
 			}
 			
 			@Override

@@ -9,13 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
@@ -333,11 +331,11 @@ public class JoinTableComposite
 			}
 		}
 
-		public ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(ReadOnlyJoinTable subject) {
-			return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedInverseJoinColumns());
+		public ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(ReadOnlyJoinTable subject) {
+			return new SuperListIterableWrapper<ReadOnlyJoinColumn>(subject.getSpecifiedInverseJoinColumns());
 		}
 
-		public int specifiedJoinColumnsSize(ReadOnlyJoinTable subject) {
+		public int getSpecifiedJoinColumnsSize(ReadOnlyJoinTable subject) {
 			return subject.getSpecifiedInverseJoinColumnsSize();
 		}
 
