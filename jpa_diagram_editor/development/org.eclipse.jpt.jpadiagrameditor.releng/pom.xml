@@ -44,8 +44,8 @@
 			<layout>p2</layout>			
 		</repository>	
 		<repository>
-			<id>indigo_WTP_RC1</id>
-			<url>http://build.eclipse.org/webtools/committers/wtp-R3.3.0-I/20110513100703/I-3.3.0-20110513100703/repository/</url>
+			<id>Juno</id>
+			<url>http://build.eclipse.org/webtools/committers/wtp-R3.3.1-M/20110803220843/M-3.3.1-20110803220843/repository/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
