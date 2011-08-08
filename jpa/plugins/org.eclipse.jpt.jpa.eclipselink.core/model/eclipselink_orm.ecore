@@ -725,6 +725,8 @@
     <eClassifiers xsi:type="ecore:EClass" name="XmlMultitenant_2_3" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//v2_3/XmlMultitenantType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="tenantDiscriminatorColumns"
+          upperBound="-1" eType="#//v2_3/XmlTenantDiscriminatorColumn_2_3" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlNamedPlsqlStoredFunctionQuery_2_3"
         abstract="true" interface="true">
@@ -755,8 +757,10 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlTenantDiscriminatorColumn_2_3"
-        abstract="true" interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+        abstract="true" interface="true" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//AbstractXmlDiscriminatorColumn">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="contextProperty" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="table" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="primaryKey" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlStructure_2_3" abstract="true"
         interface="true"/>

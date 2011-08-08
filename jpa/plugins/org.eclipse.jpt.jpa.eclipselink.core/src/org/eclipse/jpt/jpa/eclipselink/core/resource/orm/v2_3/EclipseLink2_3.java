@@ -28,6 +28,7 @@ public interface EclipseLink2_3
 	String MULTITENANT = "multitenant";
 		String MULTITENANT__TYPE = "type";
 	String MULTITENANT_TYPE = "multiltenant-type";
+
 	String NAMED_STORED_FUNCTION_QUERY = "named-stored-function-query";
 		String NAMED_STORED_FUNCTION_QUERY__NAME = "nname";
 	String NAMED_PLSQL_STORED_PROCEDURE_QUERY = "named-plsql-stored-procedure-query";
@@ -41,8 +42,11 @@ public interface EclipseLink2_3
 	String STRUCT = "struct";
 		String STRUCT__NAME = "name";
 	String STRUCTURE = "structure";
+
 	String TENANT_DISCRIMINATOR_COLUMN = "tenant-discriminator-column";
-		String TENANT_DISCRIMINATOR_COLUMN__NAME = "name";
+		String TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY = "contextProperty";
+		String TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY= "primaryKey";
+		String TENANT_DISCRIMINATOR_COLUMN__TABLE = "table";
 
 
 }

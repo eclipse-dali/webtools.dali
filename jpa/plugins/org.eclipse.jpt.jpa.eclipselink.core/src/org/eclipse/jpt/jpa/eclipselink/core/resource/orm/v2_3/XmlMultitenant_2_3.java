@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 
 /**
@@ -20,6 +21,7 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3#getType <em>Type</em>}</li>
+ *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3#getTenantDiscriminatorColumns <em>Tenant Discriminator Columns</em>}</li>
  * </ul>
  * </p>
  *
@@ -59,4 +61,20 @@ public interface XmlMultitenant_2_3 extends JpaEObject
 	 * @generated
 	 */
 	void setType(XmlMultitenantType value);
+
+	/**
+	 * Returns the value of the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Tenant Discriminator Columns</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Tenant Discriminator Columns</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMultitenant_2_3_TenantDiscriminatorColumns()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<XmlTenantDiscriminatorColumn_2_3> getTenantDiscriminatorColumns();
 } // XmlMultitenant_2_3

@@ -355,7 +355,7 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 			buildAccessTranslator(),
 			buildAccessMethodsTranslator(),
 			buildCascadePersistTranslator(),
-			XmlTenantDiscriminatorColumn.buildTranslator(EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlPersistenceUnitDefaults_2_3_TenantDiscriminatorColumns()),
+			buildTenantDiscriminatorColumnsTranslator(),
 			buildEntityListenersTranslator()
 		};
 	}
@@ -364,4 +364,7 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
 
+	protected static Translator buildTenantDiscriminatorColumnsTranslator() {
+		return XmlTenantDiscriminatorColumn.buildTranslator(EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlPersistenceUnitDefaults_2_3_TenantDiscriminatorColumns());
+	}
 } // XmlPersistenceUnitDefaults

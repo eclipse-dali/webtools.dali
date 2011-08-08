@@ -12,6 +12,12 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="updatable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlDiscriminatorColumn" abstract="true"
+      eSuperTypes="#//AbstractXmlNamedColumn">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorType" eType="#//DiscriminatorType"
+        defaultValueLiteral="STRING"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlEmbedded" abstract="true"
       eSuperTypes="#//AbstractXmlAttributeMapping #//XmlAttributeOverrideContainer"/>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlMultiRelationshipMapping"
@@ -125,11 +131,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//TemporalType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumerated" eType="#//EnumType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlDiscriminatorColumn" eSuperTypes="#//AbstractXmlNamedColumn">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorType" eType="#//DiscriminatorType"
-        defaultValueLiteral="STRING"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlDiscriminatorColumn" eSuperTypes="#//AbstractXmlDiscriminatorColumn"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection" eSuperTypes="#//AbstractXmlAttributeMapping #//v2_0/XmlElementCollection_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="#//AbstractXmlTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="#//AbstractXmlEmbedded #//v2_0/XmlEmbedded_2_0"/>

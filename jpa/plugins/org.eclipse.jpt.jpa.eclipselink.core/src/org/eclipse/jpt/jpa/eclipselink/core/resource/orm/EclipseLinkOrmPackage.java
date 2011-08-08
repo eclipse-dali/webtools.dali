@@ -4736,6 +4736,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MULTITENANT__TYPE = EclipseLinkOrmV2_3Package.XML_MULTITENANT_23__TYPE;
 	/**
+	 * The feature id for the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTITENANT__TENANT_DISCRIMINATOR_COLUMNS = EclipseLinkOrmV2_3Package.XML_MULTITENANT_23__TENANT_DISCRIMINATOR_COLUMNS;
+	/**
 	 * The number of structural features of the '<em>Xml Multitenant</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6485,6 +6493,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_TENANT_DISCRIMINATOR_COLUMN = 78;
 	/**
+	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__COLUMN_DEFINITION;
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6492,6 +6508,46 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__NAME = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__NAME;
+	/**
+	 * The feature id for the '<em><b>Discriminator Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__DISCRIMINATOR_TYPE;
+	/**
+	 * The feature id for the '<em><b>Length</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__LENGTH = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__LENGTH;
+	/**
+	 * The feature id for the '<em><b>Context Property</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__CONTEXT_PROPERTY;
+	/**
+	 * The feature id for the '<em><b>Table</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__TABLE = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__TABLE;
+	/**
+	 * The feature id for the '<em><b>Primary Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__PRIMARY_KEY;
 	/**
 	 * The number of structural features of the '<em>Xml Tenant Discriminator Column</em>' class.
 	 * <!-- begin-user-doc -->

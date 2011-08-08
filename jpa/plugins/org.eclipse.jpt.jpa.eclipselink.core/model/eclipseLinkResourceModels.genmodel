@@ -569,6 +569,7 @@
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlMultitenant_2_3">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlMultitenant_2_3/type"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlMultitenant_2_3/tenantDiscriminatorColumns"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlNamedPlsqlStoredFunctionQuery_2_3">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlNamedPlsqlStoredFunctionQuery_2_3/name"/>
@@ -592,7 +593,9 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlStruct_2_3/name"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminatorColumn_2_3">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminatorColumn_2_3/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminatorColumn_2_3/contextProperty"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminatorColumn_2_3/table"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminatorColumn_2_3/primaryKey"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStructure_2_3"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlElementCollection_2_3">

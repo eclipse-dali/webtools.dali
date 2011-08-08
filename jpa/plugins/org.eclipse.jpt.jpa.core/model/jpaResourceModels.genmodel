@@ -62,6 +62,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlColumn/unique"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlColumn/updatable"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlDiscriminatorColumn">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlDiscriminatorColumn/discriminatorType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlDiscriminatorColumn/length"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlEmbedded"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlMultiRelationshipMapping">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//AbstractXmlMultiRelationshipMapping/mapKey"/>
@@ -145,10 +149,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlConvertibleMapping/temporal"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlConvertibleMapping/enumerated"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlDiscriminatorColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlDiscriminatorColumn/discriminatorType"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlDiscriminatorColumn/length"/>
-    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlDiscriminatorColumn"/>
     <genClasses ecoreClass="orm.ecore#//XmlElementCollection"/>
     <genClasses ecoreClass="orm.ecore#//XmlEmbeddable"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlEmbedded"/>
@@ -452,8 +453,8 @@
       </genClasses>
     </nestedGenPackages>
   </genPackages>
-  <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.jpa.core.resource" disposableProviderFactory="true"
-      adapterFactory="false" ecorePackage="persistence.ecore#/">
+  <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.jpa.core.resource"
+      disposableProviderFactory="true" adapterFactory="false" ecorePackage="persistence.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="persistence.ecore#//XmlPersistenceUnitTransactionType">
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/JTA"/>
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/RESOURCE_LOCAL"/>

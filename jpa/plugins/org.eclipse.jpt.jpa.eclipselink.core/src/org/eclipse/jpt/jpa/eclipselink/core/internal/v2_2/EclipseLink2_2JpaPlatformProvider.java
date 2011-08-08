@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,14 +12,16 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.v2_2;
 import java.util.ArrayList;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_1.AbstractEclipseLink2_1JpaPlatformProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.AbstractEclipseLink2_0JpaPlatformProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_1.context.orm.EclipseLinkOrmXml2_1Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_2.context.orm.EclipseLinkOrmXml2_2Definition;
 
 public class EclipseLink2_2JpaPlatformProvider
-	extends AbstractEclipseLink2_1JpaPlatformProvider
+	extends AbstractEclipseLink2_0JpaPlatformProvider
 {
 	// singleton
 	private static final JpaPlatformProvider INSTANCE = new EclipseLink2_2JpaPlatformProvider();
@@ -57,6 +59,11 @@ public class EclipseLink2_2JpaPlatformProvider
 	@Override
 	protected void addResourceDefinitionsTo(ArrayList<ResourceDefinition> definitions) {
 		super.addResourceDefinitionsTo(definitions);
-		definitions.add(EclipseLinkOrmXml2_2Definition.instance());
+		CollectionTools.addAll(definitions, RESOURCE_DEFINITIONS);
 	}
+
+	protected static final ResourceDefinition[] RESOURCE_DEFINITIONS = new ResourceDefinition[] {
+		EclipseLinkOrmXml2_1Definition.instance(),
+		EclipseLinkOrmXml2_2Definition.instance(),
+	};
 }

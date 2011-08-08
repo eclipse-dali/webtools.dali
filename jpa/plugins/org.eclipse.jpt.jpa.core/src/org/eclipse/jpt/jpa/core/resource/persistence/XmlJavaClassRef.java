@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -43,7 +44,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @extends JpaEObject
  * @generated
  */
-public class XmlJavaClassRef extends AbstractJpaEObject
+public class XmlJavaClassRef extends AbstractJpaEObject implements JpaEObject
 {
 	/**
 	 * The default value of the '{@link #getJavaClass() <em>Java Class</em>}' attribute.
