@@ -74,23 +74,26 @@ abstract class SourceMember<M extends Member>
 		}
 		for (Annotation annotation : this.getAnnotations()) {
 			if ( ! CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
-				if (annotationIsValidContainer(annotation.getAnnotationName())) {
-					this.annotationContainers.remove(getAnnotationProvider().getNestableAnnotationName(annotation.getAnnotationName()));
-				}
-				else {
-					this.annotations.remove(annotation);
-				}
+				this.annotations.remove(annotation);
 				annotation.removeAnnotation();
 			}
 		}
-		//At this point the only thing remaining would be a standalone "nestable" annotation
 		Iterator<AnnotationContainer> containers = this.annotationContainers.values().iterator();
 		for (; containers.hasNext();) {
 			AnnotationContainer container = containers.next();
-			String nestedAnnotatioName = container.getNestedAnnotationName();
-			if ( ! CollectionTools.contains(annotationNames, nestedAnnotatioName)) {
-				containers.remove();
-				container.getNestedAnnotations().iterator().next().removeAnnotation();
+			if (container.getContainerAnnotation() != null) {
+				if ( ! CollectionTools.contains(annotationNames, container.getContainerAnnotation().getAnnotationName())) {
+					containers.remove();
+					container.getContainerAnnotation().removeAnnotation();
+				}
+			}
+			else {
+				//At this point the only thing remaining would be a standalone "nestable" annotation
+				String nestedAnnotatioName = container.getNestedAnnotationName();
+				if ( ! CollectionTools.contains(annotationNames, nestedAnnotatioName)) {
+					containers.remove();
+					container.getNestedAnnotations().iterator().next().removeAnnotation();
+				}
 			}
 		}
 
