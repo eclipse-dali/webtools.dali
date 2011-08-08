@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.jpa.feature"
       label="%featureName"
-      version="3.0.0.qualifier"
+      version="3.0.1.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jpt.jpa.branding"
       license-feature="org.eclipse.license"
@@ -72,11 +72,15 @@
 	<!-- persistence bundles -->
 	<plugin
          id="org.eclipse.persistence.jpa.jpql"
+         download-size="0"
+         install-size="0"
          version="1.0.0.qualifier"
          unpack="false"/>
-         
-	<plugin
+
+   <plugin
          id="org.eclipse.persistence.jpa.jpql.source"
+         download-size="0"
+         install-size="0"
          version="1.0.0.qualifier"
          unpack="false"/>
 

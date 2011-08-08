@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.jpa.eclipselink.feature"
       label="%featureName"
-      version="3.0.0.qualifier"
+      version="3.0.1.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jpt.jpa.eclipselink.branding"
       license-feature="org.eclipse.license"
@@ -25,28 +25,38 @@
       <import feature="org.eclipse.jpt.common.eclipselink.feature" version="1.0.0"/>
    </requires>
 
-	<plugin
+   <plugin
          id="javax.persistence"
+         download-size="0"
+         install-size="0"
          version="2.0.3.qualifier"
          unpack="false"/>
 
-	<plugin
+   <plugin
          id="org.eclipse.persistence.antlr"
+         download-size="0"
+         install-size="0"
          version="2.3.0.qualifier"
          unpack="false"/>
 
-	<plugin
+   <plugin
          id="org.eclipse.persistence.asm"
+         download-size="0"
+         install-size="0"
          version="2.3.0.qualifier"
          unpack="false"/>
 
-	<plugin
+   <plugin
          id="org.eclipse.persistence.core"
+         download-size="0"
+         install-size="0"
          version="2.3.0.qualifier"
          unpack="false"/>
 
-	<plugin
+   <plugin
          id="org.eclipse.persistence.jpa"
+         download-size="0"
+         install-size="0"
          version="2.3.0.qualifier"
          unpack="false"/>
 

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jpa.core;singleton:=true
-Bundle-Version: 3.0.0.qualifier
+Bundle-Version: 3.0.1.qualifier
 Bundle-Activator: org.eclipse.jpt.jpa.core.JptJpaCorePlugin
 Bundle-ActivationPolicy: lazy;exclude:="org.eclipse.jpt.core.internal.resource.contenttypes"
 Bundle-ClassPath: .
