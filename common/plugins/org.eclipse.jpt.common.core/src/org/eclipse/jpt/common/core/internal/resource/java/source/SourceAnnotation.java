@@ -37,9 +37,11 @@ public abstract class SourceAnnotation
 {
 	protected final AnnotatedElement annotatedElement;
 
-	protected final DeclarationAnnotationAdapter daa;
+	// TODO - make 'final' if we start using combination annotation adapters(?)
+	protected DeclarationAnnotationAdapter daa;
 
-	protected final AnnotationAdapter annotationAdapter;
+	// TODO - make 'final' if we start using combination annotation adapters(?)
+	protected AnnotationAdapter annotationAdapter;
 
 
 	/**
@@ -113,11 +115,15 @@ public abstract class SourceAnnotation
 	}
 
 	/**
+	/**
 	 * Return the text range corresponding to the annotation.
-	 * If the annotation is missing, return null.
+	 * If the annotation is missing, return <code>null</code>.
 	 */
 	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getAstAnnotation(astRoot));
+		// the AST is null for virtual Java attributes
+		// TODO remove the AST null check once we start storing text ranges
+		// in the resource model
+		return (astRoot == null) ? null : this.getTextRange(this.getAstAnnotation(astRoot));
 	}
 
 	/**
@@ -158,7 +164,10 @@ public abstract class SourceAnnotation
 	 * If the element is missing, return null.
 	 */
 	protected TextRange getAnnotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
-		return this.getTextRange(this.getAnnotationElementExpression(adapter, astRoot));
+		// the AST is null for virtual Java attributes
+		// TODO remove the AST null check once we start storing text ranges
+		// in the resource model
+		return (astRoot == null) ? null : this.getTextRange(this.getAnnotationElementExpression(adapter, astRoot));
 	}
 
 	/**
