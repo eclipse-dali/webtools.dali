@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.eclipse.jpt.jpadiagrameditor.feature_1.0.0.qualifier.jar" id="org.eclipse.jpt.jpadiagrameditor.feature" version="1.0.0.qualifier">
+   <feature url="features/org.eclipse.jpt.jpadiagrameditor.feature_1.0.1.qualifier.jar" id="org.eclipse.jpt.jpadiagrameditor.feature" version="1.0.1.qualifier">
       <category name="jpa_diagram_editor"/>
    </feature>
    <category-def name="jpa_diagram_editor" label="JPA Diagram Editor"/>
