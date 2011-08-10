@@ -46,7 +46,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses( {
-				CreateDiagramTest.class,
+//				CreateDiagramTest.class,
 				JPAEditorPreferenceInitializerTest.class,
 	 			JPAEditorPreferencesPageTest.class,
 	 			AddJPAEntityFeatureTest.class,
