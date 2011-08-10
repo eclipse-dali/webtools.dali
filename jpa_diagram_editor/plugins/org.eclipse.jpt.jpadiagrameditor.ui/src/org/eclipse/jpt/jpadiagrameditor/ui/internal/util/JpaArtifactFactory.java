@@ -431,9 +431,8 @@ public class JpaArtifactFactory {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				try {
-					if (!cu.isWorkingCopy())
-						JPAEditorUtil.becomeWorkingCopy(cu);
-					cu.commitWorkingCopy(true, new NullProgressMonitor());
+					if (cu.isWorkingCopy()) 
+						cu.commitWorkingCopy(true, new NullProgressMonitor());
 					cu.save(new NullProgressMonitor(), true);
 				} catch (JavaModelException e) {
 					if (cu.getResource().getProject().isAccessible() && cu.getResource().isAccessible())
