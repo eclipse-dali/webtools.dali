@@ -15,7 +15,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.JptJpaEclipseLinkCoreTests;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.java.JptEclipseLinkCoreJavaResourceModelTests;
-import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_3.resource.java.JptEclipseLink2_3CoreJavaResourceModelTests;
 
 /**
  * Required Java system property:
@@ -28,7 +27,7 @@ public class JptJpaEclipselinkCoreResourceModelTests extends TestCase
 		TestSuite suite = new TestSuite(JptJpaEclipselinkCoreResourceModelTests.class.getName());
 		if(JptJpaEclipseLinkCoreTests.requiredJarsExists()) {
 			suite.addTest(JptEclipseLinkCoreJavaResourceModelTests.suite());
-			suite.addTest(JptEclipseLink2_3CoreJavaResourceModelTests.suite());
+//			suite.addTest(JptEclipseLink2_3CoreJavaResourceModelTests.suite());
 		}
 		else {
 			suite.addTest(TestSuite.warning(JptJpaEclipseLinkCoreTests.buildMissingJarErrorMessage()));
