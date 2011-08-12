@@ -10,25 +10,18 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 
 /**
  * org.eclipse.persistence.annotations.Convert
  */
 public final class BinaryEclipseLinkConvertAnnotation
-	extends BinaryAnnotation
-	implements EclipseLinkConvertAnnotation
+	extends BinaryBaseEclipseLinkConvertAnnotation
 {
-	private String value;
 
 	public BinaryEclipseLinkConvertAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
-		this.value = this.buildValue();
 	}
 
 	public String getAnnotationName() {
@@ -36,39 +29,7 @@ public final class BinaryEclipseLinkConvertAnnotation
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.setValue_(this.buildValue());
+	protected String getValueElementName() {
+		return EclipseLink.CONVERT__VALUE;
 	}
-
-
-	// ********** ConvertAnnotation implementation **********
-
-	// ***** value
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		throw new UnsupportedOperationException();
-	}
-
-	private void setValue_(String value) {
-		String old = this.value;
-		this.value = value;
-		this.firePropertyChanged(VALUE_PROPERTY, old, value);
-	}
-
-	private String buildValue() {
-		return (String) this.getJdtMemberValue(EclipseLink.CONVERT__VALUE);
-	}
-
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean valueTouches(int pos, CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
-	}
-
 }
