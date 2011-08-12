@@ -9,22 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.TemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.AbstractJavaElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaTemporalConverter
 	extends AbstractJavaConverter
@@ -35,8 +26,8 @@ public class GenericJavaTemporalConverter
 	protected TemporalType temporalType;
 
 
-	public GenericJavaTemporalConverter(JavaAttributeMapping parent, TemporalAnnotation temporalAnnotation) {
-		super(parent);
+	public GenericJavaTemporalConverter(JavaAttributeMapping parent, TemporalAnnotation temporalAnnotation, JavaConverter.Owner owner) {
+		super(parent, owner);
 		this.temporalAnnotation = temporalAnnotation;
 		this.temporalType = this.buildTemporalType();
 	}
@@ -82,59 +73,13 @@ public class GenericJavaTemporalConverter
 		return TemporalConverter.class;
 	}
 
-	@Override
-	protected String getAnnotationName() {
-		return TemporalAnnotation.ANNOTATION_NAME;
+	public TemporalAnnotation getConverterAnnotation() {
+		return this.temporalAnnotation;
 	}
 
 	protected void removeTemporalAnnotationIfUnset() {
 		if (this.temporalAnnotation.isUnset()) {
 			this.temporalAnnotation.removeAnnotation();
 		}
-	}
-
-
-	// ********** validation **********
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateAttributeTypeWithTemporal(messages, astRoot);
-	}
-
-	protected void validateAttributeTypeWithTemporal(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.getAttributeMapping().getKey() == MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY) {
-			String typeName = ((AbstractJavaElementCollectionMapping2_0) this.getAttributeMapping()).getFullyQualifiedTargetClass();
-			if (!ArrayTools.contains(TEMPORAL_MAPPING_SUPPORTED_TYPES, typeName)) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.PERSISTENT_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE,
-								EMPTY_STRING_ARRAY,
-								this,
-								this.getValidationTextRange(astRoot)
-						)
-				);
-			}
-		} else {
-			String typeName = this.getAttributeMapping().getPersistentAttribute().getTypeName();
-			if (!ArrayTools.contains(TEMPORAL_MAPPING_SUPPORTED_TYPES, typeName)) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE,
-								EMPTY_STRING_ARRAY,
-								this,
-								this.getValidationTextRange(astRoot)
-						)
-				);
-			}
-
-		}
-	}
-
-	@Override
-	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
-		return this.temporalAnnotation.getTextRange(astRoot);
 	}
 }

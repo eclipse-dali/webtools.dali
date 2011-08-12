@@ -61,7 +61,7 @@ public abstract class AbstractJavaBasicMapping
 
 	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
 		JavaEnumeratedConverter.Adapter.instance(),
-		JavaTemporalConverter.Adapter.instance(),
+		JavaTemporalConverter.BasicAdapter.instance(),
 		JavaLobConverter.Adapter.instance()
 	};
 	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
@@ -180,7 +180,7 @@ public abstract class AbstractJavaBasicMapping
 	}
 
 	public boolean isDefaultOptional() {
-		return defaultOptional;
+		return this.defaultOptional;
 	}
 
 	protected void setDefaultOptional(boolean optional) {

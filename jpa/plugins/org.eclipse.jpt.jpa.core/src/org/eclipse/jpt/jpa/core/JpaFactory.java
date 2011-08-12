@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedIdMapping;
@@ -135,7 +136,7 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
  *
  * @see org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaFactory
  * 
- * @version 2.3
+ * @version 3.1
  * @since 2.0
  */
 public interface JpaFactory 
@@ -272,11 +273,11 @@ public interface JpaFactory
 	
 	JavaVirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JavaJpaContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint);
 	
-	JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, EnumeratedAnnotation annotation);
+	JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, EnumeratedAnnotation annotation, JavaConverter.Owner owner);
 	
-	JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, TemporalAnnotation annotation);
+	JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, TemporalAnnotation annotation, JavaConverter.Owner owner);
 	
-	JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, LobAnnotation annotation);
+	JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, LobAnnotation annotation, JavaConverter.Owner owner);
 
 	JavaOrderable buildJavaOrderable(JavaAttributeMapping parent);
 }

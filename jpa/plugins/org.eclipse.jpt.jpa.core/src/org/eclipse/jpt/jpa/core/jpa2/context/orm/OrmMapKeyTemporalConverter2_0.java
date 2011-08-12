@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,19 +7,24 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.context.orm;
+package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
+import org.eclipse.jpt.jpa.core.context.orm.OrmTemporalConverter;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
-import org.eclipse.jpt.jpa.core.resource.orm.EnumType;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmMapKeyTemporalConverterValidator;
+import org.eclipse.jpt.jpa.core.resource.orm.TemporalType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyConvertibleMapping_2_0;
 
 /**
- * <code>orm.xml</code> enumerated converter
+ * <code>orm.xml</code> temporal converter
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -27,20 +32,9 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmEnumeratedConverter
-	extends EnumeratedConverter, OrmConverter
+public interface OrmMapKeyTemporalConverter2_0
+	extends OrmTemporalConverter
 {
-	// ********** owner **********
-
-	/**
-	 */
-	public interface Owner extends OrmConverter.Owner {
-		EnumType getXmlEnumType();
-
-		void setXmlEnumType(EnumType enumType);
-
-		TextRange getEnumTextRange();
-	}
 
 	// ********** adapter **********
 
@@ -57,41 +51,44 @@ public interface OrmEnumeratedConverter
 		}
 
 		public Class<? extends Converter> getConverterType() {
-			return EnumeratedConverter.class;
+			return TemporalConverter.class;
 		}
 
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
-			XmlConvertibleMapping xmlMapping = (XmlConvertibleMapping) parent.getXmlAttributeMapping();
-			return (xmlMapping.getEnumerated() == null) ? null : factory.buildOrmEnumeratedConverter(parent, this.buildOwner(xmlMapping));
+			XmlMapKeyConvertibleMapping_2_0 xmlMapping = (XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping();
+			return (xmlMapping.getMapKeyTemporal() == null) ? null : factory.buildOrmTemporalConverter(parent, this.buildOwner(xmlMapping));
 		}
 
-		protected OrmEnumeratedConverter.Owner buildOwner(final XmlConvertibleMapping mapping) {
-			return new OrmEnumeratedConverter.Owner() {
-				public void setXmlEnumType(EnumType enumType) {
-					mapping.setEnumerated(enumType);
+		protected OrmTemporalConverter.Owner buildOwner(final XmlMapKeyConvertibleMapping_2_0 mapping) {
+			return new OrmTemporalConverter.Owner() {
+				public void setXmlTemporalType(TemporalType temporalType) {
+					mapping.setMapKeyTemporal(temporalType);
 				}
-				public EnumType getXmlEnumType() {
-					return mapping.getEnumerated();
+				
+				public TemporalType getXmlTemporalType() {
+					return mapping.getMapKeyTemporal();
 				}
-				public TextRange getEnumTextRange() {
-					return mapping.getEnumeratedTextRange();
+				
+				public TextRange getTemporalTextRange() {
+					return mapping.getMapKeyTemporalTextRange();
 				}
+
 				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
-					return JptValidator.Null.instance();
+					return new OrmMapKeyTemporalConverterValidator((TemporalConverter) converter, textRangeResolver);
 				}
 			};
 		}
 
 		public boolean isActive(XmlAttributeMapping xmlMapping) {
-			return ((XmlConvertibleMapping) xmlMapping).getEnumerated() != null;
+			return ((XmlMapKeyConvertibleMapping_2_0) xmlMapping).getMapKeyTemporal() != null;
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
-			return factory.buildOrmEnumeratedConverter(parent, this.buildOwner((XmlConvertibleMapping) parent.getXmlAttributeMapping()));
+			return factory.buildOrmTemporalConverter(parent, this.buildOwner((XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping()));
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {
-			((XmlConvertibleMapping) xmlMapping).setEnumerated(null);
+			((XmlMapKeyConvertibleMapping_2_0) xmlMapping).setMapKeyTemporal(null);
 		}
 	}
 }

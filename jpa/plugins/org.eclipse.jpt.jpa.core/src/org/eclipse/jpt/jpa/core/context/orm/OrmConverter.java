@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -25,7 +26,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.1
  * @since 2.1
  */
 public interface OrmConverter
@@ -93,7 +94,7 @@ public interface OrmConverter
 		 * 
 		 * @see #buildNewConverter(OrmAttributeMapping, OrmXmlContextNodeFactory)
 		 */
-		boolean isActive(XmlConvertibleMapping xmlMapping);
+		boolean isActive(XmlAttributeMapping xmlMapping);
 
 		/**
 		 * Build a converter for specified mapping.
@@ -111,6 +112,6 @@ public interface OrmConverter
 		/**
 		 * Clear the adapter's XML value from the specified XML mapping.
 		 */
-		void clearXmlValue(XmlConvertibleMapping xmlMapping);
+		void clearXmlValue(XmlAttributeMapping xmlMapping);
 	}
 }

@@ -28,9 +28,14 @@ public class GenericOrmEnumeratedConverter
 	protected EnumType defaultEnumType;
 
 
-	public GenericOrmEnumeratedConverter(OrmAttributeMapping parent) {
-		super(parent);
+	public GenericOrmEnumeratedConverter(OrmAttributeMapping parent,  OrmEnumeratedConverter.Owner owner) {
+		super(parent, owner);
 		this.specifiedEnumType = this.buildSpecifiedEnumType();
+	}
+
+	@Override
+	protected OrmEnumeratedConverter.Owner getOwner() {
+		return (OrmEnumeratedConverter.Owner) super.getOwner();
 	}
 
 
@@ -71,11 +76,11 @@ public class GenericOrmEnumeratedConverter
 	}
 
 	protected void setXmlEnumerated(EnumType enumType) {
-		this.getXmlConvertibleMapping().setEnumerated(EnumType.toOrmResourceModel(enumType));
+		this.getOwner().setXmlEnumType(EnumType.toOrmResourceModel(enumType));
 	}
 
 	protected EnumType buildSpecifiedEnumType() {
-		return EnumType.fromOrmResourceModel(this.getXmlConvertibleMapping().getEnumerated());
+		return EnumType.fromOrmResourceModel(this.getOwner().getXmlEnumType());
 	}
 
 	public EnumType getDefaultEnumType() {
@@ -130,6 +135,6 @@ public class GenericOrmEnumeratedConverter
 
 	@Override
 	protected TextRange getXmlValidationTextRange() {
-		return this.getXmlConvertibleMapping().getEnumeratedTextRange();
+		return this.getOwner().getEnumTextRange();
 	}
 }

@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.jpa.core.resource.java.LobAnnotation;
 
@@ -23,8 +22,8 @@ public class GenericJavaLobConverter
 {
 	protected final LobAnnotation lobAnnotation;
 
-	public GenericJavaLobConverter(JavaAttributeMapping parent, LobAnnotation lobAnnotation) {
-		super(parent);
+	public GenericJavaLobConverter(JavaAttributeMapping parent, LobAnnotation lobAnnotation, JavaConverter.Owner owner) {
+		super(parent, owner);
 		this.lobAnnotation = lobAnnotation;
 	}
 
@@ -35,16 +34,7 @@ public class GenericJavaLobConverter
 		return LobConverter.class;
 	}
 
-	@Override
-	protected String getAnnotationName() {
-		return LobAnnotation.ANNOTATION_NAME;
-	}
-
-
-	// ********** validation **********
-
-	@Override
-	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
-		return this.lobAnnotation.getTextRange(astRoot);
+	public LobAnnotation getConverterAnnotation() {
+		return this.lobAnnotation;
 	}
 }

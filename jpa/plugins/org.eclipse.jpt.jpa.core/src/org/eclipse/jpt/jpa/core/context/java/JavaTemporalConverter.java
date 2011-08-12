@@ -13,6 +13,10 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaElementCollectionTemporalConverterValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
 
 /**
@@ -29,15 +33,53 @@ public interface JavaTemporalConverter
 {
 	// ********** adapter **********
 
-	public static class Adapter
-		extends JavaConverter.AbstractAdapter
+	public static class BasicAdapter extends AbstractAdapter
 	{
-		private static final Adapter INSTANCE = new Adapter();
+		private static final Adapter INSTANCE = new BasicAdapter();
 		public static Adapter instance() {
 			return INSTANCE;
 		}
+	
+		private BasicAdapter() {
+			super();
+		}
+	
+		@Override
+		protected Owner buildOwner() {
+			return new Owner() {
+				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
+					return new JavaTemporalConverterValidator((TemporalConverter) converter, textRangeResolver);
+				}
+			};
+		}
+	}
 
-		private Adapter() {
+	public static class ElementCollectionAdapter extends AbstractAdapter
+	{
+		private static final Adapter INSTANCE = new ElementCollectionAdapter();
+		public static Adapter instance() {
+			return INSTANCE;
+		}
+	
+		private ElementCollectionAdapter() {
+			super();
+		}
+	
+		@Override
+		protected Owner buildOwner() {
+			return new Owner() {
+				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
+					return new JavaElementCollectionTemporalConverterValidator((TemporalConverter) converter, textRangeResolver);
+				}
+			};
+		}
+	}
+
+	abstract static class AbstractAdapter
+		extends JavaConverter.AbstractAdapter
+	{
+	
+		AbstractAdapter() {
 			super();
 		}
 
@@ -51,7 +93,7 @@ public interface JavaTemporalConverter
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return factory.buildJavaTemporalConverter(parent, (TemporalAnnotation) converterAnnotation);
+			return factory.buildJavaTemporalConverter(parent, (TemporalAnnotation) converterAnnotation, this.buildOwner());
 		}
 	}
 }

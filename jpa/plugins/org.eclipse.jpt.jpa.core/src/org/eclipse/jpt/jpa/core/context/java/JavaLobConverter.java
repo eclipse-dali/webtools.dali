@@ -51,7 +51,7 @@ public interface JavaLobConverter
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return factory.buildJavaLobConverter(parent, (LobAnnotation) converterAnnotation);
+			return factory.buildJavaLobConverter(parent, (LobAnnotation) converterAnnotation, this.buildOwner());
 		}
 	}
 }

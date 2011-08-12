@@ -22,11 +22,15 @@ import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.EnumType;
+import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
@@ -43,6 +47,8 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToMany2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -1417,5 +1423,109 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals("state.foo", specifiedOverrides.next().getName());
 		assertEquals("city", specifiedOverrides.next().getName());
 		assertFalse(specifiedOverrides.hasNext());
+	}
+
+	public void testSetSpecifiedMapKeyEnumerated() throws Exception {
+		createTestEntityWithValidGenericMapOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getMapping();
+		assertNull(oneToManyMapping.getMapKeyConverter().getType());
+		
+		oneToManyMapping.setMapKeyConverter(EnumeratedConverter.class);
+		
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME);
+		
+		assertNotNull(enumerated);
+		assertEquals(null, enumerated.getValue());
+		
+		((EnumeratedConverter) oneToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
+		assertEquals(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING, enumerated.getValue());
+		
+		((EnumeratedConverter) oneToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(null);
+		assertNotNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
+		assertNull(enumerated.getValue());
+		
+		oneToManyMapping.setMapKeyConverter(null);
+		assertNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testGetSpecifiedMapKeyEnumeratedUpdatesFromResourceModelChange() throws Exception {
+		createTestEntityWithValidGenericMapOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getMapping();
+
+		assertNull(oneToManyMapping.getMapKeyConverter().getType());
+		
+		
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		MapKeyEnumerated2_0Annotation enumerated = (MapKeyEnumerated2_0Annotation) resourceField.addAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME);
+		enumerated.setValue(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING);
+		getJpaProject().synchronizeContextModel();
+		
+		assertEquals(EnumType.STRING, ((EnumeratedConverter) oneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		
+		enumerated.setValue(null);
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
+		assertNull(((EnumeratedConverter) oneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertFalse(oneToManyMapping.isDefault());
+		assertSame(oneToManyMapping, persistentAttribute.getMapping());
+	}
+
+	public void testSetMapKeyTemporal() throws Exception {
+		createTestEntityWithValidGenericMapOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getMapping();
+		assertNull(oneToManyMapping.getMapKeyConverter().getType());
+		
+		oneToManyMapping.setMapKeyConverter(TemporalConverter.class);
+		
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		MapKeyTemporal2_0Annotation temporal = (MapKeyTemporal2_0Annotation) resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME);
+		
+		assertNotNull(temporal);
+		assertEquals(null, temporal.getValue());
+		
+		((TemporalConverter) oneToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
+		assertEquals(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME, temporal.getValue());
+		
+		((TemporalConverter) oneToManyMapping.getMapKeyConverter()).setTemporalType(null);
+		assertNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
+	}
+	
+	public void testGetMapKeyTemporalUpdatesFromResourceModelChange() throws Exception {
+		createTestEntityWithValidGenericMapOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getMapping();
+
+		assertNull(oneToManyMapping.getMapKeyConverter().getType());
+		
+		
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		MapKeyTemporal2_0Annotation temporal = (MapKeyTemporal2_0Annotation) resourceField.addAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME);
+		temporal.setValue(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME);
+		getJpaProject().synchronizeContextModel();
+		
+		assertEquals(TemporalType.TIME, ((TemporalConverter) oneToManyMapping.getMapKeyConverter()).getTemporalType());
+		
+		temporal.setValue(null);
+		getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
+		assertNull(((TemporalConverter) oneToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertFalse(oneToManyMapping.isDefault());
+		assertSame(oneToManyMapping, persistentAttribute.getMapping());
 	}
 }

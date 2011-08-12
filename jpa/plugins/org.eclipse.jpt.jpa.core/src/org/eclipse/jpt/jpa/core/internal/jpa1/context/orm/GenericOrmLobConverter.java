@@ -16,15 +16,21 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.text.edits.ReplaceEdit;
 
 public class GenericOrmLobConverter
 	extends AbstractOrmConverter
 	implements OrmLobConverter
 {
-	public GenericOrmLobConverter(OrmAttributeMapping parent) {
-		super(parent);
+	public GenericOrmLobConverter(OrmAttributeMapping parent, OrmConverter.Owner owner) {
+		super(parent, owner);
+	}
+
+	protected XmlConvertibleMapping getXmlConvertibleMapping() {
+		return (XmlConvertibleMapping) this.getXmlAttributeMapping();
 	}
 
 

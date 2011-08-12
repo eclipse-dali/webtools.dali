@@ -12,15 +12,21 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.Association;
+import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
@@ -33,6 +39,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOrderable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -47,10 +54,13 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyAttributeOverrideCol
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyAttributeOverrideValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.RelationshipStrategyTableDescriptionProvider;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapKeyEnumeratedConverter2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapKeyTemporalConverter2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
@@ -82,8 +92,15 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected Type keyType;
 
 	protected final JavaColumn mapKeyColumn;
+	protected JavaConverter mapKeyConverter;  // map key converter - never null
 
 	protected final JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer;
+
+	protected static final JavaConverter.Adapter[] MAP_KEY_CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
+		JavaMapKeyEnumeratedConverter2_0.Adapter.instance(),
+		JavaMapKeyTemporalConverter2_0.Adapter.instance()
+	};
+	protected static final Iterable<JavaConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
@@ -98,6 +115,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		this.specifiedMapKeyClass = this.buildSpecifiedMapKeyClass();
 
 		this.mapKeyColumn = this.buildMapKeyColumn();
+		this.mapKeyConverter = this.buildMapKeyConverter();
 		this.mapKeyAttributeOverrideContainer = this.buildMapKeyAttributeOverrideContainer();
 	}
 
@@ -117,6 +135,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		this.setSpecifiedMapKeyClass_(this.buildSpecifiedMapKeyClass());
 
 		this.mapKeyColumn.synchronizeWithResourceModel();
+		this.syncMapKeyConverter();
 
 		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel();
 	}
@@ -134,6 +153,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		this.setKeyType(this.buildKeyType());
 
 		this.mapKeyColumn.update();
+		this.mapKeyConverter.update();
 
 		this.mapKeyAttributeOverrideContainer.update();
 	}
@@ -532,6 +552,118 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 
+	// ********** map key converter **********
+
+	public JavaConverter getMapKeyConverter() {
+		return this.mapKeyConverter;
+	}
+
+	public void setMapKeyConverter(Class<? extends Converter> converterType) {
+		if (this.mapKeyConverter.getType() != converterType) {
+			this.mapKeyConverter.dispose();
+			JavaConverter.Adapter converterAdapter = this.getKeyConverterAdapter(converterType);
+			this.retainMapKeyConverterAnnotation(converterAdapter);
+			this.setMapKeyConverter_(this.buildMapKeyConverter(converterAdapter));
+		}
+	}
+
+	protected JavaConverter buildMapKeyConverter(JavaConverter.Adapter converterAdapter) {
+		 return (converterAdapter != null) ?
+				converterAdapter.buildNewConverter(this, this.getJpaFactory()) :
+				this.buildNullMapKeyConverter();
+	}
+
+	protected void setMapKeyConverter_(JavaConverter mapKeyConverter) {
+		Converter old = this.mapKeyConverter;
+		this.mapKeyConverter = mapKeyConverter;
+		this.firePropertyChanged(MAP_KEY_CONVERTER_PROPERTY, old, mapKeyConverter);
+	}
+
+	/**
+	 * Clear all the converter annotations <em>except</em> for the annotation
+	 * corresponding to the specified adapter. If the specified adapter is
+	 * <code>null</code>, remove <em>all</em> the converter annotations.
+	 */
+	protected void retainMapKeyConverterAnnotation(JavaConverter.Adapter converterAdapter) {
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
+		for (JavaConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+			if (adapter != converterAdapter) {
+				adapter.removeConverterAnnotation(resourceAttribute);
+			}
+		}
+	}
+
+	protected JavaConverter buildMapKeyConverter() {
+		if (isJpa2_0Compatible()) {
+			JpaFactory jpaFactory = this.getJpaFactory();
+			for (JavaConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+				JavaConverter javaConverter = adapter.buildConverter(this, jpaFactory);
+				if (javaConverter != null) {
+					return javaConverter;
+				}
+			}
+		}
+		return this.buildNullMapKeyConverter();
+	}
+
+	protected void syncMapKeyConverter() {
+		Association<JavaConverter.Adapter, Annotation> assoc = this.getMapKeyConverterAnnotation();
+		if (assoc == null) {
+			if (this.mapKeyConverter.getType() != null) {
+				this.setMapKeyConverter_(this.buildNullMapKeyConverter());
+			}
+		} else {
+			JavaConverter.Adapter adapter = assoc.getKey();
+			Annotation annotation = assoc.getValue();
+			if ((this.mapKeyConverter.getType() == adapter.getConverterType()) &&
+					(this.mapKeyConverter.getConverterAnnotation() == annotation)) {
+				this.mapKeyConverter.synchronizeWithResourceModel();
+			} else {
+				this.setMapKeyConverter_(adapter.buildConverter(annotation, this, this.getJpaFactory()));
+			}
+		}
+	}
+
+	/**
+	 * Return the first converter annotation we find along with its corresponding
+	 * adapter. Return <code>null</code> if there are no converter annotations.
+	 */
+	protected Association<JavaConverter.Adapter, Annotation> getMapKeyConverterAnnotation() {
+		if (isJpa2_0Compatible()) {
+			JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
+			for (JavaConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+				Annotation annotation = adapter.getConverterAnnotation(resourceAttribute);
+				if (annotation != null) {
+					return new SimpleAssociation<JavaConverter.Adapter, Annotation>(adapter, annotation);
+				}
+			}
+		}
+		return null;
+	}
+
+	protected JavaConverter buildNullMapKeyConverter() {
+		return new NullJavaConverter(this);
+	}
+
+
+	// ********** map key converter adapters **********
+
+	/**
+	 * Return the converter adapter for the specified converter type.
+	 */
+	protected JavaConverter.Adapter getKeyConverterAdapter(Class<? extends Converter> converterType) {
+		for (JavaConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+			if (adapter.getConverterType() == converterType) {
+				return adapter;
+			}
+		}
+		return null;
+	}
+
+	protected Iterable<JavaConverter.Adapter> getMapKeyConverterAdapters() {
+		return MAP_KEY_CONVERTER_ADAPTERS;
+	}
+
 	// ********** map key attribute override container **********
 
 	public JavaAttributeOverrideContainer getMapKeyAttributeOverrideContainer() {
@@ -650,7 +782,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		}
 		if (this.getKeyType() == Type.BASIC_TYPE) {
 			this.mapKeyColumn.validate(messages, reporter, astRoot);
-			//validate map key converter
+			this.mapKeyConverter.validate(messages, reporter, astRoot);
 		}
 		else if (this.getKeyType() == Type.ENTITY_TYPE) {
 			//validate map key join columns

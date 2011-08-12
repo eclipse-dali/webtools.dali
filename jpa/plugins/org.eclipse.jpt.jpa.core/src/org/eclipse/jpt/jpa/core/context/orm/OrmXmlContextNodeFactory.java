@@ -253,11 +253,11 @@ public interface OrmXmlContextNodeFactory
 
 	OrmVirtualUniqueConstraint buildOrmVirtualUniqueConstraint(XmlContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint);
 
-	OrmConverter buildOrmEnumeratedConverter(OrmAttributeMapping parent);
+	OrmConverter buildOrmEnumeratedConverter(OrmAttributeMapping parent, OrmEnumeratedConverter.Owner owner);
 
-	OrmConverter buildOrmTemporalConverter(OrmAttributeMapping parent);
+	OrmConverter buildOrmTemporalConverter(OrmAttributeMapping parent, OrmTemporalConverter.Owner owner);
 
-	OrmConverter buildOrmLobConverter(OrmAttributeMapping parent);
+	OrmConverter buildOrmLobConverter(OrmAttributeMapping parent, OrmConverter.Owner owner);
 
 	/**
 	 * JPA 1.0 only

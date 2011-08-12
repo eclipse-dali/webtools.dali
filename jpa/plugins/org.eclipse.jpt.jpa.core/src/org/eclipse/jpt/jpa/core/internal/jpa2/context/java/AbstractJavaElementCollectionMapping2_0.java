@@ -92,6 +92,8 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContain
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapKeyEnumeratedConverter2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapKeyTemporalConverter2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
@@ -141,16 +143,24 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	protected String fullyQualifiedMapKeyClass;
 
 	protected final JavaColumn mapKeyColumn;
+	protected JavaConverter mapKeyConverter;  // map key converter - never null
 
 	protected final JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
 
 	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
 		JavaEnumeratedConverter.Adapter.instance(),
-		JavaTemporalConverter.Adapter.instance(),
+		JavaTemporalConverter.ElementCollectionAdapter.instance(),
 		JavaLobConverter.Adapter.instance()
 	};
 	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
+
+
+	protected static final JavaConverter.Adapter[] MAP_KEY_CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
+		JavaMapKeyEnumeratedConverter2_0.Adapter.instance(),
+		JavaMapKeyTemporalConverter2_0.Adapter.instance()
+	};
+	protected static final Iterable<JavaConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 
 	protected AbstractJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
@@ -172,6 +182,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.specifiedMapKeyClass = this.buildSpecifiedMapKeyClass();
 
 		this.mapKeyColumn = this.buildMapKeyColumn();
+		this.mapKeyConverter = this.buildMapKeyConverter();
 		this.mapKeyAttributeOverrideContainer = this.buildMapKeyAttributeOverrideContainer();
 	}
 
@@ -198,6 +209,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.setSpecifiedMapKeyClass_(this.buildSpecifiedMapKeyClass());
 
 		this.mapKeyColumn.synchronizeWithResourceModel();
+		this.syncMapKeyConverter();
 		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel();
 	}
 
@@ -223,6 +235,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
 
 		this.mapKeyColumn.update();
+		this.mapKeyConverter.update();
 		this.mapKeyAttributeOverrideContainer.update();
 	}
 
@@ -903,6 +916,109 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.getResourceAttribute().removeAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
 	}
 
+	// ********** map key converter **********
+
+	public JavaConverter getMapKeyConverter() {
+		return this.mapKeyConverter;
+	}
+
+	public void setMapKeyConverter(Class<? extends Converter> converterType) {
+		if (this.mapKeyConverter.getType() != converterType) {
+			this.mapKeyConverter.dispose();
+			JavaConverter.Adapter converterAdapter = this.getMapKeyConverterAdapter(converterType);
+			this.retainMapKeyConverterAnnotation(converterAdapter);
+			this.setMapKeyConverter_(this.buildKeyConverter(converterAdapter));
+		}
+	}
+
+	protected JavaConverter buildKeyConverter(JavaConverter.Adapter converterAdapter) {
+		 return (converterAdapter != null) ?
+				converterAdapter.buildNewConverter(this, this.getJpaFactory()) :
+				this.buildNullConverter();
+	}
+
+	protected void setMapKeyConverter_(JavaConverter keyConverter) {
+		Converter old = this.mapKeyConverter;
+		this.mapKeyConverter = keyConverter;
+		this.firePropertyChanged(MAP_KEY_CONVERTER_PROPERTY, old, keyConverter);
+	}
+
+	/**
+	 * Clear all the converter annotations <em>except</em> for the annotation
+	 * corresponding to the specified adapter. If the specified adapter is
+	 * <code>null</code>, remove <em>all</em> the converter annotations.
+	 */
+	protected void retainMapKeyConverterAnnotation(JavaConverter.Adapter converterAdapter) {
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
+		for (JavaConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+			if (adapter != converterAdapter) {
+				adapter.removeConverterAnnotation(resourceAttribute);
+			}
+		}
+	}
+
+	protected JavaConverter buildMapKeyConverter() {
+		JpaFactory jpaFactory = this.getJpaFactory();
+		for (JavaConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+			JavaConverter javaConverter = adapter.buildConverter(this, jpaFactory);
+			if (javaConverter != null) {
+				return javaConverter;
+			}
+		}
+		return this.buildNullConverter();
+	}
+
+	protected void syncMapKeyConverter() {
+		Association<JavaConverter.Adapter, Annotation> assoc = this.getMapKeyConverterAnnotation();
+		if (assoc == null) {
+			if (this.mapKeyConverter.getType() != null) {
+				this.setMapKeyConverter_(this.buildNullConverter());
+			}
+		} else {
+			JavaConverter.Adapter adapter = assoc.getKey();
+			Annotation annotation = assoc.getValue();
+			if ((this.mapKeyConverter.getType() == adapter.getConverterType()) &&
+					(this.mapKeyConverter.getConverterAnnotation() == annotation)) {
+				this.mapKeyConverter.synchronizeWithResourceModel();
+			} else {
+				this.setMapKeyConverter_(adapter.buildConverter(annotation, this, this.getJpaFactory()));
+			}
+		}
+	}
+
+	/**
+	 * Return the first converter annotation we find along with its corresponding
+	 * adapter. Return <code>null</code> if there are no converter annotations.
+	 */
+	protected Association<JavaConverter.Adapter, Annotation> getMapKeyConverterAnnotation() {
+		JavaResourceAttribute resourceAttribute = this.getResourceAttribute();
+		for (JavaConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+			Annotation annotation = adapter.getConverterAnnotation(resourceAttribute);
+			if (annotation != null) {
+				return new SimpleAssociation<JavaConverter.Adapter, Annotation>(adapter, annotation);
+			}
+		}
+		return null;
+	}
+
+
+	// ********** map key converter adapters **********
+
+	/**
+	 * Return the converter adapter for the specified converter type.
+	 */
+	protected JavaConverter.Adapter getMapKeyConverterAdapter(Class<? extends Converter> converterType) {
+		for (JavaConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+			if (adapter.getConverterType() == converterType) {
+				return adapter;
+			}
+		}
+		return null;
+	}
+
+	protected Iterable<JavaConverter.Adapter> getMapKeyConverterAdapters() {
+		return MAP_KEY_CONVERTER_ADAPTERS;
+	}
 
 	// ********** map key attribute override container **********
 
@@ -1295,7 +1411,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		switch (this.keyType) {
 			case BASIC_TYPE :
 				this.mapKeyColumn.validate(messages, reporter, astRoot);
-				//validate map key converter
+				this.mapKeyConverter.validate(messages, reporter, astRoot);
 				break;
 			case ENTITY_TYPE :
 				//validate map key join columns

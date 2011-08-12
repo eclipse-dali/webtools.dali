@@ -15,13 +15,21 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.text.edits.ReplaceEdit;
 
 public class NullOrmConverter
-	extends AbstractOrmConverter
+	extends AbstractOrmXmlContextNode
+	implements OrmConverter
 {
 	public NullOrmConverter(OrmAttributeMapping parent) {
 		super(parent);
+	}
+
+	@Override
+	public OrmAttributeMapping getParent() {
+		return (OrmAttributeMapping) super.getParent();
 	}
 
 	public void initialize() {
@@ -32,11 +40,9 @@ public class NullOrmConverter
 		return null;
 	}
 
-	@Override
-	protected TextRange getXmlValidationTextRange() {
-		return null;
+	public TextRange getValidationTextRange() {
+		return this.getParent().getValidationTextRange();
 	}
-
 
 	// ********** refactoring **********
 

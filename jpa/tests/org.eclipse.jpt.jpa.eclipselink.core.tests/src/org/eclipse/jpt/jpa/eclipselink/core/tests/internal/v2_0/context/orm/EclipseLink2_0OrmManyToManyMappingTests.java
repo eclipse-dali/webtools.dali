@@ -17,10 +17,14 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.EnumType;
+import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
@@ -38,6 +42,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlManyToMany_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkManyToManyMapping;
@@ -959,5 +964,107 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 		assertEquals(null, ormManyToManyMapping.getOrderable().getSpecifiedOrderBy());
 
 		assertEquals(null, ormManyToManyMapping.getJoinFetch().getValue());
+	}
+
+	public void testUpdateSpecifiedEnumerated() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		OrmManyToManyMapping2_0 ormManyToManyMapping = (OrmManyToManyMapping2_0) ormPersistentAttribute.getMapping();
+		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(manyToManyResource.getMapKeyEnumerated());
+				
+		//set enumerated in the resource model, verify context model updated
+		manyToManyResource.setMapKeyEnumerated(org.eclipse.jpt.jpa.core.resource.orm.EnumType.ORDINAL);
+		assertEquals(EnumType.ORDINAL, ((EnumeratedConverter) ormManyToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.ORDINAL, manyToManyResource.getMapKeyEnumerated());
+	
+		manyToManyResource.setMapKeyEnumerated(org.eclipse.jpt.jpa.core.resource.orm.EnumType.STRING);
+		assertEquals(EnumType.STRING, ((EnumeratedConverter) ormManyToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.STRING, manyToManyResource.getMapKeyEnumerated());
+
+		//set enumerated to null in the resource model
+		manyToManyResource.setMapKeyEnumerated(null);
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(manyToManyResource.getMapKeyEnumerated());
+	}
+	
+	public void testModifySpecifiedEnumerated() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "ManyToManyMapping");
+		OrmManyToManyMapping2_0 ormManyToManyMapping = (OrmManyToManyMapping2_0) ormPersistentAttribute.getMapping();
+		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(manyToManyResource.getMapKeyEnumerated());
+				
+		//set enumerated in the context model, verify resource model updated
+		ormManyToManyMapping.setMapKeyConverter(EnumeratedConverter.class);
+		((EnumeratedConverter) ormManyToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.ORDINAL);
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.ORDINAL, manyToManyResource.getMapKeyEnumerated());
+		assertEquals(EnumType.ORDINAL, ((EnumeratedConverter) ormManyToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+	
+		((EnumeratedConverter) ormManyToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.STRING, manyToManyResource.getMapKeyEnumerated());
+		assertEquals(EnumType.STRING, ((EnumeratedConverter) ormManyToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+
+		//set enumerated to null in the context model
+		ormManyToManyMapping.setMapKeyConverter(null);
+		assertNull(manyToManyResource.getMapKeyEnumerated());
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+	}
+	
+	public void testUpdateSpecifiedTemporal() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "ManyToManyMapping");
+		OrmManyToManyMapping2_0 ormManyToManyMapping = (OrmManyToManyMapping2_0) ormPersistentAttribute.getMapping();
+		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(manyToManyResource.getMapKeyTemporal());
+				
+		//set temporal in the resource model, verify context model updated
+		manyToManyResource.setMapKeyTemporal(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.DATE);
+		assertEquals(TemporalType.DATE, ((TemporalConverter) ormManyToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.DATE, manyToManyResource.getMapKeyTemporal());
+	
+		manyToManyResource.setMapKeyTemporal(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIME);
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ormManyToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIME, manyToManyResource.getMapKeyTemporal());
+		
+		manyToManyResource.setMapKeyTemporal(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIMESTAMP);
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormManyToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIMESTAMP, manyToManyResource.getMapKeyTemporal());
+
+		//set temporal to null in the resource model
+		manyToManyResource.setMapKeyTemporal(null);
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(manyToManyResource.getMapKeyTemporal());
+	}
+	
+	public void testModifySpecifiedTemporal() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "ManyToManyMapping");
+		OrmManyToManyMapping2_0 ormManyToManyMapping = (OrmManyToManyMapping2_0) ormPersistentAttribute.getMapping();
+		XmlManyToMany_2_0 manyToManyResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
+		assertNull(manyToManyResource.getMapKeyTemporal());
+				
+		//set temporal in the context model, verify resource model updated
+		ormManyToManyMapping.setMapKeyConverter(TemporalConverter.class);
+		((TemporalConverter) ormManyToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.DATE);
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.DATE, manyToManyResource.getMapKeyTemporal());
+		assertEquals(TemporalType.DATE, ((TemporalConverter) ormManyToManyMapping.getMapKeyConverter()).getTemporalType());
+	
+		((TemporalConverter) ormManyToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIME, manyToManyResource.getMapKeyTemporal());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ormManyToManyMapping.getMapKeyConverter()).getTemporalType());
+
+		//set temporal to null in the context model
+		ormManyToManyMapping.setMapKeyConverter(null);
+		assertNull(manyToManyResource.getMapKeyTemporal());
+		assertNull(ormManyToManyMapping.getMapKeyConverter().getType());
 	}
 }

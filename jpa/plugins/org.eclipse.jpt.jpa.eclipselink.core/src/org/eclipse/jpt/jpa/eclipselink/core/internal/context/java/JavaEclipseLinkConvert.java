@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.Association;
@@ -58,13 +57,16 @@ public class JavaEclipseLinkConvert
 	protected static final Iterable<JavaEclipseLinkConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaEclipseLinkConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
                                                                                                                       
 
-	public JavaEclipseLinkConvert(JavaAttributeMapping parent, EclipseLinkConvertAnnotation convertAnnotation) {
-		super(parent);
+	public JavaEclipseLinkConvert(JavaAttributeMapping parent, EclipseLinkConvertAnnotation convertAnnotation, JavaConverter.Owner owner) {
+		super(parent, owner);
 		this.convertAnnotation = convertAnnotation;
 		this.specifiedConverterName = convertAnnotation.getValue();
 		this.converter = this.buildConverter();
 	}
 
+	public EclipseLinkConvertAnnotation getConverterAnnotation() {
+		return this.convertAnnotation;
+	}
 
 	// ********** synchronize/update **********
 
@@ -244,11 +246,6 @@ public class JavaEclipseLinkConvert
 		return EclipseLinkConvert.class;
 	}
 
-	@Override
-	protected String getAnnotationName() {
-		return EclipseLinkConvertAnnotation.ANNOTATION_NAME;
-	}
-
 	/**
 	 * Return whether the convert is <em>virtual</em> and, as a result, does
 	 * not have a converter.
@@ -342,11 +339,6 @@ public class JavaEclipseLinkConvert
 			)
 		);	
 	}
-	
-	@Override
-	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
-		return this.convertAnnotation.getTextRange(astRoot);
-	}
 
 
 	// ********** adapter **********
@@ -373,7 +365,7 @@ public class JavaEclipseLinkConvert
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return new JavaEclipseLinkConvert(parent, (EclipseLinkConvertAnnotation) converterAnnotation);
+			return new JavaEclipseLinkConvert(parent, (EclipseLinkConvertAnnotation) converterAnnotation, this.buildOwner());
 		}
 	}
 }

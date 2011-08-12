@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
 
@@ -28,8 +27,8 @@ public class GenericJavaEnumeratedConverter
 	protected EnumType defaultEnumType;
 
 
-	public GenericJavaEnumeratedConverter(JavaAttributeMapping parent, EnumeratedAnnotation enumeratedAnnotation) {
-		super(parent);
+	public GenericJavaEnumeratedConverter(JavaAttributeMapping parent, EnumeratedAnnotation enumeratedAnnotation, JavaConverter.Owner owner) {
+		super(parent, owner);
 		this.enumeratedAnnotation = enumeratedAnnotation;
 		this.specifiedEnumType = this.buildSpecifiedEnumType();
 	}
@@ -96,16 +95,7 @@ public class GenericJavaEnumeratedConverter
 		return EnumeratedConverter.class;
 	}
 
-	@Override
-	protected String getAnnotationName() {
-		return EnumeratedAnnotation.ANNOTATION_NAME;
-	}
-
-
-	// ********** validation **********
-
-	@Override
-	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
-		return this.enumeratedAnnotation.getTextRange(astRoot);
+	public EnumeratedAnnotation getConverterAnnotation() {
+		return this.enumeratedAnnotation;
 	}
 }

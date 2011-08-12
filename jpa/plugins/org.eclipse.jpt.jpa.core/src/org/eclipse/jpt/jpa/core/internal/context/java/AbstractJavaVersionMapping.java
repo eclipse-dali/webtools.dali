@@ -56,7 +56,7 @@ public abstract class AbstractJavaVersionMapping
 	// the spec does not list Temporal explicitly,
 	// but it is included in the orm.xml schema...
 	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
-		JavaTemporalConverter.Adapter.instance(),
+		JavaTemporalConverter.BasicAdapter.instance(),
 	};
 	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
 

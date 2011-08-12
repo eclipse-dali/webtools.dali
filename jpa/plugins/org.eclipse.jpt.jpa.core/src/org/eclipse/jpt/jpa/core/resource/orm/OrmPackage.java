@@ -558,22 +558,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
 
 	/**
-	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
-
-	/**
 	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 6;
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
@@ -582,7 +573,16 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 7;
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS = ABSTRACT_XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
@@ -1911,49 +1911,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
 
 	/**
-	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__TARGET_CLASS = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
-
-	/**
-	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__FETCH = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
-
-	/**
-	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
-
-	/**
-	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_CLASS = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
-
-	/**
 	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
@@ -1962,7 +1926,43 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 13;
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
+
+	/**
+	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__TARGET_CLASS = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
+
+	/**
+	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__FETCH = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
+
+	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_CLASS = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
@@ -3820,15 +3820,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES;
 
 	/**
-	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_CLASS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS;
-
-	/**
 	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3845,6 +3836,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MANY_TO_MANY__MAP_KEY_ENUMERATED = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_CLASS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
@@ -4387,15 +4387,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES;
 
 	/**
-	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_CLASS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS;
-
-	/**
 	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4412,6 +4403,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_MANY__MAP_KEY_ENUMERATED = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED;
+
+	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_CLASS = ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS;
 
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.

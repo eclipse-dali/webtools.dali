@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyConvertibleMapping_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -117,15 +118,6 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 */
 	protected EList<XmlAttributeOverride> mapKeyAttributeOverrides;
 	/**
-	 * The cached value of the '{@link #getMapKeyClass() <em>Map Key Class</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyClass()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlClassReference mapKeyClass;
-	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
 	 * we don't want a default for enums, just null if the tag does not exist
 	 */
@@ -153,6 +145,15 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * @ordered
 	 */
 	protected EnumType mapKeyEnumerated = MAP_KEY_ENUMERATED_EDEFAULT;
+	/**
+	 * The cached value of the '{@link #getMapKeyClass() <em>Map Key Class</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlClassReference mapKeyClass;
 	/**
 	 * The cached value of the '{@link #getMapKeyColumn() <em>Map Key Column</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -485,7 +486,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * @return the value of the '<em>Map Key Temporal</em>' attribute.
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.TemporalType
 	 * @see #setMapKeyTemporal(TemporalType)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_2_0_MapKeyTemporal()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMapKeyConvertibleMapping_2_0_MapKeyTemporal()
 	 * @model
 	 * @generated
 	 */
@@ -523,7 +524,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * @return the value of the '<em>Map Key Enumerated</em>' attribute.
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.EnumType
 	 * @see #setMapKeyEnumerated(EnumType)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_2_0_MapKeyEnumerated()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMapKeyConvertibleMapping_2_0_MapKeyEnumerated()
 	 * @model
 	 * @generated
 	 */
@@ -738,12 +739,12 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return getOrderBy();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				return getMapKeyAttributeOverrides();
-			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
-				return getMapKeyClass();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL:
 				return getMapKeyTemporal();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED:
 				return getMapKeyEnumerated();
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
+				return getMapKeyClass();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN:
 				return getMapKeyColumn();
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS:
@@ -781,14 +782,14 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				getMapKeyAttributeOverrides().clear();
 				getMapKeyAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
 				return;
-			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
-				setMapKeyClass((XmlClassReference)newValue);
-				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL:
 				setMapKeyTemporal((TemporalType)newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED:
 				setMapKeyEnumerated((EnumType)newValue);
+				return;
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
+				setMapKeyClass((XmlClassReference)newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN:
 				setMapKeyColumn((XmlColumn)newValue);
@@ -829,14 +830,14 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				getMapKeyAttributeOverrides().clear();
 				return;
-			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
-				setMapKeyClass((XmlClassReference)null);
-				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL:
 				setMapKeyTemporal(MAP_KEY_TEMPORAL_EDEFAULT);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED:
 				setMapKeyEnumerated(MAP_KEY_ENUMERATED_EDEFAULT);
+				return;
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
+				setMapKeyClass((XmlClassReference)null);
 				return;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN:
 				setMapKeyColumn((XmlColumn)null);
@@ -871,12 +872,12 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				return mapKeyAttributeOverrides != null && !mapKeyAttributeOverrides.isEmpty();
-			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
-				return mapKeyClass != null;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL:
 				return mapKeyTemporal != MAP_KEY_TEMPORAL_EDEFAULT;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED:
 				return mapKeyEnumerated != MAP_KEY_ENUMERATED_EDEFAULT;
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS:
+				return mapKeyClass != null;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN:
 				return mapKeyColumn != null;
 			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS:
@@ -935,13 +936,20 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMapKeyConvertibleMapping_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL: return OrmV2_0Package.XML_MAP_KEY_CONVERTIBLE_MAPPING_20__MAP_KEY_TEMPORAL;
+				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED: return OrmV2_0Package.XML_MAP_KEY_CONVERTIBLE_MAPPING_20__MAP_KEY_ENUMERATED;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlMultiRelationshipMapping_2_0.class)
 		{
 			switch (derivedFeatureID)
 			{
 				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_CLASS;
-				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_TEMPORAL;
-				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ENUMERATED;
 				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_COLUMN;
 				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS: return OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_JOIN_COLUMNS;
 				default: return -1;
@@ -998,13 +1006,20 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMapKeyConvertibleMapping_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_MAP_KEY_CONVERTIBLE_MAPPING_20__MAP_KEY_TEMPORAL: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL;
+				case OrmV2_0Package.XML_MAP_KEY_CONVERTIBLE_MAPPING_20__MAP_KEY_ENUMERATED: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlMultiRelationshipMapping_2_0.class)
 		{
 			switch (baseFeatureID)
 			{
 				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_CLASS: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_CLASS;
-				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_TEMPORAL: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_TEMPORAL;
-				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_ENUMERATED: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_ENUMERATED;
 				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_COLUMN: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_COLUMN;
 				case OrmV2_0Package.XML_MULTI_RELATIONSHIP_MAPPING_20__MAP_KEY_JOIN_COLUMNS: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY_JOIN_COLUMNS;
 				default: return -1;
@@ -1040,6 +1055,14 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 		return getAttributeTextRange(JPA.MAPPED_BY);
 	}
 
+	public TextRange getMapKeyEnumeratedTextRange() {
+		return getAttributeTextRange(JPA2_0.MAP_KEY_ENUMERATED);
+	}
+
+	public TextRange getMapKeyTemporalTextRange() {
+		return getAttributeTextRange(JPA2_0.MAP_KEY_TEMPORAL);
+	}
+
 
 	// ********** refactoring **********
 
@@ -1063,11 +1086,11 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	}
 
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(JPA2_0.MAP_KEY_TEMPORAL, OrmV2_0Package.eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyTemporal());
+		return new Translator(JPA2_0.MAP_KEY_TEMPORAL, OrmV2_0Package.eINSTANCE.getXmlMapKeyConvertibleMapping_2_0_MapKeyTemporal());
 	}
 
 	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlMultiRelationshipMapping_2_0_MapKeyEnumerated());
+		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlMapKeyConvertibleMapping_2_0_MapKeyEnumerated());
 	}
 
 	protected static Translator buildMapKeyClassTranslator() {

@@ -72,7 +72,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 
 
 	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
-		OrmTemporalConverter.Adapter.instance(),
+		OrmTemporalConverter.BasicAdapter.instance(),
 	};
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
 

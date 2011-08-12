@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010 Oracle. 
+ *  Copyright (c) 2009, 2011 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -30,6 +30,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlElementCollection_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyConvertibleMapping_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -159,6 +160,38 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	protected EList<XmlAttributeOverride> mapKeyAttributeOverrides;
 
 	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyTemporal()
+	 * @generated
+	 * @ordered
+	 */
+	protected TemporalType mapKeyTemporal = MAP_KEY_TEMPORAL_EDEFAULT;
+
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyEnumerated()
+	 * @generated
+	 * @ordered
+	 */
+	protected EnumType mapKeyEnumerated = MAP_KEY_ENUMERATED_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getTargetClass() <em>Target Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -213,38 +246,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @ordered
 	 */
 	protected XmlClassReference mapKeyClass;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyTemporal()
-	 * @generated
-	 * @ordered
-	 */
-	protected TemporalType mapKeyTemporal = MAP_KEY_TEMPORAL_EDEFAULT;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyEnumerated()
-	 * @generated
-	 * @ordered
-	 */
-	protected EnumType mapKeyEnumerated = MAP_KEY_ENUMERATED_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getMapKeyColumn() <em>Map Key Column</em>}' containment reference.
@@ -787,7 +788,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @return the value of the '<em>Map Key Temporal</em>' attribute.
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.TemporalType
 	 * @see #setMapKeyTemporal(TemporalType)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlElementCollection_2_0_MapKeyTemporal()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMapKeyConvertibleMapping_2_0_MapKeyTemporal()
 	 * @model
 	 * @generated
 	 */
@@ -825,7 +826,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	 * @return the value of the '<em>Map Key Enumerated</em>' attribute.
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.EnumType
 	 * @see #setMapKeyEnumerated(EnumType)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlElementCollection_2_0_MapKeyEnumerated()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMapKeyConvertibleMapping_2_0_MapKeyEnumerated()
 	 * @model
 	 * @generated
 	 */
@@ -1114,6 +1115,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return getAssociationOverrides();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				return getMapKeyAttributeOverrides();
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL:
+				return getMapKeyTemporal();
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
+				return getMapKeyEnumerated();
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				return getTargetClass();
 			case OrmPackage.XML_ELEMENT_COLLECTION__FETCH:
@@ -1122,10 +1127,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return getMapKey();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS:
 				return getMapKeyClass();
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL:
-				return getMapKeyTemporal();
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
-				return getMapKeyEnumerated();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN:
 				return getMapKeyColumn();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS:
@@ -1176,6 +1177,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				getMapKeyAttributeOverrides().clear();
 				getMapKeyAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
 				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL:
+				setMapKeyTemporal((TemporalType)newValue);
+				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
+				setMapKeyEnumerated((EnumType)newValue);
+				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				setTargetClass((String)newValue);
 				return;
@@ -1187,12 +1194,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS:
 				setMapKeyClass((XmlClassReference)newValue);
-				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL:
-				setMapKeyTemporal((TemporalType)newValue);
-				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
-				setMapKeyEnumerated((EnumType)newValue);
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN:
 				setMapKeyColumn((XmlColumn)newValue);
@@ -1245,6 +1246,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				getMapKeyAttributeOverrides().clear();
 				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL:
+				setMapKeyTemporal(MAP_KEY_TEMPORAL_EDEFAULT);
+				return;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
+				setMapKeyEnumerated(MAP_KEY_ENUMERATED_EDEFAULT);
+				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				setTargetClass(TARGET_CLASS_EDEFAULT);
 				return;
@@ -1256,12 +1263,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS:
 				setMapKeyClass((XmlClassReference)null);
-				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL:
-				setMapKeyTemporal(MAP_KEY_TEMPORAL_EDEFAULT);
-				return;
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
-				setMapKeyEnumerated(MAP_KEY_ENUMERATED_EDEFAULT);
 				return;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN:
 				setMapKeyColumn((XmlColumn)null);
@@ -1305,6 +1306,10 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return associationOverrides != null && !associationOverrides.isEmpty();
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES:
 				return mapKeyAttributeOverrides != null && !mapKeyAttributeOverrides.isEmpty();
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL:
+				return mapKeyTemporal != MAP_KEY_TEMPORAL_EDEFAULT;
+			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
+				return mapKeyEnumerated != MAP_KEY_ENUMERATED_EDEFAULT;
 			case OrmPackage.XML_ELEMENT_COLLECTION__TARGET_CLASS:
 				return TARGET_CLASS_EDEFAULT == null ? targetClass != null : !TARGET_CLASS_EDEFAULT.equals(targetClass);
 			case OrmPackage.XML_ELEMENT_COLLECTION__FETCH:
@@ -1313,10 +1318,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				return mapKey != null;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS:
 				return mapKeyClass != null;
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL:
-				return mapKeyTemporal != MAP_KEY_TEMPORAL_EDEFAULT;
-			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED:
-				return mapKeyEnumerated != MAP_KEY_ENUMERATED_EDEFAULT;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN:
 				return mapKeyColumn != null;
 			case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS:
@@ -1387,6 +1388,15 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMapKeyConvertibleMapping_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL: return OrmV2_0Package.XML_MAP_KEY_CONVERTIBLE_MAPPING_20__MAP_KEY_TEMPORAL;
+				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED: return OrmV2_0Package.XML_MAP_KEY_CONVERTIBLE_MAPPING_20__MAP_KEY_ENUMERATED;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlElementCollection_2_0.class)
 		{
 			switch (derivedFeatureID)
@@ -1395,8 +1405,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				case OrmPackage.XML_ELEMENT_COLLECTION__FETCH: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__FETCH;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_CLASS;
-				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_TEMPORAL;
-				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_ENUMERATED;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_COLUMN;
 				case OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_JOIN_COLUMNS;
 				case OrmPackage.XML_ELEMENT_COLLECTION__COLUMN: return OrmV2_0Package.XML_ELEMENT_COLLECTION_20__COLUMN;
@@ -1465,6 +1473,15 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMapKeyConvertibleMapping_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_MAP_KEY_CONVERTIBLE_MAPPING_20__MAP_KEY_TEMPORAL: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL;
+				case OrmV2_0Package.XML_MAP_KEY_CONVERTIBLE_MAPPING_20__MAP_KEY_ENUMERATED: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlElementCollection_2_0.class)
 		{
 			switch (baseFeatureID)
@@ -1473,8 +1490,6 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__FETCH: return OrmPackage.XML_ELEMENT_COLLECTION__FETCH;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_CLASS: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS;
-				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_TEMPORAL: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL;
-				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_ENUMERATED: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_COLUMN: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_COLUMN;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__MAP_KEY_JOIN_COLUMNS: return OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_JOIN_COLUMNS;
 				case OrmV2_0Package.XML_ELEMENT_COLLECTION_20__COLUMN: return OrmPackage.XML_ELEMENT_COLLECTION__COLUMN;
@@ -1504,14 +1519,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		result.append(enumerated);
 		result.append(", orderBy: ");
 		result.append(orderBy);
-		result.append(", targetClass: ");
-		result.append(targetClass);
-		result.append(", fetch: ");
-		result.append(fetch);
 		result.append(", mapKeyTemporal: ");
 		result.append(mapKeyTemporal);
 		result.append(", mapKeyEnumerated: ");
 		result.append(mapKeyEnumerated);
+		result.append(", targetClass: ");
+		result.append(targetClass);
+		result.append(", fetch: ");
+		result.append(fetch);
 		result.append(')');
 		return result.toString();
 	}
@@ -1540,6 +1555,14 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	
 	public TextRange getTargetClassTextRange() {
 		return getAttributeTextRange(JPA2_0.TARGET_CLASS);
+	}
+
+	public TextRange getMapKeyEnumeratedTextRange() {
+		return getAttributeTextRange(JPA2_0.MAP_KEY_ENUMERATED);
+	}
+
+	public TextRange getMapKeyTemporalTextRange() {
+		return getAttributeTextRange(JPA2_0.MAP_KEY_TEMPORAL);
 	}
 	
 	// **************** translators *******************************************
@@ -1614,11 +1637,11 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	protected static Translator buildMapKeyTemporalTranslator() {
-		return new Translator(JPA2_0.MAP_KEY_TEMPORAL, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyTemporal());
+		return new Translator(JPA2_0.MAP_KEY_TEMPORAL, OrmV2_0Package.eINSTANCE.getXmlMapKeyConvertibleMapping_2_0_MapKeyTemporal());
 	}
 	
 	protected static Translator buildMapKeyEnumeratedTranslator() {
-		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_MapKeyEnumerated());
+		return new Translator(JPA2_0.MAP_KEY_ENUMERATED, OrmV2_0Package.eINSTANCE.getXmlMapKeyConvertibleMapping_2_0_MapKeyEnumerated());
 	}	
 	
 	protected static Translator buildAttributeOverrideTranslator() {

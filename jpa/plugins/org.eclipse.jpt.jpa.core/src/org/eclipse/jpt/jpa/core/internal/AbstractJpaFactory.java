@@ -35,6 +35,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedIdMapping;
@@ -396,16 +397,16 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualUniqueConstraint(parent, overriddenUniqueConstraint);
 	}
 	
-	public JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, EnumeratedAnnotation annotation) {
-		return new GenericJavaEnumeratedConverter(parent, annotation);
+	public JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, EnumeratedAnnotation annotation, JavaConverter.Owner owner) {
+		return new GenericJavaEnumeratedConverter(parent, annotation, owner);
 	}
 	
-	public JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, TemporalAnnotation annotation) {
-		return new GenericJavaTemporalConverter(parent, annotation);
+	public JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, TemporalAnnotation annotation, JavaConverter.Owner owner) {
+		return new GenericJavaTemporalConverter(parent, annotation, owner);
 	}
 	
-	public JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, LobAnnotation annotation) {
-		return new GenericJavaLobConverter(parent, annotation);
+	public JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, LobAnnotation annotation, JavaConverter.Owner owner) {
+		return new GenericJavaLobConverter(parent, annotation, owner);
 	}
 	
 	public JavaOrderable buildJavaOrderable(JavaAttributeMapping parent) {

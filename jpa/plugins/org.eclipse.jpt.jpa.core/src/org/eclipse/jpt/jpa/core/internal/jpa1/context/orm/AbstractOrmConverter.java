@@ -9,21 +9,30 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmConverter
 	extends AbstractOrmXmlContextNode
 	implements OrmConverter
 {
-	protected AbstractOrmConverter(OrmAttributeMapping parent) {
+	protected final OrmConverter.Owner owner;
+
+	protected AbstractOrmConverter(OrmAttributeMapping parent, OrmConverter.Owner owner) {
 		super(parent);
+		this.owner = owner;
 	}
 
+	protected OrmConverter.Owner getOwner() {
+		return this.owner;
+	}
 
 	// ********** misc **********
 
@@ -40,13 +49,23 @@ public abstract class AbstractOrmConverter
 		return this.getAttributeMapping().getXmlAttributeMapping();
 	}
 
-	protected XmlConvertibleMapping getXmlConvertibleMapping() {
-		return (XmlConvertibleMapping) this.getXmlAttributeMapping();
-	}
-
 
 	// ********** validation **********
 
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.owner.buildValidator(this, this.buildConverterTextRangeResolver()).validate(messages, reporter);
+	}
+
+
+	protected ConverterTextRangeResolver buildConverterTextRangeResolver() {
+		return new ConverterTextRangeResolver() {
+			public TextRange getConverterTextRange() {
+				return getValidationTextRange();
+			}
+		};
+	}
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getXmlValidationTextRange();
 		return (textRange != null) ? textRange : this.getAttributeMapping().getValidationTextRange();

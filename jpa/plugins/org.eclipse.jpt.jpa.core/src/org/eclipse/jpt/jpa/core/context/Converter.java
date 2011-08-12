@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 
 /**
  * JPA attribute mapping converter.
@@ -18,7 +21,7 @@ package org.eclipse.jpt.jpa.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.1
  * @since 2.1
  */
 public interface Converter
@@ -30,4 +33,20 @@ public interface Converter
 	 * Return the converter's type.
 	 */
 	Class<? extends Converter> getType();
+
+
+	// ********** owner **********
+
+	/**
+	 * Interface allowing converters to be used in multiple places
+	 * (e.g. basic mappings, collection mappings, etc).
+	 */
+	public interface Owner
+	{
+		/**
+		 * 
+		 */
+		JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver);
+	}
+
 }

@@ -65,7 +65,7 @@ public abstract class AbstractOrmBasicMapping<X extends XmlBasic>
 
 	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
 		OrmEnumeratedConverter.Adapter.instance(),
-		OrmTemporalConverter.Adapter.instance(),
+		OrmTemporalConverter.BasicAdapter.instance(),
 		OrmLobConverter.Adapter.instance()
 	};
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);

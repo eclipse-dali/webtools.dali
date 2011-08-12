@@ -90,6 +90,8 @@ import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMapKeyEnumeratedConverter2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMapKeyTemporalConverter2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
@@ -139,16 +141,23 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected String defaultMapKeyClass;
 
 	protected final OrmColumn mapKeyColumn;
+	protected OrmConverter mapKeyConverter;  // map key converter - never null
 
 	protected final OrmAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
 
 	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
 		OrmEnumeratedConverter.Adapter.instance(),
-		OrmTemporalConverter.Adapter.instance(),
+		OrmTemporalConverter.ElementCollectionAdapter.instance(),
 		OrmLobConverter.Adapter.instance()
 	};
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
+
+	protected static final OrmConverter.Adapter[] MAP_KEY_CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
+		OrmMapKeyEnumeratedConverter2_0.Adapter.instance(),
+		OrmMapKeyTemporalConverter2_0.Adapter.instance()
+	};
+	protected static final Iterable<OrmConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
 
 	protected AbstractOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, X xmlMapping) {
@@ -170,6 +179,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		this.specifiedMapKeyClass = this.buildSpecifiedMapKeyClass();
 
 		this.mapKeyColumn = this.buildMapKeyColumn();
+		this.mapKeyConverter = this.buildMapKeyConverter();
 		this.mapKeyAttributeOverrideContainer = this.buildMapKeyAttributeOverrideContainer();
 	}
 
@@ -196,6 +206,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		this.setSpecifiedMapKeyClass_(this.buildSpecifiedMapKeyClass());
 
 		this.mapKeyColumn.synchronizeWithResourceModel();
+		this.syncMapKeyConverter();
 		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel();
 	}
 
@@ -217,6 +228,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 
 		this.mapKeyColumn.update();
+		this.mapKeyConverter.update();
 		this.mapKeyAttributeOverrideContainer.update();
 	}
 
@@ -837,6 +849,98 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 
+	// ********** map key converter **********
+
+	public OrmConverter getMapKeyConverter() {
+		return this.mapKeyConverter;
+	}
+
+	public void setMapKeyConverter(Class<? extends Converter> converterType) {
+		if (this.mapKeyConverter.getType() != converterType) {
+			// note: we may also clear the XML value we want;
+			// but if we leave it, the resulting sync will screw things up...
+			this.clearXmlMapKeyConverterValues();
+			OrmConverter.Adapter converterAdapter = this.getMapKeyConverterAdapter(converterType);
+			this.setMapKeyConverter_(this.buildMapKeyConverter(converterAdapter));
+			this.mapKeyConverter.initialize();
+		}
+	}
+
+	protected OrmConverter buildMapKeyConverter(OrmConverter.Adapter converterAdapter) {
+		 return (converterAdapter != null) ?
+				converterAdapter.buildNewConverter(this, this.getContextNodeFactory()) :
+				this.buildNullConverter();
+	}
+
+	protected void setMapKeyConverter_(OrmConverter converter) {
+		Converter old = this.mapKeyConverter;
+		this.mapKeyConverter = converter;
+		this.firePropertyChanged(MAP_KEY_CONVERTER_PROPERTY, old, converter);
+	}
+
+	protected void clearXmlMapKeyConverterValues() {
+		for (OrmConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+			adapter.clearXmlValue(this.xmlAttributeMapping);
+		}
+	}
+
+	protected OrmConverter buildMapKeyConverter() {
+		OrmXmlContextNodeFactory factory = this.getContextNodeFactory();
+		for (OrmConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+			OrmConverter ormConverter = adapter.buildConverter(this, factory);
+			if (ormConverter != null) {
+				return ormConverter;
+			}
+		}
+		return this.buildNullConverter();
+	}
+
+	protected void syncMapKeyConverter() {
+		OrmConverter.Adapter adapter = this.getXmlMapKeyConverterAdapter();
+		if (adapter == null) {
+			if (this.mapKeyConverter.getType() != null) {
+				this.setMapKeyConverter_(this.buildNullConverter());
+			}
+		} else {
+			if (this.mapKeyConverter.getType() == adapter.getConverterType()) {
+				this.mapKeyConverter.synchronizeWithResourceModel();
+			} else {
+				this.setMapKeyConverter_(adapter.buildNewConverter(this, this.getContextNodeFactory()));
+			}
+		}
+	}
+
+	/**
+	 * Return the first adapter whose converter value is set in the XML mapping.
+	 * Return <code>null</code> if there are no converter values in the XML.
+	 */
+	protected OrmConverter.Adapter getXmlMapKeyConverterAdapter() {
+		for (OrmConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+			if (adapter.isActive(this.xmlAttributeMapping)) {
+				return adapter;
+			}
+		}
+		return null;
+	}
+
+	// ********** map key converter adapters **********
+
+	/**
+	 * Return the converter adapter for the specified converter type.
+	 */
+	protected OrmConverter.Adapter getMapKeyConverterAdapter(Class<? extends Converter> converterType) {
+		for (OrmConverter.Adapter adapter : this.getMapKeyConverterAdapters()) {
+			if (adapter.getConverterType() == converterType) {
+				return adapter;
+			}
+		}
+		return null;
+	}
+
+	protected Iterable<OrmConverter.Adapter> getMapKeyConverterAdapters() {
+		return MAP_KEY_CONVERTER_ADAPTERS;
+	}
+
 	// ********** map key attribute override container **********
 
 	public OrmAttributeOverrideContainer getMapKeyAttributeOverrideContainer() {
@@ -1276,7 +1380,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		switch (this.keyType) {
 			case BASIC_TYPE :
 				this.mapKeyColumn.validate(messages, reporter);
-				//validate map key converter
+				this.mapKeyConverter.validate(messages, reporter);
 				break;
 			case ENTITY_TYPE :
 				//validate map key join columns

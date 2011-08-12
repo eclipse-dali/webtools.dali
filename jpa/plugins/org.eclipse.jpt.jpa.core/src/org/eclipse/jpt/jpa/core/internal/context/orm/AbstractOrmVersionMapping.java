@@ -60,7 +60,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 	// the spec does not list Temporal explicitly,
 	// but it is included in the orm.xml schema...
 	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
-		OrmTemporalConverter.Adapter.instance(),
+		OrmTemporalConverter.BasicAdapter.instance(),
 	};
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
 

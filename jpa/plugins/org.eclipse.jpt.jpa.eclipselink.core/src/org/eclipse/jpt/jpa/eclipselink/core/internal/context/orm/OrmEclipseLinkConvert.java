@@ -23,7 +23,10 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmConverter;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -54,8 +57,8 @@ public class OrmEclipseLinkConvert
 	protected static final Iterable<OrmEclipseLinkConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<OrmEclipseLinkConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
                                                                                                                       
 
-	public OrmEclipseLinkConvert(OrmAttributeMapping parent) {
-		super(parent);
+	public OrmEclipseLinkConvert(OrmAttributeMapping parent, OrmConverter.Owner owner) {
+		super(parent, owner);
 		this.specifiedConverterName = this.getXmlConvertibleMapping().getConvert();
 		this.converter = this.buildConverter();
 	}
@@ -225,10 +228,9 @@ public class OrmEclipseLinkConvert
 
 	// ********** misc **********
 
-	@Override
 	protected XmlConvertibleMapping getXmlConvertibleMapping() {
 		// cast to EclipseLink type
-		return (XmlConvertibleMapping) super.getXmlConvertibleMapping();
+		return (XmlConvertibleMapping) super.getXmlAttributeMapping();
 	}
 
 	public Class<? extends Converter> getType() {
@@ -312,7 +314,7 @@ public class OrmEclipseLinkConvert
 	// ********** adapter **********
 
 	public static class Adapter
-		implements OrmConverter.Adapter
+		implements OrmConverter.Adapter, OrmConverter.Owner
 	{
 		private static final Adapter INSTANCE = new Adapter();
 		public static Adapter instance() {
@@ -329,19 +331,23 @@ public class OrmEclipseLinkConvert
 
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
 			XmlConvertibleMapping xmlMapping = (XmlConvertibleMapping) parent.getXmlAttributeMapping();
-			return (xmlMapping.getConvert() == null) ? null : new OrmEclipseLinkConvert(parent);
+			return (xmlMapping.getConvert() == null) ? null : new OrmEclipseLinkConvert(parent, this);
 		}
 
-		public boolean isActive(org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping xmlMapping) {
+		public boolean isActive(XmlAttributeMapping xmlMapping) {
 			return ((XmlConvertibleMapping) xmlMapping).getConvert() != null;
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
-			return new OrmEclipseLinkConvert(parent);
+			return new OrmEclipseLinkConvert(parent, this);
 		}
 
-		public void clearXmlValue(org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping xmlMapping) {
+		public void clearXmlValue(XmlAttributeMapping xmlMapping) {
 			((XmlConvertibleMapping) xmlMapping).setConvert(null);
+		}
+
+		public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
+			return JptValidator.Null.instance();
 		}
 	}
 }

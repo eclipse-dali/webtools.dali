@@ -15,6 +15,8 @@ import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 
 /**
  * Java converter
@@ -25,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.Converter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.1
  * @since 2.1
  */
 public interface JavaConverter
@@ -111,11 +113,11 @@ public interface JavaConverter
 			return (annotation == null) ? null : this.buildConverter(annotation, parent, factory);
 		}
 
+		protected abstract String getAnnotationName();
+
 		public Annotation getConverterAnnotation(JavaResourceAttribute attribute) {
 			return attribute.getAnnotation(this.getAnnotationName());
 		}
-
-		protected abstract String getAnnotationName();
 
 		public JavaConverter buildNewConverter(JavaAttributeMapping parent, JpaFactory factory) {
 			return this.buildConverter(this.buildConverterAnnotationIfNecessary(parent.getResourceAttribute()), parent, factory);
@@ -133,6 +135,14 @@ public interface JavaConverter
 
 		public void removeConverterAnnotation(JavaResourceAttribute attribute) {
 			attribute.removeAnnotation(this.getAnnotationName());
+		}
+
+		protected Owner buildOwner() {
+			return new Owner() {
+				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
+					return JptValidator.Null.instance();
+				}
+			};
 		}
 
 		@Override

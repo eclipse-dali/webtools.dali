@@ -21,6 +21,8 @@ import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
+import org.eclipse.jpt.jpa.core.context.EnumType;
+import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
@@ -28,6 +30,8 @@ import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
@@ -1442,5 +1446,107 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 
 		ElementCollectionMapping2_0 mapping = (ElementCollectionMapping2_0) persistentType.getAttributeNamed("elementCollection").getMapping();
 		assertFalse(mapping.getAllOverridableAttributeMappingNames().iterator().hasNext());
+	}
+
+	public void testUpdateSpecifiedEnumerated() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionResource.getMapKeyEnumerated());
+				
+		//set enumerated in the resource model, verify context model updated
+		elementCollectionResource.setMapKeyEnumerated(org.eclipse.jpt.jpa.core.resource.orm.EnumType.ORDINAL);
+		assertEquals(EnumType.ORDINAL, ((EnumeratedConverter) ormElementCollectionMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.ORDINAL, elementCollectionResource.getMapKeyEnumerated());
+	
+		elementCollectionResource.setMapKeyEnumerated(org.eclipse.jpt.jpa.core.resource.orm.EnumType.STRING);
+		assertEquals(EnumType.STRING, ((EnumeratedConverter) ormElementCollectionMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.STRING, elementCollectionResource.getMapKeyEnumerated());
+
+		//set enumerated to null in the resource model
+		elementCollectionResource.setMapKeyEnumerated(null);
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionResource.getMapKeyEnumerated());
+	}
+	
+	public void testModifySpecifiedEnumerated() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionResource.getMapKeyEnumerated());
+				
+		//set enumerated in the context model, verify resource model updated
+		ormElementCollectionMapping.setMapKeyConverter(EnumeratedConverter.class);
+		((EnumeratedConverter) ormElementCollectionMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.ORDINAL);
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.ORDINAL, elementCollectionResource.getMapKeyEnumerated());
+		assertEquals(EnumType.ORDINAL, ((EnumeratedConverter) ormElementCollectionMapping.getMapKeyConverter()).getSpecifiedEnumType());
+	
+		((EnumeratedConverter) ormElementCollectionMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.STRING, elementCollectionResource.getMapKeyEnumerated());
+		assertEquals(EnumType.STRING, ((EnumeratedConverter) ormElementCollectionMapping.getMapKeyConverter()).getSpecifiedEnumType());
+
+		//set enumerated to null in the context model
+		ormElementCollectionMapping.setMapKeyConverter(null);
+		assertNull(elementCollectionResource.getMapKeyEnumerated());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+	}
+	
+	public void testUpdateSpecifiedTemporal() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionResource.getMapKeyTemporal());
+				
+		//set temporal in the resource model, verify context model updated
+		elementCollectionResource.setMapKeyTemporal(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.DATE);
+		assertEquals(TemporalType.DATE, ((TemporalConverter) ormElementCollectionMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.DATE, elementCollectionResource.getMapKeyTemporal());
+	
+		elementCollectionResource.setMapKeyTemporal(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIME);
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ormElementCollectionMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIME, elementCollectionResource.getMapKeyTemporal());
+		
+		elementCollectionResource.setMapKeyTemporal(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIMESTAMP);
+		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormElementCollectionMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIMESTAMP, elementCollectionResource.getMapKeyTemporal());
+
+		//set temporal to null in the resource model
+		elementCollectionResource.setMapKeyTemporal(null);
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionResource.getMapKeyTemporal());
+	}
+	
+	public void testModifySpecifiedTemporal() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+		assertNull(elementCollectionResource.getMapKeyTemporal());
+				
+		//set temporal in the context model, verify resource model updated
+		ormElementCollectionMapping.setMapKeyConverter(TemporalConverter.class);
+		((TemporalConverter) ormElementCollectionMapping.getMapKeyConverter()).setTemporalType(TemporalType.DATE);
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.DATE, elementCollectionResource.getMapKeyTemporal());
+		assertEquals(TemporalType.DATE, ((TemporalConverter) ormElementCollectionMapping.getMapKeyConverter()).getTemporalType());
+	
+		((TemporalConverter) ormElementCollectionMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
+		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIME, elementCollectionResource.getMapKeyTemporal());
+		assertEquals(TemporalType.TIME, ((TemporalConverter) ormElementCollectionMapping.getMapKeyConverter()).getTemporalType());
+
+		//set temporal to null in the context model
+		ormElementCollectionMapping.setMapKeyConverter(null);
+		assertNull(elementCollectionResource.getMapKeyTemporal());
+		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
 	}
 }

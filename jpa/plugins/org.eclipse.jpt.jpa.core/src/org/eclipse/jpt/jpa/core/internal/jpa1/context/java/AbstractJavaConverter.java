@@ -9,20 +9,54 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaConverter
 	extends AbstractJavaJpaContextNode
 	implements JavaConverter
 {
-	protected AbstractJavaConverter(JavaAttributeMapping parent) {
+
+	protected final JavaConverter.Owner owner;
+
+	protected AbstractJavaConverter(JavaAttributeMapping parent, JavaConverter.Owner owner) {
 		super(parent);
+		this.owner = owner;
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.owner.buildValidator(this, this.buildConverterTextRangeResolver(astRoot)).validate(messages, reporter);
+	}
+
+
+	protected ConverterTextRangeResolver buildConverterTextRangeResolver(final CompilationUnit astRoot) {
+		return new ConverterTextRangeResolver() {
+			public TextRange getConverterTextRange() {
+				return getValidationTextRange(astRoot);
+			}
+		};
+	}
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.getAnnotationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getAttributeMapping().getValidationTextRange(astRoot);
+	}
+
+	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
+		return this.getConverterAnnotation().getTextRange(astRoot);
 	}
 
 
@@ -40,19 +74,6 @@ public abstract class AbstractJavaConverter
 	protected JavaResourceAttribute getResourceAttribute() {
 		return this.getAttributeMapping().getResourceAttribute();
 	}
-
-	public Annotation getConverterAnnotation() {
-		return this.getResourceAttribute().getAnnotation(this.getAnnotationName());
-	}
-
-	protected abstract String getAnnotationName();
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getAnnotationTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getAttributeMapping().getValidationTextRange(astRoot);
-	}
-
-	protected abstract TextRange getAnnotationTextRange(CompilationUnit astRoot);
 
 	public void dispose() {
 		// NOP

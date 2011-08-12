@@ -379,8 +379,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/fetch"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKey"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyClass"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyTemporal"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyEnumerated"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyColumn"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/mapKeyJoinColumns"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlElementCollection_2_0/column"/>
@@ -401,13 +399,15 @@
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyAttributeOverrideContainer_2_0">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMapKeyAttributeOverrideContainer_2_0/mapKeyAttributeOverrides"/>
       </genClasses>
+      <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapKeyConvertibleMapping_2_0">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapKeyConvertibleMapping_2_0/mapKeyTemporal"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapKeyConvertibleMapping_2_0/mapKeyEnumerated"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMapsId_2_0">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMapsId_2_0/mapsId"/>
       </genClasses>
       <genClasses image="false" ecoreClass="orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyClass"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyTemporal"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyEnumerated"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyColumn"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//v2_0/XmlMultiRelationshipMapping_2_0/mapKeyJoinColumns"/>
       </genClasses>

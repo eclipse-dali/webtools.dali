@@ -34,6 +34,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
@@ -64,6 +65,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
+import org.eclipse.jpt.jpa.core.context.orm.OrmTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
@@ -374,16 +376,16 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmVirtualUniqueConstraint(parent, overriddenUniqueConstraint);
 	}
 
-	public OrmConverter buildOrmEnumeratedConverter(OrmAttributeMapping parent) {
-		return new GenericOrmEnumeratedConverter(parent);
+	public OrmConverter buildOrmEnumeratedConverter(OrmAttributeMapping parent, OrmEnumeratedConverter.Owner owner) {
+		return new GenericOrmEnumeratedConverter(parent, owner);
 	}
 	
-	public OrmConverter buildOrmLobConverter(OrmAttributeMapping parent) {
-		return new GenericOrmLobConverter(parent);
+	public OrmConverter buildOrmLobConverter(OrmAttributeMapping parent, OrmConverter.Owner owner) {
+		return new GenericOrmLobConverter(parent, owner);
 	}
 	
-	public OrmConverter buildOrmTemporalConverter(OrmAttributeMapping parent) {
-		return new GenericOrmTemporalConverter(parent);
+	public OrmConverter buildOrmTemporalConverter(OrmAttributeMapping parent, OrmTemporalConverter.Owner owner) {
+		return new GenericOrmTemporalConverter(parent, owner);
 	}
 	
 	public OrmOrderable buildOrmOrderable(OrmAttributeMapping parent) {
