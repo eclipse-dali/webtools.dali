@@ -14,8 +14,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_0.resource.java.EclipseLink2_1;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_0.resource.java.EclipseLinkClassExtractorAnnotation2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_1.resource.java.EclipseLink2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_1.resource.java.EclipseLinkClassExtractorAnnotation2_1;
 
 /**
  * org.eclipse.persistence.annotations.ClassExtractor

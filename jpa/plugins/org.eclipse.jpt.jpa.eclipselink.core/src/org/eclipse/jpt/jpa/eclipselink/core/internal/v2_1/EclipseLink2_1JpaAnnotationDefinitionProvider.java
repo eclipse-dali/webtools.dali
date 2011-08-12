@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkWr
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_1.resource.java.EclipseLinkClassExtractor2_1AnnotationDefinition;
 
 /**
- * Provides annotations for 1.0 EclipseLink platform
+ * Provides annotations for 2.1 EclipseLink platform
  */
 public class EclipseLink2_1JpaAnnotationDefinitionProvider
 	extends AbstractJpaAnnotationDefinitionProvider
