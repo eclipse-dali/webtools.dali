@@ -1229,7 +1229,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected void validateMapKeyClass(List<IMessage> messages) {
 		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
-		if ((javaAttribute != null) && ! javaAttribute.getJpaContainerDefinition().isMap()) {
+		if ((javaAttribute != null) && javaAttribute.getJpaContainerDefinition().isMap()) {
 			this.validateMapKeyClass_(messages);
 		}
 	}
