@@ -15,6 +15,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -22,6 +23,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.NameTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 
@@ -131,31 +135,42 @@ final class BinaryMethod
 	 * IMethod adapter
 	 */
 	static class MethodAdapter
-		implements BinaryAttribute.Adapter
-	{
+			implements BinaryAttribute.Adapter {
+		
 		final IMethod method;
 		static final IMethod[] EMPTY_METHOD_ARRAY = new IMethod[0];
-
+		
 		MethodAdapter(IMethod method) {
 			super();
 			this.method = method;
 		}
-
+		
 		public IMethod getElement() {
 			return this.method;
 		}
-
+		
+		public Iterable<ITypeParameter> getTypeParameters() {
+			try {
+				return new CompositeIterable<ITypeParameter>(
+						new ArrayIterable<ITypeParameter>(this.method.getTypeParameters()),
+						new ArrayIterable<ITypeParameter>(this.method.getDeclaringType().getTypeParameters()));
+			}
+			catch (JavaModelException jme) {
+				JptCommonCorePlugin.log(jme);
+			}
+			return EmptyIterable.instance();
+		}
+		
 		public IAnnotation[] getAnnotations() throws JavaModelException {
 			return this.method.getAnnotations();
 		}
-
+		
 		public String getAttributeName() {
 			return NameTools.convertGetterSetterMethodNameToPropertyName(this.method.getElementName());
 		}
-
+		
 		public String getTypeSignature() throws JavaModelException {
 			return this.method.getReturnType();
 		}
 	}
-
 }

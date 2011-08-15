@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -44,6 +44,10 @@ abstract class BinaryAttribute
 	private boolean typeIsEnum;
 
 	private boolean typeIsArray;
+	
+	private int typeArrayDimensionality;
+	
+	private String typeArrayComponentTypeName;
 
 	private final Vector<String> typeSuperclassNames = new Vector<String>();
 
@@ -55,16 +59,21 @@ abstract class BinaryAttribute
 	protected BinaryAttribute(JavaResourceType parent, Adapter adapter) {
 		super(parent, adapter);
 		this.modifiers = this.buildModifiers();
-		this.typeName = this.buildTypeName();
-
-		IType type = this.getType();  // shouldn't be an array...
+		
+		String typeSignature = getTypeSignature();
+		Iterable<ITypeParameter> typeParameters = getAdapter().getTypeParameters();
+		this.typeName = buildTypeName(typeSignature, typeParameters);
+		this.typeIsArray = buildTypeIsArray(typeSignature);
+		this.typeArrayDimensionality = buildTypeArrayDimensionality(typeSignature);
+		this.typeArrayComponentTypeName = buildTypeArrayComponentTypeName(typeSignature, typeParameters);
+		this.typeTypeArgumentNames.addAll(buildTypeTypeArgumentNames(typeSignature, typeParameters));
+		
+		IType type = getType();
+		// if the type is an array, then the following will be false or empty
 		this.typeIsInterface = this.buildTypeIsInterface(type);
 		this.typeIsEnum = this.buildTypeIsEnum(type);
-		this.typeIsArray = this.buildTypeIsArray(type);
 		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames(type));
 		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(type));
-
-		this.typeTypeArgumentNames.addAll(this.buildTypeTypeArgumentNames());
 	}
 
 
@@ -74,16 +83,20 @@ abstract class BinaryAttribute
 	public void update() {
 		super.update();
 		this.setModifiers(this.buildModifiers());
-		this.setTypeName(this.buildTypeName());
-
-		IType type = this.getType();  // shouldn't be an array...
+		
+		String typeSignature = getTypeSignature();
+		Iterable<ITypeParameter> typeParameters = getAdapter().getTypeParameters();
+		setTypeName(buildTypeName(typeSignature, typeParameters));
+		setTypeIsArray(buildTypeIsArray(typeSignature));
+		setTypeArrayDimensionality(buildTypeArrayDimensionality(typeSignature));
+		setTypeArrayComponentTypeName(buildTypeArrayComponentTypeName(typeSignature, typeParameters));
+		setTypeTypeArgumentNames(buildTypeTypeArgumentNames(typeSignature, typeParameters));
+		
+		IType type = this.getType();  // if the type is an array, then the following will be false or empty
 		this.setTypeIsInterface(this.buildTypeIsInterface(type));
 		this.setTypeIsEnum(this.buildTypeIsEnum(type));
-		this.setTypeIsArray(this.buildTypeIsArray(type));
 		this.setTypeSuperclassNames(this.buildTypeSuperclassNames(type));
 		this.setTypeInterfaceNames(this.buildTypeInterfaceNames(type));
-
-		this.setTypeTypeArgumentNames(this.buildTypeTypeArgumentNames());
 	}
 
 	@Override
@@ -157,13 +170,9 @@ abstract class BinaryAttribute
 		this.typeName = typeName;
 		this.firePropertyChanged(TYPE_NAME_PROPERTY, old, typeName);
 	}
-
-	/**
-	 * JARs don't have array types;
-	 * also, no generic type parameters
-	 */
-	private String buildTypeName() {
-		return convertTypeSignatureToTypeName(this.getTypeSignature());
+	
+	private String buildTypeName(String typeSignature, Iterable<ITypeParameter> typeParameters) {
+		return convertTypeSignatureToTypeName(typeSignature, typeParameters);
 	}
 
 	// ***** type is interface
@@ -217,8 +226,39 @@ abstract class BinaryAttribute
 		this.firePropertyChanged(TYPE_IS_ARRAY_PROPERTY, old, typeIsArray);
 	}
 
-	private boolean buildTypeIsArray(IType type) {
-		return false; //TODO debug this
+	private boolean buildTypeIsArray(String typeSignature) {
+		return convertTypeSignatureToTypeIsArray(typeSignature);
+	}
+	
+	// ***** type array dimensionality
+	public int getTypeArrayDimensionality() {
+		return this.typeArrayDimensionality;
+	}
+	
+	private void setTypeArrayDimensionality(int typeArrayDimensionality) {
+		int old = this.typeArrayDimensionality;
+		this.typeArrayDimensionality = typeArrayDimensionality;
+		firePropertyChanged(TYPE_ARRAY_DIMENSIONALITY_PROPERTY, old, typeArrayDimensionality);
+	}
+	
+	private int buildTypeArrayDimensionality(String typeSignature) {
+		return convertTypeSignatureToTypeArrayDimensionality(typeSignature);
+ 	}
+	
+	// ***** type array component type name
+	public String getTypeArrayComponentTypeName() {
+		return this.typeArrayComponentTypeName;
+	}
+	
+	private void setTypeArrayComponentTypeName(String typeArrayComponentTypeName) {
+		String old = this.typeArrayComponentTypeName;
+		this.typeArrayComponentTypeName = typeArrayComponentTypeName;
+		firePropertyChanged(TYPE_ARRAY_COMPONENT_TYPE_NAME_PROPERTY, old, typeArrayComponentTypeName);
+	}
+	
+	private String buildTypeArrayComponentTypeName(String typeSignature, Iterable<ITypeParameter> typeParameters) {
+		int arrayDimensionality = convertTypeSignatureToTypeArrayDimensionality(typeSignature);
+		return (arrayDimensionality == 0) ? null : convertTypeSignatureToTypeArrayComponentTypeName(typeSignature, typeParameters);
  	}
 
 	// ***** type superclass hierarchy
@@ -301,33 +341,15 @@ abstract class BinaryAttribute
 	private void setTypeTypeArgumentNames(List<String> typeTypeArgumentNames) {
 		this.synchronizeList(typeTypeArgumentNames, this.typeTypeArgumentNames, TYPE_TYPE_ARGUMENT_NAMES_LIST);
 	}
-
-	/**
-	 * these types can be arrays (e.g. "java.lang.String[]");
-	 * but they won't have any further nested generic type arguments
-	 * (e.g. "java.util.Collection<java.lang.String>")
-	 */
-	private List<String> buildTypeTypeArgumentNames() {
-		String typeSignature = this.getTypeSignature();
-		if (typeSignature == null) {
-			return Collections.emptyList();
-		}
-
-		String[] typeArgumentSignatures = Signature.getTypeArguments(typeSignature);
-		if (typeArgumentSignatures.length == 0) {
-			return Collections.emptyList();
-		}
-
-		ArrayList<String> names = new ArrayList<String>(typeArgumentSignatures.length);
-		for (String typeArgumentSignature : typeArgumentSignatures) {
-			names.add(convertTypeSignatureToTypeName(typeArgumentSignature));
-		}
-		return names;
+	
+	private List<String> buildTypeTypeArgumentNames(String typeSignature, Iterable<ITypeParameter> typeParameters) {
+		int arrayDimensionality = convertTypeSignatureToTypeArrayDimensionality(typeSignature);
+		return (arrayDimensionality != 0) ? Collections.<String>emptyList() : convertTypeSignatureToTypeTypeArgumentNames(typeSignature, typeParameters);
 	}
 
 
 	// ********** convenience methods **********
-
+	
 	private String getTypeSignature() {
 		try {
 			return this.getAdapter().getTypeSignature();
@@ -388,18 +410,17 @@ abstract class BinaryAttribute
 	 * Adapt an IField or IMethod.
 	 */
 	interface Adapter
-		extends BinaryMember.Adapter
-	{
+			extends BinaryMember.Adapter {
+		
 		/**
 		 * Return the field or getter method's "attribute" name
 		 * (e.g. field "foo" -> "foo"; method "getFoo" -> "foo").
 		 */
 		String getAttributeName();
-
+		
 		/**
 		 * Return the attribute's type signature.
 		 */
 		String getTypeSignature() throws JavaModelException;
 	}
-
 }

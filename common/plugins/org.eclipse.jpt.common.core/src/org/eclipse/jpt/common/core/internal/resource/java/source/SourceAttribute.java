@@ -42,6 +42,10 @@ abstract class SourceAttribute<A extends Attribute>
 	private boolean typeIsEnum;
 
 	private boolean typeIsArray;
+	
+	private int typeArrayDimensionality;
+	
+	private String typeArrayComponentTypeName;
 
 	private final Vector<String> typeSuperclassNames = new Vector<String>();
 
@@ -63,6 +67,8 @@ abstract class SourceAttribute<A extends Attribute>
 		this.typeIsInterface = this.buildTypeIsInterface(typeBinding);
 		this.typeIsEnum = this.buildTypeIsEnum(typeBinding);
 		this.typeIsArray = this.buildTypeIsArray(typeBinding);
+		this.typeArrayDimensionality = buildTypeArrayDimensionality(typeBinding);
+		this.typeArrayComponentTypeName = buildTypeArrayComponentTypeName(typeBinding);
 		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames(typeBinding));
 		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(typeBinding));
 		this.typeTypeArgumentNames.addAll(this.buildTypeTypeArgumentNames(typeBinding));
@@ -76,6 +82,7 @@ abstract class SourceAttribute<A extends Attribute>
 		super.resolveTypes(astRoot);
 		ITypeBinding typeBinding = this.getTypeBinding(astRoot);//build once, minor performance tweak for major benefit
 		this.syncTypeName(this.buildTypeName(typeBinding));
+		syncTypeArrayComponentTypeName(buildTypeArrayComponentTypeName(typeBinding));
 		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(typeBinding));
 		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(typeBinding));
 		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(typeBinding));
@@ -90,6 +97,8 @@ abstract class SourceAttribute<A extends Attribute>
 		this.syncTypeIsInterface(this.buildTypeIsInterface(typeBinding));
 		this.syncTypeIsEnum(this.buildTypeIsEnum(typeBinding));
 		this.syncTypeIsArray(this.buildTypeIsArray(typeBinding));
+		syncTypeArrayDimensionality(buildTypeArrayDimensionality(typeBinding));
+		syncTypeArrayComponentTypeName(buildTypeArrayComponentTypeName(typeBinding));
 		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(typeBinding));
 		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(typeBinding));
 		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(typeBinding));
@@ -172,13 +181,8 @@ abstract class SourceAttribute<A extends Attribute>
 		if (typeBinding == null) {
 			return null;
 		}
-		// a type variable is what is declared by a generic type;
-		// e.g. "E" is a type variable declared by the generic type "Collection" in
-		//     public interface Collection<E>
-		if (typeBinding.isTypeVariable()) {
-			// e.g. "E extends Number" has an erasure of "Number"
-			typeBinding = typeBinding.getErasure();
-		}
+		
+		typeBinding = typeBinding.getErasure();
 		String tbName = typeBinding.getTypeDeclaration().getQualifiedName();
 		return (tbName.length() == 0) ? null : tbName;
 	}
@@ -226,6 +230,57 @@ abstract class SourceAttribute<A extends Attribute>
 
 	private boolean buildTypeIsArray(ITypeBinding typeBinding) {
 		return (typeBinding != null) && typeBinding.isArray();
+	}
+	
+	// ***** type array dimensionality
+	public int getTypeArrayDimensionality() {
+		return this.typeArrayDimensionality;
+	}
+	
+	private void syncTypeArrayDimensionality(int astTypeArrayDimensionality) {
+		int old = this.typeArrayDimensionality;
+		this.typeArrayDimensionality = astTypeArrayDimensionality;
+		firePropertyChanged(TYPE_ARRAY_DIMENSIONALITY_PROPERTY, old, astTypeArrayDimensionality);
+	}
+	
+	private int buildTypeArrayDimensionality(ITypeBinding typeBinding) {
+		return (typeBinding == null) ? 0 : typeBinding.getDimensions();
+	}
+	
+	// ***** type array component type name
+	public String getTypeArrayComponentTypeName() {
+		return this.typeArrayComponentTypeName;
+	}
+	
+	private void syncTypeArrayComponentTypeName(String astTypeArrayComponentTypeName) {
+		String old = this.typeArrayComponentTypeName;
+		this.typeArrayComponentTypeName = astTypeArrayComponentTypeName;
+		firePropertyChanged(TYPE_ARRAY_COMPONENT_TYPE_NAME_PROPERTY, old, astTypeArrayComponentTypeName);
+	}
+	
+	private String buildTypeArrayComponentTypeName(ITypeBinding typeBinding) {
+		if (typeBinding == null || ! typeBinding.isArray()) {
+			return null;
+		}
+		
+		// the component type of String[][] is actually String[], whereas we want String
+		while (typeBinding.isArray()) {
+			typeBinding = typeBinding.getComponentType();
+			
+			if (typeBinding == null) {
+				return null;
+			}
+		}
+		
+		// a type variable is what is declared by a generic type;
+		// e.g. "E" is a type variable declared by the generic type "Collection" in
+		//     public interface Collection<E>
+		if (typeBinding.isTypeVariable()) {
+			// e.g. "E extends Number" has an erasure of "Number"
+			typeBinding = typeBinding.getErasure();
+		}
+		String tbName = typeBinding.getTypeDeclaration().getQualifiedName();
+		return (tbName.length() == 0) ? null : tbName;
 	}
 
 	// ***** type superclass hierarchy
@@ -326,5 +381,4 @@ abstract class SourceAttribute<A extends Attribute>
 		}
 		return names;
 	}
-
 }

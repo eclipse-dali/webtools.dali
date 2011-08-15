@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
@@ -21,6 +22,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 
 /**
  * binary persistent type
@@ -193,21 +196,32 @@ abstract class BinaryAbstractType
 
 	// ********** IType adapter **********
 
-	static class TypeAdapter implements Adapter {
+	static class TypeAdapter
+			implements Adapter {
+		
 		private final IType type;
-
+		
 		TypeAdapter(IType type) {
 			super();
 			this.type = type;
 		}
-
+		
 		public IType getElement() {
 			return this.type;
 		}
-
+		
+		public Iterable<ITypeParameter> getTypeParameters() {
+			try {
+				return new ArrayIterable<ITypeParameter>(this.type.getTypeParameters());
+			}
+			catch (JavaModelException jme) {
+				JptCommonCorePlugin.log(jme);
+			}
+			return EmptyIterable.instance();
+		}
+		
 		public IAnnotation[] getAnnotations() throws JavaModelException {
 			return this.type.getAnnotations();
 		}
-
 	}
 }

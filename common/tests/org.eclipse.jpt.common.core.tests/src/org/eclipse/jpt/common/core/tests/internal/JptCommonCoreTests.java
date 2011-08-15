@@ -11,12 +11,14 @@ package org.eclipse.jpt.common.core.tests.internal;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.common.core.tests.internal.resource.java.JptCommonCoreResourceJavaTests;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.JptCommonCoreUtilityJdtTests;
 
 public class JptCommonCoreTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCommonCoreTests.class.getPackage().getName());
+		suite.addTest(JptCommonCoreResourceJavaTests.suite());
 		suite.addTest(JptCommonCoreUtilityJdtTests.suite());
 		return suite;
 	}

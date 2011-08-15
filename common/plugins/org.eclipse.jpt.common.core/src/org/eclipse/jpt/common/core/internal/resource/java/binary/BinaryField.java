@@ -11,9 +11,13 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 
 /**
  * binary field
@@ -40,29 +44,39 @@ final class BinaryField
 	 * IField adapter
 	 */
 	static class FieldAdapter
-		implements BinaryAttribute.Adapter
-	{
+			implements BinaryAttribute.Adapter {
+		
 		final IField field;
-
+		
 		FieldAdapter(IField field) {
 			super();
 			this.field = field;
 		}
-
+		
 		public IField getElement() {
 			return this.field;
 		}
-
+		
+		public Iterable<ITypeParameter> getTypeParameters() {
+			try {
+				return new ArrayIterable<ITypeParameter>(this.field.getDeclaringType().getTypeParameters());
+			}
+			catch (JavaModelException jme) {
+				JptCommonCorePlugin.log(jme);
+			}
+			return EmptyIterable.instance();
+		}
+		
 		public IAnnotation[] getAnnotations() throws JavaModelException {
 			return this.field.getAnnotations();
 		}
-
+		
 		public String getAttributeName() {
 			return this.field.getElementName();
 		}
-
+		
 		public String getTypeSignature() throws JavaModelException {
 			return this.field.getTypeSignature();
-		} 
+		}
 	}
 }

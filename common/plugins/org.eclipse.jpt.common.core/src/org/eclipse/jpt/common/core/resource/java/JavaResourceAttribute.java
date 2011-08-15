@@ -78,7 +78,21 @@ public interface JavaResourceAttribute
 	 */
 	boolean typeIsArray();
 		String TYPE_IS_ARRAY_PROPERTY = "typeIsArray"; //$NON-NLS-1$
-
+	
+	/**
+	 * Return the dimensionality of the array, 0 otherwise.
+	 * (String[][] -> 2, Collection<String> -> 0)
+	 */
+	int getTypeArrayDimensionality();
+		String TYPE_ARRAY_DIMENSIONALITY_PROPERTY = "typeArrayDimensionality"; //$NON-NLS-1$
+	
+	/**
+	 * Return the component type name of the array, null otherwise.
+	 * (String[][] -> "java.lang.String", Collection<String> -> null)
+	 */
+	String getTypeArrayComponentTypeName();
+		String TYPE_ARRAY_COMPONENT_TYPE_NAME_PROPERTY = "typeArrayComponentTypeName"; //$NON-NLS-1$
+	
 	/**
 	 * Return the names of the attribute type's superclasses.
 	 */

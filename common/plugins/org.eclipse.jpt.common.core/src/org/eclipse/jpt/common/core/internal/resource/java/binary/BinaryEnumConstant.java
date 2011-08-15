@@ -11,9 +11,13 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 
 /**
  * Java binary enum constant, IField that returns true to isEnumConstant
@@ -49,18 +53,30 @@ final class BinaryEnumConstant
 	
 	// ********** IField adapter **********
 
-	static class EnumConstantAdapter implements Adapter {
+	static class EnumConstantAdapter 
+			implements Adapter {
+		
 		private final IField enumConstant;
-
+		
 		EnumConstantAdapter(IField enumConstant) {
 			super();
 			this.enumConstant = enumConstant;
 		}
-
+		
 		public IField getElement() {
 			return this.enumConstant;
 		}
-
+		
+		public Iterable<ITypeParameter> getTypeParameters() {
+			try {
+				return new ArrayIterable<ITypeParameter>(this.enumConstant.getDeclaringType().getTypeParameters());
+			}
+			catch (JavaModelException jme) {
+				JptCommonCorePlugin.log(jme);
+			}
+			return EmptyIterable.instance();
+		}
+		
 		public IAnnotation[] getAnnotations() throws JavaModelException {
 			return this.enumConstant.getAnnotations();
 		}

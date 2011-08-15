@@ -239,6 +239,14 @@ public abstract class AbstractAccessor
 		public boolean typeIsArray() {
 			return this.member.typeIsArray();
 		}
+		
+		public int getTypeArrayDimensionality() {
+			return this.member.getTypeArrayDimensionality();
+		}
+		
+		public String getTypeArrayComponentTypeName() {
+			return this.member.getTypeArrayComponentTypeName();
+		}
 
 		public ListIterable<String> getTypeSuperclassNames() {
 			return this.member.getTypeSuperclassNames();
