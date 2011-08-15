@@ -15,9 +15,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.jaxb.core.context.JaxbContainmentMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbBasicMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbSchemaComponentRef;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlAttachmentRef;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
@@ -25,26 +24,19 @@ import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlList;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
-import org.eclipse.jpt.jaxb.core.resource.java.JaxbContainmentAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JaxbBasicSchemaComponentAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
-import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnnotation>
+public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponentAnnotation>
 		extends AbstractJavaAttributeMapping<A>
-		implements JaxbContainmentMapping {
-	
-	protected final JaxbSchemaComponentRef schemaComponentRef;
-	
-	protected Boolean specifiedRequired;
+		implements JaxbBasicMapping {
 	
 	protected final XmlAdaptable xmlAdaptable;
 	
@@ -59,10 +51,8 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 	protected XmlAttachmentRef xmlAttachmentRef;
 	
 	
-	public GenericJavaContainmentMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaBasicMapping(JaxbPersistentAttribute parent) {
 		super(parent);
-		this.schemaComponentRef = buildSchemaComponentRef();
-		this.specifiedRequired = buildSpecifiedRequired();
 		this.xmlAdaptable = buildXmlAdaptable();
 		this.initializeXmlSchemaType();
 		this.initializeXmlList();
@@ -75,8 +65,6 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.schemaComponentRef.synchronizeWithResourceModel();
-		setSpecifiedRequired_(buildSpecifiedRequired());
 		this.xmlAdaptable.synchronizeWithResourceModel();
 		this.syncXmlSchemaType();
 		this.syncXmlList();
@@ -88,7 +76,6 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 	@Override
 	public void update() {
 		super.update();
-		this.schemaComponentRef.update();
 		this.xmlAdaptable.update();
 		this.updateXmlSchemaType();
 		this.updateXmlList();
@@ -97,42 +84,7 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.updateXmlAttachmentRef();
 	}
 	
-	protected abstract JaxbSchemaComponentRef buildSchemaComponentRef();
 	
-	public JaxbSchemaComponentRef getSchemaComponentRef() {
-		return this.schemaComponentRef;
-	}
-	
-	//************ required ***************
-
-	public boolean isRequired() {
-		return (this.getSpecifiedRequired() == null) ? this.isDefaultRequired() : this.getSpecifiedRequired().booleanValue();
-	}
-
-	public boolean isDefaultRequired() {
-		return DEFAULT_REQUIRED;
-	}
-
-	public Boolean getSpecifiedRequired() {
-		return this.specifiedRequired;
-	}
-
-	public void setSpecifiedRequired(Boolean newSpecifiedRequired) {
-		this.getOrCreateAnnotation().setRequired(newSpecifiedRequired);
-		this.setSpecifiedRequired_(newSpecifiedRequired);
-	}
-
-	protected void setSpecifiedRequired_(Boolean newSpecifiedRequired) {
-		Boolean oldRequired = this.specifiedRequired;
-		this.specifiedRequired = newSpecifiedRequired;
-		firePropertyChanged(SPECIFIED_REQUIRED_PROPERTY, oldRequired, newSpecifiedRequired);
-	}
-
-	protected Boolean buildSpecifiedRequired() {
-		return getAnnotation() == null ? null : getAnnotation().getRequired();
-	}
-
-
 	//****************** XmlJavaTypeAdapter *********************
 
 	public XmlAdaptable buildXmlAdaptable() {
@@ -141,10 +93,10 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 				return getJavaResourceAttribute();
 			}
 			public XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation adapterAnnotation) {
-				return GenericJavaContainmentMapping.this.buildXmlJavaTypeAdapter(adapterAnnotation);
+				return GenericJavaBasicMapping.this.buildXmlJavaTypeAdapter(adapterAnnotation);
 			}
 			public void fireXmlAdapterChanged(XmlJavaTypeAdapter oldAdapter, XmlJavaTypeAdapter newAdapter) {
-				GenericJavaContainmentMapping.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
+				GenericJavaBasicMapping.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
 			}
 		});
 	}
@@ -174,7 +126,7 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 	protected void setXmlSchemaType_(XmlSchemaType xmlSchemaType) {
 		XmlSchemaType oldXmlSchemaType = this.xmlSchemaType;
 		this.xmlSchemaType = xmlSchemaType;
-		this.firePropertyChanged(XML_SCHEMA_TYPE, oldXmlSchemaType, xmlSchemaType);
+		this.firePropertyChanged(XML_SCHEMA_TYPE_PROPERTY, oldXmlSchemaType, xmlSchemaType);
 	}
 
 	public boolean hasXmlSchemaType() {
@@ -201,7 +153,7 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 	}
 
 	protected XmlSchemaType buildXmlSchemaType(XmlSchemaTypeAnnotation annotation) {
-		return new GenericJavaContainmentMappingXmlSchemaType(this, annotation);
+		return new GenericJavaAttributeMappingXmlSchemaType(this, annotation);
 	}
 
 	protected XmlSchemaTypeAnnotation getXmlSchemaTypeAnnotation() {
@@ -517,11 +469,6 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 			return result;
 		}
 		
-		result = this.schemaComponentRef.getJavaCompletionProposals(pos, filter, astRoot);
-		if (! CollectionTools.isEmpty(result)) {
-			return result;
-		}
-		
 		if (this.xmlSchemaType != null) {
 			result = this.xmlSchemaType.getJavaCompletionProposals(pos, filter, astRoot);
 			if (! CollectionTools.isEmpty(result)) {
@@ -538,8 +485,6 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		
-		this.schemaComponentRef.validate(messages, reporter, astRoot);
 		
 		this.xmlAdaptable.validate(messages, reporter, astRoot);
 		
@@ -561,37 +506,6 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		
 		if (this.xmlAttachmentRef != null) {
 			this.xmlAttachmentRef.validate(messages, reporter, astRoot);
-		}
-	}
-	
-	
-	protected abstract class ContainmentMappingSchemaComponentRef
-			extends AbstractJavaSchemaComponentRef {
-		
-		protected ContainmentMappingSchemaComponentRef(JavaContextNode parent) {
-			super(parent);
-		}
-		
-		
-		@Override
-		protected SchemaComponentRefAnnotation getAnnotation(boolean createIfNull) {
-			if (createIfNull) {
-				return GenericJavaContainmentMapping.this.getOrCreateAnnotation();
-			}
-			else {
-				return GenericJavaContainmentMapping.this.getAnnotation();
-			}
-		}
-		
-		@Override
-		public String getDefaultName() {
-			return GenericJavaContainmentMapping.this.getJavaResourceAttribute().getName();
-		}
-		
-		@Override
-		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaContainmentMapping.this.getJaxbPackage().getXsdSchema();
-			return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
 		}
 	}
 }

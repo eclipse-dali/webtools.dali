@@ -9,9 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-
 /**
- * Represents a JAXB containment mappings (xml element/attribute)
+ * Represents a JAXB mapping of an attribute to a single xml attribute or element
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,73 +18,63 @@ package org.eclipse.jpt.jaxb.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  */
-public interface JaxbContainmentMapping
+public interface JaxbBasicMapping
 		extends JaxbAttributeMapping, XmlAdaptable {
 	
-	// ***** schema component ref *****
+	// ***** xml schema type *****
 	
-	JaxbSchemaComponentRef getSchemaComponentRef();
+	String XML_SCHEMA_TYPE_PROPERTY = "xmlSchemaType"; //$NON-NLS-1$
 	
-	
-	// ***** required *****
-	
-	static String SPECIFIED_REQUIRED_PROPERTY = "specifiedRequired"; //$NON-NLS-1$
-	
-	static boolean DEFAULT_REQUIRED = false;
-	
-	boolean isRequired();
-	
-	boolean isDefaultRequired();
-	
-	Boolean getSpecifiedRequired();
-	
-	void setSpecifiedRequired(Boolean specifiedRequired);
-	
-	
-	// ********** xml schema type ************
-	/**
-	 * Return whether this class has an XmlSchemaType annotation)
-	 */
-	boolean hasXmlSchemaType();
-
-	/**
-	 * Return the xml schema type or null.
-	 */
 	XmlSchemaType getXmlSchemaType();
-
+	
 	XmlSchemaType addXmlSchemaType();
+	
 	void removeXmlSchemaType();
-		String XML_SCHEMA_TYPE = "xmlSchemaType"; //$NON-NLS-1$
-
-
-	/********** XmlList **********/
+	
+	
+	// ***** XmlList *****
+	
+	String XML_LIST_PROPERTY = "xmlList"; //$NON-NLS-1$
+	
 	XmlList getXmlList();
+	
 	XmlList addXmlList();
+	
 	void removeXmlList();
-		String XML_LIST_PROPERTY = "xmlList"; //$NON-NLS-1$
-
-
-	/********** XmlID **********/
+	
+	
+	// ***** XmlID *****
+	
+	String XML_ID_PROPERTY = "xmlID"; //$NON-NLS-1$
+	
 	XmlID getXmlID();
+	
 	XmlID addXmlID();
+	
 	void removeXmlID();
-		String XML_ID_PROPERTY = "xmlID"; //$NON-NLS-1$
-
-
-	/********** XmlIDREF **********/
+	
+	
+	// ***** XmlIDREF *****
+	
+	String XML_IDREF_PROPERTY = "xmlIDREF"; //$NON-NLS-1$
+	
 	XmlIDREF getXmlIDREF();
+	
 	XmlIDREF addXmlIDREF();
+	
 	void removeXmlIDREF();
-		String XML_IDREF_PROPERTY = "xmlIDREF"; //$NON-NLS-1$
-
-
-	/********** XmlAttachmentRef **********/
+	
+	
+	// ***** XmlAttachmentRef *****
+	
+	String XML_ATTACHMENT_REF_PROPERTY = "xmlAttachmentRef"; //$NON-NLS-1$
+	
 	XmlAttachmentRef getXmlAttachmentRef();
+	
 	XmlAttachmentRef addXmlAttachmentRef();
+	
 	void removeXmlAttachmentRef();
-		String XML_ATTACHMENT_REF_PROPERTY = "xmlAttachmentRef"; //$NON-NLS-1$
-
 }

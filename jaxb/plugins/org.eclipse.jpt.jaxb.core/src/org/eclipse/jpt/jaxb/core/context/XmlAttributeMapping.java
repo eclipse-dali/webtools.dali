@@ -23,6 +23,22 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface XmlAttributeMapping
-		extends JaxbContainmentMapping {	
+		extends JaxbBasicMapping {	
 	
+	// ***** schema component ref *****
+	
+	JaxbSchemaComponentRef getSchemaComponentRef();
+	
+	
+	// ***** required *****
+	
+	boolean isRequired();
+	
+	static String SPECIFIED_REQUIRED_PROPERTY = "specifiedRequired"; //$NON-NLS-1$
+	
+	Boolean getSpecifiedRequired();
+	
+	void setSpecifiedRequired(Boolean specifiedRequired);
+	
+	boolean isDefaultRequired();
 }

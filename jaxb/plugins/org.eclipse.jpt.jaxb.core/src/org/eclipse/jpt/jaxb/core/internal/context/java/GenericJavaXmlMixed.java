@@ -17,24 +17,25 @@ import org.eclipse.jpt.jaxb.core.context.XmlMixed;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
 
 public class GenericJavaXmlMixed
-	extends AbstractJavaContextNode
-	implements XmlMixed
-{
-
+		extends AbstractJavaContextNode
+		implements XmlMixed {
+	
 	protected final XmlMixedAnnotation resourceXmlMixed;
-
+	
+	
 	public GenericJavaXmlMixed(JaxbAttributeMapping parent, XmlMixedAnnotation resource) {
 		super(parent);
 		this.resourceXmlMixed = resource;
 	}
-
+	
+	
 	@Override
 	public JaxbAttributeMapping getParent() {
 		return (JaxbAttributeMapping) super.getParent();
 	}
 
 	protected JaxbPersistentAttribute getPersistentAttribute() {
-		return getParent().getParent();
+		return getParent().getPersistentAttribute();
 	}
 
 

@@ -9,30 +9,30 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbContainmentMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 
-public class GenericJavaContainmentMappingXmlSchemaType
+public class GenericJavaAttributeMappingXmlSchemaType
 		extends GenericJavaXmlSchemaType {
 	
-	public GenericJavaContainmentMappingXmlSchemaType(JaxbContainmentMapping parent, XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation) {
+	public GenericJavaAttributeMappingXmlSchemaType(JaxbAttributeMapping parent, XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation) {
 		super(parent, xmlSchemaTypeAnnotation);
 	}
 
 	@Override
-	public JaxbContainmentMapping getParent() {
-		return (JaxbContainmentMapping) super.getParent();
+	public JaxbAttributeMapping getParent() {
+		return (JaxbAttributeMapping) super.getParent();
 	}
 
-	protected JaxbContainmentMapping getJaxbContainmentMapping() {
+	protected JaxbAttributeMapping getAttributeMapping() {
 		return getParent();
 	}
 
 	protected JaxbPersistentAttribute getPersistentAttribute() {
-		return getJaxbContainmentMapping().getParent();
+		return getAttributeMapping().getPersistentAttribute();
 	}
 
 	protected JaxbPersistentClass getPersistentClass() {

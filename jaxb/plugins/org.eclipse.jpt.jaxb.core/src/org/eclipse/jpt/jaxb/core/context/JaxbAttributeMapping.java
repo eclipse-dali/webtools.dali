@@ -28,7 +28,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 public interface JaxbAttributeMapping
 		extends JavaContextNode {
 	
-	JaxbPersistentAttribute getParent();
+	JaxbPersistentAttribute getPersistentAttribute();
 	
 	JavaResourceAttribute getJavaResourceAttribute();
 	

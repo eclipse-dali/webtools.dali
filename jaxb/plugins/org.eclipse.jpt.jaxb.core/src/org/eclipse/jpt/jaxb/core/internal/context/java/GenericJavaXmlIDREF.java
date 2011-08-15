@@ -40,7 +40,7 @@ public class GenericJavaXmlIDREF
 	}
 
 	protected JaxbPersistentAttribute getPersistentAttribute() {
-		return getParent().getParent();
+		return getParent().getPersistentAttribute();
 	}
 
 
@@ -61,11 +61,11 @@ public class GenericJavaXmlIDREF
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (getPersistentAttribute().getJavaResourceAttributeTypeName() == Object.class.getName()) {
+		String typeName = getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
+		if (Object.class.getName().equals(typeName)) {
 			//The instance must contain a property/field annotated with @XmlID attribute, but we cannot validate the instance
 			return;
 		}
-		String typeName = getPersistentAttribute().getJavaResourceAttributeTypeName();
 		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(typeName);
 		if (persistentClass != null) {
 			if (!persistentClass.containsXmlId()) {

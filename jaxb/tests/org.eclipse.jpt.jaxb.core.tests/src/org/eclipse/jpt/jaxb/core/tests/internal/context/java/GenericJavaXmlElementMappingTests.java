@@ -10,11 +10,13 @@
 package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 
 import java.util.Iterator;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
@@ -24,6 +26,7 @@ import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
@@ -45,7 +48,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 	public GenericJavaXmlElementMappingTests(String name) {
 		super(name);
 	}
-
+	
 	private ICompilationUnit createTypeWithXmlElement() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -62,29 +65,48 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 			}
 		});
 	}
-
+	
+	private void createXmlTypeWithVariousAttributes() throws CoreException {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("import ").append(JAXB.XML_TYPE).append(";").append(CR);
+				sb.append("import java.util.List;").append(CR);
+				sb.append(CR);
+				sb.append("@XmlType").append(CR);
+				sb.append("public class ").append(TYPE_NAME).append("{").append(CR);
+				sb.append("    public String string;").append(CR);
+				sb.append("    public List<String> stringList;").append(CR);
+				sb.append("    public String[] stringArray;").append(CR);
+				sb.append("}").append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, TYPE_NAME + ".java", sourceWriter);
+	}
+	
 	public void testModifyName() throws Exception {
 		createTypeWithXmlElement();
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		assertNull(xmlElement.getSchemaElementRef().getSpecifiedName());
+		assertEquals("id", xmlElement.getSchemaElementRef().getDefaultName());
+		assertEquals("id", xmlElement.getSchemaElementRef().getName());
 
-		assertNull(xmlElementMapping.getSchemaComponentRef().getSpecifiedName());
-		assertEquals("id", xmlElementMapping.getSchemaComponentRef().getDefaultName());
-		assertEquals("id", xmlElementMapping.getSchemaComponentRef().getName());
-
-		xmlElementMapping.getSchemaComponentRef().setSpecifiedName("foo");
+		xmlElement.getSchemaElementRef().setSpecifiedName("foo");
 		XmlElementAnnotation xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlElementAnnotation.getName());
-		assertEquals("foo", xmlElementMapping.getSchemaComponentRef().getSpecifiedName());
-		assertEquals("id", xmlElementMapping.getSchemaComponentRef().getDefaultName());
-		assertEquals("foo", xmlElementMapping.getSchemaComponentRef().getName());
+		assertEquals("foo", xmlElement.getSchemaElementRef().getSpecifiedName());
+		assertEquals("id", xmlElement.getSchemaElementRef().getDefaultName());
+		assertEquals("foo", xmlElement.getSchemaElementRef().getName());
 
-		xmlElementMapping.getSchemaComponentRef().setSpecifiedName(null);
+		xmlElement.getSchemaElementRef().setSpecifiedName(null);
 		xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementAnnotation.getName());
-		assertNull(xmlElementMapping.getSchemaComponentRef().getSpecifiedName());
+		assertNull(xmlElement.getSchemaElementRef().getSpecifiedName());
 	}
 
 	public void testUpdateName() throws Exception {
@@ -92,9 +114,10 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementMapping.getSchemaComponentRef().getSpecifiedName());
+		assertNull(xmlElement.getSchemaElementRef().getSpecifiedName());
 
 
 		//add a Name member value pair
@@ -104,7 +127,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.addXmlElementMemberValuePair(declaration, JAXB.XML_ELEMENT__NAME, "foo");
 			}
 		});
-		assertEquals("foo", xmlElementMapping.getSchemaComponentRef().getName());
+		assertEquals("foo", xmlElement.getSchemaElementRef().getName());
 
 		//remove the Name member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -113,7 +136,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.values(xmlElementAnnotation).remove(0);
 			}
 		});
-		assertNull(xmlElementMapping.getSchemaComponentRef().getSpecifiedName());
+		assertNull(xmlElement.getSchemaElementRef().getSpecifiedName());
 	}
 
 	public void testModifyNamespace() throws Exception {
@@ -121,19 +144,20 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementMapping.getSchemaComponentRef().getSpecifiedNamespace());
+		assertNull(xmlElement.getSchemaElementRef().getSpecifiedNamespace());
 
-		xmlElementMapping.getSchemaComponentRef().setSpecifiedNamespace("foo");
+		xmlElement.getSchemaElementRef().setSpecifiedNamespace("foo");
 		XmlElementAnnotation xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlElementAnnotation.getNamespace());
-		assertEquals("foo", xmlElementMapping.getSchemaComponentRef().getNamespace());
+		assertEquals("foo", xmlElement.getSchemaElementRef().getNamespace());
 
-		xmlElementMapping.getSchemaComponentRef().setSpecifiedNamespace(null);
+		xmlElement.getSchemaElementRef().setSpecifiedNamespace(null);
 		xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementAnnotation.getNamespace());
-		assertNull(xmlElementMapping.getSchemaComponentRef().getSpecifiedNamespace());
+		assertNull(xmlElement.getSchemaElementRef().getSpecifiedNamespace());
 	}
 
 	public void testUpdateNamespace() throws Exception {
@@ -141,9 +165,10 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementMapping.getSchemaComponentRef().getSpecifiedNamespace());
+		assertNull(xmlElement.getSchemaElementRef().getSpecifiedNamespace());
 
 
 		//add a namespace member value pair
@@ -153,7 +178,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.addXmlElementMemberValuePair(declaration, JAXB.XML_ELEMENT__NAMESPACE, "foo");
 			}
 		});
-		assertEquals("foo", xmlElementMapping.getSchemaComponentRef().getNamespace());
+		assertEquals("foo", xmlElement.getSchemaElementRef().getNamespace());
 
 		//remove the namespace member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -162,7 +187,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.values(xmlElementAnnotation).remove(0);
 			}
 		});
-		assertNull(xmlElementMapping.getSchemaComponentRef().getSpecifiedNamespace());
+		assertNull(xmlElement.getSchemaElementRef().getSpecifiedNamespace());
 	}
 
 	public void testModifyRequired() throws Exception {
@@ -170,25 +195,26 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementMapping.getSpecifiedRequired());
-		assertEquals(false, xmlElementMapping.isDefaultRequired());
-		assertEquals(false, xmlElementMapping.isRequired());
+		assertNull(xmlElement.getSpecifiedRequired());
+		assertEquals(false, xmlElement.isDefaultRequired());
+		assertEquals(false, xmlElement.isRequired());
 
-		xmlElementMapping.setSpecifiedRequired(Boolean.TRUE);
+		xmlElement.setSpecifiedRequired(Boolean.TRUE);
 		XmlElementAnnotation xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.TRUE, xmlElementAnnotation.getRequired());
-		assertEquals(Boolean.TRUE, xmlElementMapping.getSpecifiedRequired());
-		assertEquals(false, xmlElementMapping.isDefaultRequired());
-		assertEquals(true, xmlElementMapping.isRequired());
+		assertEquals(Boolean.TRUE, xmlElement.getSpecifiedRequired());
+		assertEquals(false, xmlElement.isDefaultRequired());
+		assertEquals(true, xmlElement.isRequired());
 
-		xmlElementMapping.setSpecifiedRequired(null);
+		xmlElement.setSpecifiedRequired(null);
 		xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementAnnotation.getName());
-		assertNull(xmlElementMapping.getSpecifiedRequired());
-		assertEquals(false, xmlElementMapping.isDefaultRequired());
-		assertEquals(false, xmlElementMapping.isRequired());
+		assertNull(xmlElement.getSpecifiedRequired());
+		assertEquals(false, xmlElement.isDefaultRequired());
+		assertEquals(false, xmlElement.isRequired());
 	}
 
 	public void testUpdateRequired() throws Exception {
@@ -196,11 +222,12 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementMapping.getSpecifiedRequired());
-		assertEquals(false, xmlElementMapping.isDefaultRequired());
-		assertEquals(false, xmlElementMapping.isRequired());
+		assertNull(xmlElement.getSpecifiedRequired());
+		assertEquals(false, xmlElement.isDefaultRequired());
+		assertEquals(false, xmlElement.isRequired());
 
 
 		//add a required member value pair
@@ -210,9 +237,9 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.addXmlElementMemberValuePair(declaration, JAXB.XML_ELEMENT__REQUIRED, true);
 			}
 		});
-		assertEquals(Boolean.TRUE, xmlElementMapping.getSpecifiedRequired());
-		assertEquals(false, xmlElementMapping.isDefaultRequired());
-		assertEquals(true, xmlElementMapping.isRequired());
+		assertEquals(Boolean.TRUE, xmlElement.getSpecifiedRequired());
+		assertEquals(false, xmlElement.isDefaultRequired());
+		assertEquals(true, xmlElement.isRequired());
 
 		//remove the required member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -221,9 +248,9 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.values(xmlElementAnnotation).remove(0);
 			}
 		});
-		assertNull(xmlElementMapping.getSpecifiedRequired());
-		assertEquals(false, xmlElementMapping.isDefaultRequired());
-		assertEquals(false, xmlElementMapping.isRequired());
+		assertNull(xmlElement.getSpecifiedRequired());
+		assertEquals(false, xmlElement.isDefaultRequired());
+		assertEquals(false, xmlElement.isRequired());
 	}
 
 	public void testModifyNillable() throws Exception {
@@ -231,25 +258,26 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementMapping.getSpecifiedNillable());
-		assertEquals(false, xmlElementMapping.isDefaultNillable());
-		assertEquals(false, xmlElementMapping.isNillable());
+		assertNull(xmlElement.getSpecifiedNillable());
+		assertEquals(false, xmlElement.isDefaultNillable());
+		assertEquals(false, xmlElement.isNillable());
 
-		xmlElementMapping.setSpecifiedNillable(Boolean.TRUE);
+		xmlElement.setSpecifiedNillable(Boolean.TRUE);
 		XmlElementAnnotation xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.TRUE, xmlElementAnnotation.getNillable());
-		assertEquals(Boolean.TRUE, xmlElementMapping.getSpecifiedNillable());
-		assertEquals(false, xmlElementMapping.isDefaultNillable());
-		assertEquals(true, xmlElementMapping.isNillable());
+		assertEquals(Boolean.TRUE, xmlElement.getSpecifiedNillable());
+		assertEquals(false, xmlElement.isDefaultNillable());
+		assertEquals(true, xmlElement.isNillable());
 
-		xmlElementMapping.setSpecifiedNillable(null);
+		xmlElement.setSpecifiedNillable(null);
 		xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementAnnotation.getName());
-		assertNull(xmlElementMapping.getSpecifiedNillable());
-		assertEquals(false, xmlElementMapping.isDefaultNillable());
-		assertEquals(false, xmlElementMapping.isNillable());
+		assertNull(xmlElement.getSpecifiedNillable());
+		assertEquals(false, xmlElement.isDefaultNillable());
+		assertEquals(false, xmlElement.isNillable());
 	}
 
 	public void testUpdateNillable() throws Exception {
@@ -257,11 +285,12 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementMapping.getSpecifiedNillable());
-		assertEquals(false, xmlElementMapping.isDefaultNillable());
-		assertEquals(false, xmlElementMapping.isNillable());
+		assertNull(xmlElement.getSpecifiedNillable());
+		assertEquals(false, xmlElement.isDefaultNillable());
+		assertEquals(false, xmlElement.isNillable());
 
 
 		//add a nillable member value pair
@@ -271,9 +300,9 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.addXmlElementMemberValuePair(declaration, JAXB.XML_ELEMENT__NILLABLE, true);
 			}
 		});
-		assertEquals(Boolean.TRUE, xmlElementMapping.getSpecifiedNillable());
-		assertEquals(false, xmlElementMapping.isDefaultNillable());
-		assertEquals(true, xmlElementMapping.isNillable());
+		assertEquals(Boolean.TRUE, xmlElement.getSpecifiedNillable());
+		assertEquals(false, xmlElement.isDefaultNillable());
+		assertEquals(true, xmlElement.isNillable());
 
 		//remove the nillable member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -282,9 +311,65 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.values(xmlElementAnnotation).remove(0);
 			}
 		});
-		assertNull(xmlElementMapping.getSpecifiedNillable());
-		assertEquals(false, xmlElementMapping.isDefaultNillable());
-		assertEquals(false, xmlElementMapping.isNillable());
+		assertNull(xmlElement.getSpecifiedNillable());
+		assertEquals(false, xmlElement.isDefaultNillable());
+		assertEquals(false, xmlElement.isNillable());
+	}
+	
+	public void testDefaultNillable() throws Exception {
+		createXmlTypeWithVariousAttributes();
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		
+		// string
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = persistentAttribute.getJavaResourceAttribute();
+		
+		assertEquals(false, xmlElement.isDefaultNillable());
+		
+		annotatedElement(resourceAttribute).edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						GenericJavaXmlElementMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ELEMENT);
+					}
+				});
+		
+		assertEquals(false, xmlElement.isDefaultNillable());
+		
+		// string list
+		persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 1);
+		xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		xmlElement = xmlElementMapping.getXmlElement();
+		resourceAttribute = persistentAttribute.getJavaResourceAttribute();
+		
+		assertEquals(true, xmlElement.isDefaultNillable());
+		
+		annotatedElement(resourceAttribute).edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						GenericJavaXmlElementMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ELEMENT);
+					}
+				});
+		
+		assertEquals(false, xmlElement.isDefaultNillable());
+		
+		// string array
+		persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 2);
+		xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		xmlElement = xmlElementMapping.getXmlElement();
+		resourceAttribute = persistentAttribute.getJavaResourceAttribute();
+		
+		assertEquals(true, xmlElement.isDefaultNillable());
+		
+		annotatedElement(resourceAttribute).edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						GenericJavaXmlElementMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ELEMENT);
+					}
+				});
+		
+		assertEquals(false, xmlElement.isDefaultNillable());
 	}
 
 	public void testModifyDefaultValue() throws Exception {
@@ -292,19 +377,20 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementMapping.getDefaultValue());
+		assertNull(xmlElement.getDefaultValue());
 
-		xmlElementMapping.setDefaultValue("foo");
+		xmlElement.setDefaultValue("foo");
 		XmlElementAnnotation xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlElementAnnotation.getDefaultValue());
-		assertEquals("foo", xmlElementMapping.getDefaultValue());
+		assertEquals("foo", xmlElement.getDefaultValue());
 
-		xmlElementMapping.setDefaultValue(null);
+		xmlElement.setDefaultValue(null);
 		xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementAnnotation.getDefaultValue());
-		assertNull(xmlElementMapping.getDefaultValue());
+		assertNull(xmlElement.getDefaultValue());
 	}
 
 	public void testUpdateDefaultValue() throws Exception {
@@ -312,9 +398,10 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementMapping.getDefaultValue());
+		assertNull(xmlElement.getDefaultValue());
 
 
 		//add a DefaultValue member value pair
@@ -324,7 +411,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.addXmlElementMemberValuePair(declaration, JAXB.XML_ELEMENT__DEFAULT_VALUE, "foo");
 			}
 		});
-		assertEquals("foo", xmlElementMapping.getDefaultValue());
+		assertEquals("foo", xmlElement.getDefaultValue());
 
 		//remove the DefaultValue member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -333,39 +420,39 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.values(xmlElementAnnotation).remove(0);
 			}
 		});
-		assertNull(xmlElementMapping.getDefaultValue());
+		assertNull(xmlElement.getDefaultValue());
 	}
 
 	public void testModifyType() throws Exception {
 		createTypeWithXmlElement();
-
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
-
-		assertNull(xmlElementMapping.getSpecifiedType());
-
-		xmlElementMapping.setSpecifiedType("Foo");
-		XmlElementAnnotation xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
-		assertEquals("Foo", xmlElementMapping.getSpecifiedType());
-		assertEquals("Foo", xmlElementMapping.getType());
-
-		xmlElementMapping.setSpecifiedType(null);
-		xmlElementAnnotation = (XmlElementAnnotation) resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME);
-		assertNull(xmlElementAnnotation.getType());
-		assertNull(xmlElementMapping.getSpecifiedType());
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		
+		assertNull(xmlElement.getSpecifiedType());
+		assertEquals("int", xmlElement.getType());
+		assertEquals("int", xmlElement.getDefaultType());
+		
+		xmlElement.setSpecifiedType("Foo");
+		assertEquals("Foo", xmlElement.getSpecifiedType());
+		assertEquals("Foo", xmlElement.getType());
+		
+		xmlElement.setSpecifiedType(null);
+		assertNull(xmlElement.getSpecifiedType());
+		assertEquals("int", xmlElement.getType());
 	}
-
+	
 	public void testUpdateType() throws Exception {
 		createTypeWithXmlElement();
-
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
-
-		assertNull(xmlElementMapping.getSpecifiedType());
-
-
+		XmlElement xmlElement = xmlElementMapping.getXmlElement();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		assertNull(xmlElement.getSpecifiedType());
+		assertEquals("int", xmlElement.getDefaultType());
+		assertEquals("int", xmlElement.getType());
+		
 		//add a Type member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
 		annotatedElement.edit(new Member.Editor() {
@@ -373,8 +460,9 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.addXmlElementTypeMemberValuePair(declaration, JAXB.XML_ELEMENT__TYPE, "Foo");
 			}
 		});
-		assertEquals("Foo", xmlElementMapping.getType());
-
+		assertEquals("Foo", xmlElement.getSpecifiedType());
+		assertEquals("Foo", xmlElement.getType());
+		
 		//remove the Type member value pair
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -382,7 +470,8 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.values(xmlElementAnnotation).remove(0);
 			}
 		});
-		assertNull(xmlElementMapping.getSpecifiedType());
+		assertNull(xmlElement.getSpecifiedType());
+		assertEquals("int", xmlElement.getType());
 	}
 
 	public void testChangeMappingType() throws Exception {
@@ -391,7 +480,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNotNull(xmlElementMapping);
 		assertNotNull(resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME));
@@ -416,7 +505,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlJavaTypeAdapter());
@@ -429,6 +518,8 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		xmlElementMapping.removeXmlJavaTypeAdapter();
 		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNull(xmlElementMapping.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
 	}
 
 	public void testUpdateXmlJavaTypeAdapter() throws Exception {
@@ -437,7 +528,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlJavaTypeAdapter());
@@ -472,7 +563,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlSchemaType());
@@ -493,7 +584,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlSchemaType());
@@ -548,7 +639,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlElementWrapper());
@@ -569,7 +660,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlElementWrapper());
@@ -604,7 +695,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlListAnnotation xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(XmlListAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlList());
@@ -625,7 +716,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlListAnnotation xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(XmlListAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlList());
@@ -660,7 +751,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlIDAnnotation xmlIDAnnotation = (XmlIDAnnotation) resourceAttribute.getAnnotation(XmlIDAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlID());
@@ -681,7 +772,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlIDAnnotation xmlIDAnnotation = (XmlIDAnnotation) resourceAttribute.getAnnotation(XmlIDAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlID());
@@ -716,7 +807,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlIDREFAnnotation xmlIDREFAnnotation = (XmlIDREFAnnotation) resourceAttribute.getAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlIDREF());
@@ -729,6 +820,8 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 
 		xmlElementMapping.removeXmlIDREF();
 		xmlIDREFAnnotation = (XmlIDREFAnnotation) resourceAttribute.getAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
+		assertNull(xmlElementMapping.getXmlIDREF());
+		assertNull(xmlIDREFAnnotation);
 	}
 
 	public void testUpdateXmlIDREF() throws Exception {
@@ -737,7 +830,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlIDREFAnnotation xmlIDREFAnnotation = (XmlIDREFAnnotation) resourceAttribute.getAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlIDREF());
@@ -772,7 +865,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlAttachmentRefAnnotation xmlAttachmentRefAnnotation = (XmlAttachmentRefAnnotation) resourceAttribute.getAnnotation(XmlAttachmentRefAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlAttachmentRef());
@@ -793,7 +886,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlAttachmentRefAnnotation xmlAttachmentRefAnnotation = (XmlAttachmentRefAnnotation) resourceAttribute.getAnnotation(XmlAttachmentRefAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlAttachmentRef());

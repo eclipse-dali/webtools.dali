@@ -21,9 +21,7 @@ public class JaxbCoreJavaContextModelTests
 		suite.addTestSuite(GenericJavaElementFactoryMethodTests.class);
 		suite.addTestSuite(GenericJavaEnumConstantTests.class);
 		suite.addTestSuite(GenericJavaPackageInfoTests.class);
-		suite.addTestSuite(GenericJavaPackageXmlJavaTypeAdapterTests.class);
-		suite.addTestSuite(GenericJavaTypeXmlJavaTypeAdapterTests.class);
-		suite.addTestSuite(GenericJavaAttributeXmlJavaTypeAdapterTests.class);
+		suite.addTestSuite(GenericJavaPersistentAttributeTests.class);
 		suite.addTestSuite(GenericJavaPersistentClassTests.class);
 		suite.addTestSuite(GenericJavaPersistentEnumTests.class);
 		suite.addTestSuite(GenericJavaRegistryTests.class);
@@ -31,6 +29,10 @@ public class JaxbCoreJavaContextModelTests
 		suite.addTestSuite(GenericJavaXmlAnyElementMappingTests.class);
 		suite.addTestSuite(GenericJavaXmlAttributeMappingTests.class);
 		suite.addTestSuite(GenericJavaXmlElementMappingTests.class);
+		suite.addTestSuite(GenericJavaXmlElementsMappingTests.class);
+		suite.addTestSuite(GenericJavaPackageXmlJavaTypeAdapterTests.class);
+		suite.addTestSuite(GenericJavaTypeXmlJavaTypeAdapterTests.class);
+		suite.addTestSuite(GenericJavaAttributeXmlJavaTypeAdapterTests.class);
 		suite.addTestSuite(GenericJavaXmlRootElementTests.class);
 		suite.addTestSuite(GenericJavaXmlSchemaTests.class);
 		suite.addTestSuite(GenericJavaXmlSchemaTypeTests.class);

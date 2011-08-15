@@ -37,16 +37,16 @@ public interface Accessor
 	boolean isFor(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
 
 	/**
-	 * Return the type name of the java resource attribute
-	 * This might not return the same thing as getJavaResourceAttribute().getTypeName().
+	 * Return the type name of the java attribute, or the item type name of a collection or array.
 	 */
-	String getJavaResourceAttributeTypeName();
-
+	String getJavaResourceAttributeBaseTypeName();
+	
 	/**
-	 * Return whether the java resource attribute type is an array
-	 * This might not return the same thing as getJavaResourceAttribute().typeIsArray().
+	 * (See JAXB 2.2 Spec, sect. 5.5.2)
+	 * Return true if the java attribute type is an extension of java.util.Collection or a single 
+	 * dimensional array (except for byte[], which is treated like a non-array)
 	 */
-	boolean isJavaResourceAttributeTypeArray();
+	boolean isJavaResourceAttributeCollectionType();
 	
 	/**
 	 * Return whether the java resource attribute type is a subtype of the given type
@@ -58,16 +58,45 @@ public interface Accessor
 	//**************** static methods *****************
 
 	final class AccessorTools {
-		public static String getTypeName(JavaResourceAttribute attribute) {
-			if (attribute.typeIsSubTypeOf(COLLECTION_CLASS_NAME)) {
+		
+		public static final String BYTE_ARRAY_CLASS_NAME = "byte[]";
+		public static final String COLLECTION_CLASS_NAME = Collection.class.getName();
+		public static final String OBJECT_CLASS_NAME = Object.class.getName();
+		
+		public static String getBaseTypeName(JavaResourceAttribute attribute) {
+			if (attribute.typeIsArray()) {
+				if (BYTE_ARRAY_CLASS_NAME.equals(attribute.getTypeName())) {
+					return BYTE_ARRAY_CLASS_NAME;
+				}
+				else if (attribute.getTypeArrayDimensionality() == 1) {
+					return attribute.getTypeArrayComponentTypeName();
+				}
+			}
+			else if (attribute.typeIsSubTypeOf(COLLECTION_CLASS_NAME)) {
 				if (attribute.getTypeTypeArgumentNamesSize() == 1) {
 					return attribute.getTypeTypeArgumentName(0);
 				}
-				return null;
+				return OBJECT_CLASS_NAME;
 			}
 			return attribute.getTypeName();
 		}
-	
-		public static final String COLLECTION_CLASS_NAME = Collection.class.getName();
+		
+		/**
+		 * @see JaxbPersistentAttribute#isJavaResourceAttributeCollectionType()
+		 */
+		public static boolean isCollectionType(JavaResourceAttribute attribute) {
+			if (attribute.typeIsArray()) {
+				if (attribute.getTypeArrayDimensionality() == 1
+						&& ! BYTE_ARRAY_CLASS_NAME.equals(attribute.getTypeName())) {
+					return true;
+				}
+				return false;
+			}
+			else if (attribute.typeIsSubTypeOf(COLLECTION_CLASS_NAME)) {
+				return true;
+			}
+			
+			return false;
+		}
 	}
 }

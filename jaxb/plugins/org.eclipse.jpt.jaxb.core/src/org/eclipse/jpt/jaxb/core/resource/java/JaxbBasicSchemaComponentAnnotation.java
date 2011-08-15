@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
+ * Super-interface for {@link XmlAttributeAnnotation} and {@link XmlElementAnnotation}
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,10 +21,10 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  */
-public interface JaxbContainmentAnnotation
+public interface JaxbBasicSchemaComponentAnnotation
 		extends SchemaComponentRefAnnotation {
 	
 	/**

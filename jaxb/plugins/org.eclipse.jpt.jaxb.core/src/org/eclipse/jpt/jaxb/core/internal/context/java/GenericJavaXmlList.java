@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import java.util.Collection;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.context.JaxbContainmentMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.JaxbBasicMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlList;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -29,18 +28,18 @@ public class GenericJavaXmlList
 
 	protected final XmlListAnnotation resourceXmlList;
 
-	public GenericJavaXmlList(JaxbContainmentMapping parent, XmlListAnnotation resource) {
+	public GenericJavaXmlList(JaxbBasicMapping parent, XmlListAnnotation resource) {
 		super(parent);
 		this.resourceXmlList = resource;
 	}
 
 	@Override
-	public JaxbContainmentMapping getParent() {
-		return (JaxbContainmentMapping) super.getParent();
+	public JaxbBasicMapping getParent() {
+		return (JaxbBasicMapping) super.getParent();
 	}
 
 	protected JaxbPersistentAttribute getPersistentAttribute() {
-		return getParent().getParent();
+		return getParent().getPersistentAttribute();
 	}
 
 
@@ -49,7 +48,7 @@ public class GenericJavaXmlList
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (!getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(Collection.class.getName()) && !getPersistentAttribute().isJavaResourceAttributeTypeArray()) {
+		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

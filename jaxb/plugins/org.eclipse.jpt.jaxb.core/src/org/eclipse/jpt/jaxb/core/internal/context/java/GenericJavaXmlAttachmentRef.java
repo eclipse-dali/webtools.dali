@@ -17,24 +17,25 @@ import org.eclipse.jpt.jaxb.core.context.XmlAttachmentRef;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
 
 public class GenericJavaXmlAttachmentRef
-	extends AbstractJavaContextNode
-	implements XmlAttachmentRef
-{
-
+		extends AbstractJavaContextNode
+		implements XmlAttachmentRef {
+	
 	protected final XmlAttachmentRefAnnotation resourceXmlAttachmentRef;
-
+	
+	
 	public GenericJavaXmlAttachmentRef(JaxbAttributeMapping parent, XmlAttachmentRefAnnotation resource) {
 		super(parent);
 		this.resourceXmlAttachmentRef = resource;
 	}
-
+	
+	
 	@Override
 	public JaxbAttributeMapping getParent() {
 		return (JaxbAttributeMapping) super.getParent();
 	}
 
 	protected JaxbPersistentAttribute getPersistentAttribute() {
-		return getParent().getParent();
+		return getParent().getPersistentAttribute();
 	}
 
 	@Override

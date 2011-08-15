@@ -26,11 +26,11 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface XmlElementsAnnotation
-	extends Annotation
-{
+		extends Annotation {
+	
 	String ANNOTATION_NAME = JAXB.XML_ELEMENTS;
-
-
+	
+	
 	/**
 	 * Corresponds to the 'value' element of the XmlElements annotation.
 	 * Return an empty iterator if the element does not exist in Java.

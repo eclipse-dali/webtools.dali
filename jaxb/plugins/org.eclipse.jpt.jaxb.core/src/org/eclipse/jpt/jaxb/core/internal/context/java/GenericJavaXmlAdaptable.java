@@ -74,7 +74,7 @@ class GenericJavaXmlAdaptable
 		if (this.xmlJavaTypeAdapter == null) {
 			throw new IllegalStateException();
 		}
-		this.owner.getResource().removeAnnotation(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		this.owner.getResource().removeAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		this.setXmlJavaTypeAdapter_(null);
 	}
 

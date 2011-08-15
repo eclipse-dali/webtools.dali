@@ -10,7 +10,13 @@
 package org.eclipse.jpt.jaxb.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.utility.Command;
+import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
+import org.eclipse.jpt.common.utility.internal.synchronizers.SynchronousSynchronizer;
+import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
@@ -56,7 +62,36 @@ public class TestJaxbProject
 				((IProjectFacetVersion) config.getProperty(IFacetDataModelProperties.FACET_VERSION)).getVersionString();
 		this.installFacet(JaxbFacet.ID, jaxbFacetVersion, config);
 		this.jaxbProject = JptJaxbCorePlugin.getJaxbProject(this.getProject());
-//		this.jaxbProject.setUpdater(new SynchronousJpaProjectUpdater(this.jaxbProject));
+		this.jaxbProject.setContextModelSynchronizer(this.buildSynchronousContextModelSynchronizer());
+		this.jaxbProject.setUpdateSynchronizer(this.buildSynchronousUpdateSynchronizer());
+	}
+	
+	protected Synchronizer buildSynchronousContextModelSynchronizer() {
+		return new SynchronousSynchronizer(this.buildSynchronousContextModelSynchronizerCommand());
+	}
+
+	protected Command buildSynchronousContextModelSynchronizerCommand() {
+		return new SynchronousContextModelSynchronizerCommand();
+	}
+
+	protected class SynchronousContextModelSynchronizerCommand implements Command {
+		public void execute() {
+			TestJaxbProject.this.jaxbProject.synchronizeContextModel(new NullProgressMonitor());
+		}
+	}
+	
+	protected CallbackSynchronizer buildSynchronousUpdateSynchronizer() {
+		return new CallbackSynchronousSynchronizer(this.buildSynchronousUpdateSynchronizerCommand());
+	}
+
+	protected Command buildSynchronousUpdateSynchronizerCommand() {
+		return new SynchronousUpdateSynchronizerCommand();
+	}
+
+	protected class SynchronousUpdateSynchronizerCommand implements Command {
+		public void execute() {
+			TestJaxbProject.this.jaxbProject.update(new NullProgressMonitor());
+		}
 	}
 	
 	

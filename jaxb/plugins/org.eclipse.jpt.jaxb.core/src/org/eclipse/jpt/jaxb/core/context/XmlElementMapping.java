@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-
 /**
  * Represents a JAXB xml element mapping (@XmlElement)
  * <p>
@@ -23,26 +22,11 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface XmlElementMapping
-		extends JaxbContainmentMapping {
+		extends JaxbBasicMapping {
 	
-	boolean isNillable();
-	boolean isDefaultNillable();
-		boolean DEFAULT_NILLABLE = false;
-	Boolean getSpecifiedNillable();
-	void setSpecifiedNillable(Boolean specifiedNillable);
-		String SPECIFIED_NILLABLE_PROPERTY = "specifiedNillable"; //$NON-NLS-1$
-
-	String getDefaultValue();
-	void setDefaultValue(String defaultValue);
-		String DEFAULT_VALUE_PROPERTY = "defaultValue"; //$NON-NLS-1$
-
-	String getType();
-	String getDefaultType();
-	String getSpecifiedType();
-	void setSpecifiedType(String type);
-		String SPECIFIED_TYPE_PROPERTY = "specifiedType"; //$NON-NLS-1$
-
-
+	XmlElement getXmlElement();
+	
+	
 	/********** XmlElementWrapper **********/
 	
 	XmlElementWrapper getXmlElementWrapper();

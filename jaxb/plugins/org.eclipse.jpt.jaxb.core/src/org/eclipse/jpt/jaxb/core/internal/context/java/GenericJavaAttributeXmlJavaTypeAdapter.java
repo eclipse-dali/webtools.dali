@@ -34,14 +34,14 @@ public class GenericJavaAttributeXmlJavaTypeAdapter
 	}
 
 	protected JaxbPersistentAttribute getPersistentAttribute() {
-		return getParent().getParent();
+		return getParent().getPersistentAttribute();
 	}
 
 	// ********** type **********
 
 	@Override
 	protected String buildDefaultType() {
-		return this.getPersistentAttribute().getJavaResourceAttributeTypeName();
+		return this.getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
 	}
 
 

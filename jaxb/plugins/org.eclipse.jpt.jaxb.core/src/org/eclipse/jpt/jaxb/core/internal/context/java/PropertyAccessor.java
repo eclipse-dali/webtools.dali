@@ -35,19 +35,19 @@ public class PropertyAccessor
 	public JavaResourceAttribute getJavaResourceAttribute() {
 		return this.calculateResourceMethodToAnnotate();
 	}
-
-	public String getJavaResourceAttributeTypeName() {
+	
+	public String getJavaResourceAttributeBaseTypeName() {
 		JavaResourceAttribute getterMethod = getResourceGetterMethod();
 		//it's invalid to have a setter without a getter, so just return null in this case
 		//rather than attempting to define the type from the setter's parameters
-		return getterMethod == null ? null : AccessorTools.getTypeName(getterMethod);
+		return getterMethod == null ? null : AccessorTools.getBaseTypeName(getterMethod);
 	}
-
-	public boolean isJavaResourceAttributeTypeArray() {
+	
+	public boolean isJavaResourceAttributeCollectionType() {
 		JavaResourceAttribute getterMethod = getResourceGetterMethod();
 		//it's invalid to have a setter without a getter, so just return false in this case
 		//rather than attempting to use the setter's parameters
-		return getterMethod == null ? false : getterMethod.typeIsArray();
+		return getterMethod == null ? false : AccessorTools.isCollectionType(getterMethod);
 	}
 
 	public boolean isJavaResourceAttributeTypeSubTypeOf(String typeName) {

@@ -66,7 +66,7 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNotNull(xmlAnyElementMapping);
 		assertNotNull(resourceAttribute.getAnnotation(XmlAnyElementAnnotation.ANNOTATION_NAME));
@@ -103,7 +103,7 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(xmlAnyElementMapping.getXmlJavaTypeAdapter());
@@ -124,7 +124,7 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(xmlAnyElementMapping.getXmlJavaTypeAdapter());
@@ -158,7 +158,7 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNull(xmlAnyElementMapping.getSpecifiedLax());
 		assertEquals(false, xmlAnyElementMapping.isDefaultLax());
@@ -183,7 +183,7 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNull(xmlAnyElementMapping.getSpecifiedLax());
 		assertEquals(false, xmlAnyElementMapping.isDefaultLax());
@@ -218,7 +218,7 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNull(xmlAnyElementMapping.getSpecifiedValue());
 
@@ -238,7 +238,7 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNull(xmlAnyElementMapping.getSpecifiedValue());
 
@@ -283,7 +283,7 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlMixedAnnotation xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
 		assertNull(xmlAnyElementMapping.getXmlMixed());
@@ -304,7 +304,7 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlMixedAnnotation xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
 		assertNull(xmlAnyElementMapping.getXmlMixed());

@@ -519,10 +519,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 	protected void removeXmlSchemaType(ModifiedDeclaration declaration, int index) {
 		this.removeArrayElement((NormalAnnotation) declaration.getAnnotationNamed(JAXB.XML_SCHEMA_TYPES), JAXB.XML_SCHEMA_TYPES__VALUE, index);
 	}
-
-
-
-
+	
 	
 	public void testGetXmlJavaTypeAdapters() throws Exception {
 		this.createPackageInfoWithAccessorOrder();

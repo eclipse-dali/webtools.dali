@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -25,6 +26,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -103,15 +106,15 @@ public class GenericJavaPersistentAttribute
 	public JavaResourceAttribute getJavaResourceAttribute() {
 		return this.accessor.getJavaResourceAttribute();
 	}
-
-	public String getJavaResourceAttributeTypeName() {
-		return this.accessor.getJavaResourceAttributeTypeName();
+	
+	public String getJavaResourceAttributeBaseTypeName() {
+		return this.accessor.getJavaResourceAttributeBaseTypeName();
 	}
-
-	public boolean isJavaResourceAttributeTypeArray() {
-		return this.accessor.isJavaResourceAttributeTypeArray();
+	
+	public boolean isJavaResourceAttributeCollectionType() {
+		return this.accessor.isJavaResourceAttributeCollectionType();
 	}
-
+	
 	public boolean isJavaResourceAttributeTypeSubTypeOf(String typeName) {
 		return this.accessor.isJavaResourceAttributeTypeSubTypeOf(typeName);
 	}
@@ -251,7 +254,7 @@ public class GenericJavaPersistentAttribute
 	protected JaxbAttributeMapping buildMapping_(JavaAttributeMappingDefinition definition) {
 		// 'mapping' is null during construction
 		if ((this.mapping != null) && this.mapping.isDefault() && Tools.valuesAreEqual(this.mapping.getKey(), definition.getKey())) {
-			this.mapping.updateDefault();  // since nothing here changes, we need to update the mapping's flag
+			this.mapping.synchronizeWithResourceModel();  // the mapping instance hasn't changed, but some resource differences may have resulted
 			return this.mapping;
 		}
 		return definition.buildMapping(this, this.getFactory());
@@ -282,6 +285,7 @@ public class GenericJavaPersistentAttribute
 		} else {
 			if (this.mapping.isDefault()) {
 				// null/default => specified
+				// (will not change mapping instance if keys are the same, but will sync the mapping)
 				this.setMapping(this.buildMapping(definition));
 			} else {
 				// specified => specified
@@ -401,7 +405,39 @@ public class GenericJavaPersistentAttribute
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		
+		// validate that unsupported annotations are not present
+		JavaAttributeMappingDefinition currentMappingDefinition = getCurrentMappingDefinition();
+		Iterable<String> supportingAnnotationNames = currentMappingDefinition.getSupportingAnnotationNames();
+		
+		for (Annotation annotation : getJavaResourceAttribute().getAnnotations()) {
+			if (Tools.valuesAreDifferent(currentMappingDefinition.getAnnotationName(), annotation.getAnnotationName())
+					&& ! CollectionTools.contains(supportingAnnotationNames, annotation.getAnnotationName())) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.ATTRIBUTE_MAPPING__UNSUPPORTED_ANNOTATION,
+								new String[] { annotation.getAnnotationName(), currentMappingDefinition.getAnnotationName() },
+								this,
+								annotation.getTextRange(astRoot)));
+			}
+		}
+		
 		this.getMapping().validate(messages, reporter, astRoot);
 	}
-
+	
+	protected JavaAttributeMappingDefinition getCurrentMappingDefinition() {
+		Iterable<? extends JavaAttributeMappingDefinition> mappingDefinitions = 
+				(this.mapping.isDefault()) ? 
+						getDefaultMappingDefinitions()
+						: getSpecifiedMappingDefinitions();
+		
+		for (JavaAttributeMappingDefinition mappingDefinition : mappingDefinitions) {
+			if (Tools.valuesAreEqual(mappingDefinition.getKey(), this.mapping.getKey())) {
+				return mappingDefinition;
+			}
+		}
+		
+		return null;
+	}
 }

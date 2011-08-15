@@ -22,22 +22,37 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlAttributeMapping
-		extends GenericJavaContainmentMapping<XmlAttributeAnnotation>
+		extends GenericJavaBasicMapping<XmlAttributeAnnotation>
 		implements XmlAttributeMapping {
+	
+	protected final JaxbSchemaComponentRef schemaComponentRef;
+	
+	protected Boolean specifiedRequired;
+	
 	
 	public GenericJavaXmlAttributeMapping(JaxbPersistentAttribute parent) {
 		super(parent);
+		this.schemaComponentRef = buildSchemaComponentRef();
+		this.specifiedRequired = buildSpecifiedRequired();
 	}
 	
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.schemaComponentRef.synchronizeWithResourceModel();
+		setSpecifiedRequired_(buildSpecifiedRequired());
+	}
 	
 	@Override
-	protected JaxbSchemaComponentRef buildSchemaComponentRef() {
-		return new XmlAttributeSchemaComponentRef(this);
+	public void update() {
+		super.update();
+		this.schemaComponentRef.update();
 	}
 	
 	public String getKey() {
@@ -49,14 +64,60 @@ public class GenericJavaXmlAttributeMapping
 		return XmlAttributeAnnotation.ANNOTATION_NAME;
 	}
 	
+	// ***** schema component ref *****
 	
-	protected class XmlAttributeSchemaComponentRef
-			extends ContainmentMappingSchemaComponentRef {
+	public JaxbSchemaComponentRef getSchemaComponentRef() {
+		return this.schemaComponentRef;
+	}
+	
+	protected JaxbSchemaComponentRef buildSchemaComponentRef() {
+		return new XmlSchemaAttributeRef(this);
+	}
+	
+	
+	// ***** XmlAttribute.required *****
+
+	public boolean isRequired() {
+		return (this.specifiedRequired == null) ? isDefaultRequired() : this.specifiedRequired.booleanValue();
+	}
+	
+	public Boolean getSpecifiedRequired() {
+		return this.specifiedRequired;
+	}
+	
+	public void setSpecifiedRequired(Boolean newSpecifiedRequired) {
+		getOrCreateAnnotation().setRequired(newSpecifiedRequired);
+		setSpecifiedRequired_(newSpecifiedRequired);
+	}
+	
+	protected void setSpecifiedRequired_(Boolean newSpecifiedRequired) {
+		Boolean oldRequired = this.specifiedRequired;
+		this.specifiedRequired = newSpecifiedRequired;
+		firePropertyChanged(SPECIFIED_REQUIRED_PROPERTY, oldRequired, newSpecifiedRequired);
+	}
+	
+	protected Boolean buildSpecifiedRequired() {
+		XmlAttributeAnnotation annotation = getAnnotation();
+		return (annotation == null) ? null : annotation.getRequired();
+	}
+	
+	public boolean isDefaultRequired() {
+		return false;
+	}
+	
+	
+	protected class XmlSchemaAttributeRef
+			extends AbstractJavaSchemaComponentRef {
 		
-		protected XmlAttributeSchemaComponentRef(JavaContextNode parent) {
+		protected XmlSchemaAttributeRef(JavaContextNode parent) {
 			super(parent);
 		}
 		
+		
+		@Override
+		public String getSchemaComponentTypeDescription() {
+			return JptJaxbCoreMessages.XML_ATTRIBUTE_DESC;
+		}
 		
 		@Override
 		protected SchemaComponentRefAnnotation getAnnotation(boolean createIfNull) {
@@ -69,9 +130,8 @@ public class GenericJavaXmlAttributeMapping
 		}
 		
 		@Override
-		public String getDefaultNamespace() {
-			return (GenericJavaXmlAttributeMapping.this.getJaxbPackage().getAttributeFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlAttributeMapping.this.getPersistentClass().getSchemaTypeRef().getNamespace() : "";
+		public String getDefaultName() {
+			return GenericJavaXmlAttributeMapping.this.getPersistentAttribute().getJavaResourceAttribute().getName();
 		}
 		
 		@Override
@@ -81,8 +141,15 @@ public class GenericJavaXmlAttributeMapping
 		}
 		
 		@Override
-		public String getSchemaComponentTypeDescription() {
-			return JptJaxbCoreMessages.XML_ATTRIBUTE_DESC;
+		public String getDefaultNamespace() {
+			return (GenericJavaXmlAttributeMapping.this.getJaxbPackage().getAttributeFormDefault() == XmlNsForm.QUALIFIED) ?
+					GenericJavaXmlAttributeMapping.this.getPersistentClass().getSchemaTypeRef().getNamespace() : "";
+		}
+		
+		@Override
+		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
+			XsdSchema schema = GenericJavaXmlAttributeMapping.this.getJaxbPackage().getXsdSchema();
+			return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
 		}
 		
 		@Override

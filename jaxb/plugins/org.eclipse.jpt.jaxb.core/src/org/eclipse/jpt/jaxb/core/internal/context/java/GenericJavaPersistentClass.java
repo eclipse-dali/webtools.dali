@@ -32,8 +32,8 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
+import org.eclipse.jpt.jaxb.core.context.JaxbBasicMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbContainmentMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -726,36 +726,36 @@ public class GenericJavaPersistentClass
 	
 	protected void validateXmlIDs(List<IMessage> messages, CompilationUnit astRoot) {
 		String xmlIdMapping = null;
-		for (JaxbContainmentMapping containmentMapping : getContainmentMappingsWithXmlID()) {
+		for (JaxbBasicMapping containmentMapping : getBasicMappingsWithXmlID()) {
 			if (xmlIdMapping != null) {
 				messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JaxbValidationMessages.MULTIPLE_XML_IDS_DEFINED,
-						new String[] {containmentMapping.getParent().getName(), xmlIdMapping},
+						new String[] { containmentMapping.getPersistentAttribute().getName(), xmlIdMapping },
 						containmentMapping,
 						containmentMapping.getValidationTextRange(astRoot)));
 			}
 			else {
-				xmlIdMapping = containmentMapping.getParent().getName();
+				xmlIdMapping = containmentMapping.getPersistentAttribute().getName();
 			}
 		}
 	}
 	
-	protected Iterable<JaxbContainmentMapping> getContainmentMappingsWithXmlID(){
-		return new FilteringIterable<JaxbContainmentMapping>(this.getContainmentMappings()){
+	protected Iterable<JaxbBasicMapping> getBasicMappingsWithXmlID(){
+		return new FilteringIterable<JaxbBasicMapping>(this.getBasicMappings()){
 			@Override
-			protected boolean accept(JaxbContainmentMapping containmentMapping) {
-				return containmentMapping.getXmlID() != null;
+			protected boolean accept(JaxbBasicMapping basicMapping) {
+				return basicMapping.getXmlID() != null;
 			}
 		};
 	}
 	
-	protected Iterable<JaxbContainmentMapping> getContainmentMappings() {
-		return new SubIterableWrapper<JaxbAttributeMapping, JaxbContainmentMapping>(this.getContainmentMappings_());
+	protected Iterable<JaxbBasicMapping> getBasicMappings() {
+		return new SubIterableWrapper<JaxbAttributeMapping, JaxbBasicMapping>(this.getBasicMappings_());
 	}
 	
-	protected Iterable<JaxbAttributeMapping> getContainmentMappings_(){
+	protected Iterable<JaxbAttributeMapping> getBasicMappings_(){
 		return new FilteringIterable<JaxbAttributeMapping>(this.getAttributeMappings()){
 			@Override
 			protected boolean accept(JaxbAttributeMapping attributeMapping) {
@@ -775,6 +775,6 @@ public class GenericJavaPersistentClass
 	}
 
 	public boolean containsXmlId() {
-		return !CollectionTools.isEmpty(getContainmentMappingsWithXmlID());
+		return !CollectionTools.isEmpty(getBasicMappingsWithXmlID());
 	}
 }

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 
@@ -51,4 +53,11 @@ public interface JaxbSchemaComponentRef
 	String getSpecifiedName();
 	
 	void setSpecifiedName(String name);	
+	
+	
+	// ***** validation *****
+	
+	TextRange getNamespaceTextRange(CompilationUnit astRoot);
+	
+	TextRange getNameTextRange(CompilationUnit astRoot);
 }

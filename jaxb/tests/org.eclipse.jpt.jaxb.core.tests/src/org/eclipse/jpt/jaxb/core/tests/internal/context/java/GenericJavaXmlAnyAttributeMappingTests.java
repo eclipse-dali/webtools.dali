@@ -62,7 +62,7 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlAnyAttributeMapping xmlAnyAttributeMapping = (XmlAnyAttributeMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyAttributeMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyAttributeMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		assertNotNull(xmlAnyAttributeMapping);
 		assertNotNull(resourceAttribute.getAnnotation(XmlAnyAttributeAnnotation.ANNOTATION_NAME));
@@ -99,7 +99,7 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlAnyAttributeMapping xmlAnyAttributeMapping = (XmlAnyAttributeMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyAttributeMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyAttributeMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(xmlAnyAttributeMapping.getXmlJavaTypeAdapter());
@@ -120,7 +120,7 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
 		XmlAnyAttributeMapping xmlAnyAttributeMapping = (XmlAnyAttributeMapping) persistentAttribute.getMapping();
-		JavaResourceAttribute resourceAttribute = xmlAnyAttributeMapping.getParent().getJavaResourceAttribute();
+		JavaResourceAttribute resourceAttribute = xmlAnyAttributeMapping.getPersistentAttribute().getJavaResourceAttribute();
 
 		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(xmlAnyAttributeMapping.getXmlJavaTypeAdapter());

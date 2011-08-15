@@ -158,12 +158,12 @@ public abstract class AbstractJavaSchemaComponentRef
 		return getParent().getValidationTextRange(astRoot);
 	}
 	
-	protected TextRange getNamespaceTextRange(CompilationUnit astRoot) {
+	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
 		SchemaComponentRefAnnotation annotation = getAnnotation(false);
 		return (annotation == null) ? null : getTextRange(annotation.getNamespaceTextRange(astRoot), astRoot);
 	}
 	
-	protected TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		SchemaComponentRefAnnotation annotation = getAnnotation(false);
 		return (annotation == null) ? null : getTextRange(annotation.getNameTextRange(astRoot), astRoot);
 	}

@@ -32,15 +32,15 @@ public class FieldAccessor
 	public JavaResourceAttribute getJavaResourceAttribute() {
 		return this.getResourceField();
 	}
-
-	public String getJavaResourceAttributeTypeName() {
-		return AccessorTools.getTypeName(this.getJavaResourceAttribute());
+	
+	public String getJavaResourceAttributeBaseTypeName() {
+		return AccessorTools.getBaseTypeName(this.getJavaResourceAttribute());
 	}
-
-	public boolean isJavaResourceAttributeTypeArray() {
-		return this.getJavaResourceAttribute().typeIsArray();
+	
+	public boolean isJavaResourceAttributeCollectionType() {
+		return AccessorTools.isCollectionType(getJavaResourceAttribute());
 	}
-
+	
 	public boolean isJavaResourceAttributeTypeSubTypeOf(String typeName) {
 		return this.getJavaResourceAttribute().typeIsSubTypeOf(typeName);
 	}

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+
 /**
  * Represents a JAXB xml elements mapping (@XmlElements)
  * <p>
@@ -22,6 +24,43 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.1
  */
 public interface XmlElementsMapping
-		extends JaxbAttributeMapping {
+		extends JaxbAttributeMapping, XmlAdaptable {
 	
+	// ***** XmlElements *****
+	
+	String XML_ELEMENTS_LIST = "xmlElements"; //$NON-NLS-1$
+	
+	ListIterable<XmlElement> getXmlElements();
+	
+	int getXmlElementsSize();
+	
+	XmlElement addXmlElement(int index);
+	
+	void removeXmlElement(int index);
+	
+	void removeXmlElement(XmlElement xmlElement);
+	
+	void moveXmlElement(int targetIndex, int sourceIndex);
+	
+	
+	// ***** XmlElementWrapper *****
+	
+	String XML_ELEMENT_WRAPPER_PROPERTY = "xmlElementWrapper"; //$NON-NLS-1$
+	
+	XmlElementWrapper getXmlElementWrapper();
+	
+	XmlElementWrapper addXmlElementWrapper();
+	
+	void removeXmlElementWrapper();
+	
+	
+	// ***** XmlIDREF *****
+	
+	String XML_IDREF_PROPERTY = "xmlIDREF"; //$NON-NLS-1$
+	
+	XmlIDREF getXmlIDREF();
+	
+	XmlIDREF addXmlIDREF();
+	
+	void removeXmlIDREF();
 }

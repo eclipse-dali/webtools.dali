@@ -61,16 +61,16 @@ public interface JaxbPersistentAttribute
 	JavaResourceAttribute getJavaResourceAttribute();
 	
 	/**
-	 * Return the type name of the java resource attribute
-	 * This might not return the same thing as getJavaResourceAttribute().getTypeName().
+	 * Return the type name of the java attribute, or the item type name of a collection or array.
 	 */
-	String getJavaResourceAttributeTypeName();
+	String getJavaResourceAttributeBaseTypeName();
 	
 	/**
-	 * Return whether the java resource attribute type is an array
-	 * This might not return the same thing as getJavaResourceAttribute().typeIsArray().
+	 * (See JAXB 2.2 Spec, sect. 5.5.2)
+	 * Return true if the java attribute type is an extension of java.util.Collection or a single 
+	 * dimensional array (except for byte[], which is treated like a non-array)
 	 */
-	boolean isJavaResourceAttributeTypeArray();
+	boolean isJavaResourceAttributeCollectionType();
 	
 	/**
 	 * Return whether the java resource attribute type is a subtype of the given type

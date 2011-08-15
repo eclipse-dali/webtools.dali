@@ -97,14 +97,9 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	
 	
 	// ********** misc **********
-
-	@Override
-	public JaxbPersistentAttribute getParent() {
-		return (JaxbPersistentAttribute) super.getParent();
-	}
-
+	
 	public JaxbPersistentAttribute getPersistentAttribute() {
-		return this.getParent();
+		return (JaxbPersistentAttribute) super.getParent();
 	}
 	
 	public JaxbPersistentClass getPersistentClass() {
@@ -118,16 +113,8 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	public JavaResourceAttribute getJavaResourceAttribute() {
 		return this.getPersistentAttribute().getJavaResourceAttribute();
 	}
-
-	public String getJavaResourceAttributeType() {
-		return this.getPersistentAttribute().getJavaResourceAttributeTypeName();
-	}
-	
-	public String getAttributeTypeName() {
-		return getJavaResourceAttributeType();
-	}
 	
 	public Iterable<String> getDirectlyReferencedTypeNames() {
-		return new SingleElementIterable(getPersistentAttribute().getJavaResourceAttributeTypeName());
+		return new SingleElementIterable(getPersistentAttribute().getJavaResourceAttributeBaseTypeName());
 	}
 }
