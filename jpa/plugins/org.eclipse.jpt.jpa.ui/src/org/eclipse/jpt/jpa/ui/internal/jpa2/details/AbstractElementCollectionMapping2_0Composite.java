@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -162,12 +162,11 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		
 		installValueControlSwitcher(pageBook);
 	}
-	
+
 	protected void initializeBasicValueSection(Composite container) {
 		this.basicValueComposite = addSubPane(container);
 
 		new ColumnComposite(this, buildValueColumnHolder(), this.basicValueComposite);
-
 		// type section
 		Composite converterSection = addCollapsibleSubSection(
 			this.basicValueComposite,
@@ -176,42 +175,46 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		);
 		((GridLayout) converterSection.getLayout()).numColumns = 2;
 
+		this.initializeBasicValueTypeSection(converterSection);
+	}
+
+	protected void initializeBasicValueTypeSection(Composite typeSection) {
 		// No converter
 		Button noConverterButton = addRadioButton(
-			converterSection, 
+			typeSection, 
 			JptUiDetailsMessages.TypeSection_default, 
 			buildNoConverterHolder(), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
-		
+
 		// Lob
 		Button lobButton = addRadioButton(
-			converterSection, 
+			typeSection, 
 			JptUiDetailsMessages.TypeSection_lob, 
 			buildLobConverterHolder(), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
-		
-		
+
+
 		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
 		// Temporal
 		addRadioButton(
-			converterSection, 
+			typeSection, 
 			JptUiDetailsMessages.TypeSection_temporal, 
 			buildTemporalBooleanHolder(), 
 			null);
-		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), converterSection, getWidgetFactory()));
-		
-		
+		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), typeSection, getWidgetFactory()));
+
+
 		// Enumerated
 		addRadioButton(
-			converterSection, 
+			typeSection, 
 			JptUiDetailsMessages.TypeSection_enumerated, 
 			buildEnumeratedBooleanHolder(), 
 			null);
-		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(converterHolder), converterSection, getWidgetFactory()));
+		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(converterHolder), typeSection, getWidgetFactory()));
 	}
-	
+
 	protected void initializeEmbeddableValueSection(Composite container) {
 		this.embeddableValueComposite = new ElementCollectionValueOverridesComposite(this, container).getControl();
 	}

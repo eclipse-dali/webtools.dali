@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,6 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.BaseEclipseLinkOr
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkBasicMapping1_1Composite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkVersionMapping1_1Composite;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEmbeddedMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.jpa2.details.orm.OrmXmlUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
@@ -132,6 +131,6 @@ public class EclipseLinkOrmXml2_0UiFactory
 			PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 }

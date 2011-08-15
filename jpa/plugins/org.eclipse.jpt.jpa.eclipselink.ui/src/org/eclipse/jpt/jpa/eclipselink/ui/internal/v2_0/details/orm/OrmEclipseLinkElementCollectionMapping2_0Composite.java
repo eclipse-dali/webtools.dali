@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.details.java;
+package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -15,16 +15,16 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CollectionTable2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.TargetClassComposite;
@@ -32,7 +32,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-public class JavaEclipseLinkElementCollectionMapping2_0Composite extends AbstractElementCollectionMapping2_0Composite<JavaElementCollectionMapping2_0>
+public class OrmEclipseLinkElementCollectionMapping2_0Composite
+	extends AbstractElementCollectionMapping2_0Composite<ElementCollectionMapping2_0>
 {
 	/**
 	 * Creates a new <code>EclipseLink1_1OrmBasicMappingComposite</code>.
@@ -41,7 +42,7 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite extends Abstrac
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaEclipseLinkElementCollectionMapping2_0Composite(PropertyValueModel<? extends JavaElementCollectionMapping2_0> subjectHolder,
+	public OrmEclipseLinkElementCollectionMapping2_0Composite(PropertyValueModel<? extends ElementCollectionMapping2_0> subjectHolder,
 	                               Composite parent,
 	                               WidgetFactory widgetFactory) {
 
@@ -51,20 +52,20 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite extends Abstrac
 	@Override
 	protected void initializeElementCollectionSection(Composite container) {
 		new TargetClassComposite(this, container);
+		new OrmMappingNameChooser(this, getSubjectHolder(), container);
+		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 		new FetchTypeComposite(this, container);
-		new EclipseLinkJoinFetchComposite(this, buildJoinFetchHolder(), container);
 		new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
 	}
 
-	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchHolder() {
-		return new PropertyAspectAdapter<JavaElementCollectionMapping2_0, EclipseLinkJoinFetch>(getSubjectHolder()) {
+	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
+		return new PropertyAspectAdapter<ElementCollectionMapping2_0, AccessHolder>(getSubjectHolder()) {
 			@Override
-			protected EclipseLinkJoinFetch buildValue_() {
-				return ((EclipseLinkElementCollectionMapping2_0) this.subject).getJoinFetch();
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentAttribute();
 			}
 		};
 	}
-
 
 	@Override
 	protected void initializeBasicValueTypeSection(Composite typeSection) {

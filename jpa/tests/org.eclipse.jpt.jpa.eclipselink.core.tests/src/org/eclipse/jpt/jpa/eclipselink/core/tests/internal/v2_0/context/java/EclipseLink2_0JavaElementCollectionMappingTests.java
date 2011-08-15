@@ -69,6 +69,9 @@ import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TransientAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.VersionAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -95,6 +98,25 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 			}
 		});
 	}
+	private ICompilationUnit createTestEntityWithElementCollectionMappingWithConvert() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, EclipseLink.CONVERT);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@ElementCollection").append(CR);
+				sb.append("@Convert(\"class-instance\")").append(CR);
+			}
+		});
+	}
+	
 	
 	private ICompilationUnit createTestEntityWithGenericEmbeddableElementCollectionMapping() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -2177,6 +2199,81 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
 		assertNull(((TemporalConverter) elementCollectionMapping.getMapKeyConverter()).getTemporalType());
+		assertFalse(elementCollectionMapping.isDefault());
+		assertSame(elementCollectionMapping, persistentAttribute.getMapping());
+	}
+
+
+	public void testGetConvert() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		resourceField.addAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals(EclipseLinkConvert.class, elementCollectionMapping.getConverter().getType());
+	}
+	
+	public void testGetConvert2() throws Exception {
+		createTestEntityWithElementCollectionMappingWithConvert();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals(EclipseLinkConvert.class, elementCollectionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.CLASS_INSTANCE_CONVERTER, ((EclipseLinkConvert) elementCollectionMapping.getConverter()).getConverterName());
+	}
+
+	public void testSetConvert() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+		assertNull(elementCollectionMapping.getConverter().getType());
+		
+		elementCollectionMapping.setConverter(EclipseLinkConvert.class);
+		((EclipseLinkConvert) elementCollectionMapping.getConverter()).setSpecifiedConverterName("foo");
+		
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		EclipseLinkConvertAnnotation eclipselinkConvert = (EclipseLinkConvertAnnotation) resourceField.getAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
+		
+		assertEquals("foo", eclipselinkConvert.getValue());
+		
+		elementCollectionMapping.setConverter(null);
+		assertNull(resourceField.getAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME));
+	}
+	
+	public void testGetConvertUpdatesFromResourceModelChange() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertNull(elementCollectionMapping.getConverter().getType());
+		
+		
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) resourceField.addAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
+		convert.setValue("foo");
+		getJpaProject().synchronizeContextModel();
+		
+		assertEquals(EclipseLinkConvert.class, elementCollectionMapping.getConverter().getType());
+		assertEquals("foo", ((EclipseLinkConvert) elementCollectionMapping.getConverter()).getConverterName());
+		
+		resourceField.removeAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
+		
+		assertNull(elementCollectionMapping.getConverter().getType());
 		assertFalse(elementCollectionMapping.isDefault());
 		assertSame(elementCollectionMapping, persistentAttribute.getMapping());
 	}

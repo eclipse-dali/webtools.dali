@@ -22,7 +22,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmOrderable;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmDerivedIdentity2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmOrphanRemoval2_0;
@@ -41,9 +40,9 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection;
 
 public class EclipseLinkOrmXml2_0ContextNodeFactory
 	extends EclipseLinkOrmXmlContextNodeFactory
@@ -63,8 +62,8 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory
 		return new GenericOrmDerivedIdentity2_0(parent);
 	}
 	
-	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
-		return new GenericOrmElementCollectionMapping2_0(parent, resourceMapping);
+	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection resourceMapping) {
+		return new EclipseLinkOrmElementCollectionMapping2_0(parent, (XmlElementCollection) resourceMapping);
 	}
 	
 	public OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent) {

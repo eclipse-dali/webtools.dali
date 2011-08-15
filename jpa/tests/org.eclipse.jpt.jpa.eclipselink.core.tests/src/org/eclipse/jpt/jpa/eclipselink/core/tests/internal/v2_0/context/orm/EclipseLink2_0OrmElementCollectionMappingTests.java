@@ -56,6 +56,9 @@ import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlElementCollection_2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.EclipseLinkElementCollectionMapping2_0;
 
 @SuppressWarnings("nls")
 public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2_0OrmContextModelTestCase
@@ -1548,5 +1551,87 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		ormElementCollectionMapping.setMapKeyConverter(null);
 		assertNull(elementCollectionResource.getMapKeyTemporal());
 		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+	}
+
+	public void testUpdateConvert() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "address");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlConvertibleMapping elementCollectionResource = (XmlConvertibleMapping) getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("address").getMapping();
+		
+		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertEquals(null, elementCollectionResource.getConvert());
+				
+		//set lob in the resource model, verify context model updated
+		elementCollectionResource.setConvert("myConvert");
+		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getType());
+		assertEquals("myConvert", elementCollectionResource.getConvert());
+
+		//set lob to null in the resource model
+		elementCollectionResource.setConvert(null);
+		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertEquals(null, elementCollectionResource.getConvert());
+		
+		
+		javaElementCollectionMapping.setConverter(EclipseLinkConvert.class);
+		((EclipseLinkConvert) javaElementCollectionMapping.getConverter()).setSpecifiedConverterName("foo");
+		
+		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertEquals(null, elementCollectionResource.getConvert());
+		assertEquals("foo", ((EclipseLinkConvert) javaElementCollectionMapping.getConverter()).getSpecifiedConverterName());
+		
+		
+		ormPersistentAttribute.convertToVirtual();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("address");
+		EclipseLinkElementCollectionMapping2_0 virtualElementCollectionMapping = (EclipseLinkElementCollectionMapping2_0) ormPersistentAttribute2.getMapping();
+		
+		assertEquals(EclipseLinkConvert.class, virtualElementCollectionMapping.getConverter().getType());
+		assertEquals("foo", ((EclipseLinkConvert) virtualElementCollectionMapping.getConverter()).getSpecifiedConverterName());
+		assertEquals(null, elementCollectionResource.getConvert());
+		assertEquals("foo", ((EclipseLinkConvert) javaElementCollectionMapping.getConverter()).getSpecifiedConverterName());
+		
+		((EclipseLinkConvert) javaElementCollectionMapping.getConverter()).setSpecifiedConverterName("bar");
+		assertEquals(EclipseLinkConvert.class, virtualElementCollectionMapping.getConverter().getType());
+		assertEquals("bar", ((EclipseLinkConvert) virtualElementCollectionMapping.getConverter()).getSpecifiedConverterName());
+		assertEquals(null, elementCollectionResource.getConvert());
+		assertEquals("bar", ((EclipseLinkConvert) javaElementCollectionMapping.getConverter()).getSpecifiedConverterName());
+
+		javaElementCollectionMapping.setConverter(null);
+		assertNull(virtualElementCollectionMapping.getConverter().getType());
+		assertEquals(null, elementCollectionResource.getConvert());
+		assertNull(javaElementCollectionMapping.getConverter().getType());
+	}
+	
+	public void testModifyConvert() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlConvertibleMapping elementCollectionResource = (XmlConvertibleMapping) getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+	
+		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertEquals(null, elementCollectionResource.getConvert());
+				
+		//set lob in the context model, verify resource model updated
+		ormElementCollectionMapping.setConverter(EclipseLinkConvert.class);
+		assertEquals("", elementCollectionResource.getConvert());
+		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getType());
+	
+		((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).setSpecifiedConverterName("bar");
+		assertEquals("bar", elementCollectionResource.getConvert());
+		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getType());
+		assertEquals("bar", ((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).getSpecifiedConverterName());
+
+		((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).setSpecifiedConverterName(null);
+
+		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertEquals(null, elementCollectionResource.getConvert());
+
+		//set lob to false in the context model
+		ormElementCollectionMapping.setConverter(null);
+		assertNull(ormElementCollectionMapping.getConverter().getType());
+		assertEquals(null, elementCollectionResource.getConvert());
 	}
 }
