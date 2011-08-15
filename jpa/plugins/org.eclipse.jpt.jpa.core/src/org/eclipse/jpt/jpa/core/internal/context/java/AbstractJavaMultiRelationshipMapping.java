@@ -714,7 +714,10 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		if (result != null) {
 			return result;
 		}
-
+		result = this.mapKeyConverter.getJavaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		result = this.mapKeyAttributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;

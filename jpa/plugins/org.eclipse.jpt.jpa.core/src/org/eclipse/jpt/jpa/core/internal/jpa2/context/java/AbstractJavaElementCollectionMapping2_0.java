@@ -1227,6 +1227,10 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		if (result != null) {
 			return result;
 		}
+		result = this.mapKeyConverter.getJavaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		result = this.mapKeyAttributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
