@@ -74,14 +74,14 @@
          id="org.eclipse.persistence.jpa.jpql"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="1.0.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.persistence.jpa.jpql.source"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="1.0.1.qualifier"
          unpack="false"/>
 
 	<!-- apache bundles -->
