@@ -185,7 +185,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		return this.getPersistentType().getJavaPersistentType();
 	}
 
-	protected JavaResourceType getJavaResourceType() {
+	public JavaResourceType getJavaResourceType() {
 		JavaPersistentType javaType = this.getJavaPersistentType();
 		return (javaType == null) ? null : javaType.getJavaResourceType();
 	}

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.db.Schema;
 
@@ -24,13 +25,19 @@ import org.eclipse.jpt.jpa.db.Schema;
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.1
  * @since 2.0
  */
 public interface TypeMapping
 	extends JpaContextNode
 {
 	PersistentType getPersistentType();
+
+	/**
+	 * Return the corresponding java resource type, this can be null
+	 */
+	JavaResourceType getJavaResourceType();
+
 
 	/**
 	 * Return a unique key for the type mapping. If this is defined in an

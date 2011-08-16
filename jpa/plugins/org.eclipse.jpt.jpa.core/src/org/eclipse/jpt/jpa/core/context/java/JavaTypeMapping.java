@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.Annotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 
 /**
@@ -22,14 +21,12 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.1
  * @since 2.0
  */
 public interface JavaTypeMapping
 	extends TypeMapping, JavaJpaContextNode
 {
-	JavaResourceType getJavaResourceType();
-
 	Annotation getMappingAnnotation();
 
 
