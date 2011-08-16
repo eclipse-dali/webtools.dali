@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -310,14 +311,7 @@ public class GenericJavaXmlElement
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		if (StringTools.stringIsEmpty(getFullyQualifiedType())) {
-			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE,
-							this,
-							getTypeTextRange(astRoot)));
-		}
+		validateType(messages, reporter, astRoot);
 		
 		if (StringTools.stringIsEmpty(this.schemaElementRef.getName())) {
 			messages.add(
@@ -326,6 +320,31 @@ public class GenericJavaXmlElement
 							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_ELEMENT_NAME,
 							this,
 							this.schemaElementRef.getNameTextRange(astRoot)));
+		}
+	}
+	
+	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		String fqType = getFullyQualifiedType();
+		if (StringTools.stringIsEmpty(fqType)) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE,
+							this,
+							getTypeTextRange(astRoot)));
+		}
+		else if (! StringTools.stringIsEmpty(this.specifiedType)) {
+			String attributeBaseType = getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
+			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
+								new String[] { attributeBaseType },
+								this,
+								getTypeTextRange(astRoot)));
+								
+			}
 		}
 	}
 	
