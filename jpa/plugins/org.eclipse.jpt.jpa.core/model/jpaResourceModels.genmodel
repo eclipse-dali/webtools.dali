@@ -70,10 +70,14 @@
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlMultiRelationshipMapping">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//AbstractXmlMultiRelationshipMapping/mapKey"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlNamedColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlNamedColumn/columnDefinition"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlNamedColumn/name"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlNamedColumn">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedColumn/columnDefinition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedColumn/name"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlBaseJoinColumn">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseJoinColumn/referencedColumnName"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlNamedColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlRelationshipMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlRelationshipMapping/targetEntity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlRelationshipMapping/fetch"/>
@@ -229,9 +233,7 @@
     <genClasses ecoreClass="orm.ecore#//Inheritance">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Inheritance/strategy"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm.ecore#//XmlJoinColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlJoinColumn/referencedColumnName"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlJoinColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlJoinColumnContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlJoinColumnContainer/joinColumns"/>
     </genClasses>
@@ -290,9 +292,7 @@
     <genClasses ecoreClass="orm.ecore#//PrePersist"/>
     <genClasses ecoreClass="orm.ecore#//PreRemove"/>
     <genClasses ecoreClass="orm.ecore#//PreUpdate"/>
-    <genClasses ecoreClass="orm.ecore#//XmlPrimaryKeyJoinColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlPrimaryKeyJoinColumn/referencedColumnName"/>
-    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlPrimaryKeyJoinColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlPrimaryKeyJoinColumnContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlPrimaryKeyJoinColumnContainer/primaryKeyJoinColumns"/>
     </genClasses>

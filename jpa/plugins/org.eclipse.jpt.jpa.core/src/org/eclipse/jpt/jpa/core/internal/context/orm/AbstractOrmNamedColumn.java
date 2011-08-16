@@ -19,6 +19,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -42,7 +43,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Typically, a column belonging to a list of columns will directly hold its XML
  * column; since the context column only exists if the XML column exists.
  */
-public abstract class AbstractOrmNamedColumn<X extends AbstractXmlNamedColumn, O extends OrmReadOnlyNamedColumn.Owner>
+public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends OrmReadOnlyNamedColumn.Owner>
 	extends AbstractOrmXmlContextNode
 	implements OrmNamedColumn
 {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,18 +28,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn#getReferencedColumnName <em>Referenced Column Name</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumn()
  * @model kind="class"
  * @generated
  */
-public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
+public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn implements XmlBaseJoinColumn
 {
 	/**
 	 * The default value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
@@ -92,7 +86,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Referenced Column Name</em>' attribute.
 	 * @see #setReferencedColumnName(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumn_ReferencedColumnName()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlBaseJoinColumn_ReferencedColumnName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -189,6 +183,44 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 	 * @generated
 	 */
 	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlBaseJoinColumn.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME: return OrmPackage.XML_BASE_JOIN_COLUMN__REFERENCED_COLUMN_NAME;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlBaseJoinColumn.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_BASE_JOIN_COLUMN__REFERENCED_COLUMN_NAME: return OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public String toString()
 	{
 		if (eIsProxy()) return super.toString();
@@ -224,7 +256,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 	}
 	
 	protected static Translator buildReferencedColumnNameTranslator() {
-		return new Translator(JPA.REFERENCED_COLUMN_NAME, OrmPackage.eINSTANCE.getXmlPrimaryKeyJoinColumn_ReferencedColumnName(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.REFERENCED_COLUMN_NAME, OrmPackage.eINSTANCE.getXmlBaseJoinColumn_ReferencedColumnName(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // XmlPrimaryKeyJoinColumnImpl

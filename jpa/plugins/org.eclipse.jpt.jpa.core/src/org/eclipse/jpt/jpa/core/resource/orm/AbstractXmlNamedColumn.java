@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -28,20 +27,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn#getColumnDefinition <em>Column Definition</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn#getName <em>Name</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlNamedColumn()
  * @model kind="class" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public abstract class AbstractXmlNamedColumn extends AbstractJpaEObject implements JpaEObject
+public abstract class AbstractXmlNamedColumn extends AbstractJpaEObject implements XmlNamedColumn
 {
 	/**
 	 * The default value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
@@ -114,7 +105,7 @@ public abstract class AbstractXmlNamedColumn extends AbstractJpaEObject implemen
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Definition</em>' attribute.
 	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlNamedColumn_ColumnDefinition()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlNamedColumn_ColumnDefinition()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -149,7 +140,7 @@ public abstract class AbstractXmlNamedColumn extends AbstractJpaEObject implemen
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlNamedColumn_Name()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlNamedColumn_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -276,11 +267,11 @@ public abstract class AbstractXmlNamedColumn extends AbstractJpaEObject implemen
 	// ********** translators **********
 	
 	protected static Translator buildNameTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getAbstractXmlNamedColumn_Name(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlNamedColumn_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildColumnDefinitionTranslator() {
-		return new Translator(JPA.COLUMN_DEFINITION, OrmPackage.eINSTANCE.getAbstractXmlNamedColumn_ColumnDefinition(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.COLUMN_DEFINITION, OrmPackage.eINSTANCE.getXmlNamedColumn_ColumnDefinition(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // AbstractXmlNamedColumn

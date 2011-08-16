@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn;
 
 /**
  * <code>orm.xml</code>
@@ -27,11 +27,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.1
  * @since 2.0
  */
 public interface OrmNamedColumn
 	extends NamedColumn, OrmReadOnlyNamedColumn
 {
-	AbstractXmlNamedColumn getXmlColumn();
+	XmlNamedColumn getXmlColumn();
 }
