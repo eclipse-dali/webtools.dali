@@ -34,6 +34,10 @@ public class JDTToolsTests
 	public void testTypeIsSubtype() throws Exception {		
 		IJavaProject jProj = getJavaProject().getJavaProject();
 		
+		// same type
+		assertTrue(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), ArrayList.class.getName()));
+		assertTrue(JDTTools.typeIsSubType(jProj, List.class.getName(), List.class.getName()));
+		
 		// concrete type is subtype of interface
 		assertTrue(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), List.class.getName()));
 		assertTrue(JDTTools.typeIsSubType(jProj, TreeSet.class.getName(), Iterable.class.getName()));

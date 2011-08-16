@@ -75,7 +75,8 @@ public final class JDTTools {
 	public static boolean typeIsSubType(IJavaProject javaProject, String potentialSubType, String potentialSuperType) {
 		try {
 			return typeIsSubType(javaProject, javaProject.findType(potentialSubType), javaProject.findType(potentialSuperType));
-		} catch (JavaModelException ex) {
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return false;
 		}
@@ -90,8 +91,13 @@ public final class JDTTools {
 			return false;
 		}
 		
-		// short cut if potential supertype is "java.lang.Object"
-		if (Object.class.getName().equals(potentialSuperType)) {
+		// short cut if types are the same
+		if (potentialSubType.equals(potentialSuperType)) {
+			return true;
+		}
+		
+		// short cut if potential supertype is java.lang.Object
+		if (javaProject.findType(Object.class.getName()).equals(potentialSuperType)) {
 			return true;
 		}
 		
