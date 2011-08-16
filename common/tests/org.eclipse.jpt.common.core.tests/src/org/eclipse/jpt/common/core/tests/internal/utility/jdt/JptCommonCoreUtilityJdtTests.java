@@ -19,6 +19,7 @@ public class JptCommonCoreUtilityJdtTests {
 		suite.addTestSuite(CombinationIndexedDeclarationAnnotationAdapterTests.class);
 		suite.addTestSuite(DefaultAnnotationEditFormatterTests.class);
 		suite.addTestSuite(ASTToolsTests.class);
+		suite.addTestSuite(JDTToolsTests.class);
 		suite.addTestSuite(MemberAnnotationElementAdapterTests.class);
 		suite.addTestSuite(NestedDeclarationAnnotationAdapterTests.class);
 		suite.addTestSuite(NestedIndexedDeclarationAnnotationAdapterTests.class);

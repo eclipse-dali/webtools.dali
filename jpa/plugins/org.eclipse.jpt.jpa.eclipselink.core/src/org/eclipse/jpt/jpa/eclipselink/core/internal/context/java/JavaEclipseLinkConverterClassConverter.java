@@ -156,7 +156,7 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 	 */
 	protected boolean typeImplementsInterface(String typeName, String interfaceName) {
 		return (typeName != null) && 
-				JDTTools.typeNamedImplementsInterfaceNamed(this.getJavaProject(), typeName, interfaceName);
+				JDTTools.typeIsSubType(this.getJavaProject(), typeName, interfaceName);
 	}
 
 	protected boolean converterClassImplementsInterface(String interfaceName) {

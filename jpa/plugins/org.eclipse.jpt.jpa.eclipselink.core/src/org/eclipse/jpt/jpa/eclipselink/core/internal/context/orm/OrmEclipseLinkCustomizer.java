@@ -275,7 +275,7 @@ public class OrmEclipseLinkCustomizer
 								this.getValidationTextRange()
 						)
 				);
-			} else if (!JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.getCustomizerClass(), ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
+			} else if (!JDTTools.typeIsSubType(javaProject, this.getCustomizerClass(), ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
 				messages.add(
 						DefaultEclipseLinkJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,

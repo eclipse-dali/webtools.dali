@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.core.internal.utility;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -24,10 +23,13 @@ import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassName;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 
 /**
  * Convenience methods for dealing with JDT core
@@ -68,70 +70,76 @@ public final class JDTTools {
 	private static final IJavaElement[] EMPTY_JAVA_ELEMENT_ARRAY = new IJavaElement[0];
 
 	/**
-	 * Climb the specified type's inheritance hierarchy looking for the
-	 * specified interface.
+	 * Climb the specified type's inheritance hierarchy looking for the specified interface.
 	 */
-	public static boolean typeNamedImplementsInterfaceNamed(IJavaProject javaProject, String typeName, String interfaceName) {
+	public static boolean typeIsSubType(IJavaProject javaProject, String potentialSubType, String potentialSuperType) {
 		try {
-			return typeImplementsInterface(javaProject, javaProject.findType(typeName), javaProject.findType(interfaceName));
+			return typeIsSubType(javaProject, javaProject.findType(potentialSubType), javaProject.findType(potentialSuperType));
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return false;
 		}
 	}
 
-	private static boolean typeImplementsInterfaceNamed(IJavaProject javaProject, IType type, String interfaceName) throws JavaModelException {
-		return typeImplementsInterface(javaProject, type, javaProject.findType(interfaceName));
+	private static boolean typeIsSubType(IJavaProject javaProject, IType potentialSubType, String potentialSuperType) throws JavaModelException {
+		return typeIsSubType(javaProject, potentialSubType, javaProject.findType(potentialSuperType));
 	}
 
-	private static boolean typeImplementsInterface(IJavaProject javaProject, IType type, IType interfase) throws JavaModelException {
-		if ((type == null) || (interfase == null)) {
+	private static boolean typeIsSubType(IJavaProject javaProject, IType potentialSubType, IType potentialSuperType) throws JavaModelException {
+		if ((potentialSubType == null) || (potentialSuperType == null)) {
 			return false;
 		}
-
-		String interfaceName = interfase.getFullyQualifiedName();
-		for (String superInterfaceName : resolveSuperInterfaceNames(type)) {
-			if (superInterfaceName.equals(interfaceName)) {
+		
+		// short cut if potential supertype is "java.lang.Object"
+		if (Object.class.getName().equals(potentialSuperType)) {
+			return true;
+		}
+		
+		String potentialSuperTypeName = potentialSuperType.getFullyQualifiedName();
+		
+		for (String superTypeName : getResolvedSuperTypeNames(potentialSubType)) {
+			if (superTypeName.equals(potentialSuperTypeName)) {
 				return true;
 			}
-			// recurse into super interface
-			if (typeImplementsInterface(javaProject, javaProject.findType(superInterfaceName), interfase)) {
+			
+			// recurse into super type
+			if (typeIsSubType(javaProject, javaProject.findType(superTypeName), potentialSuperType)) {
 				return true;
 			}
 		}
-
-		if (type.getSuperclassName() == null) {
-			return false;
-		}
-		// recurse into superclass
-		return typeImplementsInterface(javaProject, javaProject.findType(resolveSuperclassName(type)), interfase);
+		
+		return false;
 	}
 
 	/**
-	 * Return the names of the specified type's super interfaces.
-	 * This is necessary because, for whatever reason, {@link IType#getSuperInterfaceNames()}
-	 * returns unqualified names when the type is from Java source.
+	 * Return the names of the specified type's supertypes (class and interfaces).
+	 * This is necessary because, for whatever reason, { @link IType#getSuperInterfaceNames()}
+	 * {@link IType#getSuperclassName()} return unqualified names when the type is from Java source.
 	 */
-	private static Iterable<String> resolveSuperInterfaceNames(IType type) throws JavaModelException {
+	private static Iterable<String> getResolvedSuperTypeNames(IType type) throws JavaModelException {
+		Iterable<String> nonResolvedSuperTypeNames = getNonResolvedSuperTypeNames(type);
 		if (type.isBinary()) {
-			return new ArrayIterable<String>(type.getSuperInterfaceNames());
+			// if type is binary, the types are already resolved
+			return nonResolvedSuperTypeNames;
 		}
-		ArrayList<String> resolvedSuperInterfaceNames = new ArrayList<String>();
-		for (String superInterfaceName : type.getSuperInterfaceNames()) {
-			resolvedSuperInterfaceNames.add(resolveType(type, superInterfaceName));
+		ArrayList<String> resolvedSuperTypeNames = new ArrayList<String>();
+		for (String superTypeName : nonResolvedSuperTypeNames) {
+			resolvedSuperTypeNames.add(resolveType(type, superTypeName));
 		}
-		return resolvedSuperInterfaceNames;
+		return resolvedSuperTypeNames;
 	}
-
+	
 	/**
-	 * Return the name of the specified type's superclass.
-	 * This is necessary because, for whatever reason, {@link IType#getSuperclassName()}
-	 * returns unqualified names when the type is from Java source.
+	 * Return the (potentially) non-resolved names of the specified type's supertypes (class and interfaces).
+	 * This is necessary because, for whatever reason, { @link IType#getSuperInterfaceNames()} and
+	 * {@link IType#getSuperclassName()} return unqualified names when the type is from Java source.
 	 */
-	private static String resolveSuperclassName(IType type) throws JavaModelException {
-		return type.isBinary() ?
-				type.getSuperclassName() :
-				resolveType(type, type.getSuperclassName());
+	private static Iterable<String> getNonResolvedSuperTypeNames(IType type) throws JavaModelException {
+		return new CompositeIterable<String>(
+					new FilteringIterable<String>(
+							new SingleElementIterable<String>(type.getSuperclassName()),
+							NotNullFilter.<String>instance()),
+					new ArrayIterable<String>(type.getSuperInterfaceNames()));
 	}
 
 	/**
@@ -227,7 +235,7 @@ public final class JDTTools {
 		if (typeIsOtherValidBasicType(fullyQualifiedName)) {
 			return true;
 		}
-		if (typeImplementsInterfaceNamed(javaProject, type, SERIALIZABLE_CLASS_NAME)) {
+		if (typeIsSubType(javaProject, type, SERIALIZABLE_CLASS_NAME)) {
 			return true;
 		}
 		if (type.isEnum()) {

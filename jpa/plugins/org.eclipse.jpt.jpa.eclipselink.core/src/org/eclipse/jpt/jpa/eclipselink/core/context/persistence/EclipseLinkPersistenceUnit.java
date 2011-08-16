@@ -640,7 +640,7 @@ public class EclipseLinkPersistenceUnit
 							loggerProperty.getValidationTextRange()
 					)
 			);
-		} else if (!JDTTools.typeNamedImplementsInterfaceNamed(
+		} else if (!JDTTools.typeIsSubType(
 				javaProject, loggerProperty.getValue(), Logging.ECLIPSELINK_LOGGER_CLASS_NAME)
 		) {
 			messages.add(
@@ -691,7 +691,7 @@ public class EclipseLinkPersistenceUnit
 							handlerProperty.getValidationTextRange()
 					)
 			);
-		} else if (!JDTTools.typeNamedImplementsInterfaceNamed(
+		} else if (!JDTTools.typeIsSubType(
 				javaProject, handlerProperty.getValue(), Customization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME)
 		) {
 			messages.add(
@@ -747,7 +747,7 @@ public class EclipseLinkPersistenceUnit
 							profilerProperty.getValidationTextRange()
 					)
 			);
-		} else if (!JDTTools.typeNamedImplementsInterfaceNamed(
+		} else if (!JDTTools.typeIsSubType(
 				javaProject, profilerProperty.getValue(), Customization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME)
 		) {
 			messages.add(
@@ -799,7 +799,7 @@ public class EclipseLinkPersistenceUnit
 									property.getValidationTextRange()
 							)
 					);
-				} else if (!JDTTools.typeNamedImplementsInterfaceNamed(
+				} else if (!JDTTools.typeIsSubType(
 						javaProject, property.getValue(), Customization.ECLIPSELINK_SESSION_CUSTOMIZER_CLASS_NAME)
 				) {
 					messages.add(
