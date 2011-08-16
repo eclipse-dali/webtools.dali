@@ -13,7 +13,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context.EclipseLinkPersistentAttributeValidator;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkPersistentAttributeValidator;
 
 /**
  * EclipseLink

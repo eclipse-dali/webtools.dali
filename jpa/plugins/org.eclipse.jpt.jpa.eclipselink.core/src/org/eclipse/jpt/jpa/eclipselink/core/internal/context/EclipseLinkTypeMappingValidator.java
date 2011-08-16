@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context;
+package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;

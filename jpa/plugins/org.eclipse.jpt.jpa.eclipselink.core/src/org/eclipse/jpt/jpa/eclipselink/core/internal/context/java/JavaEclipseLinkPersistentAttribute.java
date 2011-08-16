@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context.EclipseLinkPersistentAttributeValidator;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkPersistentAttributeValidator;
 
 /**
  * EclipseLink Java persistent attribute

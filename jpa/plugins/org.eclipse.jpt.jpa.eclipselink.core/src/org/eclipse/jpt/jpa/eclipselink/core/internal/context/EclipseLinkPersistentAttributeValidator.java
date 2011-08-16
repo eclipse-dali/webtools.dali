@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.context;
+package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
