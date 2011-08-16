@@ -9,11 +9,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.common.core.tests.internal.utility.jdt;
 
+import java.util.AbstractCollection;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.Vector;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
@@ -32,20 +36,26 @@ public class JDTToolsTests
 		
 		// concrete type is subtype of interface
 		assertTrue(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), List.class.getName()));
+		assertTrue(JDTTools.typeIsSubType(jProj, TreeSet.class.getName(), Iterable.class.getName()));
 		
 		// concrete type is not subtype of interface
 		assertFalse(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), Map.class.getName()));
+		assertFalse(JDTTools.typeIsSubType(jProj, TreeSet.class.getName(), Map.class.getName()));
 		
 		// interface is subtype of interface
 		assertTrue(JDTTools.typeIsSubType(jProj, List.class.getName(), Collection.class.getName()));
+		assertTrue(JDTTools.typeIsSubType(jProj, SortedSet.class.getName(), Iterable.class.getName()));
 		
 		// interface is not subtype of interface
 		assertFalse(JDTTools.typeIsSubType(jProj, List.class.getName(), Map.class.getName()));
+		assertFalse(JDTTools.typeIsSubType(jProj, SortedSet.class.getName(), Map.class.getName()));
 		
 		// concrete type is subtype of concrete type
 		assertTrue(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), AbstractList.class.getName()));
+		assertTrue(JDTTools.typeIsSubType(jProj, LinkedList.class.getName(), AbstractCollection.class.getName()));
 		
 		// concrete type is not subtype of concrete type
 		assertFalse(JDTTools.typeIsSubType(jProj, ArrayList.class.getName(), Vector.class.getName()));
+		assertFalse(JDTTools.typeIsSubType(jProj, LinkedList.class.getName(), Vector.class.getName()));
 	}
 }
