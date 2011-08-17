@@ -5,13 +5,16 @@
     nsURI="jpt.orm.xmi" nsPrefix="org.eclipse.jpt.jpa.core.resource.orm">
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlAttributeMapping" abstract="true"
       eSuperTypes="#//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlColumn" abstract="true" eSuperTypes="#//AbstractXmlNamedColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBaseColumn" abstract="true" interface="true"
+      eSuperTypes="#//XmlNamedColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="insertable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="table" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="updatable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlBaseColumn" abstract="true"
+      eSuperTypes="#//AbstractXmlNamedColumn #//XmlBaseColumn"/>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlDiscriminatorColumn" abstract="true"
       eSuperTypes="#//AbstractXmlNamedColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorType" eType="#//DiscriminatorType"
@@ -119,7 +122,7 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlCollectionTable" eSuperTypes="#//AbstractXmlReferenceTable #//v2_0/XmlCollectionTable_2_0"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlColumn" eSuperTypes="#//AbstractXmlColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlColumn" eSuperTypes="#//AbstractXmlBaseColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="scale" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
@@ -256,7 +259,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="strategy" eType="#//InheritanceType"
         defaultValueLiteral="SINGLE_TABLE"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinColumn" eSuperTypes="#//AbstractXmlColumn #//XmlBaseJoinColumn"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinColumn" eSuperTypes="#//AbstractXmlBaseColumn #//XmlBaseJoinColumn"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlJoinColumnContainer" abstract="true"
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"

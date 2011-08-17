@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,22 +27,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn#getInsertable <em>Insertable</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn#getNullable <em>Nullable</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn#getTable <em>Table</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn#getUnique <em>Unique</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn#getUpdatable <em>Updatable</em>}</li>
- * </ul>
- * </p>
  *
- * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlColumn()
+ * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlBaseColumn()
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
+public abstract class AbstractXmlBaseColumn extends AbstractXmlNamedColumn implements XmlBaseColumn
 {
 	/**
 	 * The default value of the '{@link #getInsertable() <em>Insertable</em>}' attribute.
@@ -149,7 +139,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected AbstractXmlColumn()
+	protected AbstractXmlBaseColumn()
 	{
 		super();
 	}
@@ -162,7 +152,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.ABSTRACT_XML_COLUMN;
+		return OrmPackage.Literals.ABSTRACT_XML_BASE_COLUMN;
 	}
 
 	/**
@@ -175,7 +165,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Insertable</em>' attribute.
 	 * @see #setInsertable(Boolean)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlColumn_Insertable()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlBaseColumn_Insertable()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -185,7 +175,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn#getInsertable <em>Insertable</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlBaseColumn#getInsertable <em>Insertable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Insertable</em>' attribute.
@@ -197,7 +187,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 		Boolean oldInsertable = insertable;
 		insertable = newInsertable;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_COLUMN__INSERTABLE, oldInsertable, insertable));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_BASE_COLUMN__INSERTABLE, oldInsertable, insertable));
 	}
 
 	/**
@@ -210,7 +200,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Nullable</em>' attribute.
 	 * @see #setNullable(Boolean)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlColumn_Nullable()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlBaseColumn_Nullable()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -220,7 +210,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn#getNullable <em>Nullable</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlBaseColumn#getNullable <em>Nullable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Nullable</em>' attribute.
@@ -232,7 +222,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 		Boolean oldNullable = nullable;
 		nullable = newNullable;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_COLUMN__NULLABLE, oldNullable, nullable));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_BASE_COLUMN__NULLABLE, oldNullable, nullable));
 	}
 
 	/**
@@ -245,7 +235,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table</em>' attribute.
 	 * @see #setTable(String)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlColumn_Table()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlBaseColumn_Table()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -255,7 +245,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn#getTable <em>Table</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlBaseColumn#getTable <em>Table</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Table</em>' attribute.
@@ -267,7 +257,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 		String oldTable = table;
 		table = newTable;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_COLUMN__TABLE, oldTable, table));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_BASE_COLUMN__TABLE, oldTable, table));
 	}
 
 	/**
@@ -280,7 +270,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Unique</em>' attribute.
 	 * @see #setUnique(Boolean)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlColumn_Unique()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlBaseColumn_Unique()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -290,7 +280,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn#getUnique <em>Unique</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlBaseColumn#getUnique <em>Unique</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Unique</em>' attribute.
@@ -302,7 +292,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 		Boolean oldUnique = unique;
 		unique = newUnique;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_COLUMN__UNIQUE, oldUnique, unique));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_BASE_COLUMN__UNIQUE, oldUnique, unique));
 	}
 
 	/**
@@ -315,7 +305,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Updatable</em>' attribute.
 	 * @see #setUpdatable(Boolean)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlColumn_Updatable()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlBaseColumn_Updatable()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -325,7 +315,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn#getUpdatable <em>Updatable</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlBaseColumn#getUpdatable <em>Updatable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Updatable</em>' attribute.
@@ -337,7 +327,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 		Boolean oldUpdatable = updatable;
 		updatable = newUpdatable;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_COLUMN__UPDATABLE, oldUpdatable, updatable));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_BASE_COLUMN__UPDATABLE, oldUpdatable, updatable));
 	}
 
 	/**
@@ -350,15 +340,15 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_COLUMN__INSERTABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__INSERTABLE:
 				return getInsertable();
-			case OrmPackage.ABSTRACT_XML_COLUMN__NULLABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__NULLABLE:
 				return getNullable();
-			case OrmPackage.ABSTRACT_XML_COLUMN__TABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__TABLE:
 				return getTable();
-			case OrmPackage.ABSTRACT_XML_COLUMN__UNIQUE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__UNIQUE:
 				return getUnique();
-			case OrmPackage.ABSTRACT_XML_COLUMN__UPDATABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__UPDATABLE:
 				return getUpdatable();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -374,19 +364,19 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_COLUMN__INSERTABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__INSERTABLE:
 				setInsertable((Boolean)newValue);
 				return;
-			case OrmPackage.ABSTRACT_XML_COLUMN__NULLABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__NULLABLE:
 				setNullable((Boolean)newValue);
 				return;
-			case OrmPackage.ABSTRACT_XML_COLUMN__TABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__TABLE:
 				setTable((String)newValue);
 				return;
-			case OrmPackage.ABSTRACT_XML_COLUMN__UNIQUE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__UNIQUE:
 				setUnique((Boolean)newValue);
 				return;
-			case OrmPackage.ABSTRACT_XML_COLUMN__UPDATABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__UPDATABLE:
 				setUpdatable((Boolean)newValue);
 				return;
 		}
@@ -403,19 +393,19 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_COLUMN__INSERTABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__INSERTABLE:
 				setInsertable(INSERTABLE_EDEFAULT);
 				return;
-			case OrmPackage.ABSTRACT_XML_COLUMN__NULLABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__NULLABLE:
 				setNullable(NULLABLE_EDEFAULT);
 				return;
-			case OrmPackage.ABSTRACT_XML_COLUMN__TABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__TABLE:
 				setTable(TABLE_EDEFAULT);
 				return;
-			case OrmPackage.ABSTRACT_XML_COLUMN__UNIQUE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__UNIQUE:
 				setUnique(UNIQUE_EDEFAULT);
 				return;
-			case OrmPackage.ABSTRACT_XML_COLUMN__UPDATABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__UPDATABLE:
 				setUpdatable(UPDATABLE_EDEFAULT);
 				return;
 		}
@@ -432,18 +422,64 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_COLUMN__INSERTABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__INSERTABLE:
 				return INSERTABLE_EDEFAULT == null ? insertable != null : !INSERTABLE_EDEFAULT.equals(insertable);
-			case OrmPackage.ABSTRACT_XML_COLUMN__NULLABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__NULLABLE:
 				return NULLABLE_EDEFAULT == null ? nullable != null : !NULLABLE_EDEFAULT.equals(nullable);
-			case OrmPackage.ABSTRACT_XML_COLUMN__TABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__TABLE:
 				return TABLE_EDEFAULT == null ? table != null : !TABLE_EDEFAULT.equals(table);
-			case OrmPackage.ABSTRACT_XML_COLUMN__UNIQUE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__UNIQUE:
 				return UNIQUE_EDEFAULT == null ? unique != null : !UNIQUE_EDEFAULT.equals(unique);
-			case OrmPackage.ABSTRACT_XML_COLUMN__UPDATABLE:
+			case OrmPackage.ABSTRACT_XML_BASE_COLUMN__UPDATABLE:
 				return UPDATABLE_EDEFAULT == null ? updatable != null : !UPDATABLE_EDEFAULT.equals(updatable);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlBaseColumn.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_BASE_COLUMN__INSERTABLE: return OrmPackage.XML_BASE_COLUMN__INSERTABLE;
+				case OrmPackage.ABSTRACT_XML_BASE_COLUMN__NULLABLE: return OrmPackage.XML_BASE_COLUMN__NULLABLE;
+				case OrmPackage.ABSTRACT_XML_BASE_COLUMN__TABLE: return OrmPackage.XML_BASE_COLUMN__TABLE;
+				case OrmPackage.ABSTRACT_XML_BASE_COLUMN__UNIQUE: return OrmPackage.XML_BASE_COLUMN__UNIQUE;
+				case OrmPackage.ABSTRACT_XML_BASE_COLUMN__UPDATABLE: return OrmPackage.XML_BASE_COLUMN__UPDATABLE;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlBaseColumn.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_BASE_COLUMN__INSERTABLE: return OrmPackage.ABSTRACT_XML_BASE_COLUMN__INSERTABLE;
+				case OrmPackage.XML_BASE_COLUMN__NULLABLE: return OrmPackage.ABSTRACT_XML_BASE_COLUMN__NULLABLE;
+				case OrmPackage.XML_BASE_COLUMN__TABLE: return OrmPackage.ABSTRACT_XML_BASE_COLUMN__TABLE;
+				case OrmPackage.XML_BASE_COLUMN__UNIQUE: return OrmPackage.ABSTRACT_XML_BASE_COLUMN__UNIQUE;
+				case OrmPackage.XML_BASE_COLUMN__UPDATABLE: return OrmPackage.ABSTRACT_XML_BASE_COLUMN__UPDATABLE;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -478,23 +514,23 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	// ********** translators **********
 
 	protected static Translator buildUniqueTranslator() {
-		return new BooleanTranslator(JPA.UNIQUE, OrmPackage.eINSTANCE.getAbstractXmlColumn_Unique(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.UNIQUE, OrmPackage.eINSTANCE.getXmlBaseColumn_Unique(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildNullableTranslator() {
-		return new BooleanTranslator(JPA.NULLABLE, OrmPackage.eINSTANCE.getAbstractXmlColumn_Nullable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.NULLABLE, OrmPackage.eINSTANCE.getXmlBaseColumn_Nullable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildInsertableTranslator() {
-		return new BooleanTranslator(JPA.INSERTABLE, OrmPackage.eINSTANCE.getAbstractXmlColumn_Insertable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.INSERTABLE, OrmPackage.eINSTANCE.getXmlBaseColumn_Insertable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildUpdatableTranslator() {
-		return new BooleanTranslator(JPA.UPDATABLE, OrmPackage.eINSTANCE.getAbstractXmlColumn_Updatable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.UPDATABLE, OrmPackage.eINSTANCE.getXmlBaseColumn_Updatable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildTableTranslator() {
-		return new Translator(JPA.TABLE, OrmPackage.eINSTANCE.getAbstractXmlColumn_Table(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.TABLE, OrmPackage.eINSTANCE.getXmlBaseColumn_Table(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // AbstractXmlAbstractColumn

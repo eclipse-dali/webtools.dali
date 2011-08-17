@@ -15,12 +15,12 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
 
 /**
  * <code>orm.xml</code> column or join column
  */
-public abstract class AbstractOrmBaseColumn<X extends AbstractXmlColumn, O extends OrmReadOnlyBaseColumn.Owner>
+public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends OrmReadOnlyBaseColumn.Owner>
 	extends AbstractOrmNamedColumn<X, O>
 	implements OrmBaseColumn
 {

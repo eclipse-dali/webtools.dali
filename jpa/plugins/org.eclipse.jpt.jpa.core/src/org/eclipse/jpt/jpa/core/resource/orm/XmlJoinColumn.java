@@ -33,7 +33,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlJoinColumn extends AbstractXmlColumn implements XmlBaseJoinColumn
+public class XmlJoinColumn extends AbstractXmlBaseColumn implements XmlBaseJoinColumn
 {
 	/**
 	 * The default value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.

@@ -55,13 +55,14 @@
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//TemporalType/TIMESTAMP"/>
     </genEnums>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlAttributeMapping"/>
-    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlColumn/insertable"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlColumn/nullable"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlColumn/table"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlColumn/unique"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlColumn/updatable"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlBaseColumn">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseColumn/insertable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseColumn/nullable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseColumn/table"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseColumn/unique"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseColumn/updatable"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlBaseColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlDiscriminatorColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlDiscriminatorColumn/discriminatorType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlDiscriminatorColumn/length"/>

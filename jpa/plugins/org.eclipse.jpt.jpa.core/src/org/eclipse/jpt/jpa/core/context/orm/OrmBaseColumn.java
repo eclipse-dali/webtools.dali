@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
-import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
 
 /**
  * <code>orm.xml</code> column or join column
@@ -21,11 +21,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.1
  * @since 2.0
  */
 public interface OrmBaseColumn
 	extends BaseColumn, OrmNamedColumn, OrmReadOnlyBaseColumn
 {
-	AbstractXmlColumn getXmlColumn();
+	XmlBaseColumn getXmlColumn();
 }
