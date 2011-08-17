@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaJoinColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -32,21 +32,17 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java join column
  */
 public class GenericJavaJoinColumn
-	extends AbstractJavaBaseColumn<JoinColumnAnnotation, JavaReadOnlyJoinColumn.Owner>
+	extends AbstractJavaBaseColumn<CompleteJoinColumnAnnotation, JavaReadOnlyJoinColumn.Owner>
 	implements JavaJoinColumn
 {
 	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
-	protected /* final */ JoinColumnAnnotation columnAnnotation;  // never null
+	protected /* final */ CompleteJoinColumnAnnotation columnAnnotation;  // never null
 
 	protected String specifiedReferencedColumnName;
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner) {
-		this(parent, owner, null);
-	}
-
-	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, JoinColumnAnnotation columnAnnotation) {
+	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName();
 	}
@@ -70,12 +66,12 @@ public class GenericJavaJoinColumn
 	// ********** column annotation **********
 
 	@Override
-	public JoinColumnAnnotation getColumnAnnotation() {
+	public CompleteJoinColumnAnnotation getColumnAnnotation() {
 		return this.columnAnnotation;
 	}
 
 	@Override
-	protected void setColumnAnnotation(JoinColumnAnnotation columnAnnotation) {
+	protected void setColumnAnnotation(CompleteJoinColumnAnnotation columnAnnotation) {
 		this.columnAnnotation = columnAnnotation;
 	}
 

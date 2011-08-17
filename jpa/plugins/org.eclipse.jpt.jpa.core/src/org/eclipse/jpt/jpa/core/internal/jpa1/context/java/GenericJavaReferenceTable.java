@@ -156,7 +156,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 		}
 		@Override
 		protected JoinColumnAnnotation getResourceElement(JavaJoinColumn contextElement) {
-			return contextElement.getColumnAnnotation();
+			return (JoinColumnAnnotation) contextElement.getColumnAnnotation();
 		}
 	}
 

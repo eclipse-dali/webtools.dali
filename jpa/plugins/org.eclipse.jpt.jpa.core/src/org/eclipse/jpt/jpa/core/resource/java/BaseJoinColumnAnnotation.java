@@ -24,11 +24,11 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.1
  * @since 2.3
  */
 public interface BaseJoinColumnAnnotation
-	extends BaseColumnAnnotation, NestableAnnotation
+	extends NamedColumnAnnotation, NestableAnnotation
 {
 	// ********** referenced column name **********
 	/**

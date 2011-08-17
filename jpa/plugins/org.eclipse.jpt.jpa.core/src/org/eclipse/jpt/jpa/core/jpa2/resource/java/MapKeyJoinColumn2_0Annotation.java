@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.resource.java;
 
-import org.eclipse.jpt.jpa.core.resource.java.BaseJoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
 
 /**
  * Corresponds to the JPA annotation
@@ -21,11 +21,11 @@ import org.eclipse.jpt.jpa.core.resource.java.BaseJoinColumnAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.1
  * @since 2.3
  */
 public interface MapKeyJoinColumn2_0Annotation
-	extends BaseJoinColumnAnnotation
+	extends CompleteJoinColumnAnnotation
 {
 	String ANNOTATION_NAME = JPA2_0.MAP_KEY_JOIN_COLUMN;
 }

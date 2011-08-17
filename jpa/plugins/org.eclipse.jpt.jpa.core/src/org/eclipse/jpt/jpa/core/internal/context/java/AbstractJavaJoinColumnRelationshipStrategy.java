@@ -147,7 +147,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 		}
 		@Override
 		protected JoinColumnAnnotation getResourceElement(JavaJoinColumn contextElement) {
-			return contextElement.getColumnAnnotation();
+			return (JoinColumnAnnotation) contextElement.getColumnAnnotation();
 		}
 	}
 

@@ -9,10 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.common.core.utility.TextRange;
-
 /**
  * Corresponds to the JPA annotation
  * <code>javax.persistence.PrimaryKeyJoinColumn</code>
@@ -23,40 +19,12 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
+ * @version 3.1
  * @since 2.0
  */
 public interface PrimaryKeyJoinColumnAnnotation
-	extends NamedColumnAnnotation, NestableAnnotation
+	extends BaseJoinColumnAnnotation
 {
 	String ANNOTATION_NAME = JPA.PRIMARY_KEY_JOIN_COLUMN;
-
-
-	// ********** referenced column name **********
-
-	/**
-	 * Corresponds to the 'referencedColumnName' element of the PrimaryKeyJoinColumn annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getReferencedColumnName();
-		String REFERENCED_COLUMN_NAME_PROPERTY = "referencedColumnName"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'referencedColumnName' element of the PrimaryKeyJoinColumn annotation.
-	 * Set the to null to remove the element.
-	 */
-	void setReferencedColumnName(String referencedColumnName);
-
-	/**
-	 * Return the {@link TextRange} for the 'referencedColumnName' element.
-	 * If the element does not exist return the {@link TextRange} for the PrimaryKeyJoinColumn annotation.
-	 */
-	TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Return whether the specified position touches the 'referencedColumnName' element.
-	 * Return false if the element does not exist.
-	 */
-	boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot);
 
 }
