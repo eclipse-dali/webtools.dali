@@ -444,7 +444,7 @@ public class GenericJavaXmlElementsMapping
 	
 	
 	protected class XmlElementContext
-			implements XmlElement.Context {
+			implements GenericJavaXmlElement.Context {
 		
 		protected XmlElementAnnotation annotation;
 		

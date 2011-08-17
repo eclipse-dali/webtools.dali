@@ -104,16 +104,4 @@ public interface XmlElement
 	// ***** validation *****
 	
 	TextRange getTypeTextRange(CompilationUnit astRoot);
-	
-	
-	public interface Context {
-		
-		JaxbAttributeMapping getAttributeMapping();
-		
-		XmlElementAnnotation getAnnotation(boolean createIfNull);
-		
-		String getDefaultType();
-		
-		XmlElementWrapper getElementWrapper();
-	}
 }

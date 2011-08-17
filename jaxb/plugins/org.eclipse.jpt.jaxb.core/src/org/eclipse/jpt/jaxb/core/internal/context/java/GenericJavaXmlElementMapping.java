@@ -197,7 +197,7 @@ public class GenericJavaXmlElementMapping
 	
 	
 	public class XmlElementContext
-			implements XmlElement.Context {
+			implements GenericJavaXmlElement.Context {
 		
 		public XmlElementAnnotation getAnnotation(boolean createIfNull) {
 			return (createIfNull) ? 

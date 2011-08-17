@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
@@ -42,7 +43,7 @@ public class GenericJavaXmlElement
 		extends AbstractJavaContextNode
 		implements XmlElement {
 	
-	protected final XmlElement.Context context;
+	protected final Context context;
 	
 	protected final JaxbSchemaComponentRef schemaElementRef;
 	
@@ -59,7 +60,7 @@ public class GenericJavaXmlElement
 	protected String defaultType;
 	
 	
-	public GenericJavaXmlElement(JavaContextNode parent, XmlElement.Context context) {
+	public GenericJavaXmlElement(JavaContextNode parent, Context context) {
 		super(parent);
 		this.context = context;
 		this.schemaElementRef = buildSchemaElementRef();
@@ -433,5 +434,17 @@ public class GenericJavaXmlElement
 				messages.add(getUnresolveSchemaComponentMessage(astRoot));
 			}
 		}
+	}
+	
+	
+	public interface Context {
+		
+		JaxbAttributeMapping getAttributeMapping();
+		
+		XmlElementAnnotation getAnnotation(boolean createIfNull);
+		
+		String getDefaultType();
+		
+		XmlElementWrapper getElementWrapper();
 	}
 }
