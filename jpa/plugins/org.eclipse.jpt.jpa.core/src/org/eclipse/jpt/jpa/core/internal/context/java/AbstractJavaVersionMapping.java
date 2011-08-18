@@ -227,7 +227,7 @@ public abstract class AbstractJavaVersionMapping
 		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	public String getDefaultColumnName() {
+	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 		return this.getName();
 	}
 

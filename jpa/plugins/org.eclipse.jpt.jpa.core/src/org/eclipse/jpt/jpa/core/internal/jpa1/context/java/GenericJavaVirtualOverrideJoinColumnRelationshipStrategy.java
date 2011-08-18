@@ -33,6 +33,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumnRelationshipSt
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.db.Table;
@@ -336,9 +337,8 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this.getTableName();
 		}
 
-		public String getDefaultColumnName() {
-			//built in MappingTools.buildJoinColumnDefaultName()
-			return null;
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+			return MappingTools.buildJoinColumnDefaultName((ReadOnlyJoinColumn) column, this);
 		}
 
 		public String getAttributeName() {

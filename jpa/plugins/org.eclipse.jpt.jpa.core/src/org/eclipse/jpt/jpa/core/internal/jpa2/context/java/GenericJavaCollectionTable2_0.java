@@ -113,9 +113,8 @@ public class GenericJavaCollectionTable2_0
 					null;
 		}
 
-		public String getDefaultColumnName() {
-			//built in MappingTools.buildJoinColumnDefaultName()
-			return null;
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+			return MappingTools.buildJoinColumnDefaultName((ReadOnlyJoinColumn) column, this);
 		}
 
 		/**

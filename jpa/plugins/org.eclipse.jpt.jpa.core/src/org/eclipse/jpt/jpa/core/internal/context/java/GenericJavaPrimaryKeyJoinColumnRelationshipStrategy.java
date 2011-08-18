@@ -328,7 +328,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 			return false;
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return null;
 		}
 

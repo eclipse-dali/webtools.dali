@@ -352,7 +352,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 
 	// ********** OrmColumn.Owner implementation **********
 
-	public String getDefaultColumnName() {
+	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 		return (this.derived && ! this.isColumnSpecified()) ? null : this.name;
 	}
 

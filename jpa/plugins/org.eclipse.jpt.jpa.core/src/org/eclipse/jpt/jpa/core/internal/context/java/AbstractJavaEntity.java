@@ -1624,7 +1624,7 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.defaultPrimaryKeyJoinColumn == joinColumn;
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			if (this.getJoinColumnsSize() != 1) {
 				return null;
 			}
@@ -1644,7 +1644,7 @@ public abstract class AbstractJavaEntity
 		extends NamedColumnOwner
 		implements JavaDiscriminatorColumn.Owner
 	{
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getName() :
 					this.discriminatorColumnIsUndefined() ? null : DiscriminatorColumn.DEFAULT_NAME;

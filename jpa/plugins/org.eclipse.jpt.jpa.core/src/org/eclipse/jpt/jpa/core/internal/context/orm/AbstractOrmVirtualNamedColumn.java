@@ -103,7 +103,7 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 	}
 
 	protected String buildDefaultName() {
-		return this.owner.getDefaultColumnName();
+		return this.owner.getDefaultColumnName(this);
 	}
 
 

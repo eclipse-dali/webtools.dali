@@ -258,7 +258,7 @@ public class GenericOrmVirtualSecondaryTable
 			return GenericOrmVirtualSecondaryTable.this.getName();
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			if (this.getJoinColumnsSize() != 1) {
 				return null;
 			}

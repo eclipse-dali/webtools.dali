@@ -93,7 +93,7 @@ public class GenericOrmAttributeOverride
 
 	// ********** column owner implementation **********
 
-	public String getDefaultColumnName() {
+	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 		return this.name;
 	}
 

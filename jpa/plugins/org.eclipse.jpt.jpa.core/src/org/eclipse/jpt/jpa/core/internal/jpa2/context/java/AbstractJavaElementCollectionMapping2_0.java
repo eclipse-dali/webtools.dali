@@ -1499,7 +1499,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			AbstractJavaElementCollectionMapping2_0.this.removeValueColumnAnnotation();
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return this.getMappingName();
 		}
 
@@ -1523,7 +1523,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			AbstractJavaElementCollectionMapping2_0.this.removeMapKeyColumnAnnotation();
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return this.getMappingName() + "_KEY"; //$NON-NLS-1$
 		}
 

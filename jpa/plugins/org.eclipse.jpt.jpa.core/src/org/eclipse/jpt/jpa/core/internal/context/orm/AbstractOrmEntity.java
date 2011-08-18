@@ -2100,7 +2100,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return CollectionTools.contains(AbstractOrmEntity.this.getDefaultPrimaryKeyJoinColumns(), joinColumn);
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			if (this.getJoinColumnsSize() != 1) {
 				return null;
 			}
@@ -2120,7 +2120,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		extends NamedColumnOwner
 		implements OrmDiscriminatorColumn.Owner
 	{
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			if (this.getXmlColumn() == null) {
 				JavaEntity javaEntity = this.getJavaEntityForDefaults();
 				if (javaEntity != null) {

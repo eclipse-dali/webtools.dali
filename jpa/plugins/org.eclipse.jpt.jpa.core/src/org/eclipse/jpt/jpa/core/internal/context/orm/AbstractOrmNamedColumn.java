@@ -162,7 +162,7 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 	}
 
 	protected String buildDefaultName() {
-		return this.owner.getDefaultColumnName();
+		return this.owner.getDefaultColumnName(this);
 	}
 
 

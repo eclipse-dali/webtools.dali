@@ -27,6 +27,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaMappingJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
@@ -164,9 +165,8 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 			return GenericJavaMappingJoinColumnRelationshipStrategy.this.getTableName();
 		}
 
-		public String getDefaultColumnName() {
-			//built in MappingTools.buildJoinColumnDefaultName()
-			return null;
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+			return MappingTools.buildJoinColumnDefaultName((ReadOnlyJoinColumn) column, this);
 		}
 
 		public String getAttributeName() {

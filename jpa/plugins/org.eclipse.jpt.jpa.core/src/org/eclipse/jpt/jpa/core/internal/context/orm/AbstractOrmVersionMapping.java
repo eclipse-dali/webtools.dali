@@ -229,7 +229,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 
 	// ********** OrmColumn.Owner implementation **********
 
-	public String getDefaultColumnName() {
+	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 		return this.name;
 	}
 

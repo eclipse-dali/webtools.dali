@@ -366,7 +366,7 @@ public abstract class AbstractJavaIdMapping
 		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	public String getDefaultColumnName() {
+	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 		return (this.derived && ! this.columnIsSpecified()) ? null : this.getName();
 	}
 

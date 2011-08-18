@@ -286,7 +286,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 			return false;
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return null;
 		}
 

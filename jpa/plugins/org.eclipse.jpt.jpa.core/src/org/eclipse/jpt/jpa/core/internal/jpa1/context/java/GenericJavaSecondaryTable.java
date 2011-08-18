@@ -345,7 +345,7 @@ public class GenericJavaSecondaryTable
 			return GenericJavaSecondaryTable.this.defaultPrimaryKeyJoinColumn == joinColumn;
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			if (this.getJoinColumnsSize() != 1) {
 				return null;
 			}

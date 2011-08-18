@@ -153,7 +153,7 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	}
 
 	protected String buildDefaultName() {
-		return this.owner.getDefaultColumnName();
+		return this.owner.getDefaultColumnName(this);
 	}
 
 

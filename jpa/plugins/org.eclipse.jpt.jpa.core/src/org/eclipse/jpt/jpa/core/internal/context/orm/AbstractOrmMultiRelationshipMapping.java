@@ -839,7 +839,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		extends AbstractOwner
 		implements OrmColumn.Owner
 	{
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return AbstractOrmMultiRelationshipMapping.this.getName() + "_KEY"; //$NON-NLS-1$
 		}
 

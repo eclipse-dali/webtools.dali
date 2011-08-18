@@ -462,7 +462,7 @@ public class GenericJavaOrderable
 			return GenericJavaOrderable.this.resolveDbTable(tableName);
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return this.getPersistentAttribute().getName() + "_ORDER"; //$NON-NLS-1$
 		}
 

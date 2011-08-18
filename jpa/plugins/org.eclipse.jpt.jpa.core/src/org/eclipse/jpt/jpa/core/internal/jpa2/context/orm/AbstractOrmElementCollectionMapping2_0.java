@@ -1474,7 +1474,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			this.getXmlMapping().setColumn(null);
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return this.getMappingName();
 		}
 
@@ -1504,7 +1504,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			this.getXmlMapping().setMapKeyColumn(null);
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return this.getMappingName() + "_KEY"; //$NON-NLS-1$
 		}
 

@@ -338,7 +338,7 @@ public class GenericOrmSecondaryTable
 			return GenericOrmSecondaryTable.this.getName();
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			if (this.getJoinColumnsSize() != 1) {
 				return null;
 			}

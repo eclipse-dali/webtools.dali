@@ -118,7 +118,7 @@ public class GenericOrmVirtualJoinColumn
 
 	@Override
 	protected String buildDefaultName() {
-		return MappingTools.buildJoinColumnDefaultName(this, this.owner);
+		return this.owner.getDefaultColumnName(this);
 	}
 
 

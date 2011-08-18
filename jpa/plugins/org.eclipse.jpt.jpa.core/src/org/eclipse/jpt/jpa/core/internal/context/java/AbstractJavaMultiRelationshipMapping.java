@@ -848,7 +848,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			AbstractJavaMultiRelationshipMapping.this.removeMapKeyColumnAnnotation();
 		}
 
-		public String getDefaultColumnName() {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return AbstractJavaMultiRelationshipMapping.this.getName() + "_KEY"; //$NON-NLS-1$
 		}
 

@@ -323,11 +323,8 @@ public class GenericOrmJoinTable
 			return this.getRelationship().getTypeMapping();
 		}
 
-		/**
-		 * @see MappingTools#buildJoinColumnDefaultName(org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn, org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn.Owner)
-		 */
-		public String getDefaultColumnName() {
-			throw new UnsupportedOperationException();
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+			return MappingTools.buildJoinColumnDefaultName((ReadOnlyJoinColumn) column, this);
 		}
 
 		/**

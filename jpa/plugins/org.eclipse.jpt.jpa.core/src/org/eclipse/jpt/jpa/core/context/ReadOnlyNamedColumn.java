@@ -94,7 +94,7 @@ public interface ReadOnlyNamedColumn
 		/**
 		 * Return the default column name.
 		 */
-		String getDefaultColumnName();
+		String getDefaultColumnName(ReadOnlyNamedColumn column);
 
 		/**
 		 * Return the database table for the specified table name.
