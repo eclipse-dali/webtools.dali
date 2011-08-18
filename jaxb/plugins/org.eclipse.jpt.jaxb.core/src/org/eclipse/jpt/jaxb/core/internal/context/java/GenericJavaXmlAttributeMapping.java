@@ -11,8 +11,10 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbSchemaComponentRef;
@@ -20,6 +22,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableType;
 import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -64,6 +67,7 @@ public class GenericJavaXmlAttributeMapping
 		return XmlAttributeAnnotation.ANNOTATION_NAME;
 	}
 	
+	
 	// ***** schema component ref *****
 	
 	public JaxbSchemaComponentRef getSchemaComponentRef() {
@@ -103,6 +107,14 @@ public class GenericJavaXmlAttributeMapping
 	
 	public boolean isDefaultRequired() {
 		return false;
+	}
+	
+	
+	// ***** XmlIDREF *****
+	
+	@Override
+	protected GenericJavaXmlIDREF.Context buildXmlIDREFContext() {
+		return new XmlIDREFContext();
 	}
 	
 	
@@ -160,6 +172,26 @@ public class GenericJavaXmlAttributeMapping
 					messages.add(getUnresolveSchemaComponentMessage(astRoot));
 				}
 			}
+		}
+	}
+	
+	
+	protected class XmlIDREFContext
+			extends GenericJavaBasicMapping.XmlIDREFContext {
+		
+		public Iterable<ValidatableType> getReferencedTypes() {
+			return new SingleElementIterable<ValidatableType>(
+					new ValidatableType() {
+						public String getFullyQualifiedName() {
+							return GenericJavaXmlAttributeMapping.this.getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
+						}
+						
+						public TextRange getValidationTextRange(CompilationUnit astRoot) {
+							// 1) if we're getting here, XmlIDREF will not be null
+							// 2) use the @XmlIDREF text range, since there is no specific place where the type is specified
+							return GenericJavaXmlAttributeMapping.this.getXmlIDREF().getValidationTextRange(astRoot);
+						}
+					});
 		}
 	}
 }

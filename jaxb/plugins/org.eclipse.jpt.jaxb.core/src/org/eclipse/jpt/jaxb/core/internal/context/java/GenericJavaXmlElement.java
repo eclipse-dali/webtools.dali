@@ -334,7 +334,9 @@ public class GenericJavaXmlElement
 							this,
 							getTypeTextRange(astRoot)));
 		}
-		else if (! StringTools.stringIsEmpty(this.specifiedType)) {
+		else if (! StringTools.stringIsEmpty(this.specifiedType)
+				// verify that type actually exists before validating
+				&& JDTTools.findType(getJaxbProject().getJavaProject(), fqType) != null) {
 			String attributeBaseType = getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
 			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
 				messages.add(

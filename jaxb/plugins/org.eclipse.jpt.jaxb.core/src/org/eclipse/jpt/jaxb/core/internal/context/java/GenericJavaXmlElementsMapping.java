@@ -13,6 +13,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Bag;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -31,6 +32,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableType;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -258,8 +260,8 @@ public class GenericJavaXmlElementsMapping
 		if (this.xmlIDREF != null) {
 			throw new IllegalStateException();
 		}
-		XmlIDREFAnnotation annotation = (XmlIDREFAnnotation) getJavaResourceAttribute().addAnnotation(JAXB.XML_IDREF);
-		XmlIDREF xmlIDREF = buildXmlIDREF(annotation);
+		getJavaResourceAttribute().addAnnotation(JAXB.XML_IDREF);
+		XmlIDREF xmlIDREF = buildXmlIDREF();
 		setXmlIDREF_(xmlIDREF);
 		return xmlIDREF;
 	}
@@ -272,33 +274,21 @@ public class GenericJavaXmlElementsMapping
 		setXmlIDREF_(null);
 	}
 	
-	protected XmlIDREFAnnotation getXmlIDREFAnnotation() {
-		return (XmlIDREFAnnotation) getJavaResourceAttribute().getAnnotation(JAXB.XML_IDREF);
-	}
-	
 	protected void initializeXmlIDREF() {
-		XmlIDREFAnnotation annotation = getXmlIDREFAnnotation();
-		if (annotation != null) {
-			this.xmlIDREF = this.buildXmlIDREF(annotation);
+		if (getXmlIDREFAnnotation() != null) {
+			this.xmlIDREF = buildXmlIDREF();
 		}
-	}
-	
-	protected XmlIDREF buildXmlIDREF(XmlIDREFAnnotation xmlIDREFAnnotation) {
-		return new GenericJavaXmlIDREF(this, xmlIDREFAnnotation);
 	}
 	
 	protected void syncXmlIDREF() {
-		XmlIDREFAnnotation annotation = getXmlIDREFAnnotation();
-		if (annotation != null) {
-			if (this.xmlIDREF != null) {
-				this.xmlIDREF.synchronizeWithResourceModel();
-			}
-			else {
-				setXmlIDREF_(buildXmlIDREF(annotation));
-			}
+		if (getXmlIDREFAnnotation() == null) {
+			setXmlIDREF_(null);
+		}
+		else if (this.xmlIDREF == null) {
+			setXmlIDREF_(buildXmlIDREF());
 		}
 		else {
-			setXmlIDREF_(null);
+			this.xmlIDREF.synchronizeWithResourceModel();
 		}
 	}
 	
@@ -306,6 +296,17 @@ public class GenericJavaXmlElementsMapping
 		if (this.xmlIDREF != null) {
 			this.xmlIDREF.update();
 		}
+	}
+	protected XmlIDREFAnnotation getXmlIDREFAnnotation() {
+		return (XmlIDREFAnnotation) getJavaResourceAttribute().getAnnotation(JAXB.XML_IDREF);
+	}
+	
+	protected XmlIDREF buildXmlIDREF() {
+		return new GenericJavaXmlIDREF(this, buildXmlIDREFContext());
+	}
+	
+	protected XmlIDREFContext buildXmlIDREFContext() {
+		return new XmlIDREFContext();
 	}
 	
 	
@@ -467,6 +468,36 @@ public class GenericJavaXmlElementsMapping
 		
 		public XmlElementWrapper getElementWrapper() {
 			return GenericJavaXmlElementsMapping.this.getXmlElementWrapper();
+		}
+	}
+	
+	
+	protected class XmlIDREFContext
+			implements GenericJavaXmlIDREF.Context {
+		
+		public XmlIDREFAnnotation getAnnotation() {
+			return GenericJavaXmlElementsMapping.this.getXmlIDREFAnnotation();
+		}
+		
+		public Iterable<ValidatableType> getReferencedTypes() {
+			return new TransformationIterable<XmlElement, ValidatableType>(
+					GenericJavaXmlElementsMapping.this.getXmlElements()) {
+				
+				@Override
+				protected ValidatableType transform(final XmlElement o) {
+					
+					return new ValidatableType() {
+						
+						public String getFullyQualifiedName() {
+							return o.getFullyQualifiedType();
+						}
+						
+						public TextRange getValidationTextRange(CompilationUnit astRoot) {
+							return o.getTypeTextRange(astRoot);
+						}
+					};
+				}
+			};
 		}
 	}
 }

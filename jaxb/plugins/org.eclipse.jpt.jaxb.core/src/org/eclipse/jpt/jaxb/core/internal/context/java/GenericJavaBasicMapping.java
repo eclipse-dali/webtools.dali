@@ -24,6 +24,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlList;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JaxbBasicSchemaComponentAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
@@ -329,67 +330,66 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	public XmlIDREF getXmlIDREF() {
 		return this.xmlIDREF;
 	}
-
-	public XmlIDREF addXmlIDREF() {
-		if (this.xmlIDREF != null) {
-			throw new IllegalStateException();
-		}
-		XmlIDREFAnnotation annotation = (XmlIDREFAnnotation) this.getJavaResourceAttribute().addAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
-
-		XmlIDREF xmlIDREF = this.buildXmlIDREF(annotation);
-		this.setXmlIDREF_(xmlIDREF);
-		return xmlIDREF;
-	}
-
-	protected XmlIDREF buildXmlIDREF(XmlIDREFAnnotation xmlIDREFAnnotation) {
-		return new GenericJavaXmlIDREF(this, xmlIDREFAnnotation);
-	}
-
-	public void removeXmlIDREF() {
-		if (this.xmlIDREF == null) {
-			throw new IllegalStateException();
-		}
-		this.getJavaResourceAttribute().removeAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
-		this.setXmlIDREF_(null);
-	}
-
-	protected void initializeXmlIDREF() {
-		XmlIDREFAnnotation annotation = this.getXmlIDREFAnnotation();
-		if (annotation != null) {
-			this.xmlIDREF = this.buildXmlIDREF(annotation);
-		}
-	}
-
-	protected XmlIDREFAnnotation getXmlIDREFAnnotation() {
-		return (XmlIDREFAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
-	}
-
-	protected void syncXmlIDREF() {
-		XmlIDREFAnnotation annotation = this.getXmlIDREFAnnotation();
-		if (annotation != null) {
-			if (this.getXmlIDREF() != null) {
-				this.getXmlIDREF().synchronizeWithResourceModel();
-			}
-			else {
-				this.setXmlIDREF_(this.buildXmlIDREF(annotation));
-			}
-		}
-		else {
-			this.setXmlIDREF_(null);
-		}
-	}
-
-	protected void updateXmlIDREF() {
-		if (this.getXmlIDREF() != null) {
-			this.getXmlIDREF().update();
-		}
-	}
-
+	
 	protected void setXmlIDREF_(XmlIDREF xmlIDREF) {
 		XmlIDREF oldXmlIDREF = this.xmlIDREF;
 		this.xmlIDREF = xmlIDREF;
 		firePropertyChanged(XML_IDREF_PROPERTY, oldXmlIDREF, xmlIDREF);
 	}
+	
+	public XmlIDREF addXmlIDREF() {
+		if (this.xmlIDREF != null) {
+			throw new IllegalStateException();
+		}
+		
+		getJavaResourceAttribute().addAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
+		
+		XmlIDREF xmlIDREF = buildXmlIDREF();
+		setXmlIDREF_(xmlIDREF);
+		return xmlIDREF;
+	}
+	
+	public void removeXmlIDREF() {
+		if (this.xmlIDREF == null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceAttribute().removeAnnotation(JAXB.XML_IDREF);
+		setXmlIDREF_(null);
+	}
+	
+	protected void initializeXmlIDREF() {
+		if (getXmlIDREFAnnotation() != null) {
+			this.xmlIDREF = buildXmlIDREF();
+		}
+	}
+	
+	protected void syncXmlIDREF() {
+		if (getXmlIDREFAnnotation() == null) {
+			setXmlIDREF_(null);
+		}
+		else if (this.xmlIDREF == null) {
+			setXmlIDREF_(buildXmlIDREF());
+		}
+		else {
+			this.xmlIDREF.synchronizeWithResourceModel();
+		}
+	}
+
+	protected void updateXmlIDREF() {
+		if (this.xmlIDREF != null) {
+			this.xmlIDREF.update();
+		}
+	}
+	
+	protected XmlIDREFAnnotation getXmlIDREFAnnotation() {
+		return (XmlIDREFAnnotation) getJavaResourceAttribute().getAnnotation(JAXB.XML_IDREF);
+	}
+	
+	protected XmlIDREF buildXmlIDREF() {
+		return new GenericJavaXmlIDREF(this, buildXmlIDREFContext());
+	}
+	
+	protected abstract GenericJavaXmlIDREF.Context buildXmlIDREFContext();
 
 
 	//************  XmlAttachmentRef ***************
@@ -506,6 +506,15 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		
 		if (this.xmlAttachmentRef != null) {
 			this.xmlAttachmentRef.validate(messages, reporter, astRoot);
+		}
+	}
+	
+	
+	protected abstract class XmlIDREFContext
+			implements GenericJavaXmlIDREF.Context {
+		
+		public XmlIDREFAnnotation getAnnotation() {
+			return GenericJavaBasicMapping.this.getXmlIDREFAnnotation();
 		}
 	}
 }

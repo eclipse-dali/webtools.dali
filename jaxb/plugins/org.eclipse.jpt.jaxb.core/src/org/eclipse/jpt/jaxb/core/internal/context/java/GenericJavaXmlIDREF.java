@@ -11,7 +11,9 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
@@ -23,17 +25,18 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlIDREF
-	extends AbstractJavaContextNode
-	implements XmlIDREF
-{
-
-	protected final XmlIDREFAnnotation resourceXmlIDREF;
-
-	public GenericJavaXmlIDREF(JaxbAttributeMapping parent, XmlIDREFAnnotation resource) {
+		extends AbstractJavaContextNode
+		implements XmlIDREF {
+	
+	protected final Context context;
+	
+	
+	public GenericJavaXmlIDREF(JaxbAttributeMapping parent, Context context) {
 		super(parent);
-		this.resourceXmlIDREF = resource;
+		this.context = context;
 	}
-
+	
+	
 	@Override
 	public JaxbAttributeMapping getParent() {
 		return (JaxbAttributeMapping) super.getParent();
@@ -44,47 +47,53 @@ public class GenericJavaXmlIDREF
 	}
 
 
-	//************* validation ****************
-	/**
-	 * From the JAXB spec section 8.9.12 XmlIDREF:
-	 * <p>
-	 * The following mapping constraints must be enforced:<ul>
-	 * <li> If the type of the field or property is a collection type, then the collection
-	 *      item type must contain a property or field annotated with @XmlID.
-	 * <li> If the field or property is not a collection type, then the type of the
-	 *     property or field must contain a property or field annotated with @XmlID.
-	 * </ul>
-	 * <p>
-	 * Note: If the collection item type or the type of the property (for non collection type)
-	 * is java.lang.Object, then the instance must contain a property/field annotated with @XmlID attribute.
-	 */
+	// ***** validation *****
+	
+	@Override
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return this.context.getAnnotation().getTextRange(astRoot);
+	}
+	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		String typeName = getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
-		if (Object.class.getName().equals(typeName)) {
-			//The instance must contain a property/field annotated with @XmlID attribute, but we cannot validate the instance
-			return;
-		}
-		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(typeName);
-		if (persistentClass != null) {
-			if (!persistentClass.containsXmlId()) {
+		
+		for (ValidatableType type : this.context.getReferencedTypes()) {
+			String typeName = type.getFullyQualifiedName();
+			
+			// Object may be used in some cases of a *single* type, but can't be validated
+			if ((Object.class.getName().equals(typeName) && CollectionTools.size(this.context.getReferencedTypes()) == 1)
+					// Make sure class exists.  Nonexistent classes will already have an error.
+					|| JDTTools.findType(getJaxbProject().getJavaProject(), typeName) == null) {
+				continue;
+			}
+			
+			JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(typeName);
+			if (persistentClass == null || ! persistentClass.containsXmlId()) {
 				messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JaxbValidationMessages.XML_IDREF_TYPE_DOES_NOT_CONTAIN_XML_ID,
-					new String[] {getPersistentAttribute().getName(), typeName},
+					JaxbValidationMessages.XML_IDREF__TYPE_DOES_NOT_CONTAIN_XML_ID,
+					new String[] { typeName },
 					this,
-					getValidationTextRange(astRoot)));				
+					type.getValidationTextRange(astRoot)));				
 			}
 		}
-		else {
-			//do we validate this case??
-		}
 	}
-
-	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.resourceXmlIDREF.getTextRange(astRoot);
+	
+	
+	public interface Context {
+		
+		XmlIDREFAnnotation getAnnotation();
+		
+		Iterable<ValidatableType> getReferencedTypes();
+	}
+	
+	
+	public interface ValidatableType {
+		
+		String getFullyQualifiedName();
+		
+		TextRange getValidationTextRange(CompilationUnit astRoot);
 	}
 }

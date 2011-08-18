@@ -11,16 +11,19 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
@@ -147,6 +150,14 @@ public class GenericJavaXmlElementMapping
 	}
 	
 	
+	// ***** XmlIDREF *****
+	
+	@Override
+	protected GenericJavaXmlIDREF.Context buildXmlIDREFContext() {
+		return new XmlIDREFContext();
+	}
+	
+	
 	// ***** misc *****
 	
 	@Override
@@ -215,6 +226,28 @@ public class GenericJavaXmlElementMapping
 		
 		public XmlElementWrapper getElementWrapper() {
 			return GenericJavaXmlElementMapping.this.getXmlElementWrapper();
+		}
+	}
+	
+	
+	protected class XmlIDREFContext
+			extends GenericJavaBasicMapping.XmlIDREFContext {
+		
+		public Iterable<ValidatableType> getReferencedTypes() {
+			return new SingleElementIterable<ValidatableType>(
+					new ValidatableType() {
+						public String getFullyQualifiedName() {
+							return GenericJavaXmlElementMapping.this.xmlElement.getType();
+						}
+						
+						public TextRange getValidationTextRange(CompilationUnit astRoot) {
+							// 1) if we're getting here, XmlIDREF will not be null
+							// 2) if there is an @XmlElement annotation, use that, otherwise use the @XmlIDREF
+							return (GenericJavaXmlElementMapping.this.getAnnotation() == null) ?
+									GenericJavaXmlElementMapping.this.getXmlIDREF().getValidationTextRange(astRoot)
+									: GenericJavaXmlElementMapping.this.xmlElement.getTypeTextRange(astRoot);
+						}
+					});
 		}
 	}
 }
