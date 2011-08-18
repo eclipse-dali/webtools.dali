@@ -166,11 +166,6 @@ public class GenericOrmJoinColumn
 		return this.owner.joinColumnIsDefault(this);
 	}
 
-	@Override
-	protected String buildDefaultName() {
-		return this.owner.getDefaultColumnName(this);
-	}
-
 
 	// ********** validation **********
 

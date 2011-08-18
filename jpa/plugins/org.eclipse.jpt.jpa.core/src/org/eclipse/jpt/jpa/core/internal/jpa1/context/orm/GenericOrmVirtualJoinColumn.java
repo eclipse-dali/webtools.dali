@@ -114,14 +114,6 @@ public class GenericOrmVirtualJoinColumn
 	}
 
 
-	// ********** misc **********
-
-	@Override
-	protected String buildDefaultName() {
-		return this.owner.getDefaultColumnName(this);
-	}
-
-
 	// ********** validation **********
 
 	public TextRange getReferencedColumnNameTextRange() {

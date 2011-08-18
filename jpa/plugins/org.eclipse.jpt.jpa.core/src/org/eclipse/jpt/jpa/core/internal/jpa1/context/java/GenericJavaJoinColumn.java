@@ -156,12 +156,6 @@ public class GenericJavaJoinColumn
 		return this.owner.joinColumnIsDefault(this);
 	}
 
-	@Override
-	protected String buildDefaultName() {
-		return this.owner.getDefaultColumnName(this);
-	}
-
-
 	// ********** Java completion proposals **********
 
 	@Override
