@@ -13,7 +13,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 
 /**
- * Represents a JAXB XmlID
+ * Represents a JAXB XML ID (@XmlID)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,6 +26,5 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  */
 public interface XmlID
 		extends JavaContextNode {
-
-
+	
 }
