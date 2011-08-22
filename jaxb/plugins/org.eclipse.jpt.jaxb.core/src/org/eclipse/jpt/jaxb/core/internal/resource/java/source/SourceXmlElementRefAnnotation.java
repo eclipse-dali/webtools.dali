@@ -52,6 +52,10 @@ public final class SourceXmlElementRefAnnotation
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
 	
+	private final DeclarationAnnotationElementAdapter<Boolean> requiredDeclarationAdapter;
+	private final AnnotationElementAdapter<Boolean> requiredAdapter;
+	private Boolean required;
+	
 	private final DeclarationAnnotationElementAdapter<String> typeDeclarationAdapter;
 	private final AnnotationElementAdapter<String> typeAdapter;
 	private String type;
@@ -100,6 +104,8 @@ public final class SourceXmlElementRefAnnotation
 		this.nameAdapter = this.buildAnnotationElementAdapter(this.nameDeclarationAdapter);
 		this.namespaceDeclarationAdapter = this.buildNamespaceDeclarationAdapter();
 		this.namespaceAdapter = this.buildAnnotationElementAdapter(this.namespaceDeclarationAdapter);
+		this.requiredDeclarationAdapter = this.buildRequiredAdapter(daa);
+		this.requiredAdapter = this.buildShortCircuitBooleanElementAdapter(this.requiredDeclarationAdapter);
 		this.typeDeclarationAdapter = this.buildTypeDeclarationAdapter();
 		this.typeAdapter = this.buildAnnotationElementAdapter(this.typeDeclarationAdapter);
 	}
@@ -111,6 +117,10 @@ public final class SourceXmlElementRefAnnotation
 	
 	private DeclarationAnnotationElementAdapter<String> buildNamespaceDeclarationAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, JAXB.XML_ELEMENT_REF__NAMESPACE);
+	}
+
+	private DeclarationAnnotationElementAdapter<Boolean> buildRequiredAdapter(DeclarationAnnotationAdapter daa) {
+		return ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, JAXB.XML_ELEMENT_REF__REQUIRED);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildTypeDeclarationAdapter() {
@@ -125,6 +135,10 @@ public final class SourceXmlElementRefAnnotation
 		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
+	private AnnotationElementAdapter<Boolean> buildShortCircuitBooleanElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
+		return new AnnotatedElementAnnotationElementAdapter<Boolean>(this.annotatedElement, daea);
+	}
+
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
@@ -132,6 +146,7 @@ public final class SourceXmlElementRefAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
 		this.namespace = this.buildNamespace(astRoot);
+		this.required = this.buildRequired(astRoot);
 		this.type = this.buildType(astRoot);
 		this.fullyQualifiedTypeName = this.buildFullyQualifiedTypeName(astRoot);
 	}
@@ -139,6 +154,7 @@ public final class SourceXmlElementRefAnnotation
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
 		this.syncNamespace(this.buildNamespace(astRoot));
+		this.syncRequired(this.buildRequired(astRoot));
 		this.syncType(this.buildType(astRoot));
 		this.syncFullyQualifiedTypeName(this.buildFullyQualifiedTypeName(astRoot));
 	}
@@ -213,6 +229,32 @@ public final class SourceXmlElementRefAnnotation
 	}
 	
 
+	// ***** required
+	public Boolean getRequired() {
+		return this.required;
+	}
+
+	public void setRequired(Boolean required) {
+		if (this.attributeValueHasChanged(this.required, required)) {
+			this.required = required;
+			this.requiredAdapter.setValue(required);
+		}
+	}
+
+	private void syncRequired(Boolean astRequired) {
+		Boolean old = this.required;
+		this.required = astRequired;
+		this.firePropertyChanged(REQUIRED_PROPERTY, old, astRequired);
+	}
+
+	private Boolean buildRequired(CompilationUnit astRoot) {
+		return this.requiredAdapter.getValue(astRoot);
+	}
+	
+	public TextRange getRequiredTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(this.requiredDeclarationAdapter, astRoot);
+	}
+
 	// ***** type
 	public String getType() {
 		return this.type;
@@ -261,6 +303,7 @@ public final class SourceXmlElementRefAnnotation
 	 * convenience implementation of method from NestableAnnotation interface
 	 * for subclasses
 	 */
+	@Override
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}

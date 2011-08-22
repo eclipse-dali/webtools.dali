@@ -71,6 +71,22 @@ public class XmlElementRefAnnotationTests
 		});
 	}
 	
+	private ICompilationUnit createTestXmlElementRefWithBooleanElement(final String booleanElement) throws Exception {
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JAXB.XML_ELEMENT_REF);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlElementRef(" + booleanElement + " = true)");
+			}
+		});
+	}
+	
 	private ICompilationUnit createTestXmlElementRefWithType() throws Exception {
 		
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -157,6 +173,35 @@ public class XmlElementRefAnnotationTests
 		assertNull(xmlElementRefAnnotation.getNamespace());
 		assertSourceContains("@XmlElementRef", cu);
 		assertSourceDoesNotContain("@XmlElementRef(namespace = \"" + XML_ELEMENT_REF_NAMESPACE + "\")", cu);
+	}
+	
+	public void testGetRequired() throws Exception {
+		ICompilationUnit cu = this.createTestXmlElementRefWithBooleanElement("required");
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
+		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_REF);
+		
+		assertEquals(Boolean.TRUE, xmlElementRefAnnotation.getRequired());
+	}
+	
+	public void testSetRequired() throws Exception {
+		ICompilationUnit cu = this.createTestXmlElementRef();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
+		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_REF);
+		
+		assertNotNull(xmlElementRefAnnotation);
+		assertNull(xmlElementRefAnnotation.getRequired());
+		
+		xmlElementRefAnnotation.setRequired(Boolean.FALSE);
+		
+		assertEquals(Boolean.FALSE, xmlElementRefAnnotation.getRequired());
+		assertSourceContains("@XmlElementRef(required = false)", cu);
+		
+		xmlElementRefAnnotation.setRequired(null);
+		
+		assertSourceContains("@XmlElementRef", cu);
+		assertSourceDoesNotContain("required", cu);
 	}
 	
 	public void testGetType() throws Exception {

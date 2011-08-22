@@ -31,8 +31,42 @@ public interface XmlElementRefAnnotation
 	
 	String ANNOTATION_NAME = JAXB.XML_ELEMENT_REF;
 	
+	
+	// ***** required *****
+	
 	/**
-	 * Corresponds to the 'type' element of the XmlElementRef annotation.
+	 * String associated with changes to the 'required' property of this annotation.
+	 */
+	String REQUIRED_PROPERTY = "required"; //$NON-NLS-1$
+	
+	/**
+	 * Corresponds to the 'required' element of this annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	Boolean getRequired();
+	
+	/**
+	 * Corresponds to the 'required' element of this annotation.
+	 * Set to null to remove the element.
+	 */
+	void setRequired(Boolean required);
+	
+	/**
+	 * Return the {@link TextRange} for the 'required' element. If the element
+	 * does not exist return the {@link TextRange} for the annotation itself.
+	 */
+	TextRange getRequiredTextRange(CompilationUnit astRoot);
+	
+	
+	// ***** type *****
+	
+	/**
+	 * String associated with changes to the 'type' property of this annotation.
+	 */
+	String TYPE_PROPERTY = "type"; //$NON-NLS-1$
+	
+	/**
+	 * Corresponds to the 'type' element of this annotation.
 	 * Return null if the element does not exist in Java.
 	 * Return the portion of the value preceding ".class".
 	 * <pre>
@@ -41,19 +75,24 @@ public interface XmlElementRefAnnotation
 	 * will return "Foo"
 	 */
 	String getType();
-		String TYPE_PROPERTY = "type"; //$NON-NLS-1$
-
+	
 	/**
-	 * Corresponds to the 'type' element of the XmlElementRef annotation.
+	 * Corresponds to the 'type' element of this annotation.
 	 * Set to null to remove the element.
 	 */
 	void setType(String type);
+	
 	/**
 	 * Return the {@link TextRange} for the 'type' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementRef annotation.
+	 * does not exist return the {@link TextRange} for the annotation itself.
 	 */
 	TextRange getTypeTextRange(CompilationUnit astRoot);
-
+	
+	/**
+	 * String associated with changes to the 'fullyQualifiedName' property of this annotation.
+	 */
+	String FULLY_QUALIFIED_TYPE_NAME_PROPERTY = "fullyQualifiedTypeName"; //$NON-NLS-1$
+	
 	/**
 	 * Return the fully-qualified type name as resolved by the AST's bindings.
 	 * <pre>
@@ -63,5 +102,4 @@ public interface XmlElementRefAnnotation
 	 * @return
 	 */
 	String getFullyQualifiedTypeName();
-		String FULLY_QUALIFIED_TYPE_NAME_PROPERTY = "fullyQualifiedTypeName"; //$NON-NLS-1$
 }

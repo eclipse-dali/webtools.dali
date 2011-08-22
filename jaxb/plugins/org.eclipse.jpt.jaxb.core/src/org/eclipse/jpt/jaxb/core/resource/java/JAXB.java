@@ -75,6 +75,7 @@ public interface JAXB {
 	String XML_ELEMENT_REF = PACKAGE_ + "XmlElementRef";
 		String XML_ELEMENT_REF__NAME = "name";
 		String XML_ELEMENT_REF__NAMESPACE = "namespace";
+		String XML_ELEMENT_REF__REQUIRED = "required";
 		String XML_ELEMENT_REF__TYPE = "type";
 
 	String XML_ELEMENT_REFS = PACKAGE_ + "XmlElementRefs";

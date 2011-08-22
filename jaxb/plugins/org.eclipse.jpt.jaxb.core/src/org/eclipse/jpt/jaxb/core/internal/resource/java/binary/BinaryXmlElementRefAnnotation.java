@@ -26,6 +26,7 @@ public final class BinaryXmlElementRefAnnotation
 {
 	private String name;
 	private String namespace;
+	private Boolean required;
 	private String type;
 
 
@@ -33,6 +34,7 @@ public final class BinaryXmlElementRefAnnotation
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
 		this.namespace = this.buildNamespace();
+		this.required = this.buildRequired();
 		this.type = this.buildType();
 	}
 
@@ -45,6 +47,7 @@ public final class BinaryXmlElementRefAnnotation
 		super.update();
 		this.setName_(this.buildName());
 		this.setNamespace_(this.buildNamespace());
+		this.setRequired_(this.buildRequired());
 		this.setType_(this.buildType());
 	}
 
@@ -106,6 +109,29 @@ public final class BinaryXmlElementRefAnnotation
 	}
 	
 	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+
+	// ***** required
+	public Boolean getRequired() {
+		return this.required;
+	}
+
+	public void setRequired(Boolean required) {
+		throw new UnsupportedOperationException();
+	}
+
+	private void setRequired_(Boolean required) {
+		Boolean old = this.required;
+		this.required = required;
+		this.firePropertyChanged(REQUIRED_PROPERTY, old, required);
+	}
+
+	private Boolean buildRequired() {
+		return (Boolean) this.getJdtMemberValue(JAXB.XML_ELEMENT__REQUIRED);
+	}
+
+	public TextRange getRequiredTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 
