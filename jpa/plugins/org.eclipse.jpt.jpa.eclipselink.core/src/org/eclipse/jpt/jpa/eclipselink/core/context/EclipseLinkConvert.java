@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.jpa.core.context.Converter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 
 /**
  * EclipseLink convert (not to be confused with EclipseLink converter)
@@ -20,12 +21,15 @@ import org.eclipse.jpt.jpa.core.context.Converter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.1
  * @since 2.1
  */
 public interface EclipseLinkConvert
 	extends Converter
 {
+
+	EclipseLinkPersistenceUnit getPersistenceUnit();
+
 	String getConverterName();
 	
 	String getSpecifiedConverterName();

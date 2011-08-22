@@ -9,13 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.Association;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -30,13 +27,10 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkConvertValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.text.edits.ReplaceEdit;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkConvert
 	extends AbstractOrmConverter
@@ -265,45 +259,6 @@ public class OrmEclipseLinkConvert
 
 
 	// ********** validation **********
-
-	/**
-	 * The converters are validated in the persistence unit.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit#validateConverters(List, IReporter)
-	 */
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
-		// converters are validated in the persistence unit
-		this.validateConverterName(messages);
-	}
-	
-	private void validateConverterName(List<IMessage> messages) {
-		String converterName = this.getConverterName();
-		if (converterName == null) {
-			return;
-		}
-
-		if (CollectionTools.contains(this.getPersistenceUnit().getUniqueConverterNames(), converterName)) {
-			return;
-		}
-
-		if (ArrayTools.contains(RESERVED_CONVERTER_NAMES, converterName)) {
-			return;
-		}
-
-		messages.add(
-			DefaultEclipseLinkJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				EclipseLinkJpaValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
-				new String[] {
-					converterName,
-					this.getParent().getName()
-				},
-				this.getParent(),
-				this.getValidationTextRange()
-			)
-		);	
-	}
 	
 	@Override
 	protected TextRange getXmlValidationTextRange() {
@@ -347,7 +302,7 @@ public class OrmEclipseLinkConvert
 		}
 
 		public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
-			return JptValidator.Null.instance();
+			return new EclipseLinkConvertValidator((EclipseLinkConvert) converter, textRangeResolver);
 		}
 	}
 }

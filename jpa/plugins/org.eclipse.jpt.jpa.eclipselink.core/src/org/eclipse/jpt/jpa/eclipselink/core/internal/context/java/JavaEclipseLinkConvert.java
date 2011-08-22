@@ -9,14 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.Association;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
@@ -25,16 +22,15 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkConvertValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkConvert
 	extends AbstractJavaConverter
@@ -291,53 +287,12 @@ public class JavaEclipseLinkConvert
 	}
 
 	protected Iterable<String> getConverterNames() {
-		return this.getEclipseLinkPersistenceUnit().getUniqueConverterNames();
+		return this.getPersistenceUnit().getUniqueConverterNames();
 	}
 
-	protected EclipseLinkPersistenceUnit getEclipseLinkPersistenceUnit() {
-		return (EclipseLinkPersistenceUnit) this.getPersistenceUnit();
-	}
-
-
-	// ********** validation **********
-
-	/**
-	 * The converters are validated in the persistence unit.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit#validateConverters(List, IReporter)
-	 */
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		// converters are validated in the persistence unit
-		this.validateConverterName(messages, astRoot);
-	}
-	
-	private void validateConverterName(List<IMessage> messages, CompilationUnit astRoot) {
-		String converterName = this.getConverterName();
-		if (converterName == null) {
-			return;
-		}
-
-		if (CollectionTools.contains(this.getEclipseLinkPersistenceUnit().getUniqueConverterNames(), converterName)) {
-			return;
-		}
-		
-		if (ArrayTools.contains(RESERVED_CONVERTER_NAMES, converterName)) {
-			return;
-		}
-		
-		messages.add(
-			DefaultEclipseLinkJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				EclipseLinkJpaValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
-				new String[] {
-					converterName,
-					this.getParent().getName()
-				},
-				this.getParent(),
-				this.getValidationTextRange(astRoot)
-			)
-		);	
+	public EclipseLinkPersistenceUnit getPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 
 
@@ -366,6 +321,15 @@ public class JavaEclipseLinkConvert
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
 			return new JavaEclipseLinkConvert(parent, (EclipseLinkConvertAnnotation) converterAnnotation, this.buildOwner());
+		}
+		
+		@Override
+		protected Owner buildOwner() {
+			return new Owner() {
+				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
+					return new EclipseLinkConvertValidator((EclipseLinkConvert) converter, textRangeResolver);
+				}
+			};
 		}
 	}
 }
