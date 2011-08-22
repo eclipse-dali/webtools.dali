@@ -22,6 +22,18 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.1
  */
 public interface XmlElementRefMapping
-		extends JaxbAttributeMapping {
+		extends JaxbAttributeMapping, XmlAdaptable {
 	
+	XmlElementRef getXmlElementRef();
+	
+	
+	// ***** XmlElementWrapper *****
+	
+	String XML_ELEMENT_WRAPPER_PROPERTY = "xmlElementWrapper"; //$NON-NLS-1$
+	
+	XmlElementWrapper getXmlElementWrapper();
+	
+	XmlElementWrapper addXmlElementWrapper();
+	
+	void removeXmlElementWrapper();	
 }

@@ -175,7 +175,10 @@ public abstract class AbstractJavaSchemaComponentRef
 	/**
 	 * e.g. "XML element"
 	 */
-	protected abstract String getSchemaComponentTypeDescription();
+	protected String getSchemaComponentTypeDescription() {
+		// default impl
+		return null;
+	}
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {

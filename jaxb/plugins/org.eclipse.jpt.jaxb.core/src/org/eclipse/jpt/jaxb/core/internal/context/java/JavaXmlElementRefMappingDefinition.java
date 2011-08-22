@@ -56,6 +56,6 @@ public class JavaXmlElementRefMappingDefinition
 	}
 	
 	public JaxbAttributeMapping buildMapping(JaxbPersistentAttribute parent, JaxbFactory factory) {
-		return factory.buildJavaXmlElementRefsMapping(parent);
+		return factory.buildJavaXmlElementRefMapping(parent);
 	}
 }
