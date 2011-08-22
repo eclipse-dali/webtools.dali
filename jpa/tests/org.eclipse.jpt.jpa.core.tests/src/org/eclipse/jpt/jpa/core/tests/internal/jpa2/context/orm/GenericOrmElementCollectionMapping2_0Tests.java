@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
@@ -1561,6 +1562,150 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		ormElementCollectionMapping.setMapKeyConverter(null);
 		assertNull(elementCollectionResource.getMapKeyTemporal());
 		assertNull(ormElementCollectionMapping.getMapKeyConverter().getType());
+	}
+
+	public void testAddSpecifiedMapKeyJoinColumn() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		ElementCollectionMapping2_0 ormElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+		
+		JoinColumn joinColumn = ormElementCollectionMapping.addSpecifiedMapKeyJoinColumn(0);
+		joinColumn.setSpecifiedName("FOO");
+				
+		assertEquals("FOO", elementCollectionResource.getMapKeyJoinColumns().get(0).getName());
+		
+		JoinColumn joinColumn2 = ormElementCollectionMapping.addSpecifiedMapKeyJoinColumn(0);
+		joinColumn2.setSpecifiedName("BAR");
+		
+		assertEquals("BAR", elementCollectionResource.getMapKeyJoinColumns().get(0).getName());
+		assertEquals("FOO", elementCollectionResource.getMapKeyJoinColumns().get(1).getName());
+		
+		JoinColumn joinColumn3 = ormElementCollectionMapping.addSpecifiedMapKeyJoinColumn(1);
+		joinColumn3.setSpecifiedName("BAZ");
+		
+		assertEquals("BAR", elementCollectionResource.getMapKeyJoinColumns().get(0).getName());
+		assertEquals("BAZ", elementCollectionResource.getMapKeyJoinColumns().get(1).getName());
+		assertEquals("FOO", elementCollectionResource.getMapKeyJoinColumns().get(2).getName());
+		
+		ListIterator<? extends JoinColumn> joinColumns = ormElementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals(joinColumn2, joinColumns.next());
+		assertEquals(joinColumn3, joinColumns.next());
+		assertEquals(joinColumn, joinColumns.next());
+		
+		joinColumns = ormElementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+	}
+	
+	public void testRemoveSpecifiedMapKeyJoinColumn() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		ElementCollectionMapping2_0 ormElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+
+		ormElementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
+		ormElementCollectionMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
+		ormElementCollectionMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
+		
+		assertEquals(3, elementCollectionResource.getMapKeyJoinColumns().size());
+		
+		ormElementCollectionMapping.removeSpecifiedMapKeyJoinColumn(0);
+		assertEquals(2, elementCollectionResource.getMapKeyJoinColumns().size());
+		assertEquals("BAR", elementCollectionResource.getMapKeyJoinColumns().get(0).getName());
+		assertEquals("BAZ", elementCollectionResource.getMapKeyJoinColumns().get(1).getName());
+
+		ormElementCollectionMapping.removeSpecifiedMapKeyJoinColumn(0);
+		assertEquals(1, elementCollectionResource.getMapKeyJoinColumns().size());
+		assertEquals("BAZ", elementCollectionResource.getMapKeyJoinColumns().get(0).getName());
+		
+		ormElementCollectionMapping.removeSpecifiedMapKeyJoinColumn(0);
+		assertEquals(0, elementCollectionResource.getMapKeyJoinColumns().size());
+	}
+	
+	public void testMoveSpecifiedMapKeyJoinColumn() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		ElementCollectionMapping2_0 ormElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+
+		ormElementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
+		ormElementCollectionMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
+		ormElementCollectionMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
+		
+		assertEquals(3, elementCollectionResource.getMapKeyJoinColumns().size());
+		
+		
+		ormElementCollectionMapping.moveSpecifiedMapKeyJoinColumn(2, 0);
+		ListIterator<? extends JoinColumn> joinColumns = ormElementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+
+		assertEquals("BAR", elementCollectionResource.getMapKeyJoinColumns().get(0).getName());
+		assertEquals("BAZ", elementCollectionResource.getMapKeyJoinColumns().get(1).getName());
+		assertEquals("FOO", elementCollectionResource.getMapKeyJoinColumns().get(2).getName());
+
+
+		ormElementCollectionMapping.moveSpecifiedMapKeyJoinColumn(0, 1);
+		joinColumns = ormElementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+
+		assertEquals("BAZ", elementCollectionResource.getMapKeyJoinColumns().get(0).getName());
+		assertEquals("BAR", elementCollectionResource.getMapKeyJoinColumns().get(1).getName());
+		assertEquals("FOO", elementCollectionResource.getMapKeyJoinColumns().get(2).getName());
+	}
+
+	public void testUpdateMapKeyJoinColumns() throws Exception {
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		ElementCollectionMapping2_0 ormElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
+	
+		elementCollectionResource.getMapKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumn());
+		elementCollectionResource.getMapKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumn());
+		elementCollectionResource.getMapKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumn());
+		
+		elementCollectionResource.getMapKeyJoinColumns().get(0).setName("FOO");
+		elementCollectionResource.getMapKeyJoinColumns().get(1).setName("BAR");
+		elementCollectionResource.getMapKeyJoinColumns().get(2).setName("BAZ");
+
+		ListIterator<? extends JoinColumn> joinColumns = ormElementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("FOO", joinColumns.next().getName());
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertFalse(joinColumns.hasNext());
+		
+		elementCollectionResource.getMapKeyJoinColumns().move(2, 0);
+		joinColumns = ormElementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+		assertFalse(joinColumns.hasNext());
+
+		elementCollectionResource.getMapKeyJoinColumns().move(0, 1);
+		joinColumns = ormElementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+		assertFalse(joinColumns.hasNext());
+
+		elementCollectionResource.getMapKeyJoinColumns().remove(1);
+		joinColumns = ormElementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+		assertFalse(joinColumns.hasNext());
+
+		elementCollectionResource.getMapKeyJoinColumns().remove(1);
+		joinColumns = ormElementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertFalse(joinColumns.hasNext());
+		
+		elementCollectionResource.getMapKeyJoinColumns().remove(0);
+		assertFalse(ormElementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator().hasNext());
 	}
 
 }

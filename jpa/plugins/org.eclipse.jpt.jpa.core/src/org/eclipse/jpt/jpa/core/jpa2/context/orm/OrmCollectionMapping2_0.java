@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmCollectionMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 
 /**
@@ -22,11 +24,18 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.1
  * @since 2.3
  */
 public interface OrmCollectionMapping2_0
 	extends CollectionMapping2_0, OrmCollectionMapping, OrmConvertibleKeyMapping2_0
 {
 	OrmAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
+
+	ListIterable<? extends OrmJoinColumn> getSpecifiedMapKeyJoinColumns();
+	OrmJoinColumn getSpecifiedMapKeyJoinColumn(int index);
+	OrmJoinColumn addSpecifiedMapKeyJoinColumn();
+	OrmJoinColumn addSpecifiedMapKeyJoinColumn(int index);
+
+	OrmJoinColumn getDefaultMapKeyJoinColumn();
 }

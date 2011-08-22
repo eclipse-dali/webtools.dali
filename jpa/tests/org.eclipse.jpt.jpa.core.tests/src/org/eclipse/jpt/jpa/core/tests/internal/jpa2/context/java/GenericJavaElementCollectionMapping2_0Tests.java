@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
@@ -56,6 +58,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
@@ -240,6 +243,36 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
 	}
+
+	private void createTestTargetEntityAddress() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("Address").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    private String city;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int state;").append(CR);
+				sb.append(CR);
+				sb.append("    private int zip;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Address.java", sourceWriter);
+	}
 	
 	private void createTestEmbeddableState() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -275,6 +308,28 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 				sb.append("@Entity").append(CR);
 			}
 			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);				
+				sb.append("    private java.util.Map<Address, PropertyInfo> parcels;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+
+	private ICompilationUnit createTestEntityWithEntityKeyElementCollectionMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
@@ -2242,5 +2297,319 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNull(((TemporalConverter) elementCollectionMapping.getMapKeyConverter()).getTemporalType());
 		assertFalse(elementCollectionMapping.isDefault());
 		assertSame(elementCollectionMapping, persistentAttribute.getMapping());
+	}
+
+	public void testSpecifiedMapKeyJoinColumns() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		ListIterator<? extends JoinColumn> specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+
+		//add an annotation to the resource model and verify the context model is updated
+		MapKeyJoinColumn2_0Annotation joinColumn = (MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		joinColumn.setName("FOO");
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();	
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+		joinColumn = (MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		joinColumn.setName("BAR");
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertEquals("BAR", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+
+		joinColumn = (MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		joinColumn.setName("BAZ");
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertEquals("BAZ", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("BAR", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+		//move an annotation to the resource model and verify the context model is updated
+		resourceField.moveAnnotation(1, 0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertEquals("BAR", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("BAZ", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+		resourceField.removeAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertEquals("BAZ", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+		resourceField.removeAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+
+		resourceField.removeAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+	}
+
+	public void testSpecifiedMapKeyJoinColumnsSize() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals(0, elementCollectionMapping.getSpecifiedMapKeyJoinColumnsSize());
+
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0);
+		assertEquals(1, elementCollectionMapping.getSpecifiedMapKeyJoinColumnsSize());
+
+		elementCollectionMapping.removeSpecifiedMapKeyJoinColumn(0);
+		assertEquals(0, elementCollectionMapping.getSpecifiedMapKeyJoinColumnsSize());
+	}
+
+	public void testMapKeyJoinColumnsSize() throws Exception {
+		createTestEntityWithEntityKeyElementCollectionMapping();
+		createTestTargetEntityAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals(1, elementCollectionMapping.getMapKeyJoinColumnsSize());
+
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0);
+		assertEquals(1, elementCollectionMapping.getMapKeyJoinColumnsSize());
+
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0);
+		assertEquals(2, elementCollectionMapping.getMapKeyJoinColumnsSize());
+
+		elementCollectionMapping.removeSpecifiedMapKeyJoinColumn(0);
+		elementCollectionMapping.removeSpecifiedMapKeyJoinColumn(0);
+		assertEquals(1, elementCollectionMapping.getMapKeyJoinColumnsSize());
+	}
+
+	public void testAddSpecifiedMapKeyJoinColumn() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("BAR");
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("BAZ");
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		Iterator<NestableAnnotation> joinColumnsIterator = 
+			resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+
+		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertFalse(joinColumnsIterator.hasNext());
+	}
+
+	public void testAddSpecifiedMapKeyJoinColumn2() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		Iterator<NestableAnnotation> joinColumnsIterator = 
+			resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertFalse(joinColumnsIterator.hasNext());
+	}
+
+	public void testRemoveSpecifiedMapKeyJoinColumn() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+
+		assertEquals(3, resourceField.getAnnotationsSize(JPA2_0.MAP_KEY_JOIN_COLUMN));
+
+		elementCollectionMapping.removeSpecifiedMapKeyJoinColumn(1);
+
+		Iterator<NestableAnnotation> joinColumnResources = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());		
+		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());
+		assertFalse(joinColumnResources.hasNext());
+
+		Iterator<? extends JoinColumn> joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("FOO", joinColumnsIterator.next().getName());		
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+
+		elementCollectionMapping.removeSpecifiedMapKeyJoinColumn(1);
+		joinColumnResources = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());		
+		assertFalse(joinColumnResources.hasNext());
+
+		joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("FOO", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+
+		elementCollectionMapping.removeSpecifiedMapKeyJoinColumn(0);
+		joinColumnResources = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertFalse(joinColumnResources.hasNext());
+		joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertFalse(joinColumnsIterator.hasNext());
+
+		assertNull(resourceField.getAnnotation(0, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME));
+	}
+
+	public void testMoveSpecifiedJoinColumn() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+
+		Iterator<NestableAnnotation> javaJoinColumns = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertEquals(3, CollectionTools.size(javaJoinColumns));
+
+
+		elementCollectionMapping.moveSpecifiedMapKeyJoinColumn(2, 0);
+		ListIterator<? extends JoinColumn> joinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAR", joinColumns.next().getSpecifiedName());
+		assertEquals("BAZ", joinColumns.next().getSpecifiedName());
+		assertEquals("FOO", joinColumns.next().getSpecifiedName());
+
+		javaJoinColumns = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+
+
+		elementCollectionMapping.moveSpecifiedMapKeyJoinColumn(0, 1);
+		joinColumns = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumns.next().getSpecifiedName());
+		assertEquals("BAR", joinColumns.next().getSpecifiedName());
+		assertEquals("FOO", joinColumns.next().getSpecifiedName());
+
+		javaJoinColumns = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+	}
+
+	public void testUpdateSpecifiedMapKeyJoinColumns() throws Exception {
+		createTestEntityWithElementCollectionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+
+		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("FOO");
+		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(1, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAR");
+		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(2, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAZ");
+		getJpaProject().synchronizeContextModel();
+
+		ListIterator<? extends JoinColumn> joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("FOO", joinColumnsIterator.next().getName());
+		assertEquals("BAR", joinColumnsIterator.next().getName());
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+		resourceField.moveAnnotation(2, 0, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
+		joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAR", joinColumnsIterator.next().getName());
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertEquals("FOO", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+		resourceField.moveAnnotation(0, 1, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
+		joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertEquals("BAR", joinColumnsIterator.next().getName());
+		assertEquals("FOO", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+		resourceField.removeAnnotation(1, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertEquals("FOO", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+		resourceField.removeAnnotation(1, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+		resourceField.removeAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertFalse(joinColumnsIterator.hasNext());
+	}
+
+	public void testMapKeyJoinColumnIsDefault() throws Exception {
+		createTestEntityWithEntityKeyElementCollectionMapping();
+		createTestTargetEntityAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
+
+		assertTrue(elementCollectionMapping.getDefaultMapKeyJoinColumn().isDefault());
+
+		elementCollectionMapping.addSpecifiedMapKeyJoinColumn(0);
+		JoinColumn specifiedJoinColumn = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator().next();
+		assertFalse(specifiedJoinColumn.isDefault());
+
+		assertNull(elementCollectionMapping.getDefaultMapKeyJoinColumn());
 	}
 }

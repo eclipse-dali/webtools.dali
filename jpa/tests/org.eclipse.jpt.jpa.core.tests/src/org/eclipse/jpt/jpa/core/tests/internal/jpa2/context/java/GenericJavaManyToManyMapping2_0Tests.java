@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
 import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
@@ -57,6 +59,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
@@ -256,6 +259,28 @@ public class GenericJavaManyToManyMapping2_0Tests
 	}
 
 	private ICompilationUnit createTestEntityWithEmbeddableKeyManyToManyMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_MANY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ManyToMany").append(CR);				
+				sb.append("    private java.util.Map<Address, PropertyInfo> parcels;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+
+	private ICompilationUnit createTestEntityWithEntityKeyManyToManyMapping() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -1610,4 +1635,319 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertFalse(manyToManyMapping.isDefault());
 		assertSame(manyToManyMapping, persistentAttribute.getMapping());
 	}
+
+	public void testSpecifiedMapKeyJoinColumns() throws Exception {
+		createTestEntityWithEntityKeyManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
+
+		ListIterator<? extends JoinColumn> specifiedMapKeyJoinColumns = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+
+		//add an annotation to the resource model and verify the context model is updated
+		MapKeyJoinColumn2_0Annotation joinColumn = (MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		joinColumn.setName("FOO");
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();	
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+		joinColumn = (MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		joinColumn.setName("BAR");
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertEquals("BAR", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+
+		joinColumn = (MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		joinColumn.setName("BAZ");
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertEquals("BAZ", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("BAR", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+		//move an annotation to the resource model and verify the context model is updated
+		resourceField.moveAnnotation(1, 0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertEquals("BAR", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("BAZ", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+		resourceField.removeAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertEquals("BAZ", specifiedMapKeyJoinColumns.next().getName());
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+		resourceField.removeAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertEquals("FOO", specifiedMapKeyJoinColumns.next().getName());
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+
+
+		resourceField.removeAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		specifiedMapKeyJoinColumns = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();		
+		assertFalse(specifiedMapKeyJoinColumns.hasNext());
+	}
+
+	public void testSpecifiedMapKeyJoinColumnsSize() throws Exception {
+		createTestEntityWithEntityKeyManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals(0, manyToManyMapping.getSpecifiedMapKeyJoinColumnsSize());
+
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0);
+		assertEquals(1, manyToManyMapping.getSpecifiedMapKeyJoinColumnsSize());
+
+		manyToManyMapping.removeSpecifiedMapKeyJoinColumn(0);
+		assertEquals(0, manyToManyMapping.getSpecifiedMapKeyJoinColumnsSize());
+	}
+
+	public void testMapKeyJoinColumnsSize() throws Exception {
+		createTestEntityWithEntityKeyManyToManyMapping();
+		createTestTargetEntityAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
+
+		assertEquals(1, manyToManyMapping.getMapKeyJoinColumnsSize());
+
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0);
+		assertEquals(1, manyToManyMapping.getMapKeyJoinColumnsSize());
+
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0);
+		assertEquals(2, manyToManyMapping.getMapKeyJoinColumnsSize());
+
+		manyToManyMapping.removeSpecifiedMapKeyJoinColumn(0);
+		manyToManyMapping.removeSpecifiedMapKeyJoinColumn(0);
+		assertEquals(1, manyToManyMapping.getMapKeyJoinColumnsSize());
+	}
+
+	public void testAddSpecifiedMapKeyJoinColumn() throws Exception {
+		createTestEntityWithEntityKeyManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
+
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("BAR");
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("BAZ");
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		Iterator<NestableAnnotation> joinColumnsIterator = 
+			resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+
+		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertFalse(joinColumnsIterator.hasNext());
+	}
+
+	public void testAddSpecifiedMapKeyJoinColumn2() throws Exception {
+		createTestEntityWithEntityKeyManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
+
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+		Iterator<NestableAnnotation> joinColumnsIterator = 
+			resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnsIterator.next()).getName());
+		assertFalse(joinColumnsIterator.hasNext());
+	}
+
+	public void testRemoveSpecifiedMapKeyJoinColumn() throws Exception {
+		createTestEntityWithEntityKeyManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
+
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+
+		assertEquals(3, resourceField.getAnnotationsSize(JPA2_0.MAP_KEY_JOIN_COLUMN));
+
+		manyToManyMapping.removeSpecifiedMapKeyJoinColumn(1);
+
+		Iterator<NestableAnnotation> joinColumnResources = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());		
+		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());
+		assertFalse(joinColumnResources.hasNext());
+
+		Iterator<? extends JoinColumn> joinColumnsIterator = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("FOO", joinColumnsIterator.next().getName());		
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+
+		manyToManyMapping.removeSpecifiedMapKeyJoinColumn(1);
+		joinColumnResources = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumnResources.next()).getName());		
+		assertFalse(joinColumnResources.hasNext());
+
+		joinColumnsIterator = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("FOO", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+
+		manyToManyMapping.removeSpecifiedMapKeyJoinColumn(0);
+		joinColumnResources = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertFalse(joinColumnResources.hasNext());
+		joinColumnsIterator = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertFalse(joinColumnsIterator.hasNext());
+
+		assertNull(resourceField.getAnnotation(0, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME));
+	}
+
+	public void testMoveSpecifiedJoinColumn() throws Exception {
+		createTestEntityWithEntityKeyManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
+
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0).setSpecifiedName("FOO");
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(1).setSpecifiedName("BAR");
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(2).setSpecifiedName("BAZ");
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+
+		Iterator<NestableAnnotation> javaJoinColumns = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertEquals(3, CollectionTools.size(javaJoinColumns));
+
+
+		manyToManyMapping.moveSpecifiedMapKeyJoinColumn(2, 0);
+		ListIterator<? extends JoinColumn> joinColumns = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAR", joinColumns.next().getSpecifiedName());
+		assertEquals("BAZ", joinColumns.next().getSpecifiedName());
+		assertEquals("FOO", joinColumns.next().getSpecifiedName());
+
+		javaJoinColumns = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+
+
+		manyToManyMapping.moveSpecifiedMapKeyJoinColumn(0, 1);
+		joinColumns = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumns.next().getSpecifiedName());
+		assertEquals("BAR", joinColumns.next().getSpecifiedName());
+		assertEquals("FOO", joinColumns.next().getSpecifiedName());
+
+		javaJoinColumns = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
+		assertEquals("BAZ", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+		assertEquals("BAR", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) javaJoinColumns.next()).getName());
+	}
+
+	public void testUpdateSpecifiedMapKeyJoinColumns() throws Exception {
+		createTestEntityWithEntityKeyManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		JavaResourceField resourceField = resourceType.getFields().iterator().next();
+
+		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("FOO");
+		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(1, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAR");
+		((MapKeyJoinColumn2_0Annotation) resourceField.addAnnotation(2, JPA2_0.MAP_KEY_JOIN_COLUMN)).setName("BAZ");
+		getJpaProject().synchronizeContextModel();
+
+		ListIterator<? extends JoinColumn> joinColumnsIterator = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("FOO", joinColumnsIterator.next().getName());
+		assertEquals("BAR", joinColumnsIterator.next().getName());
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+		resourceField.moveAnnotation(2, 0, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
+		joinColumnsIterator = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAR", joinColumnsIterator.next().getName());
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertEquals("FOO", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+		resourceField.moveAnnotation(0, 1, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
+		joinColumnsIterator = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertEquals("BAR", joinColumnsIterator.next().getName());
+		assertEquals("FOO", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+		resourceField.removeAnnotation(1, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		joinColumnsIterator = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertEquals("FOO", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+		resourceField.removeAnnotation(1, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		joinColumnsIterator = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertEquals("BAZ", joinColumnsIterator.next().getName());
+		assertFalse(joinColumnsIterator.hasNext());
+
+		resourceField.removeAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN);
+		getJpaProject().synchronizeContextModel();
+		joinColumnsIterator = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
+		assertFalse(joinColumnsIterator.hasNext());
+	}
+
+	public void testMapKeyJoinColumnIsDefault() throws Exception {
+		createTestEntityWithEntityKeyManyToManyMapping();
+		createTestTargetEntityAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
+		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
+
+		assertTrue(manyToManyMapping.getDefaultMapKeyJoinColumn().isDefault());
+
+		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0);
+		JoinColumn specifiedJoinColumn = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator().next();
+		assertFalse(specifiedJoinColumn.isDefault());
+
+		assertNull(manyToManyMapping.getDefaultMapKeyJoinColumn());
+	}
+
 }

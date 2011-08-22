@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Association;
@@ -27,7 +28,11 @@ import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
@@ -40,11 +45,14 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
@@ -57,8 +65,10 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
@@ -81,6 +91,8 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.CollectionTableValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
@@ -99,6 +111,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
@@ -147,6 +160,10 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected final JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
+	protected final ContextListContainer<JavaJoinColumn, MapKeyJoinColumn2_0Annotation> specifiedMapKeyJoinColumnContainer;
+	protected final JavaReadOnlyJoinColumn.Owner mapKeyJoinColumnOwner;
+
+	protected JavaJoinColumn defaultMapKeyJoinColumn;
 
 	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
 		JavaEnumeratedConverter.Adapter.instance(),
@@ -184,6 +201,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.mapKeyColumn = this.buildMapKeyColumn();
 		this.mapKeyConverter = this.buildMapKeyConverter();
 		this.mapKeyAttributeOverrideContainer = this.buildMapKeyAttributeOverrideContainer();
+		this.mapKeyJoinColumnOwner = this.buildMapKeyJoinColumnOwner();
+		this.specifiedMapKeyJoinColumnContainer = this.buildSpecifiedMapKeyJoinColumnContainer();
 	}
 
 
@@ -211,6 +230,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.mapKeyColumn.synchronizeWithResourceModel();
 		this.syncMapKeyConverter();
 		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel();
+		this.syncSpecifiedMapKeyJoinColumns();
 	}
 
 	@Override
@@ -237,6 +257,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.mapKeyColumn.update();
 		this.mapKeyConverter.update();
 		this.mapKeyAttributeOverrideContainer.update();
+		this.updateNodes(this.getSpecifiedMapKeyJoinColumns());
+		this.updateDefaultMapKeyJoinColumn();
 	}
 
 
@@ -1034,6 +1056,168 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return new MapKeyAttributeOverrideContainerOwner();
 	}
 
+	// ********** map key join columns **********
+
+	public ListIterable<JavaJoinColumn> getMapKeyJoinColumns() {
+		return this.hasSpecifiedMapKeyJoinColumns() ? this.getSpecifiedMapKeyJoinColumns() : this.getDefaultMapKeyJoinColumns();
+	}
+
+	public int getMapKeyJoinColumnsSize() {
+		return this.hasSpecifiedMapKeyJoinColumns() ? this.getSpecifiedMapKeyJoinColumnsSize() : this.getDefaultMapKeyJoinColumnsSize();
+	}
+
+
+	// ********** specified map key join columns **********
+
+	public ListIterable<JavaJoinColumn> getSpecifiedMapKeyJoinColumns() {
+		return this.specifiedMapKeyJoinColumnContainer.getContextElements();
+	}
+
+	public int getSpecifiedMapKeyJoinColumnsSize() {
+		return this.specifiedMapKeyJoinColumnContainer.getContextElementsSize();
+	}
+
+	public boolean hasSpecifiedMapKeyJoinColumns() {
+		return this.getSpecifiedMapKeyJoinColumnsSize() != 0;
+	}
+
+	public JavaJoinColumn getSpecifiedMapKeyJoinColumn(int index) {
+		return this.specifiedMapKeyJoinColumnContainer.getContextElement(index);
+	}
+
+	public JavaJoinColumn addSpecifiedMapKeyJoinColumn() {
+		return this.addSpecifiedMapKeyJoinColumn(this.getSpecifiedMapKeyJoinColumnsSize());
+	}
+
+	public JavaJoinColumn addSpecifiedMapKeyJoinColumn(int index) {
+		MapKeyJoinColumn2_0Annotation annotation = this.addMapKeyJoinColumnAnnotation(index);
+		return this.specifiedMapKeyJoinColumnContainer.addContextElement(index, annotation);
+	}
+
+	public void removeSpecifiedMapKeyJoinColumn(JoinColumn joinColumn) {
+		this.removeSpecifiedMapKeyJoinColumn(this.specifiedMapKeyJoinColumnContainer.indexOfContextElement((JavaJoinColumn) joinColumn));
+	}
+
+	public void removeSpecifiedMapKeyJoinColumn(int index) {
+		this.removeMapKeyJoinColumnAnnotation(index);
+		this.specifiedMapKeyJoinColumnContainer.removeContextElement(index);
+	}
+
+	public void moveSpecifiedMapKeyJoinColumn(int targetIndex, int sourceIndex) {
+		this.moveMapKeyJoinColumnAnnotation(targetIndex, sourceIndex);
+		this.specifiedMapKeyJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+	}
+
+	protected void syncSpecifiedMapKeyJoinColumns() {
+		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel();
+	}
+
+	protected void updateSpecifiedMapKeyJoinColumns() {
+		this.specifiedMapKeyJoinColumnContainer.update();
+	}
+
+	protected ContextListContainer<JavaJoinColumn, MapKeyJoinColumn2_0Annotation> buildSpecifiedMapKeyJoinColumnContainer() {
+		return new SpecifiedMapKeyJoinColumnContainer();
+	}
+
+	/**
+	 * specified map key join column container
+	 */
+	protected class SpecifiedMapKeyJoinColumnContainer
+		extends ContextListContainer<JavaJoinColumn, MapKeyJoinColumn2_0Annotation>
+	{
+		@Override
+		protected String getContextElementsPropertyName() {
+			return SPECIFIED_MAP_KEY_JOIN_COLUMNS_LIST;
+		}
+		@Override
+		protected JavaJoinColumn buildContextElement(MapKeyJoinColumn2_0Annotation resourceElement) {
+			return AbstractJavaElementCollectionMapping2_0.this.buildMapKeyJoinColumn(resourceElement);
+		}
+		@Override
+		protected ListIterable<MapKeyJoinColumn2_0Annotation> getResourceElements() {
+			return AbstractJavaElementCollectionMapping2_0.this.getMapKeyJoinColumnAnnotations();
+		}
+		@Override
+		protected MapKeyJoinColumn2_0Annotation getResourceElement(JavaJoinColumn contextElement) {
+			return (MapKeyJoinColumn2_0Annotation) contextElement.getColumnAnnotation();
+		}
+	}
+
+	protected JavaJoinColumn buildMapKeyJoinColumn(MapKeyJoinColumn2_0Annotation joinColumnAnnotation) {
+		return this.getJpaFactory().buildJavaJoinColumn(this, this.mapKeyJoinColumnOwner, joinColumnAnnotation);
+	}
+
+	protected JavaReadOnlyJoinColumn.Owner buildMapKeyJoinColumnOwner() {
+		return new MapKeyJoinColumnOwner();
+	}
+
+
+	// ********** default map key join column **********
+
+	public JavaJoinColumn getDefaultMapKeyJoinColumn() {
+		return this.defaultMapKeyJoinColumn;
+	}
+
+	protected void setDefaultMapKeyJoinColumn(JavaJoinColumn mapKeyJoinColumn) {
+		JavaJoinColumn old = this.defaultMapKeyJoinColumn;
+		this.defaultMapKeyJoinColumn = mapKeyJoinColumn;
+		this.firePropertyChanged(DEFAULT_MAP_KEY_JOIN_COLUMN_PROPERTY, old, mapKeyJoinColumn);
+	}
+
+	protected ListIterable<JavaJoinColumn> getDefaultMapKeyJoinColumns() {
+		return (this.defaultMapKeyJoinColumn != null) ?
+				new SingleElementListIterable<JavaJoinColumn>(this.defaultMapKeyJoinColumn) :
+				EmptyListIterable.<JavaJoinColumn>instance();
+	}
+
+	protected int getDefaultMapKeyJoinColumnsSize() {
+		return (this.defaultMapKeyJoinColumn == null) ? 0 : 1;
+	}
+
+	protected void updateDefaultMapKeyJoinColumn() {
+		if (this.buildsDefaultMapKeyJoinColumn()) {
+			if (this.defaultMapKeyJoinColumn == null) {
+				this.setDefaultMapKeyJoinColumn(this.buildMapKeyJoinColumn(this.buildNullMapKeyJoinColumnAnnotation()));
+			} else {
+				this.defaultMapKeyJoinColumn.update();
+			}
+		} else {
+			this.setDefaultMapKeyJoinColumn(null);
+		}
+	}
+
+	protected boolean buildsDefaultMapKeyJoinColumn() {
+		return ! this.hasSpecifiedMapKeyJoinColumns() &&
+				getKeyType() == Type.ENTITY_TYPE;
+	}
+
+	// ********** map key join column annotations **********
+
+	protected ListIterable<MapKeyJoinColumn2_0Annotation> getMapKeyJoinColumnAnnotations() {
+		return new SubListIterableWrapper<NestableAnnotation, MapKeyJoinColumn2_0Annotation>(this.getNestableMapKeyJoinColumnAnnotations());
+	}
+
+	protected ListIterable<NestableAnnotation> getNestableMapKeyJoinColumnAnnotations() {
+		return this.getResourceAttribute().getAnnotations(MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+	}
+
+	protected MapKeyJoinColumn2_0Annotation addMapKeyJoinColumnAnnotation(int index) {
+		return (MapKeyJoinColumn2_0Annotation) this.getResourceAttribute().addAnnotation(index, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+	}
+
+	protected void removeMapKeyJoinColumnAnnotation(int index) {
+		this.getResourceAttribute().removeAnnotation(index, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+	}
+
+	protected void moveMapKeyJoinColumnAnnotation(int targetIndex, int sourceIndex) {
+		this.getResourceAttribute().moveAnnotation(targetIndex, sourceIndex, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME);
+	}
+
+	protected MapKeyJoinColumn2_0Annotation buildNullMapKeyJoinColumnAnnotation() {
+		return new NullMapKeyJoinColumnAnnotation(this.getResourceAttribute());
+	}
+
 
 	// ********** embedded mappings **********
 
@@ -1235,6 +1419,12 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		if (result != null) {
 			return result;
 		}
+		for (JavaJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
+			result = joinColumn.getJavaCompletionProposals(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
 		return null;
 	}
 
@@ -1418,11 +1608,13 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				this.mapKeyConverter.validate(messages, reporter, astRoot);
 				break;
 			case ENTITY_TYPE :
-				//validate map key join columns
+				for (JavaJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
+					joinColumn.validate(messages, reporter, astRoot);
+				}
 				break;
 			case EMBEDDABLE_TYPE :
 				this.mapKeyAttributeOverrideContainer.validate(messages, reporter, astRoot);
-				//validate map key association overrides
+				//validate map key association overrides - for eclipselink
 				break;
 			default :
 				break;
@@ -1626,6 +1818,81 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 		protected UnsupportedOperationException buildJoinTableUnsupportedException() {
 			return new UnsupportedOperationException("An element collection containing a nested relationship mapping using a join table is not supported"); //$NON-NLS-1$
+		}
+	}
+
+	// ********** map key join column owner **********
+
+	protected class MapKeyJoinColumnOwner
+		implements JavaReadOnlyJoinColumn.Owner
+	{
+		protected MapKeyJoinColumnOwner() {
+			super();
+		}
+
+		public String getDefaultTableName() {
+			return AbstractJavaElementCollectionMapping2_0.this.getCollectionTable().getName();
+		}
+
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+			return AbstractJavaElementCollectionMapping2_0.this.getName() + "_KEY"; //$NON-NLS-1$
+		}
+
+		public String getAttributeName() {
+			return AbstractJavaElementCollectionMapping2_0.this.getName();
+		}
+
+		protected PersistentAttribute getPersistentAttribute() {
+			return AbstractJavaElementCollectionMapping2_0.this.getPersistentAttribute();
+		}
+
+		public TypeMapping getTypeMapping() {
+			return AbstractJavaElementCollectionMapping2_0.this.getTypeMapping();
+		}
+
+		public Entity getRelationshipTarget() {
+			return AbstractJavaElementCollectionMapping2_0.this.getResolvedMapKeyEntity();
+		}
+
+		/**
+		 * If there is a specified table name it needs to be the same as
+		 * the default table name.  The table is always the collection table.
+		 */
+		public boolean tableNameIsInvalid(String tableName) {
+			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
+		}
+
+		public Iterable<String> getCandidateTableNames() {
+			return EmptyIterable.instance();
+		}
+
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
+			return AbstractJavaElementCollectionMapping2_0.this.getCollectionTable().getDbTable();
+		}
+
+		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
+			return AbstractJavaElementCollectionMapping2_0.this.getResolvedMapKeyEntity().getPrimaryDbTable();
+		}
+
+		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
+			return AbstractJavaElementCollectionMapping2_0.this.defaultMapKeyJoinColumn == joinColumn;
+		}
+
+		public int getJoinColumnsSize() {
+			return AbstractJavaElementCollectionMapping2_0.this.getMapKeyJoinColumnsSize();
+		}
+
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return AbstractJavaElementCollectionMapping2_0.this.getValidationTextRange(astRoot);
+		}
+
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new MapKeyJoinColumnValidator(
+				this.getPersistentAttribute(),
+				(ReadOnlyJoinColumn) column,
+				this, 
+				(JoinColumnTextRangeResolver) textRangeResolver,
+				new CollectionTableTableDescriptionProvider());
 		}
 	}
 

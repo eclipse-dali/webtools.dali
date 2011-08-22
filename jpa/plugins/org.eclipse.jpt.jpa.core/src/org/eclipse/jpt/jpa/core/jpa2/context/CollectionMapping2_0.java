@@ -10,9 +10,12 @@
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 
 /**
  * JPA 2.0 collection mapping (e.g. 1:m, m:m, element collection)
@@ -56,4 +59,87 @@ public interface CollectionMapping2_0
 	Column getMapKeyColumn();
 
 	AttributeOverrideContainer getMapKeyAttributeOverrideContainer();
+
+	// ********** map key join columns **********
+
+	/**
+	 * Return the map key join columns whether specified or default.
+	 */
+	ListIterable<? extends ReadOnlyJoinColumn> getMapKeyJoinColumns();
+
+	/**
+	 * Return the number of map key join columns, whether specified and default.
+	 */
+	int getMapKeyJoinColumnsSize();
+
+
+	// ********** specified map key join columns **********
+
+	/**
+	 * Change notification identifier for "specifiedMapKeyJoinColumns" list
+	 */
+	String SPECIFIED_MAP_KEY_JOIN_COLUMNS_LIST = "specifiedMapKeyJoinColumns"; //$NON-NLS-1$
+
+	/**
+	 * Return the specified map key join columns.
+	 */
+	ListIterable<? extends JoinColumn> getSpecifiedMapKeyJoinColumns();
+
+	/**
+	 * Return the number of specified join columns.
+	 */
+	int getSpecifiedMapKeyJoinColumnsSize();
+
+	/**
+	 * Return whether the mapping has any specified map key join columns.
+	 * (Equivalent to {@link #getSpecifiedMapKeyJoinColumnsSize()} != 0.)
+	 */
+	boolean hasSpecifiedMapKeyJoinColumns();
+
+	/**
+	 * Return the specified map key join column at the specified index.
+	 */
+	JoinColumn getSpecifiedMapKeyJoinColumn(int index);
+
+	/**
+	 * Add a specified map key join column to the relationship.
+	 */
+	JoinColumn addSpecifiedMapKeyJoinColumn();
+
+	/**
+	 * Add a specified map key join column to the relationship.
+	 */
+	JoinColumn addSpecifiedMapKeyJoinColumn(int index);
+
+	/**
+	 * Remove the specified map key join column.
+	 */
+	void removeSpecifiedMapKeyJoinColumn(int index);
+
+	/**
+	 * Remove the specified map key join column.
+	 */
+	void removeSpecifiedMapKeyJoinColumn(JoinColumn joinColumn);
+
+	/**
+	 * Move the specified map key join column from the source index to the target index.
+	 */
+	void moveSpecifiedMapKeyJoinColumn(int targetIndex, int sourceIndex);
+
+
+	// ********** default map key join column **********
+
+	/**
+	 * Change notification identifier for "defaultMapKeyJoinColumn" property
+	 */
+	String DEFAULT_MAP_KEY_JOIN_COLUMN_PROPERTY = "defaultMapKeyJoinColumn"; //$NON-NLS-1$
+
+	/**
+	 * Return the default map key join column. If there are specified map key join
+	 * columns, there is no default join column. There are also
+	 * times that there may be no default map key join column even if there are no
+	 * specified map key join columns.
+	 */
+	JoinColumn getDefaultMapKeyJoinColumn();
+
 }

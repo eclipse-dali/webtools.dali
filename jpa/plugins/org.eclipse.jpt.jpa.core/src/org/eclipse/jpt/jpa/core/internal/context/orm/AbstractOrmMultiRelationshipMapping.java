@@ -19,7 +19,11 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Column;
@@ -27,10 +31,14 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -39,13 +47,16 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
@@ -56,6 +67,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyAttributeOverrideVal
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.RelationshipStrategyTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionMapping2_0;
@@ -68,6 +80,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -98,6 +111,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	protected final OrmAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
+	protected final ContextListContainer<OrmJoinColumn, XmlJoinColumn> specifiedMapKeyJoinColumnContainer;
+	protected final OrmReadOnlyJoinColumn.Owner mapKeyJoinColumnOwner;
+
+	protected OrmJoinColumn defaultMapKeyJoinColumn;
+
 
 	protected static final OrmConverter.Adapter[] MAP_KEY_CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
 		OrmMapKeyEnumeratedConverter2_0.Adapter.instance(),
@@ -119,6 +137,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		this.mapKeyColumn = this.buildMapKeyColumn();
 		this.mapKeyConverter = this.buildMapKeyConverter();
 		this.mapKeyAttributeOverrideContainer = this.buildMapKeyAttributeOverrideContainer();
+		this.mapKeyJoinColumnOwner = this.buildMapKeyJoinColumnOwner();
+		this.specifiedMapKeyJoinColumnContainer = this.buildSpecifiedMapKeyJoinColumnContainer();
 	}
 
 
@@ -140,6 +160,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		this.syncMapKeyConverter();
 
 		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel();
+		this.syncSpecifiedMapKeyJoinColumns();
 	}
 
 	@Override
@@ -157,6 +178,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		this.mapKeyConverter.update();
 
 		this.mapKeyAttributeOverrideContainer.update();
+		this.updateNodes(this.getSpecifiedMapKeyJoinColumns());
+		this.updateDefaultMapKeyJoinColumn();
 	}
 
 
@@ -652,6 +675,148 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		return (javaAttribute == null) ? null : javaAttribute.getMapping();
 	}
+	// ********** map key join columns **********
+
+	public ListIterable<OrmJoinColumn> getMapKeyJoinColumns() {
+		return this.hasSpecifiedMapKeyJoinColumns() ? this.getSpecifiedMapKeyJoinColumns() : this.getDefaultMapKeyJoinColumns();
+	}
+
+	public int getMapKeyJoinColumnsSize() {
+		return this.hasSpecifiedMapKeyJoinColumns() ? this.getSpecifiedMapKeyJoinColumnsSize() : this.getDefaultMapKeyJoinColumnsSize();
+	}
+
+
+	// ********** specified map key join columns **********
+
+	public ListIterable<OrmJoinColumn> getSpecifiedMapKeyJoinColumns() {
+		return this.specifiedMapKeyJoinColumnContainer.getContextElements();
+	}
+
+	public int getSpecifiedMapKeyJoinColumnsSize() {
+		return this.specifiedMapKeyJoinColumnContainer.getContextElementsSize();
+	}
+
+	public boolean hasSpecifiedMapKeyJoinColumns() {
+		return this.getSpecifiedMapKeyJoinColumnsSize() != 0;
+	}
+
+	public OrmJoinColumn getSpecifiedMapKeyJoinColumn(int index) {
+		return this.specifiedMapKeyJoinColumnContainer.getContextElement(index);
+	}
+
+	public OrmJoinColumn addSpecifiedMapKeyJoinColumn() {
+		return this.addSpecifiedMapKeyJoinColumn(this.getSpecifiedMapKeyJoinColumnsSize());
+	}
+
+	public OrmJoinColumn addSpecifiedMapKeyJoinColumn(int index) {
+		XmlJoinColumn xmlJoinColumn = this.buildXmlJoinColumn();
+		OrmJoinColumn joinColumn = this.specifiedMapKeyJoinColumnContainer.addContextElement(index, xmlJoinColumn);
+		this.getXmlAttributeMapping().getMapKeyJoinColumns().add(index, xmlJoinColumn);
+		return joinColumn;
+	}
+
+	protected XmlJoinColumn buildXmlJoinColumn() {
+		return OrmFactory.eINSTANCE.createXmlJoinColumn();
+	}
+
+	public void removeSpecifiedMapKeyJoinColumn(JoinColumn joinColumn) {
+		this.removeSpecifiedMapKeyJoinColumn(this.specifiedMapKeyJoinColumnContainer.indexOfContextElement((OrmJoinColumn) joinColumn));
+	}
+
+	public void removeSpecifiedMapKeyJoinColumn(int index) {
+		this.specifiedMapKeyJoinColumnContainer.removeContextElement(index);
+		this.getXmlAttributeMapping().getMapKeyJoinColumns().remove(index);
+	}
+
+	public void moveSpecifiedMapKeyJoinColumn(int targetIndex, int sourceIndex) {
+		this.specifiedMapKeyJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+		this.getXmlAttributeMapping().getMapKeyJoinColumns().move(targetIndex, sourceIndex);
+	}
+
+	protected void syncSpecifiedMapKeyJoinColumns() {
+		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel();
+	}
+
+	protected ListIterable<XmlJoinColumn> getXmlMapKeyJoinColumns() {
+		// clone to reduce chance of concurrency problems
+		return new LiveCloneListIterable<XmlJoinColumn>(this.getXmlAttributeMapping().getMapKeyJoinColumns());
+	}
+
+	protected ContextListContainer<OrmJoinColumn, XmlJoinColumn> buildSpecifiedMapKeyJoinColumnContainer() {
+		return new SpecifiedMapKeyJoinColumnContainer();
+	}
+
+	/**
+	 * specified join column container
+	 */
+	protected class SpecifiedMapKeyJoinColumnContainer
+		extends ContextListContainer<OrmJoinColumn, XmlJoinColumn>
+	{
+		@Override
+		protected String getContextElementsPropertyName() {
+			return SPECIFIED_MAP_KEY_JOIN_COLUMNS_LIST;
+		}
+		@Override
+		protected OrmJoinColumn buildContextElement(XmlJoinColumn resourceElement) {
+			return AbstractOrmMultiRelationshipMapping.this.buildMapKeyJoinColumn(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlJoinColumn> getResourceElements() {
+			return AbstractOrmMultiRelationshipMapping.this.getXmlMapKeyJoinColumns();
+		}
+		@Override
+		protected XmlJoinColumn getResourceElement(OrmJoinColumn contextElement) {
+			return contextElement.getXmlColumn();
+		}
+	}
+
+	protected OrmJoinColumn buildMapKeyJoinColumn(XmlJoinColumn xmlJoinColumn) {
+		return this.getContextNodeFactory().buildOrmJoinColumn(this, this.mapKeyJoinColumnOwner, xmlJoinColumn);
+	}
+
+	protected OrmReadOnlyJoinColumn.Owner buildMapKeyJoinColumnOwner() {
+		return new MapKeyJoinColumnOwner();
+	}
+
+
+	// ********** default map key join column **********
+
+	public OrmJoinColumn getDefaultMapKeyJoinColumn() {
+		return this.defaultMapKeyJoinColumn;
+	}
+
+	protected void setDefaultMapKeyJoinColumn(OrmJoinColumn mapKeyJoinColumn) {
+		OrmJoinColumn old = this.defaultMapKeyJoinColumn;
+		this.defaultMapKeyJoinColumn = mapKeyJoinColumn;
+		this.firePropertyChanged(DEFAULT_MAP_KEY_JOIN_COLUMN_PROPERTY, old, mapKeyJoinColumn);
+	}
+
+	protected ListIterable<OrmJoinColumn> getDefaultMapKeyJoinColumns() {
+		return (this.defaultMapKeyJoinColumn != null) ?
+				new SingleElementListIterable<OrmJoinColumn>(this.defaultMapKeyJoinColumn) :
+				EmptyListIterable.<OrmJoinColumn>instance();
+	}
+
+	protected int getDefaultMapKeyJoinColumnsSize() {
+		return (this.defaultMapKeyJoinColumn == null) ? 0 : 1;
+	}
+
+	protected void updateDefaultMapKeyJoinColumn() {
+		if (this.buildsDefaultMapKeyJoinColumn()) {
+			if (this.defaultMapKeyJoinColumn == null) {
+				this.setDefaultMapKeyJoinColumn(this.buildMapKeyJoinColumn(null));
+			} else {
+				this.defaultMapKeyJoinColumn.update();
+			}
+		} else {
+			this.setDefaultMapKeyJoinColumn(null);
+		}
+	}
+
+	protected boolean buildsDefaultMapKeyJoinColumn() {
+		return ! this.hasSpecifiedMapKeyJoinColumns() &&
+				getKeyType() == Type.ENTITY_TYPE;
+	}
 
 
 	// ********** misc **********
@@ -910,6 +1075,81 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, column, textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
+		}
+	}
+
+
+	// ********** map key join column owner **********
+
+	protected class MapKeyJoinColumnOwner
+		implements OrmReadOnlyJoinColumn.Owner
+	{
+		protected MapKeyJoinColumnOwner() {
+			super();
+		}
+
+		public String getDefaultTableName() {
+			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy().getTableName();
+		}
+
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+			return AbstractOrmMultiRelationshipMapping.this.getName() + "_KEY"; //$NON-NLS-1$
+		}
+
+		public String getAttributeName() {
+			return AbstractOrmMultiRelationshipMapping.this.getName();
+		}
+
+		protected PersistentAttribute getPersistentAttribute() {
+			return AbstractOrmMultiRelationshipMapping.this.getPersistentAttribute();
+		}
+
+		public TypeMapping getTypeMapping() {
+			return AbstractOrmMultiRelationshipMapping.this.getTypeMapping();
+		}
+
+		public Entity getRelationshipTarget() {
+			return AbstractOrmMultiRelationshipMapping.this.getResolvedMapKeyEntity();
+		}
+
+		public boolean tableNameIsInvalid(String tableName) {
+			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy().tableNameIsInvalid(tableName);
+		}
+
+		/**
+		 * the map key join column can be on a secondary table
+		 */
+		public Iterable<String> getCandidateTableNames() {
+			return AbstractOrmMultiRelationshipMapping.this.getTypeMapping().getAllAssociatedTableNames();
+		}
+
+		public Table resolveDbTable(String tableName) {
+			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy().resolveDbTable(tableName);
+		}
+
+		public Table getReferencedColumnDbTable() {
+			return AbstractOrmMultiRelationshipMapping.this.getResolvedMapKeyEntity().getPrimaryDbTable();
+		}
+
+		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
+			return AbstractOrmMultiRelationshipMapping.this.defaultMapKeyJoinColumn == joinColumn;
+		}
+
+		public int getJoinColumnsSize() {
+			return AbstractOrmMultiRelationshipMapping.this.getMapKeyJoinColumnsSize();
+		}
+
+		public TextRange getValidationTextRange() {
+			return AbstractOrmMultiRelationshipMapping.this.getValidationTextRange();
+		}
+
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new MapKeyJoinColumnValidator(
+				this.getPersistentAttribute(),
+				(ReadOnlyJoinColumn) column,
+				this, 
+				(JoinColumnTextRangeResolver) textRangeResolver,
+				new RelationshipStrategyTableDescriptionProvider(getRelationship().getStrategy()));
 		}
 	}
 }

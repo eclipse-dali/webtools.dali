@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaCollectionMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 
 /**
@@ -37,4 +39,11 @@ public interface JavaCollectionMapping2_0
 	 */
 	String getFullyQualifiedMapKeyClass();
 		String FULLY_QUALIFIED_MAP_KEY_CLASS_PROPERTY = "fullyQualifiedMapKeyClass"; //$NON-NLS-1$
+	
+	ListIterable<? extends JavaJoinColumn> getSpecifiedMapKeyJoinColumns();
+	JavaJoinColumn getSpecifiedMapKeyJoinColumn(int index);
+	JavaJoinColumn addSpecifiedMapKeyJoinColumn();
+	JavaJoinColumn addSpecifiedMapKeyJoinColumn(int index);
+
+	JavaJoinColumn getDefaultMapKeyJoinColumn();
 }
