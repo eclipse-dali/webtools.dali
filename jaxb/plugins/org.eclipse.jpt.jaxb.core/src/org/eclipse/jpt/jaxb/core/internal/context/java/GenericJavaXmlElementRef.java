@@ -20,12 +20,12 @@ import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbSchemaComponentRef;
+import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
-import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -38,7 +38,7 @@ public class GenericJavaXmlElementRef
 	
 	protected final Context context;
 	
-	protected final JaxbSchemaComponentRef schemaElementRef;
+	protected final JaxbQName qName;
 	
 	protected Boolean specifiedRequired;
 	
@@ -50,7 +50,7 @@ public class GenericJavaXmlElementRef
 	public GenericJavaXmlElementRef(JavaContextNode parent, Context context) {
 		super(parent);
 		this.context = context;
-		this.schemaElementRef = buildSchemaElementRef();
+		this.qName = buildQName();
 		this.specifiedRequired = buildSpecifiedRequired();
 		this.specifiedType = buildSpecifiedType();
 		this.defaultType = buildDefaultType();
@@ -60,7 +60,7 @@ public class GenericJavaXmlElementRef
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.schemaElementRef.synchronizeWithResourceModel();
+		this.qName.synchronizeWithResourceModel();
 		setSpecifiedRequired_(buildSpecifiedRequired());
 		setSpecifiedType_(buildSpecifiedType());
 		setDefaultType_(buildDefaultType());
@@ -69,7 +69,7 @@ public class GenericJavaXmlElementRef
 	@Override
 	public void update() {
 		super.update();
-		this.schemaElementRef.update();
+		this.qName.update();
 	}
 	
 	@Override
@@ -100,12 +100,12 @@ public class GenericJavaXmlElementRef
 	
 	// ***** schema component ref *****
 	
-	public JaxbSchemaComponentRef getSchemaElementRef() {
-		return this.schemaElementRef;
+	public JaxbQName getQName() {
+		return this.qName;
 	}
 	
-	protected JaxbSchemaComponentRef buildSchemaElementRef() {
-		return new XmlElementDeclRef(this);
+	protected JaxbQName buildQName() {
+		return new XmlElementRefQName(this);
 	}
 	
 	
@@ -200,7 +200,7 @@ public class GenericJavaXmlElementRef
 			return result;
 		}
 		
-		result = this.schemaElementRef.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.qName.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
@@ -267,15 +267,15 @@ public class GenericJavaXmlElementRef
 	}
 	
 	
-	protected class XmlElementDeclRef
-			extends AbstractJavaSchemaComponentRef {
+	protected class XmlElementRefQName
+			extends AbstractJavaQName {
 		
-		protected XmlElementDeclRef(JavaContextNode parent) {
+		protected XmlElementRefQName(JavaContextNode parent) {
 			super(parent);
 		}
 		
 		@Override
-		protected SchemaComponentRefAnnotation getAnnotation(boolean createIfNull) {
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
 			return GenericJavaXmlElementRef.this.getAnnotation();
 		}
 		
@@ -311,7 +311,7 @@ public class GenericJavaXmlElementRef
 		@Override
 		public String getDefaultNamespace() {
 			return (GenericJavaXmlElementRef.this.getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlElementRef.this.getPersistentClass().getSchemaTypeRef().getNamespace() : "";
+					GenericJavaXmlElementRef.this.getPersistentClass().getQName().getNamespace() : "";
 		}
 		
 		@Override
@@ -321,7 +321,7 @@ public class GenericJavaXmlElementRef
 		}
 		
 		@Override
-		protected void validateSchemaComponentRef(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 			
 			// TODO
 //			XsdTypeDefinition xsdType = GenericJavaXmlElementRef.this.getPersistentClass().getXsdTypeDefinition();

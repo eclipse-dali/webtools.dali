@@ -18,14 +18,14 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbSchemaComponentRef;
+import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
-import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -39,7 +39,7 @@ public class GenericJavaXmlElementWrapper
 	
 	protected final XmlElementWrapperAnnotation annotation;
 	
-	protected JaxbSchemaComponentRef schemaComponentRef;
+	protected JaxbQName qName;
 	
 	protected Boolean specifiedRequired;
 	
@@ -49,14 +49,14 @@ public class GenericJavaXmlElementWrapper
 	public GenericJavaXmlElementWrapper(JaxbAttributeMapping parent, XmlElementWrapperAnnotation annotation) {
 		super(parent);
 		this.annotation = annotation;
-		this.schemaComponentRef = buildSchemaComponentRef();
+		this.qName = buildQName();
 		this.specifiedRequired = buildSpecifiedRequired();
 		this.specifiedNillable = this.buildSpecifiedNillable();
 	}
 	
 	
-	protected JaxbSchemaComponentRef buildSchemaComponentRef() {
-		return new XmlElementSchemaComponentRef(this);
+	protected JaxbQName buildQName() {
+		return new XmlElementQName(this);
 	}
 	
 	@Override
@@ -82,7 +82,7 @@ public class GenericJavaXmlElementWrapper
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.schemaComponentRef.synchronizeWithResourceModel();
+		this.qName.synchronizeWithResourceModel();
 		setSpecifiedRequired_(buildSpecifiedRequired());
 		this.setSpecifiedNillable_(this.buildSpecifiedNillable());
 	}
@@ -90,14 +90,14 @@ public class GenericJavaXmlElementWrapper
 	@Override
 	public void update() {
 		super.update();
-		this.schemaComponentRef.update();
+		this.qName.update();
 	}
 	
 	
 	// ***** schema component ref *****
 	
-	public JaxbSchemaComponentRef getSchemaElementRef() {
-		return this.schemaComponentRef;
+	public JaxbQName getQName() {
+		return this.qName;
 	}
 	
 	
@@ -165,7 +165,7 @@ public class GenericJavaXmlElementWrapper
 	
 	public XsdElementDeclaration getXsdElementDeclaration() {
 		XsdTypeDefinition xsdType = getPersistentAttribute().getPersistentClass().getXsdTypeDefinition();
-		return (xsdType == null) ? null : xsdType.getElement(this.schemaComponentRef.getNamespace(), this.schemaComponentRef.getName());
+		return (xsdType == null) ? null : xsdType.getElement(this.qName.getNamespace(), this.qName.getName());
 	}
 	
 	
@@ -179,7 +179,7 @@ public class GenericJavaXmlElementWrapper
 			return result;
 		}
 		
-		result = this.schemaComponentRef.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.qName.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
@@ -209,16 +209,16 @@ public class GenericJavaXmlElementWrapper
 	}
 	
 	
-	protected class XmlElementSchemaComponentRef
-			extends AbstractJavaSchemaComponentRef {
+	protected class XmlElementQName
+			extends AbstractJavaQName {
 		
-		protected XmlElementSchemaComponentRef(JavaContextNode parent) {
+		protected XmlElementQName(JavaContextNode parent) {
 			super(parent);
 		}
 		
 		
 		@Override
-		protected SchemaComponentRefAnnotation getAnnotation(boolean createIfNull) {
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
 			// never null
 			return GenericJavaXmlElementWrapper.this.annotation;
 		}
@@ -231,7 +231,7 @@ public class GenericJavaXmlElementWrapper
 		@Override
 		public String getDefaultNamespace() {
 			return (GenericJavaXmlElementWrapper.this.getPersistentClass().getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlElementWrapper.this.getPersistentClass().getSchemaTypeRef().getNamespace() : "";
+					GenericJavaXmlElementWrapper.this.getPersistentClass().getQName().getNamespace() : "";
 		}
 		
 		@Override
@@ -247,12 +247,12 @@ public class GenericJavaXmlElementWrapper
 		}
 		
 		@Override
-		public String getSchemaComponentTypeDescription() {
+		public String getReferencedComponentTypeDescription() {
 			return JptJaxbCoreMessages.XML_ELEMENT_DESC;
 		}
 		
 		@Override
-		protected void validateSchemaComponentRef(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 			XsdTypeDefinition type = getPersistentClass().getXsdTypeDefinition();
 			if (type == null) {
 				return;

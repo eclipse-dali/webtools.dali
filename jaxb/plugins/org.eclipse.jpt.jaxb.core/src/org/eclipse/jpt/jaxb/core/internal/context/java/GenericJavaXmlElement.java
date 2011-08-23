@@ -22,7 +22,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbSchemaComponentRef;
+import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
-import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -45,7 +45,7 @@ public class GenericJavaXmlElement
 	
 	protected final Context context;
 	
-	protected final JaxbSchemaComponentRef schemaElementRef;
+	protected final JaxbQName qName;
 	
 	protected Boolean specifiedNillable;
 	
@@ -63,7 +63,7 @@ public class GenericJavaXmlElement
 	public GenericJavaXmlElement(JavaContextNode parent, Context context) {
 		super(parent);
 		this.context = context;
-		this.schemaElementRef = buildSchemaElementRef();
+		this.qName = buildQName();
 		this.specifiedNillable = buildSpecifiedNillable();
 		this.defaultNillable = buildDefaultNillable();
 		this.specifiedRequired = buildSpecifiedRequired();
@@ -76,7 +76,7 @@ public class GenericJavaXmlElement
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.schemaElementRef.synchronizeWithResourceModel();
+		this.qName.synchronizeWithResourceModel();
 		setSpecifiedNillable_(buildSpecifiedNillable());
 		setDefaultNillable_(buildDefaultNillable());
 		setSpecifiedRequired_(buildSpecifiedRequired());
@@ -88,7 +88,7 @@ public class GenericJavaXmlElement
 	@Override
 	public void update() {
 		super.update();
-		this.schemaElementRef.update();
+		this.qName.update();
 	}
 	
 	@Override
@@ -119,12 +119,12 @@ public class GenericJavaXmlElement
 	
 	// ***** schema component ref *****
 	
-	public JaxbSchemaComponentRef getSchemaElementRef() {
-		return this.schemaElementRef;
+	public JaxbQName getQName() {
+		return this.qName;
 	}
 	
-	protected JaxbSchemaComponentRef buildSchemaElementRef() {
-		return new XmlSchemaElementRef(this);
+	protected JaxbQName buildQName() {
+		return new XmlElementQName(this);
 	}
 	
 	
@@ -286,7 +286,7 @@ public class GenericJavaXmlElement
 			return result;
 		}
 		
-		result = this.schemaElementRef.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.qName.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
@@ -314,13 +314,13 @@ public class GenericJavaXmlElement
 		
 		validateType(messages, reporter, astRoot);
 		
-		if (StringTools.stringIsEmpty(this.schemaElementRef.getName())) {
+		if (StringTools.stringIsEmpty(this.qName.getName())) {
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_ELEMENT_NAME,
 							this,
-							this.schemaElementRef.getNameTextRange(astRoot)));
+							this.qName.getNameTextRange(astRoot)));
 		}
 	}
 	
@@ -352,20 +352,20 @@ public class GenericJavaXmlElement
 	}
 	
 	
-	protected class XmlSchemaElementRef
-			extends AbstractJavaSchemaComponentRef {
+	protected class XmlElementQName
+			extends AbstractJavaQName {
 		
-		protected XmlSchemaElementRef(JavaContextNode parent) {
+		protected XmlElementQName(JavaContextNode parent) {
 			super(parent);
 		}
 		
 		@Override
-		public String getSchemaComponentTypeDescription() {
+		public String getReferencedComponentTypeDescription() {
 			return JptJaxbCoreMessages.XML_ELEMENT_DESC;
 		}
 		
 		@Override
-		protected SchemaComponentRefAnnotation getAnnotation(boolean createIfNull) {
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
 			return GenericJavaXmlElement.this.getAnnotation(createIfNull);
 		}
 		
@@ -399,7 +399,7 @@ public class GenericJavaXmlElement
 		@Override
 		public String getDefaultNamespace() {
 			return (GenericJavaXmlElement.this.getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlElement.this.getPersistentClass().getSchemaTypeRef().getNamespace() : "";
+					GenericJavaXmlElement.this.getPersistentClass().getQName().getNamespace() : "";
 		}
 		
 		@Override
@@ -409,7 +409,7 @@ public class GenericJavaXmlElement
 		}
 		
 		@Override
-		protected void validateSchemaComponentRef(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 			XsdTypeDefinition xsdType = GenericJavaXmlElement.this.getPersistentClass().getXsdTypeDefinition();
 			if (xsdType == null) {
 				return;

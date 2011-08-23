@@ -385,9 +385,9 @@ public class GenericJavaXmlElementsMapping
 			if (! StringTools.stringIsEmpty(typeName)) {
 				xmlElementTypes.add(typeName);
 			}
-			String elementName = xmlElement.getSchemaElementRef().getName();
+			String elementName = xmlElement.getQName().getName();
 			if (! StringTools.stringIsEmpty(elementName)) {
-				xmlElementQnames.add(new QName(xmlElement.getSchemaElementRef().getNamespace(), elementName));
+				xmlElementQnames.add(new QName(xmlElement.getQName().getNamespace(), elementName));
 			}
 		}
 		
@@ -403,8 +403,8 @@ public class GenericJavaXmlElementsMapping
 								xmlElement.getTypeTextRange(astRoot)));
 			}
 			
-			String xmlElementNamespace = xmlElement.getSchemaElementRef().getNamespace();
-			String xmlElementName = xmlElement.getSchemaElementRef().getName();
+			String xmlElementNamespace = xmlElement.getQName().getNamespace();
+			String xmlElementName = xmlElement.getQName().getName();
 			if (xmlElementQnames.count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
 				messages.add(
 						DefaultValidationMessages.buildMessage(
@@ -412,7 +412,7 @@ public class GenericJavaXmlElementsMapping
 								JaxbValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_QNAME,
 								new String[] { xmlElementName },
 								xmlElement,
-								xmlElement.getSchemaElementRef().getNameTextRange(astRoot)));
+								xmlElement.getQName().getNameTextRange(astRoot)));
 			}
 		}
 	}

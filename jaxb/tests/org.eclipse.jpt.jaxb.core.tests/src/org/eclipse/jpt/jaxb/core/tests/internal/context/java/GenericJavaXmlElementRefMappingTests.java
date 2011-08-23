@@ -71,21 +71,21 @@ public class GenericJavaXmlElementRefMappingTests
 		XmlElementRef xmlElementRef = xmlElementRefMapping.getXmlElementRef();
 		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
-		assertNull(xmlElementRef.getSchemaElementRef().getSpecifiedName());
-		assertEquals("id", xmlElementRef.getSchemaElementRef().getDefaultName());
-		assertEquals("id", xmlElementRef.getSchemaElementRef().getName());
+		assertNull(xmlElementRef.getQName().getSpecifiedName());
+		assertEquals("id", xmlElementRef.getQName().getDefaultName());
+		assertEquals("id", xmlElementRef.getQName().getName());
 
-		xmlElementRef.getSchemaElementRef().setSpecifiedName("foo");
+		xmlElementRef.getQName().setSpecifiedName("foo");
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(XmlElementRefAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlElementRefAnnotation.getName());
-		assertEquals("foo", xmlElementRef.getSchemaElementRef().getSpecifiedName());
-		assertEquals("id", xmlElementRef.getSchemaElementRef().getDefaultName());
-		assertEquals("foo", xmlElementRef.getSchemaElementRef().getName());
+		assertEquals("foo", xmlElementRef.getQName().getSpecifiedName());
+		assertEquals("id", xmlElementRef.getQName().getDefaultName());
+		assertEquals("foo", xmlElementRef.getQName().getName());
 
-		xmlElementRef.getSchemaElementRef().setSpecifiedName(null);
+		xmlElementRef.getQName().setSpecifiedName(null);
 		xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(XmlElementRefAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementRefAnnotation.getName());
-		assertNull(xmlElementRef.getSchemaElementRef().getSpecifiedName());
+		assertNull(xmlElementRef.getQName().getSpecifiedName());
 	}
 
 	public void testUpdateName() throws Exception {
@@ -96,7 +96,7 @@ public class GenericJavaXmlElementRefMappingTests
 		XmlElementRef xmlElementRef = xmlElementRefMapping.getXmlElementRef();
 		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementRef.getSchemaElementRef().getSpecifiedName());
+		assertNull(xmlElementRef.getQName().getSpecifiedName());
 
 
 		//add a Name member value pair
@@ -106,7 +106,7 @@ public class GenericJavaXmlElementRefMappingTests
 				GenericJavaXmlElementRefMappingTests.this.addXmlElementRefMemberValuePair(declaration, JAXB.XML_ELEMENT_REF__NAME, "foo");
 			}
 		});
-		assertEquals("foo", xmlElementRef.getSchemaElementRef().getName());
+		assertEquals("foo", xmlElementRef.getQName().getName());
 
 		//remove the Name member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -115,7 +115,7 @@ public class GenericJavaXmlElementRefMappingTests
 				GenericJavaXmlElementRefMappingTests.this.values(xmlElementRefAnnotation).remove(0);
 			}
 		});
-		assertNull(xmlElementRef.getSchemaElementRef().getSpecifiedName());
+		assertNull(xmlElementRef.getQName().getSpecifiedName());
 	}
 
 	public void testModifyNamespace() throws Exception {
@@ -126,17 +126,17 @@ public class GenericJavaXmlElementRefMappingTests
 		XmlElementRef xmlElementRef = xmlElementRefMapping.getXmlElementRef();
 		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementRef.getSchemaElementRef().getSpecifiedNamespace());
+		assertNull(xmlElementRef.getQName().getSpecifiedNamespace());
 
-		xmlElementRef.getSchemaElementRef().setSpecifiedNamespace("foo");
+		xmlElementRef.getQName().setSpecifiedNamespace("foo");
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(XmlElementRefAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlElementRefAnnotation.getNamespace());
-		assertEquals("foo", xmlElementRef.getSchemaElementRef().getNamespace());
+		assertEquals("foo", xmlElementRef.getQName().getNamespace());
 
-		xmlElementRef.getSchemaElementRef().setSpecifiedNamespace(null);
+		xmlElementRef.getQName().setSpecifiedNamespace(null);
 		xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(XmlElementRefAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementRefAnnotation.getNamespace());
-		assertNull(xmlElementRef.getSchemaElementRef().getSpecifiedNamespace());
+		assertNull(xmlElementRef.getQName().getSpecifiedNamespace());
 	}
 
 	public void testUpdateNamespace() throws Exception {
@@ -147,7 +147,7 @@ public class GenericJavaXmlElementRefMappingTests
 		XmlElementRef xmlElementRef = xmlElementRefMapping.getXmlElementRef();
 		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		assertNull(xmlElementRef.getSchemaElementRef().getSpecifiedNamespace());
+		assertNull(xmlElementRef.getQName().getSpecifiedNamespace());
 
 
 		//add a namespace member value pair
@@ -157,7 +157,7 @@ public class GenericJavaXmlElementRefMappingTests
 				GenericJavaXmlElementRefMappingTests.this.addXmlElementRefMemberValuePair(declaration, JAXB.XML_ELEMENT_REF__NAMESPACE, "foo");
 			}
 		});
-		assertEquals("foo", xmlElementRef.getSchemaElementRef().getNamespace());
+		assertEquals("foo", xmlElementRef.getQName().getNamespace());
 
 		//remove the namespace member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -166,7 +166,7 @@ public class GenericJavaXmlElementRefMappingTests
 				GenericJavaXmlElementRefMappingTests.this.values(xmlElementRefAnnotation).remove(0);
 			}
 		});
-		assertNull(xmlElementRef.getSchemaElementRef().getSpecifiedNamespace());
+		assertNull(xmlElementRef.getQName().getSpecifiedNamespace());
 	}
 
 	public void testModifyRequired() throws Exception {

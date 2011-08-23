@@ -47,18 +47,18 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		assertNull(contextXmlSchemaType.getSchemaTypeRef().getName());
+		assertNull(contextXmlSchemaType.getQName().getName());
 		
-		contextXmlSchemaType.getSchemaTypeRef().setSpecifiedName("foo");
+		contextXmlSchemaType.getQName().setSpecifiedName("foo");
 		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", schemaTypeAnnotation.getName());
-		assertEquals("foo", contextXmlSchemaType.getSchemaTypeRef().getName());
+		assertEquals("foo", contextXmlSchemaType.getQName().getName());
 		
 		 //verify the xml schema type annotation is not removed when the name is set to null
-		contextXmlSchemaType.getSchemaTypeRef().setSpecifiedName(null);
+		contextXmlSchemaType.getQName().setSpecifiedName(null);
 		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertNull(schemaTypeAnnotation.getName());
-		assertNull(contextXmlSchemaType.getSchemaTypeRef().getName());
+		assertNull(contextXmlSchemaType.getQName().getName());
 	}
 	
 	public void testUpdateName() throws Exception {
@@ -67,7 +67,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		assertNull(contextXmlSchemaType.getSchemaTypeRef().getName());
+		assertNull(contextXmlSchemaType.getQName().getName());
 		
 		//add a name member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
@@ -76,7 +76,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 				GenericJavaXmlSchemaTypeTests.this.addXmlSchemaTypeMemberValuePair(declaration, JAXB.XML_SCHEMA_TYPE__NAME, "foo");
 			}
 		});
-		assertEquals("foo", contextXmlSchemaType.getSchemaTypeRef().getName());
+		assertEquals("foo", contextXmlSchemaType.getQName().getName());
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -92,22 +92,22 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
-		assertNull(contextXmlSchemaType.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getSchemaTypeRef().getDefaultNamespace());
-		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getSchemaTypeRef().getNamespace());
+		assertNull(contextXmlSchemaType.getQName().getSpecifiedNamespace());
+		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getDefaultNamespace());
+		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
 		
-		contextXmlSchemaType.getSchemaTypeRef().setSpecifiedNamespace("foo");
+		contextXmlSchemaType.getQName().setSpecifiedNamespace("foo");
 		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", schemaTypeAnnotation.getNamespace());
-		assertEquals("foo", contextXmlSchemaType.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals("foo", contextXmlSchemaType.getSchemaTypeRef().getNamespace());
+		assertEquals("foo", contextXmlSchemaType.getQName().getSpecifiedNamespace());
+		assertEquals("foo", contextXmlSchemaType.getQName().getNamespace());
 		
 		 //verify the xml schema type annotation is not removed when the namespace is set to null
-		contextXmlSchemaType.getSchemaTypeRef().setSpecifiedNamespace(null);
+		contextXmlSchemaType.getQName().setSpecifiedNamespace(null);
 		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertNull(schemaTypeAnnotation.getNamespace());
-		assertNull(contextXmlSchemaType.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getSchemaTypeRef().getNamespace());
+		assertNull(contextXmlSchemaType.getQName().getSpecifiedNamespace());
+		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
 	}
 	
 	public void testUpdateNamespace() throws Exception {
@@ -116,9 +116,9 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		assertNull(contextXmlSchemaType.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getSchemaTypeRef().getDefaultNamespace());
-		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getSchemaTypeRef().getNamespace());
+		assertNull(contextXmlSchemaType.getQName().getSpecifiedNamespace());
+		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getDefaultNamespace());
+		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
@@ -127,8 +127,8 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 				GenericJavaXmlSchemaTypeTests.this.addXmlSchemaTypeMemberValuePair(declaration, JAXB.XML_SCHEMA_TYPE__NAMESPACE, "foo");
 			}
 		});
-		assertEquals("foo", contextXmlSchemaType.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals("foo", contextXmlSchemaType.getSchemaTypeRef().getNamespace());
+		assertEquals("foo", contextXmlSchemaType.getQName().getSpecifiedNamespace());
+		assertEquals("foo", contextXmlSchemaType.getQName().getNamespace());
 		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {

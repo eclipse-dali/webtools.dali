@@ -32,10 +32,10 @@ public interface XmlSchemaType
 	
 	XmlSchemaTypeAnnotation getXmlSchemaTypeAnnotation();
 	
-	JaxbSchemaComponentRef getSchemaTypeRef();
+	JaxbQName getQName();
 	
 	
-	/**************** type *****************/
+	// ***** type *****
 	
 	/**
 	 * Corresponds to the XmlSchemaType annotation 'type' element

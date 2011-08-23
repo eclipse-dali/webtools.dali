@@ -25,9 +25,9 @@ package org.eclipse.jpt.jaxb.core.context;
 public interface XmlAttributeMapping
 		extends JaxbBasicMapping {	
 	
-	// ***** schema component ref *****
+	// ***** qname *****
 	
-	JaxbSchemaComponentRef getSchemaComponentRef();
+	JaxbQName getQName();
 	
 	
 	// ***** required *****

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @version 3.?
  * @since 3.? 
  */
-public interface JaxbSchemaComponentRef
+public interface JaxbQName
 		extends JavaContextNode {
 	
 	// ***** namespace *****

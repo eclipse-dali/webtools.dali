@@ -107,8 +107,8 @@ public class GenericJavaXmlElementsMappingTests
 		
 		assertFalse(CollectionTools.isEmpty(mapping.getXmlElements()));
 		assertEquals(2, mapping.getXmlElementsSize());
-		assertEquals("foo", CollectionTools.get(xmlElements, 0).getSchemaElementRef().getName());
-		assertEquals("bar", CollectionTools.get(xmlElements, 1).getSchemaElementRef().getName());
+		assertEquals("foo", CollectionTools.get(xmlElements, 0).getQName().getName());
+		assertEquals("bar", CollectionTools.get(xmlElements, 1).getQName().getName());
 		
 		// switch XmlElement annotations
 		annotatedElement.edit(
@@ -123,8 +123,8 @@ public class GenericJavaXmlElementsMappingTests
 		
 		assertFalse(CollectionTools.isEmpty(mapping.getXmlElements()));
 		assertEquals(2, mapping.getXmlElementsSize());
-		assertEquals("bar", CollectionTools.get(xmlElements, 0).getSchemaElementRef().getName());
-		assertEquals("foo", CollectionTools.get(xmlElements, 1).getSchemaElementRef().getName());
+		assertEquals("bar", CollectionTools.get(xmlElements, 0).getQName().getName());
+		assertEquals("foo", CollectionTools.get(xmlElements, 1).getQName().getName());
 		
 		// remove XmlElement annotations
 		annotatedElement.edit(
@@ -154,9 +154,9 @@ public class GenericJavaXmlElementsMappingTests
 		assertEquals(0, xmlElementsAnnotation.getXmlElementsSize());
 		assertEquals(0, mapping.getXmlElementsSize());
 		
-		mapping.addXmlElement(0).getSchemaElementRef().setSpecifiedName("foo");
-		mapping.addXmlElement(1).getSchemaElementRef().setSpecifiedName("baz");
-		mapping.addXmlElement(1).getSchemaElementRef().setSpecifiedName("bar");
+		mapping.addXmlElement(0).getQName().setSpecifiedName("foo");
+		mapping.addXmlElement(1).getQName().setSpecifiedName("baz");
+		mapping.addXmlElement(1).getQName().setSpecifiedName("bar");
 		
 		xmlElementAnnotations = xmlElementsAnnotation.getXmlElements();
 		

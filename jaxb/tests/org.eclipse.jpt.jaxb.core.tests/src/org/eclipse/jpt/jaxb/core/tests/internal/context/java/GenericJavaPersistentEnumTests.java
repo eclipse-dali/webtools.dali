@@ -167,30 +167,30 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 		String defaultXmlTypeName = Introspector.decapitalize(TYPE_NAME);
 		
-		assertNull(contextEnum.getSchemaTypeRef().getSpecifiedName());
-		assertEquals(defaultXmlTypeName, contextEnum.getSchemaTypeRef().getDefaultName());
-		assertEquals(defaultXmlTypeName, contextEnum.getSchemaTypeRef().getName());
+		assertNull(contextEnum.getQName().getSpecifiedName());
+		assertEquals(defaultXmlTypeName, contextEnum.getQName().getDefaultName());
+		assertEquals(defaultXmlTypeName, contextEnum.getQName().getName());
 		
-		contextEnum.getSchemaTypeRef().setSpecifiedName("foo");
+		contextEnum.getQName().setSpecifiedName("foo");
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlTypeAnnotation.getName());
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getSpecifiedName());
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getName());
+		assertEquals("foo", contextEnum.getQName().getSpecifiedName());
+		assertEquals("foo", contextEnum.getQName().getName());
 		
-		contextEnum.getSchemaTypeRef().setSpecifiedName(null);
+		contextEnum.getQName().setSpecifiedName(null);
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		assertNull(xmlTypeAnnotation.getName());
-		assertNull(contextEnum.getSchemaTypeRef().getSpecifiedName());
-		assertEquals(defaultXmlTypeName, contextEnum.getSchemaTypeRef().getName());
+		assertNull(contextEnum.getQName().getSpecifiedName());
+		assertEquals(defaultXmlTypeName, contextEnum.getQName().getName());
 		
 		resourceEnum.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		
 		//set name again, this time starting with no XmlType annotation
-		contextEnum.getSchemaTypeRef().setSpecifiedName("foo");
+		contextEnum.getQName().setSpecifiedName("foo");
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlTypeAnnotation.getName());
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getSpecifiedName());
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getName());
+		assertEquals("foo", contextEnum.getQName().getSpecifiedName());
+		assertEquals("foo", contextEnum.getQName().getName());
 	}
 	
 	public void testUpdateSchemaTypeName() throws Exception {
@@ -200,9 +200,9 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 		String defaultXmlTypeName = Introspector.decapitalize(TYPE_NAME);
 		
-		assertNull(contextEnum.getSchemaTypeRef().getSpecifiedName());
-		assertEquals(defaultXmlTypeName, contextEnum.getSchemaTypeRef().getDefaultName());
-		assertEquals(defaultXmlTypeName, contextEnum.getSchemaTypeRef().getName());
+		assertNull(contextEnum.getQName().getSpecifiedName());
+		assertEquals(defaultXmlTypeName, contextEnum.getQName().getDefaultName());
+		assertEquals(defaultXmlTypeName, contextEnum.getQName().getName());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceEnum);
@@ -212,8 +212,8 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 				GenericJavaPersistentEnumTests.this.addXmlTypeMemberValuePair(declaration, JAXB.XML_TYPE__NAME, "foo");
 			}
 		});
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getSpecifiedName());
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getName());
+		assertEquals("foo", contextEnum.getQName().getSpecifiedName());
+		assertEquals("foo", contextEnum.getQName().getName());
 		
 		//remove the namespace member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -222,8 +222,8 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 				GenericJavaPersistentEnumTests.this.values(xmlTypeAnnotation).remove(0);
 			}
 		});
-		assertNull(contextEnum.getSchemaTypeRef().getSpecifiedName());
-		assertEquals(defaultXmlTypeName, contextEnum.getSchemaTypeRef().getName());
+		assertNull(contextEnum.getQName().getSpecifiedName());
+		assertEquals(defaultXmlTypeName, contextEnum.getQName().getName());
 	}
 
 	public void testModifyNamespace() throws Exception {
@@ -232,30 +232,30 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 		
-		assertNull(contextEnum.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals("", contextEnum.getSchemaTypeRef().getDefaultNamespace());
-		assertEquals("", contextEnum.getSchemaTypeRef().getNamespace());
+		assertNull(contextEnum.getQName().getSpecifiedNamespace());
+		assertEquals("", contextEnum.getQName().getDefaultNamespace());
+		assertEquals("", contextEnum.getQName().getNamespace());
 		
-		contextEnum.getSchemaTypeRef().setSpecifiedNamespace("foo");
+		contextEnum.getQName().setSpecifiedNamespace("foo");
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlTypeAnnotation.getNamespace());
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getNamespace());
+		assertEquals("foo", contextEnum.getQName().getSpecifiedNamespace());
+		assertEquals("foo", contextEnum.getQName().getNamespace());
 		
-		contextEnum.getSchemaTypeRef().setSpecifiedNamespace(null);
+		contextEnum.getQName().setSpecifiedNamespace(null);
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		assertNull(xmlTypeAnnotation.getNamespace());
-		assertNull(contextEnum.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals("", contextEnum.getSchemaTypeRef().getNamespace());
+		assertNull(contextEnum.getQName().getSpecifiedNamespace());
+		assertEquals("", contextEnum.getQName().getNamespace());
 		
 		resourceEnum.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		
 		//set namespace again, this time starting with no XmlType annotation
-		contextEnum.getSchemaTypeRef().setSpecifiedNamespace("foo");
+		contextEnum.getQName().setSpecifiedNamespace("foo");
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlTypeAnnotation.getNamespace());
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getNamespace());
+		assertEquals("foo", contextEnum.getQName().getSpecifiedNamespace());
+		assertEquals("foo", contextEnum.getQName().getNamespace());
 	}
 	
 	public void testUpdateNamespace() throws Exception {
@@ -264,9 +264,9 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 		
-		assertNull(contextEnum.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals("", contextEnum.getSchemaTypeRef().getDefaultNamespace());
-		assertEquals("", contextEnum.getSchemaTypeRef().getNamespace());
+		assertNull(contextEnum.getQName().getSpecifiedNamespace());
+		assertEquals("", contextEnum.getQName().getDefaultNamespace());
+		assertEquals("", contextEnum.getQName().getNamespace());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceEnum);
@@ -276,8 +276,8 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 				GenericJavaPersistentEnumTests.this.addXmlTypeMemberValuePair(declaration, JAXB.XML_TYPE__NAMESPACE, "foo");
 			}
 		});
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals("foo", contextEnum.getSchemaTypeRef().getNamespace());
+		assertEquals("foo", contextEnum.getQName().getSpecifiedNamespace());
+		assertEquals("foo", contextEnum.getQName().getNamespace());
 		
 		//remove the namespace member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -286,8 +286,8 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 				GenericJavaPersistentEnumTests.this.values(xmlTypeAnnotation).remove(0);
 			}
 		});
-		assertNull(contextEnum.getSchemaTypeRef().getSpecifiedNamespace());
-		assertEquals("", contextEnum.getSchemaTypeRef().getNamespace());
+		assertNull(contextEnum.getQName().getSpecifiedNamespace());
+		assertEquals("", contextEnum.getQName().getNamespace());
 	}
 
 	public void testGetPropOrder() throws Exception {
@@ -573,7 +573,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		contextEnum.setRootElement("foo");
 		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceEnum.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlRootElementAnnotation.getName());
-		assertEquals("foo", contextEnum.getRootElement().getSchemaElementRef().getName());
+		assertEquals("foo", contextEnum.getRootElement().getQName().getName());
 		assertTrue(contextEnum.isRootElement());
 
 		contextEnum.setRootElement(null);
@@ -601,7 +601,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 				GenericJavaPersistentEnumTests.this.addMemberValuePair(annotation, JAXB.XML_ROOT_ELEMENT__NAME, "foo");
 			}
 		});
-		assertEquals("foo", contextEnum.getRootElement().getSchemaElementRef().getName());
+		assertEquals("foo", contextEnum.getRootElement().getQName().getName());
 		assertTrue(contextEnum.isRootElement());
 
 		//remove the XmlRootElement annotation

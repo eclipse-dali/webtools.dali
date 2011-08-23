@@ -29,5 +29,5 @@ public interface XmlRootElement
 	
 	JaxbPersistentType getPersistentType();
 	
-	JaxbSchemaComponentRef getSchemaElementRef();
+	JaxbQName getQName();
 }

@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlSchemaTypeAnnotation
-		extends SchemaComponentRefAnnotation, NestableAnnotation {
+		extends QNameAnnotation, NestableAnnotation {
 	
 	String ANNOTATION_NAME = JAXB.XML_SCHEMA_TYPE;
 	/**

@@ -23,13 +23,13 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
-import org.eclipse.jpt.jaxb.core.context.JaxbSchemaComponentRef;
+import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
-import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -41,7 +41,7 @@ public abstract class AbstractJavaPersistentType
 		extends AbstractJavaType
 		implements JaxbPersistentType {
 	
-	protected final JaxbSchemaComponentRef schemaTypeRef;
+	protected final JaxbQName qName;
 	
 	protected String factoryClass;
 	
@@ -54,7 +54,7 @@ public abstract class AbstractJavaPersistentType
 	
 	public AbstractJavaPersistentType(JaxbContextRoot parent, JavaResourceAbstractType resourceType) {
 		super(parent, resourceType);
-		this.schemaTypeRef = buildSchemaTypeRef(); 
+		this.qName = buildQName(); 
 		this.factoryClass = this.getResourceFactoryClass();
 		this.factoryMethod = this.getResourceFactoryMethod();
 		this.propOrderContainer = new PropOrderContainer();
@@ -62,8 +62,8 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	
-	protected JaxbSchemaComponentRef buildSchemaTypeRef() {
-		return new PersistentTypeSchemaTypeRef(this);
+	protected JaxbQName buildQName() {
+		return new XmlTypeQName(this);
 	}
 	
 	@Override
@@ -82,7 +82,7 @@ public abstract class AbstractJavaPersistentType
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.schemaTypeRef.synchronizeWithResourceModel();
+		this.qName.synchronizeWithResourceModel();
 		this.setFactoryClass_(getResourceFactoryClass());
 		this.setFactoryMethod_(getResourceFactoryMethod());
 		this.syncPropOrder();
@@ -92,7 +92,7 @@ public abstract class AbstractJavaPersistentType
 	@Override
 	public void update() {
 		super.update();
-		this.schemaTypeRef.update();
+		this.qName.update();
 	}
 	
 	
@@ -105,8 +105,8 @@ public abstract class AbstractJavaPersistentType
 	
 	// ***** schema type ref *****
 	
-	public JaxbSchemaComponentRef getSchemaTypeRef() {
-		return this.schemaTypeRef;
+	public JaxbQName getQName() {
+		return this.qName;
 	}
 	
 	
@@ -263,7 +263,7 @@ public abstract class AbstractJavaPersistentType
 			return result;
 		}
 		
-		result = this.schemaTypeRef.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.qName.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
@@ -291,7 +291,7 @@ public abstract class AbstractJavaPersistentType
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		this.schemaTypeRef.validate(messages, reporter, astRoot);
+		this.qName.validate(messages, reporter, astRoot);
 		
 		if (this.rootElement != null) {
 			this.rootElement.validate(messages, reporter, astRoot);
@@ -303,7 +303,7 @@ public abstract class AbstractJavaPersistentType
 	
 	public XsdTypeDefinition getXsdTypeDefinition() {
 		XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
-		return (xsdSchema == null) ? null : xsdSchema.getTypeDefinition(this.schemaTypeRef.getNamespace(), this.schemaTypeRef.getName());
+		return (xsdSchema == null) ? null : xsdSchema.getTypeDefinition(this.qName.getNamespace(), this.qName.getName());
 	}
 	
 	@Override
@@ -313,16 +313,16 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	
-	protected class PersistentTypeSchemaTypeRef
-			extends AbstractJavaSchemaComponentRef {
+	protected class XmlTypeQName
+			extends AbstractJavaQName {
 		
-		protected PersistentTypeSchemaTypeRef(JavaContextNode parent) {
+		protected XmlTypeQName(JavaContextNode parent) {
 			super(parent);
 		}
 		
 		
 		@Override
-		protected SchemaComponentRefAnnotation getAnnotation(boolean createIfNull) {
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
 			// never null
 			return AbstractJavaPersistentType.this.getXmlTypeAnnotation();
 		}
@@ -356,7 +356,7 @@ public abstract class AbstractJavaPersistentType
 		}
 		
 		@Override
-		public String getSchemaComponentTypeDescription() {
+		public String getReferencedComponentTypeDescription() {
 			return JptJaxbCoreMessages.XML_TYPE_DESC;
 		}
 		
@@ -378,7 +378,7 @@ public abstract class AbstractJavaPersistentType
 		}
 		
 		@Override
-		protected void validateSchemaComponentRef(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 			// if name is not absent (""), type must be from schema associated with this package
 			String name = getName();
 			String namespace = getNamespace();

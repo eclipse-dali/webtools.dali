@@ -17,13 +17,13 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
-import org.eclipse.jpt.jaxb.core.context.JaxbSchemaComponentRef;
+import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
-import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -37,18 +37,18 @@ public class GenericJavaXmlRootElement
 	
 	protected final XmlRootElementAnnotation annotation;
 	
-	protected JaxbSchemaComponentRef schemaElementRef;
+	protected JaxbQName qName;
 	
 	
 	public GenericJavaXmlRootElement(JaxbPersistentType parent, XmlRootElementAnnotation resourceXmlRootElementAnnotation) {
 		super(parent);
 		this.annotation = resourceXmlRootElementAnnotation;
-		this.schemaElementRef = buildSchemaElementRef();
+		this.qName = buildQName();
 	}
 	
 	
-	protected JaxbSchemaComponentRef buildSchemaElementRef() {
-		return new XmlRootElementSchemaElementRef(this);
+	protected JaxbQName buildQName() {
+		return new XmlRootElementQName(this);
 	}
 	
 	public JaxbPersistentType getPersistentType() {
@@ -61,20 +61,20 @@ public class GenericJavaXmlRootElement
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.schemaElementRef.synchronizeWithResourceModel();
+		this.qName.synchronizeWithResourceModel();
 	}
 	
 	@Override
 	public void update() {
 		super.update();
-		this.schemaElementRef.update();
+		this.qName.update();
 	}
 	
 	
 	// ***** schema element ref *****
 	
-	public JaxbSchemaComponentRef getSchemaElementRef() {
-		return this.schemaElementRef;
+	public JaxbQName getQName() {
+		return this.qName;
 	}
 		
 	
@@ -87,7 +87,7 @@ public class GenericJavaXmlRootElement
 			return result;
 		}
 		
-		result = this.schemaElementRef.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.qName.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
@@ -107,7 +107,7 @@ public class GenericJavaXmlRootElement
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		this.schemaElementRef.validate(messages, reporter, astRoot);
+		this.qName.validate(messages, reporter, astRoot);
 	}
 	
 	
@@ -116,20 +116,20 @@ public class GenericJavaXmlRootElement
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
-		sb.append(this.schemaElementRef.toString());
+		sb.append(this.qName.toString());
 	}
 	
 	
-	protected class XmlRootElementSchemaElementRef
-			extends AbstractJavaSchemaComponentRef {
+	protected class XmlRootElementQName
+			extends AbstractJavaQName {
 		
-		protected XmlRootElementSchemaElementRef(JavaContextNode parent) {
+		protected XmlRootElementQName(JavaContextNode parent) {
 			super(parent);
 		}
 		
 		
 		@Override
-		protected SchemaComponentRefAnnotation getAnnotation(boolean createIfNull) {
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
 			// never null
 			return GenericJavaXmlRootElement.this.annotation;
 		}
@@ -163,12 +163,12 @@ public class GenericJavaXmlRootElement
 		}
 		
 		@Override
-		public String getSchemaComponentTypeDescription() {
+		public String getReferencedComponentTypeDescription() {
 			return JptJaxbCoreMessages.XML_ELEMENT_DESC;
 		}
 		
 		@Override
-		protected void validateSchemaComponentRef(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 			String name = getName();
 			String namespace = getNamespace();
 			XsdSchema schema = GenericJavaXmlRootElement.this.getPersistentType().getJaxbPackage().getXsdSchema();

@@ -215,8 +215,8 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
 		ListIterator<XmlSchemaType> xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
 		assertTrue(xmlSchemaTypesIterator.hasNext());
-		assertEquals("bar", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("foo", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getQName().getName());
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 	}
 	
@@ -256,9 +256,9 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 		
-		contextPackageInfo.addXmlSchemaType(0).getSchemaTypeRef().setSpecifiedName("bar");
-		contextPackageInfo.addXmlSchemaType(0).getSchemaTypeRef().setSpecifiedName("foo");
-		contextPackageInfo.addXmlSchemaType(0).getSchemaTypeRef().setSpecifiedName("baz");
+		contextPackageInfo.addXmlSchemaType(0).getQName().setSpecifiedName("bar");
+		contextPackageInfo.addXmlSchemaType(0).getQName().setSpecifiedName("foo");
+		contextPackageInfo.addXmlSchemaType(0).getQName().setSpecifiedName("baz");
 
 		Iterator<XmlSchemaTypeAnnotation> xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
 
@@ -279,9 +279,9 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		contextPackageInfo.addXmlSchemaType(0).getSchemaTypeRef().setSpecifiedName("bar");
-		contextPackageInfo.addXmlSchemaType(1).getSchemaTypeRef().setSpecifiedName("foo");
-		contextPackageInfo.addXmlSchemaType(0).getSchemaTypeRef().setSpecifiedName("baz");
+		contextPackageInfo.addXmlSchemaType(0).getQName().setSpecifiedName("bar");
+		contextPackageInfo.addXmlSchemaType(1).getQName().setSpecifiedName("foo");
+		contextPackageInfo.addXmlSchemaType(0).getQName().setSpecifiedName("baz");
 
 		Iterator<XmlSchemaTypeAnnotation> xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
 
@@ -296,9 +296,9 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		contextPackageInfo.addXmlSchemaType(0).getSchemaTypeRef().setSpecifiedName("bar");
-		contextPackageInfo.addXmlSchemaType(1).getSchemaTypeRef().setSpecifiedName("foo");
-		contextPackageInfo.addXmlSchemaType(2).getSchemaTypeRef().setSpecifiedName("baz");
+		contextPackageInfo.addXmlSchemaType(0).getQName().setSpecifiedName("bar");
+		contextPackageInfo.addXmlSchemaType(1).getQName().setSpecifiedName("foo");
+		contextPackageInfo.addXmlSchemaType(2).getQName().setSpecifiedName("baz");
 
 		Iterator<XmlSchemaTypeAnnotation> xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
 		assertEquals("bar", xmlSchemaTypes.next().getName());		
@@ -328,9 +328,9 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		contextPackageInfo.addXmlSchemaType(0).getSchemaTypeRef().setSpecifiedName("bar");
-		contextPackageInfo.addXmlSchemaType(1).getSchemaTypeRef().setSpecifiedName("foo");
-		contextPackageInfo.addXmlSchemaType(2).getSchemaTypeRef().setSpecifiedName("baz");
+		contextPackageInfo.addXmlSchemaType(0).getQName().setSpecifiedName("bar");
+		contextPackageInfo.addXmlSchemaType(1).getQName().setSpecifiedName("foo");
+		contextPackageInfo.addXmlSchemaType(2).getQName().setSpecifiedName("baz");
 
 		Iterator<XmlSchemaTypeAnnotation> xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
 		assertEquals("bar", xmlSchemaTypes.next().getName());		
@@ -374,9 +374,9 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
 		ListIterator<XmlSchemaType> xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
 		assertTrue(xmlSchemaTypesIterator.hasNext());
-		assertEquals("bar", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("foo", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("baz", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getQName().getName());
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 
 
@@ -388,9 +388,9 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
 		assertTrue(xmlSchemaTypesIterator.hasNext());
-		assertEquals("foo", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("baz", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("bar", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getQName().getName());
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 
 
@@ -402,9 +402,9 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
 		assertTrue(xmlSchemaTypesIterator.hasNext());
-		assertEquals("baz", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("foo", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("bar", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getQName().getName());
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 
 
@@ -416,8 +416,8 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
 		assertTrue(xmlSchemaTypesIterator.hasNext());
-		assertEquals("baz", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("bar", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getQName().getName());
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 
 
@@ -429,7 +429,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
 		assertTrue(xmlSchemaTypesIterator.hasNext());
-		assertEquals("baz", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getQName().getName());
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 
 
@@ -462,7 +462,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
 		ListIterator<XmlSchemaType> xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
 		assertTrue(xmlSchemaTypesIterator.hasNext());
-		assertEquals("bar", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getQName().getName());
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 
 
@@ -476,8 +476,8 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
 		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
 		assertTrue(xmlSchemaTypesIterator.hasNext());
-		assertEquals("bar", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("foo", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getQName().getName());
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 
 		//add 1 XmlSchemaType when a container annotations exists
@@ -490,9 +490,9 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
 		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
 		assertTrue(xmlSchemaTypesIterator.hasNext());
-		assertEquals("bar", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("foo", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("baz", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getQName().getName());
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 
 		//add 1 XmlSchemaType to beginning of list when a container annotations exists
@@ -505,10 +505,10 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
 		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
 		assertTrue(xmlSchemaTypesIterator.hasNext());
-		assertEquals("foobaz", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("bar", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("foo", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
-		assertEquals("baz", xmlSchemaTypesIterator.next().getSchemaTypeRef().getName());
+		assertEquals("foobaz", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getQName().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getQName().getName());
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 	}
 

@@ -28,9 +28,9 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 public interface XmlElementWrapper
 		extends JavaContextNode {
 
-	// ***** schema element ref *****
+	// ***** qname *****
 	
-	JaxbSchemaComponentRef getSchemaElementRef();
+	JaxbQName getQName();
 	
 	
 	// ***** nillable *****

@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlElementWrapperAnnotation
-		extends SchemaComponentRefAnnotation {
+		extends QNameAnnotation {
 	
 	String ANNOTATION_NAME = JAXB.XML_ELEMENT_WRAPPER;
 	

@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface XmlTypeAnnotation
-		extends SchemaComponentRefAnnotation {
+		extends QNameAnnotation {
 	
 	String ANNOTATION_NAME = JAXB.XML_TYPE;
 

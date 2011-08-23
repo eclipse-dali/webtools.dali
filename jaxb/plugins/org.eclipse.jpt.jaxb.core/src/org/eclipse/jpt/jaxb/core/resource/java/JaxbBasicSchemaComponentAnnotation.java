@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface JaxbBasicSchemaComponentAnnotation
-		extends SchemaComponentRefAnnotation {
+		extends QNameAnnotation {
 	
 	/**
 	 * Corresponds to the 'required' element of the XmlAttribute annotation.

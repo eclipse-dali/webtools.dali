@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @version 3.?
  * @since 3.?
  */
-public interface SchemaComponentRefAnnotation
+public interface QNameAnnotation
 		extends Annotation {
 	
 	/**

@@ -34,9 +34,9 @@ public interface XmlElement
 	XmlElementAnnotation getAnnotation(boolean createIfNull);
 	
 	
-	// ***** schema element ref *****
+	// ***** qname *****
 	
-	JaxbSchemaComponentRef getSchemaElementRef();
+	JaxbQName getQName();
 	
 	
 	// ***** nillable *****

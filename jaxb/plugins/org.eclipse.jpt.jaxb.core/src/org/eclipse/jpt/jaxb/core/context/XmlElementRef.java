@@ -34,9 +34,9 @@ public interface XmlElementRef
 	XmlElementRefAnnotation getAnnotation();
 	
 	
-	// ***** schema element ref *****
+	// ***** qname *****
 	
-	JaxbSchemaComponentRef getSchemaElementRef();
+	JaxbQName getQName();
 	
 	
 	// ***** required *****

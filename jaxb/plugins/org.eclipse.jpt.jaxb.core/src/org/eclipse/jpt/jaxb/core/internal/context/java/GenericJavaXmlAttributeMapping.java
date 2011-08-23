@@ -17,13 +17,13 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbSchemaComponentRef;
+import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableType;
-import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
@@ -34,28 +34,28 @@ public class GenericJavaXmlAttributeMapping
 		extends GenericJavaBasicMapping<XmlAttributeAnnotation>
 		implements XmlAttributeMapping {
 	
-	protected final JaxbSchemaComponentRef schemaComponentRef;
+	protected final JaxbQName qName;
 	
 	protected Boolean specifiedRequired;
 	
 	
 	public GenericJavaXmlAttributeMapping(JaxbPersistentAttribute parent) {
 		super(parent);
-		this.schemaComponentRef = buildSchemaComponentRef();
+		this.qName = buildQName();
 		this.specifiedRequired = buildSpecifiedRequired();
 	}
 	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.schemaComponentRef.synchronizeWithResourceModel();
+		this.qName.synchronizeWithResourceModel();
 		setSpecifiedRequired_(buildSpecifiedRequired());
 	}
 	
 	@Override
 	public void update() {
 		super.update();
-		this.schemaComponentRef.update();
+		this.qName.update();
 	}
 	
 	public String getKey() {
@@ -70,12 +70,12 @@ public class GenericJavaXmlAttributeMapping
 	
 	// ***** schema component ref *****
 	
-	public JaxbSchemaComponentRef getSchemaComponentRef() {
-		return this.schemaComponentRef;
+	public JaxbQName getQName() {
+		return this.qName;
 	}
 	
-	protected JaxbSchemaComponentRef buildSchemaComponentRef() {
-		return new XmlSchemaAttributeRef(this);
+	protected JaxbQName buildQName() {
+		return new XmlAttributeQName(this);
 	}
 	
 	
@@ -118,21 +118,21 @@ public class GenericJavaXmlAttributeMapping
 	}
 	
 	
-	protected class XmlSchemaAttributeRef
-			extends AbstractJavaSchemaComponentRef {
+	protected class XmlAttributeQName
+			extends AbstractJavaQName {
 		
-		protected XmlSchemaAttributeRef(JavaContextNode parent) {
+		protected XmlAttributeQName(JavaContextNode parent) {
 			super(parent);
 		}
 		
 		
 		@Override
-		public String getSchemaComponentTypeDescription() {
+		public String getReferencedComponentTypeDescription() {
 			return JptJaxbCoreMessages.XML_ATTRIBUTE_DESC;
 		}
 		
 		@Override
-		protected SchemaComponentRefAnnotation getAnnotation(boolean createIfNull) {
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
 			if (createIfNull) {
 				return GenericJavaXmlAttributeMapping.this.getOrCreateAnnotation();
 			}
@@ -155,7 +155,7 @@ public class GenericJavaXmlAttributeMapping
 		@Override
 		public String getDefaultNamespace() {
 			return (GenericJavaXmlAttributeMapping.this.getJaxbPackage().getAttributeFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlAttributeMapping.this.getPersistentClass().getSchemaTypeRef().getNamespace() : "";
+					GenericJavaXmlAttributeMapping.this.getPersistentClass().getQName().getNamespace() : "";
 		}
 		
 		@Override
@@ -165,7 +165,7 @@ public class GenericJavaXmlAttributeMapping
 		}
 		
 		@Override
-		protected void validateSchemaComponentRef(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 			XsdTypeDefinition type = getPersistentClass().getXsdTypeDefinition();
 			if (type != null) {
 				if (type.getAttribute(getNamespace(), getName()) == null) {

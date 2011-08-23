@@ -18,11 +18,11 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbSchemaComponentRef;
+import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
-import org.eclipse.jpt.jaxb.core.resource.java.SchemaComponentRefAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
@@ -35,7 +35,7 @@ public abstract class GenericJavaXmlSchemaType
 	
 	protected final XmlSchemaTypeAnnotation annotation;
 	
-	protected JaxbSchemaComponentRef schemaTypeRef;
+	protected JaxbQName qName;
 	
 	protected String type;
 	
@@ -43,17 +43,17 @@ public abstract class GenericJavaXmlSchemaType
 	protected GenericJavaXmlSchemaType(JaxbContextNode parent, XmlSchemaTypeAnnotation annotation) {
 		super(parent);
 		this.annotation = annotation;
-		this.schemaTypeRef = buildSchemaTypeRef();
+		this.qName = buildQName();
 		this.type = this.getResourceTypeString();
 	}
 	
 	
-	protected JaxbSchemaComponentRef buildSchemaTypeRef() {
-		return new XmlSchemaTypeRef(this);
+	protected JaxbQName buildQName() {
+		return new XmlSchemaTypeQName(this);
 	}
 	
-	public JaxbSchemaComponentRef getSchemaTypeRef() {
-		return this.schemaTypeRef;
+	public JaxbQName getQName() {
+		return this.qName;
 	}
 	
 	public XmlSchemaTypeAnnotation getXmlSchemaTypeAnnotation() {
@@ -68,14 +68,14 @@ public abstract class GenericJavaXmlSchemaType
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.schemaTypeRef.synchronizeWithResourceModel();
+		this.qName.synchronizeWithResourceModel();
 		this.setType_(this.getResourceTypeString());
 	}
 	
 	@Override
 	public void update() {
 		super.update();
-		this.schemaTypeRef.update();
+		this.qName.update();
 	}
 	
 	
@@ -110,7 +110,7 @@ public abstract class GenericJavaXmlSchemaType
 			return result;
 		}
 		
-		result = this.schemaTypeRef.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.qName.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
@@ -130,26 +130,26 @@ public abstract class GenericJavaXmlSchemaType
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		this.schemaTypeRef.validate(messages, reporter, astRoot);
+		this.qName.validate(messages, reporter, astRoot);
 	}
 	
 	
-	protected class XmlSchemaTypeRef
-			extends AbstractJavaSchemaComponentRef {
+	protected class XmlSchemaTypeQName
+			extends AbstractJavaQName {
 		
-		protected XmlSchemaTypeRef(JavaContextNode parent) {
+		protected XmlSchemaTypeQName(JavaContextNode parent) {
 			super(parent);
 		}
 		
 		
 		@Override
-		protected SchemaComponentRefAnnotation getAnnotation(boolean createIfNull) {
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
 			// never null
 			return GenericJavaXmlSchemaType.this.annotation;
 		}
 		
 		@Override
-		protected String getSchemaComponentTypeDescription() {
+		protected String getReferencedComponentTypeDescription() {
 			return JptJaxbCoreMessages.XML_TYPE_DESC;
 		}
 		
@@ -182,7 +182,7 @@ public abstract class GenericJavaXmlSchemaType
 		}
 		
 		@Override
-		protected void validateSchemaComponentRef(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 			String name = getName();
 			String namespace = getNamespace();
 			

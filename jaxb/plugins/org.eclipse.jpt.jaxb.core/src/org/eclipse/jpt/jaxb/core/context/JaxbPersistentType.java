@@ -28,9 +28,9 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 public interface JaxbPersistentType
 		extends JaxbType {
 	
-	// ***** schema type ref *****
+	// ***** qname *****
 	
-	JaxbSchemaComponentRef getSchemaTypeRef();
+	JaxbQName getQName();
 	
 	
 	// **************** factory class *****************/
