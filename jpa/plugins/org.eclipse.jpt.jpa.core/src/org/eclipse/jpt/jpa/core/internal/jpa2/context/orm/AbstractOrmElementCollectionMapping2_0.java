@@ -1196,8 +1196,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return;
 		}
 
-		IJavaProject javaProject = this.getJpaProject().getJavaProject();
-		if (JDTTools.findType(javaProject, targetClass) == null) {
+		if (! this.targetClassExists()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -1210,6 +1209,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return;
 		}
 
+		IJavaProject javaProject = this.getJpaProject().getJavaProject();
 		if ( ! JDTTools.typeIsBasic(javaProject, targetClass) && (this.getResolvedTargetEmbeddable() == null)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -1221,6 +1221,20 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 				)
 			);
 		}
+	}
+
+	protected boolean targetClassExists() {
+		IJavaProject javaProject = getJpaProject().getJavaProject();
+		boolean targetClassExists = JDTTools.findType(javaProject, this.getTargetClass()) != null;
+		if (targetClassExists) {
+			return true;
+		}
+		// ...then try to resolve by prepending the global package name
+		if (this.getEntityMappings().getPackage() != null) {
+			String fullyQualifiedIdClassName = this.getEntityMappings().getPackage() + '.' + this.getTargetClass();
+			targetClassExists = JDTTools.findType(javaProject, fullyQualifiedIdClassName) != null;
+		}
+		return targetClassExists;
 	}
 
 	protected TextRange getTargetClassTextRange() {
