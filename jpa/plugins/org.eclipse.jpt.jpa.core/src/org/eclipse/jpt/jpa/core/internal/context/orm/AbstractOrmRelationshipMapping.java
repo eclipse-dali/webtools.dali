@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
@@ -351,14 +352,26 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	}
 
 	protected void validateTargetEntity(List<IMessage> messages) {
-		if (this.getTargetEntity() == null) {
+		if (StringTools.stringIsEmpty(this.getTargetEntity())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED,
-					new String[] {this.name},
+					EMPTY_STRING_ARRAY,
 					this,
-					this.getValidationTextRange()
+					this.getTargetEntityTextRange()
+				)
+			);
+			return;
+		}
+		if ( ! this.targetEntityExists()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TARGET_ENTITY_NOT_EXIST,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getTargetEntityTextRange()
 				)
 			);
 			return;
@@ -368,13 +381,18 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-					new String[] {this.getTargetEntity(), this.name},
+					new String[] {this.getTargetEntity()},
 					this,
 					this.getTargetEntityTextRange()
 				)
 			);
 		}
 	}
+
+	protected boolean targetEntityExists() {
+		return getEntityMappings().resolveJdtType(this.getTargetEntity()) != null;
+	}
+
 
 	protected TextRange getTargetEntityTextRange() {
 		return this.getValidationTextRange(this.xmlAttributeMapping.getTargetEntityTextRange());

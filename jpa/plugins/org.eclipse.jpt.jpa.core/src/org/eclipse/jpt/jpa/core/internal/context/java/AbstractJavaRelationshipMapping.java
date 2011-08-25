@@ -10,7 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -325,27 +327,30 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 			);
 			return;
 		}
-		if (this.getResolvedTargetEntity() == null) {
-			if (this.getPersistentAttribute().isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
-						new String[] {this.getName(), this.getTargetEntity()},
-						this,
-						this.getValidationTextRange(astRoot)
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-						new String[] {this.getTargetEntity(), this.getName()},
-						this,
-						this.getTargetEntityTextRange(astRoot)
-					)
-				);
+		IJavaProject javaProject = this.getJpaProject().getJavaProject();
+		if (JDTTools.findType(javaProject, getFullyQualifiedTargetEntity()) != null) {
+			if (this.getResolvedTargetEntity() == null) {
+				if (this.getPersistentAttribute().isVirtual()) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
+							new String[] {this.getName(), this.getFullyQualifiedTargetEntity()},
+							this,
+							this.getValidationTextRange(astRoot)
+						)
+					);
+				} else {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
+							new String[] {this.getFullyQualifiedTargetEntity()},
+							this,
+							this.getTargetEntityTextRange(astRoot)
+						)
+					);
+				}
 			}
 		}
 	}
