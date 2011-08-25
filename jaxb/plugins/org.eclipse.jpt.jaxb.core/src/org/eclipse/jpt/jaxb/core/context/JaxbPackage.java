@@ -66,6 +66,12 @@ public interface JaxbPackage
 	boolean isEmpty();
 	
 	/**
+	 * Return the {@link JaxbRegistry} for this package if there is one.
+	 * Return *one* if there are more than one (which is an error case at any rate)
+	 */
+	JaxbRegistry getRegistry();
+	
+	/**
 	 * Return the {@link XsdSchema} associated with this package, if there is one, null otherwise
 	 */
 	XsdSchema getXsdSchema();

@@ -11,9 +11,11 @@ package org.eclipse.jpt.jaxb.core.internal.context;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
+import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -94,9 +96,16 @@ public class GenericPackage
 		return getFactory().buildJavaPackageInfo(this, resourcePackage);
 	}
 	
-	
 	public boolean isEmpty() {
-		return getPackageInfo() == null;
+		return getPackageInfo() == null && getRegistry() == null;
+	}
+	
+	public JaxbRegistry getRegistry() {
+		Iterable<JaxbRegistry> registries = getContextRoot().getRegistries(this);
+		if (CollectionTools.isEmpty(registries)) {
+			return null;
+		}
+		return CollectionTools.get(registries, 0);
 	}
 	
 	
