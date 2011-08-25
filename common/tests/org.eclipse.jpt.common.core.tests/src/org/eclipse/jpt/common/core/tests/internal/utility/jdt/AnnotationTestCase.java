@@ -219,6 +219,10 @@ public abstract class AnnotationTestCase
 		return this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, this.createSourceWriter(annotationWriter));
 	}
 	
+	protected ICompilationUnit createTestType(String typeName, AnnotationWriter annotationWriter) throws CoreException {
+		return this.javaProject.createCompilationUnit(PACKAGE_NAME, typeName + ".java", createSourceWriter(annotationWriter, typeName));
+	}
+	
 	protected ICompilationUnit createTestType(String packageName, String fileName, String typeName, AnnotationWriter annotationWriter) throws CoreException {
 		return this.javaProject.createCompilationUnit(packageName, fileName, this.createSourceWriter(annotationWriter, typeName));
 	}
