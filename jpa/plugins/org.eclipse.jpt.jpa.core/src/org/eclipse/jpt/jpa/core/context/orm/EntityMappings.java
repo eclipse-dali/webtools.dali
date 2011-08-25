@@ -165,6 +165,15 @@ public interface EntityMappings
 	 */
 	PersistentType resolvePersistentType(String className);
 
+	/**
+	 * Return the JDT IType resource type for the specified class name
+	 * found in the Java project. First look for one with the specified
+	 * name (since it might be fully qualified). If not found, prepend the
+	 * default package name and try again.
+	 * 
+	 * @see #getPackage()
+	 */
+	IType resolveJdtType(String className);
 
 
 	// ********** refactoring **********

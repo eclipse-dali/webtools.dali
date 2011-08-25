@@ -13,8 +13,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -476,6 +478,10 @@ public abstract class AbstractEntityMappings
 		return (JavaResourceAbstractType) this.resolveType(RESOURCE_TYPE_LOOKUP_ADAPTER, className);
 	}
 
+	public IType resolveJdtType(String className) {
+		return (IType) this.resolveType(JDT_TYPE_LOOKUP_ADAPTER, className);
+	}
+
 	protected Object resolveType(TypeLookupAdapter adapter, String className) {
 		if (className == null) {
 			return null;
@@ -512,6 +518,14 @@ public abstract class AbstractEntityMappings
 		new TypeLookupAdapter() {
 			public Object resolveType(EntityMappings entityMappings, String className) {
 				return entityMappings.getJpaProject().getJavaResourceType(className);
+			}
+		};
+
+	protected static final TypeLookupAdapter JDT_TYPE_LOOKUP_ADAPTER =
+		new TypeLookupAdapter() {
+			public Object resolveType(EntityMappings entityMappings, String className) {
+				IJavaProject javaProject = entityMappings.getJpaProject().getJavaProject();
+				return JDTTools.findType(javaProject, className);
 			}
 		};
 

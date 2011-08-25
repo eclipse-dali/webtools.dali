@@ -1450,45 +1450,46 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void validateTargetClass(List<IMessage> messages) {
-		String targetClass = this.getTargetClass();
-		if (StringTools.stringIsEmpty(targetClass)) {
+		if (StringTools.stringIsEmpty(this.getTargetClass())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
-					this.getValidationTextRange()
+					this.getTargetClassTextRange()
 				)
 			);
 			return;
 		}
-
-		IJavaProject javaProject = this.getJpaProject().getJavaProject();
-		if (JDTTools.findType(javaProject, targetClass) == null) {
+		if ( ! this.targetClassExists()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
-					new String[] {this.name},
+					EMPTY_STRING_ARRAY,
 					this,
 					this.getTargetClassTextRange()
 				)
 			);
 			return;
 		}
-
-		if ( ! JDTTools.typeIsBasic(javaProject, targetClass) && (this.getResolvedTargetEmbeddable() == null)) {
+		IJavaProject javaProject = this.getJpaProject().getJavaProject();
+		if ( ! JDTTools.typeIsBasic(javaProject, this.getTargetClass()) && (this.getResolvedTargetEmbeddable() == null)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-					new String[] {this.getTargetClass(), this.name},
+					new String[] {this.getTargetClass()},
 					this,
 					this.getTargetClassTextRange()
 				)
 			);
 		}
+	}
+
+	protected boolean targetClassExists() {
+		return getEntityMappings().resolveJdtType(this.getTargetClass()) != null;
 	}
 
 	protected TextRange getTargetClassTextRange() {
@@ -1503,17 +1504,39 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void validateMapKeyClass_(List<IMessage> messages) {
-		if (this.getMapKeyClass() == null) {
+		if (StringTools.stringIsEmpty(getMapKeyClass())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
+					JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
 					this.getValidationTextRange()
 				)
 			);
+			return;
 		}
+
+		if ( ! this.mapKeyClassExists()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getMapKeyClassTextRange()
+				)
+			);
+			return;
+		}
+	}
+
+	protected boolean mapKeyClassExists() {
+		return getEntityMappings().resolveJdtType(this.getMapKeyClass()) != null;
+	}
+
+	protected TextRange getMapKeyClassTextRange() {
+		return this.getValidationTextRange(this.xmlAttributeMapping.getMapKeyClassTextRange());
 	}
 
 	public void validateValue(List<IMessage> messages, IReporter reporter) {
