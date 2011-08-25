@@ -32,6 +32,7 @@ import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -303,7 +304,22 @@ public abstract class AbstractJavaPersistentType
 	
 	public XsdTypeDefinition getXsdTypeDefinition() {
 		XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
-		return (xsdSchema == null) ? null : xsdSchema.getTypeDefinition(this.qName.getNamespace(), this.qName.getName());
+		if (xsdSchema == null) {
+			return null;
+		}
+		
+		if (! StringTools.stringIsEmpty(this.qName.getName())) {
+			return xsdSchema.getTypeDefinition(this.qName.getNamespace(), this.qName.getName());
+		}
+		
+		if (this.rootElement != null) {
+			XsdElementDeclaration xsdElement = xsdSchema.getElementDeclaration(this.rootElement.getQName().getNamespace(), this.rootElement.getQName().getName());
+			if (xsdElement != null) {
+				return xsdElement.getType();
+			}
+		}
+		
+		return null;
 	}
 	
 	@Override
