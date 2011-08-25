@@ -11,23 +11,30 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
+import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
-import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
+import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
-import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -223,52 +230,41 @@ public class GenericJavaXmlElementRef
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		
-		// TODO 
-//		validateType(messages, reporter, astRoot);
-//		
-//		if (StringTools.stringIsEmpty(this.schemaElementRef.getName())) {
-//			messages.add(
-//					DefaultValidationMessages.buildMessage(
-//							IMessage.HIGH_SEVERITY,
-//							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_ELEMENT_NAME,
-//							this,
-//							this.schemaElementRef.getNameTextRange(astRoot)));
-//		}
+		this.qName.validate(messages, reporter, astRoot);
+		validateType(messages, reporter, astRoot);
 	}
 	
 	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		
-		// TODO
-//		String fqType = getFullyQualifiedType();
-//		if (StringTools.stringIsEmpty(fqType)) {
-//			messages.add(
-//					DefaultValidationMessages.buildMessage(
-//							IMessage.HIGH_SEVERITY,
-//							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE,
-//							this,
-//							getTypeTextRange(astRoot)));
-//		}
-//		else if (! StringTools.stringIsEmpty(this.specifiedType)
-//				// verify that type actually exists before validating
-//				&& JDTTools.findType(getJaxbProject().getJavaProject(), fqType) != null) {
-//			String attributeBaseType = getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
-//			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
-//				messages.add(
-//						DefaultValidationMessages.buildMessage(
-//								IMessage.HIGH_SEVERITY,
-//								JaxbValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
-//								new String[] { attributeBaseType },
-//								this,
-//								getTypeTextRange(astRoot)));
-//								
-//			}
-//		}
+		String fqType = getFullyQualifiedType();
+		if (StringTools.stringIsEmpty(fqType)) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE,
+							this,
+							getTypeTextRange(astRoot)));
+		}
+		else if (! StringTools.stringIsEmpty(this.specifiedType)
+				// verify that type actually exists before validating
+				&& JDTTools.findType(getJaxbProject().getJavaProject(), fqType) != null) {
+			String attributeBaseType = getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
+			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
+								new String[] { attributeBaseType },
+								this,
+								getTypeTextRange(astRoot)));
+								
+			}
+		}
 	}
 	
 	
 	protected class XmlElementRefQName
-			extends AbstractJavaQName {
+			extends AbstractJavaElementQName {
 		
 		protected XmlElementRefQName(JavaContextNode parent) {
 			super(parent);
@@ -280,75 +276,97 @@ public class GenericJavaXmlElementRef
 		}
 		
 		@Override
-		public String getDefaultName() {
-			return GenericJavaXmlElementRef.this.getPersistentAttribute().getJavaResourceAttribute().getName();
+		protected JaxbPersistentAttribute getPersistentAttribute() {
+			return GenericJavaXmlElementRef.this.getPersistentAttribute();
+		}
+		
+		protected boolean isTypeJAXBElement() {
+			return JAXB.JAXB_ELEMENT.equals(GenericJavaXmlElementRef.this.getFullyQualifiedType());
+		}
+		
+		protected JaxbPersistentClass getReferencedPersistentClass() {
+			String fqTypeName = GenericJavaXmlElementRef.this.getFullyQualifiedType();
+			return getJaxbProject().getContextRoot().getPersistentClass(fqTypeName);
 		}
 		
 		@Override
-		public Iterable<String> getNameProposals(Filter<String> filter) {
+		protected XmlElementWrapper getElementWrapper() {
+			return GenericJavaXmlElementRef.this.context.getElementWrapper();
+		}
+		
+		@Override
+		public String getDefaultName() {
+			if (isTypeJAXBElement()) {
+				return super.getDefaultName();
+			}
 			
-			// TODO
-//			XsdTypeDefinition xsdType = GenericJavaXmlElementRef.this.getPersistentClass().getXsdTypeDefinition();
-//			if (xsdType == null) {
-//				return EmptyIterable.instance();
-//			}
-//			
-//			XmlElementWrapper elementWrapper = GenericJavaXmlElementRef.this.getContext().getElementWrapper();
-//			
-//			if (elementWrapper == null) {
-//				return xsdType.getElementNameProposals(getNamespace(), filter);
-//			}
-//			else {
-//				XsdElementDeclaration xsdWrapperElement = elementWrapper.getXsdElementDeclaration();
-//				if (xsdWrapperElement != null) {
-//					return xsdWrapperElement.getElementNameProposals(getNamespace(), filter);
-//				}
-//			}
-//			
-			return EmptyIterable.instance();
+			JaxbPersistentClass referencedClass = getReferencedPersistentClass();
+			if (referencedClass != null) {
+				XmlRootElement rootElement = referencedClass.getRootElement();
+				if (rootElement != null) {
+					return rootElement.getQName().getName();
+				}
+			}
+			
+			return "";
 		}
 		
 		@Override
 		public String getDefaultNamespace() {
-			return (GenericJavaXmlElementRef.this.getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlElementRef.this.getPersistentClass().getQName().getNamespace() : "";
+			JaxbPersistentClass referencedClass = getReferencedPersistentClass();
+			if (referencedClass != null) {
+				XmlRootElement rootElement = referencedClass.getRootElement();
+				if (rootElement != null) {
+					return rootElement.getQName().getNamespace();
+				}
+			}
+			
+			return super.getDefaultNamespace();
 		}
 		
 		@Override
-		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlElementRef.this.getJaxbPackage().getXsdSchema();
-			return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
+		protected void validateName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+			// only validate if type is JAXBElement
+			if (isTypeJAXBElement()) {
+				super.validateName(messages, reporter, astRoot);
+			}
 		}
 		
 		@Override
 		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+			super.validateReference(messages, reporter, astRoot);
 			
-			// TODO
-//			XsdTypeDefinition xsdType = GenericJavaXmlElementRef.this.getPersistentClass().getXsdTypeDefinition();
-//			if (xsdType == null) {
-//				return;
-//			}
-//			
-//			XsdElementDeclaration resolvedXsdElement = null;
-//			
-//			XmlElementWrapper elementWrapper = GenericJavaXmlElementRef.this.getContext().getElementWrapper();
-//			
-//			if (elementWrapper == null) {
-//				resolvedXsdElement = xsdType.getElement(getNamespace(), getName());
-//			}
-//			else {
-//				XsdElementDeclaration xsdWrapperElement = elementWrapper.getXsdElementDeclaration();
-//				if (xsdWrapperElement == null) {
-//					// there will be a separate message for unresolved wrapper element
-//					// no need to also have a message for the nested element
-//					return;
-//				}
-//				resolvedXsdElement = xsdWrapperElement.getElement(getNamespace(), getName());
-//			}
-//			
-//			if (resolvedXsdElement == null) {
-//				messages.add(getUnresolveSchemaComponentMessage(astRoot));
-//			}
+			// if type is JAXBElement, then name/namespace must also point at a valid XmlElementDecl
+			if (! isTypeJAXBElement()) {
+				return;
+			}
+			
+			JaxbRegistry registry = getJaxbPackage().getRegistry();
+			
+			if (registry == null) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.XML_ELEMENT_REF__NO_REGISTRY,
+								this,
+								getValidationTextRange(astRoot)));
+				return;
+			}
+			
+			for (JaxbElementFactoryMethod elementDecl : registry.getElementFactoryMethods()) {
+				if (Tools.valuesAreEqual(getName(), elementDecl.getElementName())
+						&& Tools.valuesAreEqual(getNamespace(), elementDecl.getNamespace())) {
+					return;
+				}
+			}
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ELEMENT_REF__NO_MATCHING_ELEMENT_DECL,
+							new String[] { getNamespace(), getName() },
+							this,
+							getValidationTextRange(astRoot)));
+							
 		}
 	}
 	

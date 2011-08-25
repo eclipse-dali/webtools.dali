@@ -25,16 +25,11 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
-import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
-import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
-import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
-import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
-import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -311,17 +306,8 @@ public class GenericJavaXmlElement
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		
+		this.qName.validate(messages, reporter, astRoot);
 		validateType(messages, reporter, astRoot);
-		
-		if (StringTools.stringIsEmpty(this.qName.getName())) {
-			messages.add(
-					DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_ELEMENT_NAME,
-							this,
-							this.qName.getNameTextRange(astRoot)));
-		}
 	}
 	
 	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -353,15 +339,10 @@ public class GenericJavaXmlElement
 	
 	
 	protected class XmlElementQName
-			extends AbstractJavaQName {
+			extends AbstractJavaElementQName {
 		
 		protected XmlElementQName(JavaContextNode parent) {
 			super(parent);
-		}
-		
-		@Override
-		public String getReferencedComponentTypeDescription() {
-			return JptJaxbCoreMessages.XML_ELEMENT_DESC;
 		}
 		
 		@Override
@@ -370,72 +351,14 @@ public class GenericJavaXmlElement
 		}
 		
 		@Override
-		public String getDefaultName() {
-			return GenericJavaXmlElement.this.getPersistentAttribute().getJavaResourceAttribute().getName();
+		protected JaxbPersistentAttribute getPersistentAttribute() {
+			return GenericJavaXmlElement.this.getPersistentAttribute();
 		}
 		
 		@Override
-		public Iterable<String> getNameProposals(Filter<String> filter) {
-			XsdTypeDefinition xsdType = GenericJavaXmlElement.this.getPersistentClass().getXsdTypeDefinition();
-			if (xsdType == null) {
-				return EmptyIterable.instance();
-			}
-			
-			XmlElementWrapper elementWrapper = GenericJavaXmlElement.this.getContext().getElementWrapper();
-			
-			if (elementWrapper == null) {
-				return xsdType.getElementNameProposals(getNamespace(), filter);
-			}
-			else {
-				XsdElementDeclaration xsdWrapperElement = elementWrapper.getXsdElementDeclaration();
-				if (xsdWrapperElement != null) {
-					return xsdWrapperElement.getElementNameProposals(getNamespace(), filter);
-				}
-			}
-			
-			return EmptyIterable.instance();
-		}
-		
-		@Override
-		public String getDefaultNamespace() {
-			return (GenericJavaXmlElement.this.getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlElement.this.getPersistentClass().getQName().getNamespace() : "";
-		}
-		
-		@Override
-		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlElement.this.getJaxbPackage().getXsdSchema();
-			return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
-		}
-		
-		@Override
-		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-			XsdTypeDefinition xsdType = GenericJavaXmlElement.this.getPersistentClass().getXsdTypeDefinition();
-			if (xsdType == null) {
-				return;
-			}
-			
-			XsdElementDeclaration resolvedXsdElement = null;
-			
-			XmlElementWrapper elementWrapper = GenericJavaXmlElement.this.getContext().getElementWrapper();
-			
-			if (elementWrapper == null) {
-				resolvedXsdElement = xsdType.getElement(getNamespace(), getName());
-			}
-			else {
-				XsdElementDeclaration xsdWrapperElement = elementWrapper.getXsdElementDeclaration();
-				if (xsdWrapperElement == null) {
-					// there will be a separate message for unresolved wrapper element
-					// no need to also have a message for the nested element
-					return;
-				}
-				resolvedXsdElement = xsdWrapperElement.getElement(getNamespace(), getName());
-			}
-			
-			if (resolvedXsdElement == null) {
-				messages.add(getUnresolveSchemaComponentMessage(astRoot));
-			}
-		}
+		protected XmlElementWrapper getElementWrapper() {
+			return GenericJavaXmlElement.this.context.getElementWrapper();
+		}	
 	}
 	
 	
