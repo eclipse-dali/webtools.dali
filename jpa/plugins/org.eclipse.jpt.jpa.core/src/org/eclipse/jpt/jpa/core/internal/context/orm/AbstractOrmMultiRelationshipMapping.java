@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -68,6 +69,8 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.RelationshipStrategyTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionMapping2_0;
@@ -939,6 +942,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.orderable.validate(messages, reporter);
+		this.validateMapKeyClass(messages);
 		this.validateMapKey(messages, reporter);
 	}
 
@@ -952,12 +956,57 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			this.mapKeyConverter.validate(messages, reporter);
 		}
 		else if (this.keyType == Type.ENTITY_TYPE) {
-			//validate map key join columns
+			for (OrmJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
+				joinColumn.validate(messages, reporter);
+			}
 		}
 		else if (this.keyType == Type.EMBEDDABLE_TYPE) {
 			this.mapKeyAttributeOverrideContainer.validate(messages, reporter);
 			//validate map key association overrides
 		}
+	}
+
+	protected void validateMapKeyClass(List<IMessage> messages) {
+		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		if ((javaAttribute != null) && javaAttribute.getJpaContainerDefinition().isMap()) {
+			this.validateMapKeyClass_(messages);
+		}
+	}
+
+	protected void validateMapKeyClass_(List<IMessage> messages) {
+		if (StringTools.stringIsEmpty(getMapKeyClass())) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getMapKeyClassTextRange()
+				)
+			);
+			return;
+		}
+
+		if ( ! this.mapKeyClassExists()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getMapKeyClassTextRange()
+				)
+			);
+			return;
+		}
+	}
+
+	protected boolean mapKeyClassExists() {
+		return getEntityMappings().resolveJdtType(this.getMapKeyClass()) != null;
+	}
+
+	protected TextRange getMapKeyClassTextRange() {
+		return this.getValidationTextRange(this.xmlAttributeMapping.getMapKeyClassTextRange());
 	}
 
 

@@ -349,7 +349,6 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE, 					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,													JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST); //3.0 M7
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,															JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,															JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,	JpaValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED); //3.0 M7
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,										JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED); 	//3.0 M7
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPS_ID_VALUE_INVALID,																										JpaValidationMessages.MAPS_ID_VALUE_INVALID);
@@ -372,15 +371,18 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME,																		JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,																					JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_NOT_DEFINED,																							JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TARGET_ENTITY_NOT_EXIST,																							JpaValidationMessages.TARGET_ENTITY_NOT_EXIST);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAP_KEY_CLASS_NOT_DEFINED,															JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAP_KEY_CLASS_NOT_EXIST,															JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST);
 
 		parent = addSubExpandableSection(parent, JptUiValidationPreferenceMessages.IMPLIED_ATTRIBUTE_LEVEL_CATEGORY);
 		
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,										JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED);	
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,									JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,	JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,											JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,																	JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,																			JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,										JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED);	
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_INVALID_TEMPORAL_MAP_KEY_TYPE,																			JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVALID_TEMPORAL_MAP_KEY_TYPE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE,																			JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.VIRTUAL_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE,																			JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE);

@@ -11,6 +11,7 @@
 package org.eclipse.jpt.jpa.core.resource.orm.v2_0;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
@@ -109,4 +110,8 @@ public interface XmlMultiRelationshipMapping_2_0 extends XmlOrderable_2_0, XmlMa
 	 */
 	EList<XmlJoinColumn> getMapKeyJoinColumns();
 
+	/**
+	 * Return the {@link TextRange} for the map-key-class attribute.
+	 */
+	TextRange getMapKeyClassTextRange();
 } // XmlMultiRelationshipMapping_2_0

@@ -261,4 +261,9 @@ public interface XmlElementCollection_2_0 extends XmlConvertibleMapping, XmlOrde
 	 */
 	TextRange getTargetClassTextRange();
 
+	/**
+	 * Return the {@link TextRange} for the map-key-class attribute.
+	 */
+	TextRange getMapKeyClassTextRange();
+
 } // XmlElementCollection_2_0

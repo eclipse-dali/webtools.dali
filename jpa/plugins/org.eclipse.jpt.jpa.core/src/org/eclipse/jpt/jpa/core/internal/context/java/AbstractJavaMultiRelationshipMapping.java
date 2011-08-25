@@ -70,6 +70,8 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
@@ -973,6 +975,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		this.validateMapKeyClass(messages, astRoot);
 		this.orderable.validate(messages, reporter, astRoot);
 		this.validateMapKey(messages, reporter, astRoot);
 	}
@@ -996,6 +999,39 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			//validate map key association overrides - for eclipselink
 		}
 	}
+
+	protected void validateMapKeyClass(List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.getPersistentAttribute().getJpaContainerDefinition().isMap()) {
+			this.validateMapKeyClass_(messages, astRoot);
+		}
+	}
+
+	protected void validateMapKeyClass_(List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.getMapKeyClass() == null) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
+						new String[] {this.getName()},
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			} else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
+						EMPTY_STRING_ARRAY,
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			}
+		}
+	}
+
 
 
 	// ********** abstract owner **********

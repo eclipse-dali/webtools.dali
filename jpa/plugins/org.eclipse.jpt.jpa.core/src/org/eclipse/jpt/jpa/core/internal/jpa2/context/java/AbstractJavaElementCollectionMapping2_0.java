@@ -1482,7 +1482,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected void validateTargetClass(List<IMessage> messages, CompilationUnit astRoot) {
 		String targetClass = this.getFullyQualifiedTargetClass();
-		if (StringTools.stringIsEmpty(targetClass)) {
+		if (targetClass == null) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -1515,7 +1515,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-							new String[] {this.getName(), this.getTargetClass()},
+							new String[] {this.getName(), targetClass},
 							this,
 							this.getTargetClassTextRange(astRoot)
 						)
@@ -1525,7 +1525,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-							new String[] {this.getTargetClass(), this.getName()},
+							new String[] {targetClass},
 							this,
 							this.getTargetClassTextRange(astRoot)
 						)
@@ -1556,7 +1556,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
 						new String[] {this.getName()},
 						this,
 						this.getValidationTextRange(astRoot)
@@ -1566,7 +1566,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.ELEMENT_COLLECTION_MAP_KEY_CLASS_NOT_DEFINED,
+						JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getValidationTextRange(astRoot)

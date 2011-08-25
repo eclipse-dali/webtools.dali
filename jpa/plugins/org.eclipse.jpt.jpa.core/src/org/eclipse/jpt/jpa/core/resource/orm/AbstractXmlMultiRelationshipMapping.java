@@ -1063,6 +1063,9 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 		return getAttributeTextRange(JPA2_0.MAP_KEY_TEMPORAL);
 	}
 
+	public TextRange getMapKeyClassTextRange() {
+		return getElementTextRange(JPA2_0.MAP_KEY_CLASS);
+	}
 
 	// ********** refactoring **********
 

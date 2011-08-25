@@ -1564,7 +1564,11 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	public TextRange getMapKeyTemporalTextRange() {
 		return getAttributeTextRange(JPA2_0.MAP_KEY_TEMPORAL);
 	}
-	
+
+	public TextRange getMapKeyClassTextRange() {
+		return getElementTextRange(JPA2_0.MAP_KEY_CLASS);
+	}
+
 	// **************** translators *******************************************
 	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
