@@ -16,6 +16,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlMixed;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
@@ -169,7 +170,7 @@ public class GenericJavaXmlAnyElementMapping
 		if (this.xmlMixed != null) {
 			throw new IllegalStateException();
 		}
-		XmlMixedAnnotation annotation = (XmlMixedAnnotation) this.getJavaResourceAttribute().addAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
+		XmlMixedAnnotation annotation = (XmlMixedAnnotation) this.getJavaResourceAttribute().addAnnotation(JAXB.XML_MIXED);
 
 		XmlMixed xmlMixed = this.buildXmlMixed(annotation);
 		this.setXmlMixed_(xmlMixed);
@@ -184,7 +185,7 @@ public class GenericJavaXmlAnyElementMapping
 		if (this.xmlMixed == null) {
 			throw new IllegalStateException();
 		}
-		this.getJavaResourceAttribute().removeAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceAttribute().removeAnnotation(JAXB.XML_MIXED);
 		this.setXmlMixed_(null);
 	}
 
@@ -196,7 +197,7 @@ public class GenericJavaXmlAnyElementMapping
 	}
 
 	protected XmlMixedAnnotation getXmlMixedAnnotation() {
-		return (XmlMixedAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
+		return (XmlMixedAnnotation) this.getJavaResourceAttribute().getAnnotation(JAXB.XML_MIXED);
 	}
 
 	protected void syncXmlMixed() {

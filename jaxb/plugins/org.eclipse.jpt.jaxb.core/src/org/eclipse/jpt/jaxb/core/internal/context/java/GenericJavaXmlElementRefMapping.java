@@ -23,10 +23,12 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.context.XmlMixed;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -41,12 +43,15 @@ public class GenericJavaXmlElementRefMapping
 	
 	protected XmlElementWrapper xmlElementWrapper;
 	
+	protected XmlMixed xmlMixed;
+	
 	
 	public GenericJavaXmlElementRefMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		this.xmlElementRef = buildXmlElementRef();
 		this.xmlAdaptable = buildXmlAdaptable();
-		this.initializeXmlElementWrapper();			
+		initializeXmlElementWrapper();			
+		initializeXmlMixed();			
 	}
 	
 	
@@ -65,6 +70,7 @@ public class GenericJavaXmlElementRefMapping
 		this.xmlElementRef.synchronizeWithResourceModel();
 		this.xmlAdaptable.synchronizeWithResourceModel();
 		syncXmlElementWrapper();
+		syncXmlMixed();
 	}
 	
 	@Override
@@ -73,6 +79,7 @@ public class GenericJavaXmlElementRefMapping
 		this.xmlElementRef.update();
 		this.xmlAdaptable.update();
 		updateXmlElementWrapper();
+		updateXmlMixed();
 	}
 	
 	
@@ -126,6 +133,12 @@ public class GenericJavaXmlElementRefMapping
 		return this.xmlElementWrapper;
 	}
 	
+	protected void setXmlElementWrapper_(XmlElementWrapper xmlElementWrapper) {
+		XmlElementWrapper oldXmlElementWrapper = this.xmlElementWrapper;
+		this.xmlElementWrapper = xmlElementWrapper;
+		firePropertyChanged(XML_ELEMENT_WRAPPER_PROPERTY, oldXmlElementWrapper, xmlElementWrapper);
+	}
+	
 	public XmlElementWrapper addXmlElementWrapper() {
 		if (this.xmlElementWrapper != null) {
 			throw new IllegalStateException();
@@ -137,16 +150,20 @@ public class GenericJavaXmlElementRefMapping
 		return xmlElementWrapper;
 	}
 	
-	protected XmlElementWrapper buildXmlElementWrapper(XmlElementWrapperAnnotation xmlElementWrapperAnnotation) {
-		return new GenericJavaXmlElementWrapper(this, xmlElementWrapperAnnotation);
-	}
-	
 	public void removeXmlElementWrapper() {
 		if (this.xmlElementWrapper == null) {
 			throw new IllegalStateException();
 		}
-		this.getJavaResourceAttribute().removeAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceAttribute().removeAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 		this.setXmlElementWrapper_(null);
+	}
+	
+	protected XmlElementWrapperAnnotation getXmlElementWrapperAnnotation() {
+		return (XmlElementWrapperAnnotation) this.getJavaResourceAttribute().getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
+	}
+	
+	protected XmlElementWrapper buildXmlElementWrapper(XmlElementWrapperAnnotation xmlElementWrapperAnnotation) {
+		return new GenericJavaXmlElementWrapper(this, xmlElementWrapperAnnotation);
 	}
 	
 	protected void initializeXmlElementWrapper() {
@@ -154,10 +171,6 @@ public class GenericJavaXmlElementRefMapping
 		if (annotation != null) {
 			this.xmlElementWrapper = this.buildXmlElementWrapper(annotation);
 		}
-	}
-	
-	protected XmlElementWrapperAnnotation getXmlElementWrapperAnnotation() {
-		return (XmlElementWrapperAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void syncXmlElementWrapper() {
@@ -181,10 +194,72 @@ public class GenericJavaXmlElementRefMapping
 		}
 	}
 	
-	protected void setXmlElementWrapper_(XmlElementWrapper xmlElementWrapper) {
-		XmlElementWrapper oldXmlElementWrapper = this.xmlElementWrapper;
-		this.xmlElementWrapper = xmlElementWrapper;
-		firePropertyChanged(XML_ELEMENT_WRAPPER_PROPERTY, oldXmlElementWrapper, xmlElementWrapper);
+	
+	// ***** XmlMixed *****
+	
+	public XmlMixed getXmlMixed() {
+		return this.xmlMixed;
+	}
+	
+	protected void setXmlMixed_(XmlMixed xmlMixed) {
+		XmlMixed oldXmlMixed = this.xmlMixed;
+		this.xmlMixed = xmlMixed;
+		firePropertyChanged(XML_MIXED_PROPERTY, oldXmlMixed, xmlMixed);
+	}
+	
+	public XmlMixed addXmlMixed() {
+		if (this.xmlMixed != null) {
+			throw new IllegalStateException();
+		}
+		XmlMixedAnnotation annotation = (XmlMixedAnnotation) getJavaResourceAttribute().addAnnotation(JAXB.XML_MIXED);
+		
+		XmlMixed xmlMixed = buildXmlMixed(annotation);
+		setXmlMixed_(xmlMixed);
+		return xmlMixed;
+	}
+	
+	public void removeXmlMixed() {
+		if (this.xmlMixed == null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceAttribute().removeAnnotation(JAXB.XML_MIXED);
+		setXmlMixed_(null);
+	}
+	
+	protected XmlMixedAnnotation getXmlMixedAnnotation() {
+		return (XmlMixedAnnotation) getJavaResourceAttribute().getAnnotation(JAXB.XML_MIXED);
+	}
+	
+	protected XmlMixed buildXmlMixed(XmlMixedAnnotation xmlMixedAnnotation) {
+		return new GenericJavaXmlMixed(this, xmlMixedAnnotation);
+	}
+	
+	protected void initializeXmlMixed() {
+		XmlMixedAnnotation annotation = getXmlMixedAnnotation();
+		if (annotation != null) {
+			this.xmlMixed = buildXmlMixed(annotation);
+		}
+	}
+	
+	protected void syncXmlMixed() {
+		XmlMixedAnnotation annotation = getXmlMixedAnnotation();
+		if (annotation != null) {
+			if (this.xmlMixed != null) {
+				this.xmlMixed.synchronizeWithResourceModel();
+			}
+			else {
+				setXmlMixed_(buildXmlMixed(annotation));
+			}
+		}
+		else {
+			setXmlMixed_(null);
+		}
+	}
+
+	protected void updateXmlMixed() {
+		if (this.xmlMixed != null) {
+			this.xmlMixed.update();
+		}
 	}
 	
 	

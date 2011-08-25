@@ -24,4 +24,13 @@ package org.eclipse.jpt.jaxb.core.context;
 public interface XmlElementRefsMapping
 		extends JaxbAttributeMapping {
 	
+	// ***** XmlMixed *****
+	
+	String XML_MIXED_PROPERTY = "xmlMixed"; //$NON-NLS-1$
+	
+	XmlMixed getXmlMixed();
+	
+	XmlMixed addXmlMixed();
+	
+	void removeXmlMixed();
 }

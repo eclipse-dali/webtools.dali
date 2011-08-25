@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.context;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
- * 
+ * Represents the @XmlMixed JAXB annotation
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,8 +24,6 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @since 3.0
  */
 public interface XmlMixed
-	extends 
-		JavaContextNode
-{
-
+		extends JavaContextNode {
+	
 }

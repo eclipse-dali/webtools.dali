@@ -285,17 +285,17 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		XmlMixedAnnotation xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
+		XmlMixedAnnotation xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
 		assertNull(xmlAnyElementMapping.getXmlMixed());
 		assertNull(xmlListAnnotation);
 
 		xmlAnyElementMapping.addXmlMixed();
-		xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
+		xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
 		assertNotNull(xmlAnyElementMapping.getXmlMixed());
 		assertNotNull(xmlListAnnotation);
 
 		xmlAnyElementMapping.removeXmlMixed();
-		xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
+		xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
 	}
 
 	public void testUpdateXmlMixed() throws Exception {
@@ -306,7 +306,7 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 		XmlAnyElementMapping xmlAnyElementMapping = (XmlAnyElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlAnyElementMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		XmlMixedAnnotation xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
+		XmlMixedAnnotation xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
 		assertNull(xmlAnyElementMapping.getXmlMixed());
 		assertNull(xmlListAnnotation);
 
@@ -315,20 +315,20 @@ public class GenericJavaXmlAnyElementMappingTests extends JaxbContextModelTestCa
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaXmlAnyElementMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlMixedAnnotation.ANNOTATION_NAME);
+				GenericJavaXmlAnyElementMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_MIXED);
 			}
 		});
-		xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
+		xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
 		assertNotNull(xmlAnyElementMapping.getXmlMixed());
 		assertNotNull(xmlListAnnotation);
 
 		//remove the XmlMixed annotation
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaXmlAnyElementMappingTests.this.removeAnnotation(declaration, XmlMixedAnnotation.ANNOTATION_NAME);
+				GenericJavaXmlAnyElementMappingTests.this.removeAnnotation(declaration, JAXB.XML_MIXED);
 			}
 		});
-		xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(XmlMixedAnnotation.ANNOTATION_NAME);
+		xmlListAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
 		assertNull(xmlAnyElementMapping.getXmlMixed());
 		assertNull(xmlListAnnotation);
 	}

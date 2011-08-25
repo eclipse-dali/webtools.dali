@@ -31,6 +31,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
 
@@ -511,5 +512,64 @@ public class GenericJavaXmlElementRefMappingTests
 		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 		assertNull(xmlElementRefMapping.getXmlElementWrapper());
 		assertNull(xmlElementWrapperAnnotation);
+	}
+	
+	public void testModifyXmlMixed() throws Exception {
+		createTypeWithXmlElementRef();
+		
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementRefMapping mapping = (XmlElementRefMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		XmlMixedAnnotation annotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
+		assertNull(mapping.getXmlMixed());
+		assertNull(annotation);
+		
+		mapping.addXmlMixed();
+		annotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
+		assertNotNull(mapping.getXmlMixed());
+		assertNotNull(annotation);
+		
+		mapping.removeXmlMixed();
+		annotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
+		assertNull(mapping.getXmlMixed());
+		assertNull(annotation);
+	}
+
+	public void testUpdateXmlMixed() throws Exception {
+		createTypeWithXmlElementRef();
+		
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementRefMapping mapping = (XmlElementRefMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		XmlMixedAnnotation annotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
+		assertNull(mapping.getXmlMixed());
+		assertNull(annotation);
+		
+		//add an XmlMixed annotation
+		AnnotatedElement annotatedElement = annotatedElement(resourceAttribute);
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						GenericJavaXmlElementRefMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_MIXED);
+					}
+				});
+		annotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
+		assertNotNull(mapping.getXmlMixed());
+		assertNotNull(annotation);
+		
+		//remove the XmlMixed annotation
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						GenericJavaXmlElementRefMappingTests.this.removeAnnotation(declaration, JAXB.XML_MIXED);
+					}
+				});
+		annotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
+		assertNull(mapping.getXmlMixed());
+		assertNull(annotation);
 	}
 }

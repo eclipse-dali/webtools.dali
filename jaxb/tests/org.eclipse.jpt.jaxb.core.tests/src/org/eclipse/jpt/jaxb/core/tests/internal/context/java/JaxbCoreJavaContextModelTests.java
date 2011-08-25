@@ -30,6 +30,7 @@ public class JaxbCoreJavaContextModelTests
 		suite.addTestSuite(GenericJavaXmlAttributeMappingTests.class);
 		suite.addTestSuite(GenericJavaXmlElementMappingTests.class);
 		suite.addTestSuite(GenericJavaXmlElementRefMappingTests.class);
+		suite.addTestSuite(GenericJavaXmlElementRefsMappingTests.class);
 		suite.addTestSuite(GenericJavaXmlElementsMappingTests.class);
 		suite.addTestSuite(GenericJavaPackageXmlJavaTypeAdapterTests.class);
 		suite.addTestSuite(GenericJavaTypeXmlJavaTypeAdapterTests.class);

@@ -36,4 +36,15 @@ public interface XmlElementRefMapping
 	XmlElementWrapper addXmlElementWrapper();
 	
 	void removeXmlElementWrapper();	
+	
+	
+	// ***** XmlMixed *****
+	
+	String XML_MIXED_PROPERTY = "xmlMixed"; //$NON-NLS-1$
+	
+	XmlMixed getXmlMixed();
+	
+	XmlMixed addXmlMixed();
+	
+	void removeXmlMixed();
 }
