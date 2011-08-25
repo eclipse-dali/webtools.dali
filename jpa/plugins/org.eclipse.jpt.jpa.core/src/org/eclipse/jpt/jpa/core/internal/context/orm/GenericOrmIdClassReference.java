@@ -10,10 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -331,15 +329,14 @@ public class GenericOrmIdClassReference
 	}
 	
 	protected void validateIdClass(List<IMessage> messages, IReporter reporter) {
-		IJavaProject javaProject = getJpaProject().getJavaProject();
 		if (this.isSpecified()) {
-			JavaResourceType jrt = (JavaResourceType) getJpaProject().getJavaResourceType(this.getIdClassName(), Kind.TYPE);
-			if ((jrt != null) && (jrt.isAnnotatedWith(getJpaProject().getTypeMappingAnnotations()))) {
+			JavaResourceAbstractType jrt = getEntityMappings().resolveJavaResourceType(this.getIdClassName());
+			if ((jrt != null) && (jrt.isAnnotatedWith(this.getJpaProject().getTypeMappingAnnotations()))) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_VALID,
-								new String[] {jrt.getName()}, 
+								EMPTY_STRING_ARRAY, 
 								this,
 								this.getValidationTextRange()
 						)
@@ -354,18 +351,22 @@ public class GenericOrmIdClassReference
 								this.getValidationTextRange()
 						)
 				);
-			} else if (JDTTools.findType(javaProject, this.getIdClassName()) == null) {
+			} else if ( ! this.idClassExists()) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,
-								new String[] { this.getIdClassName()},
+								EMPTY_STRING_ARRAY,
 								this,
 								this.getValidationTextRange()
 						)
 				);
 			}
 		}
+	}
+
+	protected boolean idClassExists() {
+		return getEntityMappings().resolveJdtType(getIdClassName()) != null;
 	}
 
 	public TextRange getValidationTextRange() {
