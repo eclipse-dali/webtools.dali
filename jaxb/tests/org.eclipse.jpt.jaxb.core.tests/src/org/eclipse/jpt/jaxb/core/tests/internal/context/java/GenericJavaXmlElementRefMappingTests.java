@@ -62,6 +62,79 @@ public class GenericJavaXmlElementRefMappingTests
 		});
 	}
 	
+	private ICompilationUnit createTypeWithJAXBElementXmlElementRef() throws Exception {
+		return this.createTestType(TYPE_NAME + "2", new DefaultAnnotationWriter() {
+			
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ELEMENT_REF, JAXB.JAXB_ELEMENT);
+			}
+			
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlType");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlElementRef").append(CR);
+				sb.append("private JAXBElement foo;").append(CR).append(CR);
+			}
+		});
+	}
+	
+	private ICompilationUnit createTypeWithRootElementXmlElementRef() throws Exception {
+		return this.createTestType(TYPE_NAME + "3", new DefaultAnnotationWriter() {
+			
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ELEMENT_REF, JAXB.XML_ROOT_ELEMENT);
+			}
+			
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlType").append(CR);
+				sb.append("@XmlRootElement(name=\"foo\")");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlElementRef").append(CR);
+				sb.append("private " + TYPE_NAME + "3 foo;").append(CR).append(CR);
+			}
+		});
+	}
+	
+	
+	public void testDefaultName() throws Exception {
+		createTypeWithXmlElementRef();
+		createTypeWithJAXBElementXmlElementRef(); // FULLY_QUALIFIED_TYPE_NAME + "2"
+		createTypeWithRootElementXmlElementRef(); // FULLY_QUALIFIED_TYPE_NAME + "3"
+		
+		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
+		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
+		XmlElementRef xmlElementRef = xmlElementRefMapping.getXmlElementRef();
+		
+		// XmlElementRef type is java.lang.String -> no default name or namespace
+		assertEquals("", xmlElementRef.getQName().getName());
+		assertEquals("", xmlElementRef.getQName().getNamespace());
+		
+		persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME + "2");
+		xmlElementRefMapping = (XmlElementRefMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
+		xmlElementRef = xmlElementRefMapping.getXmlElementRef();
+		
+		// XmlElementRef type is JAXBElement -> default name is name of attribute
+		assertEquals("foo", xmlElementRef.getQName().getName());
+		assertEquals("", xmlElementRef.getQName().getNamespace());
+		
+		persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME + "3");
+		xmlElementRefMapping = (XmlElementRefMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
+		xmlElementRef = xmlElementRefMapping.getXmlElementRef();
+		
+		// XmlElementRef type is type with root element -> default name is root element name
+		assertEquals("foo", xmlElementRef.getQName().getName());
+		assertEquals("", xmlElementRef.getQName().getNamespace());
+	}
 	
 	public void testModifyName() throws Exception {
 		createTypeWithXmlElementRef();
@@ -72,14 +145,13 @@ public class GenericJavaXmlElementRefMappingTests
 		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertNull(xmlElementRef.getQName().getSpecifiedName());
-		assertEquals("id", xmlElementRef.getQName().getDefaultName());
-		assertEquals("id", xmlElementRef.getQName().getName());
+		assertEquals("", xmlElementRef.getQName().getDefaultName());
+		assertEquals("", xmlElementRef.getQName().getName());
 
 		xmlElementRef.getQName().setSpecifiedName("foo");
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(XmlElementRefAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlElementRefAnnotation.getName());
 		assertEquals("foo", xmlElementRef.getQName().getSpecifiedName());
-		assertEquals("id", xmlElementRef.getQName().getDefaultName());
 		assertEquals("foo", xmlElementRef.getQName().getName());
 
 		xmlElementRef.getQName().setSpecifiedName(null);
