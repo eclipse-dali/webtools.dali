@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
@@ -115,6 +116,34 @@ public class GenericJavaXmlAttributeMapping
 	@Override
 	protected GenericJavaXmlIDREF.Context buildXmlIDREFContext() {
 		return new XmlIDREFContext();
+	}
+	
+	
+	// ***** content assist *****
+	
+	@Override
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		result = this.qName.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		return EmptyIterable.instance();
+	}
+	
+	
+	// ***** validation *****
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		this.qName.validate(messages, reporter, astRoot);
 	}
 	
 	
