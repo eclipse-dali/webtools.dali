@@ -278,7 +278,7 @@ public class XmlAccessMethods extends AbstractJpaEObject implements JpaEObject
 		return new SimpleTranslator(
 			elementName,
 			structuralFeature,
-			Translator.END_TAG_NO_INDENT,
+			EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethods(),
 			buildTranslatorChildren()
 		);
 	}
