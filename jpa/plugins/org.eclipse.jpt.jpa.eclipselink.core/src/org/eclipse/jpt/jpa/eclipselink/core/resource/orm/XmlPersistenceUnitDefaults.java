@@ -343,7 +343,11 @@ public class XmlPersistenceUnitDefaults extends org.eclipse.jpt.jpa.core.resourc
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature,
+			EclipseLinkOrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults(),
+			buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {
