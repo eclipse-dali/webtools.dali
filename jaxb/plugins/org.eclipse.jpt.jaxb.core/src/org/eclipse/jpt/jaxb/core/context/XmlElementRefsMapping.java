@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+
 /**
  * Represents a JAXB xml element refs mapping (@XmlElementRefs)
  * <p>
@@ -22,7 +24,35 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.1
  */
 public interface XmlElementRefsMapping
-		extends JaxbAttributeMapping {
+		extends JaxbAttributeMapping, XmlAdaptable {
+	
+	// ***** XmlElementRefs *****
+	
+	String XML_ELEMENT_REFS_LIST = "xmlElementRefs"; //$NON-NLS-1$
+	
+	ListIterable<XmlElementRef> getXmlElementRefs();
+	
+	int getXmlElementRefsSize();
+	
+	XmlElementRef addXmlElementRef(int index);
+	
+	void removeXmlElementRef(int index);
+	
+	void removeXmlElementRef(XmlElementRef xmlElementRef);
+	
+	void moveXmlElementRef(int targetIndex, int sourceIndex);
+	
+	
+	// ***** XmlElementWrapper *****
+	
+	String XML_ELEMENT_WRAPPER_PROPERTY = "xmlElementWrapper"; //$NON-NLS-1$
+	
+	XmlElementWrapper getXmlElementWrapper();
+	
+	XmlElementWrapper addXmlElementWrapper();
+	
+	void removeXmlElementWrapper();
+	
 	
 	// ***** XmlMixed *****
 	

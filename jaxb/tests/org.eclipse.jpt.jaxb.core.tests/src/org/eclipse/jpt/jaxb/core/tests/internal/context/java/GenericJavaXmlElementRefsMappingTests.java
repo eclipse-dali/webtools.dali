@@ -11,8 +11,10 @@ package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
@@ -23,8 +25,13 @@ import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefsAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
@@ -57,49 +64,6 @@ public class GenericJavaXmlElementRefsMappingTests
 		});
 	}
 	
-//	private ICompilationUnit createTypeWithJAXBElementXmlElementRefs() throws Exception {
-//		return this.createTestType(TYPE_NAME + "2", new DefaultAnnotationWriter() {
-//			
-//			@Override
-//			public Iterator<String> imports() {
-//				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ELEMENT_REFS, JAXB.JAXB_ELEMENT);
-//			}
-//			
-//			@Override
-//			public void appendTypeAnnotationTo(StringBuilder sb) {
-//				sb.append("@XmlType");
-//			}
-//			
-//			@Override
-//			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-//				sb.append("@XmlElementRefs").append(CR);
-//				sb.append("private JAXBElement foo;").append(CR).append(CR);
-//			}
-//		});
-//	}
-//	
-//	private ICompilationUnit createTypeWithRootElementXmlElementRefs() throws Exception {
-//		return this.createTestType(TYPE_NAME + "3", new DefaultAnnotationWriter() {
-//			
-//			@Override
-//			public Iterator<String> imports() {
-//				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ELEMENT_REFS, JAXB.XML_ROOT_ELEMENT);
-//			}
-//			
-//			@Override
-//			public void appendTypeAnnotationTo(StringBuilder sb) {
-//				sb.append("@XmlType").append(CR);
-//				sb.append("@XmlRootElement(name=\"foo\")");
-//			}
-//			
-//			@Override
-//			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-//				sb.append("@XmlElementRefs").append(CR);
-//				sb.append("private " + TYPE_NAME + "3 foo;").append(CR).append(CR);
-//			}
-//		});
-//	}
-	
 	protected Annotation getXmlElementRefsAnnotation(ModifiedDeclaration declaration) {
 		return declaration.getAnnotationNamed(JAXB.XML_ELEMENT_REFS);
 	}
@@ -120,140 +84,128 @@ public class GenericJavaXmlElementRefsMappingTests
 	}
 	
 	
-//	public void testDefaultName() throws Exception {
-//		createTypeWithXmlElementRefs();
-//		createTypeWithJAXBElementXmlElementRefs(); // FULLY_QUALIFIED_TYPE_NAME + "2"
-//		createTypeWithRootElementXmlElementRefs(); // FULLY_QUALIFIED_TYPE_NAME + "3"
-//		
-//		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
-//		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-//		XmlElementRef xmlElementRef = xmlElementRefMapping.getXmlElementRef();
-//		
-//		// XmlElementRef type is java.lang.String -> no default name or namespace
-//		assertEquals("", xmlElementRef.getQName().getName());
-//		assertEquals("", xmlElementRef.getQName().getNamespace());
-//		
-//		persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME + "2");
-//		xmlElementRefMapping = (XmlElementRefMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-//		xmlElementRef = xmlElementRefMapping.getXmlElementRef();
-//		
-//		// XmlElementRef type is JAXBElement -> default name is name of attribute
-//		assertEquals("foo", xmlElementRef.getQName().getName());
-//		assertEquals("", xmlElementRef.getQName().getNamespace());
-//		
-//		persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME + "3");
-//		xmlElementRefMapping = (XmlElementRefMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-//		xmlElementRef = xmlElementRefMapping.getXmlElementRef();
-//		
-//		// XmlElementRef type is type with root element -> default name is root element name
-//		assertEquals("foo", xmlElementRef.getQName().getName());
-//		assertEquals("", xmlElementRef.getQName().getNamespace());
-//	}
-//	
-//	public void testModifyName() throws Exception {
-//		createTypeWithXmlElementRef();
-//
-//		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-//		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-//		XmlElementRef xmlElementRef = xmlElementRefMapping.getXmlElementRef();
-//		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
-//		
-//		assertNull(xmlElementRef.getQName().getSpecifiedName());
-//		assertEquals("", xmlElementRef.getQName().getDefaultName());
-//		assertEquals("", xmlElementRef.getQName().getName());
-//
-//		xmlElementRef.getQName().setSpecifiedName("foo");
-//		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(XmlElementRefAnnotation.ANNOTATION_NAME);
-//		assertEquals("foo", xmlElementRefAnnotation.getName());
-//		assertEquals("foo", xmlElementRef.getQName().getSpecifiedName());
-//		assertEquals("foo", xmlElementRef.getQName().getName());
-//
-//		xmlElementRef.getQName().setSpecifiedName(null);
-//		xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(XmlElementRefAnnotation.ANNOTATION_NAME);
-//		assertNull(xmlElementRefAnnotation.getName());
-//		assertNull(xmlElementRef.getQName().getSpecifiedName());
-//	}
-//
-//	public void testUpdateName() throws Exception {
-//		createTypeWithXmlElementRef();
-//
-//		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-//		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-//		XmlElementRef xmlElementRef = xmlElementRefMapping.getXmlElementRef();
-//		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
-//
-//		assertNull(xmlElementRef.getQName().getSpecifiedName());
-//
-//
-//		//add a Name member value pair
-//		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
-//		annotatedElement.edit(new Member.Editor() {
-//			public void edit(ModifiedDeclaration declaration) {
-//				GenericJavaXmlElementRefMappingTests.this.addXmlElementRefMemberValuePair(declaration, JAXB.XML_ELEMENT_REF__NAME, "foo");
-//			}
-//		});
-//		assertEquals("foo", xmlElementRef.getQName().getName());
-//
-//		//remove the Name member value pair
-//		annotatedElement.edit(new Member.Editor() {
-//			public void edit(ModifiedDeclaration declaration) {
-//				NormalAnnotation xmlElementRefAnnotation = (NormalAnnotation) GenericJavaXmlElementRefMappingTests.this.getXmlElementRefAnnotation(declaration);
-//				GenericJavaXmlElementRefMappingTests.this.values(xmlElementRefAnnotation).remove(0);
-//			}
-//		});
-//		assertNull(xmlElementRef.getQName().getSpecifiedName());
-//	}
-//
-//	public void testModifyNamespace() throws Exception {
-//		createTypeWithXmlElementRef();
-//
-//		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-//		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-//		XmlElementRef xmlElementRef = xmlElementRefMapping.getXmlElementRef();
-//		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
-//
-//		assertNull(xmlElementRef.getQName().getSpecifiedNamespace());
-//
-//		xmlElementRef.getQName().setSpecifiedNamespace("foo");
-//		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(XmlElementRefAnnotation.ANNOTATION_NAME);
-//		assertEquals("foo", xmlElementRefAnnotation.getNamespace());
-//		assertEquals("foo", xmlElementRef.getQName().getNamespace());
-//
-//		xmlElementRef.getQName().setSpecifiedNamespace(null);
-//		xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(XmlElementRefAnnotation.ANNOTATION_NAME);
-//		assertNull(xmlElementRefAnnotation.getNamespace());
-//		assertNull(xmlElementRef.getQName().getSpecifiedNamespace());
-//	}
-//
-//	public void testUpdateNamespace() throws Exception {
-//		createTypeWithXmlElementRef();
-//
-//		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-//		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
-//		XmlElementRef xmlElementRef = xmlElementRefMapping.getXmlElementRef();
-//		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
-//
-//		assertNull(xmlElementRef.getQName().getSpecifiedNamespace());
-//
-//
-//		//add a namespace member value pair
-//		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
-//		annotatedElement.edit(new Member.Editor() {
-//			public void edit(ModifiedDeclaration declaration) {
-//				GenericJavaXmlElementRefMappingTests.this.addXmlElementRefMemberValuePair(declaration, JAXB.XML_ELEMENT_REF__NAMESPACE, "foo");
-//			}
-//		});
-//		assertEquals("foo", xmlElementRef.getQName().getNamespace());
-//
-//		//remove the namespace member value pair
-//		annotatedElement.edit(new Member.Editor() {
-//			public void edit(ModifiedDeclaration declaration) {
-//				NormalAnnotation xmlElementRefAnnotation = (NormalAnnotation) GenericJavaXmlElementRefMappingTests.this.getXmlElementRefAnnotation(declaration);
-//				GenericJavaXmlElementRefMappingTests.this.values(xmlElementRefAnnotation).remove(0);
-//			}
-//		});
-//		assertNull(xmlElementRef.getQName().getSpecifiedNamespace());
-//	}
+	// ***** XmlElements *****
+	
+	protected NormalAnnotation newXmlElementRefAnnotation(AST ast, String name) {
+		NormalAnnotation annotation = newNormalAnnotation(ast, JAXB.XML_ELEMENT_REF);
+		addMemberValuePair(annotation, JAXB.XML_ELEMENT_REF__NAME, name);
+		return annotation;
+	}
+	
+	protected void addXmlElementRef(ModifiedDeclaration declaration, int index, String name) {
+		NormalAnnotation arrayElement = newXmlElementRefAnnotation(declaration.getAst(), name);
+		addArrayElement(declaration, JAXB.XML_ELEMENT_REFS, index, JAXB.XML_ELEMENT_REFS__VALUE, arrayElement);		
+	}
+	
+	protected void moveXmlElementRef(ModifiedDeclaration declaration, int targetIndex, int sourceIndex) {
+		moveArrayElement((NormalAnnotation) declaration.getAnnotationNamed(JAXB.XML_ELEMENT_REFS), JAXB.XML_ELEMENT_REFS__VALUE, targetIndex, sourceIndex);
+	}
+	
+	protected void removeXmlElementRef(ModifiedDeclaration declaration, int index) {
+		removeArrayElement((NormalAnnotation) declaration.getAnnotationNamed(JAXB.XML_ELEMENT_REFS), JAXB.XML_ELEMENT_REFS__VALUE, index);
+	}
+	
+	public void testSyncXmlElementRefs() throws Exception {
+		createTypeWithXmlElementRefs();
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		XmlElementRefsMapping mapping = (XmlElementRefsMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
+		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		Iterable<XmlElementRef> xmlElementRefs = mapping.getXmlElementRefs();
+		assertTrue(CollectionTools.isEmpty(xmlElementRefs));
+		assertEquals(0, mapping.getXmlElementRefsSize());
+		
+		//add 2 XmlElementRef annotations
+		AnnotatedElement annotatedElement = annotatedElement(resourceAttribute);
+		annotatedElement.edit(
+				new Member.Editor() {
+					
+					public void edit(ModifiedDeclaration declaration) {
+						GenericJavaXmlElementRefsMappingTests.this.addXmlElementRef(declaration, 0, "foo");
+						GenericJavaXmlElementRefsMappingTests.this.addXmlElementRef(declaration, 1, "bar");
+					}
+				});
+		
+		xmlElementRefs = mapping.getXmlElementRefs();
+		
+		assertFalse(CollectionTools.isEmpty(mapping.getXmlElementRefs()));
+		assertEquals(2, mapping.getXmlElementRefsSize());
+		assertEquals("foo", CollectionTools.get(xmlElementRefs, 0).getQName().getName());
+		assertEquals("bar", CollectionTools.get(xmlElementRefs, 1).getQName().getName());
+		
+		// switch XmlElementRef annotations
+		annotatedElement.edit(
+				new Member.Editor() {
+					
+					public void edit(ModifiedDeclaration declaration) {
+						GenericJavaXmlElementRefsMappingTests.this.moveXmlElementRef(declaration, 0, 1);
+					}
+				});
+		
+		xmlElementRefs = mapping.getXmlElementRefs();
+		
+		assertFalse(CollectionTools.isEmpty(mapping.getXmlElementRefs()));
+		assertEquals(2, mapping.getXmlElementRefsSize());
+		assertEquals("bar", CollectionTools.get(xmlElementRefs, 0).getQName().getName());
+		assertEquals("foo", CollectionTools.get(xmlElementRefs, 1).getQName().getName());
+		
+		// remove XmlElementRef annotations
+		annotatedElement.edit(
+				new Member.Editor() {
+					
+					public void edit(ModifiedDeclaration declaration) {
+						GenericJavaXmlElementRefsMappingTests.this.removeXmlElementRef(declaration, 1);
+						GenericJavaXmlElementRefsMappingTests.this.removeXmlElementRef(declaration, 0);
+					}
+				});
+		
+		xmlElementRefs = mapping.getXmlElementRefs();
+		
+		assertTrue(CollectionTools.isEmpty(xmlElementRefs));
+		assertEquals(0, mapping.getXmlElementRefsSize());
+	}
+
+	public void testModifyXmlElementRefs() throws Exception {
+		createTypeWithXmlElementRefs();
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		XmlElementRefsMapping mapping = (XmlElementRefsMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
+		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
+		XmlElementRefsAnnotation annotation = (XmlElementRefsAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_REFS);
+		
+		Iterable<XmlElementRefAnnotation> annotations = annotation.getXmlElementRefs();
+		
+		assertEquals(0, annotation.getXmlElementRefsSize());
+		assertEquals(0, mapping.getXmlElementRefsSize());
+		
+		mapping.addXmlElementRef(0).getQName().setSpecifiedName("foo");
+		mapping.addXmlElementRef(1).getQName().setSpecifiedName("baz");
+		mapping.addXmlElementRef(1).getQName().setSpecifiedName("bar");
+		
+		annotations = annotation.getXmlElementRefs();
+		
+		assertEquals(3, annotation.getXmlElementRefsSize());
+		assertEquals(3, mapping.getXmlElementRefsSize());
+		assertEquals("foo", CollectionTools.get(annotations, 0).getName());
+		assertEquals("bar", CollectionTools.get(annotations, 1).getName());
+		assertEquals("baz", CollectionTools.get(annotations, 2).getName());
+		
+		mapping.moveXmlElementRef(1, 2);
+		
+		annotations = annotation.getXmlElementRefs();
+		
+		assertEquals(3, annotation.getXmlElementRefsSize());
+		assertEquals(3, mapping.getXmlElementRefsSize());
+		assertEquals("foo", CollectionTools.get(annotations, 0).getName());
+		assertEquals("baz", CollectionTools.get(annotations, 1).getName());
+		assertEquals("bar", CollectionTools.get(annotations, 2).getName());
+		
+		mapping.removeXmlElementRef(2);
+		mapping.removeXmlElementRef(0);
+		mapping.removeXmlElementRef(0);
+		
+		assertEquals(0, annotation.getXmlElementRefsSize());
+		assertEquals(0, mapping.getXmlElementRefsSize());
+	}
 
 	public void testChangeMappingType() throws Exception {
 		createTypeWithXmlElementRefs();
@@ -279,118 +231,118 @@ public class GenericJavaXmlElementRefsMappingTests
 		assertNull(resourceAttribute.getAnnotation(JAXB.XML_ATTRIBUTE));
 	}
 	
-//	public void testModifyXmlJavaTypeAdapter() throws Exception {
-//		createTypeWithXmlElementRef();
-//
-//		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-//		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
-//		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) persistentAttribute.getMapping();
-//		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
-//
-//		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
-//		assertNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-//		assertNull(xmlJavaTypeAdapterAnnotation);
-//
-//		xmlElementRefMapping.addXmlJavaTypeAdapter();
-//		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
-//		assertNotNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-//		assertNotNull(xmlJavaTypeAdapterAnnotation);
-//
-//		xmlElementRefMapping.removeXmlJavaTypeAdapter();
-//		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
-//		assertNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-//		assertNull(xmlJavaTypeAdapterAnnotation);
-//	}
-//
-//	public void testUpdateXmlJavaTypeAdapter() throws Exception {
-//		createTypeWithXmlElementRef();
-//
-//		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-//		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
-//		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) persistentAttribute.getMapping();
-//		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
-//
-//		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
-//		assertNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-//		assertNull(xmlJavaTypeAdapterAnnotation);
-//
-//
-//		//add an XmlJavaTypeAdapter annotation
-//		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
-//		annotatedElement.edit(new Member.Editor() {
-//			public void edit(ModifiedDeclaration declaration) {
-//				GenericJavaXmlElementRefMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
-//			}
-//		});
-//		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
-//		assertNotNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-//		assertNotNull(xmlJavaTypeAdapterAnnotation);
-//
-//		//remove the XmlJavaTypeAdapter annotation
-//		annotatedElement.edit(new Member.Editor() {
-//			public void edit(ModifiedDeclaration declaration) {
-//				GenericJavaXmlElementRefMappingTests.this.removeAnnotation(declaration, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
-//			}
-//		});
-//		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
-//		assertNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-//		assertNull(xmlJavaTypeAdapterAnnotation);
-//	}
-//	
-//	public void testModifyXmlElementWrapper() throws Exception {
-//		createTypeWithXmlElementRef();
-//
-//		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-//		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
-//		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) persistentAttribute.getMapping();
-//		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
-//
-//		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
-//		assertNull(xmlElementRefMapping.getXmlElementWrapper());
-//		assertNull(xmlElementWrapperAnnotation);
-//		
-//		xmlElementRefMapping.addXmlElementWrapper();
-//		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
-//		assertNotNull(xmlElementRefMapping.getXmlElementWrapper());
-//		assertNotNull(xmlElementWrapperAnnotation);
-//		
-//		xmlElementRefMapping.removeXmlElementWrapper();
-//		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
-//	}
-//	
-//	public void testUpdateXmlElementRefWrapper() throws Exception {
-//		createTypeWithXmlElementRef();
-//
-//		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-//		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
-//		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) persistentAttribute.getMapping();
-//		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
-//
-//		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
-//		assertNull(xmlElementRefMapping.getXmlElementWrapper());
-//		assertNull(xmlElementWrapperAnnotation);
-//		
-//		//add an XmlElementWrapper annotation
-//		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
-//		annotatedElement.edit(new Member.Editor() {
-//			public void edit(ModifiedDeclaration declaration) {
-//				GenericJavaXmlElementRefMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ELEMENT_WRAPPER);
-//			}
-//		});
-//		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
-//		assertNotNull(xmlElementRefMapping.getXmlElementWrapper());
-//		assertNotNull(xmlElementWrapperAnnotation);
-//		
-//		//remove the XmlElementWrapper annotation
-//		annotatedElement.edit(new Member.Editor() {
-//			public void edit(ModifiedDeclaration declaration) {
-//				GenericJavaXmlElementRefMappingTests.this.removeAnnotation(declaration, JAXB.XML_ELEMENT_WRAPPER);
-//			}
-//		});
-//		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
-//		assertNull(xmlElementRefMapping.getXmlElementWrapper());
-//		assertNull(xmlElementWrapperAnnotation);
-//	}
+	public void testModifyXmlJavaTypeAdapter() throws Exception {
+		createTypeWithXmlElementRefs();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementRefsMapping mapping = (XmlElementRefsMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		assertNull(mapping.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
+
+		mapping.addXmlJavaTypeAdapter();
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		assertNotNull(mapping.getXmlJavaTypeAdapter());
+		assertNotNull(xmlJavaTypeAdapterAnnotation);
+
+		mapping.removeXmlJavaTypeAdapter();
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		assertNull(mapping.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
+	}
+
+	public void testUpdateXmlJavaTypeAdapter() throws Exception {
+		createTypeWithXmlElementRefs();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementRefsMapping mapping = (XmlElementRefsMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		assertNull(mapping.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
+
+
+		//add an XmlJavaTypeAdapter annotation
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlElementRefsMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_JAVA_TYPE_ADAPTER);
+			}
+		});
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		assertNotNull(mapping.getXmlJavaTypeAdapter());
+		assertNotNull(xmlJavaTypeAdapterAnnotation);
+
+		//remove the XmlJavaTypeAdapter annotation
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlElementRefsMappingTests.this.removeAnnotation(declaration, JAXB.XML_JAVA_TYPE_ADAPTER);
+			}
+		});
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		assertNull(mapping.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
+	}
+	
+	public void testModifyXmlElementWrapper() throws Exception {
+		createTypeWithXmlElementRefs();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementRefsMapping mapping = (XmlElementRefsMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
+		assertNull(mapping.getXmlElementWrapper());
+		assertNull(xmlElementWrapperAnnotation);
+		
+		mapping.addXmlElementWrapper();
+		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
+		assertNotNull(mapping.getXmlElementWrapper());
+		assertNotNull(xmlElementWrapperAnnotation);
+		
+		mapping.removeXmlElementWrapper();
+		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
+	}
+	
+	public void testUpdateXmlElementRefWrapper() throws Exception {
+		createTypeWithXmlElementRefs();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementRefsMapping mapping = (XmlElementRefsMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
+		assertNull(mapping.getXmlElementWrapper());
+		assertNull(xmlElementWrapperAnnotation);
+		
+		//add an XmlElementWrapper annotation
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlElementRefsMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ELEMENT_WRAPPER);
+			}
+		});
+		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
+		assertNotNull(mapping.getXmlElementWrapper());
+		assertNotNull(xmlElementWrapperAnnotation);
+		
+		//remove the XmlElementWrapper annotation
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlElementRefsMappingTests.this.removeAnnotation(declaration, JAXB.XML_ELEMENT_WRAPPER);
+			}
+		});
+		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
+		assertNull(mapping.getXmlElementWrapper());
+		assertNull(xmlElementWrapperAnnotation);
+	}
 	
 	public void testModifyXmlMixed() throws Exception {
 		createTypeWithXmlElementRefs();
