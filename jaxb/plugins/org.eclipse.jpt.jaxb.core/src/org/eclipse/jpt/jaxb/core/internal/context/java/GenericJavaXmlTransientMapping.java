@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
 
 public class GenericJavaXmlTransientMapping
@@ -27,7 +28,7 @@ public class GenericJavaXmlTransientMapping
 
 	@Override
 	protected String getAnnotationName() {
-		return XmlTransientAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_TRANSIENT;
 	}
 	
 	@Override

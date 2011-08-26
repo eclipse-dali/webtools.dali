@@ -39,7 +39,7 @@ public final class SourceXmlElementRefAnnotation
 		extends SourceAnnotation
 		implements XmlElementRefAnnotation {
 	
-	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ELEMENT_REF);
 	
 	
 	private String fullyQualifiedTypeName;
@@ -140,7 +140,7 @@ public final class SourceXmlElementRefAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ELEMENT_REF;
 	}
 
 	public void initialize(CompilationUnit astRoot) {

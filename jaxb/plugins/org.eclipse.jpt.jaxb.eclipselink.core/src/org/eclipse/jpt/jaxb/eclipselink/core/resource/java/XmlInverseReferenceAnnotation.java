@@ -15,9 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 
 
 public interface XmlInverseReferenceAnnotation
-	extends Annotation {
-	
-	String ANNOTATION_NAME = ELJaxb.XML_INVERSE_REFERENCE;
+		extends Annotation {
 	
 	/**
 	 * String associated with change events to the 'mappedBy' property

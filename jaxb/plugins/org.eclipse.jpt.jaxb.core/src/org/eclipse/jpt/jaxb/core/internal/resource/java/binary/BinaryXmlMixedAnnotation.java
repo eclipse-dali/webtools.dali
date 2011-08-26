@@ -12,21 +12,21 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlMixed
  */
 public final class BinaryXmlMixedAnnotation
-	extends BinaryAnnotation
-	implements XmlMixedAnnotation
-{
-
+		extends BinaryAnnotation
+		implements XmlMixedAnnotation {
+	
 	public BinaryXmlMixedAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
-
+	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_MIXED;
 	}
 }

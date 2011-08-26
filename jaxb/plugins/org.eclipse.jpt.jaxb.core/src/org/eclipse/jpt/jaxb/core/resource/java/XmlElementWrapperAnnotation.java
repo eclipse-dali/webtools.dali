@@ -28,8 +28,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 public interface XmlElementWrapperAnnotation
 		extends QNameAnnotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_ELEMENT_WRAPPER;
-	
 	/**
 	 * Corresponds to the 'nillable' element of the XmlElementWrapper annotation.
 	 * Return null if the element does not exist in Java.

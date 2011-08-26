@@ -30,7 +30,7 @@ public final class SourceXmlEnumValueAnnotation
 	extends SourceAnnotation
 	implements XmlEnumValueAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ENUM_VALUE);
 
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
@@ -46,7 +46,7 @@ public final class SourceXmlEnumValueAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ENUM_VALUE;
 	}
 
 	public void initialize(CompilationUnit astRoot) {

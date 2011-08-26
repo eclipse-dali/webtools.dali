@@ -29,7 +29,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 public interface XmlSchemaTypeAnnotation
 		extends QNameAnnotation, NestableAnnotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_SCHEMA_TYPE;
 	/**
 	 * Corresponds to the 'type' element of the XmlSchemaType annotation.
 	 * Return null if the element does not exist in Java.

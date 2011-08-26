@@ -29,9 +29,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 public interface XmlElementRefAnnotation
 		extends QNameAnnotation, NestableAnnotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_ELEMENT_REF;
-	
-	
 	// ***** required *****
 	
 	/**

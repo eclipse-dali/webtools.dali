@@ -26,8 +26,6 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
  * @since 3.0
  */
 public interface XmlRegistryAnnotation
-	extends Annotation
-{
-	String ANNOTATION_NAME = JAXB.XML_REGISTRY;
-
+		extends Annotation {
+	
 }

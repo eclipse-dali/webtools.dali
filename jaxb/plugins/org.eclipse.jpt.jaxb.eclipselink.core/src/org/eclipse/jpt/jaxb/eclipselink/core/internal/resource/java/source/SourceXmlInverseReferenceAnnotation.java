@@ -31,7 +31,7 @@ public class SourceXmlInverseReferenceAnnotation
 		extends SourceAnnotation
 		implements XmlInverseReferenceAnnotation {
 	
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ELJaxb.XML_INVERSE_REFERENCE);
 	
 	private final DeclarationAnnotationElementAdapter<String> mappedByDeclarationAdapter;
 	private final AnnotationElementAdapter<String> mappedByAdapter;
@@ -58,7 +58,7 @@ public class SourceXmlInverseReferenceAnnotation
 	}
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return ELJaxb.XML_INVERSE_REFERENCE;
 	}
 	
 	public void initialize(CompilationUnit astRoot) {

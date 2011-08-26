@@ -15,15 +15,7 @@ import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlInlineBinaryDataAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlMimeTypeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 
 public class JavaXmlAttributeMappingDefinition
@@ -41,15 +33,15 @@ public class JavaXmlAttributeMappingDefinition
 		return INSTANCE;
 	}
 
-	private static final String[] SUPPORTING_ANNOTATION_NAMES = 
-		{XmlIDAnnotation.ANNOTATION_NAME,
-		XmlIDREFAnnotation.ANNOTATION_NAME,
-		XmlListAnnotation.ANNOTATION_NAME,
-		XmlSchemaTypeAnnotation.ANNOTATION_NAME,
-		XmlAttachmentRefAnnotation.ANNOTATION_NAME,
-		XmlMimeTypeAnnotation.ANNOTATION_NAME,
-		XmlInlineBinaryDataAnnotation.ANNOTATION_NAME,
-		XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME};
+	private static final String[] SUPPORTING_ANNOTATION_NAMES = {
+			JAXB.XML_ATTACHMENT_REF,
+			JAXB.XML_ID,
+			JAXB.XML_IDREF,
+			JAXB.XML_INLINE_BINARY_DATA,
+			JAXB.XML_JAVA_TYPE_ADAPTER,
+			JAXB.XML_LIST,
+			JAXB.XML_MIME_TYPE,
+			JAXB.XML_SCHEMA_TYPE };
 
 	/**
 	 * Enforce singleton usage
@@ -64,7 +56,7 @@ public class JavaXmlAttributeMappingDefinition
 	}
 
 	public String getAnnotationName() {
-		return XmlAttributeAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_ATTRIBUTE;
 	}
 
 	public Iterable<String> getSupportingAnnotationNames() {

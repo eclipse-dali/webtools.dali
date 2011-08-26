@@ -107,7 +107,7 @@ public class GenericJavaXmlElementMapping
 		if (this.xmlElementWrapper == null) {
 			throw new IllegalStateException();
 		}
-		this.getJavaResourceAttribute().removeAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceAttribute().removeAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 		this.setXmlElementWrapper_(null);
 	}
 	
@@ -119,7 +119,7 @@ public class GenericJavaXmlElementMapping
 	}
 	
 	protected XmlElementWrapperAnnotation getXmlElementWrapperAnnotation() {
-		return (XmlElementWrapperAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+		return (XmlElementWrapperAnnotation) this.getJavaResourceAttribute().getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 	}
 	
 	protected void syncXmlElementWrapper() {

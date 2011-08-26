@@ -30,7 +30,7 @@ public class SourceXmlTransformationAnnotation
 		extends SourceAnnotation
 		implements XmlTransformationAnnotation {
 	
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ELJaxb.XML_TRANSFORMATION);
 	
 	private final DeclarationAnnotationElementAdapter<Boolean> optionalDeclarationAdapter;
 	private final AnnotationElementAdapter<Boolean> optionalAdapter;
@@ -57,7 +57,7 @@ public class SourceXmlTransformationAnnotation
 	}
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return ELJaxb.XML_TRANSFORMATION;
 	}
 	
 	public void initialize(CompilationUnit astRoot) {

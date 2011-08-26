@@ -22,7 +22,6 @@ import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
@@ -58,13 +57,13 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 
 		contextXmlJavaTypeAdapter.setValue("foo");
-		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertEquals("foo", javaTypeAdapterAnnotation.getValue());
 		assertEquals("foo", contextXmlJavaTypeAdapter.getValue());
 
 		 //verify the xml schema type annotation is not removed when the value is set to null
 		contextXmlJavaTypeAdapter.setValue(null);
-		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(javaTypeAdapterAnnotation.getValue());
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 	}
@@ -105,13 +104,13 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, contextXmlJavaTypeAdapter.getDefaultType());
 
 		contextXmlJavaTypeAdapter.setSpecifiedType("foo");
-		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertEquals("foo", javaTypeAdapterAnnotation.getType());
 		assertEquals("foo", contextXmlJavaTypeAdapter.getSpecifiedType());
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, contextXmlJavaTypeAdapter.getDefaultType());
 
 		contextXmlJavaTypeAdapter.setSpecifiedType(null);
-		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(javaTypeAdapterAnnotation.getType());
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, contextXmlJavaTypeAdapter.getType());
 		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
@@ -161,11 +160,11 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 	//add another package annotation so that the context model object doesn't get removed when 
 	//removing the XmlJavaTypeAdapter annotation. Only "annotated" packages are added to the context model
 	protected void removeXmlJavaTypeAdapterAnnotation(ModifiedDeclaration declaration) {
-		this.addMarkerAnnotation(declaration.getDeclaration(), XmlAccessorOrderAnnotation.ANNOTATION_NAME);
-		this.removeAnnotation(declaration, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);		
+		this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ACCESSOR_ORDER);
+		this.removeAnnotation(declaration, JAXB.XML_JAVA_TYPE_ADAPTER);		
 	}
 
 	protected Annotation getXmlJavaTypeAdapterAnnotation(ModifiedDeclaration declaration) {
-		return declaration.getAnnotationNamed(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		return declaration.getAnnotationNamed(JAXB.XML_JAVA_TYPE_ADAPTER);
 	}
 }

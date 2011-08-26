@@ -26,8 +26,6 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
  * @since 3.0
  */
 public interface XmlValueAnnotation
-	extends Annotation
-{
-	String ANNOTATION_NAME = JAXB.XML_VALUE;
-
+		extends Annotation {
+	
 }

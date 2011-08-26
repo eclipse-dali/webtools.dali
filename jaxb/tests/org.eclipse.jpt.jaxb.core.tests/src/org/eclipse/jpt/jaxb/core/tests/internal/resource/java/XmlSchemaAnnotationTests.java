@@ -104,7 +104,7 @@ public class XmlSchemaAnnotationTests
 		assertNull(schemaAnnotation.getAttributeFormDefault());
 		assertSourceDoesNotContain("@XmlSchema(", cu);
 		
-		schemaAnnotation = (XmlSchemaAnnotation) packageResource.addAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) packageResource.addAnnotation(JAXB.XML_SCHEMA);
 		schemaAnnotation.setAttributeFormDefault(XmlNsForm.QUALIFIED);
 		assertEquals(XmlNsForm.QUALIFIED, schemaAnnotation.getAttributeFormDefault());
 		assertSourceContains("@XmlSchema(attributeFormDefault = QUALIFIED)", cu);
@@ -134,7 +134,7 @@ public class XmlSchemaAnnotationTests
 		assertNull(schemaAnnotation.getElementFormDefault());
 		assertSourceDoesNotContain("@XmlSchema(", cu);
 		
-		schemaAnnotation = (XmlSchemaAnnotation) packageResource.addAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) packageResource.addAnnotation(JAXB.XML_SCHEMA);
 		schemaAnnotation.setElementFormDefault(XmlNsForm.QUALIFIED);
 		assertEquals(XmlNsForm.QUALIFIED, schemaAnnotation.getElementFormDefault());
 		assertSourceContains("@XmlSchema(elementFormDefault = QUALIFIED)", cu);
@@ -154,7 +154,7 @@ public class XmlSchemaAnnotationTests
 		assertNull(schemaAnnotation.getLocation());
 		assertSourceDoesNotContain("@XmlSchema(", cu);
 		
-		schemaAnnotation = (XmlSchemaAnnotation) packageResource.addAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) packageResource.addAnnotation(JAXB.XML_SCHEMA);
 		schemaAnnotation.setLocation(TEST_LOCATION);
 		assertEquals(TEST_LOCATION, schemaAnnotation.getLocation());
 		assertSourceContains("@XmlSchema(location = \"" + TEST_LOCATION + "\")", cu);
@@ -174,7 +174,7 @@ public class XmlSchemaAnnotationTests
 		assertNull(schemaAnnotation.getNamespace());
 		assertSourceDoesNotContain("@XmlSchema(", cu);
 		
-		schemaAnnotation = (XmlSchemaAnnotation) packageResource.addAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) packageResource.addAnnotation(JAXB.XML_SCHEMA);
 		schemaAnnotation.setNamespace(TEST_NAMESPACE);
 		assertEquals(TEST_NAMESPACE, schemaAnnotation.getNamespace());
 		assertSourceContains("@XmlSchema(namespace = \"" + TEST_NAMESPACE + "\")", cu);

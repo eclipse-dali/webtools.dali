@@ -29,6 +29,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
@@ -100,7 +101,7 @@ public abstract class AbstractJavaPersistentType
 	// ********** xml type annotation **********
 	
 	protected XmlTypeAnnotation getXmlTypeAnnotation() {
-		return (XmlTypeAnnotation) this.getJavaResourceType().getNonNullAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		return (XmlTypeAnnotation) this.getJavaResourceType().getNonNullAnnotation(JAXB.XML_TYPE);
 	}
 	
 	
@@ -205,11 +206,11 @@ public abstract class AbstractJavaPersistentType
 	
 	public XmlRootElement setRootElement(String name) {
 		if (name == null) {
-			this.getJavaResourceType().removeAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+			this.getJavaResourceType().removeAnnotation(JAXB.XML_ROOT_ELEMENT);
 			this.setRootElement_(null);
 			return null;
 		}
-		XmlRootElementAnnotation resourceRootElement = (XmlRootElementAnnotation) getJavaResourceType().addAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		XmlRootElementAnnotation resourceRootElement = (XmlRootElementAnnotation) getJavaResourceType().addAnnotation(JAXB.XML_ROOT_ELEMENT);
 		resourceRootElement.setName(name);
 		XmlRootElement contextRootElement = this.buildRootElement(resourceRootElement);
 		this.setRootElement_(contextRootElement);
@@ -247,7 +248,7 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	protected XmlRootElementAnnotation getRootElementAnnotation() {
-		return (XmlRootElementAnnotation) this.getJavaResourceType().getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		return (XmlRootElementAnnotation) this.getJavaResourceType().getAnnotation(JAXB.XML_ROOT_ELEMENT);
 	}
 	
 	

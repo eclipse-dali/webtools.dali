@@ -270,7 +270,7 @@ public class GenericJavaPersistentClass
 	}
 	
 	protected XmlAccessorTypeAnnotation getAccessorTypeAnnotation() {
-		return (XmlAccessorTypeAnnotation) getJavaResourceType().getNonNullAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
+		return (XmlAccessorTypeAnnotation) getJavaResourceType().getNonNullAnnotation(JAXB.XML_ACCESSOR_TYPE);
 	}
 	
 	/**
@@ -337,7 +337,7 @@ public class GenericJavaPersistentClass
 	}
 	
 	protected XmlAccessorOrderAnnotation getAccessorOrderAnnotation() {
-		return (XmlAccessorOrderAnnotation) getJavaResourceType().getNonNullAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
+		return (XmlAccessorOrderAnnotation) getJavaResourceType().getNonNullAnnotation(JAXB.XML_ACCESSOR_ORDER);
 	}
 	
 	/**

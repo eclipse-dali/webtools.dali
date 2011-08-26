@@ -22,6 +22,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbTransientClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
@@ -74,7 +75,7 @@ public class GenericJavaTransientClass
 	// ********** xml transient annotation **********
 
 	protected XmlTransientAnnotation getXmlTransientAnnotation() {
-		return (XmlTransientAnnotation) this.getJavaResourceType().getNonNullAnnotation(XmlTransientAnnotation.ANNOTATION_NAME);
+		return (XmlTransientAnnotation) this.getJavaResourceType().getNonNullAnnotation(JAXB.XML_TRANSIENT);
 	}
 	
 	
@@ -190,7 +191,7 @@ public class GenericJavaTransientClass
 	}
 
 	protected XmlAccessorTypeAnnotation getAccessorTypeAnnotation() {
-		return (XmlAccessorTypeAnnotation) getJavaResourceType().getNonNullAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
+		return (XmlAccessorTypeAnnotation) getJavaResourceType().getNonNullAnnotation(JAXB.XML_ACCESSOR_TYPE);
 	}
 
 
@@ -224,7 +225,7 @@ public class GenericJavaTransientClass
 	}
 
 	protected XmlAccessorOrderAnnotation getAccessorOrderAnnotation() {
-		return (XmlAccessorOrderAnnotation) getJavaResourceType().getNonNullAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
+		return (XmlAccessorOrderAnnotation) getJavaResourceType().getNonNullAnnotation(JAXB.XML_ACCESSOR_ORDER);
 	}
 
 	// **************** validation ********************************************

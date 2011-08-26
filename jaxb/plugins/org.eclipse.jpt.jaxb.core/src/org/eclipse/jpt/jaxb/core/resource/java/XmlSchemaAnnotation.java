@@ -30,8 +30,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 public interface XmlSchemaAnnotation
 		extends Annotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_SCHEMA;
-	
 	/**
 	 * Corresponds to the 'attributeFormDefault' element of the XmlSchema annotation.
 	 * Return null if the element does not exist in Java.

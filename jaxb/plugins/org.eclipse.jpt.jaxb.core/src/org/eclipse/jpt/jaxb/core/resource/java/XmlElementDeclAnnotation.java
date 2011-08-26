@@ -27,10 +27,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlElementDeclAnnotation
-	extends Annotation
-{
-	String ANNOTATION_NAME = JAXB.XML_ELEMENT_DECL;
-
+		extends Annotation {
+	
 	/**
 	 * Corresponds to the 'name' element of the XmlElementDecl annotation.
 	 * Return null if the element does not exist in Java.

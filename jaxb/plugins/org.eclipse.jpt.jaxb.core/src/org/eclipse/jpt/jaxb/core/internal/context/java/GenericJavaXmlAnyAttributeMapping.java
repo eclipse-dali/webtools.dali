@@ -20,6 +20,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -56,7 +57,7 @@ public class GenericJavaXmlAnyAttributeMapping
 
 	@Override
 	protected String getAnnotationName() {
-		return XmlAnyAttributeAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_ANY_ATTRIBUTE;
 	}
 
 	//****************** XmlJavaTypeAdapter *********************

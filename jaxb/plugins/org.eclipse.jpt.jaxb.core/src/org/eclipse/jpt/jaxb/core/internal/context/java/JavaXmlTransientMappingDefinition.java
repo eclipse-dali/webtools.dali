@@ -15,7 +15,7 @@ import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 
 public class JavaXmlTransientMappingDefinition
@@ -47,7 +47,7 @@ public class JavaXmlTransientMappingDefinition
 	}
 
 	public String getAnnotationName() {
-		return XmlTransientAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_TRANSIENT;
 	}
 
 	public Iterable<String> getSupportingAnnotationNames() {

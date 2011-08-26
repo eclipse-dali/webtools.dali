@@ -33,7 +33,7 @@ public final class BinaryXmlEnumAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ENUM;
 	}
 
 	@Override

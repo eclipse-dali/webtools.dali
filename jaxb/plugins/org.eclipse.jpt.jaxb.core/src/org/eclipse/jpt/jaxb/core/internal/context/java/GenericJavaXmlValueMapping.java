@@ -15,6 +15,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlValueAnnotation;
 
@@ -48,7 +49,7 @@ public class GenericJavaXmlValueMapping
 
 	@Override
 	protected String getAnnotationName() {
-		return XmlValueAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_VALUE;
 	}
 
 	//****************** XmlJavaTypeAdapter *********************

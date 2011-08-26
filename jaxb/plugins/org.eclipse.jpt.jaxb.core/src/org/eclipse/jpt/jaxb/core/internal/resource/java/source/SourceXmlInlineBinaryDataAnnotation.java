@@ -15,29 +15,32 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotat
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlInlineBinaryDataAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlInlineBinaryDataAnnotation
  */
 public final class SourceXmlInlineBinaryDataAnnotation
-	extends SourceAnnotation
-	implements XmlInlineBinaryDataAnnotation
-{
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-
+		extends SourceAnnotation
+		implements XmlInlineBinaryDataAnnotation {
+	
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_INLINE_BINARY_DATA);
+	
+	
 	public SourceXmlInlineBinaryDataAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 	}
-
+	
+	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_INLINE_BINARY_DATA;
 	}
-
+	
 	public void initialize(CompilationUnit astRoot) {
 		//no-op
 	}
-
+	
 	public void synchronizeWith(CompilationUnit astRoot) {
 		//no-op
 	}

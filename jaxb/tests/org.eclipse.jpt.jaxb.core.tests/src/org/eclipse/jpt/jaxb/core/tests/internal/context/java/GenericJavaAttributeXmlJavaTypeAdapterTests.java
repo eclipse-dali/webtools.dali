@@ -61,13 +61,13 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 
 		contextXmlJavaTypeAdapter.setValue("foo");
-		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertEquals("foo", javaTypeAdapterAnnotation.getValue());
 		assertEquals("foo", contextXmlJavaTypeAdapter.getValue());
 
 		 //verify the xml schema type annotation is not removed when the value is set to null
 		contextXmlJavaTypeAdapter.setValue(null);
-		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(javaTypeAdapterAnnotation.getValue());
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 	}
@@ -108,13 +108,13 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 		assertEquals("int", contextXmlJavaTypeAdapter.getDefaultType());
 
 		contextXmlJavaTypeAdapter.setSpecifiedType("foo");
-		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertEquals("foo", javaTypeAdapterAnnotation.getType());
 		assertEquals("foo", contextXmlJavaTypeAdapter.getSpecifiedType());
 		assertEquals("int", contextXmlJavaTypeAdapter.getDefaultType());
 
 		contextXmlJavaTypeAdapter.setSpecifiedType(null);
-		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(javaTypeAdapterAnnotation.getType());
 		assertEquals("int", contextXmlJavaTypeAdapter.getType());
 		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
@@ -162,10 +162,10 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 	}
 
 	protected void removeXmlJavaTypeAdapterAnnotation(ModifiedDeclaration declaration) {
-		this.removeAnnotation(declaration, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);		
+		this.removeAnnotation(declaration, JAXB.XML_JAVA_TYPE_ADAPTER);		
 	}
 
 	protected Annotation getXmlJavaTypeAdapterAnnotation(ModifiedDeclaration declaration) {
-		return declaration.getAnnotationNamed(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		return declaration.getAnnotationNamed(JAXB.XML_JAVA_TYPE_ADAPTER);
 	}
 }

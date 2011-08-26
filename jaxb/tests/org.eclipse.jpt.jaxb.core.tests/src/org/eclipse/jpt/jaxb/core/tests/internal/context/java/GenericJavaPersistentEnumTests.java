@@ -62,16 +62,16 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		assertNull(contextEnum.getFactoryClass());
 		
 		contextEnum.setFactoryClass("foo");
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryClass());
 		assertEquals("foo", contextEnum.getFactoryClass());
 		
 		contextEnum.setFactoryClass(null);
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getFactoryClass());
 		assertNull(contextEnum.getFactoryClass());
 	
-		resourceEnum.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		resourceEnum.removeAnnotation(JAXB.XML_TYPE);
 		assertNull(contextEnum.getFactoryClass());
 	}
 	
@@ -113,20 +113,20 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		assertNull(contextEnum.getFactoryMethod());
 		
 		contextEnum.setFactoryMethod("foo");
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryMethod());
 		assertEquals("foo", contextEnum.getFactoryMethod());
 		
 		contextEnum.setFactoryMethod(null);
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getFactoryMethod());
 		assertNull(contextEnum.getFactoryMethod());
 	
-		resourceEnum.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		resourceEnum.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set factoryMethod again, this time starting with no XmlType annotation
 		contextEnum.setFactoryMethod("foo");
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryMethod());
 		assertEquals("foo", contextEnum.getFactoryMethod());
 	}
@@ -172,22 +172,22 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		assertEquals(defaultXmlTypeName, contextEnum.getQName().getName());
 		
 		contextEnum.getQName().setSpecifiedName("foo");
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getName());
 		assertEquals("foo", contextEnum.getQName().getSpecifiedName());
 		assertEquals("foo", contextEnum.getQName().getName());
 		
 		contextEnum.getQName().setSpecifiedName(null);
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getName());
 		assertNull(contextEnum.getQName().getSpecifiedName());
 		assertEquals(defaultXmlTypeName, contextEnum.getQName().getName());
 		
-		resourceEnum.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		resourceEnum.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set name again, this time starting with no XmlType annotation
 		contextEnum.getQName().setSpecifiedName("foo");
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getName());
 		assertEquals("foo", contextEnum.getQName().getSpecifiedName());
 		assertEquals("foo", contextEnum.getQName().getName());
@@ -237,22 +237,22 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		assertEquals("", contextEnum.getQName().getNamespace());
 		
 		contextEnum.getQName().setSpecifiedNamespace("foo");
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getNamespace());
 		assertEquals("foo", contextEnum.getQName().getSpecifiedNamespace());
 		assertEquals("foo", contextEnum.getQName().getNamespace());
 		
 		contextEnum.getQName().setSpecifiedNamespace(null);
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getNamespace());
 		assertNull(contextEnum.getQName().getSpecifiedNamespace());
 		assertEquals("", contextEnum.getQName().getNamespace());
 		
-		resourceEnum.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		resourceEnum.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set namespace again, this time starting with no XmlType annotation
 		contextEnum.getQName().setSpecifiedNamespace("foo");
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getNamespace());
 		assertEquals("foo", contextEnum.getQName().getSpecifiedNamespace());
 		assertEquals("foo", contextEnum.getQName().getNamespace());
@@ -344,7 +344,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		contextEnum.addProp(0, "foo");
 		contextEnum.addProp(0, "baz");
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		ListIterator<String> props = xmlTypeAnnotation.getPropOrder().iterator();
 
 		assertEquals("baz", props.next());
@@ -362,7 +362,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		contextEnum.addProp(1, "foo");
 		contextEnum.addProp(0, "baz");
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 		ListIterator<String> props = xmlTypeAnnotation.getPropOrder().iterator();
 
 		assertEquals("baz", props.next());
@@ -380,7 +380,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		contextEnum.addProp(1, "foo");
 		contextEnum.addProp(2, "baz");
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 
 		contextEnum.removeProp(1);
 
@@ -408,7 +408,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		contextEnum.addProp(1, "foo");
 		contextEnum.addProp(2, "baz");
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceEnum.getAnnotation(JAXB.XML_TYPE);
 
 		assertEquals(3, xmlTypeAnnotation.getPropOrderSize());		
 
@@ -546,11 +546,11 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	protected Annotation getXmlTypeAnnotation(ModifiedDeclaration declaration) {
-		return declaration.getAnnotationNamed(XmlTypeAnnotation.ANNOTATION_NAME);
+		return declaration.getAnnotationNamed(JAXB.XML_TYPE);
 	}
 
 	protected Annotation getXmlEnumAnnotation(ModifiedDeclaration declaration) {
-		return declaration.getAnnotationNamed(XmlEnumAnnotation.ANNOTATION_NAME);
+		return declaration.getAnnotationNamed(JAXB.XML_ENUM);
 	}
 
 	protected void moveProp(ModifiedDeclaration declaration, int targetIndex, int sourceIndex) {
@@ -571,13 +571,13 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		assertFalse(contextEnum.isRootElement());
 
 		contextEnum.setRootElement("foo");
-		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceEnum.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceEnum.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertEquals("foo", xmlRootElementAnnotation.getName());
 		assertEquals("foo", contextEnum.getRootElement().getQName().getName());
 		assertTrue(contextEnum.isRootElement());
 
 		contextEnum.setRootElement(null);
-		xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceEnum.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceEnum.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertNull(xmlRootElementAnnotation);
 		assertNull(contextEnum.getRootElement());
 		assertFalse(contextEnum.isRootElement());
@@ -623,17 +623,17 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		assertNull(contextEnum.getEnumType());
 		
 		contextEnum.setEnumType("Integer");
-		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) resourceEnum.getAnnotation(XmlEnumAnnotation.ANNOTATION_NAME);
+		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) resourceEnum.getAnnotation(JAXB.XML_ENUM);
 		assertEquals("Integer", xmlEnumAnnotation.getValue());
 		assertEquals("Integer", contextEnum.getEnumType());
 		
 		contextEnum.setEnumType(null);
-		xmlEnumAnnotation = (XmlEnumAnnotation) resourceEnum.getAnnotation(XmlEnumAnnotation.ANNOTATION_NAME);
+		xmlEnumAnnotation = (XmlEnumAnnotation) resourceEnum.getAnnotation(JAXB.XML_ENUM);
 		assertNull(xmlEnumAnnotation.getValue());
 		assertNull(contextEnum.getEnumType());
 	
-		resourceEnum.addAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
-		resourceEnum.removeAnnotation(XmlEnumAnnotation.ANNOTATION_NAME);
+		resourceEnum.addAnnotation(JAXB.XML_TYPE);
+		resourceEnum.removeAnnotation(JAXB.XML_ENUM);
 		contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		assertNull(contextEnum.getEnumType());
 	}

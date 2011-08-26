@@ -41,7 +41,7 @@ public final class SourceXmlSeeAlsoAnnotation
 		extends SourceAnnotation
 		implements XmlSeeAlsoAnnotation {
 	
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_SEE_ALSO);
 	
 	private final DeclarationAnnotationElementAdapter<String[]> valueDeclarationAdapter;
 	
@@ -72,7 +72,7 @@ public final class SourceXmlSeeAlsoAnnotation
 	}
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_SEE_ALSO;
 	}
 	
 	public void initialize(CompilationUnit astRoot) {

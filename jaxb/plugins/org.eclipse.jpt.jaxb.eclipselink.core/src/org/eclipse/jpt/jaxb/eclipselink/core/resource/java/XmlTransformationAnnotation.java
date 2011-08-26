@@ -29,8 +29,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 public interface XmlTransformationAnnotation
 		extends Annotation {
 	
-	String ANNOTATION_NAME = ELJaxb.XML_TRANSFORMATION;
-	
 	/**
 	 * String associated with change events to the 'optional' property
 	 */

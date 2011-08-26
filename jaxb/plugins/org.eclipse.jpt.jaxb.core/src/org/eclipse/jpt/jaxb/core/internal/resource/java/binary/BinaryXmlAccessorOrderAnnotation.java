@@ -34,7 +34,7 @@ public final class BinaryXmlAccessorOrderAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ACCESSOR_ORDER;
 	}
 
 	@Override

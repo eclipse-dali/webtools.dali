@@ -29,8 +29,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 public interface XmlNsAnnotation
 		extends NestableAnnotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_NS;
-	
 	/**
 	 * Corresponds to the 'namespaceURI' element of the XmlNs annotation.
 	 * Return null if the element does not exist in Java.

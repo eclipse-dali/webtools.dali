@@ -32,7 +32,7 @@ public final class SourceXmlElementWrapperAnnotation
 	extends SourceAnnotation
 	implements XmlElementWrapperAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ELEMENT_WRAPPER);
 
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private final AnnotationElementAdapter<String> nameAdapter;
@@ -93,7 +93,7 @@ public final class SourceXmlElementWrapperAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ELEMENT_WRAPPER;
 	}
 
 	public void initialize(CompilationUnit astRoot) {

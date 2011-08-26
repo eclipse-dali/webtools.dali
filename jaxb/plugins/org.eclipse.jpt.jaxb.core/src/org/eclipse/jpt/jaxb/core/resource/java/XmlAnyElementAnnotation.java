@@ -27,10 +27,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlAnyElementAnnotation
-	extends Annotation
-{
-	String ANNOTATION_NAME = JAXB.XML_ANY_ELEMENT;
-
+		extends Annotation {
+	
 	/**
 	 * Corresponds to the 'lax' element of the XmlAnyElement annotation.
 	 * Return null if the element does not exist in Java.

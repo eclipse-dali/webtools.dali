@@ -26,8 +26,6 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
  * @since 3.0
  */
 public interface XmlListAnnotation
-	extends Annotation
-{
-	String ANNOTATION_NAME = JAXB.XML_LIST;
-
+		extends Annotation {
+	
 }

@@ -26,8 +26,6 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
  * @since 3.0
  */
 public interface XmlInlineBinaryDataAnnotation
-	extends Annotation
-{
-	String ANNOTATION_NAME = JAXB.XML_INLINE_BINARY_DATA;
-
+		extends Annotation {
+	
 }

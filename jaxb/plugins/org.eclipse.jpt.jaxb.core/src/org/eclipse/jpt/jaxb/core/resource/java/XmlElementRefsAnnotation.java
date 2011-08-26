@@ -28,9 +28,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 public interface XmlElementRefsAnnotation
 		extends Annotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_ELEMENT_REFS;
-	
-	
 	/**
 	 * Corresponds to the 'value' element of the XmlElementRefs annotation.
 	 * Return an empty iterator if the element does not exist in Java.

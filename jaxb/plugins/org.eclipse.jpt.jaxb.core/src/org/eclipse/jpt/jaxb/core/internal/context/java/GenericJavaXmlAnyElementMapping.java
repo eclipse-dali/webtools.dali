@@ -65,7 +65,7 @@ public class GenericJavaXmlAnyElementMapping
 
 	@Override
 	protected String getAnnotationName() {
-		return XmlAnyElementAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_ANY_ELEMENT;
 	}
 
 

@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRegistryAnnotation;
 
 
@@ -40,7 +40,7 @@ public class GenericJavaRegistry
 	}
 	
 	protected XmlRegistryAnnotation getAnnotation() {
-		return (XmlRegistryAnnotation) getJavaResourceType().getNonNullAnnotation(XmlRegistryAnnotation.ANNOTATION_NAME);
+		return (XmlRegistryAnnotation) getJavaResourceType().getNonNullAnnotation(JAXB.XML_REGISTRY);
 	}
 	
 	
@@ -94,7 +94,7 @@ public class GenericJavaRegistry
 	}
 
 	protected static boolean methodHasXmlElementDeclAnnotation(JavaResourceMethod method) {
-		return method.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME) != null;
+		return method.getAnnotation(JAXB.XML_ELEMENT_DECL) != null;
 	}
 	
 	protected static boolean methodStartsWithCreate(JavaResourceMethod method) {

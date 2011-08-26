@@ -30,7 +30,7 @@ public class SourceXmlElementsAnnotation
 		implements XmlElementsAnnotation {
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER 
-	= new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	= new SimpleDeclarationAnnotationAdapter(JAXB.XML_ELEMENTS);
 
 	
 	private final XmlElementsAnnotationContainer xmlElementsContainer = new XmlElementsAnnotationContainer();
@@ -44,7 +44,7 @@ public class SourceXmlElementsAnnotation
 	}
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ELEMENTS;
 	}
 	
 	public void initialize(CompilationUnit astRoot) {

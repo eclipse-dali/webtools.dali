@@ -24,6 +24,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableType;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -65,7 +66,7 @@ public class GenericJavaXmlAttributeMapping
 
 	@Override
 	protected String getAnnotationName() {
-		return XmlAttributeAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_ATTRIBUTE;
 	}
 	
 	

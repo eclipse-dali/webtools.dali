@@ -28,8 +28,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 public interface XmlSeeAlsoAnnotation
 		extends Annotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_SEE_ALSO;
-	
 	/**
 	 * Change notification constant associated with the value element
 	 */

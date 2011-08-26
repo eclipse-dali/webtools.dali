@@ -15,8 +15,7 @@ import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyAttributeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 
 public class JavaXmlAnyAttributeMappingDefinition
@@ -34,8 +33,8 @@ public class JavaXmlAnyAttributeMappingDefinition
 		return INSTANCE;
 	}
 
-	private static final String[] SUPPORTING_ANNOTATION_NAMES = 
-		{XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME};
+	private static final String[] SUPPORTING_ANNOTATION_NAMES = { 
+			JAXB.XML_JAVA_TYPE_ADAPTER };
 
 	/**
 	 * Enforce singleton usage
@@ -50,7 +49,7 @@ public class JavaXmlAnyAttributeMappingDefinition
 	}
 
 	public String getAnnotationName() {
-		return XmlAnyAttributeAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_ANY_ATTRIBUTE;
 	}
 
 	public Iterable<String> getSupportingAnnotationNames() {

@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.xsd.util.XSDUtil;
@@ -50,13 +49,13 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		assertNull(contextXmlSchemaType.getQName().getName());
 		
 		contextXmlSchemaType.getQName().setSpecifiedName("foo");
-		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		assertEquals("foo", schemaTypeAnnotation.getName());
 		assertEquals("foo", contextXmlSchemaType.getQName().getName());
 		
 		 //verify the xml schema type annotation is not removed when the name is set to null
 		contextXmlSchemaType.getQName().setSpecifiedName(null);
-		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		assertNull(schemaTypeAnnotation.getName());
 		assertNull(contextXmlSchemaType.getQName().getName());
 	}
@@ -97,14 +96,14 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
 		
 		contextXmlSchemaType.getQName().setSpecifiedNamespace("foo");
-		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		assertEquals("foo", schemaTypeAnnotation.getNamespace());
 		assertEquals("foo", contextXmlSchemaType.getQName().getSpecifiedNamespace());
 		assertEquals("foo", contextXmlSchemaType.getQName().getNamespace());
 		
 		 //verify the xml schema type annotation is not removed when the namespace is set to null
 		contextXmlSchemaType.getQName().setSpecifiedNamespace(null);
-		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		assertNull(schemaTypeAnnotation.getNamespace());
 		assertNull(contextXmlSchemaType.getQName().getSpecifiedNamespace());
 		assertEquals(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, contextXmlSchemaType.getQName().getNamespace());
@@ -147,13 +146,13 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		assertNull(contextXmlSchemaType.getType());
 		
 		contextXmlSchemaType.setType("foo");
-		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		assertEquals("foo", schemaTypeAnnotation.getType());
 		assertEquals("foo", contextXmlSchemaType.getType());
 		
 		 //verify the xml schema type annotation is not removed when the type is set to null
 		contextXmlSchemaType.setType(null);
-		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		assertNull(schemaTypeAnnotation.getType());
 		assertNull(contextXmlSchemaType.getType());
 	}
@@ -197,11 +196,11 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 	//add another package annotation so that the context model object doesn't get removed when 
 	//removing the XmlSchemaType annotation. Only "annotated" packages are added to the context model
 	protected void removeXmlSchemaTypeAnnotation(ModifiedDeclaration declaration) {
-		this.addMarkerAnnotation(declaration.getDeclaration(), XmlAccessorOrderAnnotation.ANNOTATION_NAME);
-		this.removeAnnotation(declaration, XmlSchemaTypeAnnotation.ANNOTATION_NAME);		
+		this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ACCESSOR_ORDER);
+		this.removeAnnotation(declaration, JAXB.XML_SCHEMA_TYPE);		
 	}
 
 	protected Annotation getXmlSchemaTypeAnnotation(ModifiedDeclaration declaration) {
-		return declaration.getAnnotationNamed(XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		return declaration.getAnnotationNamed(JAXB.XML_SCHEMA_TYPE);
 	}
 }

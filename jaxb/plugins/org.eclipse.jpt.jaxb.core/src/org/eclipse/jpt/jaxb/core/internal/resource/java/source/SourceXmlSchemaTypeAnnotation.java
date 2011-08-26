@@ -37,7 +37,7 @@ public class SourceXmlSchemaTypeAnnotation
 		extends SourceAnnotation
 		implements XmlSchemaTypeAnnotation {
 	
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_SCHEMA_TYPE);
 	public static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_SCHEMA_TYPES);
 	
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -114,7 +114,7 @@ public class SourceXmlSchemaTypeAnnotation
 	}
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_SCHEMA_TYPE;
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
@@ -246,6 +246,7 @@ public class SourceXmlSchemaTypeAnnotation
 	 * convenience implementation of method from NestableAnnotation interface
 	 * for subclasses
 	 */
+	@Override
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}

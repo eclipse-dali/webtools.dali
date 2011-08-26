@@ -44,7 +44,7 @@ public final class BinaryXmlTypeAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_TYPE;
 	}
 
 	@Override

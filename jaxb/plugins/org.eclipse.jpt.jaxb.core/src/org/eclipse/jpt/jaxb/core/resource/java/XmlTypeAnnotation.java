@@ -29,8 +29,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 public interface XmlTypeAnnotation
 		extends QNameAnnotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_TYPE;
-
 	/**
 	 * Corresponds to the 'factoryClass' element of the XmlType annotation.
 	 * Return null if the element does not exist in Java.

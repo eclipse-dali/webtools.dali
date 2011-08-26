@@ -36,7 +36,7 @@ public final class BinaryXmlJavaTypeAdapterAnnotation
 	}
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_JAVA_TYPE_ADAPTER;
 	}
 	
 	@Override

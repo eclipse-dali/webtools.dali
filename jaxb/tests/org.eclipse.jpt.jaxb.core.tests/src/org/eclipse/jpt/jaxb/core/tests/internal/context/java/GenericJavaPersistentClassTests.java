@@ -43,11 +43,9 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
@@ -271,22 +269,22 @@ public class GenericJavaPersistentClassTests
 		assertNull(persistentClass.getFactoryClass());
 		
 		persistentClass.setFactoryClass("foo");
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryClass());
 		assertEquals("foo", persistentClass.getFactoryClass());
 		
 		persistentClass.setFactoryClass(null);
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getFactoryClass());
 		assertNull(persistentClass.getFactoryClass());
 	
 		//add another annotation so that the context model does not get blown away
 		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
-		resourceType.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		resourceType.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set factoryClass again, this time starting with no XmlType annotation
 		persistentClass.setFactoryClass("foo");
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryClass());
 		assertEquals("foo", persistentClass.getFactoryClass());
 	}
@@ -328,22 +326,22 @@ public class GenericJavaPersistentClassTests
 		assertNull(persistentClass.getFactoryMethod());
 		
 		persistentClass.setFactoryMethod("foo");
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryMethod());
 		assertEquals("foo", persistentClass.getFactoryMethod());
 		
 		persistentClass.setFactoryMethod(null);
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getFactoryMethod());
 		assertNull(persistentClass.getFactoryMethod());
 	
 		//add another annotation so that the context model does not get blown away
 		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
-		resourceType.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		resourceType.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set factoryMethod again, this time starting with no XmlType annotation
 		persistentClass.setFactoryMethod("foo");
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryMethod());
 		assertEquals("foo", persistentClass.getFactoryMethod());
 	}
@@ -388,24 +386,24 @@ public class GenericJavaPersistentClassTests
 		assertEquals(defaultXmlTypeName, persistentClass.getQName().getName());
 		
 		persistentClass.getQName().setSpecifiedName("foo");
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getName());
 		assertEquals("foo", persistentClass.getQName().getSpecifiedName());
 		assertEquals("foo", persistentClass.getQName().getName());
 		
 		persistentClass.getQName().setSpecifiedName(null);
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getName());
 		assertNull(persistentClass.getQName().getSpecifiedName());
 		assertEquals(defaultXmlTypeName, persistentClass.getQName().getName());	
 		
 		//add another annotation so that the context model does not get blown away
 		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
-		resourceType.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		resourceType.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set name again, this time starting with no XmlType annotation
 		persistentClass.getQName().setSpecifiedName("foo");
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getName());
 		assertEquals("foo", persistentClass.getQName().getSpecifiedName());
 		assertEquals("foo", persistentClass.getQName().getName());
@@ -454,24 +452,24 @@ public class GenericJavaPersistentClassTests
 		assertEquals("", persistentClass.getQName().getNamespace());
 		
 		persistentClass.getQName().setSpecifiedNamespace("foo");
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getNamespace());
 		assertEquals("foo", persistentClass.getQName().getSpecifiedNamespace());
 		assertEquals("foo", persistentClass.getQName().getNamespace());
 		
 		persistentClass.getQName().setSpecifiedNamespace(null);
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getNamespace());
 		assertNull(persistentClass.getQName().getSpecifiedNamespace());
 		assertEquals("", persistentClass.getQName().getNamespace());
 		
 		//add another annotation so that the context model does not get blown away
 		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
-		resourceType.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		resourceType.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set namespace again, this time starting with no XmlType annotation
 		persistentClass.getQName().setSpecifiedNamespace("foo");
-		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getNamespace());
 		assertEquals("foo", persistentClass.getQName().getSpecifiedNamespace());
 		assertEquals("foo", persistentClass.getQName().getNamespace());
@@ -519,7 +517,7 @@ public class GenericJavaPersistentClassTests
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getDefaultAccessType());
 		
 		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
-		XmlAccessorTypeAnnotation accessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
+		XmlAccessorTypeAnnotation accessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.FIELD, accessorTypeAnnotation.getValue());
 		assertEquals(XmlAccessType.FIELD, persistentClass.getAccessType());
 
@@ -532,7 +530,7 @@ public class GenericJavaPersistentClassTests
 		assertEquals(XmlAccessType.NONE, persistentClass.getAccessType());
 		
 		persistentClass.setSpecifiedAccessType(null);
-		accessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
+		accessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
 		assertNull(accessorTypeAnnotation.getValue());
 		assertNull(persistentClass.getSpecifiedAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getAccessType());
@@ -553,7 +551,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, XmlAccessorTypeAnnotation.ANNOTATION_NAME, JAXB.XML_ACCESS_TYPE__FIELD);
+				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, JAXB.XML_ACCESS_TYPE__FIELD);
 			}
 		});
 		assertEquals(XmlAccessType.FIELD, persistentClass.getAccessType());
@@ -561,7 +559,7 @@ public class GenericJavaPersistentClassTests
 		//set the accesser type value to PUBLIC_MEMBER
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, XmlAccessorTypeAnnotation.ANNOTATION_NAME, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
 			}
 		});
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getAccessType());
@@ -569,14 +567,14 @@ public class GenericJavaPersistentClassTests
 		//set the accesser type value to NONE
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, XmlAccessorTypeAnnotation.ANNOTATION_NAME, JAXB.XML_ACCESS_TYPE__NONE);
+				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, JAXB.XML_ACCESS_TYPE__NONE);
 			}
 		});
 		assertEquals(XmlAccessType.NONE, persistentClass.getAccessType());
 		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAccessorTypeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ACCESSOR_TYPE);
 			}
 		});
 		assertNull(persistentClass.getSpecifiedAccessType());
@@ -628,7 +626,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(persistentClass.getJavaResourceType());
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlTypeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_TYPE);
 			}
 		});
 		assertEquals(persistentClass, childPersistentClass.getSuperClass());
@@ -644,12 +642,12 @@ public class GenericJavaPersistentClassTests
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getDefaultAccessOrder());
 
 		persistentClass.setSpecifiedAccessOrder(XmlAccessOrder.UNDEFINED);
-		XmlAccessorOrderAnnotation accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
+		XmlAccessorOrderAnnotation accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder.UNDEFINED, accessorOrderAnnotation.getValue());
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getAccessOrder());
 
 		persistentClass.setSpecifiedAccessOrder(null);
-		accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
+		accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
 		assertNull(accessorOrderAnnotation.getValue());
 		assertNull(persistentClass.getSpecifiedAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getAccessOrder());
@@ -669,14 +667,14 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, XmlAccessorOrderAnnotation.ANNOTATION_NAME, JAXB.XML_ACCESS_ORDER__UNDEFINED);
+				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_ORDER, JAXB.XML_ACCESS_ORDER__UNDEFINED);
 			}
 		});
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getAccessOrder());
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAccessorOrderAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ACCESSOR_ORDER);
 			}
 		});
 		assertNull(persistentClass.getSpecifiedAccessOrder());
@@ -738,7 +736,7 @@ public class GenericJavaPersistentClassTests
 		persistentClass.addProp(0, "foo");
 		persistentClass.addProp(0, "baz");
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		ListIterator<String> props = xmlTypeAnnotation.getPropOrder().iterator();
 
 		assertEquals("baz", props.next());
@@ -756,7 +754,7 @@ public class GenericJavaPersistentClassTests
 		persistentClass.addProp(1, "foo");
 		persistentClass.addProp(0, "baz");
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		ListIterator<String> props = xmlTypeAnnotation.getPropOrder().iterator();
 
 		assertEquals("baz", props.next());
@@ -774,7 +772,7 @@ public class GenericJavaPersistentClassTests
 		persistentClass.addProp(1, "foo");
 		persistentClass.addProp(2, "baz");
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 
 		persistentClass.removeProp(1);
 
@@ -802,7 +800,7 @@ public class GenericJavaPersistentClassTests
 		persistentClass.addProp(1, "foo");
 		persistentClass.addProp(2, "baz");
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 
 		assertEquals(3, xmlTypeAnnotation.getPropOrderSize());		
 
@@ -933,7 +931,7 @@ public class GenericJavaPersistentClassTests
 	}
 
 	protected Annotation getXmlTypeAnnotation(ModifiedDeclaration declaration) {
-		return declaration.getAnnotationNamed(XmlTypeAnnotation.ANNOTATION_NAME);
+		return declaration.getAnnotationNamed(JAXB.XML_TYPE);
 	}
 
 	protected void moveProp(ModifiedDeclaration declaration, int targetIndex, int sourceIndex) {
@@ -954,13 +952,13 @@ public class GenericJavaPersistentClassTests
 		assertFalse(persistentClass.isRootElement());
 
 		persistentClass.setRootElement("foo");
-		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertEquals("foo", xmlRootElementAnnotation.getName());
 		assertEquals("foo", persistentClass.getRootElement().getQName().getName());
 		assertTrue(persistentClass.isRootElement());
 
 		persistentClass.setRootElement(null);
-		xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertNull(xmlRootElementAnnotation);
 		assertNull(persistentClass.getRootElement());
 		assertFalse(persistentClass.isRootElement());
@@ -1068,7 +1066,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlTransientAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TRANSIENT);
 			}
 		});
 		//@XmlTransient
@@ -1105,7 +1103,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlTransientAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_TRANSIENT);
 			}
 		});
 	}
@@ -1260,7 +1258,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
@@ -1297,7 +1295,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 		removeModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD);
@@ -1334,7 +1332,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
@@ -1371,7 +1369,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 		removeModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.TRANSIENT_KEYWORD);
@@ -1408,7 +1406,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
@@ -1445,7 +1443,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 		removeModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.STATIC_KEYWORD);
@@ -1482,7 +1480,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
@@ -1519,7 +1517,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 	}
@@ -1569,7 +1567,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMethod);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
@@ -1606,7 +1604,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 	}
@@ -1641,7 +1639,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMethod);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
@@ -1678,7 +1676,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 	}
@@ -1722,7 +1720,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMethod);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
@@ -1759,7 +1757,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 	}
@@ -1799,7 +1797,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMethod);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
@@ -1836,7 +1834,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 	}
@@ -1874,7 +1872,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceGetter);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
@@ -1911,7 +1909,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 		this.removeModifiers(resourceGetter, ModifierKeyword.STATIC_KEYWORD);
@@ -1956,7 +1954,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceGetter);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
@@ -1993,7 +1991,7 @@ public class GenericJavaPersistentClassTests
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlAttributeAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 		this.removeModifiers(resourceGetter, ModifierKeyword.PRIVATE_KEYWORD);
@@ -2008,17 +2006,17 @@ public class GenericJavaPersistentClassTests
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(persistentClass.getXmlJavaTypeAdapter());
 		assertNull(xmlJavaTypeAdapterAnnotation);
 
 		persistentClass.addXmlJavaTypeAdapter();
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNotNull(persistentClass.getXmlJavaTypeAdapter());
 		assertNotNull(xmlJavaTypeAdapterAnnotation);
 
 		persistentClass.removeXmlJavaTypeAdapter();
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 	}
 
 	public void testUpdateXmlJavaTypeAdapter() throws Exception {
@@ -2027,7 +2025,7 @@ public class GenericJavaPersistentClassTests
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(persistentClass.getXmlJavaTypeAdapter());
 		assertNull(xmlJavaTypeAdapterAnnotation);
 
@@ -2036,20 +2034,20 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_JAVA_TYPE_ADAPTER);
 			}
 		});
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNotNull(persistentClass.getXmlJavaTypeAdapter());
 		assertNotNull(xmlJavaTypeAdapterAnnotation);
 
 		//remove the XmlJavaTypeAdapter annotation
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_JAVA_TYPE_ADAPTER);
 			}
 		});
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(persistentClass.getXmlJavaTypeAdapter());
 		assertNull(xmlJavaTypeAdapterAnnotation);
 	}
@@ -2156,7 +2154,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceClass);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, XmlAccessorTypeAnnotation.ANNOTATION_NAME, accessType);
+				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, accessType);
 			}
 		});
 	}

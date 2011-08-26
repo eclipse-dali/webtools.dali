@@ -28,5 +28,4 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 public interface XmlMixedAnnotation
 		extends Annotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_MIXED;
 }

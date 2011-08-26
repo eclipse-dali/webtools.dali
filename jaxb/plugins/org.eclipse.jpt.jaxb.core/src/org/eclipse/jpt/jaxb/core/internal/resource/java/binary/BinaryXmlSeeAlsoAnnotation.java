@@ -34,7 +34,7 @@ public final class BinaryXmlSeeAlsoAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_SEE_ALSO;
 	}
 
 	@Override

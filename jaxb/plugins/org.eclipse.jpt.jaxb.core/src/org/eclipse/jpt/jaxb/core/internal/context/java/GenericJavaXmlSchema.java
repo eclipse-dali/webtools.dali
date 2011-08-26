@@ -24,6 +24,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -90,7 +91,7 @@ public class GenericJavaXmlSchema
 	// ********** xml schema annotation **********
 	
 	protected XmlSchemaAnnotation getXmlSchemaAnnotation() {
-		return (XmlSchemaAnnotation) this.getResourcePackage().getNonNullAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		return (XmlSchemaAnnotation) this.getResourcePackage().getNonNullAnnotation(JAXB.XML_SCHEMA);
 	}
 	
 	// ********** namespace **********

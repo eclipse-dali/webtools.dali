@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -59,7 +60,7 @@ class GenericJavaXmlAdaptable
 		if (this.xmlJavaTypeAdapter != null) {
 			throw new IllegalStateException();
 		}
-		XmlJavaTypeAdapterAnnotation annotation = (XmlJavaTypeAdapterAnnotation) this.owner.getResource().addAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		XmlJavaTypeAdapterAnnotation annotation = (XmlJavaTypeAdapterAnnotation) this.owner.getResource().addAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 
 		XmlJavaTypeAdapter xmlJavaTypeAdapter = this.buildXmlJavaTypeAdapter(annotation);
 		this.setXmlJavaTypeAdapter_(xmlJavaTypeAdapter);
@@ -74,7 +75,7 @@ class GenericJavaXmlAdaptable
 		if (this.xmlJavaTypeAdapter == null) {
 			throw new IllegalStateException();
 		}
-		this.owner.getResource().removeAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		this.owner.getResource().removeAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		this.setXmlJavaTypeAdapter_(null);
 	}
 
@@ -86,7 +87,7 @@ class GenericJavaXmlAdaptable
 	}
 
 	protected XmlJavaTypeAdapterAnnotation getXmlJavaTypeAdapterAnnotation() {
-		return (XmlJavaTypeAdapterAnnotation) this.owner.getResource().getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		return (XmlJavaTypeAdapterAnnotation) this.owner.getResource().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 	}
 
 	protected void syncXmlJavaTypeAdapter() {

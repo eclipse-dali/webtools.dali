@@ -12,21 +12,21 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlList
  */
 public final class BinaryXmlListAnnotation
-	extends BinaryAnnotation
-	implements XmlListAnnotation
-{
-
+		extends BinaryAnnotation
+		implements XmlListAnnotation {
+	
 	public BinaryXmlListAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
-
+	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_LIST;
 	}
 }

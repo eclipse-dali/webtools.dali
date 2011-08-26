@@ -31,7 +31,7 @@ public final class SourceXmlAccessorOrderAnnotation
 	extends SourceAnnotation
 	implements XmlAccessorOrderAnnotation
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ACCESSOR_ORDER);
 
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
@@ -44,7 +44,7 @@ public final class SourceXmlAccessorOrderAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ACCESSOR_ORDER;
 	}
 
 	public void initialize(CompilationUnit astRoot) {

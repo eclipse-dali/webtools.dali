@@ -34,7 +34,7 @@ public final class SourceXmlElementDeclAnnotation
 	extends SourceAnnotation
 	implements XmlElementDeclAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ELEMENT_DECL);
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
 	private final AnnotationElementAdapter<String> nameAdapter;
@@ -79,7 +79,7 @@ public final class SourceXmlElementDeclAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ELEMENT_DECL;
 	}
 
 	public void initialize(CompilationUnit astRoot) {

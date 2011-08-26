@@ -138,7 +138,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		if (this.xmlSchemaType != null) {
 			throw new IllegalStateException();
 		}
-		XmlSchemaTypeAnnotation annotation = (XmlSchemaTypeAnnotation) this.getJavaResourceAttribute().addAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		XmlSchemaTypeAnnotation annotation = (XmlSchemaTypeAnnotation) this.getJavaResourceAttribute().addAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 
 		XmlSchemaType xmlJavaTypeAdapter = this.buildXmlSchemaType(annotation);
 		this.setXmlSchemaType_(xmlJavaTypeAdapter);
@@ -149,7 +149,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		if (this.xmlSchemaType == null) {
 			throw new IllegalStateException();
 		}
-		this.getJavaResourceAttribute().removeAnnotation(XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceAttribute().removeAnnotation(JAXB.XML_SCHEMA_TYPE);
 		this.setXmlSchemaType_(null);
 	}
 
@@ -158,7 +158,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	}
 
 	protected XmlSchemaTypeAnnotation getXmlSchemaTypeAnnotation() {
-		return (XmlSchemaTypeAnnotation) this.getJavaResourceAttribute().getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		return (XmlSchemaTypeAnnotation) this.getJavaResourceAttribute().getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 	}
 
 	protected void initializeXmlSchemaType() {
@@ -199,7 +199,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		if (this.xmlList != null) {
 			throw new IllegalStateException();
 		}
-		XmlListAnnotation annotation = (XmlListAnnotation) this.getJavaResourceAttribute().addAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+		XmlListAnnotation annotation = (XmlListAnnotation) this.getJavaResourceAttribute().addAnnotation(JAXB.XML_LIST);
 
 		XmlList xmlList = this.buildXmlList(annotation);
 		this.setXmlList_(xmlList);
@@ -214,7 +214,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		if (this.xmlList == null) {
 			throw new IllegalStateException();
 		}
-		this.getJavaResourceAttribute().removeAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceAttribute().removeAnnotation(JAXB.XML_LIST);
 		this.setXmlList_(null);
 	}
 
@@ -226,7 +226,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	}
 
 	protected XmlListAnnotation getXmlListAnnotation() {
-		return (XmlListAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+		return (XmlListAnnotation) this.getJavaResourceAttribute().getAnnotation(JAXB.XML_LIST);
 	}
 
 	protected void syncXmlList() {
@@ -267,7 +267,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		if (this.xmlID != null) {
 			throw new IllegalStateException();
 		}
-		XmlIDAnnotation annotation = (XmlIDAnnotation) this.getJavaResourceAttribute().addAnnotation(XmlIDAnnotation.ANNOTATION_NAME);
+		XmlIDAnnotation annotation = (XmlIDAnnotation) this.getJavaResourceAttribute().addAnnotation(JAXB.XML_ID);
 
 		XmlID xmlID = this.buildXmlID(annotation);
 		this.setXmlID_(xmlID);
@@ -282,7 +282,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		if (this.xmlID == null) {
 			throw new IllegalStateException();
 		}
-		this.getJavaResourceAttribute().removeAnnotation(XmlIDAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceAttribute().removeAnnotation(JAXB.XML_ID);
 		this.setXmlID_(null);
 	}
 
@@ -294,7 +294,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	}
 
 	protected XmlIDAnnotation getXmlIDAnnotation() {
-		return (XmlIDAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlIDAnnotation.ANNOTATION_NAME);
+		return (XmlIDAnnotation) this.getJavaResourceAttribute().getAnnotation(JAXB.XML_ID);
 	}
 
 	protected void syncXmlID() {
@@ -342,7 +342,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 			throw new IllegalStateException();
 		}
 		
-		getJavaResourceAttribute().addAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
+		getJavaResourceAttribute().addAnnotation(JAXB.XML_IDREF);
 		
 		XmlIDREF xmlIDREF = buildXmlIDREF();
 		setXmlIDREF_(xmlIDREF);
@@ -402,7 +402,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		if (this.xmlAttachmentRef != null) {
 			throw new IllegalStateException();
 		}
-		XmlAttachmentRefAnnotation annotation = (XmlAttachmentRefAnnotation) this.getJavaResourceAttribute().addAnnotation(XmlAttachmentRefAnnotation.ANNOTATION_NAME);
+		XmlAttachmentRefAnnotation annotation = (XmlAttachmentRefAnnotation) this.getJavaResourceAttribute().addAnnotation(JAXB.XML_ATTACHMENT_REF);
 
 		XmlAttachmentRef xmlAttachmentRef = this.buildXmlAttachmentRef(annotation);
 		this.setXmlAttachmentRef_(xmlAttachmentRef);
@@ -417,7 +417,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		if (this.xmlAttachmentRef == null) {
 			throw new IllegalStateException();
 		}
-		this.getJavaResourceAttribute().removeAnnotation(XmlAttachmentRefAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceAttribute().removeAnnotation(JAXB.XML_ATTACHMENT_REF);
 		this.setXmlAttachmentRef_(null);
 	}
 
@@ -429,7 +429,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	}
 
 	protected XmlAttachmentRefAnnotation getXmlAttachmentRefAnnotation() {
-		return (XmlAttachmentRefAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlAttachmentRefAnnotation.ANNOTATION_NAME);
+		return (XmlAttachmentRefAnnotation) this.getJavaResourceAttribute().getAnnotation(JAXB.XML_ATTACHMENT_REF);
 	}
 
 	protected void syncXmlAttachmentRef() {

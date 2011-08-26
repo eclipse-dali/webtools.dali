@@ -65,7 +65,7 @@ public class SourceXmlNsAnnotation
 	}
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_NS;
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
@@ -142,6 +142,7 @@ public class SourceXmlNsAnnotation
 	
 	// **************** NestableAnnotation impl *******************************
 	
+	@Override
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}

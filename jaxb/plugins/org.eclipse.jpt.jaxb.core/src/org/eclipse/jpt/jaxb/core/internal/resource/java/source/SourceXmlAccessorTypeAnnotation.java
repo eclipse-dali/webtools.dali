@@ -31,7 +31,7 @@ public final class SourceXmlAccessorTypeAnnotation
 	extends SourceAnnotation
 	implements XmlAccessorTypeAnnotation
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ACCESSOR_TYPE);
 
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
@@ -44,7 +44,7 @@ public final class SourceXmlAccessorTypeAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ACCESSOR_TYPE;
 	}
 
 	public void initialize(CompilationUnit astRoot) {

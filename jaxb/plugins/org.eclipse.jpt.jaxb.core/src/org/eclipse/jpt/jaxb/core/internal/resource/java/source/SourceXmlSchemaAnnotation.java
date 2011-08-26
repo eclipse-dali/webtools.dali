@@ -35,7 +35,7 @@ public class SourceXmlSchemaAnnotation
 		implements XmlSchemaAnnotation {
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER 
-			= new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+			= new SimpleDeclarationAnnotationAdapter(JAXB.XML_SCHEMA);
 	
 	private static final DeclarationAnnotationElementAdapter<String> ATTRIBUTE_FORM_DEFAULT_ADAPTER = 
 			buildAttributeFormDefaultAdapter();
@@ -101,7 +101,7 @@ public class SourceXmlSchemaAnnotation
 	}
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_SCHEMA;
 	}
 	
 	public void initialize(CompilationUnit astRoot) {

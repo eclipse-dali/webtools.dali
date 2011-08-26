@@ -32,7 +32,7 @@ public class BinaryXmlInverseReferenceAnnotation
 	
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return ELJaxb.XML_INVERSE_REFERENCE;
 	}
 	
 	@Override

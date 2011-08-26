@@ -29,8 +29,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 public interface XmlJavaTypeAdapterAnnotation
 		extends NestableAnnotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_JAVA_TYPE_ADAPTER;
-	
 	/**
 	 * Corresponds to the 'value' element of the XmlJavaTypeAdapter annotation.
 	 * Return null if the element does not exist in Java.

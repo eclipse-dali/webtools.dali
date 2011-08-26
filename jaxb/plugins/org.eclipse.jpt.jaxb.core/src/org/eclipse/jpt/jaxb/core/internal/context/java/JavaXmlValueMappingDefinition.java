@@ -15,9 +15,7 @@ import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlValueAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
 
 public class JavaXmlValueMappingDefinition
@@ -27,9 +25,9 @@ public class JavaXmlValueMappingDefinition
 	private static final JavaXmlValueMappingDefinition INSTANCE = 
 		new JavaXmlValueMappingDefinition();
 
-	private static final String[] SUPPORTING_ANNOTATION_NAMES = 
-		{XmlListAnnotation.ANNOTATION_NAME,
-		XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME};
+	private static final String[] SUPPORTING_ANNOTATION_NAMES = {
+			JAXB.XML_LIST,
+			JAXB.XML_JAVA_TYPE_ADAPTER };
 
 	/**
 	 * Return the singleton.
@@ -52,7 +50,7 @@ public class JavaXmlValueMappingDefinition
 	}
 
 	public String getAnnotationName() {
-		return XmlValueAnnotation.ANNOTATION_NAME;
+		return JAXB.XML_VALUE;
 	}
 
 	public Iterable<String> getSupportingAnnotationNames() {

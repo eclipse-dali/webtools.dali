@@ -29,8 +29,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 public interface XmlElementAnnotation
 		extends JaxbBasicSchemaComponentAnnotation, NestableAnnotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_ELEMENT;
-
 	/**
 	 * Corresponds to the 'defaultValue' element of the XmlElement annotation.
 	 * Return null if the element does not exist in Java.

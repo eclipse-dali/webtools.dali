@@ -27,10 +27,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlEnumAnnotation
-	extends Annotation
-{
-	String ANNOTATION_NAME = JAXB.XML_ENUM;
-
+		extends Annotation {
+	
 	/**
 	 * Corresponds to the 'value' element of the XmlEnum annotation.
 	 * Return null if the element does not exist in Java.

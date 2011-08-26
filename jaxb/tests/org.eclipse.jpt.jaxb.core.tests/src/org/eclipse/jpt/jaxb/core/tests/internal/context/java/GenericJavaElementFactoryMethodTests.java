@@ -82,13 +82,13 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 		assertNull(elementFactoryMethod.getElementName());
 
 		elementFactoryMethod.setElementName("bar");
-		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertEquals("bar", elementDeclAnnotation.getName());
 		assertEquals("bar", elementFactoryMethod.getElementName());
 
 		 //verify the xml element decl annotation is not removed when the element name is set to null
 		elementFactoryMethod.setElementName(null);
-		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(elementDeclAnnotation.getName());
 		assertNull(elementFactoryMethod.getElementName());
 	}
@@ -134,13 +134,13 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 		assertNull(elementFactoryMethod.getDefaultValue());
 
 		elementFactoryMethod.setDefaultValue("bar");
-		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertEquals("bar", elementDeclAnnotation.getDefaultValue());
 		assertEquals("bar", elementFactoryMethod.getDefaultValue());
 
 		 //verify the xml element decl annotation is not removed when the element name is set to null
 		elementFactoryMethod.setDefaultValue(null);
-		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(elementDeclAnnotation.getDefaultValue());
 		assertNull(elementFactoryMethod.getDefaultValue());
 	}
@@ -186,13 +186,13 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 		assertNull(elementFactoryMethod.getScope());
 
 		elementFactoryMethod.setScope("Bar");
-		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertEquals("Bar", elementDeclAnnotation.getScope());
 		assertEquals("Bar", elementFactoryMethod.getScope());
 
 		 //verify the xml element decl annotation is not removed when the element name is set to null
 		elementFactoryMethod.setScope(null);
-		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(elementDeclAnnotation.getScope());
 		assertNull(elementFactoryMethod.getScope());
 	}
@@ -238,13 +238,13 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 		assertNull(elementFactoryMethod.getSubstitutionHeadName());
 
 		elementFactoryMethod.setSubstitutionHeadName("bar");
-		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertEquals("bar", elementDeclAnnotation.getSubstitutionHeadName());
 		assertEquals("bar", elementFactoryMethod.getSubstitutionHeadName());
 
 		 //verify the xml element decl annotation is not removed when the element name is set to null
 		elementFactoryMethod.setSubstitutionHeadName(null);
-		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(elementDeclAnnotation.getSubstitutionHeadName());
 		assertNull(elementFactoryMethod.getSubstitutionHeadName());
 	}
@@ -290,13 +290,13 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 		assertNull(elementFactoryMethod.getSubstitutionHeadNamespace());
 
 		elementFactoryMethod.setSubstitutionHeadNamespace("bar");
-		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertEquals("bar", elementDeclAnnotation.getSubstitutionHeadNamespace());
 		assertEquals("bar", elementFactoryMethod.getSubstitutionHeadNamespace());
 
 		 //verify the xml element decl annotation is not removed when the element name is set to null
 		elementFactoryMethod.setSubstitutionHeadNamespace(null);
-		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(elementDeclAnnotation.getSubstitutionHeadNamespace());
 		assertNull(elementFactoryMethod.getSubstitutionHeadNamespace());
 	}
@@ -342,13 +342,13 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 		assertNull(elementFactoryMethod.getNamespace());
 
 		elementFactoryMethod.setNamespace("bar");
-		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		XmlElementDeclAnnotation elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertEquals("bar", elementDeclAnnotation.getNamespace());
 		assertEquals("bar", elementFactoryMethod.getNamespace());
 
 		 //verify the xml element decl annotation is not removed when the element name is set to null
 		elementFactoryMethod.setNamespace(null);
-		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		elementDeclAnnotation = (XmlElementDeclAnnotation) resourceMethod.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(elementDeclAnnotation.getNamespace());
 		assertNull(elementFactoryMethod.getNamespace());
 	}
@@ -387,11 +387,11 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 	}
 
 	protected Annotation getXmlElementDeclAnnotation(ModifiedDeclaration declaration) {
-		return declaration.getAnnotationNamed(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		return declaration.getAnnotationNamed(JAXB.XML_ELEMENT_DECL);
 	}
 
 	protected void removeXmlElementDeclAnnotation(ModifiedDeclaration declaration) {
-		this.removeAnnotation(declaration, XmlElementDeclAnnotation.ANNOTATION_NAME);		
+		this.removeAnnotation(declaration, JAXB.XML_ELEMENT_DECL);		
 	}
 
 	protected void addXmlElementDeclTypeMemberValuePair(ModifiedDeclaration declaration, String name, String typeName) {

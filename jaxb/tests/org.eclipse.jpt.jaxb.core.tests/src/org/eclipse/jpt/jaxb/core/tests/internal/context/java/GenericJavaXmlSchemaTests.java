@@ -28,7 +28,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
@@ -64,7 +63,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		assertNull(contextXmlSchema.getSpecifiedNamespace());
 		
 		contextXmlSchema.setSpecifiedNamespace("foo");
-		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertEquals("foo", schemaAnnotation.getNamespace());
 		assertEquals("foo", contextXmlSchema.getNamespace());
 		assertEquals("foo", contextXmlSchema.getSpecifiedNamespace());
@@ -72,14 +71,14 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		 //set another annotation so the context model is not blown away by removing the XmlSchema annotation
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
 		contextXmlSchema.setSpecifiedNamespace(null);
-		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertNull(schemaAnnotation.getNamespace());
 		assertEquals("", contextXmlSchema.getNamespace());
 		assertNull(contextXmlSchema.getSpecifiedNamespace());
 		
 		//set namespace again, this time starting with no XmlSchema annotation
 		contextXmlSchema.setSpecifiedNamespace("foo");
-		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertEquals("foo", schemaAnnotation.getNamespace());
 		assertEquals("foo", contextXmlSchema.getSpecifiedNamespace());
 		assertEquals("foo", contextXmlSchema.getNamespace());
@@ -123,20 +122,20 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		assertNull(contextXmlSchema.getLocation());
 		
 		contextXmlSchema.setLocation("foo");
-		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertEquals("foo", schemaAnnotation.getLocation());
 		assertEquals("foo", contextXmlSchema.getLocation());
 		
 		 //set another annotation so the context model is not blown away by removing the XmlSchema annotation
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
 		contextXmlSchema.setLocation(null);
-		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertNull(schemaAnnotation.getLocation());
 		assertNull(contextXmlSchema.getLocation());
 
 		//set location again, this time starting with no XmlSchema annotation
 		contextXmlSchema.setLocation("foo");
-		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertEquals("foo", schemaAnnotation.getLocation());
 		assertEquals("foo", contextXmlSchema.getLocation());
 	}
@@ -178,7 +177,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		assertEquals(XmlNsForm.UNSET, contextXmlSchema.getAttributeFormDefault());
 		
 		contextXmlSchema.setSpecifiedAttributeFormDefault(XmlNsForm.QUALIFIED);
-		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm.QUALIFIED, schemaAnnotation.getAttributeFormDefault());
 		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getAttributeFormDefault());
 		
@@ -189,13 +188,13 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		 //set another annotation so the context model is not blown away by removing the XmlSchema annotation
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
 		contextXmlSchema.setSpecifiedAttributeFormDefault(null);
-		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertNull(schemaAnnotation.getAttributeFormDefault());
 		assertNull(contextXmlSchema.getSpecifiedAttributeFormDefault());
 		
 		//set attribute form default again, this time starting with no XmlSchema annotation
 		contextXmlSchema.setSpecifiedAttributeFormDefault(XmlNsForm.QUALIFIED);
-		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm.QUALIFIED, schemaAnnotation.getAttributeFormDefault());
 		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getAttributeFormDefault());
 	}
@@ -257,7 +256,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		assertEquals(XmlNsForm.UNSET, contextXmlSchema.getElementFormDefault());
 		
 		contextXmlSchema.setSpecifiedElementFormDefault(XmlNsForm.QUALIFIED);
-		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm.QUALIFIED, schemaAnnotation.getElementFormDefault());
 		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getElementFormDefault());
 		
@@ -268,13 +267,13 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		 //set another annotation so the context model is not blown away by removing the XmlSchema annotation
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
 		contextXmlSchema.setSpecifiedElementFormDefault(null);
-		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertNull(schemaAnnotation.getElementFormDefault());
 		assertNull(contextXmlSchema.getSpecifiedElementFormDefault());
 		
 		//set element form default again, this time starting with no XmlSchema annotation
 		contextXmlSchema.setSpecifiedElementFormDefault(XmlNsForm.QUALIFIED);
-		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm.QUALIFIED, schemaAnnotation.getElementFormDefault());
 		assertEquals(XmlNsForm.QUALIFIED, contextXmlSchema.getElementFormDefault());
 	}
@@ -405,7 +404,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		xmlNsPrefix.setNamespaceURI("baz");
 		xmlNsPrefix.setPrefix("bazPrefix");
 
-		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		ListIterator<XmlNsAnnotation> xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
 
 		XmlNsAnnotation xmlNsAnnotation = xmlNsPrefixes.next();
@@ -436,7 +435,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		xmlNsPrefix.setNamespaceURI("baz");
 		xmlNsPrefix.setPrefix("bazPrefix");
 
-		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		ListIterator<XmlNsAnnotation> xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
 
 		XmlNsAnnotation xmlNsAnnotation = xmlNsPrefixes.next();
@@ -461,7 +460,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		contextXmlSchema.addXmlNsPrefix(1).setNamespaceURI("foo");
 		contextXmlSchema.addXmlNsPrefix(2).setNamespaceURI("baz");
 
-		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 		assertEquals(3, schemaAnnotation.getXmlnsSize());
 
 		contextXmlSchema.removeXmlNsPrefix(1);
@@ -492,7 +491,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		contextXmlSchema.addXmlNsPrefix(2).setNamespaceURI("baz");
 
 
-		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(JAXB.XML_SCHEMA);
 
 		assertEquals(3, schemaAnnotation.getXmlnsSize());		
 
@@ -652,12 +651,12 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	//add another package annotation so that the context model object doesn't get removed when 
 	//removing the XmlSchema annotation. Only "annotated" packages are added to the context model
 	protected void removeXmlSchemaAnnotation(ModifiedDeclaration declaration) {
-		this.addMarkerAnnotation(declaration.getDeclaration(), XmlAccessorOrderAnnotation.ANNOTATION_NAME);
-		this.removeAnnotation(declaration, XmlSchemaAnnotation.ANNOTATION_NAME);
+		this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ACCESSOR_ORDER);
+		this.removeAnnotation(declaration, JAXB.XML_SCHEMA);
 	}
 
 	protected Annotation getXmlSchemaAnnotation(ModifiedDeclaration declaration) {
-		return declaration.getAnnotationNamed(XmlSchemaAnnotation.ANNOTATION_NAME);
+		return declaration.getAnnotationNamed(JAXB.XML_SCHEMA);
 	}
 
 	protected void moveXmlNsPrefix(ModifiedDeclaration declaration, int targetIndex, int sourceIndex) {

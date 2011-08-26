@@ -27,10 +27,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlMimeTypeAnnotation
-	extends Annotation
-{
-	String ANNOTATION_NAME = JAXB.XML_MIME_TYPE;
-
+		extends Annotation {
+	
 	/**
 	 * Corresponds to the 'value' element of the XmlMimeType annotation.
 	 * Return null if the element does not exist in Java.

@@ -26,5 +26,4 @@ package org.eclipse.jpt.jaxb.core.resource.java;
 public interface XmlRootElementAnnotation
 		extends QNameAnnotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_ROOT_ELEMENT;
 }

@@ -44,7 +44,7 @@ public final class BinaryXmlElementsAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ELEMENTS;
 	}
 
 	public ListIterable<XmlElementAnnotation> getXmlElements() {

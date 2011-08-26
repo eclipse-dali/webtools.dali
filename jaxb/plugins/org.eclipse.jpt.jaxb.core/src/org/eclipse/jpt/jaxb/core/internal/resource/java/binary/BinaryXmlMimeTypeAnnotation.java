@@ -33,7 +33,7 @@ public final class BinaryXmlMimeTypeAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_MIME_TYPE;
 	}
 
 	@Override

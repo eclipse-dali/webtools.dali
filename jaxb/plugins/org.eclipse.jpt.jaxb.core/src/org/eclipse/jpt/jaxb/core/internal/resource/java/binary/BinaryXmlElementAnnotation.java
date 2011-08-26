@@ -43,7 +43,7 @@ public final class BinaryXmlElementAnnotation
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JAXB.XML_ELEMENT;
 	}
 
 	@Override

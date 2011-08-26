@@ -83,14 +83,14 @@ public class GenericJavaEnumConstantTests extends JaxbContextModelTestCase
 		assertNull(contextEnumConstant.getSpecifiedValue());
 		
 		contextEnumConstant.setSpecifiedValue("foo");
-		XmlEnumValueAnnotation enumValueAnnotation = (XmlEnumValueAnnotation) resourceEnumConstant.getAnnotation(XmlEnumValueAnnotation.ANNOTATION_NAME);
+		XmlEnumValueAnnotation enumValueAnnotation = (XmlEnumValueAnnotation) resourceEnumConstant.getAnnotation(JAXB.XML_ENUM_VALUE);
 		assertEquals("foo", enumValueAnnotation.getValue());
 		assertEquals("MONDAY", contextEnumConstant.getDefaultValue());
 		assertEquals("foo", contextEnumConstant.getValue());
 		assertEquals("foo", contextEnumConstant.getSpecifiedValue());
 		
 		contextEnumConstant.setSpecifiedValue(null);
-		enumValueAnnotation = (XmlEnumValueAnnotation) resourceEnumConstant.getAnnotation(XmlEnumValueAnnotation.ANNOTATION_NAME);
+		enumValueAnnotation = (XmlEnumValueAnnotation) resourceEnumConstant.getAnnotation(JAXB.XML_ENUM_VALUE);
 		assertNull(enumValueAnnotation.getValue());
 		assertEquals("MONDAY", contextEnumConstant.getDefaultValue());
 		assertEquals("MONDAY", contextEnumConstant.getValue());

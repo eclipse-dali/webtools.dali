@@ -32,7 +32,7 @@ public class BinaryXmlTransformationAnnotation
 	
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return ELJaxb.XML_TRANSFORMATION;
 	}
 	
 	@Override

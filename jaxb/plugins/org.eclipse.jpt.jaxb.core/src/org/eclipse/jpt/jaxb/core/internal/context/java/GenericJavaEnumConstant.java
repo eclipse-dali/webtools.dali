@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
 
 public class GenericJavaEnumConstant
@@ -46,7 +47,7 @@ public class GenericJavaEnumConstant
 	// ********** xml enum value annotation **********
 
 	protected XmlEnumValueAnnotation getXmlEnumValueAnnotation() {
-		return (XmlEnumValueAnnotation) this.getResourceEnumConstant().getNonNullAnnotation(XmlEnumValueAnnotation.ANNOTATION_NAME);
+		return (XmlEnumValueAnnotation) this.getResourceEnumConstant().getNonNullAnnotation(JAXB.XML_ENUM_VALUE);
 	}
 
 

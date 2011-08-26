@@ -61,13 +61,13 @@ public class GenericJavaXmlRootElementTests
 		assertEquals("", contextRootElement.getQName().getNamespace());
 		
 		contextRootElement.getQName().setSpecifiedNamespace("foo");
-		XmlRootElementAnnotation rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		XmlRootElementAnnotation rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertEquals("foo", rootElementAnnotation.getNamespace());
 		assertEquals("foo", contextRootElement.getQName().getSpecifiedNamespace());
 		assertEquals("foo", contextRootElement.getQName().getNamespace());
 		
 		contextRootElement.getQName().setSpecifiedNamespace(null);
-		rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertNull(rootElementAnnotation.getNamespace());
 		assertNull(contextRootElement.getQName().getSpecifiedNamespace());
 		assertEquals("", contextRootElement.getQName().getNamespace());
@@ -95,7 +95,7 @@ public class GenericJavaXmlRootElementTests
 		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaXmlRootElementTests.this.removeAnnotation(declaration, XmlRootElementAnnotation.ANNOTATION_NAME);
+				GenericJavaXmlRootElementTests.this.removeAnnotation(declaration, JAXB.XML_ROOT_ELEMENT);
 			}
 		});
 		contextRootElement = persistentClass.getRootElement();
@@ -114,13 +114,13 @@ public class GenericJavaXmlRootElementTests
 		assertEquals(defaultName, contextRootElement.getQName().getName());
 		
 		contextRootElement.getQName().setSpecifiedName("foo");
-		XmlRootElementAnnotation rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		XmlRootElementAnnotation rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertEquals("foo", rootElementAnnotation.getName());
 		assertEquals("foo", contextRootElement.getQName().getSpecifiedName());
 		assertEquals("foo", contextRootElement.getQName().getName());
 		
 		contextRootElement.getQName().setSpecifiedName(null);
-		rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertNull(rootElementAnnotation.getName());
 		assertNull(contextRootElement.getQName().getSpecifiedName());
 		assertEquals(defaultName, contextRootElement.getQName().getName());
@@ -149,7 +149,7 @@ public class GenericJavaXmlRootElementTests
 		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaXmlRootElementTests.this.removeAnnotation(declaration, XmlRootElementAnnotation.ANNOTATION_NAME);
+				GenericJavaXmlRootElementTests.this.removeAnnotation(declaration, JAXB.XML_ROOT_ELEMENT);
 			}
 		});
 		contextRootElement = persistentClass.getRootElement();
@@ -161,6 +161,6 @@ public class GenericJavaXmlRootElementTests
 	}
 
 	protected Annotation getXmlRootElementAnnotation(ModifiedDeclaration declaration) {
-		return declaration.getAnnotationNamed(XmlRootElementAnnotation.ANNOTATION_NAME);
+		return declaration.getAnnotationNamed(JAXB.XML_ROOT_ELEMENT);
 	}
 }

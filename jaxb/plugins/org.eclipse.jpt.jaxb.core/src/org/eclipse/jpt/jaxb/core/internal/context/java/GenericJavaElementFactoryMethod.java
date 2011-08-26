@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
 
 public class GenericJavaElementFactoryMethod
@@ -60,7 +61,7 @@ public class GenericJavaElementFactoryMethod
 	// ********** xml enum value annotation **********
 
 	protected XmlElementDeclAnnotation getXmlElementDeclAnnotation() {
-		return (XmlElementDeclAnnotation) this.getResourceMethod().getNonNullAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME);
+		return (XmlElementDeclAnnotation) this.getResourceMethod().getNonNullAnnotation(JAXB.XML_ELEMENT_DECL);
 	}
 
 
