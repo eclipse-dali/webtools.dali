@@ -17,9 +17,13 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -28,11 +32,16 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -55,12 +64,15 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IImportDeclaration;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.internal.core.search.JavaSearchScope;
 import org.eclipse.jdt.ui.actions.FormatAllAction;
 import org.eclipse.jdt.ui.actions.OrganizeImportsAction;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -98,10 +110,12 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 
+@SuppressWarnings("restriction")
 public class JPAEditorUtil {
 	
 
 	private static IPeServiceUtil peUtil = null;
+	private final static String PERSISTENCE_PROVIDER_LIBRARY_STRING = "javax/persistence/"; //$NON-NLS-1$
 		
 	public static String capitalizeFirstLetter(String s) {
 		if (s.length() == 0) return s;
@@ -1402,5 +1416,59 @@ public class JPAEditorUtil {
 	static public String getPrimitiveWrapper(String primitive) {
 		return JPAEditorConstants.PRIMITIVE_TO_WRAPPER.get(primitive);
 	}
+	
+	static private File getFile(IPath classPathEntry) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IFile f = root.getFile(classPathEntry);
+		if ((f != null) && f.exists()) {
+			URI uri = f.getLocationURI();
+			if (uri == null) 
+				return new File(classPathEntry.toOSString());
+			File file = new File(uri);
+			return file;
+		} else {
+			return new File(classPathEntry.toOSString()); 	
+		}
+
+	}
+	
+	static public boolean isPersistenceProviderLibraryInClasspath(IPath classPathEntry) {
+		try {
+			File f = getFile(classPathEntry);
+			if ((f == null) || !f.exists()) 
+				return false;
+			JarFile jar = new JarFile(f);
+			Enumeration<JarEntry> entries = jar.entries();
+
+			while (entries.hasMoreElements()) {
+				JarEntry entry = entries.nextElement();
+				if (entry.getName().equals(PERSISTENCE_PROVIDER_LIBRARY_STRING)) {
+					return true;
+				}
+			}
+
+		} catch (IOException e) {
+			JPADiagramEditorPlugin.logError(e); 	     					
+		}
+		return false;
+	}
+		
+	static public boolean checkIsSetPersistenceProviderLibrary(JpaProject jpaProject) {
+		IJavaProject javaProject = JavaCore.create(jpaProject.getProject());
+		IJavaElement[] elements = new IJavaElement[] { javaProject };
+		JavaSearchScope scope = (JavaSearchScope) SearchEngine.createJavaSearchScope(elements);
+		boolean isAdded = false;
+
+		IPath[] paths = scope.enclosingProjectsAndJars();
+		for (int i = 1; i < paths.length; i++) {
+			IPath path = paths[i];
+			if (isPersistenceProviderLibraryInClasspath(path)) {
+				isAdded = true;
+				break;
+			}
+		}
+		return isAdded;
+	}
+	
 	
 }

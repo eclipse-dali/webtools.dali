@@ -18,9 +18,11 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.WeakHashMap;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -70,6 +72,7 @@ public class ModelIntegrationUtil {
 	public static final String DEFAULT_RES_FOLDER = "src";		//$NON-NLS-1$
 
 	private static boolean xmiExists = false;
+	private static WeakHashMap<IProject, WeakReference<Diagram>> projectToDiagram = new  WeakHashMap<IProject, WeakReference<Diagram>>();
 	
 	public static IPath createDiagramPath(PersistenceUnit persistenceUnit) throws CoreException {
 	    IProject project = persistenceUnit.getJpaProject().getProject();
@@ -209,11 +212,11 @@ public class ModelIntegrationUtil {
 		});
 		
 		if (!resource.isLoaded())
-			return createNewDiagram(defaultTransEditDomain, resourceSet, resource, diagramName, grid, snap);
+			return createNewDiagram(project, defaultTransEditDomain, resourceSet, resource, diagramName, grid, snap);
 		
 		EList<EObject> objs = resource.getContents();
 		if (objs == null) 
-			return createNewDiagram(defaultTransEditDomain, resourceSet, resource, diagramName, grid, snap);
+			return createNewDiagram(project, defaultTransEditDomain, resourceSet, resource, diagramName, grid, snap);
 		Iterator<EObject> it = objs.iterator();
 		while (it.hasNext()) {
 			EObject obj = it.next();
@@ -224,10 +227,11 @@ public class ModelIntegrationUtil {
 			defaultTransEditDomain.getCommandStack().flush();
 			return diagram;
 		}
-		return createNewDiagram(defaultTransEditDomain, resourceSet, resource, diagramName, grid, snap);
+		return createNewDiagram(project, defaultTransEditDomain, resourceSet, resource, diagramName, grid, snap);
 	}
 	
-	private static Diagram createNewDiagram(TransactionalEditingDomain editingDomain,
+	private static Diagram createNewDiagram(final IProject project,
+											TransactionalEditingDomain editingDomain,
 											ResourceSet resourceSet,
 											final Resource resource,
 											final String diagramName,
@@ -238,6 +242,7 @@ public class ModelIntegrationUtil {
 			@Override
 			protected void doExecute() {
 				Diagram diagram = Graphiti.getPeService().createDiagram(JPA_DIAGRAM_TYPE, diagramName, grid, snap);
+				projectToDiagram.put(project, new WeakReference<Diagram>(diagram));
 				wrp.setObject(diagram);
 				resource.getContents().add(diagram);
 				try {
@@ -336,29 +341,36 @@ public class ModelIntegrationUtil {
 				.addFileExtension(
 						ModelIntegrationUtil.DIAGRAM_XML_FILE_EXTENSION)).getFullPath();
 	}
+	
+	synchronized public static void putProjectToDiagram(IProject project, Diagram d) {
+		projectToDiagram.put(project, new WeakReference<Diagram>(d));
+	}
 
-	public static Diagram getDiagramByProject(IProject project) {
+	synchronized public static Diagram getDiagramByProject(IProject project) {
 		if (project == null)
 			return null;
 		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		IWorkbenchPage workbenchPage = null; 
 		try {
 			workbenchPage = workbenchWindow.getActivePage();
+			IEditorReference[] editorRefs = workbenchPage.getEditorReferences();
+			for (IEditorReference editorRef : editorRefs) {
+				if(!JPADiagramEditorPlugin.PLUGIN_ID.equals(editorRef.getId())) 
+					continue;
+				JPADiagramEditor editor = (JPADiagramEditor)editorRef.getEditor(false);
+				if (editor == null)
+					continue;
+				JPAEditorDiagramTypeProvider diagramProvider = editor.getDiagramTypeProvider();  
+				Diagram d = diagramProvider.getDiagram();
+				if (d.getName().equals(project.getName()))
+					return d;
+			}			
 		} catch (NullPointerException e) {
-			return null;
+			// ignore
 		}
-		IEditorReference[] editorRefs = workbenchPage.getEditorReferences();
-		for (IEditorReference editorRef : editorRefs) {
-			if(!JPADiagramEditorPlugin.PLUGIN_ID.equals(editorRef.getId())) 
-				continue;
-			JPADiagramEditor editor = (JPADiagramEditor)editorRef.getEditor(false);
-			if (editor == null)
-				continue;
-			JPAEditorDiagramTypeProvider diagramProvider = editor.getDiagramTypeProvider();  
-			Diagram d = diagramProvider.getDiagram();
-			if (d.getName().equals(project.getName()))
-				return d;
-		}
+		WeakReference<Diagram> ref = projectToDiagram.get(project);
+		if (ref != null)
+			return ref.get();
 		return null;
 	}
 

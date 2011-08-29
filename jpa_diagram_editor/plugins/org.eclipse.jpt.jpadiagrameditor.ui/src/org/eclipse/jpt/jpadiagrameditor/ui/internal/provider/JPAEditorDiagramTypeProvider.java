@@ -160,10 +160,11 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 		});    	
     }
     
-	private boolean openPersistedDiagram(boolean hasToAdd) {		
-		final Diagram diagram = getDiagram();
+	private boolean openPersistedDiagram(boolean hasToAdd) {	
 		final JpaProject proj = getTargetJPAProject();
 		IProject project = proj.getProject();
+		final Diagram diagram = getDiagram();
+		ModelIntegrationUtil.putProjectToDiagram(project, diagram);
 		PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(proj);
 		String diagramName = pu.getName();
 	    IPath path = ModelIntegrationUtil.getDiagramsFolderPath(project).append(diagramName).addFileExtension(ModelIntegrationUtil.DIAGRAM_FILE_EXTENSION);
