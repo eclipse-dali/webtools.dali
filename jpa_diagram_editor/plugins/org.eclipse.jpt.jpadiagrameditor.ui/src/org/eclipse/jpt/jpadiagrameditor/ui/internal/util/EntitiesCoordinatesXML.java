@@ -160,11 +160,10 @@ public class EntitiesCoordinatesXML {
 	}
 
 	synchronized public void load(Hashtable<String, SizePosition> marks){
-		
 		if(rootElement.getChildNodes().getLength()<=1){
 			if(ModelIntegrationUtil.xmiExists()){
 				store();
-				clean();
+				save();
 			}
 		} 
 		
@@ -205,7 +204,7 @@ public class EntitiesCoordinatesXML {
 		parentElement.appendChild(document.createTextNode(position));
 	}
 	
-	synchronized public void close() {
+	public void save() {
 		OutputStream os = null;
 		try {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -221,8 +220,11 @@ public class EntitiesCoordinatesXML {
 			} catch (IOException e) {
 				// ignore
 			}
-		}
-		
+		}		
+	}
+	
+	synchronized public void close() {
+		save();
 		clean();
 	}
 	

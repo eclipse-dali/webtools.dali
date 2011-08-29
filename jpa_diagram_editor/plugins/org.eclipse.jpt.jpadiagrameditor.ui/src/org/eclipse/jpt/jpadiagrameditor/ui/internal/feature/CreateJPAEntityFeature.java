@@ -15,17 +15,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
-import java.io.IOException;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
@@ -35,11 +30,6 @@ import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.internal.core.search.JavaSearchScope;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -58,10 +48,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 
 
-@SuppressWarnings({ "restriction" })
 public class CreateJPAEntityFeature extends AbstractCreateFeature {
 	
-	private String PERSISTENCE_PROVIDER_LIBRARY_STRING = "javax/persistence/"; //$NON-NLS-1$
 	private IPreferenceStore jpaPreferenceStore = JPADiagramEditorPlugin.getDefault().getPreferenceStore();
 	private boolean isMappedSuperclassChild;
 	private String mappedSuperclassName;
@@ -100,7 +88,8 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
         return context.getTargetContainer() instanceof Diagram;
     }
 
-    public Object[] create(ICreateContext context) {
+    @SuppressWarnings("restriction")
+	public Object[] create(ICreateContext context) {
 		List<Shape> shapes = this.getFeatureProvider().getDiagramTypeProvider().getDiagram().getChildren();
 		IProject targetProject = null;
 		JpaProject jpaProject = null;
@@ -120,7 +109,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 														 JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject()), 
 														 getFeatureProvider()); 
 
-		if(!checkIsSetPersistenceProviderLibrary(jpaProject)){
+		if(!JPAEditorUtil.checkIsSetPersistenceProviderLibrary(jpaProject)){
 			Shell shell = JPADiagramEditorPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 			IStatus status = new Status(IStatus.ERROR, JPADiagramEditor.ID, JPAEditorMessages.CreateJPAEntityFeature_createEntityErrorStatusMsg);
 			ErrorDialog.openError(shell, JPAEditorMessages.CreateJPAEntityFeature_createEntityErrorMsgTitle, 
@@ -184,42 +173,6 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
         
 	private JpaProject getTargetJPAProject() {
 		return getFeatureProvider().getMoinIntegrationUtil().getProjectByDiagram(getDiagram());
-	}
-	
-	private boolean isPersistenceProviderLibraryInClasspath(String classPathEntry) {
-		try {
-			JarFile jar = new JarFile(classPathEntry);
-			Enumeration<JarEntry> entries = jar.entries();
-
-			while (entries.hasMoreElements()) {
-				JarEntry entry = entries.nextElement();
-				if (entry.getName().equals(PERSISTENCE_PROVIDER_LIBRARY_STRING)) {
-					return true;
-				}
-			}
-
-		} catch (IOException e) {
-			JPADiagramEditorPlugin.logError(e); 	     					
-		}
-		return false;
-	}
-	
-	private boolean checkIsSetPersistenceProviderLibrary(JpaProject jpaProject) {
-		IJavaProject javaProject = JavaCore.create(jpaProject.getProject());
-		IJavaElement[] elements = new IJavaElement[] { javaProject };
-		JavaSearchScope scope = (JavaSearchScope) SearchEngine.createJavaSearchScope(elements);
-		boolean isAdded = false;
-
-		IPath[] paths = scope.enclosingProjectsAndJars();
-		for (int i = 1; i < paths.length; i++) {
-			IPath path = paths[i];
-			if (isPersistenceProviderLibraryInClasspath(path.toString())) {
-				isAdded = true;
-				break;
-			}
-		}
-		return isAdded;
-	}
-		
+	}		
 	
 }
