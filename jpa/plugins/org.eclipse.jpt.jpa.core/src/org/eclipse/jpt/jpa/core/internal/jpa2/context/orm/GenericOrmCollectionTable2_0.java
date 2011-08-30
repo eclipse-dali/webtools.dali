@@ -119,7 +119,7 @@ public class GenericOrmCollectionTable2_0
 			super();
 		}
 
-		public TypeMapping getTypeMapping() {
+		protected TypeMapping getTypeMapping() {
 			return this.getElementCollectionMapping().getTypeMapping();
 		}
 

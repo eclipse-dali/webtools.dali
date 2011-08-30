@@ -198,7 +198,7 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	 * in {@link AbstractJavaBaseColumn} where a table can be defined.
 	 */
 	public String getTable() {
-		return this.owner.getTypeMapping().getPrimaryTableName();
+		return this.owner.getDefaultTableName();
 	}
 
 	public boolean isResolved() {

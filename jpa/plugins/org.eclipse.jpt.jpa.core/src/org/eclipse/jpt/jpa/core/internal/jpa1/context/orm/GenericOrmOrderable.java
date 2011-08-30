@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -417,10 +416,6 @@ public class GenericOrmOrderable
 
 		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return this.getPersistentAttribute().getName() + "_ORDER"; //$NON-NLS-1$
-		}
-
-		public TypeMapping getTypeMapping() {
-			return this.getPersistentAttribute().getOwningTypeMapping();
 		}
 
 		public TextRange getValidationTextRange() {

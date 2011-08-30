@@ -1153,10 +1153,6 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getPersistentAttribute();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return AbstractOrmMultiRelationshipMapping.this.getTypeMapping();
-		}
-
 		public Entity getRelationshipTarget() {
 			return AbstractOrmMultiRelationshipMapping.this.getResolvedMapKeyEntity();
 		}

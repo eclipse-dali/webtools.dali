@@ -248,10 +248,6 @@ public class GenericOrmVirtualJoinTable
 			super();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return this.getRelationship().getTypeMapping();
-		}
-
 		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return MappingTools.buildJoinColumnDefaultName((ReadOnlyJoinColumn) column, this);
 		}
@@ -326,6 +322,10 @@ public class GenericOrmVirtualJoinTable
 
 		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			return this.getTypeMapping().getPrimaryDbTable();
+		}
+
+		protected TypeMapping getTypeMapping() {
+			return this.getRelationship().getTypeMapping();
 		}
 
 		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {

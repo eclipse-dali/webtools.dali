@@ -1843,10 +1843,6 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return AbstractOrmElementCollectionMapping2_0.this.getTypeMapping();
-		}
-
 		public Entity getRelationshipTarget() {
 			return AbstractOrmElementCollectionMapping2_0.this.getResolvedMapKeyEntity();
 		}

@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
@@ -464,10 +463,6 @@ public class GenericJavaOrderable
 
 		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return this.getPersistentAttribute().getName() + "_ORDER"; //$NON-NLS-1$
-		}
-
-		public TypeMapping getTypeMapping() {
-			return this.getPersistentAttribute().getOwningTypeMapping();
 		}
 
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {

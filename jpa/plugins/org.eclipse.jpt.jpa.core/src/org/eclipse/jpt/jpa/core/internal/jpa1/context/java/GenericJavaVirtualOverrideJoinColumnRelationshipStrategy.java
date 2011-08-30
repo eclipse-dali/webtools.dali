@@ -345,10 +345,6 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this.getAttributeName();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this.getRelationshipSource();
-		}
-
 		public Entity getRelationshipTarget() {
 			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this.getRelationshipTargetEntity();
 		}

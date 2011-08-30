@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterab
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
@@ -250,10 +249,6 @@ public class GenericOrmVirtualSecondaryTable
 			return GenericOrmVirtualSecondaryTable.this.getEntity();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return this.getEntity();
-		}
-
 		public String getDefaultTableName() {
 			return GenericOrmVirtualSecondaryTable.this.getName();
 		}
@@ -281,7 +276,7 @@ public class GenericOrmVirtualSecondaryTable
 		}
 
 		public Table getReferencedColumnDbTable() {
-			return this.getTypeMapping().getPrimaryDbTable();
+			return this.getEntity().getPrimaryDbTable();
 		}
 
 		public TextRange getValidationTextRange() {

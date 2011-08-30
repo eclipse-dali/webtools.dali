@@ -139,7 +139,7 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColu
 	 * in {@link AbstractJavaVirtualBaseColumn} where a table can be defined.
 	 */
 	public String getTable() {
-		return this.owner.getTypeMapping().getPrimaryTableName();
+		return this.owner.getDefaultTableName();
 	}
 
 	public boolean isResolved() {

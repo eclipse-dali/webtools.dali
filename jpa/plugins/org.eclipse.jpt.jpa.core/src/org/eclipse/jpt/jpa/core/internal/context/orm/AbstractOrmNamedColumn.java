@@ -210,7 +210,7 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 	 * defined.
 	 */
 	public String getTable() {
-		return this.owner.getTypeMapping().getPrimaryTableName();
+		return this.owner.getDefaultTableName();
 	}
 
 	public boolean isResolved() {

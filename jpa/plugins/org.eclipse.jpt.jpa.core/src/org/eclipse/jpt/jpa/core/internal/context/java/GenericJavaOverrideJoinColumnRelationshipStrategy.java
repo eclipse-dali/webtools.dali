@@ -190,10 +190,6 @@ public class GenericJavaOverrideJoinColumnRelationshipStrategy
 			return relationshipMapping == null ? null : relationshipMapping.getPersistentAttribute();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.getRelationshipSource();
-		}
-
 		public Entity getRelationshipTarget() {
 			return GenericJavaOverrideJoinColumnRelationshipStrategy.this.getRelationshipTargetEntity();
 		}

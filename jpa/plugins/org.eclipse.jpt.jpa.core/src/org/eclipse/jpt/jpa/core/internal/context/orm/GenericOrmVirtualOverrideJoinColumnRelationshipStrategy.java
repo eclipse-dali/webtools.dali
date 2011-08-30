@@ -346,10 +346,6 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.getAttributeName();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.getRelationshipSource();
-		}
-
 		public Entity getRelationshipTarget() {
 			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.getRelationshipTargetEntity();
 		}

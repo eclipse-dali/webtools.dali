@@ -82,11 +82,6 @@ public interface ReadOnlyNamedColumn
 	interface Owner
 	{
 		/**
-		 * Return the type mapping containing the column.
-		 */
-		TypeMapping getTypeMapping();
-
-		/**
 		 * Return the name of the table which the column belongs to by default.
 		 */
 		String getDefaultTableName();

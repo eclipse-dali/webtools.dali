@@ -1180,10 +1180,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getPersistentAttribute();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return AbstractJavaMultiRelationshipMapping.this.getTypeMapping();
-		}
-
 		public Entity getRelationshipTarget() {
 			return AbstractJavaMultiRelationshipMapping.this.getResolvedMapKeyEntity();
 		}

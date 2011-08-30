@@ -1587,10 +1587,6 @@ public abstract class AbstractJavaEntity
 	protected abstract class NamedColumnOwner
 		implements JavaReadOnlyNamedColumn.Owner
 	{
-		public TypeMapping getTypeMapping() {
-			return AbstractJavaEntity.this;
-		}
-
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
 		}

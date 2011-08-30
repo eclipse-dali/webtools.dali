@@ -177,10 +177,6 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 			return GenericJavaMappingJoinColumnRelationshipStrategy.this.getRelationshipMapping().getPersistentAttribute();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return GenericJavaMappingJoinColumnRelationshipStrategy.this.getRelationshipSource();
-		}
-
 		public Entity getRelationshipTarget() {
 			return GenericJavaMappingJoinColumnRelationshipStrategy.this.getRelationshipTargetEntity();
 		}

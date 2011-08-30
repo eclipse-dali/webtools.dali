@@ -127,10 +127,6 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 			return GenericOrmMappingJoinColumnRelationshipStrategy.this.getRelationshipMapping().getPersistentAttribute();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return GenericOrmMappingJoinColumnRelationshipStrategy.this.getRelationshipSource();
-		}
-
 		public Entity getRelationshipTarget() {
 			return GenericOrmMappingJoinColumnRelationshipStrategy.this.getRelationshipTargetEntity();
 		}

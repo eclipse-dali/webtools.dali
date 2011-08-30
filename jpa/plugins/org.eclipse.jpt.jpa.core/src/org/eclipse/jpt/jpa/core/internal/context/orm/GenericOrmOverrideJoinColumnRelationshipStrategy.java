@@ -147,10 +147,6 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 			return relationshipMapping == null ? null : relationshipMapping.getPersistentAttribute();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getRelationshipSource();
-		}
-
 		public Entity getRelationshipTarget() {
 			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getRelationshipTargetEntity();
 		}

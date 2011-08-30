@@ -269,7 +269,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 			return this.getTypeMapping().getAllAssociatedTableNames();
 		}
 
-		public TypeMapping getTypeMapping() {
+		protected TypeMapping getTypeMapping() {
 			return GenericOrmPrimaryKeyJoinColumnRelationshipStrategy.this.getTypeMapping();
 		}
 

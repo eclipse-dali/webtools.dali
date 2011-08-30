@@ -103,7 +103,7 @@ public class GenericJavaCollectionTable2_0
 			super();
 		}
 
-		public TypeMapping getTypeMapping() {
+		protected TypeMapping getTypeMapping() {
 			return GenericJavaCollectionTable2_0.this.getElementCollectionMapping().getTypeMapping();
 		}
 

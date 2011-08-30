@@ -2063,10 +2063,6 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected abstract class NamedColumnOwner
 		implements OrmReadOnlyNamedColumn.Owner
 	{
-		public TypeMapping getTypeMapping() {
-			return AbstractOrmEntity.this;
-		}
-
 		public String getDefaultTableName() {
 			return AbstractOrmEntity.this.getPrimaryTableName();
 		}

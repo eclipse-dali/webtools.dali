@@ -311,7 +311,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 			return this.getTypeMapping().getAllAssociatedTableNames();
 		}
 
-		public TypeMapping getTypeMapping() {
+		protected TypeMapping getTypeMapping() {
 			return GenericJavaPrimaryKeyJoinColumnRelationshipStrategy.this.getTypeMapping();
 		}
 

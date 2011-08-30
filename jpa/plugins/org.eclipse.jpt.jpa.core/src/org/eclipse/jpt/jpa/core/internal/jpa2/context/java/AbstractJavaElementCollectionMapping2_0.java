@@ -1846,10 +1846,6 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return AbstractJavaElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return AbstractJavaElementCollectionMapping2_0.this.getTypeMapping();
-		}
-
 		public Entity getRelationshipTarget() {
 			return AbstractJavaElementCollectionMapping2_0.this.getResolvedMapKeyEntity();
 		}

@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterab
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseJoinColumn;
@@ -321,10 +320,6 @@ public class GenericJavaSecondaryTable
 			return GenericJavaSecondaryTable.this.getEntity();
 		}
 
-		public TypeMapping getTypeMapping() {
-			return this.getEntity();
-		}
-
 		public String getDefaultTableName() {
 			return GenericJavaSecondaryTable.this.getName();
 		}
@@ -334,7 +329,7 @@ public class GenericJavaSecondaryTable
 		}
 
 		public Table getReferencedColumnDbTable() {
-			return this.getTypeMapping().getPrimaryDbTable();
+			return this.getEntity().getPrimaryDbTable();
 		}
 
 		public int getJoinColumnsSize() {
