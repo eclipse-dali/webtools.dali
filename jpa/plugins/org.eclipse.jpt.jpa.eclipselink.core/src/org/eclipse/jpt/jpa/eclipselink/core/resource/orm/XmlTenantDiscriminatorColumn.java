@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlBaseDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
@@ -30,7 +30,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlTenantDiscriminatorColumn extends AbstractXmlDiscriminatorColumn implements XmlTenantDiscriminatorColumn_2_3
+public class XmlTenantDiscriminatorColumn extends AbstractXmlBaseDiscriminatorColumn implements XmlTenantDiscriminatorColumn_2_3
 {
 	/**
 	 * The default value of the '{@link #getContextProperty() <em>Context Property</em>}' attribute.
@@ -305,6 +305,48 @@ public class XmlTenantDiscriminatorColumn extends AbstractXmlDiscriminatorColumn
 	 * @generated
 	 */
 	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlTenantDiscriminatorColumn_2_3.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY: return EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__CONTEXT_PROPERTY;
+				case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__TABLE: return EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__TABLE;
+				case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY: return EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__PRIMARY_KEY;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlTenantDiscriminatorColumn_2_3.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__CONTEXT_PROPERTY: return EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY;
+				case EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__TABLE: return EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__TABLE;
+				case EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__PRIMARY_KEY: return EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public String toString()
 	{
 		if (eIsProxy()) return super.toString();
@@ -324,8 +366,9 @@ public class XmlTenantDiscriminatorColumn extends AbstractXmlDiscriminatorColumn
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
-			elementName, 
+			elementName,
 			structuralFeature,
+			Translator.END_TAG_NO_INDENT,
 			EclipseLinkOrmPackage.eINSTANCE.getXmlTenantDiscriminatorColumn(),
 			buildTranslatorChildren());
 	}
@@ -334,7 +377,7 @@ public class XmlTenantDiscriminatorColumn extends AbstractXmlDiscriminatorColumn
 		return new Translator[] {
 			buildNameTranslator(),
 			buildContextPropertyTranslator(),
-			buildDiscrminiatorTypeTranslator(),
+			buildDiscriminatorTypeTranslator(),
 			buildColumnDefinitionTranslator(),
 			buildLengthTranslator(),
 			buildTableTranslator(),

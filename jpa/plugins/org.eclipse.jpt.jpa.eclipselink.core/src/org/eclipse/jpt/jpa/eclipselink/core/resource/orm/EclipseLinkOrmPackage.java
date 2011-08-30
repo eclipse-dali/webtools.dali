@@ -1483,6 +1483,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES = OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES;
 	/**
+	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL = OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL;
+	/**
+	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED = OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED;
+	/**
 	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1514,22 +1530,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_CLASS = OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CLASS;
-	/**
-	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL = OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_TEMPORAL;
-	/**
-	 * The feature id for the '<em><b>Map Key Enumerated</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED = OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ENUMERATED;
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -3839,14 +3839,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES = OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES;
 	/**
-	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_CLASS = OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS;
-	/**
 	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3862,6 +3854,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MANY_TO_MANY__MAP_KEY_ENUMERATED = OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ENUMERATED;
+	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY_CLASS = OrmPackage.XML_MANY_TO_MANY__MAP_KEY_CLASS;
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -5035,14 +5035,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ONE_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES = OrmPackage.XML_ONE_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES;
 	/**
-	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_CLASS = OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS;
-	/**
 	 * The feature id for the '<em><b>Map Key Temporal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5058,6 +5050,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_MANY__MAP_KEY_ENUMERATED = OrmPackage.XML_ONE_TO_MANY__MAP_KEY_ENUMERATED;
+	/**
+	 * The feature id for the '<em><b>Map Key Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY_CLASS = OrmPackage.XML_ONE_TO_MANY__MAP_KEY_CLASS;
 	/**
 	 * The feature id for the '<em><b>Map Key Column</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -6499,7 +6499,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__COLUMN_DEFINITION;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION = OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6507,7 +6507,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__NAME = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__NAME;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__NAME = OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__NAME;
 	/**
 	 * The feature id for the '<em><b>Discriminator Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6515,7 +6515,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__DISCRIMINATOR_TYPE;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE;
 	/**
 	 * The feature id for the '<em><b>Length</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6523,7 +6523,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__LENGTH = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__LENGTH;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__LENGTH = OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__LENGTH;
 	/**
 	 * The feature id for the '<em><b>Context Property</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6531,7 +6531,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__CONTEXT_PROPERTY;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY = OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Table</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6539,7 +6539,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__TABLE = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__TABLE;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__TABLE = OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 1;
 	/**
 	 * The feature id for the '<em><b>Primary Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6547,7 +6547,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23__PRIMARY_KEY;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY = OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 2;
 	/**
 	 * The number of structural features of the '<em>Xml Tenant Discriminator Column</em>' class.
 	 * <!-- begin-user-doc -->
@@ -6555,7 +6555,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_FEATURE_COUNT = EclipseLinkOrmV2_3Package.XML_TENANT_DISCRIMINATOR_COLUMN_23_FEATURE_COUNT + 0;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 3;
 	/**
 	 * The feature id for the '<em><b>Hour</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -10714,6 +10714,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlTableEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlTable_2_2());
 		xmlTableGeneratorEClass.getESuperTypes().add(theOrmPackage.getXmlTableGenerator());
 		xmlTableGeneratorEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlTableGenerator_2_2());
+		xmlTenantDiscriminatorColumnEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlBaseDiscriminatorColumn());
 		xmlTenantDiscriminatorColumnEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlTenantDiscriminatorColumn_2_3());
 		xmlTransformationEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
 		xmlTransformationEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlTransformation_2_1());

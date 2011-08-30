@@ -671,7 +671,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__COLUMN_DEFINITION = OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__COLUMN_DEFINITION = OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -680,7 +680,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__NAME = OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__NAME;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__NAME = OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Discriminator Type</b></em>' attribute.
@@ -689,7 +689,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__DISCRIMINATOR_TYPE = OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__DISCRIMINATOR_TYPE = OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE;
 
 	/**
 	 * The feature id for the '<em><b>Length</b></em>' attribute.
@@ -698,7 +698,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__LENGTH = OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__LENGTH;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__LENGTH = OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN__LENGTH;
 
 	/**
 	 * The feature id for the '<em><b>Context Property</b></em>' attribute.
@@ -707,7 +707,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__CONTEXT_PROPERTY = OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 0;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__CONTEXT_PROPERTY = OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Table</b></em>' attribute.
@@ -716,7 +716,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__TABLE = OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 1;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__TABLE = OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Primary Key</b></em>' attribute.
@@ -725,7 +725,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__PRIMARY_KEY = OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 2;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23__PRIMARY_KEY = OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Xml Tenant Discriminator Column 23</em>' class.
@@ -734,7 +734,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 3;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23_FEATURE_COUNT = OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Xml Structure 23</em>' class.
@@ -1938,7 +1938,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		xmlTenantDiscriminatorColumn_2_3EClass.getESuperTypes().add(theOrmPackage.getAbstractXmlDiscriminatorColumn());
+		xmlTenantDiscriminatorColumn_2_3EClass.getESuperTypes().add(theOrmPackage.getXmlBaseDiscriminatorColumn());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlArray_2_3EClass, XmlArray_2_3.class, "XmlArray_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

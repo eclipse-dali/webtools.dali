@@ -21,19 +21,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * A representation of the model object '<em><b>Abstract Xml Discriminator Column</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlDiscriminatorColumn#getDiscriminatorType <em>Discriminator Type</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlDiscriminatorColumn#getLength <em>Length</em>}</li>
- * </ul>
- * </p>
  *
- * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlDiscriminatorColumn()
+ * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlBaseDiscriminatorColumn()
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedColumn
+public abstract class AbstractXmlBaseDiscriminatorColumn extends AbstractXmlNamedColumn implements XmlBaseDiscriminatorColumn
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -76,7 +69,7 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected AbstractXmlDiscriminatorColumn()
+	protected AbstractXmlBaseDiscriminatorColumn()
 	{
 		super();
 	}
@@ -89,7 +82,7 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.ABSTRACT_XML_DISCRIMINATOR_COLUMN;
+		return OrmPackage.Literals.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN;
 	}
 
 	/**
@@ -105,7 +98,7 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 	 * @return the value of the '<em>Discriminator Type</em>' attribute.
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.DiscriminatorType
 	 * @see #setDiscriminatorType(DiscriminatorType)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlDiscriminatorColumn_DiscriminatorType()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlBaseDiscriminatorColumn_DiscriminatorType()
 	 * @model default="STRING"
 	 * @generated
 	 */
@@ -115,7 +108,7 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlDiscriminatorColumn#getDiscriminatorType <em>Discriminator Type</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlBaseDiscriminatorColumn#getDiscriminatorType <em>Discriminator Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Discriminator Type</em>' attribute.
@@ -128,7 +121,7 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 		DiscriminatorType oldDiscriminatorType = discriminatorType;
 		discriminatorType = newDiscriminatorType == null ? DISCRIMINATOR_TYPE_EDEFAULT : newDiscriminatorType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE, oldDiscriminatorType, discriminatorType));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE, oldDiscriminatorType, discriminatorType));
 	}
 
 	/**
@@ -141,7 +134,7 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Length</em>' attribute.
 	 * @see #setLength(Integer)
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlDiscriminatorColumn_Length()
+	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlBaseDiscriminatorColumn_Length()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
@@ -151,7 +144,7 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlDiscriminatorColumn#getLength <em>Length</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlBaseDiscriminatorColumn#getLength <em>Length</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Length</em>' attribute.
@@ -163,7 +156,7 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 		Integer oldLength = length;
 		length = newLength;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__LENGTH, oldLength, length));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__LENGTH, oldLength, length));
 	}
 
 	/**
@@ -176,9 +169,9 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
+			case OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				return getDiscriminatorType();
-			case OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__LENGTH:
+			case OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__LENGTH:
 				return getLength();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -194,10 +187,10 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
+			case OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				setDiscriminatorType((DiscriminatorType)newValue);
 				return;
-			case OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__LENGTH:
+			case OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__LENGTH:
 				setLength((Integer)newValue);
 				return;
 		}
@@ -214,10 +207,10 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
+			case OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				setDiscriminatorType(DISCRIMINATOR_TYPE_EDEFAULT);
 				return;
-			case OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__LENGTH:
+			case OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__LENGTH:
 				setLength(LENGTH_EDEFAULT);
 				return;
 		}
@@ -234,12 +227,52 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
+			case OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				return discriminatorType != DISCRIMINATOR_TYPE_EDEFAULT;
-			case OrmPackage.ABSTRACT_XML_DISCRIMINATOR_COLUMN__LENGTH:
+			case OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__LENGTH:
 				return LENGTH_EDEFAULT == null ? length != null : !LENGTH_EDEFAULT.equals(length);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlBaseDiscriminatorColumn.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE: return OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE;
+				case OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__LENGTH: return OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN__LENGTH;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlBaseDiscriminatorColumn.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE: return OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE;
+				case OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN__LENGTH: return OrmPackage.ABSTRACT_XML_BASE_DISCRIMINATOR_COLUMN__LENGTH;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -264,11 +297,11 @@ public abstract class AbstractXmlDiscriminatorColumn extends AbstractXmlNamedCol
 
 	// ********** translators **********
 	
-	protected static Translator buildDiscrminiatorTypeTranslator() {
-		return new Translator(JPA.DISCRIMINATOR_TYPE, OrmPackage.eINSTANCE.getAbstractXmlDiscriminatorColumn_DiscriminatorType(), Translator.DOM_ATTRIBUTE);
+	protected static Translator buildDiscriminatorTypeTranslator() {
+		return new Translator(JPA.DISCRIMINATOR_TYPE, OrmPackage.eINSTANCE.getXmlBaseDiscriminatorColumn_DiscriminatorType(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildLengthTranslator() {
-		return new Translator(JPA.LENGTH, OrmPackage.eINSTANCE.getAbstractXmlDiscriminatorColumn_Length(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.LENGTH, OrmPackage.eINSTANCE.getXmlBaseDiscriminatorColumn_Length(), Translator.DOM_ATTRIBUTE);
 	}
 } // AbstractXmlDiscriminatorColumn

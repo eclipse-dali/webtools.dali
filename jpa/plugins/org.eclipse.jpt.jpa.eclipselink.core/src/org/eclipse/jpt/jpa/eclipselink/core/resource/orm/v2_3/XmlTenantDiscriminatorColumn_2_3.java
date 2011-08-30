@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
 
+import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseDiscriminatorColumn;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +30,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlTenantDiscriminatorColumn_2_3
+public interface XmlTenantDiscriminatorColumn_2_3 extends XmlBaseDiscriminatorColumn
 {
 
 	/**

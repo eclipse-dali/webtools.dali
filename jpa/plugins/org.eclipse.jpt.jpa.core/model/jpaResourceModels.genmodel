@@ -63,10 +63,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseColumn/updatable"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlBaseColumn"/>
-    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlDiscriminatorColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlDiscriminatorColumn/discriminatorType"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlDiscriminatorColumn/length"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlBaseDiscriminatorColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlEmbedded"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlMultiRelationshipMapping">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//AbstractXmlMultiRelationshipMapping/mapKey"/>
@@ -74,6 +71,10 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlNamedColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedColumn/columnDefinition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedColumn/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlBaseDiscriminatorColumn">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseDiscriminatorColumn/discriminatorType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseDiscriminatorColumn/length"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlBaseJoinColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseJoinColumn/referencedColumnName"/>

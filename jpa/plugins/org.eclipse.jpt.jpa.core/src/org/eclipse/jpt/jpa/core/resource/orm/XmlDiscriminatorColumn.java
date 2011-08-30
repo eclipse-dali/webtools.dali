@@ -30,14 +30,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlDiscriminatorColumn extends AbstractXmlDiscriminatorColumn
+public class XmlDiscriminatorColumn extends AbstractXmlBaseDiscriminatorColumn
 {
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final DiscriminatorType DISCRIMINATOR_TYPE_EDEFAULT = null;
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -73,7 +67,7 @@ public class XmlDiscriminatorColumn extends AbstractXmlDiscriminatorColumn
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
-			buildDiscrminiatorTypeTranslator(),
+			buildDiscriminatorTypeTranslator(),
 			buildColumnDefinitionTranslator(),
 			buildLengthTranslator()
 		};

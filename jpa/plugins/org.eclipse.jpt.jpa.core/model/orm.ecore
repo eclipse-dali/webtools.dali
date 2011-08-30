@@ -15,12 +15,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlBaseColumn" abstract="true"
       eSuperTypes="#//AbstractXmlNamedColumn #//XmlBaseColumn"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlDiscriminatorColumn" abstract="true"
-      eSuperTypes="#//AbstractXmlNamedColumn">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorType" eType="#//DiscriminatorType"
-        defaultValueLiteral="STRING"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlBaseDiscriminatorColumn"
+      abstract="true" eSuperTypes="#//AbstractXmlNamedColumn #//XmlBaseDiscriminatorColumn"/>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlEmbedded" abstract="true"
       eSuperTypes="#//AbstractXmlAttributeMapping #//XmlAttributeOverrideContainer"/>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlMultiRelationshipMapping"
@@ -31,6 +27,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedColumn" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnDefinition" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBaseDiscriminatorColumn" abstract="true"
+      interface="true" eSuperTypes="#//XmlNamedColumn">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorType" eType="#//DiscriminatorType"
+        defaultValueLiteral="STRING"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBaseJoinColumn" abstract="true" interface="true"
       eSuperTypes="#//XmlNamedColumn">
@@ -140,7 +142,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//TemporalType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumerated" eType="#//EnumType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlDiscriminatorColumn" eSuperTypes="#//AbstractXmlDiscriminatorColumn"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlDiscriminatorColumn" eSuperTypes="#//AbstractXmlBaseDiscriminatorColumn"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection" eSuperTypes="#//AbstractXmlAttributeMapping #//v2_0/XmlElementCollection_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="#//AbstractXmlTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="#//AbstractXmlEmbedded #//v2_0/XmlEmbedded_2_0"/>
