@@ -49,14 +49,14 @@
          id="org.eclipse.persistence.dbws"
          download-size="0"
          install-size="0"
-         version="2.4.0.qualifier"
+         version="2.3.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.persistence.dbws.builder"
          download-size="0"
          install-size="0"
-         version="2.4.0.qualifier"
+         version="2.3.1.qualifier"
          unpack="false"/>
 
    <plugin
