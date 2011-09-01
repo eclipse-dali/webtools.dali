@@ -13,7 +13,9 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -46,6 +48,10 @@ public class JavaNullTypeMapping
 		return false;
 	}
 	
+	public Iterable<Query> getQueries() {
+		return EmptyIterable.instance();
+	}
+
 
 	// ********** validation **********
 

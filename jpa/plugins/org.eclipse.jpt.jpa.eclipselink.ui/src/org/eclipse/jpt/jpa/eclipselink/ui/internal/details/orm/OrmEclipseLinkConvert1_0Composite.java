@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import java.util.ArrayList;
+
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.NonEmptyStringFilter;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
@@ -33,6 +33,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
@@ -197,15 +198,8 @@ public class OrmEclipseLinkConvert1_0Composite extends Pane<EclipseLinkConvert>
 	}
 
 	protected CollectionValueModel<String> buildConverterNamesModel() {
-		return new FilteringCollectionValueModel<String>(this.buildConverterNamesModel_(), NON_EMPTY_STRING_FILTER);
+		return new FilteringCollectionValueModel<String>(this.buildConverterNamesModel_(), NonEmptyStringFilter.instance());
 	}
-
-	protected static final Filter<String> NON_EMPTY_STRING_FILTER =
-		new Filter<String>() {
-			public boolean accept(String string) {
-				return StringTools.stringIsNotEmpty(string);
-			}
-		};
 
 	protected ListValueModel<String> buildConverterNamesModel_() {
 		return new TransformationListValueModel<EclipseLinkConverter, String>(this.buildConvertersModel()) {
@@ -217,7 +211,7 @@ public class OrmEclipseLinkConvert1_0Composite extends Pane<EclipseLinkConvert>
 	}
 
 	protected ListValueModel<EclipseLinkConverter> buildConvertersModel() {
-		return new ItemPropertyListValueModelAdapter<EclipseLinkConverter>(this.buildConvertersModel_(), EclipseLinkConverter.NAME_PROPERTY);
+		return new ItemPropertyListValueModelAdapter<EclipseLinkConverter>(this.buildConvertersModel_(), JpaNamedContextNode.NAME_PROPERTY);
 	}
 
 	protected CollectionValueModel<EclipseLinkConverter> buildConvertersModel_() {

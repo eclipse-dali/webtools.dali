@@ -9,11 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Arrays;
-
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
-import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 
 /**
  * Named and named native queries.
@@ -34,19 +30,8 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
  * @since 2.0
  */
 public interface Query
-	extends JpaNamedContextNode<Query>
+	extends JpaNamedContextNode
 {
-	/**
-	 * TODO use this precedence until adopters protest...
-	 * then move to JpaPlatform
-	 */
-	@SuppressWarnings("unchecked")
-	Iterable<Class<? extends Query>> PRECEDENCE_TYPE_LIST = Arrays.asList(
-			OrmQuery.class,
-			JavaQuery.class
-		);
-
-
 	// ********** query **********
 
 	String QUERY_PROPERTY = "query"; //$NON-NLS-1$
@@ -94,5 +79,4 @@ public interface Query
 	 * Move the hint from the source index to the target index.
 	 */
 	void moveHint(int targetIndex, int sourceIndex);
-
 }

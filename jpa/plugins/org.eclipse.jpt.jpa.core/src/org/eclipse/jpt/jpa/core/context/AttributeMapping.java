@@ -100,6 +100,11 @@ public interface AttributeMapping
 	 */
 	Relationship resolveOverriddenRelationship(String attributeName);
 
+	/**
+	 * Typically only ID mappings have generators.
+	 */
+	Iterable<Generator> getGenerators();
+
 
 	// ********** embedded mappings **********
 

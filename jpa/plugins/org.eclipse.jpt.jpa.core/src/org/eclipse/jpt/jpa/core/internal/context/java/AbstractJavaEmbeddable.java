@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
@@ -44,5 +46,9 @@ public abstract class AbstractJavaEmbeddable
 	@Override
 	public boolean validatesAgainstDatabase() {
 		return false;
+	}
+
+	public Iterable<Query> getQueries() {
+		return EmptyIterable.instance();
 	}
 }

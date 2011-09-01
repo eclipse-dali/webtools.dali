@@ -56,7 +56,11 @@ public interface TypeMapping
 	 * Return the resolved id class specified on this type mapping, null otherwise
 	 */
 	JavaPersistentType getIdClass();
-	
+
+	Iterable<Query> getQueries();
+
+	Iterable<Generator> getGenerators();
+
 
 	// ********** inheritance **********
 
@@ -131,7 +135,7 @@ public interface TypeMapping
 	boolean tableNameIsInvalid(String tableName);
 	
 
-	// ********** mappings **********
+	// ********** attribute mappings **********
 
 	/**
 	 * A convenience method for getting the attribute mappings from PersistentType.attributes()

@@ -12,8 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.NonEmptyStringFilter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -177,15 +176,8 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 	}
 
 	protected CollectionValueModel<String> buildGeneratorNamesModel() {
-		return new FilteringCollectionValueModel<String>(this.buildGeneratorNamesModel_(), NON_EMPTY_STRING_FILTER);
+		return new FilteringCollectionValueModel<String>(this.buildGeneratorNamesModel_(), NonEmptyStringFilter.instance());
 	}
-
-	protected static final Filter<String> NON_EMPTY_STRING_FILTER =
-		new Filter<String>() {
-			public boolean accept(String string) {
-				return StringTools.stringIsNotEmpty(string);
-			}
-		};
 
 	protected ListValueModel<String> buildGeneratorNamesModel_() {
 		return new TransformationListValueModel<Generator, String>(this.buildGeneratorsModel()) {

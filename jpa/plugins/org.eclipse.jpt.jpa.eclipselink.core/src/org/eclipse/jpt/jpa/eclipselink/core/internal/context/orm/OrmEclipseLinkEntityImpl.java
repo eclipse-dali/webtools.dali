@@ -14,9 +14,13 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
@@ -25,6 +29,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
@@ -120,6 +125,22 @@ public class OrmEclipseLinkEntityImpl
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
 		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlTypeMapping);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Iterable<EclipseLinkConverter> getConverters() {
+		return new CompositeIterable<EclipseLinkConverter>(
+					this.converterContainer.getConverters(),
+					this.getAttributeMappingConverters()
+				);
+	}
+
+	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters() {
+		return new FilteringIterable<EclipseLinkConverter>(this.getAttributeMappingConverters_(), NotNullFilter.<EclipseLinkConverter>instance());
+	}
+
+	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {
+		return new TransformationIterable<AttributeMapping, EclipseLinkConverter>(this.getAttributeMappings(), ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER);
 	}
 
 

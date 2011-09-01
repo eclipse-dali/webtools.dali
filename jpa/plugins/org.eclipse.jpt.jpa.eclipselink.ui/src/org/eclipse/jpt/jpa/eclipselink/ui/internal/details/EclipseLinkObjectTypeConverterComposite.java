@@ -34,6 +34,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelec
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
@@ -99,7 +100,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 	
 	protected WritablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
-				getSubjectHolder(), EclipseLinkConverter.NAME_PROPERTY) {
+				getSubjectHolder(), JpaNamedContextNode.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();

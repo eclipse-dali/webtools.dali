@@ -28,6 +28,12 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 public interface QueryContainer
 	extends JpaContextNode
 {
+	/**
+	 * Return the container's named and named native queries.
+	 */
+	Iterable<Query> getQueries();
+
+
 	// ********** named queries **********
 
 	/**

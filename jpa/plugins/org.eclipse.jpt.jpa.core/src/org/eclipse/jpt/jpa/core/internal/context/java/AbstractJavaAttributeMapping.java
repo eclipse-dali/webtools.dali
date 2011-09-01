@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -182,6 +183,10 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 
 	protected JavaPersistentAttribute getJavaPersistentAttribute() {
 		return this.getPersistentAttribute().getJavaPersistentAttribute();
+	}
+
+	public Iterable<Generator> getGenerators() {
+		return EmptyIterable.instance();
 	}
 
 	@Override

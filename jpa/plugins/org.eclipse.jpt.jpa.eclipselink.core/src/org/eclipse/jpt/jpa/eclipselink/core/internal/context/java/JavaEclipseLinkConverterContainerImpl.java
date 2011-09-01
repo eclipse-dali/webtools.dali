@@ -9,12 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -312,6 +316,22 @@ public class JavaEclipseLinkConverterContainerImpl
 	@SuppressWarnings("unchecked")
 	protected <C extends JavaEclipseLinkConverter<?>> C buildNewConverter(C.Adapter adapter) {
 		return (C) adapter.buildNewConverter(this.getJavaResourceType(), this);
+	}
+
+	public Iterable<EclipseLinkConverter> getConverters() {
+		return new FilteringIterable<EclipseLinkConverter>(this.getConverters_(), NotNullFilter.<EclipseLinkConverter>instance());
+	}
+
+	/**
+	 * This will include <code>null</code> converters.
+	 */
+	protected Iterable<EclipseLinkConverter> getConverters_() {
+		ArrayList<EclipseLinkConverter> result = new ArrayList<EclipseLinkConverter>(4);
+		result.add(this.customConverter);
+		result.add(this.objectTypeConverter);
+		result.add(this.structConverter);
+		result.add(this.typeConverter);
+		return result;
 	}
 
 

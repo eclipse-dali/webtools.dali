@@ -31,7 +31,9 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
@@ -826,6 +828,61 @@ public abstract class AbstractEntityMappings
 
 	protected OrmQueryContainer buildQueryContainer() {
 		return this.getContextNodeFactory().buildOrmQueryContainer(this, this.xmlEntityMappings);
+	}
+
+
+	// ********** queries/generators **********
+
+	@SuppressWarnings("unchecked")
+	public Iterable<Query> getMappingFileQueries() {
+		return new CompositeIterable<Query>(
+					this.queryContainer.getQueries(),
+					this.getTypeMappingQueries()
+				);
+	}
+
+	protected Iterable<Query> getTypeMappingQueries() {
+		return new CompositeIterable<Query>(this.getTypeMappingQueryLists());
+	}
+
+	protected Iterable<Iterable<Query>> getTypeMappingQueryLists() {
+		return new TransformationIterable<OrmTypeMapping, Iterable<Query>>(this.getTypeMappings()) {
+					@Override
+					protected Iterable<Query> transform(OrmTypeMapping typeMapping) {
+						return typeMapping.getQueries();
+					}
+				};
+	}
+
+	@SuppressWarnings("unchecked")
+	public Iterable<Generator> getMappingFileGenerators() {
+		return new CompositeIterable<Generator>(
+					this.getSequenceGenerators(),
+					this.getTableGenerators(),
+					this.getTypeMappingGenerators()
+				);
+	}
+
+	protected Iterable<Generator> getTypeMappingGenerators() {
+		return new CompositeIterable<Generator>(this.getTypeMappingGeneratorLists());
+	}
+
+	protected Iterable<Iterable<Generator>> getTypeMappingGeneratorLists() {
+		return new TransformationIterable<OrmTypeMapping, Iterable<Generator>>(this.getTypeMappings()) {
+					@Override
+					protected Iterable<Generator> transform(OrmTypeMapping typeMapping) {
+						return typeMapping.getGenerators();
+					}
+				};
+	}
+
+	protected Iterable<OrmTypeMapping> getTypeMappings() {
+		return new TransformationIterable<OrmPersistentType, OrmTypeMapping>(this.getPersistentTypes()) {
+					@Override
+					protected OrmTypeMapping transform(OrmPersistentType persistentType) {
+						return persistentType.getMapping();
+					}
+				};
 	}
 
 

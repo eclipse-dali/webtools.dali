@@ -180,6 +180,13 @@ public interface PersistentType
 	 */
 	boolean isIn(IPackageFragment packageFragment);
 
+	/**
+	 * Return the persistent type the persistent type overrides.
+	 * Typically this is the Java persistent type overridden by a
+	 * non-metadata-complete <code>orm.xml</code> persistent type.
+	 */
+	PersistentType getOverriddenPersistentType();
+
 
 	// ********** owner **********
 

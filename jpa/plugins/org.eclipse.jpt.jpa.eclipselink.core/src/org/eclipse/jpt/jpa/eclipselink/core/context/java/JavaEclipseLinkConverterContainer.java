@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkStructConverter;
@@ -34,6 +35,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLin
 public interface JavaEclipseLinkConverterContainer
 	extends JavaJpaContextNode
 {
+	Iterable<EclipseLinkConverter> getConverters();
+
 	JavaEclipseLinkCustomConverter getCustomConverter();
 	JavaEclipseLinkCustomConverter addCustomConverter();
 	void removeCustomConverter();

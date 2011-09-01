@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
@@ -267,14 +266,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	public X getXmlQuery() {
 		return this.xmlQuery;
-	}
-
-	public boolean overrides(Query other) {
-		return MappingTools.nodeOverrides(this, other, PRECEDENCE_TYPE_LIST);
-	}
-
-	public boolean duplicates(Query other) {
-		return MappingTools.nodesAreDuplicates(this, other);
 	}
 
 	@Override

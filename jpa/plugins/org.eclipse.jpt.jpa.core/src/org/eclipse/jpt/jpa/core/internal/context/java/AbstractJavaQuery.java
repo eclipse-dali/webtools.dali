@@ -245,14 +245,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 		return this.queryAnnotation;
 	}
 
-	public boolean overrides(Query other) {
-		return MappingTools.nodeOverrides(this, other, PRECEDENCE_TYPE_LIST);
-	}
-
-	public boolean duplicates(Query other) {
-		return MappingTools.nodesAreDuplicates(this, other);
-	}
-
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);

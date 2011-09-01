@@ -145,19 +145,6 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 		return this.getValidationTextRange(this.getConverterAnnotation().getNameTextRange(astRoot), astRoot);
 	}
 	
-	public boolean overrides(EclipseLinkConverter converter) {
-		// java is at the base of the tree
-		return false;
-	}
-
-	public boolean duplicates(EclipseLinkConverter converter) {
-		return (this != converter) &&
-				! StringTools.stringIsEmpty(this.name) &&
-				this.name.equals(converter.getName()) &&
-				! this.overrides(converter) &&
-				! converter.overrides(this);
-	}
-
 
 	// ********** adapter **********
 

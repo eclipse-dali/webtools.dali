@@ -14,9 +14,13 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
@@ -62,6 +66,27 @@ public class EclipseLinkEntityMappingsImpl
 		return new OrmEclipseLinkConverterContainerImpl(this, (XmlEntityMappings) this.xmlEntityMappings);
 	}
 
+	@SuppressWarnings("unchecked")
+	public Iterable<EclipseLinkConverter> getMappingFileConverters() {
+		return new CompositeIterable<EclipseLinkConverter>(
+					this.converterContainer.getConverters(),
+					this.getTypeMappingConverters()
+				);
+	}
+
+	protected Iterable<EclipseLinkConverter> getTypeMappingConverters() {
+		return new CompositeIterable<EclipseLinkConverter>(this.getTypeMappingConverterLists());
+	}
+
+	protected Iterable<Iterable<EclipseLinkConverter>> getTypeMappingConverterLists() {
+		return new TransformationIterable<OrmTypeMapping, Iterable<EclipseLinkConverter>>(this.getTypeMappings()) {
+					@Override
+					protected Iterable<EclipseLinkConverter> transform(OrmTypeMapping typeMapping) {
+						return ((EclipseLinkTypeMapping) typeMapping).getConverters();
+					}
+				};
+	}
+
 
 	// ********** misc **********
 
@@ -71,7 +96,7 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 
-	// **************** refactoring *********************************************
+	// ********** refactoring **********
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -108,7 +133,6 @@ public class EclipseLinkEntityMappingsImpl
 	protected Iterable<ReplaceEdit> createConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return this.converterContainer.createRenamePackageEdits(originalPackage, newName);
 	}
-
 
 
 	// ********** validation **********

@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.swt.widgets.Composite;
@@ -69,7 +70,7 @@ public class EclipseLinkTypeConverterComposite extends Pane<EclipseLinkTypeConve
 	
 	protected WritablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(
-				getSubjectHolder(), EclipseLinkConverter.NAME_PROPERTY) {
+				getSubjectHolder(), JpaNamedContextNode.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();

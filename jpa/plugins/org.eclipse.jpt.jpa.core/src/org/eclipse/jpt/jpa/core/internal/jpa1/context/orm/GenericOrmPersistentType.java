@@ -188,7 +188,11 @@ public class GenericOrmPersistentType
 	public String getName() {
 		return (this.javaPersistentType != null) ?
 				this.javaPersistentType.getName() :
-				this.convertMappingClassName(this.mapping.getClass_());
+				this.getMappingClassName();
+	}
+
+	protected String getMappingClassName() {
+		return this.convertMappingClassName(this.mapping.getClass_());
 	}
 
 	public String getSimpleName(){
@@ -272,14 +276,14 @@ public class GenericOrmPersistentType
 	}
 
 	/**
-	 * Don't use getName() to resolve the java resource type.
-	 * getName() uses the JavaPersistentType for determining the name. 
-	 * Changed this to fix bug 339560
+	 * Use {@link #getMappingClassName()} instead of {@link #getName()} to
+	 * look up the Java resource type because {@link #getName()}
+	 * simply delegates to the existing Java resource persistent type. (In
+	 * which case we wouldn't need to resolve it, would we?) [bug 339560]
 	 * @see #updateJavaPersistentType()
 	 */
 	protected JavaResourceAbstractType resolveJavaResourceType() {
-		return this.getEntityMappings().resolveJavaResourceType(
-			this.convertMappingClassName(this.mapping.getClass_()));
+		return this.getEntityMappings().resolveJavaResourceType(this.getMappingClassName());
 	}
 
 	/**
@@ -1373,6 +1377,10 @@ public class GenericOrmPersistentType
 
 	public boolean contains(int textOffset) {
 		return this.mapping.containsOffset(textOffset);
+	}
+
+	public PersistentType getOverriddenPersistentType() {
+		return this.mapping.isMetadataComplete() ? null : this.javaPersistentType;
 	}
 
 	@Override

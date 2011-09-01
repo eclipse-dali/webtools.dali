@@ -49,6 +49,21 @@ public interface MappingFile
 	boolean isIn(IFolder folder);
 
 
+	// ********** queries/generators **********
+
+	/**
+	 * Return the queries defined directly in the mapping file (as opposed to
+	 * including the queries defined in Java annotations).
+	 */
+	Iterable<Query> getMappingFileQueries();
+
+	/**
+	 * Return the generators defined directly in the mapping file (as opposed to
+	 * including the generators defined in Java annotations).
+	 */
+	Iterable<Generator> getMappingFileGenerators();
+
+
 	// ********** refactoring **********
 
 	/**

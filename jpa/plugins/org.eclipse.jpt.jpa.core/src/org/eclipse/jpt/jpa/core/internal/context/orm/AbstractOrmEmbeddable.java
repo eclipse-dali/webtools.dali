@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -89,6 +90,13 @@ public abstract class AbstractOrmEmbeddable<X extends XmlEmbeddable>
 
 	public void removeXmlTypeMappingFrom(XmlEntityMappings entityMappings) {
 		entityMappings.getEmbeddables().remove(this.xmlTypeMapping);
+	}
+
+
+	// ********** queries **********
+
+	public Iterable<Query> getQueries() {
+		return EmptyIterable.instance();
 	}
 
 

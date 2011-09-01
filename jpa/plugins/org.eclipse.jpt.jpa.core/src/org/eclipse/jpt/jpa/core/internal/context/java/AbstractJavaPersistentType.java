@@ -191,6 +191,7 @@ public abstract class AbstractJavaPersistentType
 		return this.getPersistenceUnit().getPersistentType(typeName);
 	}
 
+
 	// ********** access annotation **********
 
 	protected Access2_0Annotation getAccessAnnotation() {
@@ -1072,6 +1073,10 @@ public abstract class AbstractJavaPersistentType
 
 	protected String getPackageName() {
 		return this.getJavaResourceType().getPackageName();
+	}
+
+	public PersistentType getOverriddenPersistentType() {
+		return null;  // Java persistent types do not override anything
 	}
 
 	@Override

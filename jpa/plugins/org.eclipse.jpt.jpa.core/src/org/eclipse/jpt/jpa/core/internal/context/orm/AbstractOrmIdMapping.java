@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Converter;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
@@ -129,6 +130,11 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 
 	protected OrmGeneratorContainer buildGeneratorContainer() {
 		return this.getContextNodeFactory().buildOrmGeneratorContainer(this, this.xmlAttributeMapping);
+	}
+
+	@Override
+	public Iterable<Generator> getGenerators() {
+		return this.generatorContainer.getGenerators();
 	}
 
 

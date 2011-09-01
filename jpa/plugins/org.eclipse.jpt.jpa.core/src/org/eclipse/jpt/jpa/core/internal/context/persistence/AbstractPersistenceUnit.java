@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.internal.NonEmptyStringFilter;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -48,29 +48,23 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
-import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -435,15 +429,6 @@ public abstract class AbstractPersistenceUnit
 
 	// ********** mapping file refs **********
 
-	protected Iterable<String> getMappingFileRefNames() {
-		return new TransformationIterable<MappingFileRef, String>(this.getMappingFileRefs()) {
-			@Override
-			protected String transform(MappingFileRef mappingFileRef) {
-				return mappingFileRef.getFileName();
-			}
-		};
-	}
-
 	public ListIterable<MappingFileRef> getMappingFileRefs() {
 		return (this.impliedMappingFileRef == null) ?
 				this.getSpecifiedMappingFileRefs() :
@@ -472,6 +457,19 @@ public abstract class AbstractPersistenceUnit
 			@Override
 			protected boolean accept(MappingFileRef mappingFileRef) {
 				return mappingFileRef.getPersistentType(typeName) != null;
+			}
+		};
+	}
+
+	protected Iterable<MappingFile> getMappingFiles() {
+		return new FilteringIterable<MappingFile>(this.getMappingFiles_(), NotNullFilter.<MappingFile>instance());
+	}
+
+	protected Iterable<MappingFile> getMappingFiles_() {
+		return new TransformationIterable<MappingFileRef, MappingFile>(this.getMappingFileRefs()) {
+			@Override
+			protected MappingFile transform(MappingFileRef ref) {
+				return ref.getMappingFile();
 			}
 		};
 	}
@@ -651,15 +649,6 @@ public abstract class AbstractPersistenceUnit
 		return this.jarFileRefContainer.getContextElementsSize();
 	}
 
-	protected Iterable<String> getJarFileNames() {
-		return new TransformationIterable<JarFileRef, String>(this.getJarFileRefs()) {
-			@Override
-			protected String transform(JarFileRef jarFileRef) {
-				return jarFileRef.getFileName();
-			}
-		};
-	}
-
 	public JarFileRef addJarFileRef(String fileName) {
 		return this.addJarFileRef(this.getJarFileRefsSize(), fileName);
 	}
@@ -750,18 +739,6 @@ public abstract class AbstractPersistenceUnit
 
 	public int getClassRefsSize() {
 		return this.getSpecifiedClassRefsSize() + this.getImpliedClassRefsSize();
-	}
-
-	/**
-	 * Return the class ref names, both specified and implied.
-	 */
-	protected Iterable<String> getClassRefNames() {
-		return new TransformationIterable<ClassRef, String>(this.getClassRefs()) {
-			@Override
-			protected String transform(ClassRef classRef) {
-				return classRef.getClassName();
-			}
-		};
 	}
 
 
@@ -1453,18 +1430,15 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public Iterable<String> getUniqueGeneratorNames() {
-		HashSet<String> names = new HashSet<String>(this.generators.size());
-		this.addNonEmptyGeneratorNamesTo(names);
-		return names;
+		return CollectionTools.set(this.getNonEmptyGeneratorNames(), this.getGeneratorsSize());
 	}
 
-	protected void addNonEmptyGeneratorNamesTo(Set<String> names) {
-		for (Generator generator : this.getGenerators()) {
-			String generatorName = generator.getName();
-			if (StringTools.stringIsNotEmpty(generatorName)) {
-				names.add(generatorName);
-			}
-		}
+	protected Iterable<String> getNonEmptyGeneratorNames() {
+		return new FilteringIterable<String>(this.getGeneratorNames(), NonEmptyStringFilter.instance());
+	}
+
+	protected Iterable<String> getGeneratorNames() {
+		return new TransformationIterable<Generator, String>(this.getGenerators(), JpaNamedContextNode.NameTransformer.<Generator>instance());
 	}
 
 	protected void setGenerators(Iterable<Generator> generators) {
@@ -1472,102 +1446,50 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	/**
-	 * We only hold "active" generators; i.e. the mapping file generators and
-	 * the Java generators that are not "overridden" by mapping file
-	 * generators (by generator name).
+	 * Generators are much like queries.
+	 * @see #buildQueries()
 	 */
 	protected Iterable<Generator> buildGenerators() {
-		ArrayList<Generator> generatorList = new ArrayList<Generator>();
+		ArrayList<Generator> result = CollectionTools.list(this.getMappingFileGenerators());
 
-		this.addMappingFileGeneratorsTo(generatorList);
-
-		HashMap<String, ArrayList<Generator>> mappingFileGenerators = this.mapGeneratorsByName(this.getMappingFileGenerators());
-		HashMap<String, ArrayList<Generator>> javaGenerators = this.mapGeneratorsByName(this.getJavaGenerators());
-		for (Map.Entry<String, ArrayList<Generator>> javaGeneratorEntry : javaGenerators.entrySet()) {
-			if (mappingFileGenerators.get(javaGeneratorEntry.getKey()) == null) {
-				generatorList.addAll(javaGeneratorEntry.getValue());
+		HashSet<String> mappingFileGeneratorNames = this.convertToNames(result);
+		HashMap<String, ArrayList<Generator>> javaGenerators = this.mapByName(this.getAllJavaGenerators());
+		for (Map.Entry<String, ArrayList<Generator>> entry : javaGenerators.entrySet()) {
+			if ( ! mappingFileGeneratorNames.contains(entry.getKey())) {
+				result.addAll(entry.getValue());
 			}
 		}
 
-		return generatorList;
+		return result;
 	}
 
 	protected Iterable<Generator> getMappingFileGenerators() {
-		ArrayList<Generator> generatorList = new ArrayList<Generator>();
-		this.addMappingFileGeneratorsTo(generatorList);
-		return generatorList;
+		return new CompositeIterable<Generator>(this.getMappingFileGeneratorLists());
 	}
 
-	protected void addMappingFileGeneratorsTo(ArrayList<Generator> generatorList) {
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			MappingFile mappingFile = mappingFileRef.getMappingFile();
-			// TODO bjv - bogus cast - need to add API to MappingFileRef?
-			if (mappingFile instanceof OrmXml) {
-				EntityMappings entityMappings = ((OrmXml) mappingFile).getRoot();
-				if (entityMappings != null) {
-					CollectionTools.addAll(generatorList, entityMappings.getSequenceGenerators());
-					CollectionTools.addAll(generatorList, entityMappings.getTableGenerators());
-				}
-			}
-		}
-		this.addGeneratorsTo(this.getMappingFilePersistentTypes(), generatorList);
+	protected Iterable<Iterable<Generator>> getMappingFileGeneratorLists() {
+		return new TransformationIterable<MappingFileRef, Iterable<Generator>>(this.getMappingFileRefs()) {
+					@Override
+					protected Iterable<Generator> transform(MappingFileRef mappingFileRef) {
+						return mappingFileRef.getMappingFileGenerators();
+					}
+				};
 	}
 
 	/**
 	 * Include "overridden" Java generators.
 	 */
-	protected Iterable<Generator> getJavaGenerators() {
-		ArrayList<Generator> generatorList = new ArrayList<Generator>();
-		this.addJavaGeneratorsTo(generatorList);
-		return generatorList;
+	protected Iterable<Generator> getAllJavaGenerators() {
+		return new CompositeIterable<Generator>(this.getAllJavaTypeMappingGeneratorLists());
 	}
 
-	/**
-	 * Include "overridden" Java generators.
-	 */
-	protected void addJavaGeneratorsTo(ArrayList<Generator> generatorList) {
-		this.addGeneratorsTo(this.getAllJavaPersistentTypesUnique(), generatorList);
-	}
-
-	// TODO bjv - bogus casts - need to delegate...
-	protected void addGeneratorsTo(Iterable<PersistentType> persistentTypes, ArrayList<Generator> generatorList) {
-		for (PersistentType persistentType : persistentTypes) {
-			TypeMapping typeMapping = persistentType.getMapping();
-			if (typeMapping instanceof Entity) {
-				this.addGeneratorsTo(((Entity) typeMapping).getGeneratorContainer(), generatorList);
-			}
-			for (ReadOnlyPersistentAttribute persistentAttribute : persistentType.getAttributes()) {
-				AttributeMapping attributeMapping = persistentAttribute.getMapping();
-				if (attributeMapping instanceof IdMapping) {
-					this.addGeneratorsTo(((IdMapping) attributeMapping).getGeneratorContainer(), generatorList);
-				}
-			}
-		}
-	}
-
-	protected void addGeneratorsTo(GeneratorContainer generatorContainer, ArrayList<Generator> generatorList) {
-		Generator generator = generatorContainer.getSequenceGenerator();
-		if (generator != null) {
-			generatorList.add(generator);
-		}
-		generator = generatorContainer.getTableGenerator();
-		if (generator != null) {
-			generatorList.add(generator);
-		}
-	}
-
-	protected HashMap<String, ArrayList<Generator>> mapGeneratorsByName(Iterable<Generator> generatorList) {
-		HashMap<String, ArrayList<Generator>> map = new HashMap<String, ArrayList<Generator>>();
-		for (Generator generator : generatorList) {
-			String generatorName = generator.getName();
-			ArrayList<Generator> list = map.get(generatorName);
-			if (list == null) {
-				list = new ArrayList<Generator>();
-				map.put(generatorName, list);
-			}
-			list.add(generator);
-		}
-		return map;
+	protected Iterable<Iterable<Generator>> getAllJavaTypeMappingGeneratorLists() {
+		return new TransformationIterable<TypeMapping, Iterable<Generator>>(this.getAllJavaTypeMappingsUnique()) {
+					@Override
+					protected Iterable<Generator> transform(TypeMapping typeMapping) {
+						return typeMapping.getGenerators();
+					}
+				};
 	}
 
 
@@ -1590,102 +1512,84 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	/**
-	 * We only hold "active" queries; i.e. the mapping file queries and
-	 * the Java queries that are not "overridden" by mapping file
-	 * queries (by query name).
+	 * The persistence unit holds only <em>active</em> queries;
+	 * i.e. the mapping file queries and the Java queries that are not
+	 * "overridden" by mapping file queries (by query name).
+	 * <p>
+	 * <strong>NB:</strong> The list can contain queries with duplicate names;
+	 * either when there are multiple mapping file queries with the same name
+	 * or multiple, non-overridden Java queries with the same name.
 	 */
 	protected Iterable<Query> buildQueries() {
-		ArrayList<Query> queryList = new ArrayList<Query>();
+		ArrayList<Query> result = CollectionTools.list(this.getMappingFileQueries());
 
-		this.addMappingFileQueriesTo(queryList);
-
-		HashMap<String, ArrayList<Query>> mappingFileQueries = this.mapQueriesByName(this.getMappingFileQueries());
-		HashMap<String, ArrayList<Query>> javaQueries = this.mapQueriesByName(this.getJavaQueries());
-		for (Map.Entry<String, ArrayList<Query>> javaQueryEntry : javaQueries.entrySet()) {
-			if (mappingFileQueries.get(javaQueryEntry.getKey()) == null) {
-				queryList.addAll(javaQueryEntry.getValue());
+		HashSet<String> mappingFileQueryNames = this.convertToNames(result);
+		HashMap<String, ArrayList<Query>> javaQueries = this.mapByName(this.getAllJavaQueries());
+		for (Map.Entry<String, ArrayList<Query>> entry : javaQueries.entrySet()) {
+			if ( ! mappingFileQueryNames.contains(entry.getKey())) {
+				result.addAll(entry.getValue());
 			}
 		}
 
-		return queryList;
+		return result;
 	}
 
 	protected Iterable<Query> getMappingFileQueries() {
-		ArrayList<Query> queryList = new ArrayList<Query>();
-		this.addMappingFileQueriesTo(queryList);
-		return queryList;
+		return new CompositeIterable<Query>(this.getMappingFileQueryLists());
 	}
 
-	protected void addMappingFileQueriesTo(ArrayList<Query> queryList) {
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			MappingFile mappingFile = mappingFileRef.getMappingFile();
-			// TODO bjv - bogus cast - need to add API to MappingFileRef?
-			if (mappingFile instanceof OrmXml) {
-				EntityMappings entityMappings = ((OrmXml) mappingFile).getRoot();
-				if (entityMappings != null) {
-					this.addQueriesTo(entityMappings.getQueryContainer(), queryList);
-				}
-			}
-		}
-		this.addMappingFileQueriesTo(this.getMappingFilePersistentTypes(), queryList);
+	protected Iterable<Iterable<Query>> getMappingFileQueryLists() {
+		return new TransformationIterable<MappingFileRef, Iterable<Query>>(this.getMappingFileRefs()) {
+					@Override
+					protected Iterable<Query> transform(MappingFileRef mappingFileRef) {
+						return mappingFileRef.getMappingFileQueries();
+					}
+				};
 	}
 
-	// TODO bjv - bogus casts - need to delegate...
-	protected void addMappingFileQueriesTo(Iterable<PersistentType> persistentTypes, ArrayList<Query> queryList) {
-		for (PersistentType persistentType : persistentTypes) {
-			TypeMapping typeMapping = persistentType.getMapping();
-			if (typeMapping instanceof Entity) {
-				this.addQueriesTo(((Entity) typeMapping).getQueryContainer(), queryList);
-			}
-			// spec does not allow queries to be defined on mapped superclasses in orm.xml (huh?)
+	protected HashSet<String> convertToNames(Collection<? extends JpaNamedContextNode> nodes) {
+		HashSet<String> names = new HashSet<String>(nodes.size());
+		for (JpaNamedContextNode node : nodes) {
+			names.add(node.getName());
 		}
+		return names;
 	}
 
 	/**
 	 * Include "overridden" Java queries.
 	 */
-	protected Iterable<Query> getJavaQueries() {
-		ArrayList<Query> queryList = new ArrayList<Query>();
-		this.addJavaQueriesTo(queryList);
-		return queryList;
+	protected Iterable<Query> getAllJavaQueries() {
+		return new CompositeIterable<Query>(this.getAllJavaTypeMappingQueryLists());
 	}
 
-	/**
-	 * Include "overridden" Java queries.
-	 */
-	protected void addJavaQueriesTo(ArrayList<Query> queryList) {
-		this.addJavaQueriesTo(this.getAllJavaPersistentTypesUnique(), queryList);
+	protected Iterable<Iterable<Query>> getAllJavaTypeMappingQueryLists() {
+		return new TransformationIterable<TypeMapping, Iterable<Query>>(this.getAllJavaTypeMappingsUnique()) {
+					@Override
+					protected Iterable<Query> transform(TypeMapping typeMapping) {
+						return typeMapping.getQueries();
+					}
+				};
 	}
 
-	// TODO bjv - bogus casts - need to delegate...
-	protected void addJavaQueriesTo(Iterable<PersistentType> persistentTypes, ArrayList<Query> queryList) {
-		for (PersistentType persistentType : persistentTypes) {
-			TypeMapping typeMapping = persistentType.getMapping();
-			if (typeMapping instanceof Entity) {
-				this.addQueriesTo(((Entity) typeMapping).getQueryContainer(), queryList);
-			}
-// TODO not yet supported by Dali
-//			else if (typeMapping instanceof MappedSuperclass) {
-//				this.addQueriesTo(((MappedSuperclass) typeMapping).getQueryContainer(), queryList);
-//			}
-		}
+	protected Iterable<TypeMapping> getAllJavaTypeMappingsUnique() {
+		return new TransformationIterable<PersistentType, TypeMapping>(this.getAllJavaPersistentTypesUnique()) {
+					@Override
+					protected TypeMapping transform(PersistentType persistentType) {
+						return persistentType.getMapping();
+					}
+				};
 	}
 
-	protected void addQueriesTo(QueryContainer queryContainer, ArrayList<Query> queryList) {
-		CollectionTools.addAll(queryList, queryContainer.getNamedQueries());
-		CollectionTools.addAll(queryList, queryContainer.getNamedNativeQueries());
-	}
-
-	protected HashMap<String, ArrayList<Query>> mapQueriesByName(Iterable<Query> queryList) {
-		HashMap<String, ArrayList<Query>> map = new HashMap<String, ArrayList<Query>>();
-		for (Query query : queryList) {
-			String queryName = query.getName();
-			ArrayList<Query> list = map.get(queryName);
+	protected <N extends JpaNamedContextNode> HashMap<String, ArrayList<N>> mapByName(Iterable<N> nodes) {
+		HashMap<String, ArrayList<N>> map = new HashMap<String, ArrayList<N>>();
+		for (N node : nodes) {
+			String nodeName = node.getName();
+			ArrayList<N> list = map.get(nodeName);
 			if (list == null) {
-				list = new ArrayList<Query>();
-				map.put(queryName, list);
+				list = new ArrayList<N>();
+				map.put(nodeName, list);
 			}
-			list.add(query);
+			list.add(node);
 		}
 		return map;
 	}
@@ -1710,43 +1614,6 @@ public abstract class AbstractPersistenceUnit
 					this.getMappingFileRefs(),
 					PersistentTypeContainer.TRANSFORMER
 				);
-	}
-
-	/**
-	 * Return the non-<code>null</code> mapping file Java persistent types;
-	 * i.e. the Java persistent types corresponding to the mapping file
-	 * persistent types that are not marked "metadata complete".
-	 * @see #getAllJavaPersistentTypesUnique()
-	 */
-	protected Iterable<PersistentType> getMappingFileJavaPersistentTypes() {
-		return new FilteringIterable<PersistentType>(
-					this.getMappingFileJavaPersistentTypes_(),
-					NotNullFilter.<PersistentType>instance()
-				);
-	}
-
-	/**
-	 * The returned list will contain a <code>null</code> for each mapping file
-	 * persistent type that does not correspond to an existing Java type or is
-	 * marked "metadata complete".
-	 * @see #getMappingFileJavaPersistentTypes()
-	 */
-	// TODO bjv remove - bogus cast to OrmPersistentType - probably need to add API to MappingFile
-	// getOverriddenPersistentTypes()?
-	protected Iterable<PersistentType> getMappingFileJavaPersistentTypes_() {
-		return new TransformationIterable<PersistentType, PersistentType>(this.getMappingFilePersistentTypes()) {
-			@Override
-			protected PersistentType transform(PersistentType mappingFilePersistentType) {
-				return (mappingFilePersistentType instanceof OrmPersistentType) ?
-						this.transform((OrmPersistentType) mappingFilePersistentType) :
-						null;
-			}
-			protected PersistentType transform(OrmPersistentType mappingFilePersistentType) {
-				return mappingFilePersistentType.getMapping().isMetadataComplete() ?
-						null :
-						mappingFilePersistentType.getJavaPersistentType();
-			}
-		};
 	}
 
 	/**
@@ -1889,6 +1756,34 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
+	/**
+	 * Return the non-<code>null</code> mapping file Java persistent types;
+	 * i.e. the Java persistent types corresponding to the mapping file
+	 * persistent types that are not marked "metadata complete".
+	 * @see #getAllJavaPersistentTypesUnique()
+	 */
+	protected Iterable<PersistentType> getMappingFileJavaPersistentTypes() {
+		return new FilteringIterable<PersistentType>(
+					this.getMappingFileJavaPersistentTypes_(),
+					NotNullFilter.<PersistentType>instance()
+				);
+	}
+
+	/**
+	 * The returned list will contain a <code>null</code> for each mapping file
+	 * persistent type that does not correspond to an existing Java type or is
+	 * marked "metadata complete".
+	 * @see #getMappingFileJavaPersistentTypes()
+	 */
+	protected Iterable<PersistentType> getMappingFileJavaPersistentTypes_() {
+		return new TransformationIterable<PersistentType, PersistentType>(this.getMappingFilePersistentTypes()) {
+			@Override
+			protected PersistentType transform(PersistentType mappingFilePersistentType) {
+				return mappingFilePersistentType.getOverriddenPersistentType();
+			}
+		};
+	}
+
 
 	// ********** type mappings **********
 
@@ -1936,54 +1831,56 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	/**
-	 * Filters out the entities from the active type mappings
+	 * Return the "active" entities.
+	 * @see #getActiveTypeMappings()
 	 */
 	protected Iterable<Entity> getActiveEntities() {
-		return filterToEntities(this.getActiveTypeMappings());
+		return this.filterToEntities(this.getActiveTypeMappings());
 	}
 
 	/**
-	 * Returns the "active" type mappings, i.e. the mapping file type mappings and
+	 * Return the "active" type mappings, i.e. the mapping file type mappings and
 	 * the Java type mappings that are not "overridden" by mapping file
 	 * type mappings (by full qualified class name).
 	 */
 	protected Iterable<TypeMapping> getActiveTypeMappings(){
-		ArrayList<TypeMapping> typeMappingList = new ArrayList<TypeMapping>();
-		CollectionTools.addAll(typeMappingList, this.getMappingFileTypeMappings());
-		
-		HashMap<String, ArrayList<TypeMapping>> mappingFileTypeMappings = this.mapTypeMappingsByClassName(this.getMappingFileTypeMappings());
+		ArrayList<TypeMapping> result = CollectionTools.list(this.getMappingFileTypeMappings());
+
+		HashSet<String> mappingFileClassNames = this.convertToClassNames(result);
 		HashMap<String, ArrayList<TypeMapping>> javaTypeMappings = this.mapTypeMappingsByClassName(this.getJavaTypeMappings());
-		for (Map.Entry<String, ArrayList<TypeMapping>> javaTypeMappingEntry : javaTypeMappings.entrySet()) {
-			if (mappingFileTypeMappings.get(javaTypeMappingEntry.getKey()) == null) {
-				typeMappingList.addAll(javaTypeMappingEntry.getValue());
+		for (Map.Entry<String, ArrayList<TypeMapping>> entry : javaTypeMappings.entrySet()) {
+			if ( ! mappingFileClassNames.contains(entry.getKey())) {
+				result.addAll(entry.getValue());
 			}
 		}
-		
-		return typeMappingList;
+
+		return result;
 	}
 
 	/**
-	 * Return a map of the type mappings keyed by type mapping name (short class name). 
-	 * Since there can be duplicate (erroneously) type mapping names, 
-	 * each type mapping name is mapped to a <em>list</em> of type mappings.
+	 * Return all the type mappings defined in the persistence unit's mapping
+	 * files (i.e. excluding the Java type mappings).
 	 */
-	protected <M extends TypeMapping> HashMap<String, ArrayList<M>> mapTypeMappingsByName(Iterable<M> typeMappings) {
-		HashMap<String, ArrayList<M>> map = new HashMap<String, ArrayList<M>>();
-		for (M typeMapping : typeMappings) {
-			String typeMappingName = typeMapping.getName();
-			ArrayList<M> list = map.get(typeMappingName);
-			if (list == null) {
-				list = new ArrayList<M>();
-				map.put(typeMappingName, list);
+	protected Iterable<TypeMapping> getMappingFileTypeMappings() {
+		return new TransformationIterable<PersistentType, TypeMapping>(this.getMappingFilePersistentTypes()) {
+			@Override
+			protected TypeMapping transform(PersistentType persistentType) {
+				return persistentType.getMapping();
 			}
-			list.add(typeMapping);
+		};
+	}
+
+	protected HashSet<String> convertToClassNames(Collection<? extends TypeMapping> typeMappings) {
+		HashSet<String> classNames = new HashSet<String>(typeMappings.size());
+		for (TypeMapping typeMapping : typeMappings) {
+			classNames.add(typeMapping.getPersistentType().getName());
 		}
-		return map;
+		return classNames;
 	}
 
 	/**
-	 * Return a map of the type mappings keyed by full qualified class name. 
-	 * Since there can be duplicate (erroneously) class names, 
+	 * Return a map of the type mappings keyed by full qualified class name.
+	 * Since there can be duplicate (erroneously) class names,
 	 * each class name is mapped to a <em>list</em> of type mappings.
 	 */
 	protected <M extends TypeMapping> HashMap<String, ArrayList<M>> mapTypeMappingsByClassName(Iterable<M> typeMappings) {
@@ -2000,48 +1897,6 @@ public abstract class AbstractPersistenceUnit
 		return map;
 	}
 
-	// ********** mapping file type mappings **********
-
-	/**
-	 * Return all the entities defined in the persistence unit's mapping files
-	 * (i.e. excluding the Java entities).
-	 */
-	protected Iterable<Entity> getMappingFileEntities() {
-		return this.filterToEntities(this.getMappingFileTypeMappings());
-	}
-
-	/**
-	 * Return all the type mappings defined in the persistence unit's mapping
-	 * files (i.e. excluding the Java type mappings).
-	 */
-	protected Iterable<TypeMapping> getMappingFileTypeMappings() {
-		return new TransformationIterable<PersistentType, TypeMapping>(this.getMappingFilePersistentTypes()) {
-			@Override
-			protected TypeMapping transform(PersistentType persistentType) {
-				return persistentType.getMapping();
-			}
-		};
-	}
-
-	public Iterable<String> getMappingFileMappedClassNames() {
-		return new TransformationIterable<PersistentType, String>(this.getMappingFilePersistentTypes()) {
-			@Override
-			protected String transform(PersistentType persistentType) {
-				return persistentType.getName();
-			}
-		};
-	}
-
-	// ********** Java type mappings **********
-
-	/**
-	 * These may be overridden in the mapping files.
-	 * @see #getJavaPersistentTypes()
-	 */
-	public Iterable<Entity> getJavaEntities() {
-		return this.filterToEntities(this.getJavaTypeMappings());
-	}
-
 	/**
 	 * These may be overridden in the mapping files.
 	 * @see #getJavaPersistentTypes()
@@ -2054,6 +1909,7 @@ public abstract class AbstractPersistenceUnit
 			}
 		};
 	}
+
 
 	// ********** misc **********
 
@@ -2107,7 +1963,7 @@ public abstract class AbstractPersistenceUnit
 
 	protected void validateMappingFiles(List<IMessage> messages, IReporter reporter) {
 		this.checkForMultiplePersistenceUnitMetadata(messages);
-		this.checkForDuplicateMappingFiles(messages);
+		this.checkForDuplicateMappingFileRefs(messages);
 		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
 			mappingFileRef.validate(messages, reporter);
 		}
@@ -2115,16 +1971,16 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForMultiplePersistenceUnitMetadata(List<IMessage> messages) {
-		Iterable<MappingFileRef> pumdMappingFileRefs = this.getPersistenceUnitMetadataMappingFileRefs();
-		if (CollectionTools.size(pumdMappingFileRefs) > 1) {
+		ArrayList<MappingFileRef> pumdMappingFileRefs = CollectionTools.list(this.getPersistenceUnitMetadataMappingFileRefs());
+		if (pumdMappingFileRefs.size() > 1) {
 			for (MappingFileRef mappingFileRef : pumdMappingFileRefs) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
-							IMessage.NORMAL_SEVERITY,
-							JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
-							new String[] {mappingFileRef.getFileName()},
-							mappingFileRef.getMappingFile(),
-							mappingFileRef.getPersistenceUnitMetadata().getValidationTextRange()
+						IMessage.NORMAL_SEVERITY,
+						JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,
+						new String[] {mappingFileRef.getFileName()},
+						mappingFileRef.getMappingFile(),
+						mappingFileRef.getPersistenceUnitMetadata().getValidationTextRange()
 					)
 				);
 			}
@@ -2140,66 +1996,134 @@ public abstract class AbstractPersistenceUnit
 		};
 	}
 
-	protected void checkForDuplicateMappingFiles(List<IMessage> messages) {
-		HashBag<String> fileNames = CollectionTools.bag(this.getMappingFileRefNames());
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			String fileName = mappingFileRef.getFileName();
-			if (fileNames.count(fileName) > 1) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
-						new String[] {fileName},
-						mappingFileRef,
-						mappingFileRef.getValidationTextRange()
-					)
-				);
+	protected void checkForDuplicateMappingFileRefs(List<IMessage> messages) {
+		for (Map.Entry<String, ArrayList<MappingFileRef>> entry : this.mapMappingFileRefsByFileName().entrySet()) {
+			String fileName = entry.getKey();
+			if (StringTools.stringIsNotEmpty(fileName)) {
+				ArrayList<MappingFileRef> dups = entry.getValue();
+				if (dups.size() > 1) {
+					String[] parms = new String[] {fileName};
+					for (MappingFileRef dup : dups) {
+						messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
+								parms,
+								dup,
+								dup.getValidationTextRange()
+							)
+						);
+					}
+				}
 			}
 		}
 	}
 
+	/**
+	 * Return the persistence unit's mapping file refs, both default and
+	 * specified, keyed by their file names.
+	 */
+	protected HashMap<String, ArrayList<MappingFileRef>> mapMappingFileRefsByFileName() {
+		HashMap<String, ArrayList<MappingFileRef>> map = new HashMap<String, ArrayList<MappingFileRef>>(this.getMappingFileRefsSize());
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			String fileName = mappingFileRef.getFileName();
+			ArrayList<MappingFileRef> list = map.get(fileName);
+			if (list == null) {
+				list = new ArrayList<MappingFileRef>();
+				map.put(fileName, list);
+			}
+			list.add(mappingFileRef);
+		}
+		return map;
+	}
+
 	protected void checkForDuplicateMappingFileClasses(List<IMessage> messages) {
-		HashBag<String> classNames = CollectionTools.bag(this.getMappingFileMappedClassNames());
-		for (PersistentType persistentType : this.getMappingFilePersistentTypes()) {
-			String className = persistentType.getName();
-			if ((className != null) && (!StringTools.stringIsEmpty(className)) 
-					&&(classNames.count(className) > 1)) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
+		for (Map.Entry<String, ArrayList<PersistentType>> entry : this.mapMappingFilePersistentTypesByName().entrySet()) {
+			String ptName = entry.getKey();
+			if (StringTools.stringIsNotEmpty(ptName)) {
+				ArrayList<PersistentType> dups = entry.getValue();
+				if (dups.size() > 1) {
+					String[] parms = new String[] {ptName};
+					for (PersistentType dup : dups) {
+						messages.add(
+							DefaultJpaValidationMessages.buildMessage(
 								IMessage.NORMAL_SEVERITY,
 								JpaValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS,
-								new String[] {className}, 
-								persistentType,
-								persistentType.getValidationTextRange()
-						)
-				);
+								parms,
+								dup,
+								dup.getValidationTextRange()
+							)
+						);
+					}
+				}
 			}
-		}		
+		}
+	}
+
+	/**
+	 * Return the persistence unit's mapping file persistent types
+	 * keyed by their class names.
+	 */
+	protected HashMap<String, ArrayList<PersistentType>> mapMappingFilePersistentTypesByName() {
+		HashMap<String, ArrayList<PersistentType>> map = new HashMap<String, ArrayList<PersistentType>>();
+		for (PersistentType persistentType : this.getMappingFilePersistentTypes()) {
+			String ptName = persistentType.getName();
+			ArrayList<PersistentType> list = map.get(ptName);
+			if (list == null) {
+				list = new ArrayList<PersistentType>();
+				map.put(ptName, list);
+			}
+			list.add(persistentType);
+		}
+		return map;
 	}
 
 	protected void validateClassRefs(List<IMessage> messages, IReporter reporter) {
-		this.checkForDuplicateClasses(messages);
+		this.checkForDuplicateClassRefs(messages);
 		for (ClassRef classRef : this.getClassRefs()) {
 			classRef.validate(messages, reporter);
 		}
 	}
 
-	protected void checkForDuplicateClasses(List<IMessage> messages) {
-		HashBag<String> javaClassNames = CollectionTools.bag(this.getClassRefNames());
-		for (ClassRef classRef : this.getClassRefs()) {
-			String javaClassName = classRef.getClassName();
-			if ((javaClassName != null)	&& (javaClassNames.count(javaClassName) > 1)) {
-					  messages.add(
-						DefaultJpaValidationMessages.buildMessage(
+	protected void checkForDuplicateClassRefs(List<IMessage> messages) {
+		for (Map.Entry<String, ArrayList<ClassRef>> entry : this.mapClassRefsByName().entrySet()) {
+			String className = entry.getKey();
+			if (StringTools.stringIsNotEmpty(className)) {
+				ArrayList<ClassRef> dups = entry.getValue();
+				if (dups.size() > 1) {
+					String[] parms = new String[] {className};
+					for (ClassRef dup : dups) {
+						messages.add(
+							DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
-								new String[] {javaClassName},
-								classRef,
-								classRef.getValidationTextRange()
-						)
-				);
+								parms,
+								dup,
+								dup.getValidationTextRange()
+							)
+						);
+					}
+				}
 			}
 		}
+	}
+
+	/**
+	 * Return the persistence unit's class refs, both specified and implied,
+	 * keyed by their class names.
+	 */
+	protected HashMap<String, ArrayList<ClassRef>> mapClassRefsByName() {
+		HashMap<String, ArrayList<ClassRef>> map = new HashMap<String, ArrayList<ClassRef>>(this.getClassRefsSize());
+		for (ClassRef classRef : this.getClassRefs()) {
+			String refName = classRef.getClassName();
+			ArrayList<ClassRef> list = map.get(refName);
+			if (list == null) {
+				list = new ArrayList<ClassRef>();
+				map.put(refName, list);
+			}
+			list.add(classRef);
+		}
+		return map;
 	}
 
 	protected void validateJarFileRefs(List<IMessage> messages, IReporter reporter) {
@@ -2210,26 +2134,47 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForDuplicateJarFileRefs(List<IMessage> messages) {
-		HashBag<String> jarFileNames = CollectionTools.bag(this.getJarFileNames());
-		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
-			String jarFileName = jarFileRef.getFileName();
-			if ((jarFileName != null) && (jarFileNames.count(jarFileName) > 1)) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE,
-						new String[] {jarFileName},
-						jarFileRef,
-						jarFileRef.getValidationTextRange()
-					)
-				);
+		for (Map.Entry<String, ArrayList<JarFileRef>> entry : this.mapJarFileRefsByName().entrySet()) {
+			String fileName = entry.getKey();
+			if (StringTools.stringIsNotEmpty(fileName)) {
+				ArrayList<JarFileRef> dups = entry.getValue();
+				if (dups.size() > 1) {
+					String[] parms = new String[] {fileName};
+					for (JarFileRef dup : dups) {
+						messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE,
+								parms,
+								dup,
+								dup.getValidationTextRange()
+							)
+						);
+					}
+				}
 			}
 		}
 	}
 
-	protected void validateProperties(List<IMessage> messages, IReporter reporter) {
-		// do nothing by default
+	/**
+	 * Return the persistence unit's jar file refs
+	 * keyed by their file names.
+	 */
+	protected HashMap<String, ArrayList<JarFileRef>> mapJarFileRefsByName() {
+		HashMap<String, ArrayList<JarFileRef>> map = new HashMap<String, ArrayList<JarFileRef>>(this.getJarFileRefsSize());
+		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
+			String refName = jarFileRef.getFileName();
+			ArrayList<JarFileRef> list = map.get(refName);
+			if (list == null) {
+				list = new ArrayList<JarFileRef>();
+				map.put(refName, list);
+			}
+			list.add(jarFileRef);
+		}
+		return map;
 	}
+
+	protected abstract void validateProperties(List<IMessage> messages, IReporter reporter);
 
 	/**
 	 * We validate generators here because Java persistent types that are
@@ -2252,18 +2197,19 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForDuplicateGenerators(List<IMessage> messages) {
-		HashMap<String, ArrayList<Generator>> generatorsByName = this.mapGeneratorsByName(this.getGenerators());
+		HashMap<String, ArrayList<Generator>> generatorsByName = this.mapByName(this.getGenerators());
 		for (Map.Entry<String, ArrayList<Generator>> entry : generatorsByName.entrySet()) {
 			String generatorName = entry.getKey();
 			if (StringTools.stringIsNotEmpty(generatorName)) {  // ignore empty names
 				ArrayList<Generator> dups = entry.getValue();
 				if (dups.size() > 1) {
+					String[] parms = new String[] {generatorName};
 					for (Generator dup : dups) {
 						messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-								new String[] {generatorName},
+								parms,
 								dup,
 								this.extractNameTextRange(dup)
 							)
@@ -2302,18 +2248,19 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForDuplicateQueries(List<IMessage> messages) {
-		HashMap<String, ArrayList<Query>> queriesByName = this.mapQueriesByName(this.getQueries());
+		HashMap<String, ArrayList<Query>> queriesByName = this.mapByName(this.getQueries());
 		for (Map.Entry<String, ArrayList<Query>> entry : queriesByName.entrySet()) {
 			String queryName = entry.getKey();
 			if (StringTools.stringIsNotEmpty(queryName)) {  // ignore empty names
 				ArrayList<Query> dups = entry.getValue();
 				if (dups.size() > 1) {
+					String[] parms = new String[] {queryName};
 					for (Query dup : dups) {
 						messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.QUERY_DUPLICATE_NAME,
-								new String[] {queryName},
+								parms,
 								dup,
 								this.extractNameTextRange(dup)
 							)
@@ -2340,32 +2287,50 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected void validateEntityNames(List<IMessage> messages, IReporter reporter) {
-		this.checkforDuplicateEntityNames(messages);
-	}
-
-	protected void checkforDuplicateEntityNames(List<IMessage> messages) {
-		HashMap<String, ArrayList<Entity>> activeEntityNames = this.mapTypeMappingsByName(this.getActiveEntities());
-		for (ArrayList<Entity> dups : activeEntityNames.values()) {
-			if (dups.size() > 1) {
-				for (Entity dup : dups) {
-					if (!StringTools.stringIsEmpty(dup.getName())) {
+	protected void validateEntityNames(List<IMessage> messages, @SuppressWarnings("unused") IReporter reporter) {
+		for (Map.Entry<String, ArrayList<Entity>> entry : this.mapTypeMappingsByName(this.getActiveEntities()).entrySet()) {
+			String entityName = entry.getKey();
+			if (StringTools.stringIsNotEmpty(entityName)) {
+				ArrayList<Entity> dups = entry.getValue();
+				if (dups.size() > 1) {
+					String[] parms = new String[] {entityName};
+					for (Entity dup : dups) {
 						messages.add(
-								DefaultJpaValidationMessages.buildMessage(
-										IMessage.HIGH_SEVERITY,
-										JpaValidationMessages.ENTITY_NAME_DUPLICATED,
-										new String[] {dup.getName()},
-										dup,
-										this.extractNameTextRange(dup)
-										)
-								);
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.ENTITY_NAME_DUPLICATED,
+								parms,
+								dup,
+								this.extractNameTextRange(dup)
+							)
+						);
 					}
 
 				}
 			}
-		}		
+		}
 	}
 	
+	/**
+	 * Return a map of the type mappings keyed by type mapping name (typically
+	 * the short class name).
+	 * Since there can be (erroneously) duplicate type mapping names,
+	 * each type mapping name is mapped to a <em>list</em> of type mappings.
+	 */
+	protected <M extends TypeMapping> HashMap<String, ArrayList<M>> mapTypeMappingsByName(Iterable<M> typeMappings) {
+		HashMap<String, ArrayList<M>> map = new HashMap<String, ArrayList<M>>();
+		for (M typeMapping : typeMappings) {
+			String typeMappingName = typeMapping.getName();
+			ArrayList<M> list = map.get(typeMappingName);
+			if (list == null) {
+				list = new ArrayList<M>();
+				map.put(typeMappingName, list);
+			}
+			list.add(typeMapping);
+		}
+		return map;
+	}
+
 	protected TextRange extractNameTextRange(Entity entity) {
 		return (entity instanceof OrmEntity) ?
 				((OrmEntity) entity).getXmlTypeMapping().getNameTextRange():

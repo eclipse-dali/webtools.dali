@@ -15,8 +15,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.text.edits.DeleteEdit;
@@ -99,13 +101,13 @@ public interface MappingFileRef
 	// ********** misc **********
 
 	/**
-	 * Return the mapping file ref's corresponding resource mapping file ref.
+	 * Return the mapping file ref's corresponding XML mapping file ref.
 	 */
 	XmlMappingFileRef getXmlMappingFileRef();
 
 	/**
-	 * Return whether the mapping file ref is "implied" by, or explicitly
-	 * specified in, the <code>persistence.xml</code>.
+	 * Return whether the mapping file ref is "implied" by (as opposed to
+	 * explicitly specified in) the <code>persistence.xml</code>.
 	 */
 	boolean isImplied();
 
@@ -114,6 +116,16 @@ public interface MappingFileRef
 	 * the text representation of the mapping file.
 	 */
 	boolean containsOffset(int textOffset);
+
+	/**
+	 * @see MappingFile#getMappingFileQueries()
+	 */
+	Iterable<Query> getMappingFileQueries();
+
+	/**
+	 * @see MappingFile#getMappingFileGenerators()
+	 */
+	Iterable<Generator> getMappingFileGenerators();
 
 
 	// ********** refactoring **********

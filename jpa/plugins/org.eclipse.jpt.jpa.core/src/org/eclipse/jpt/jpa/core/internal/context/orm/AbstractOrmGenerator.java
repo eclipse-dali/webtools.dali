@@ -12,10 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
@@ -227,14 +225,6 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 
 	public X getXmlGenerator() {
 		return this.xmlGenerator;
-	}
-
-	public boolean overrides(Generator other) {
-		return MappingTools.nodeOverrides(this, other, PRECEDENCE_TYPE_LIST);
-	}
-
-	public boolean duplicates(Generator other) {
-		return MappingTools.nodesAreDuplicates(this, other);
 	}
 
 	@Override

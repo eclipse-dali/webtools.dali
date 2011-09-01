@@ -14,8 +14,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -48,6 +50,7 @@ public interface EntityMappings
 
 	XmlEntityMappings getXmlEntityMappings();
 
+	// TODO bjv add version constants
 	String getVersion();
 
 	String getDescription();
@@ -134,6 +137,18 @@ public interface EntityMappings
 		String TABLE_GENERATORS_LIST = "tableGenerators"; //$NON-NLS-1$
 
 	OrmQueryContainer getQueryContainer();
+
+	/**
+	 * Return all the queries defined in both the entity mappings and its
+	 * entities (but <em>not</em> in any associated Java annotations).
+	 */
+	Iterable<Query> getMappingFileQueries();
+
+	/**
+	 * Return all the generators defined in both the entity mappings and its
+	 * type mappings (but <em>not</em> in any associated Java annotations).
+	 */
+	Iterable<Generator> getMappingFileGenerators();
 
 	/**
 	 * Return the default package to be used for persistent types in this

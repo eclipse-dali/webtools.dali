@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,16 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 
 public interface EclipseLinkEntityMappings 
 	extends EntityMappings
 {
+	/**
+	 * Return all the converters defined in both the entity mappings and its
+	 * entities (but <em>not</em> in any associated Java annotations).
+	 */
+	Iterable<EclipseLinkConverter> getMappingFileConverters();
+
 	OrmEclipseLinkConverterContainer getConverterContainer();
 }

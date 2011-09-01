@@ -32,6 +32,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelec
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -267,7 +268,7 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 	private ListValueModel<EclipseLinkConverter> buildDisplayableConvertersListHolder() {
 		return new ItemPropertyListValueModelAdapter<EclipseLinkConverter>(
 			buildEclipseLinkConvertersHolder(),
-			EclipseLinkConverter.NAME_PROPERTY
+			JpaNamedContextNode.NAME_PROPERTY
 		);
 	}
 

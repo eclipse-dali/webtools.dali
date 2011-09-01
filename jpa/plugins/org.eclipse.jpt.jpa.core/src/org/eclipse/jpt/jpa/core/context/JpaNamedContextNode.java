@@ -9,10 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import java.io.Serializable;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Transformer;
+
 /**
- * Named context node that may have collisions with or override other nodes
- * with the same name defined elsewhere in the persistence unit
- * (e.g. sequence/table generators, named/named native queries).
+ * Named context node.
+ * <p>
+ * Vestigial - not sure how helpful this common interface is now....
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,37 +24,38 @@ package org.eclipse.jpt.jpa.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaNamedContextNode<T>
+public interface JpaNamedContextNode
 	extends JpaContextNode
 {
-	// ********** name **********
-
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	void setName(String name);
 
 
-	// ********** validation **********
-// TODO bjv - get rid of these methods - validation is done in the persistence unit instead
-// of in a distributed fashion...
-	/**
-	 * Return whether the node "overrides" the specified node
-	 * within the nodes' persistence unit.
-	 * (e.g. a query defined in <code>orm.xml</code>
-	 * "overrides" one with the same name defined in a Java annotation).
-	 * 
-	 * @see #duplicates(Object)
-	 */
-	boolean overrides(T other);
-
-	/**
-	 * Return whether the node is a "duplicate" of the specified node.
-	 * Two nodes are duplicates if<ul>
-	 * <li>they both have the same, non-empty name
-	 * <li>neither node "overrides" the other
-	 * <li>they both are in the same persistence unit
-	 * </ul>
-	 * @see #overrides(Object)
-	 */
-	boolean duplicates(T other);
+	final class NameTransformer<N extends JpaNamedContextNode>
+		implements Transformer<N, String>, Serializable
+	{
+		@SuppressWarnings("rawtypes")
+		public static final NameTransformer INSTANCE = new NameTransformer();
+		@SuppressWarnings("unchecked")
+		public static <T extends JpaNamedContextNode> Transformer<T, String> instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private NameTransformer() {
+			super();
+		}
+		public String transform(N node) {
+			return node.getName();
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildSingletonToString(this);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
+	}
 }

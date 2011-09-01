@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Converter;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
@@ -126,6 +127,11 @@ public abstract class AbstractJavaIdMapping
 
 	protected JavaGeneratorContainer buildGeneratorContainer() {
 		return this.getJpaFactory().buildJavaGeneratorContainer(this, this);
+	}
+
+	@Override
+	public Iterable<Generator> getGenerators() {
+		return this.generatorContainer.getGenerators();
 	}
 
 

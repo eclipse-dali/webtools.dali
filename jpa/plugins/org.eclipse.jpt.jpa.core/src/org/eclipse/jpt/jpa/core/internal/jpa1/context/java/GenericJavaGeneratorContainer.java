@@ -13,6 +13,10 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
@@ -241,6 +245,14 @@ public class GenericJavaGeneratorContainer
 	@Override
 	public JavaJpaContextNode getParent() {
 		return (JavaJpaContextNode) super.getParent();
+	}
+
+	public Iterable<Generator> getGenerators() {
+		return new FilteringIterable<Generator>(this.getGenerators_(), NotNullFilter.<Generator>instance());
+	}
+
+	protected Iterable<Generator> getGenerators_() {
+		return new ArrayIterable<Generator>(this.sequenceGenerator, this.tableGenerator);
 	}
 
 	/**

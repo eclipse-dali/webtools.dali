@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.tests.extension.resource;
 
 import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaTypeMapping;
 
@@ -38,5 +40,9 @@ public class JavaTestTypeMapping
 
 	public boolean tableNameIsInvalid(String tableName) {
 		return false;
+	}
+
+	public Iterable<Query> getQueries() {
+		return EmptyIterable.instance();
 	}
 }

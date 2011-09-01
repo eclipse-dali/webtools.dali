@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -166,8 +167,8 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	public Iterable<JavaAttributeMapping> getAttributeMappings(final String mappingKey) {
 		return new FilteringIterable<JavaAttributeMapping>(this.getAttributeMappings()) {
 			@Override
-			protected boolean accept(JavaAttributeMapping o) {
-				return Tools.valuesAreEqual(o.getKey(), mappingKey);
+			protected boolean accept(JavaAttributeMapping attributeMapping) {
+				return Tools.valuesAreEqual(attributeMapping.getKey(), mappingKey);
 			}
 		};
 	}
@@ -187,8 +188,8 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {
 		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(this.getAllAttributeMappings())) {
 			@Override
-			protected boolean accept(AttributeMapping o) {
-				return Tools.valuesAreEqual(o.getKey(), mappingKey);
+			protected boolean accept(AttributeMapping attributeMapping) {
+				return Tools.valuesAreEqual(attributeMapping.getKey(), mappingKey);
 			}
 		};
 	}
@@ -253,6 +254,22 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 			}
 		}
 		return null;
+	}
+
+
+	// ********** generators **********
+
+	public Iterable<Generator> getGenerators() {
+		return new CompositeIterable<Generator>(this.getAttributeMappingGeneratorLists());
+	}
+
+	protected Iterable<Iterable<Generator>> getAttributeMappingGeneratorLists() {
+		return new TransformationIterable<JavaAttributeMapping, Iterable<Generator>>(this.getAttributeMappings()) {
+					@Override
+					protected Iterable<Generator> transform(JavaAttributeMapping attributeMapping) {
+						return attributeMapping.getGenerators();
+					}
+				};
 	}
 
 

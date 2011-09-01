@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
@@ -138,6 +139,14 @@ public abstract class AbstractOrmMappedSuperclass<X extends XmlMappedSuperclass>
 
 	public boolean tableNameIsInvalid(String tableName) {
 		return false;
+	}
+
+
+	// ********** queries **********
+
+	public Iterable<Query> getQueries() {
+		// the orm.xml mapped superclass does NOT have queries(!)
+		return EmptyIterable.instance();
 	}
 
 

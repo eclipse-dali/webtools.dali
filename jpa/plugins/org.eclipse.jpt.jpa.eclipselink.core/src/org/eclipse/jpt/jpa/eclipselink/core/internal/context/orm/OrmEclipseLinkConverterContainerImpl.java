@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
@@ -583,6 +584,16 @@ public class OrmEclipseLinkConverterContainerImpl
 
 
 	// ********** misc **********
+
+	@SuppressWarnings("unchecked")
+	public Iterable<EclipseLinkConverter> getConverters() {
+		return new CompositeIterable<EclipseLinkConverter>(
+					this.getCustomConverters(),
+					this.getObjectTypeConverters(),
+					this.getStructConverters(),
+					this.getTypeConverters()
+				);
+	}
 
 	@Override
 	public XmlContextNode getParent() {

@@ -151,23 +151,6 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 		return this.getValidationTextRange(this.xmlConverter.getNameTextRange());
 	}
 
-	public boolean overrides(EclipseLinkConverter converter) {
-		if (this.name == null) {
-			return false;
-		}
-		// this isn't ideal, but it will have to do until we have further adopter input
-		return this.name.equals(converter.getName()) &&
-				(converter instanceof JavaEclipseLinkConverter);
-	}
-
-	public boolean duplicates(EclipseLinkConverter converter) {
-		return (this != converter) &&
-				! StringTools.stringIsEmpty(this.name) &&
-				this.name.equals(converter.getName()) &&
-				! this.overrides(converter) &&
-				! converter.overrides(this);
-	}
-
 
 	// ********** adapter **********
 

@@ -11,10 +11,12 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
@@ -62,6 +64,14 @@ public class GenericOrmQueryContainer
 		super.update();
 		this.updateNodes(this.getNamedQueries());
 		this.updateNodes(this.getNamedNativeQueries());
+	}
+
+
+	// ********** queries **********
+
+	@SuppressWarnings("unchecked")
+	public Iterable<Query> getQueries() {
+		return new CompositeIterable<Query>(this.getNamedQueries(), this.getNamedNativeQueries());
 	}
 
 

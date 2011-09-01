@@ -42,11 +42,13 @@ import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
@@ -932,6 +934,15 @@ public abstract class AbstractJavaEntity
 		return this.getJavaResourceType();
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<Generator> getGenerators() {
+		return new CompositeIterable<Generator>(
+					super.getGenerators(),
+					this.generatorContainer.getGenerators()
+				);
+	}
+
 
 	// ********** query container **********
 
@@ -941,6 +952,10 @@ public abstract class AbstractJavaEntity
 
 	protected JavaQueryContainer buildQueryContainer() {
 		return this.getJpaFactory().buildJavaQueryContainer(this, this);
+	}
+
+	public Iterable<Query> getQueries() {
+		return this.queryContainer.getQueries();
 	}
 
 

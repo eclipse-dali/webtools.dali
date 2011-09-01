@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 
 /**
  * EclipseLink converter:<ul>
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
  * @since 2.1
  */
 public interface EclipseLinkConverter
-	extends JpaContextNode
+	extends JpaNamedContextNode
 {
 	/**
 	 * Return the converter's type.
@@ -44,29 +44,10 @@ public interface EclipseLinkConverter
 		);
 		
 
-	String getName();	
-	void setName(String name);
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-	
 	/**
 	 * Return the character to be used for browsing or creating the converter
 	 * class {@link org.eclipse.jdt.core.IType IType}.
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getEnclosingTypeSeparator();
-
-	/**
-	 * Return whether the converter "overrides" the specified converter
-	 * (e.g. a converter defined in <code>orm.xml</code> overrides one
-	 * defined in Java).
-	 */
-	boolean overrides(EclipseLinkConverter converter);
-	
-	/**
-	 * Return whether the converter is a duplicate of the specified converter.
-	 * A converter is not a duplicate of another converter if is the exact
-	 * same converter, if it is a nameless converter (which is an error
-	 * condition), or if it overrides or is overridden by the other converter.
-	 */
-	boolean duplicates(EclipseLinkConverter converter);
 }

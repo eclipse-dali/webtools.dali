@@ -21,10 +21,12 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceStructureNodes;
@@ -208,6 +210,17 @@ public abstract class AbstractMappingFileRef
 		if (this.mappingFile != null) {
 			this.mappingFile.dispose();
 		}
+	}
+
+
+	// ********** queries/generators **********
+
+	public Iterable<Query> getMappingFileQueries() {
+		return (this.mappingFile != null) ? this.mappingFile.getMappingFileQueries() : EmptyIterable.<Query>instance();
+	}
+
+	public Iterable<Generator> getMappingFileGenerators() {
+		return (this.mappingFile != null) ? this.mappingFile.getMappingFileGenerators() : EmptyIterable.<Generator>instance();
 	}
 
 

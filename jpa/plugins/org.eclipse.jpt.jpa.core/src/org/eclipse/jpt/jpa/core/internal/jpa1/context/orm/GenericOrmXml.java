@@ -22,6 +22,8 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
@@ -162,6 +164,17 @@ public class GenericOrmXml
 
 	protected EntityMappings buildRoot(XmlEntityMappings xmlEntityMappings) {
 		return this.getContextNodeFactory().buildEntityMappings(this, xmlEntityMappings);
+	}
+
+
+	// ********** queries/generators **********
+
+	public Iterable<Query> getMappingFileQueries() {
+		return (this.root != null) ? this.root.getMappingFileQueries() : EmptyIterable.<Query>instance();
+	}
+
+	public Iterable<Generator> getMappingFileGenerators() {
+		return (this.root != null) ? this.root.getMappingFileGenerators() : EmptyIterable.<Generator>instance();
 	}
 
 

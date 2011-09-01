@@ -9,10 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Arrays;
-
-import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
-import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -36,18 +32,8 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * @since 2.0
  */
 public interface Generator
-	extends JpaNamedContextNode<Generator>
+	extends JpaNamedContextNode
 {
-	/**
-	 * TODO bjv remove!
-	 */
-	@SuppressWarnings("unchecked")
-	Iterable<Class<? extends Generator>> PRECEDENCE_TYPE_LIST = Arrays.asList(
-			OrmGenerator.class,
-			JavaGenerator.class
-		);
-
-
 	// ********** initial value **********
 
 	/**

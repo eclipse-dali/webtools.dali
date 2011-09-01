@@ -13,10 +13,8 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
@@ -217,17 +215,6 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	}
 
 	protected abstract String getCatalog();
-
-
-	// ********** JpaNamedContextNode implementation **********
-
-	public boolean overrides(Generator other) {
-		return MappingTools.nodeOverrides(this, other, PRECEDENCE_TYPE_LIST);
-	}
-
-	public boolean duplicates(Generator other) {
-		return MappingTools.nodesAreDuplicates(this, other);
-	}
 
 
 	// ********** misc **********

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,13 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.PrimaryKeyTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericMappedSuperclassPrimaryKeyValidator;
@@ -27,14 +30,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaMappedSuperclass
 	extends AbstractJavaTypeMapping<MappedSuperclassAnnotation>
-	implements JavaMappedSuperclass
+	implements JavaMappedSuperclass, JavaQueryContainer.Owner
 {
 	protected final JavaIdClassReference idClassReference;
+	protected final JavaQueryContainer queryContainer;
 
 
 	protected AbstractJavaMappedSuperclass(JavaPersistentType parent, MappedSuperclassAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 		this.idClassReference = this.buildIdClassReference();
+		this.queryContainer = this.buildQueryContainer();
 	}
 
 
@@ -44,12 +49,14 @@ public abstract class AbstractJavaMappedSuperclass
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.idClassReference.synchronizeWithResourceModel();
+		this.queryContainer.synchronizeWithResourceModel();
 	}
 
 	@Override
 	public void update() {
 		super.update();
 		this.idClassReference.update();
+		this.queryContainer.update();
 	}
 
 
@@ -65,6 +72,25 @@ public abstract class AbstractJavaMappedSuperclass
 
 	public JavaPersistentType getIdClass() {
 		return this.idClassReference.getIdClass();
+	}
+
+
+	// ********** query container **********
+
+	public JavaQueryContainer getQueryContainer() {
+		return this.queryContainer;
+	}
+
+	protected JavaQueryContainer buildQueryContainer() {
+		return this.getJpaFactory().buildJavaQueryContainer(this, this);
+	}
+
+	public JavaResourceMember getResourceAnnotatedElement() {
+		return this.getJavaResourceType();
+	}
+
+	public Iterable<Query> getQueries() {
+		return this.queryContainer.getQueries();
 	}
 
 
@@ -90,6 +116,7 @@ public abstract class AbstractJavaMappedSuperclass
 		super.validate(messages, reporter, astRoot);
 		this.validatePrimaryKey(messages, reporter, astRoot);
 		this.idClassReference.validate(messages, reporter, astRoot);
+		this.queryContainer.validate(messages, reporter, astRoot);
 	}
 
 	@Override

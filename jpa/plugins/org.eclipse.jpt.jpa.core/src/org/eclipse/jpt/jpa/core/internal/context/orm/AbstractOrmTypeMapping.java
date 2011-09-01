@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -431,6 +432,22 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 
 	protected ReplaceEdit createRenamePackageEdit(String newName) {
 		return this.xmlTypeMapping.createRenamePackageEdit(newName);
+	}
+
+
+	// ********** generators **********
+
+	public Iterable<Generator> getGenerators() {
+		return new CompositeIterable<Generator>(this.getAttributeMappingGeneratorLists());
+	}
+
+	protected Iterable<Iterable<Generator>> getAttributeMappingGeneratorLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<Generator>>(this.getAttributeMappings()) {
+					@Override
+					protected Iterable<Generator> transform(AttributeMapping attributeMapping) {
+						return attributeMapping.getGenerators();
+					}
+				};
 	}
 
 

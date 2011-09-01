@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
@@ -17,7 +16,6 @@ import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -312,56 +310,6 @@ public final class MappingTools {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Return whether the specified nodes are "duplicates".
-	 * @see JpaNamedContextNode#duplicates(Object)
-	 */
-	public static <T extends JpaNamedContextNode<? super T>> boolean nodesAreDuplicates(T node1, T node2) {
-		return nodesArePotentalDuplicates_(node1, node2) &&
-				! node1.overrides(node2) &&
-				! node2.overrides(node1);
-	}
-
-	/**
-	 * Return whether the specified nodes<ul>
-	 * <li>are <em>not</em> the same node
-	 * <li>have the same non-empty name
-	 * <li>are in the same persistence unit
-	 * </ul>
-	 */
-	private static <T extends JpaNamedContextNode<? super T>> boolean nodesArePotentalDuplicates_(T node1, T node2) {
-		return (node1 != node2) &&
-				StringTools.stringIsNotEmpty(node1.getName()) &&
-				node1.getName().equals(node2.getName()) &&
-				(node1.getPersistenceUnit() == node2.getPersistenceUnit());
-	}
-
-	/**
-	 * Return whether the first specified node "overrides" the second,
-	 * based on the "precedence" of their classes.
-	 * @see JpaNamedContextNode#overrides(Object)
-	 */
-	public static <T extends JpaNamedContextNode<? super T>> boolean nodeOverrides(T node1, T node2, Iterable<Class<? extends T>> precedenceTypeList) {
-		// this isn't ideal, but use it until adopters protest...
-		return nodesArePotentalDuplicates_(node1, node2) &&
-				calculatePrecedence(node1, precedenceTypeList) < calculatePrecedence(node2, precedenceTypeList);
-	}
-
-	/**
-	 * Loop through the specified classes; return the index of the first class
-	 * the specified node is an instance of.
-	 */
-	private static <T extends JpaNamedContextNode<? super T>> int calculatePrecedence(T node, Iterable<Class<? extends T>> precedenceTypeList) {
-		int precedence = 0;
-		for (Class<?> nodeClass : precedenceTypeList) {
-			if (nodeClass.isInstance(node)) {
-				return precedence;
-			}
-			precedence++;
-		}
-		throw new IllegalArgumentException("unknown named node: " + node); //$NON-NLS-1$
 	}
 
 	public static String getPrimaryKeyColumnName(Entity entity) {
