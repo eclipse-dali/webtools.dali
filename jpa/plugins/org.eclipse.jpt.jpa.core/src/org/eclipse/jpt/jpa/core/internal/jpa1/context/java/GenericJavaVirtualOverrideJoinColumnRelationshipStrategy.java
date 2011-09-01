@@ -107,19 +107,6 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 				new SuperListIterableWrapper<ReadOnlyJoinColumn>(overriddenStrategy.getSpecifiedJoinColumns());
 	}
 
-
-	protected void moveSpecifiedJoinColumn(int index, JavaVirtualJoinColumn joinColumn) {
-		this.specifiedJoinColumnContainer.moveContextElement(index, joinColumn);
-	}
-
-	protected JavaVirtualJoinColumn addSpecifiedJoinColumn(int index, ReadOnlyJoinColumn joinColumn) {
-		return this.specifiedJoinColumnContainer.addContextElement(index, joinColumn);
-	}
-
-	protected void removeSpecifiedJoinColumn(JavaVirtualJoinColumn joinColumn) {
-		this.specifiedJoinColumnContainer.removeContextElement(joinColumn);
-	}
-
 	/**
 	 * specified join column container
 	 */

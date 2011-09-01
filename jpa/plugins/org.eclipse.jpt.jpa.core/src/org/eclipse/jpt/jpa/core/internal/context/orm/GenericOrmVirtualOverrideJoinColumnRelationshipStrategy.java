@@ -105,18 +105,6 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 				new SuperListIterableWrapper<ReadOnlyJoinColumn>(overriddenStrategy.getSpecifiedJoinColumns());
 	}
 
-	protected void moveSpecifiedJoinColumn(int index, OrmVirtualJoinColumn joinColumn) {
-		this.specifiedJoinColumnContainer.moveContextElement(index, joinColumn);
-	}
-
-	protected OrmVirtualJoinColumn addSpecifiedJoinColumn(int index, ReadOnlyJoinColumn joinColumn) {
-		return this.specifiedJoinColumnContainer.addContextElement(index, joinColumn);
-	}
-
-	protected void removeSpecifiedJoinColumn(OrmVirtualJoinColumn joinColumn) {
-		this.specifiedJoinColumnContainer.removeContextElement(joinColumn);
-	}
-
 	protected ContextListContainer<OrmVirtualJoinColumn, ReadOnlyJoinColumn> buildSpecifiedJoinColumnContainer() {
 		return new SpecifiedJoinColumnContainer();
 	}
