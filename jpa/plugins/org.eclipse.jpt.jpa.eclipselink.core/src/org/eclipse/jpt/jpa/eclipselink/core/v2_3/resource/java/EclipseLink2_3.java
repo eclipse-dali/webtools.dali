@@ -33,7 +33,7 @@ public interface EclipseLink2_3 {
 
 	// EclispeLink 2.3 annotations
 	String MULTITENANT = PACKAGE_ + "Multitenant";
-		String CLASS_EXTRACTOR__VALUE = "value";
+		String MULTITENANT__VALUE = "value";
 
 	String MULTITENANT_TYPE = PACKAGE_ + "MultitenantType";
 		String MULTITENANT_TYPE_ = MULTITENANT_TYPE + ".";

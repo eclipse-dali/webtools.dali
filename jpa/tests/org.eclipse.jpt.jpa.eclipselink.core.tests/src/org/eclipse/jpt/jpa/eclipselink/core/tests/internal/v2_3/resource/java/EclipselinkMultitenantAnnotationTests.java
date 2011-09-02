@@ -50,6 +50,19 @@ public class EclipselinkMultitenantAnnotationTests extends EclipseLink2_3JavaRes
 		});
 	}
 
+	private ICompilationUnit createTestCacheWithIncludeCriteria() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(EclipseLink2_3.MULTITENANT);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Multitenant(includeCriteria=true)");
+			}
+		});
+	}
+
 	public void testMultitenant() throws Exception {
 		ICompilationUnit cu = this.createTestMultitenant();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
@@ -82,6 +95,43 @@ public class EclipselinkMultitenantAnnotationTests extends EclipseLink2_3JavaRes
 		assertNull(multitenant.getValue());
 		
 		assertSourceDoesNotContain("(TABLE_PER_TENANT)", cu);
+		assertSourceContains("@Multitenant", cu);
+		assertSourceDoesNotContain("@Multitenant(", cu);
+	}
+
+
+	public void testGetIncludeCriteria() throws Exception {
+		ICompilationUnit cu = this.createTestCacheWithIncludeCriteria();
+		JavaResourceType resourceType = buildJavaResourceType(cu);
+		
+		EclipseLinkMultitenantAnnotation multitenant = (EclipseLinkMultitenantAnnotation) resourceType.getAnnotation(EclipseLink2_3.MULTITENANT);
+		assertEquals(Boolean.TRUE, multitenant.getIncludeCriteria());
+	}
+	
+	public void testSetIncludeCriteria() throws Exception {
+		ICompilationUnit cu = this.createTestCacheWithIncludeCriteria();
+		JavaResourceType resourceType = buildJavaResourceType(cu);
+		
+		EclipseLinkMultitenantAnnotation multitenant = (EclipseLinkMultitenantAnnotation) resourceType.getAnnotation(EclipseLink2_3.MULTITENANT);
+		assertEquals(Boolean.TRUE, multitenant.getIncludeCriteria());
+		
+		multitenant.setIncludeCriteria(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, multitenant.getIncludeCriteria());
+		
+		assertSourceContains("@Multitenant(includeCriteria=false)", cu);		
+	}
+	
+	public void testSetIncludeCriteriaNull() throws Exception {
+		ICompilationUnit cu = this.createTestCacheWithIncludeCriteria();
+		JavaResourceType resourceType = buildJavaResourceType(cu);
+		
+		EclipseLinkMultitenantAnnotation multitenant = (EclipseLinkMultitenantAnnotation) resourceType.getAnnotation(EclipseLink2_3.MULTITENANT);
+		assertEquals(Boolean.TRUE, multitenant.getIncludeCriteria());
+		
+		multitenant.setIncludeCriteria(null);
+		multitenant = (EclipseLinkMultitenantAnnotation) resourceType.getAnnotation(EclipseLink2_3.MULTITENANT);
+		assertNull(multitenant.getIncludeCriteria());
+		
 		assertSourceContains("@Multitenant", cu);
 		assertSourceDoesNotContain("@Multitenant(", cu);
 	}

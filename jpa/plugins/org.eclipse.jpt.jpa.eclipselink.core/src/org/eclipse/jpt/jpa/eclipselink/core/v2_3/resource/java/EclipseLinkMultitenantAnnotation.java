@@ -51,4 +51,26 @@ public interface EclipseLinkMultitenantAnnotation
 	 */
 	TextRange getValueTextRange(CompilationUnit astRoot);
 
+
+	//********* include criteria added in EclipseLink 2.4 **********
+	/**
+	 * Corresponds to the 'includeCriteria' element of the Multitenant annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	Boolean getIncludeCriteria();
+		String INCLUDE_CRITERIA_PROPERTY = "includeCriteria"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'includeCriteria' element of the Multitenant annotation.
+	 * Set to null to remove the element.
+	 */
+	void setIncludeCriteria(Boolean includeCriteria);
+
+	/**
+	 * Return the {@link TextRange} for the 'includeCriteria' element.
+	 * If the element does not exist return the {@link TextRange}
+	 * for the Multitenant annotation.
+	 */
+	TextRange getIncludeCriteriaTextRange(CompilationUnit astRoot);
+
 }
