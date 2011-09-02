@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,6 +29,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlId_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlIndex_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlId_2_4;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -54,7 +58,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implements XmlId_2_1, XmlId_2_2, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
+public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implements XmlId_2_1, XmlId_2_2, XmlId_2_4, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
 {
 	/**
 	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
@@ -85,6 +89,16 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	 * @ordered
 	 */
 	protected XmlIndex_2_2 index;
+
+	/**
+	 * The cached value of the '{@link #getCacheIndex() <em>Cache Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlCacheIndex_2_4 cacheIndex;
 
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -300,6 +314,66 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__INDEX, newIndex, newIndex));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Cache Index</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cache Index</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cache Index</em>' containment reference.
+	 * @see #setCacheIndex(XmlCacheIndex_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId_2_4_CacheIndex()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlCacheIndex_2_4 getCacheIndex()
+	{
+		return cacheIndex;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetCacheIndex(XmlCacheIndex_2_4 newCacheIndex, NotificationChain msgs)
+	{
+		XmlCacheIndex_2_4 oldCacheIndex = cacheIndex;
+		cacheIndex = newCacheIndex;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__CACHE_INDEX, oldCacheIndex, newCacheIndex);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlId#getCacheIndex <em>Cache Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cache Index</em>' containment reference.
+	 * @see #getCacheIndex()
+	 * @generated
+	 */
+	public void setCacheIndex(XmlCacheIndex_2_4 newCacheIndex)
+	{
+		if (newCacheIndex != cacheIndex)
+		{
+			NotificationChain msgs = null;
+			if (cacheIndex != null)
+				msgs = ((InternalEObject)cacheIndex).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__CACHE_INDEX, null, msgs);
+			if (newCacheIndex != null)
+				msgs = ((InternalEObject)newCacheIndex).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__CACHE_INDEX, null, msgs);
+			msgs = basicSetCacheIndex(newCacheIndex, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__CACHE_INDEX, newCacheIndex, newCacheIndex));
 	}
 
 	/**
@@ -707,6 +781,8 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 		{
 			case EclipseLinkOrmPackage.XML_ID__INDEX:
 				return basicSetIndex(null, msgs);
+			case EclipseLinkOrmPackage.XML_ID__CACHE_INDEX:
+				return basicSetCacheIndex(null, msgs);
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
@@ -737,6 +813,8 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_ID__INDEX:
 				return getIndex();
+			case EclipseLinkOrmPackage.XML_ID__CACHE_INDEX:
+				return getCacheIndex();
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
@@ -773,6 +851,9 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				return;
 			case EclipseLinkOrmPackage.XML_ID__INDEX:
 				setIndex((XmlIndex_2_2)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ID__CACHE_INDEX:
+				setCacheIndex((XmlCacheIndex_2_4)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
@@ -819,6 +900,9 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 			case EclipseLinkOrmPackage.XML_ID__INDEX:
 				setIndex((XmlIndex_2_2)null);
 				return;
+			case EclipseLinkOrmPackage.XML_ID__CACHE_INDEX:
+				setCacheIndex((XmlCacheIndex_2_4)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
@@ -861,6 +945,8 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_ID__INDEX:
 				return index != null;
+			case EclipseLinkOrmPackage.XML_ID__CACHE_INDEX:
+				return cacheIndex != null;
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
@@ -902,6 +988,14 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ID__INDEX: return EclipseLinkOrmV2_2Package.XML_ID_22__INDEX;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlId_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ID__CACHE_INDEX: return EclipseLinkOrmV2_4Package.XML_ID_24__CACHE_INDEX;
 				default: return -1;
 			}
 		}
@@ -979,6 +1073,14 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmV2_2Package.XML_ID_22__INDEX: return EclipseLinkOrmPackage.XML_ID__INDEX;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlId_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_ID_24__CACHE_INDEX: return EclipseLinkOrmPackage.XML_ID__CACHE_INDEX;
 				default: return -1;
 			}
 		}
@@ -1083,6 +1185,7 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 			buildAttributeTypeTranslator(),
 			buildColumnTranslator(),
 			buildIndexTranslator(),
+			buildCacheIndexTranslator(),
 			buildGeneratedValueTranslator(),
 			buildTemporalTranslator(),
 			buildEnumeratedTranslator(),
@@ -1104,6 +1207,10 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	
 	protected static Translator buildIndexTranslator() {
 		return XmlIndex.buildTranslator(EclipseLink2_2.INDEX, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlId_2_2_Index());
+	}
+
+	protected static Translator buildCacheIndexTranslator() {
+		return XmlCacheIndex.buildTranslator(EclipseLink2_4.CACHE_INDEX, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlId_2_4_CacheIndex());
 	}
 	
 	protected static Translator buildConvertTranslator() {

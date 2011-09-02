@@ -14,23 +14,16 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
-
 import org.eclipse.jpt.jpa.core.resource.xml.CommonPackage;
-
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
-
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
-
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
-
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
-
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 
 /**
  * <!-- begin-user-doc -->
@@ -774,14 +767,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION_23_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType <em>Xml Multitenant Type</em>}' enum.
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType <em>Multitenant Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMultitenantType()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getMultitenantType()
 	 * @generated
 	 */
-	public static final int XML_MULTITENANT_TYPE = 17;
+	public static final int MULTITENANT_TYPE = 17;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -907,7 +900,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EEnum xmlMultitenantTypeEEnum = null;
+	private EEnum multitenantTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -968,6 +961,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		EclipseLinkOrmV2_0Package theEclipseLinkOrmV2_0Package = (EclipseLinkOrmV2_0Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_0Package.eNS_URI) instanceof EclipseLinkOrmV2_0Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_0Package.eNS_URI) : EclipseLinkOrmV2_0Package.eINSTANCE);
 		EclipseLinkOrmV2_1Package theEclipseLinkOrmV2_1Package = (EclipseLinkOrmV2_1Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_1Package.eNS_URI) instanceof EclipseLinkOrmV2_1Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_1Package.eNS_URI) : EclipseLinkOrmV2_1Package.eINSTANCE);
 		EclipseLinkOrmV2_2Package theEclipseLinkOrmV2_2Package = (EclipseLinkOrmV2_2Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) instanceof EclipseLinkOrmV2_2Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) : EclipseLinkOrmV2_2Package.eINSTANCE);
+		EclipseLinkOrmV2_4Package theEclipseLinkOrmV2_4Package = (EclipseLinkOrmV2_4Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) instanceof EclipseLinkOrmV2_4Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) : EclipseLinkOrmV2_4Package.eINSTANCE);
 
 		// Create package meta-data objects
 		theEclipseLinkOrmV2_3Package.createPackageContents();
@@ -976,6 +970,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		theEclipseLinkOrmV2_0Package.createPackageContents();
 		theEclipseLinkOrmV2_1Package.createPackageContents();
 		theEclipseLinkOrmV2_2Package.createPackageContents();
+		theEclipseLinkOrmV2_4Package.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmV2_3Package.initializePackageContents();
@@ -984,6 +979,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		theEclipseLinkOrmV2_0Package.initializePackageContents();
 		theEclipseLinkOrmV2_1Package.initializePackageContents();
 		theEclipseLinkOrmV2_2Package.initializePackageContents();
+		theEclipseLinkOrmV2_4Package.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmV2_3Package.freeze();
@@ -1784,16 +1780,16 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType <em>Xml Multitenant Type</em>}'.
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType <em>Multitenant Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Xml Multitenant Type</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType
+	 * @return the meta object for enum '<em>Multitenant Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType
 	 * @generated
 	 */
-	public EEnum getXmlMultitenantType()
+	public EEnum getMultitenantType()
 	{
-		return xmlMultitenantTypeEEnum;
+		return multitenantTypeEEnum;
 	}
 
 
@@ -1901,7 +1897,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		createEAttribute(xmlElementCollection_2_3EClass, XML_ELEMENT_COLLECTION_23__COMPOSITE_MEMBER);
 
 		// Create enums
-		xmlMultitenantTypeEEnum = createEEnum(XML_MULTITENANT_TYPE);
+		multitenantTypeEEnum = createEEnum(MULTITENANT_TYPE);
 	}
 
 	/**
@@ -1978,7 +1974,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		initEReference(getXmlMappedSuperclass_2_3_PlsqlTables(), theEclipseLinkOrmPackage.getXmlPlsqlTable(), null, "plsqlTables", null, 0, -1, XmlMappedSuperclass_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMultitenant_2_3EClass, XmlMultitenant_2_3.class, "XmlMultitenant_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlMultitenant_2_3_Type(), this.getXmlMultitenantType(), "type", null, 0, 1, XmlMultitenant_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlMultitenant_2_3_Type(), this.getMultitenantType(), "type", null, 0, 1, XmlMultitenant_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMultitenant_2_3_TenantDiscriminatorColumns(), this.getXmlTenantDiscriminatorColumn_2_3(), null, "tenantDiscriminatorColumns", null, 0, -1, XmlMultitenant_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlNamedPlsqlStoredFunctionQuery_2_3EClass, XmlNamedPlsqlStoredFunctionQuery_2_3.class, "XmlNamedPlsqlStoredFunctionQuery_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2013,9 +2009,9 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		initEAttribute(getXmlElementCollection_2_3_CompositeMember(), theXMLTypePackage.getString(), "compositeMember", null, 0, 1, XmlElementCollection_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
-		initEEnum(xmlMultitenantTypeEEnum, XmlMultitenantType.class, "XmlMultitenantType");
-		addEEnumLiteral(xmlMultitenantTypeEEnum, XmlMultitenantType.SINGLE_TABLE);
-		addEEnumLiteral(xmlMultitenantTypeEEnum, XmlMultitenantType.TABLE_PER_TENANT);
+		initEEnum(multitenantTypeEEnum, MultitenantType.class, "MultitenantType");
+		addEEnumLiteral(multitenantTypeEEnum, MultitenantType.SINGLE_TABLE);
+		addEEnumLiteral(multitenantTypeEEnum, MultitenantType.TABLE_PER_TENANT);
 	}
 
 	/**
@@ -2499,14 +2495,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		public static final EAttribute XML_ELEMENT_COLLECTION_23__COMPOSITE_MEMBER = eINSTANCE.getXmlElementCollection_2_3_CompositeMember();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType <em>Xml Multitenant Type</em>}' enum.
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType <em>Multitenant Type</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMultitenantType()
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getMultitenantType()
 		 * @generated
 		 */
-		public static final EEnum XML_MULTITENANT_TYPE = eINSTANCE.getXmlMultitenantType();
+		public static final EEnum MULTITENANT_TYPE = eINSTANCE.getMultitenantType();
 
 	}
 

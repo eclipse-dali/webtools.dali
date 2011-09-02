@@ -59,6 +59,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStore
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntity_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -93,7 +97,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity implements XmlEntity_1_1, XmlEntity_2_0, XmlEntity_2_1, XmlEntity_2_2, XmlEntity_2_3, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer, XmlPropertyContainer
+public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity implements XmlEntity_1_1, XmlEntity_2_0, XmlEntity_2_1, XmlEntity_2_2, XmlEntity_2_3, XmlEntity_2_4, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer, XmlPropertyContainer
 {
 	/**
 	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
@@ -384,6 +388,16 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	 * @ordered
 	 */
 	protected XmlStruct_2_3 struct;
+
+	/**
+	 * The cached value of the '{@link #getCacheIndex() <em>Cache Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlCacheIndex_2_4 cacheIndex;
 
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -2428,6 +2442,66 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Cache Index</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cache Index</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cache Index</em>' containment reference.
+	 * @see #setCacheIndex(XmlCacheIndex_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_4_CacheIndex()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlCacheIndex_2_4 getCacheIndex()
+	{
+		return cacheIndex;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetCacheIndex(XmlCacheIndex_2_4 newCacheIndex, NotificationChain msgs)
+	{
+		XmlCacheIndex_2_4 oldCacheIndex = cacheIndex;
+		cacheIndex = newCacheIndex;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX, oldCacheIndex, newCacheIndex);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity#getCacheIndex <em>Cache Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cache Index</em>' containment reference.
+	 * @see #getCacheIndex()
+	 * @generated
+	 */
+	public void setCacheIndex(XmlCacheIndex_2_4 newCacheIndex)
+	{
+		if (newCacheIndex != cacheIndex)
+		{
+			NotificationChain msgs = null;
+			if (cacheIndex != null)
+				msgs = ((InternalEObject)cacheIndex).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX, null, msgs);
+			if (newCacheIndex != null)
+				msgs = ((InternalEObject)newCacheIndex).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX, null, msgs);
+			msgs = basicSetCacheIndex(newCacheIndex, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX, newCacheIndex, newCacheIndex));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Additional Criteria</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -2578,6 +2652,8 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return ((InternalEList<?>)getPlsqlTables()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
 				return basicSetStruct(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX:
+				return basicSetCacheIndex(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
@@ -2670,6 +2746,8 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return getPlsqlTables();
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
 				return getStruct();
+			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX:
+				return getCacheIndex();
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -2800,6 +2878,9 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
 				setStruct((XmlStruct_2_3)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX:
+				setCacheIndex((XmlCacheIndex_2_4)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly((Boolean)newValue);
@@ -2947,6 +3028,9 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
 				setStruct((XmlStruct_2_3)null);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX:
+				setCacheIndex((XmlCacheIndex_2_4)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
@@ -3061,6 +3145,8 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return plsqlTables != null && !plsqlTables.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
 				return struct != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX:
+				return cacheIndex != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -3184,6 +3270,14 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_RECORDS: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__PLSQL_RECORDS;
 				case EclipseLinkOrmPackage.XML_ENTITY__PLSQL_TABLES: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__PLSQL_TABLES;
 				case EclipseLinkOrmPackage.XML_ENTITY__STRUCT: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__STRUCT;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntity_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX: return EclipseLinkOrmV2_4Package.XML_ENTITY_24__CACHE_INDEX;
 				default: return -1;
 			}
 		}
@@ -3340,6 +3434,14 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEntity_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_ENTITY_24__CACHE_INDEX: return EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlReadOnly.class)
 		{
 			switch (baseFeatureID)
@@ -3476,6 +3578,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			buildOptimisticLockingTranslator(),
 			buildCacheTranslator(),
 			buildCacheInterceptorTranslator(),
+			buildCacheIndexTranslator(),
 			buildFetchGroupsTranslator(),
 			buildConverterTranslator(),
 			buildTypeConverterTranslator(),
@@ -3547,6 +3650,10 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	
 	protected static Translator buildCacheInterceptorTranslator() {
 		return XmlClassReference.buildTranslator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlEntity_2_0_CacheInterceptor());
+	}
+
+	protected static Translator buildCacheIndexTranslator() {
+		return XmlCacheIndex.buildTranslator(EclipseLink2_4.CACHE_INDEX, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlEntity_2_4_CacheIndex());
 	}
 	
 	protected static Translator buildFetchGroupsTranslator() {

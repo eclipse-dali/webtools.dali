@@ -49,6 +49,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlReplicationPart
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToMany_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -72,7 +75,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany implements XmlOneToMany_2_0, XmlOneToMany_2_1, XmlOneToMany_2_2, XmlAttributeMapping, XmlPrivateOwned, XmlJoinFetch
+public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany implements XmlOneToMany_2_0, XmlOneToMany_2_1, XmlOneToMany_2_2, XmlOneToMany_2_4, XmlAttributeMapping, XmlPrivateOwned, XmlJoinFetch
 {
 	/**
 	 * The cached value of the '{@link #getConverter() <em>Converter</em>}' containment reference.
@@ -295,24 +298,44 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 	protected Boolean cascadeOnDelete = CASCADE_ON_DELETE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isNonCacheable() <em>Non Cacheable</em>}' attribute.
+	 * The default value of the '{@link #isNoncacheable() <em>Noncacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isNonCacheable()
+	 * @see #isNoncacheable()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean NON_CACHEABLE_EDEFAULT = false;
+	protected static final boolean NONCACHEABLE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isNonCacheable() <em>Non Cacheable</em>}' attribute.
+	 * The cached value of the '{@link #isNoncacheable() <em>Noncacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isNonCacheable()
+	 * @see #isNoncacheable()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean nonCacheable = NON_CACHEABLE_EDEFAULT;
+	protected boolean noncacheable = NONCACHEABLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isDeleteAll() <em>Delete All</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDeleteAll()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DELETE_ALL_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isDeleteAll() <em>Delete All</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDeleteAll()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean deleteAll = DELETE_ALL_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -1408,38 +1431,73 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Non Cacheable</b></em>' attribute.
+	 * Returns the value of the '<em><b>Noncacheable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Non Cacheable</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Noncacheable</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Non Cacheable</em>' attribute.
-	 * @see #setNonCacheable(boolean)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToMany_2_2_NonCacheable()
+	 * @return the value of the '<em>Noncacheable</em>' attribute.
+	 * @see #setNoncacheable(boolean)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToMany_2_2_Noncacheable()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	public boolean isNonCacheable()
+	public boolean isNoncacheable()
 	{
-		return nonCacheable;
+		return noncacheable;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToMany#isNonCacheable <em>Non Cacheable</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToMany#isNoncacheable <em>Noncacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Non Cacheable</em>' attribute.
-	 * @see #isNonCacheable()
+	 * @param value the new value of the '<em>Noncacheable</em>' attribute.
+	 * @see #isNoncacheable()
 	 * @generated
 	 */
-	public void setNonCacheable(boolean newNonCacheable)
+	public void setNoncacheable(boolean newNoncacheable)
 	{
-		boolean oldNonCacheable = nonCacheable;
-		nonCacheable = newNonCacheable;
+		boolean oldNoncacheable = noncacheable;
+		noncacheable = newNoncacheable;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ONE_TO_MANY__NON_CACHEABLE, oldNonCacheable, nonCacheable));
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE, oldNoncacheable, noncacheable));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Delete All</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Delete All</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Delete All</em>' attribute.
+	 * @see #setDeleteAll(boolean)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToMany_2_4_DeleteAll()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @generated
+	 */
+	public boolean isDeleteAll()
+	{
+		return deleteAll;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToMany#isDeleteAll <em>Delete All</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Delete All</em>' attribute.
+	 * @see #isDeleteAll()
+	 * @generated
+	 */
+	public void setDeleteAll(boolean newDeleteAll)
+	{
+		boolean oldDeleteAll = deleteAll;
+		deleteAll = newDeleteAll;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL, oldDeleteAll, deleteAll));
 	}
 
 	/**
@@ -1617,8 +1675,10 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return getPartitioned();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__CASCADE_ON_DELETE:
 				return getCascadeOnDelete();
-			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NON_CACHEABLE:
-				return isNonCacheable();
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE:
+				return isNoncacheable();
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL:
+				return isDeleteAll();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PROPERTIES:
@@ -1697,8 +1757,11 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__CASCADE_ON_DELETE:
 				setCascadeOnDelete((Boolean)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NON_CACHEABLE:
-				setNonCacheable((Boolean)newValue);
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE:
+				setNoncacheable((Boolean)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL:
+				setDeleteAll((Boolean)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
@@ -1781,8 +1844,11 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__CASCADE_ON_DELETE:
 				setCascadeOnDelete(CASCADE_ON_DELETE_EDEFAULT);
 				return;
-			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NON_CACHEABLE:
-				setNonCacheable(NON_CACHEABLE_EDEFAULT);
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE:
+				setNoncacheable(NONCACHEABLE_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL:
+				setDeleteAll(DELETE_ALL_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
@@ -1846,8 +1912,10 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return PARTITIONED_EDEFAULT == null ? partitioned != null : !PARTITIONED_EDEFAULT.equals(partitioned);
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__CASCADE_ON_DELETE:
 				return CASCADE_ON_DELETE_EDEFAULT == null ? cascadeOnDelete != null : !CASCADE_ON_DELETE_EDEFAULT.equals(cascadeOnDelete);
-			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NON_CACHEABLE:
-				return nonCacheable != NON_CACHEABLE_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE:
+				return noncacheable != NONCACHEABLE_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL:
+				return deleteAll != DELETE_ALL_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PROPERTIES:
@@ -1939,7 +2007,15 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ONE_TO_MANY__CASCADE_ON_DELETE: return EclipseLinkOrmV2_2Package.XML_ONE_TO_MANY_22__CASCADE_ON_DELETE;
-				case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NON_CACHEABLE: return EclipseLinkOrmV2_2Package.XML_ONE_TO_MANY_22__NON_CACHEABLE;
+				case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE: return EclipseLinkOrmV2_2Package.XML_ONE_TO_MANY_22__NONCACHEABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlOneToMany_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL: return EclipseLinkOrmV2_4Package.XML_ONE_TO_MANY_24__DELETE_ALL;
 				default: return -1;
 			}
 		}
@@ -2064,7 +2140,15 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmV2_2Package.XML_ONE_TO_MANY_22__CASCADE_ON_DELETE: return EclipseLinkOrmPackage.XML_ONE_TO_MANY__CASCADE_ON_DELETE;
-				case EclipseLinkOrmV2_2Package.XML_ONE_TO_MANY_22__NON_CACHEABLE: return EclipseLinkOrmPackage.XML_ONE_TO_MANY__NON_CACHEABLE;
+				case EclipseLinkOrmV2_2Package.XML_ONE_TO_MANY_22__NONCACHEABLE: return EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlOneToMany_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_ONE_TO_MANY_24__DELETE_ALL: return EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL;
 				default: return -1;
 			}
 		}
@@ -2129,8 +2213,10 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		result.append(partitioned);
 		result.append(", cascadeOnDelete: ");
 		result.append(cascadeOnDelete);
-		result.append(", nonCacheable: ");
-		result.append(nonCacheable);
+		result.append(", noncacheable: ");
+		result.append(noncacheable);
+		result.append(", deleteAll: ");
+		result.append(deleteAll);
 		result.append(", privateOwned: ");
 		result.append(privateOwned);
 		result.append(", joinFetch: ");
@@ -2192,6 +2278,7 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 			buildPropertyTranslator(),
 			buildAccessMethodsTranslator(),
 			buildNoncacheableTranslator(),
+			buildDeleteAllTranslator(),
 		    XmlPartitioning.buildTranslator(EclipseLink2_2.PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_Partitioning()),
 			XmlReplicationPartitioning.buildTranslator(EclipseLink2_2.REPLICATION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_ReplicationPartitioning()),
 			XmlRoundRobinPartitioning.buildTranslator(EclipseLink2_2.ROUND_ROBIN_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_RoundRobinPartitioning()),
@@ -2261,10 +2348,14 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 	}
 
 	protected static Translator buildNoncacheableTranslator() {
-		return new EmptyTagBooleanTranslator(EclipseLink2_2.NONCACHEABLE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlOneToMany_2_2_NonCacheable());
+		return new EmptyTagBooleanTranslator(EclipseLink2_2.NONCACHEABLE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlOneToMany_2_2_Noncacheable());
 	}
 
     protected static Translator buildPartitionedTranslator() {
 		return new Translator(EclipseLink2_2.PARTITIONING_GROUP__PARTITIONED, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_Partitioned());
+	}
+   
+	protected static Translator buildDeleteAllTranslator() {
+		return new EmptyTagBooleanTranslator(EclipseLink2_4.DELETE_ALL, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlOneToMany_2_4_DeleteAll());
 	}
 }

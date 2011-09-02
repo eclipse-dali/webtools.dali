@@ -21,11 +21,14 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMultitenant_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -38,17 +41,14 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant_2_3
+public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant_2_3, XmlMultitenant_2_4
 {
 	/**
-	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getType()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final XmlMultitenantType TYPE_EDEFAULT = XmlMultitenantType.SINGLE_TABLE;
+	protected static final MultitenantType TYPE_EDEFAULT = null;
+
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,7 +57,7 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlMultitenantType type = TYPE_EDEFAULT;
+	protected MultitenantType type = TYPE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getTenantDiscriminatorColumns() <em>Tenant Discriminator Columns</em>}' containment reference list.
@@ -68,6 +68,25 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 	 * @ordered
 	 */
 	protected EList<XmlTenantDiscriminatorColumn_2_3> tenantDiscriminatorColumns;
+
+	/**
+	 * The default value of the '{@link #getIncludeCriteria() <em>Include Criteria</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIncludeCriteria()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean INCLUDE_CRITERIA_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getIncludeCriteria() <em>Include Criteria</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIncludeCriteria()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean includeCriteria = INCLUDE_CRITERIA_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -92,7 +111,7 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 	
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType}.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Type</em>' attribute isn't clear,
@@ -100,13 +119,13 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Type</em>' attribute.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType
-	 * @see #setType(XmlMultitenantType)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType
+	 * @see #setType(MultitenantType)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMultitenant_2_3_Type()
 	 * @model
 	 * @generated
 	 */
-	public XmlMultitenantType getType()
+	public MultitenantType getType()
 	{
 		return type;
 	}
@@ -116,13 +135,13 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Type</em>' attribute.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType
 	 * @see #getType()
 	 * @generated
 	 */
-	public void setType(XmlMultitenantType newType)
+	public void setType(MultitenantType newType)
 	{
-		XmlMultitenantType oldType = type;
+		MultitenantType oldType = type;
 		type = newType == null ? TYPE_EDEFAULT : newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MULTITENANT__TYPE, oldType, type));
@@ -149,6 +168,41 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 			tenantDiscriminatorColumns = new EObjectContainmentEList<XmlTenantDiscriminatorColumn_2_3>(XmlTenantDiscriminatorColumn_2_3.class, this, EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_DISCRIMINATOR_COLUMNS);
 		}
 		return tenantDiscriminatorColumns;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Include Criteria</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Include Criteria</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Include Criteria</em>' attribute.
+	 * @see #setIncludeCriteria(Boolean)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMultitenant_2_4_IncludeCriteria()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getIncludeCriteria()
+	{
+		return includeCriteria;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenant#getIncludeCriteria <em>Include Criteria</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Include Criteria</em>' attribute.
+	 * @see #getIncludeCriteria()
+	 * @generated
+	 */
+	public void setIncludeCriteria(Boolean newIncludeCriteria)
+	{
+		Boolean oldIncludeCriteria = includeCriteria;
+		includeCriteria = newIncludeCriteria;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA, oldIncludeCriteria, includeCriteria));
 	}
 
 	/**
@@ -181,6 +235,8 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 				return getType();
 			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_DISCRIMINATOR_COLUMNS:
 				return getTenantDiscriminatorColumns();
+			case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA:
+				return getIncludeCriteria();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -197,11 +253,14 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_MULTITENANT__TYPE:
-				setType((XmlMultitenantType)newValue);
+				setType((MultitenantType)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_DISCRIMINATOR_COLUMNS:
 				getTenantDiscriminatorColumns().clear();
 				getTenantDiscriminatorColumns().addAll((Collection<? extends XmlTenantDiscriminatorColumn_2_3>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA:
+				setIncludeCriteria((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -223,6 +282,9 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_DISCRIMINATOR_COLUMNS:
 				getTenantDiscriminatorColumns().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA:
+				setIncludeCriteria(INCLUDE_CRITERIA_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -241,8 +303,48 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 				return type != TYPE_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_DISCRIMINATOR_COLUMNS:
 				return tenantDiscriminatorColumns != null && !tenantDiscriminatorColumns.isEmpty();
+			case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA:
+				return INCLUDE_CRITERIA_EDEFAULT == null ? includeCriteria != null : !INCLUDE_CRITERIA_EDEFAULT.equals(includeCriteria);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlMultitenant_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA: return EclipseLinkOrmV2_4Package.XML_MULTITENANT_24__INCLUDE_CRITERIA;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlMultitenant_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_MULTITENANT_24__INCLUDE_CRITERIA: return EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -258,6 +360,8 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (type: ");
 		result.append(type);
+		result.append(", includeCriteria: ");
+		result.append(includeCriteria);
 		result.append(')');
 		return result.toString();
 	}
@@ -275,6 +379,7 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildTypeTranslator(),
+			buildIncludeCriteriaTranslator(),
 			buildTenantDiscriminatorColumnsTranslator()
 		};
 	}
@@ -285,6 +390,10 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 
 	protected static Translator buildTenantDiscriminatorColumnsTranslator() {
 		return XmlTenantDiscriminatorColumn.buildTranslator(EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlMultitenant_2_3_TenantDiscriminatorColumns());		
+	}
+	
+	protected static Translator buildIncludeCriteriaTranslator() {
+		return new Translator(EclipseLink2_4.MULTITENANT__INCLUDE_CRITERIA, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlMultitenant_2_4_IncludeCriteria(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlMultitenant

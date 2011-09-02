@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToMany_2_2#getCascadeOnDelete <em>Cascade On Delete</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToMany_2_2#isNonCacheable <em>Non Cacheable</em>}</li>
+ *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToMany_2_2#isNoncacheable <em>Noncacheable</em>}</li>
  * </ul>
  * </p>
  *
@@ -62,29 +62,29 @@ public interface XmlOneToMany_2_2 extends XmlPartitioningGroup_2_2
 	void setCascadeOnDelete(Boolean value);
 
 	/**
-	 * Returns the value of the '<em><b>Non Cacheable</b></em>' attribute.
+	 * Returns the value of the '<em><b>Noncacheable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Non Cacheable</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Noncacheable</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Non Cacheable</em>' attribute.
-	 * @see #setNonCacheable(boolean)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlOneToMany_2_2_NonCacheable()
+	 * @return the value of the '<em>Noncacheable</em>' attribute.
+	 * @see #setNoncacheable(boolean)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlOneToMany_2_2_Noncacheable()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	boolean isNonCacheable();
+	boolean isNoncacheable();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToMany_2_2#isNonCacheable <em>Non Cacheable</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToMany_2_2#isNoncacheable <em>Noncacheable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Non Cacheable</em>' attribute.
-	 * @see #isNonCacheable()
+	 * @param value the new value of the '<em>Noncacheable</em>' attribute.
+	 * @see #isNoncacheable()
 	 * @generated
 	 */
-	void setNonCacheable(boolean value);
+	void setNoncacheable(boolean value);
 
 } // XmlOneToMany_2_2

@@ -68,6 +68,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStore
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMappedSuperclass_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -102,7 +106,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass implements XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0, XmlMappedSuperclass_2_1, XmlMappedSuperclass_2_2, XmlMappedSuperclass_2_3, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer
+public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass implements XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0, XmlMappedSuperclass_2_1, XmlMappedSuperclass_2_2, XmlMappedSuperclass_2_3, XmlMappedSuperclass_2_4, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer
 {
 	/**
 	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
@@ -443,6 +447,16 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @ordered
 	 */
 	protected EList<XmlPlsqlTable> plsqlTables;
+
+	/**
+	 * The cached value of the '{@link #getCacheIndex() <em>Cache Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlCacheIndex_2_4 cacheIndex;
 
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -2592,6 +2606,66 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Cache Index</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cache Index</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cache Index</em>' containment reference.
+	 * @see #setCacheIndex(XmlCacheIndex_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_4_CacheIndex()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlCacheIndex_2_4 getCacheIndex()
+	{
+		return cacheIndex;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetCacheIndex(XmlCacheIndex_2_4 newCacheIndex, NotificationChain msgs)
+	{
+		XmlCacheIndex_2_4 oldCacheIndex = cacheIndex;
+		cacheIndex = newCacheIndex;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX, oldCacheIndex, newCacheIndex);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass#getCacheIndex <em>Cache Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cache Index</em>' containment reference.
+	 * @see #getCacheIndex()
+	 * @generated
+	 */
+	public void setCacheIndex(XmlCacheIndex_2_4 newCacheIndex)
+	{
+		if (newCacheIndex != cacheIndex)
+		{
+			NotificationChain msgs = null;
+			if (cacheIndex != null)
+				msgs = ((InternalEObject)cacheIndex).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX, null, msgs);
+			if (newCacheIndex != null)
+				msgs = ((InternalEObject)newCacheIndex).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX, null, msgs);
+			msgs = basicSetCacheIndex(newCacheIndex, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX, newCacheIndex, newCacheIndex));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Exclude Default Mappings</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -2692,6 +2766,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return ((InternalEList<?>)getPlsqlRecords()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				return ((InternalEList<?>)getPlsqlTables()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
+				return basicSetCacheIndex(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CHANGE_TRACKING:
@@ -2792,6 +2868,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return getPlsqlRecords();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				return getPlsqlTables();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
+				return getCacheIndex();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
@@ -2941,6 +3019,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				getPlsqlTables().clear();
 				getPlsqlTables().addAll((Collection<? extends XmlPlsqlTable>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
+				setCacheIndex((XmlCacheIndex_2_4)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				setReadOnly((Boolean)newValue);
@@ -3099,6 +3180,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				getPlsqlTables().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
+				setCacheIndex((XmlCacheIndex_2_4)null);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
@@ -3220,6 +3304,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return plsqlRecords != null && !plsqlRecords.isEmpty();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				return plsqlTables != null && !plsqlTables.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
+				return cacheIndex != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
@@ -3388,6 +3474,14 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__PLSQL_RECORDS;
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__PLSQL_TABLES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedSuperclass_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX: return EclipseLinkOrmV2_4Package.XML_MAPPED_SUPERCLASS_24__CACHE_INDEX;
 				default: return -1;
 			}
 		}
@@ -3583,6 +3677,14 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMappedSuperclass_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_MAPPED_SUPERCLASS_24__CACHE_INDEX: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlReadOnly.class)
 		{
 			switch (baseFeatureID)
@@ -3706,6 +3808,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			buildOptimisticLockingTranslator(),
 			buildCacheTranslator(),
 			buildCacheInterceptorTranslator(),
+			buildCacheIndexTranslator(),
 			buildFetchGroupsTranslator(),
 			buildConverterTranslator(),
 			buildTypeConverterTranslator(),
@@ -3781,7 +3884,11 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	protected static Translator buildCacheInterceptorTranslator() {
 		return XmlClassReference.buildTranslator(EclipseLink2_0.CACHE_INTERCEPTOR, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlMappedSuperclass_2_0_CacheInterceptor());
 	}
-	
+
+	protected static Translator buildCacheIndexTranslator() {
+		return XmlCacheIndex.buildTranslator(EclipseLink2_4.CACHE_INDEX, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlMappedSuperclass_2_4_CacheIndex());
+	}
+
 	protected static Translator buildFetchGroupsTranslator() {
 		return XmlFetchGroup.buildTranslator(EclipseLink2_1.FETCH_GROUP, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlFetchGroupContainer_2_1_FetchGroups());
 	}

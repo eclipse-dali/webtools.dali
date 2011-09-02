@@ -54,7 +54,7 @@
 			
 			<public
 				publicId="http://www.eclipse.org/eclipselink/xsds/persistence/orm"
-				uri="schemas/eclipselink_orm_2_3.xsd"/>
+				uri="schemas/eclipselink_orm_2_4.xsd"/>
 			
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_0.xsd"
@@ -83,6 +83,10 @@
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_3.xsd"
 				uri="schemas/eclipselink_orm_2_3.xsd"/>
+			
+			<uri
+				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_4.xsd"
+				uri="schemas/eclipselink_orm_2_4.xsd"/>
 			
 			<public
 				publicId="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
@@ -143,6 +147,10 @@
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_sessions_2.0.xsd"
 				uri="schemas/eclipselink_sessions_2.0.xsd"/>	
+				
+			<uri
+				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_sessions_2.1.xsd"
+				uri="schemas/eclipselink_sessions_2.1.xsd"/>	
 			
 		</catalogContribution>
 		

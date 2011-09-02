@@ -1,9 +1,12 @@
-/**
- * <copyright>
- * </copyright>
- *
- * $Id: XmlMultitenantType.java,v 1.1 2011/07/07 19:27:07 kmoore Exp $
- */
+/*******************************************************************************
+ *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v1.0, which accompanies this distribution
+ *  and is available at http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
 
 import java.util.Arrays;
@@ -14,14 +17,14 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Xml Multitenant Type</b></em>',
+ * A representation of the literals of the enumeration '<em><b>Multitenant Type</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMultitenantType()
+ * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getMultitenantType()
  * @model
  * @generated
  */
-public enum XmlMultitenantType implements Enumerator
+public enum MultitenantType implements Enumerator
 {
 	/**
 	 * The '<em><b>SINGLE TABLE</b></em>' literal object.
@@ -41,7 +44,7 @@ public enum XmlMultitenantType implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	TABLE_PER_TENANT(1, "TABLE_PER_TENANT", "CHANGED_COLUMNS");
+	TABLE_PER_TENANT(1, "TABLE_PER_TENANT", "TABLE_PER_TENANT");
 
 	/**
 	 * The '<em><b>SINGLE TABLE</b></em>' literal value.
@@ -67,44 +70,44 @@ public enum XmlMultitenantType implements Enumerator
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #TABLE_PER_TENANT
-	 * @model literal="CHANGED_COLUMNS"
+	 * @model
 	 * @generated
 	 * @ordered
 	 */
 	public static final int TABLE_PER_TENANT_VALUE = 1;
 
 	/**
-	 * An array of all the '<em><b>Xml Multitenant Type</b></em>' enumerators.
+	 * An array of all the '<em><b>Multitenant Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final XmlMultitenantType[] VALUES_ARRAY =
-		new XmlMultitenantType[]
+	private static final MultitenantType[] VALUES_ARRAY =
+		new MultitenantType[]
 		{
 			SINGLE_TABLE,
 			TABLE_PER_TENANT,
 		};
 
 	/**
-	 * A public read-only list of all the '<em><b>Xml Multitenant Type</b></em>' enumerators.
+	 * A public read-only list of all the '<em><b>Multitenant Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<XmlMultitenantType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<MultitenantType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Xml Multitenant Type</b></em>' literal with the specified literal value.
+	 * Returns the '<em><b>Multitenant Type</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static XmlMultitenantType get(String literal)
+	public static MultitenantType get(String literal)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			XmlMultitenantType result = VALUES_ARRAY[i];
+			MultitenantType result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal))
 			{
 				return result;
@@ -114,16 +117,16 @@ public enum XmlMultitenantType implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Xml Multitenant Type</b></em>' literal with the specified name.
+	 * Returns the '<em><b>Multitenant Type</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static XmlMultitenantType getByName(String name)
+	public static MultitenantType getByName(String name)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			XmlMultitenantType result = VALUES_ARRAY[i];
+			MultitenantType result = VALUES_ARRAY[i];
 			if (result.getName().equals(name))
 			{
 				return result;
@@ -133,12 +136,12 @@ public enum XmlMultitenantType implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Xml Multitenant Type</b></em>' literal with the specified integer value.
+	 * Returns the '<em><b>Multitenant Type</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static XmlMultitenantType get(int value)
+	public static MultitenantType get(int value)
 	{
 		switch (value)
 		{
@@ -175,7 +178,7 @@ public enum XmlMultitenantType implements Enumerator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private XmlMultitenantType(int value, String name, String literal)
+	private MultitenantType(int value, String name, String literal)
 	{
 		this.value = value;
 		this.name = name;

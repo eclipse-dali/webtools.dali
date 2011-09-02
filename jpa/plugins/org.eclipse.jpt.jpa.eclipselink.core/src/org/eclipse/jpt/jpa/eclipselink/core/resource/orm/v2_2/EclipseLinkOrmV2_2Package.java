@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 
 /**
  * <!-- begin-user-doc -->
@@ -419,13 +420,13 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION_22__CASCADE_ON_DELETE = XML_PARTITIONING_GROUP_22_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Non Cacheable</b></em>' attribute.
+	 * The feature id for the '<em><b>Noncacheable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_22__NON_CACHEABLE = XML_PARTITIONING_GROUP_22_FEATURE_COUNT + 1;
+	public static final int XML_ELEMENT_COLLECTION_22__NONCACHEABLE = XML_PARTITIONING_GROUP_22_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Element Collection 22</em>' class.
@@ -1462,13 +1463,13 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	public static final int XML_ONE_TO_MANY_22__CASCADE_ON_DELETE = XML_PARTITIONING_GROUP_22_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Non Cacheable</b></em>' attribute.
+	 * The feature id for the '<em><b>Noncacheable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_22__NON_CACHEABLE = XML_PARTITIONING_GROUP_22_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_MANY_22__NONCACHEABLE = XML_PARTITIONING_GROUP_22_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml One To Many 22</em>' class.
@@ -2122,6 +2123,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		EclipseLinkOrmV2_0Package theEclipseLinkOrmV2_0Package = (EclipseLinkOrmV2_0Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_0Package.eNS_URI) instanceof EclipseLinkOrmV2_0Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_0Package.eNS_URI) : EclipseLinkOrmV2_0Package.eINSTANCE);
 		EclipseLinkOrmV2_1Package theEclipseLinkOrmV2_1Package = (EclipseLinkOrmV2_1Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_1Package.eNS_URI) instanceof EclipseLinkOrmV2_1Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_1Package.eNS_URI) : EclipseLinkOrmV2_1Package.eINSTANCE);
 		EclipseLinkOrmV2_3Package theEclipseLinkOrmV2_3Package = (EclipseLinkOrmV2_3Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_3Package.eNS_URI) instanceof EclipseLinkOrmV2_3Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_3Package.eNS_URI) : EclipseLinkOrmV2_3Package.eINSTANCE);
+		EclipseLinkOrmV2_4Package theEclipseLinkOrmV2_4Package = (EclipseLinkOrmV2_4Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) instanceof EclipseLinkOrmV2_4Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_4Package.eNS_URI) : EclipseLinkOrmV2_4Package.eINSTANCE);
 
 		// Create package meta-data objects
 		theEclipseLinkOrmV2_2Package.createPackageContents();
@@ -2130,6 +2132,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		theEclipseLinkOrmV2_0Package.createPackageContents();
 		theEclipseLinkOrmV2_1Package.createPackageContents();
 		theEclipseLinkOrmV2_3Package.createPackageContents();
+		theEclipseLinkOrmV2_4Package.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmV2_2Package.initializePackageContents();
@@ -2138,6 +2141,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		theEclipseLinkOrmV2_0Package.initializePackageContents();
 		theEclipseLinkOrmV2_1Package.initializePackageContents();
 		theEclipseLinkOrmV2_3Package.initializePackageContents();
+		theEclipseLinkOrmV2_4Package.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmV2_2Package.freeze();
@@ -2314,15 +2318,15 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlElementCollection_2_2#isNonCacheable <em>Non Cacheable</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlElementCollection_2_2#isNoncacheable <em>Noncacheable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Non Cacheable</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlElementCollection_2_2#isNonCacheable()
+	 * @return the meta object for the attribute '<em>Noncacheable</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlElementCollection_2_2#isNoncacheable()
 	 * @see #getXmlElementCollection_2_2()
 	 * @generated
 	 */
-	public EAttribute getXmlElementCollection_2_2_NonCacheable()
+	public EAttribute getXmlElementCollection_2_2_Noncacheable()
 	{
 		return (EAttribute)xmlElementCollection_2_2EClass.getEStructuralFeatures().get(1);
 	}
@@ -2688,15 +2692,15 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToMany_2_2#isNonCacheable <em>Non Cacheable</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToMany_2_2#isNoncacheable <em>Noncacheable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Non Cacheable</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToMany_2_2#isNonCacheable()
+	 * @return the meta object for the attribute '<em>Noncacheable</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToMany_2_2#isNoncacheable()
 	 * @see #getXmlOneToMany_2_2()
 	 * @generated
 	 */
-	public EAttribute getXmlOneToMany_2_2_NonCacheable()
+	public EAttribute getXmlOneToMany_2_2_Noncacheable()
 	{
 		return (EAttribute)xmlOneToMany_2_2EClass.getEStructuralFeatures().get(1);
 	}
@@ -3453,7 +3457,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 
 		xmlElementCollection_2_2EClass = createEClass(XML_ELEMENT_COLLECTION_22);
 		createEAttribute(xmlElementCollection_2_2EClass, XML_ELEMENT_COLLECTION_22__CASCADE_ON_DELETE);
-		createEAttribute(xmlElementCollection_2_2EClass, XML_ELEMENT_COLLECTION_22__NON_CACHEABLE);
+		createEAttribute(xmlElementCollection_2_2EClass, XML_ELEMENT_COLLECTION_22__NONCACHEABLE);
 
 		xmlEmbeddable_2_2EClass = createEClass(XML_EMBEDDABLE_22);
 		createEAttribute(xmlEmbeddable_2_2EClass, XML_EMBEDDABLE_22__PARENT_CLASS);
@@ -3506,7 +3510,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 
 		xmlOneToMany_2_2EClass = createEClass(XML_ONE_TO_MANY_22);
 		createEAttribute(xmlOneToMany_2_2EClass, XML_ONE_TO_MANY_22__CASCADE_ON_DELETE);
-		createEAttribute(xmlOneToMany_2_2EClass, XML_ONE_TO_MANY_22__NON_CACHEABLE);
+		createEAttribute(xmlOneToMany_2_2EClass, XML_ONE_TO_MANY_22__NONCACHEABLE);
 
 		xmlPartitioning_2_2EClass = createEClass(XML_PARTITIONING_22);
 		createEAttribute(xmlPartitioning_2_2EClass, XML_PARTITIONING_22__NAME);
@@ -3618,7 +3622,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 
 		initEClass(xmlElementCollection_2_2EClass, XmlElementCollection_2_2.class, "XmlElementCollection_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlElementCollection_2_2_CascadeOnDelete(), theXMLTypePackage.getBooleanObject(), "cascadeOnDelete", null, 0, 1, XmlElementCollection_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlElementCollection_2_2_NonCacheable(), theXMLTypePackage.getBoolean(), "nonCacheable", null, 0, 1, XmlElementCollection_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlElementCollection_2_2_Noncacheable(), theXMLTypePackage.getBoolean(), "noncacheable", null, 0, 1, XmlElementCollection_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEmbeddable_2_2EClass, XmlEmbeddable_2_2.class, "XmlEmbeddable_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlEmbeddable_2_2_ParentClass(), theXMLTypePackage.getString(), "parentClass", null, 0, 1, XmlEmbeddable_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3671,7 +3675,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 
 		initEClass(xmlOneToMany_2_2EClass, XmlOneToMany_2_2.class, "XmlOneToMany_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlOneToMany_2_2_CascadeOnDelete(), theXMLTypePackage.getBooleanObject(), "cascadeOnDelete", null, 0, 1, XmlOneToMany_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlOneToMany_2_2_NonCacheable(), theXMLTypePackage.getBoolean(), "nonCacheable", null, 0, 1, XmlOneToMany_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlOneToMany_2_2_Noncacheable(), theXMLTypePackage.getBoolean(), "noncacheable", null, 0, 1, XmlOneToMany_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlPartitioning_2_2EClass, XmlPartitioning_2_2.class, "XmlPartitioning_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlPartitioning_2_2_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlPartitioning_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3844,12 +3848,12 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		public static final EAttribute XML_ELEMENT_COLLECTION_22__CASCADE_ON_DELETE = eINSTANCE.getXmlElementCollection_2_2_CascadeOnDelete();
 
 		/**
-		 * The meta object literal for the '<em><b>Non Cacheable</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Noncacheable</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_ELEMENT_COLLECTION_22__NON_CACHEABLE = eINSTANCE.getXmlElementCollection_2_2_NonCacheable();
+		public static final EAttribute XML_ELEMENT_COLLECTION_22__NONCACHEABLE = eINSTANCE.getXmlElementCollection_2_2_Noncacheable();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlEntity_2_2 <em>Xml Entity 22</em>}' class.
@@ -4066,12 +4070,12 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		public static final EAttribute XML_ONE_TO_MANY_22__CASCADE_ON_DELETE = eINSTANCE.getXmlOneToMany_2_2_CascadeOnDelete();
 
 		/**
-		 * The meta object literal for the '<em><b>Non Cacheable</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Noncacheable</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_ONE_TO_MANY_22__NON_CACHEABLE = eINSTANCE.getXmlOneToMany_2_2_NonCacheable();
+		public static final EAttribute XML_ONE_TO_MANY_22__NONCACHEABLE = eINSTANCE.getXmlOneToMany_2_2_Noncacheable();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlPartitioning_2_2 <em>Xml Partitioning 22</em>}' class.

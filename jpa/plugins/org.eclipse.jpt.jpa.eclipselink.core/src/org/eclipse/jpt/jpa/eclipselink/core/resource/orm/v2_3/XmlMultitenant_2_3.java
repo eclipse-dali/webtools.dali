@@ -35,7 +35,7 @@ public interface XmlMultitenant_2_3 extends JpaEObject
 
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType}.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Type</em>' attribute isn't clear,
@@ -43,24 +43,24 @@ public interface XmlMultitenant_2_3 extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Type</em>' attribute.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType
-	 * @see #setType(XmlMultitenantType)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType
+	 * @see #setType(MultitenantType)
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlMultitenant_2_3_Type()
 	 * @model
 	 * @generated
 	 */
-	XmlMultitenantType getType();
+	MultitenantType getType();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3#getType <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Type</em>' attribute.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenantType
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType
 	 * @see #getType()
 	 * @generated
 	 */
-	void setType(XmlMultitenantType value);
+	void setType(MultitenantType value);
 
 	/**
 	 * Returns the value of the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.

@@ -95,8 +95,8 @@ public class EclipseLinkOrmV2_3Factory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
-			case EclipseLinkOrmV2_3Package.XML_MULTITENANT_TYPE:
-				return createXmlMultitenantTypeFromString(eDataType, initialValue);
+			case EclipseLinkOrmV2_3Package.MULTITENANT_TYPE:
+				return createMultitenantTypeFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -112,8 +112,8 @@ public class EclipseLinkOrmV2_3Factory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
-			case EclipseLinkOrmV2_3Package.XML_MULTITENANT_TYPE:
-				return convertXmlMultitenantTypeToString(eDataType, instanceValue);
+			case EclipseLinkOrmV2_3Package.MULTITENANT_TYPE:
+				return convertMultitenantTypeToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -124,9 +124,9 @@ public class EclipseLinkOrmV2_3Factory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlMultitenantType createXmlMultitenantTypeFromString(EDataType eDataType, String initialValue)
+	public MultitenantType createMultitenantTypeFromString(EDataType eDataType, String initialValue)
 	{
-		XmlMultitenantType result = XmlMultitenantType.get(initialValue);
+		MultitenantType result = MultitenantType.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -136,7 +136,7 @@ public class EclipseLinkOrmV2_3Factory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertXmlMultitenantTypeToString(EDataType eDataType, Object instanceValue)
+	public String convertMultitenantTypeToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
 	}

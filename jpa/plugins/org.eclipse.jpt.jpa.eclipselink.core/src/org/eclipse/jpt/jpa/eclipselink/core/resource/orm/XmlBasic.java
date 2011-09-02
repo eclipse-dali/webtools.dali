@@ -35,6 +35,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlBasic_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlBasic_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlIndex_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlBasic_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -58,7 +64,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic implements XmlBasic_1_1, XmlBasic_2_1, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
+public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic implements XmlBasic_1_1, XmlBasic_2_1, XmlBasic_2_2, XmlBasic_2_4, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
 {
 	/**
 	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
@@ -134,6 +140,24 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @ordered
 	 */
 	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
+	/**
+	 * The cached value of the '{@link #getIndex() <em>Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlIndex_2_2 index;
+	/**
+	 * The cached value of the '{@link #getCacheIndex() <em>Cache Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCacheIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlCacheIndex_2_4 cacheIndex;
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -627,6 +651,126 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Index</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Index</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Index</em>' containment reference.
+	 * @see #setIndex(XmlIndex_2_2)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_2_2_Index()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlIndex_2_2 getIndex()
+	{
+		return index;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetIndex(XmlIndex_2_2 newIndex, NotificationChain msgs)
+	{
+		XmlIndex_2_2 oldIndex = index;
+		index = newIndex;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__INDEX, oldIndex, newIndex);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic#getIndex <em>Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Index</em>' containment reference.
+	 * @see #getIndex()
+	 * @generated
+	 */
+	public void setIndex(XmlIndex_2_2 newIndex)
+	{
+		if (newIndex != index)
+		{
+			NotificationChain msgs = null;
+			if (index != null)
+				msgs = ((InternalEObject)index).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__INDEX, null, msgs);
+			if (newIndex != null)
+				msgs = ((InternalEObject)newIndex).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__INDEX, null, msgs);
+			msgs = basicSetIndex(newIndex, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__INDEX, newIndex, newIndex));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Cache Index</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cache Index</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cache Index</em>' containment reference.
+	 * @see #setCacheIndex(XmlCacheIndex_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_2_4_CacheIndex()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlCacheIndex_2_4 getCacheIndex()
+	{
+		return cacheIndex;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetCacheIndex(XmlCacheIndex_2_4 newCacheIndex, NotificationChain msgs)
+	{
+		XmlCacheIndex_2_4 oldCacheIndex = cacheIndex;
+		cacheIndex = newCacheIndex;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX, oldCacheIndex, newCacheIndex);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic#getCacheIndex <em>Cache Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cache Index</em>' containment reference.
+	 * @see #getCacheIndex()
+	 * @generated
+	 */
+	public void setCacheIndex(XmlCacheIndex_2_4 newCacheIndex)
+	{
+		if (newCacheIndex != cacheIndex)
+		{
+			NotificationChain msgs = null;
+			if (cacheIndex != null)
+				msgs = ((InternalEObject)cacheIndex).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX, null, msgs);
+			if (newCacheIndex != null)
+				msgs = ((InternalEObject)newCacheIndex).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX, null, msgs);
+			msgs = basicSetCacheIndex(newCacheIndex, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX, newCacheIndex, newCacheIndex));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -967,6 +1111,10 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return basicSetGeneratedValue(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
 				return basicSetReturnInsert(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
+				return basicSetIndex(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
+				return basicSetCacheIndex(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__PROPERTIES:
@@ -1005,6 +1153,10 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return getReturnUpdate();
 			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
 				return getAttributeType();
+			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
+				return getIndex();
+			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
+				return getCacheIndex();
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_BASIC__PROPERTIES:
@@ -1053,6 +1205,12 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
 				setAttributeType((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
+				setIndex((XmlIndex_2_2)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
+				setCacheIndex((XmlCacheIndex_2_4)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
@@ -1111,6 +1269,12 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
 				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
+				setIndex((XmlIndex_2_2)null);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
+				setCacheIndex((XmlCacheIndex_2_4)null);
+				return;
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
@@ -1161,6 +1325,10 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return RETURN_UPDATE_EDEFAULT == null ? returnUpdate != null : !RETURN_UPDATE_EDEFAULT.equals(returnUpdate);
 			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
 				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
+			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
+				return index != null;
+			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
+				return cacheIndex != null;
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_BASIC__PROPERTIES:
@@ -1213,6 +1381,22 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT: return EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_INSERT;
 				case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE: return EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_UPDATE;
 				case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_BASIC_21__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_2_2.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BASIC__INDEX: return EclipseLinkOrmV2_2Package.XML_BASIC_22__INDEX;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX: return EclipseLinkOrmV2_4Package.XML_BASIC_24__CACHE_INDEX;
 				default: return -1;
 			}
 		}
@@ -1301,6 +1485,22 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				case EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_INSERT: return EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT;
 				case EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_UPDATE: return EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE;
 				case EclipseLinkOrmV2_1Package.XML_BASIC_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_2_2.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_2Package.XML_BASIC_22__INDEX: return EclipseLinkOrmPackage.XML_BASIC__INDEX;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_BASIC_24__CACHE_INDEX: return EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX;
 				default: return -1;
 			}
 		}
@@ -1408,6 +1608,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			buildAttributeTypeTranslator(),
 			buildColumnTranslator(), 
 			buildIndexTranslator(), 
+			buildCacheIndexTranslator(), 
 			buildGeneratedValueTranslator(), 
 			buildLobTranslator(),
 			buildTemporalTranslator(),
@@ -1431,6 +1632,10 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 
 	protected static Translator buildIndexTranslator() {
 		return XmlIndex.buildTranslator(EclipseLink2_2.INDEX, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlBasic_2_2_Index());
+	}
+
+	protected static Translator buildCacheIndexTranslator() {
+		return XmlCacheIndex.buildTranslator(EclipseLink2_4.CACHE_INDEX, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlBasic_2_4_CacheIndex());
 	}
 	
 	protected static Translator buildGeneratedValueTranslator() {
