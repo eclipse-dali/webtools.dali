@@ -25,6 +25,8 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 
 public class JPAEditorConstants {
 	
+	public static final String HEADER_PREFIX_DIRTY = "* ";	//$NON-NLS-1$
+	
 	public static Hashtable<String, String> PRIMITIVE_TO_WRAPPER = new Hashtable<String,String>();
 	
 	public static HashSet<String> WRAPPER_SIMPLE_NAMES = new HashSet<String>();

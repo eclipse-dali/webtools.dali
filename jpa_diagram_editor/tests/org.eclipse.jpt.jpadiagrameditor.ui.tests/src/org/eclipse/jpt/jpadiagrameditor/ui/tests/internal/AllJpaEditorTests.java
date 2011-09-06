@@ -30,6 +30,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.modelintegration.util.
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.preferences.JPAEditorPreferenceInitializerTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.preferences.JPAEditorPreferencesPageTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.provider.JPAEditorToolBehaviorProviderTest;
+import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.util.JPAEditorUtilTest;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.util.JPASolverTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -55,7 +56,7 @@ import org.junit.runners.Suite.SuiteClasses;
 				DirectEditAttributeFeatureTest.class,
 				EditorTest.class,	
 				JPAEditorToolBehaviorProviderTest.class,
-//				JPAEditorUtilTest.class,
+				JPAEditorUtilTest.class,
 				JPASolverTest.class,
 //				OpenMiniatureViewFeatureTest.class,
 //				RefactorAttributeTypeFeatureTest.class,

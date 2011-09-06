@@ -420,7 +420,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		headerTextString = JPAEditorUtil.returnSimpleName(headerTextString); 
 		try {
 			if (cu.hasUnsavedChanges()) {
-				headerTextString = "* " + headerTextString;		//$NON-NLS-1$
+				headerTextString = JPAEditorConstants.HEADER_PREFIX_DIRTY + headerTextString;
 			}
 		} catch (JavaModelException e) { 
 			JPADiagramEditorPlugin.logError("Cannot check compilation unit for unsaved changes", e);  //$NON-NLS-1$		 
