@@ -217,6 +217,11 @@ public abstract class AbstractJavaVersionMapping
 		return VersionAnnotation.ANNOTATION_NAME;
 	}
 
+	@Override
+	public boolean isOverridableAttributeMapping() {
+		return true;
+	}
+
 
 	// ********** JavaColumn.Owner implementation **********
 
