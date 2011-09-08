@@ -1673,12 +1673,14 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
 		OrmAttributeOverrideContainer overrideContainer = entity.getAttributeOverrideContainer();
 		
-		assertEquals(4, overrideContainer.getVirtualOverridesSize());
+		assertEquals(5, overrideContainer.getVirtualOverridesSize());
 		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = overrideContainer.getVirtualOverrides().iterator();
 		OrmVirtualAttributeOverride virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("foo", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("basic", virtualOverride.getName());
+		virtualOverride = virtualAttributeOverrides.next();
+		assertEquals("version", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
@@ -1696,20 +1698,24 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		assertEquals(3, overrideContainer.getVirtualOverridesSize());
+		assertEquals(4, overrideContainer.getVirtualOverridesSize());
 		virtualAttributeOverrides = overrideContainer.getVirtualOverrides().iterator();
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("basic", virtualOverride.getName());
+		virtualOverride = virtualAttributeOverrides.next();
+		assertEquals("version", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("name", virtualOverride.getName());
 		
 		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals(3, overrideContainer.getVirtualOverridesSize());
+		assertEquals(4, overrideContainer.getVirtualOverridesSize());
 		virtualAttributeOverrides = overrideContainer.getVirtualOverrides().iterator();
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("basic", virtualOverride.getName());
+		virtualOverride = virtualAttributeOverrides.next();
+		assertEquals("version", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
@@ -1730,7 +1736,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		javaColumn.setSpecifiedPrecision(Integer.valueOf(8));
 		javaColumn.setSpecifiedScale(Integer.valueOf(9));
 		
-		assertEquals(4, overrideContainer.getVirtualOverridesSize());
+		assertEquals(5, overrideContainer.getVirtualOverridesSize());
 		virtualAttributeOverrides = overrideContainer.getVirtualOverrides().iterator();
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("foo", virtualOverride.getName());
@@ -1751,6 +1757,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(virtualOverride.getColumn().getSpecifiedName());
 		assertEquals("basic", virtualOverride.getColumn().getDefaultName());
 		virtualOverride = virtualAttributeOverrides.next();
+		assertEquals("version", virtualOverride.getName());
+		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualOverride.getName());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("name", virtualOverride.getName());
@@ -1770,7 +1778,7 @@ public class OrmEntityTests extends ContextModelTestCase
 
 		
 		
-		assertEquals(4, overrideContainer.getVirtualOverridesSize());
+		assertEquals(5, overrideContainer.getVirtualOverridesSize());
 		virtualAttributeOverrides = overrideContainer.getVirtualOverrides().iterator();
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("foo", virtualOverride.getName());
@@ -1798,6 +1806,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(6, virtualOverride.getColumn().getPrecision());
 		assertEquals(7, virtualOverride.getColumn().getScale());
 		virtualOverride = virtualAttributeOverrides.next();
+		assertEquals("version", virtualOverride.getName());
+		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualOverride.getName());
 	}
 	
@@ -1812,12 +1822,14 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmAttributeOverrideContainer overrideContainer = entity.getAttributeOverrideContainer();
 		
 		persistentType.getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
-		assertEquals(4, overrideContainer.getVirtualOverridesSize());
+		assertEquals(5, overrideContainer.getVirtualOverridesSize());
 		ListIterator<OrmVirtualAttributeOverride> virtualAttributeOverrides = overrideContainer.getVirtualOverrides().iterator();
 		OrmVirtualAttributeOverride attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("foo", attributeOverride.getName());
 		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("basic", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("version", attributeOverride.getName());
 		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", attributeOverride.getName());
 		attributeOverride = virtualAttributeOverrides.next();
@@ -1921,6 +1933,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		Iterator<String> overridableAttributes = entity.getAllOverridableAttributeNames().iterator();
 		assertEquals("foo", overridableAttributes.next());
 		assertEquals("basic", overridableAttributes.next());
+		assertEquals("version", overridableAttributes.next());
 		assertEquals("id", overridableAttributes.next());
 		assertEquals("name", overridableAttributes.next());
 		assertFalse(overridableAttributes.hasNext());
