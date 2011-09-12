@@ -185,7 +185,7 @@ public class GraphicsUpdater {
 		if (ga == null)
 			return;
 		final Text txt = (Text)ga.getGraphicsAlgorithmChildren().get(0);
-		if (!txt.getValue().equals(newHeader)) {
+		if (!JPAEditorUtil.areHeadersEqual(txt.getValue(), newHeader)) {
 			TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(txt);
 			RecordingCommand rc = new RecordingCommand(ted) {
 				protected void doExecute() {

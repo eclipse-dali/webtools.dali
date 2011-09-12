@@ -1467,5 +1467,20 @@ public class JPAEditorUtil {
 		return isAdded;
 	}
 	
+	public static String cutOffStringPrefix(String s, String prefix) {
+		if (s.startsWith(prefix)) 
+			return s.substring(prefix.length());
+		return s;
+	}
+	
+	public static String cutOffHeaderDirtyPrefix(String header) {
+		return cutOffStringPrefix(header, JPAEditorConstants.HEADER_PREFIX_DIRTY);
+	}	
+	
+	public static boolean areHeadersEqual(String h1, String h2) {
+		h1 = cutOffHeaderDirtyPrefix(h1);
+		h2 = cutOffHeaderDirtyPrefix(h2);
+		return h1.equals(h2);
+	}
 	
 }
