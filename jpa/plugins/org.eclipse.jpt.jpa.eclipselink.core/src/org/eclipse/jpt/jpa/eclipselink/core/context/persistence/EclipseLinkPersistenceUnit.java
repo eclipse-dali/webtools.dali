@@ -416,7 +416,10 @@ public class EclipseLinkPersistenceUnit
 		return new TransformationIterable<TypeMapping, Iterable<EclipseLinkConverter>>(this.getAllJavaTypeMappingsUnique()) {
 					@Override
 					protected Iterable<EclipseLinkConverter> transform(TypeMapping typeMapping) {
-						return ((EclipseLinkTypeMapping) typeMapping).getConverters();
+						// Java "null" type mappings are not EclipseLink mappings
+						return (typeMapping instanceof EclipseLinkTypeMapping) ?
+								((EclipseLinkTypeMapping) typeMapping).getConverters() :
+								EmptyIterable.<EclipseLinkConverter>instance();
 					}
 				};
 	}
