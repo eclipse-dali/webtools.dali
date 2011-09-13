@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -72,6 +73,9 @@ public class GenericJavaPersistentClass
 	
 	protected JaxbClass superClass;
 	
+	protected boolean hasRootElementInHierarchy_loaded = false;
+	protected boolean hasRootElementInHierarchy = false;
+	
 	protected XmlAccessType defaultAccessType;
 	protected XmlAccessType specifiedAccessType;
 	
@@ -122,14 +126,14 @@ public class GenericJavaPersistentClass
 	@Override
 	public void update() {
 		super.update();
-		super.update();
-		this.setSuperClass(this.buildSuperClass());
-		this.setDefaultAccessType(this.buildDefaultAccessType());
-		this.setDefaultAccessOrder(this.buildDefaultAccessOrder());
+		setSuperClass(buildSuperClass());
+		this.hasRootElementInHierarchy_loaded = false; // triggers that the value must be recalculated on next request
+		setDefaultAccessType(buildDefaultAccessType());
+		setDefaultAccessOrder(buildDefaultAccessOrder());
 		this.xmlAdaptable.update();
 		updateXmlSeeAlso();
 		this.attributesContainer.update();
-		this.updateInheritedAttributes();
+		updateInheritedAttributes();
 	}
 	
 	
@@ -211,6 +215,33 @@ public class GenericJavaPersistentClass
 	
 	protected JaxbClass getClass(String fullyQualifiedTypeName) {
 		return this.getParent().getClass(fullyQualifiedTypeName);
+	}
+	
+	
+	// ***** subClasses *****
+	
+	public boolean hasRootElementInHierarchy() {
+		if (! this.hasRootElementInHierarchy_loaded) {
+			this.hasRootElementInHierarchy = calculateHasRootElementInHierarchy();
+			this.hasRootElementInHierarchy_loaded = true;
+		}
+		return this.hasRootElementInHierarchy;
+	}
+	
+	protected boolean calculateHasRootElementInHierarchy() {
+		if (this.getRootElement() != null) {
+			return true;
+		}
+		
+		for (JaxbPersistentClass persistentClass : getJaxbProject().getContextRoot().getPersistentClasses()) {
+			if (persistentClass.getRootElement() != null
+					&& JDTTools.typeIsSubType(getJaxbProject().getJavaProject(),
+							persistentClass.getFullyQualifiedName(), getFullyQualifiedName())) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	

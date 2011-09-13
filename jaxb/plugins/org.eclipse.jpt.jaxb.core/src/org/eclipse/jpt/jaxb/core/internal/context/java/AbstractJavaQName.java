@@ -29,15 +29,18 @@ public abstract class AbstractJavaQName
 		extends AbstractJavaContextNode 
 		implements JaxbQName {
 	
+	protected final AnnotationProxy proxy;
+	
 	protected String specifiedNamespace;
 	
 	protected String specifiedName;
 	
 	
-	public AbstractJavaQName(JavaContextNode parent) {
+	public AbstractJavaQName(JavaContextNode parent, AnnotationProxy proxy) {
 		super(parent);
-		this.specifiedNamespace = buildSpecifiedNamespace();
-		this.specifiedName = buildSpecifiedName();
+		this.proxy = proxy;
+		this.specifiedNamespace = getAnnotationNamespace();
+		this.specifiedName = getAnnotationName();
 	}
 	
 	
@@ -46,13 +49,11 @@ public abstract class AbstractJavaQName
 		return (JavaContextNode) super.getParent();
 	}
 	
-	protected abstract QNameAnnotation getAnnotation(boolean createIfNull);
-	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		setSpecifiedNamespace_(buildSpecifiedNamespace());
-		setSpecifiedName_(buildSpecifiedName());
+		setSpecifiedNamespace_(getAnnotationNamespace());
+		setSpecifiedName_(getAnnotationName());
 	}
 	
 	
@@ -70,8 +71,8 @@ public abstract class AbstractJavaQName
 	}
 	
 	public void setSpecifiedNamespace(String newSpecifiedNamespace) {
-		getAnnotation(true).setNamespace(newSpecifiedNamespace);
-		this.setSpecifiedNamespace_(newSpecifiedNamespace);
+		setAnnotationNamespace(newSpecifiedNamespace);
+		setSpecifiedNamespace_(newSpecifiedNamespace);
 	}
 	
 	protected void setSpecifiedNamespace_(String newSpecifiedNamespace) {
@@ -80,9 +81,12 @@ public abstract class AbstractJavaQName
 		firePropertyChanged(SPECIFIED_NAMESPACE_PROPERTY, oldNamespace, newSpecifiedNamespace);
 	}
 	
-	protected String buildSpecifiedNamespace() {
-		QNameAnnotation annotation = getAnnotation(false);
-		return annotation == null ? null : annotation.getNamespace();
+	protected void setAnnotationNamespace(String newNamespace) {
+		this.proxy.setNamespace(newNamespace);
+	}
+	
+	protected String getAnnotationNamespace() {
+		return this.proxy.getNamespace();
 	}
 	
 	
@@ -99,7 +103,7 @@ public abstract class AbstractJavaQName
 	}
 	
 	public void setSpecifiedName(String newSpecifiedName) {
-		getAnnotation(true).setName(newSpecifiedName);
+		setAnnotationName(newSpecifiedName);
 		setSpecifiedName_(newSpecifiedName);
 	}
 	
@@ -109,9 +113,12 @@ public abstract class AbstractJavaQName
 		firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, newSpecifiedName);
 	}
 	
-	protected String buildSpecifiedName() {
-		QNameAnnotation annotation = getAnnotation(false);
-		return annotation == null ? null : annotation.getName();
+	protected void setAnnotationName(String newName) {
+		this.proxy.setName(newName);
+	}
+	
+	protected String getAnnotationName() {
+		return this.proxy.getName();
 	}
 	
 	
@@ -125,28 +132,18 @@ public abstract class AbstractJavaQName
 			return result;
 		}
 		
-		if (namespaceTouches(pos, astRoot)) {
+		if (this.proxy.namespaceTouches(pos, astRoot)) {
 			return getNamespaceProposals(filter);
 		}
 		
-		if (nameTouches(pos, astRoot)) {
+		if (this.proxy.nameTouches(pos, astRoot)) {
 			return getNameProposals(filter);
 		}
 		
 		return EmptyIterable.instance();
 	}
 	
-	protected boolean namespaceTouches(int pos, CompilationUnit astRoot) {
-		QNameAnnotation annotation = getAnnotation(false);
-		return (annotation == null) ? false : annotation.namespaceTouches(pos, astRoot);
-	}
-	
 	protected abstract Iterable<String> getNamespaceProposals(Filter<String> filter);
-	
-	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
-		QNameAnnotation annotation = getAnnotation(false);
-		return (annotation == null) ? false : annotation.nameTouches(pos, astRoot);
-	}
 	
 	protected abstract Iterable<String> getNameProposals(Filter<String> filter);
 	
@@ -158,18 +155,16 @@ public abstract class AbstractJavaQName
 		return getParent().getValidationTextRange(astRoot);
 	}
 	
+	protected TextRange getTextRange(TextRange textRange, CompilationUnit astRoot) {
+		return (textRange != null) ? textRange : getParent().getValidationTextRange(astRoot);
+	}
+	
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
-		QNameAnnotation annotation = getAnnotation(false);
-		return (annotation == null) ? null : getTextRange(annotation.getNamespaceTextRange(astRoot), astRoot);
+		return getTextRange(this.proxy.getNamespaceTextRange(astRoot), astRoot);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		QNameAnnotation annotation = getAnnotation(false);
-		return (annotation == null) ? null : getTextRange(annotation.getNameTextRange(astRoot), astRoot);
-	}
-	
-	protected TextRange getTextRange(TextRange textRange, CompilationUnit astRoot) {
-		return (textRange != null) ? textRange : getParent().getValidationTextRange(astRoot);
+		return getTextRange(this.proxy.getNameTextRange(astRoot), astRoot);
 	}
 	
 	/**
@@ -211,6 +206,74 @@ public abstract class AbstractJavaQName
 				JaxbValidationMessages.QNAME__UNRESOLVED_COMPONENT,
 				new String[] { getReferencedComponentTypeDescription(), getNamespace(), getName() },
 				this,
-				getValidationTextRange(astRoot));
+				getNameTextRange(astRoot));
+	}
+	
+	
+	public interface AnnotationProxy {
+		
+		String getNamespace();
+		
+		void setNamespace(String namespace);
+		
+		boolean namespaceTouches(int pos, CompilationUnit astRoot);
+		
+		TextRange getNamespaceTextRange(CompilationUnit astRoot);
+		
+		String getName();
+		
+		void setName(String name);
+		
+		boolean nameTouches(int pos, CompilationUnit astRoot);
+		
+		TextRange getNameTextRange(CompilationUnit astRoot);
+	}
+	
+	
+	/**
+	 * represents a {@link QNameAnnotation}
+	 */
+	public static abstract class AbstractQNameAnnotationProxy
+			implements AnnotationProxy {
+		
+		protected abstract QNameAnnotation getAnnotation(boolean createIfNull);
+		
+		public String getNamespace() {
+			QNameAnnotation annotation = getAnnotation(false);
+			return annotation == null ? null : annotation.getNamespace();
+		}
+		
+		public void setNamespace(String newSpecifiedNamespace) {
+			getAnnotation(true).setNamespace(newSpecifiedNamespace);
+		}
+		
+		public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+			QNameAnnotation annotation = getAnnotation(false);
+			return (annotation == null) ? false : annotation.namespaceTouches(pos, astRoot);
+		}
+		
+		public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
+			QNameAnnotation annotation = getAnnotation(false);
+			return (annotation == null) ? null : annotation.getNamespaceTextRange(astRoot);
+		}
+			
+		public String getName() {
+			QNameAnnotation annotation = getAnnotation(false);
+			return annotation == null ? null : annotation.getName();
+		}
+		
+		public void setName(String newSpecifiedName) {
+			getAnnotation(true).setName(newSpecifiedName);
+		}
+		
+		public boolean nameTouches(int pos, CompilationUnit astRoot) {
+			QNameAnnotation annotation = getAnnotation(false);
+			return (annotation == null) ? false : annotation.nameTouches(pos, astRoot);
+		}
+		
+		public TextRange getNameTextRange(CompilationUnit astRoot) {
+			QNameAnnotation annotation = getAnnotation(false);
+			return (annotation == null) ? null : annotation.getNameTextRange(astRoot);
+		}
 	}
 }

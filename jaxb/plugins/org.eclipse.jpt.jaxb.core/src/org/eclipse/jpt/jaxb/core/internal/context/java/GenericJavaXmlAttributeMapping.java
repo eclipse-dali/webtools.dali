@@ -152,23 +152,13 @@ public class GenericJavaXmlAttributeMapping
 			extends AbstractJavaQName {
 		
 		protected XmlAttributeQName(JavaContextNode parent) {
-			super(parent);
+			super(parent, new QNameAnnotationProxy());
 		}
 		
 		
 		@Override
 		public String getReferencedComponentTypeDescription() {
 			return JptJaxbCoreMessages.XML_ATTRIBUTE_DESC;
-		}
-		
-		@Override
-		protected QNameAnnotation getAnnotation(boolean createIfNull) {
-			if (createIfNull) {
-				return GenericJavaXmlAttributeMapping.this.getOrCreateAnnotation();
-			}
-			else {
-				return GenericJavaXmlAttributeMapping.this.getAnnotation();
-			}
 		}
 		
 		@Override
@@ -201,6 +191,21 @@ public class GenericJavaXmlAttributeMapping
 				if (type.getAttribute(getNamespace(), getName()) == null) {
 					messages.add(getUnresolveSchemaComponentMessage(astRoot));
 				}
+			}
+		}
+	}
+	
+	
+	protected class QNameAnnotationProxy 
+			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+		
+		@Override
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
+			if (createIfNull) {
+				return GenericJavaXmlAttributeMapping.this.getOrCreateAnnotation();
+			}
+			else {
+				return GenericJavaXmlAttributeMapping.this.getAnnotation();
 			}
 		}
 	}

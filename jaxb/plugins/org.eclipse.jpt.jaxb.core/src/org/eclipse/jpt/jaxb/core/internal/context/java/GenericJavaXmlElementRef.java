@@ -194,7 +194,14 @@ public class GenericJavaXmlElementRef
 	
 	public Iterable<String> getDirectlyReferencedTypeNames() {
 		// only return the specified type - the default type should already be included
-		return (this.specifiedType == null) ? EmptyIterable.<String>instance() : new SingleElementIterable(getFullyQualifiedType());
+		if (this.specifiedType != null) {
+			String fqType = getFullyQualifiedType();
+			if (! JAXB.JAXB_ELEMENT.equals(fqType)) {
+				return new SingleElementIterable(fqType);
+			}
+		}
+		
+		return EmptyIterable.instance();
 	}
 	
 	
@@ -241,7 +248,7 @@ public class GenericJavaXmlElementRef
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE,
+							JaxbValidationMessages.XML_ELEMENT_REF__UNSPECIFIED_TYPE,
 							this,
 							getTypeTextRange(astRoot)));
 		}
@@ -253,11 +260,23 @@ public class GenericJavaXmlElementRef
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
+								JaxbValidationMessages.XML_ELEMENT_REF__ILLEGAL_TYPE,
 								new String[] { attributeBaseType },
 								this,
 								getTypeTextRange(astRoot)));
 								
+			}
+			
+			// if type is a persistent class, check that it or a subclass has a root element specified
+			JaxbPersistentClass persistentClass = getJaxbProject().getContextRoot().getPersistentClass(fqType);
+			if (persistentClass != null && ! persistentClass.hasRootElementInHierarchy()) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.XML_ELEMENT_REF__NO_ROOT_ELEMENT,
+								new String[] { attributeBaseType },
+								this,
+								getTypeTextRange(astRoot)));
 			}
 		}
 	}
@@ -267,13 +286,9 @@ public class GenericJavaXmlElementRef
 			extends AbstractJavaElementQName {
 		
 		protected XmlElementRefQName(JavaContextNode parent) {
-			super(parent);
+			super(parent, new QNameAnnotationProxy());
 		}
 		
-		@Override
-		protected QNameAnnotation getAnnotation(boolean createIfNull) {
-			return GenericJavaXmlElementRef.this.getAnnotation();
-		}
 		
 		@Override
 		protected JaxbPersistentAttribute getPersistentAttribute() {
@@ -354,8 +369,8 @@ public class GenericJavaXmlElementRef
 			}
 			
 			for (JaxbElementFactoryMethod elementDecl : registry.getElementFactoryMethods()) {
-				if (Tools.valuesAreEqual(getName(), elementDecl.getElementName())
-						&& Tools.valuesAreEqual(getNamespace(), elementDecl.getNamespace())) {
+				if (Tools.valuesAreEqual(getName(), elementDecl.getQName().getName())
+						&& Tools.valuesAreEqual(getNamespace(), elementDecl.getQName().getNamespace())) {
 					return;
 				}
 			}
@@ -367,6 +382,16 @@ public class GenericJavaXmlElementRef
 							this,
 							getValidationTextRange(astRoot)));
 							
+		}
+	}
+	
+	
+	protected class QNameAnnotationProxy 
+			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+		
+		@Override
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
+			return GenericJavaXmlElementRef.this.getAnnotation();
 		}
 	}
 	

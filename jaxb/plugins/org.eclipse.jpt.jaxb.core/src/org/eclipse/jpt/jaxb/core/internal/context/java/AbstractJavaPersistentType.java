@@ -334,15 +334,9 @@ public abstract class AbstractJavaPersistentType
 			extends AbstractJavaQName {
 		
 		protected XmlTypeQName(JavaContextNode parent) {
-			super(parent);
+			super(parent, new QNameAnnotationProxy());
 		}
 		
-		
-		@Override
-		protected QNameAnnotation getAnnotation(boolean createIfNull) {
-			// never null
-			return AbstractJavaPersistentType.this.getXmlTypeAnnotation();
-		}
 		
 		@Override
 		public String getDefaultNamespace() {
@@ -410,6 +404,16 @@ public abstract class AbstractJavaPersistentType
 					}
 				}
 			}
+		}
+	}
+		
+		
+	protected class QNameAnnotationProxy 
+			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+		
+		@Override
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
+			return AbstractJavaPersistentType.this.getXmlTypeAnnotation();
 		}
 	}
 	

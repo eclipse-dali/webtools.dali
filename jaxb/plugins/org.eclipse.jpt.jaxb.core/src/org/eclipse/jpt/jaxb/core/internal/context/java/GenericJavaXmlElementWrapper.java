@@ -213,15 +213,9 @@ public class GenericJavaXmlElementWrapper
 			extends AbstractJavaQName {
 		
 		protected XmlElementQName(JavaContextNode parent) {
-			super(parent);
+			super(parent, new QNameAnnotationProxy());
 		}
 		
-		
-		@Override
-		protected QNameAnnotation getAnnotation(boolean createIfNull) {
-			// never null
-			return GenericJavaXmlElementWrapper.this.annotation;
-		}
 		
 		@Override
 		public String getDefaultName() {
@@ -261,6 +255,16 @@ public class GenericJavaXmlElementWrapper
 			if (type.getElement(getNamespace(), getName()) == null) {
 				messages.add(getUnresolveSchemaComponentMessage(astRoot));
 			}
+		}
+	}
+	
+	
+	protected class QNameAnnotationProxy 
+			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+		
+		@Override
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
+			return GenericJavaXmlElementWrapper.this.annotation;
 		}
 	}
 }

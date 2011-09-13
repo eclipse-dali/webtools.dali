@@ -72,6 +72,9 @@ public interface JaxbPersistentClass
 	 * Return true if 1 or more attributes include the @XmlId annotation
 	 */
 	boolean containsXmlId();
-
-
+	
+	/**
+	 * Return true if this class or a subclass has a root element defined
+	 */
+	boolean hasRootElementInHierarchy();
 }

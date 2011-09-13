@@ -138,15 +138,9 @@ public abstract class GenericJavaXmlSchemaType
 			extends AbstractJavaQName {
 		
 		protected XmlSchemaTypeQName(JavaContextNode parent) {
-			super(parent);
+			super(parent, new QNameAnnotationProxy());
 		}
 		
-		
-		@Override
-		protected QNameAnnotation getAnnotation(boolean createIfNull) {
-			// never null
-			return GenericJavaXmlSchemaType.this.annotation;
-		}
 		
 		@Override
 		protected String getReferencedComponentTypeDescription() {
@@ -196,6 +190,16 @@ public abstract class GenericJavaXmlSchemaType
 					}
 				}
 			}
+		}
+	}
+	
+	
+	protected class QNameAnnotationProxy 
+			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+		
+		@Override
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
+			return GenericJavaXmlSchemaType.this.annotation;
 		}
 	}
 }

@@ -24,29 +24,62 @@ package org.eclipse.jpt.jaxb.core.context;
  */
 public interface XmlAnyElementMapping
 		extends JaxbAttributeMapping, XmlAdaptable {	
-
-
+	
+	// ***** lax *****
+	
 	boolean isLax();
-	boolean isDefaultLax();
-		boolean DEFAULT_LAX = false;
+	
+	String SPECIFIED_LAX_PROPERTY = "specifiedLax"; //$NON-NLS-1$
+	
 	Boolean getSpecifiedLax();
+	
 	void setSpecifiedLax(Boolean specifiedLax);
-		String SPECIFIED_LAX_PROPERTY = "specifiedLax"; //$NON-NLS-1$
-
-	/**************** value *****************/
-
+	
+	boolean isDefaultLax();
+	
+	boolean DEFAULT_LAX = false;
+	
+	
+	// ***** value *****
+	
 	String getValue();
-	String getDefaultValue();
-		String DEFAULT_TYPE_PROPERTY = "defaultValue"; //$NON-NLS-1$
+	
+	String SPECIFIED_VALUE_PROPERTY = "specifiedValue"; //$NON-NLS-1$
+	
 	String getSpecifiedValue();
+	
 	void setSpecifiedValue(String value);
-		String SPECIFIED_VALUE_PROPERTY = "specifiedValue"; //$NON-NLS-1$
-		String DEFAULT_VALUE = "javax.xml.bind.annotation.W3CDomHandler"; //$NON-NLS-1$
-
-	/********** XmlMixed **********/
+	
+	String DEFAULT_TYPE_PROPERTY = "defaultValue"; //$NON-NLS-1$
+	
+	String getDefaultValue();
+	
+	String DEFAULT_VALUE = "javax.xml.bind.annotation.W3CDomHandler"; //$NON-NLS-1$
+	
+	
+	// ***** XmlElementRefs *****
+	
+	XmlElementRefs getXmlElementRefs();
+	
+	
+	// ***** XmlElementWrapper *****
+	
+	String XML_ELEMENT_WRAPPER_PROPERTY = "xmlElementWrapper"; //$NON-NLS-1$
+	
+	XmlElementWrapper getXmlElementWrapper();
+	
+	XmlElementWrapper addXmlElementWrapper();
+	
+	void removeXmlElementWrapper();
+	
+	
+	// ***** XmlMixed *****
+	
+	String XML_MIXED_PROPERTY = "xmlMixed"; //$NON-NLS-1$
+	
 	XmlMixed getXmlMixed();
+	
 	XmlMixed addXmlMixed();
-	void removeXmlMixed();
-		String XML_MIXED_PROPERTY = "xmlMixed"; //$NON-NLS-1$
-
+	
+	void removeXmlMixed();	
 }

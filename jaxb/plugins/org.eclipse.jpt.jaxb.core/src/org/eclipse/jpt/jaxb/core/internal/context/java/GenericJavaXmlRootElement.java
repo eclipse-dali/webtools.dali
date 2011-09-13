@@ -124,15 +124,9 @@ public class GenericJavaXmlRootElement
 			extends AbstractJavaQName {
 		
 		protected XmlRootElementQName(JavaContextNode parent) {
-			super(parent);
+			super(parent, new QNameAnnotationProxy());
 		}
 		
-		
-		@Override
-		protected QNameAnnotation getAnnotation(boolean createIfNull) {
-			// never null
-			return GenericJavaXmlRootElement.this.annotation;
-		}
 		
 		@Override
 		public String getDefaultNamespace() {
@@ -195,6 +189,16 @@ public class GenericJavaXmlRootElement
 					}
 				}
 			}
+		}
+	}
+	
+	
+	protected class QNameAnnotationProxy 
+			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+		
+		@Override
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
+			return GenericJavaXmlRootElement.this.annotation;
 		}
 	}
 }

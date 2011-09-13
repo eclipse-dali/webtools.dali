@@ -52,7 +52,7 @@ public interface JaxbQName
 	
 	String getSpecifiedName();
 	
-	void setSpecifiedName(String name);	
+	void setSpecifiedName(String name);
 	
 	
 	// ***** validation *****

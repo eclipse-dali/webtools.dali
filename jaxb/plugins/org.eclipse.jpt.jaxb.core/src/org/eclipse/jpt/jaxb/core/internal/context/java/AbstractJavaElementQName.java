@@ -30,8 +30,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class AbstractJavaElementQName
 		extends AbstractJavaQName {
 	
-	public AbstractJavaElementQName(JavaContextNode parent) {
-		super(parent);
+	public AbstractJavaElementQName(JavaContextNode parent, AbstractJavaQName.AnnotationProxy proxy) {
+		super(parent, proxy);
 	}
 	
 		

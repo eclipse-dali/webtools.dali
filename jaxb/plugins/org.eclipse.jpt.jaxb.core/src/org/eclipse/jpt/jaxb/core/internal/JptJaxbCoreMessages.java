@@ -36,7 +36,9 @@ public class JptJaxbCoreMessages {
 	public static String XML_ATTRIBUTE_DESC;
 	public static String XML_ELEMENT_DESC;
 	public static String XML_TYPE_DESC;
+	public static String SUBSTITUTION_HEAD_DESC;
 	
+	public static String XML_ELEMENT_DECL__SCOPE;
 	
 	
 	private static final String BUNDLE_NAME = "jpt_jaxb_core"; //$NON-NLS-1$

@@ -9,30 +9,40 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
+import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlMixed;
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericJavaXmlElementRefsMapping
 		extends AbstractJavaAttributeMapping<XmlElementRefsAnnotation>
 		implements XmlElementRefsMapping {
 	
-	protected final XmlElementRefContainer xmlElementRefContainer;
+	protected final XmlElementRefs xmlElementRefs;
 	
 	protected final XmlAdaptable xmlAdaptable;
 	
@@ -43,7 +53,7 @@ public class GenericJavaXmlElementRefsMapping
 	
 	public GenericJavaXmlElementRefsMapping(JaxbPersistentAttribute parent) {
 		super(parent);
-		this.xmlElementRefContainer = new XmlElementRefContainer();
+		this.xmlElementRefs = buildXmlElementRefs();
 		this.xmlAdaptable = buildXmlAdaptable();
 		initializeXmlElementWrapper();
 		initializeXmlMixed();			
@@ -65,7 +75,7 @@ public class GenericJavaXmlElementRefsMapping
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.xmlElementRefContainer.synchronizeWithResourceModel();
+		this.xmlElementRefs.synchronizeWithResourceModel();
 		this.xmlAdaptable.synchronizeWithResourceModel();
 		syncXmlElementWrapper();
 		syncXmlMixed();
@@ -74,52 +84,21 @@ public class GenericJavaXmlElementRefsMapping
 	@Override
 	public void update() {
 		super.update();
-		this.xmlElementRefContainer.update();
+		this.xmlElementRefs.update();
 		this.xmlAdaptable.update();
 		updateXmlElementWrapper();
 		updateXmlMixed();
 	}
 	
 	
-	// ***** xml element refs *****
+	// ***** XmlElementRefs *****
 	
-	public ListIterable<XmlElementRef> getXmlElementRefs() {
-		return this.xmlElementRefContainer.getContextElements();
+	public XmlElementRefs getXmlElementRefs() {
+		return this.xmlElementRefs;
 	}
 	
-	public int getXmlElementRefsSize() {
-		return this.xmlElementRefContainer.getContextElementsSize();
-	}
-	
-	public XmlElementRef addXmlElementRef(int index) {
-		XmlElementRefAnnotation annotation = getAnnotation().addXmlElementRef(index);
-		return this.xmlElementRefContainer.addContextElement(index, annotation);
-	}
-	
-	public void removeXmlElementRef(int index) {
-		getAnnotation().removeXmlElementRef(index);
-		this.xmlElementRefContainer.removeContextElement(index);
-	}
-	
-	public void removeXmlElementRef(XmlElementRef xmlElementRef) {
-		removeXmlElementRef(this.xmlElementRefContainer.indexOfContextElement(xmlElementRef));
-	}
-	
-	public void moveXmlElementRef(int targetIndex, int sourceIndex) {
-		getAnnotation().moveXmlElementRef(targetIndex, sourceIndex);
-		this.xmlElementRefContainer.moveContextElement(targetIndex, sourceIndex);
-	}
-	
-	protected XmlElementRef buildXmlElementRef(XmlElementRefAnnotation xmlElementRefAnnotation) {
-		return new GenericJavaXmlElementRef(this, new XmlElementRefContext(xmlElementRefAnnotation));
-	}
-	
-	protected ListIterable<XmlElementRefAnnotation> getXmlElementRefAnnotations() {
-		return getAnnotation().getXmlElementRefs();
-	}
-	
-	protected XmlElementRefAnnotation getXmlElementRefAnnotation(XmlElementRef xmlElementRef) {
-		return this.xmlElementRefContainer.getResourceElement(xmlElementRef);
+	protected XmlElementRefs buildXmlElementRefs() {
+		return new GenericJavaXmlElementRefs(this, new XmlElementRefsContext());
 	}
 	
 	
@@ -296,28 +275,88 @@ public class GenericJavaXmlElementRefsMapping
 	}
 	
 	
-	protected class XmlElementRefContainer
-			extends ContextListContainer<XmlElementRef, XmlElementRefAnnotation> {
-		
-		@Override
-		protected String getContextElementsPropertyName() {
-			return XmlElementRefsMapping.XML_ELEMENT_REFS_LIST;
+	// ***** misc *****
+	
+	@Override
+	public Iterable<String> getDirectlyReferencedTypeNames() {
+		return this.xmlElementRefs.getDirectlyReferencedTypeNames();
+	}
+	
+	
+	// ***** content assist *****
+	
+	@Override
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
 		}
 		
-		@Override
-		protected XmlElementRef buildContextElement(XmlElementRefAnnotation resourceElement) {
-			return GenericJavaXmlElementRefsMapping.this.buildXmlElementRef(resourceElement);
+		result = this.xmlElementRefs.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
 		}
 		
-		@Override
-		protected ListIterable<XmlElementRefAnnotation> getResourceElements() {
-			return GenericJavaXmlElementRefsMapping.this.getXmlElementRefAnnotations();
+		if (this.xmlElementWrapper != null) {
+			result = this.xmlElementWrapper.getJavaCompletionProposals(pos, filter, astRoot);
+			if (! CollectionTools.isEmpty(result)) {
+				return result;
+			}
 		}
 		
-		@Override
-		protected XmlElementRefAnnotation getResourceElement(XmlElementRef contextElement) {
-			// in the context of this mapping, there will never be an XmlElementRef without an annotation
-			return contextElement.getAnnotation();
+		return EmptyIterable.instance();
+	}
+	
+	
+	// ***** validation *****
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		this.xmlElementRefs.validate(messages, reporter, astRoot);
+		
+		this.xmlAdaptable.validate(messages, reporter, astRoot);
+		
+		if (this.xmlElementWrapper != null) {
+			this.xmlElementWrapper.validate(messages, reporter, astRoot);
+		}
+		
+		if (this.xmlMixed != null) {
+			this.xmlMixed.validate(messages, reporter, astRoot);
+		}
+	}
+	
+	
+	public class XmlElementRefsContext
+			implements GenericJavaXmlElementRefs.Context {
+		
+		protected XmlElementRefsAnnotation getXmlElementRefsAnnotation() {
+			return GenericJavaXmlElementRefsMapping.this.getAnnotation();
+		}
+		
+		public ListIterable<XmlElementRefAnnotation> getXmlElementRefAnnotations() {
+			return getXmlElementRefsAnnotation().getXmlElementRefs();
+		}
+		
+		public XmlElementRefAnnotation addXmlElementRefAnnotation(int index) {
+			return getXmlElementRefsAnnotation().addXmlElementRef(index);
+		}
+		
+		public void removeXmlElementRefAnnotation(int index) {
+			getXmlElementRefsAnnotation().removeXmlElementRef(index);
+		}
+		
+		public void moveXmlElementRefAnnotation(int targetIndex, int sourceIndex) {
+			getXmlElementRefsAnnotation().moveXmlElementRef(targetIndex, sourceIndex);
+		}
+		
+		public XmlElementRef buildXmlElementRef(JavaContextNode parent, XmlElementRefAnnotation annotation) {
+			return new GenericJavaXmlElementRef(parent, new XmlElementRefContext(annotation));
+		}
+		
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return getXmlElementRefsAnnotation().getTextRange(astRoot);
 		}
 	}
 	

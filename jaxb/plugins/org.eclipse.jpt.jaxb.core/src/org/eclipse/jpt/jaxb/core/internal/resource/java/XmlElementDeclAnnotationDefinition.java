@@ -53,7 +53,7 @@ public final class XmlElementDeclAnnotationDefinition
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullXmlElementDeclAnnotation(parent);
+		throw new UnsupportedOperationException();
 	}
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

@@ -31,284 +31,315 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
  * javax.xml.bind.annotation.XmlElementDecl
  */
 public final class SourceXmlElementDeclAnnotation
-	extends SourceAnnotation
-	implements XmlElementDeclAnnotation
-{
+		extends SourceAnnotation
+		implements XmlElementDeclAnnotation {
+	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ELEMENT_DECL);
-
-	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
-	private final AnnotationElementAdapter<String> nameAdapter;
-	private String name;
-
-	private static final DeclarationAnnotationElementAdapter<String> NAMESPACE_ADAPTER = buildNamespaceAdapter();
-	private final AnnotationElementAdapter<String> namespaceAdapter;
-	private String namespace;
-
-	private static final DeclarationAnnotationElementAdapter<String> DEFAULT_VALUE_ADAPTER = buildDefaultValueAdapter();
-	private final AnnotationElementAdapter<String> defaultValueAdapter;
-	private String defaultValue;
-
-	private static final DeclarationAnnotationElementAdapter<String> SCOPE_ADAPTER = buildScopeAdapter();
+	
+	private final DeclarationAnnotationElementAdapter<String> scopeDeclarationAdapter;
 	private final AnnotationElementAdapter<String> scopeAdapter;
 	private String scope;
 	private String fullyQualifiedScopeClassName;
-
-	private static final DeclarationAnnotationElementAdapter<String> SUBSTITUTION_HEAD_NAME_ADAPTER = buildSubstitutionHeadNameAdapter();
-	private final AnnotationElementAdapter<String> substitutionHeadNameAdapter;
-	private String substitutionHeadName;
-
-	private static final DeclarationAnnotationElementAdapter<String> SUBSTITUTION_HEAD_NAMESPACE_ADAPTER = buildSubstitutionHeadNamespaceAdapter();
+	
+	private final DeclarationAnnotationElementAdapter<String> namespaceDeclarationAdapter;
+	private final AnnotationElementAdapter<String> namespaceAdapter;
+	private String namespace;
+	
+	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+	private final AnnotationElementAdapter<String> nameAdapter;
+	private String name;
+	
+	private final DeclarationAnnotationElementAdapter<String> substitutionHeadNamespaceDeclarationAdapter;
 	private final AnnotationElementAdapter<String> substitutionHeadNamespaceAdapter;
 	private String substitutionHeadNamespace;
-
-
+	
+	private final DeclarationAnnotationElementAdapter<String> substitutionHeadNameDeclarationAdapter;
+	private final AnnotationElementAdapter<String> substitutionHeadNameAdapter;
+	private String substitutionHeadName;
+	
+	private final DeclarationAnnotationElementAdapter<String> defaultValueDeclarationAdapter;
+	private final AnnotationElementAdapter<String> defaultValueAdapter;
+	private String defaultValue;
+	
+	
 	// ********** constructors **********
 
 	public SourceXmlElementDeclAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(annotatedElement, DECLARATION_ANNOTATION_ADAPTER));
-		this.nameAdapter = this.buildAnnotationElementAdapter(NAME_ADAPTER);
-		this.namespaceAdapter = this.buildAnnotationElementAdapter(NAMESPACE_ADAPTER);
-		this.defaultValueAdapter = this.buildAnnotationElementAdapter(DEFAULT_VALUE_ADAPTER);
-		this.scopeAdapter = this.buildAnnotationElementAdapter(SCOPE_ADAPTER);
-		this.substitutionHeadNameAdapter = this.buildAnnotationElementAdapter(SUBSTITUTION_HEAD_NAME_ADAPTER);
-		this.substitutionHeadNamespaceAdapter = this.buildAnnotationElementAdapter(SUBSTITUTION_HEAD_NAMESPACE_ADAPTER);
+		this.scopeDeclarationAdapter = buildScopeDeclarationAdapter();
+		this.scopeAdapter = buildAnnotationElementAdapter(this.scopeDeclarationAdapter);
+		this.namespaceDeclarationAdapter = buildNamespaceDeclarationAdapter();
+		this.namespaceAdapter = buildAnnotationElementAdapter(this.namespaceDeclarationAdapter);
+		this.nameDeclarationAdapter = buildNameDeclarationAdapter();
+		this.nameAdapter = buildAnnotationElementAdapter(this.nameDeclarationAdapter);
+		this.substitutionHeadNamespaceDeclarationAdapter = buildSubstitutionHeadNamespaceDeclarationAdapter();
+		this.substitutionHeadNamespaceAdapter = buildAnnotationElementAdapter(this.substitutionHeadNamespaceDeclarationAdapter);
+		this.substitutionHeadNameDeclarationAdapter = buildSubstitutionHeadNameDeclarationAdapter();
+		this.substitutionHeadNameAdapter = buildAnnotationElementAdapter(this.substitutionHeadNameDeclarationAdapter);
+		this.defaultValueDeclarationAdapter = buildDefaultValueDeclarationAdapter();
+		this.defaultValueAdapter = buildAnnotationElementAdapter(this.defaultValueDeclarationAdapter);
 	}
-
+	
+	
 	private AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
+	
+	private DeclarationAnnotationElementAdapter<String> buildScopeDeclarationAdapter() {
+		return buildAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__SCOPE, SimpleTypeStringExpressionConverter.instance());
+	}
 
+	private DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
+		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
+	}
+	
+	private DeclarationAnnotationElementAdapter<String> buildNamespaceDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__NAMESPACE);
+	}
+	
+	private DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__NAME);
+	}
+	
+	private DeclarationAnnotationElementAdapter<String> buildSubstitutionHeadNamespaceDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__SUBSTITUTION_HEAD_NAMESPACE);
+	}
+	
+	private DeclarationAnnotationElementAdapter<String> buildSubstitutionHeadNameDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__SUBSTITUTION_HEAD_NAME);
+	}
+	
+	private DeclarationAnnotationElementAdapter<String> buildDefaultValueDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__DEFAULT_VALUE);
+	}
+	
 	public String getAnnotationName() {
 		return JAXB.XML_ELEMENT_DECL;
 	}
-
+	
 	public void initialize(CompilationUnit astRoot) {
-		this.name = this.buildName(astRoot);
-		this.namespace = this.buildNamespace(astRoot);
-		this.defaultValue = this.buildDefaultValue(astRoot);
-		this.scope = this.buildScope(astRoot);
-		this.fullyQualifiedScopeClassName = this.buildFullyQualifiedScopeClassName(astRoot);
-		this.substitutionHeadName = this.buildSubstitutionHeadName(astRoot);
-		this.substitutionHeadNamespace = this.buildSubstitutionHeadNamespace(astRoot);
+		this.scope = buildScope(astRoot);
+		this.fullyQualifiedScopeClassName = buildFullyQualifiedScopeClassName(astRoot);
+		this.namespace = buildNamespace(astRoot);
+		this.name = buildName(astRoot);
+		this.substitutionHeadNamespace = buildSubstitutionHeadNamespace(astRoot);
+		this.substitutionHeadName = buildSubstitutionHeadName(astRoot);
+		this.defaultValue = buildDefaultValue(astRoot);
 	}
-
+	
 	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.syncNamespace(this.buildNamespace(astRoot));
-		this.syncDefaultValue(this.buildDefaultValue(astRoot));
-		this.syncScope(this.buildScope(astRoot));
-		this.syncFullyQualifiedScopeClassName(this.buildFullyQualifiedScopeClassName(astRoot));
-		this.syncSubstitutionHeadName(this.buildSubstitutionHeadName(astRoot));
-		this.syncSubstitutionHeadNamespace(this.buildSubstitutionHeadNamespace(astRoot));
+		syncScope(buildScope(astRoot));
+		syncFullyQualifiedScopeClassName(buildFullyQualifiedScopeClassName(astRoot));
+		syncNamespace(buildNamespace(astRoot));
+		syncName(buildName(astRoot));
+		syncSubstitutionHeadNamespace(buildSubstitutionHeadNamespace(astRoot));
+		syncSubstitutionHeadName(buildSubstitutionHeadName(astRoot));
+		syncDefaultValue(buildDefaultValue(astRoot));
 	}
-
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-
-
-	// ********** XmlElementDeclAnnotation implementation **********
-
-	// ***** name
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
-			this.name = name;
-			this.nameAdapter.setValue(name);
-		}
-	}
-
-	private void syncName(String astName) {
-		String old = this.name;
-		this.name = astName;
-		this.firePropertyChanged(NAME_PROPERTY, old, astName);
-	}
-
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
-	}
-
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAME_ADAPTER, astRoot);
-	}
-
-	// ***** namespace
-	public String getNamespace() {
-		return this.namespace;
-	}
-
-	public void setNamespace(String namespace) {
-		if (this.attributeValueHasChanged(this.namespace, namespace)) {
-			this.namespace = namespace;
-			this.namespaceAdapter.setValue(namespace);
-		}
-	}
-
-	private void syncNamespace(String astNamespace) {
-		String old = this.namespace;
-		this.namespace = astNamespace;
-		this.firePropertyChanged(NAMESPACE_PROPERTY, old, astNamespace);
-	}
-
-	private String buildNamespace(CompilationUnit astRoot) {
-		return this.namespaceAdapter.getValue(astRoot);
-	}
-
-	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAMESPACE_ADAPTER, astRoot);
-	}
-
-	// ***** defaultValue
-	public String getDefaultValue() {
-		return this.defaultValue;
-	}
-
-	public void setDefaultValue(String defaultValue) {
-		if (this.attributeValueHasChanged(this.defaultValue, defaultValue)) {
-			this.defaultValue = defaultValue;
-			this.defaultValueAdapter.setValue(defaultValue);
-		}
-	}
-
-	private void syncDefaultValue(String astDefaultValue) {
-		String old = this.defaultValue;
-		this.defaultValue = astDefaultValue;
-		this.firePropertyChanged(DEFAULT_VALUE_PROPERTY, old, astDefaultValue);
-	}
-
-	private String buildDefaultValue(CompilationUnit astRoot) {
-		return this.defaultValueAdapter.getValue(astRoot);
-	}
-
-	public TextRange getDefaultValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(DEFAULT_VALUE_ADAPTER, astRoot);
-	}
-
-	// ***** scope
+	
+	
+	// ***** scope *****
+	
 	public String getScope() {
 		return this.scope;
 	}
-
+	
 	public void setScope(String scope) {
-		if (this.attributeValueHasChanged(this.scope, scope)) {
+		if (attributeValueHasChanged(this.scope, scope)) {
 			this.scope = scope;
 			this.scopeAdapter.setValue(scope);
 		}
 	}
-
+	
 	private void syncScope(String astScope) {
 		String old = this.scope;
 		this.scope = astScope;
-		this.firePropertyChanged(SCOPE_PROPERTY, old, astScope);
+		firePropertyChanged(SCOPE_PROPERTY, old, astScope);
 	}
-
+	
 	private String buildScope(CompilationUnit astRoot) {
 		return this.scopeAdapter.getValue(astRoot);
 	}
-
+	
 	public TextRange getScopeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(SCOPE_ADAPTER, astRoot);
+		return getElementTextRange(this.scopeDeclarationAdapter, astRoot);
 	}
-
-	// ***** fully-qualified scope class name
+	
+	
+	// ***** fully-qualified scope class name *****
+	
 	public String getFullyQualifiedScopeClassName() {
 		return this.fullyQualifiedScopeClassName;
 	}
-
+	
 	private void syncFullyQualifiedScopeClassName(String name) {
 		String old = this.fullyQualifiedScopeClassName;
 		this.fullyQualifiedScopeClassName = name;
-		this.firePropertyChanged(FULLY_QUALIFIED_SCOPE_CLASS_NAME_PROPERTY, old, name);
+		firePropertyChanged(FULLY_QUALIFIED_SCOPE_CLASS_NAME_PROPERTY, old, name);
 	}
-
+	
 	private String buildFullyQualifiedScopeClassName(CompilationUnit astRoot) {
 		return (this.scope == null) ? null : ASTTools.resolveFullyQualifiedName(this.scopeAdapter.getExpression(astRoot));
 	}
-
-	// ***** substitutionHeadName
-	public String getSubstitutionHeadName() {
-		return this.substitutionHeadName;
+	
+	
+	// ***** namespace *****
+	
+	public String getNamespace() {
+		return this.namespace;
 	}
-
-	public void setSubstitutionHeadName(String substitutionHeadName) {
-		if (this.attributeValueHasChanged(this.substitutionHeadName, substitutionHeadName)) {
-			this.substitutionHeadName = substitutionHeadName;
-			this.substitutionHeadNameAdapter.setValue(substitutionHeadName);
+	
+	public void setNamespace(String namespace) {
+		if (attributeValueHasChanged(this.namespace, namespace)) {
+			this.namespace = namespace;
+			this.namespaceAdapter.setValue(namespace);
 		}
 	}
-
-	private void syncSubstitutionHeadName(String astSubstitutionHeadName) {
-		String old = this.substitutionHeadName;
-		this.substitutionHeadName = astSubstitutionHeadName;
-		this.firePropertyChanged(SUBSTITUTION_HEAD_NAME_PROPERTY, old, astSubstitutionHeadName);
+	
+	private void syncNamespace(String astNamespace) {
+		String old = this.namespace;
+		this.namespace = astNamespace;
+		firePropertyChanged(NAMESPACE_PROPERTY, old, astNamespace);
 	}
-
-	private String buildSubstitutionHeadName(CompilationUnit astRoot) {
-		return this.substitutionHeadNameAdapter.getValue(astRoot);
+	
+	private String buildNamespace(CompilationUnit astRoot) {
+		return this.namespaceAdapter.getValue(astRoot);
 	}
-
-	public TextRange getSubstitutionHeadNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(SUBSTITUTION_HEAD_NAME_ADAPTER, astRoot);
+	
+	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
+		return getElementTextRange(this.namespaceDeclarationAdapter, astRoot);
 	}
-
-	// ***** substitutionHeadNamespace
+	
+	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(this.namespaceDeclarationAdapter, pos, astRoot);
+	}
+	
+	
+	// ***** name *****
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setName(String name) {
+		if (attributeValueHasChanged(this.name, name)) {
+			this.name = name;
+			this.nameAdapter.setValue(name);
+		}
+	}
+	
+	private void syncName(String astName) {
+		String old = this.name;
+		this.name = astName;
+		firePropertyChanged(NAME_PROPERTY, old, astName);
+	}
+	
+	private String buildName(CompilationUnit astRoot) {
+		return this.nameAdapter.getValue(astRoot);
+	}
+	
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	}
+	
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	}
+	
+	
+	// ***** substitutionHeadNamespace *****
+	
 	public String getSubstitutionHeadNamespace() {
 		return this.substitutionHeadNamespace;
 	}
-
+	
 	public void setSubstitutionHeadNamespace(String substitutionHeadNamespace) {
-		if (this.attributeValueHasChanged(this.substitutionHeadNamespace, substitutionHeadNamespace)) {
+		if (attributeValueHasChanged(this.substitutionHeadNamespace, substitutionHeadNamespace)) {
 			this.substitutionHeadNamespace = substitutionHeadNamespace;
 			this.substitutionHeadNamespaceAdapter.setValue(substitutionHeadNamespace);
 		}
 	}
-
+	
 	private void syncSubstitutionHeadNamespace(String astSubstitutionHeadNamespace) {
 		String old = this.substitutionHeadNamespace;
 		this.substitutionHeadNamespace = astSubstitutionHeadNamespace;
-		this.firePropertyChanged(SUBSTITUTION_HEAD_NAMESPACE_PROPERTY, old, astSubstitutionHeadNamespace);
+		firePropertyChanged(SUBSTITUTION_HEAD_NAMESPACE_PROPERTY, old, astSubstitutionHeadNamespace);
 	}
-
+	
 	private String buildSubstitutionHeadNamespace(CompilationUnit astRoot) {
 		return this.substitutionHeadNamespaceAdapter.getValue(astRoot);
 	}
-
+	
 	public TextRange getSubstitutionHeadNamespaceTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(SUBSTITUTION_HEAD_NAMESPACE_ADAPTER, astRoot);
+		return getElementTextRange(this.substitutionHeadNamespaceDeclarationAdapter, astRoot);
 	}
-
-
-	// ********** static methods **********
-
-	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__NAME);
+	
+	public boolean substitutionHeadNamespaceTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(this.substitutionHeadNamespaceDeclarationAdapter, pos, astRoot);
 	}
-
-	private static DeclarationAnnotationElementAdapter<String> buildNamespaceAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__NAMESPACE);
+	
+	
+	// ***** substitutionHeadName *****
+	
+	public String getSubstitutionHeadName() {
+		return this.substitutionHeadName;
 	}
-
-	private static DeclarationAnnotationElementAdapter<String> buildDefaultValueAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__DEFAULT_VALUE);
+	
+	public void setSubstitutionHeadName(String substitutionHeadName) {
+		if (attributeValueHasChanged(this.substitutionHeadName, substitutionHeadName)) {
+			this.substitutionHeadName = substitutionHeadName;
+			this.substitutionHeadNameAdapter.setValue(substitutionHeadName);
+		}
 	}
-
-	private static DeclarationAnnotationElementAdapter<String> buildScopeAdapter() {
-		return buildAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__SCOPE, SimpleTypeStringExpressionConverter.instance());
+	
+	private void syncSubstitutionHeadName(String astSubstitutionHeadName) {
+		String old = this.substitutionHeadName;
+		this.substitutionHeadName = astSubstitutionHeadName;
+		firePropertyChanged(SUBSTITUTION_HEAD_NAME_PROPERTY, old, astSubstitutionHeadName);
 	}
-
-	private static DeclarationAnnotationElementAdapter<String> buildSubstitutionHeadNameAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__SUBSTITUTION_HEAD_NAME);
+	
+	private String buildSubstitutionHeadName(CompilationUnit astRoot) {
+		return this.substitutionHeadNameAdapter.getValue(astRoot);
 	}
-
-	private static DeclarationAnnotationElementAdapter<String> buildSubstitutionHeadNamespaceAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__SUBSTITUTION_HEAD_NAMESPACE);
+	
+	public TextRange getSubstitutionHeadNameTextRange(CompilationUnit astRoot) {
+		return getElementTextRange(this.substitutionHeadNameDeclarationAdapter, astRoot);
 	}
-
-	private static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
+	
+	public boolean substitutionHeadNameTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(this.substitutionHeadNameDeclarationAdapter, pos, astRoot);
+	}
+	
+	
+	// ***** defaultValue *****
+	
+	public String getDefaultValue() {
+		return this.defaultValue;
+	}
+	
+	public void setDefaultValue(String defaultValue) {
+		if (attributeValueHasChanged(this.defaultValue, defaultValue)) {
+			this.defaultValue = defaultValue;
+			this.defaultValueAdapter.setValue(defaultValue);
+		}
+	}
+	
+	private void syncDefaultValue(String astDefaultValue) {
+		String old = this.defaultValue;
+		this.defaultValue = astDefaultValue;
+		firePropertyChanged(DEFAULT_VALUE_PROPERTY, old, astDefaultValue);
+	}
+	
+	private String buildDefaultValue(CompilationUnit astRoot) {
+		return this.defaultValueAdapter.getValue(astRoot);
+	}
+	
+	public TextRange getDefaultValueTextRange(CompilationUnit astRoot) {
+		return getElementTextRange(this.defaultValueDeclarationAdapter, astRoot);
 	}
 }

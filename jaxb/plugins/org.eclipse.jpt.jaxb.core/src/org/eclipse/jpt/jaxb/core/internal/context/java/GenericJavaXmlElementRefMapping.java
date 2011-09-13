@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -263,6 +264,17 @@ public class GenericJavaXmlElementRefMapping
 	}
 	
 	
+	// ***** misc *****
+	
+	@Override
+	public Iterable<String> getDirectlyReferencedTypeNames() {
+		String typeName = this.xmlElementRef.getFullyQualifiedType();
+		return (JAXB.JAXB_ELEMENT.equals(typeName)) ? 
+				EmptyIterable.<String>instance() 
+				: new SingleElementIterable(typeName);
+	}
+	
+	
 	// ***** content assist *****
 	
 	@Override
@@ -298,8 +310,8 @@ public class GenericJavaXmlElementRefMapping
 		
 		this.xmlAdaptable.validate(messages, reporter, astRoot);
 		
-		if (this.getXmlElementWrapper() != null) {
-			this.getXmlElementWrapper().validate(messages, reporter, astRoot);
+		if (this.xmlElementWrapper != null) {
+			this.xmlElementWrapper.validate(messages, reporter, astRoot);
 		}
 	}
 	

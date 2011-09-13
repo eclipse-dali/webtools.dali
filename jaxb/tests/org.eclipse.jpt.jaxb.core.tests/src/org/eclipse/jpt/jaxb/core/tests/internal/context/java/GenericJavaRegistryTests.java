@@ -136,10 +136,10 @@ public class GenericJavaRegistryTests extends JaxbContextModelTestCase
 		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		assertEquals("createFoo", elementFactoryMethod.getName());
-		assertEquals("foo", elementFactoryMethod.getElementName());
+		assertEquals("foo", elementFactoryMethod.getQName().getName());
 		elementFactoryMethod = elementFactoryMethods.next();
 		assertEquals("createBar", elementFactoryMethod.getName());
-		assertEquals("bar", elementFactoryMethod.getElementName());
+		assertEquals("bar", elementFactoryMethod.getQName().getName());
 		assertFalse(elementFactoryMethods.hasNext());
 
 		
@@ -154,16 +154,16 @@ public class GenericJavaRegistryTests extends JaxbContextModelTestCase
 		elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
 		elementFactoryMethod = elementFactoryMethods.next();
 		assertEquals("createFoo", elementFactoryMethod.getName());
-		assertEquals("foo", elementFactoryMethod.getElementName());
+		assertEquals("foo", elementFactoryMethod.getQName().getName());
 		elementFactoryMethod = elementFactoryMethods.next();
 		assertEquals("createBar", elementFactoryMethod.getName());
-		assertEquals("bar", elementFactoryMethod.getElementName());
+		assertEquals("bar", elementFactoryMethod.getQName().getName());
 		elementFactoryMethod = elementFactoryMethods.next();
 		assertEquals("createFoo2", elementFactoryMethod.getName());
-		assertEquals(null, elementFactoryMethod.getElementName());
+		assertEquals(null, elementFactoryMethod.getQName().getName());
 		elementFactoryMethod = elementFactoryMethods.next();
 		assertEquals("createBar2", elementFactoryMethod.getName());
-		assertEquals(null, elementFactoryMethod.getElementName());
+		assertEquals(null, elementFactoryMethod.getQName().getName());
 		assertFalse(elementFactoryMethods.hasNext());
 
 
@@ -176,13 +176,13 @@ public class GenericJavaRegistryTests extends JaxbContextModelTestCase
 		elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
 		elementFactoryMethod = elementFactoryMethods.next();
 		assertEquals("createBar", elementFactoryMethod.getName());
-		assertEquals("bar", elementFactoryMethod.getElementName());
+		assertEquals("bar", elementFactoryMethod.getQName().getName());
 		elementFactoryMethod = elementFactoryMethods.next();
 		assertEquals("createFoo2", elementFactoryMethod.getName());
-		assertEquals(null, elementFactoryMethod.getElementName());
+		assertEquals(null, elementFactoryMethod.getQName().getName());
 		elementFactoryMethod = elementFactoryMethods.next();
 		assertEquals("createBar2", elementFactoryMethod.getName());
-		assertEquals(null, elementFactoryMethod.getElementName());
+		assertEquals(null, elementFactoryMethod.getQName().getName());
 		assertFalse(elementFactoryMethods.hasNext());
 
 		annotatedElement.edit(new Member.Editor() {
@@ -195,7 +195,7 @@ public class GenericJavaRegistryTests extends JaxbContextModelTestCase
 		elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
 		elementFactoryMethod = elementFactoryMethods.next();
 		assertEquals("createBar", elementFactoryMethod.getName());
-		assertEquals("bar", elementFactoryMethod.getElementName());
+		assertEquals("bar", elementFactoryMethod.getQName().getName());
 		assertFalse(elementFactoryMethods.hasNext());
 
 		annotatedElement.edit(new Member.Editor() {

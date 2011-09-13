@@ -67,8 +67,8 @@ public class XsdComplexTypeDefinition
 	}
 	
 	@Override
-	public XsdElementDeclaration getElement(String namespace, String name) {
-		for (XsdElementDeclaration element : getElementDeclarations(namespace)) {
+	public XsdElementDeclaration getElement(String namespace, String name, boolean recurseChildren) {
+		for (XsdElementDeclaration element : getElementDeclarations(namespace, recurseChildren)) {
 			if (element.getXSDComponent().getName().equals(name)) {
 				return element;
 			}
@@ -77,10 +77,10 @@ public class XsdComplexTypeDefinition
 	}
 	
 	@Override
-	public Iterable<String> getElementNameProposals(String namespace, Filter<String> filter) {
+	public Iterable getElementNameProposals(String namespace, Filter<String> filter, boolean recurseChildren) {
 		return StringTools.convertToJavaStringLiterals(
 				new FilteringIterable<String>(
-					new TransformationIterable<XsdElementDeclaration, String>(getElementDeclarations(namespace)) {
+					new TransformationIterable<XsdElementDeclaration, String>(getElementDeclarations(namespace, recurseChildren)) {
 						@Override
 						protected String transform(XsdElementDeclaration element) {
 							return element.getXSDComponent().getName();
@@ -89,9 +89,9 @@ public class XsdComplexTypeDefinition
 					filter));
 	}
 	
-	protected Iterable<XsdElementDeclaration> getElementDeclarations(final String namespace) {
+	protected Iterable<XsdElementDeclaration> getElementDeclarations(final String namespace, boolean recurseChildren) {
 		return new TransformationIterable<XSDElementDeclaration, XsdElementDeclaration>(
-				new FilteringIterable<XSDElementDeclaration>(getXSDElementDeclarations()) {
+				new FilteringIterable<XSDElementDeclaration>(getXSDElementDeclarations(recurseChildren)) {
 					@Override
 					protected boolean accept(XSDElementDeclaration element) {
 						return XsdUtil.namespaceEquals(element, namespace);
@@ -104,8 +104,8 @@ public class XsdComplexTypeDefinition
 		};
 	}
 	
-	protected Iterable<XSDElementDeclaration> getXSDElementDeclarations() {
-		ElementFinder elementFinder = new ElementFinder();
+	protected Iterable<XSDElementDeclaration> getXSDElementDeclarations(boolean recurseChildren) {
+		ElementFinder elementFinder = new ElementFinder(recurseChildren);
 		elementFinder.visitNode(getXSDComponent());
 		return elementFinder.getElements();
 	}
@@ -114,8 +114,20 @@ public class XsdComplexTypeDefinition
 	private class ElementFinder
 			extends XSDNodeVisitor {
 		
+		private boolean recurseChildren;
+		
 		private List<XSDElementDeclaration> elements = new ArrayList<XSDElementDeclaration>();
 		
+		
+		private ElementFinder(boolean recurseChildren) {
+			this.recurseChildren = recurseChildren;
+		}
+		
+		
+		@Override
+		protected boolean visitChildren() {
+			return super.visitChildren() || this.recurseChildren;
+		}
 		
 		@Override
 		public void visitXSDElementDeclaration(XSDElementDeclaration node) {

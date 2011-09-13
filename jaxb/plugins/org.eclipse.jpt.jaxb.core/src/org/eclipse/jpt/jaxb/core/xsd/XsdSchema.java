@@ -34,7 +34,11 @@ public class XsdSchema
 	}
 	
 	public Iterable<String> getNamespaces() {
-		return new SnapshotCloneIterable(getXSDSchema().getQNamePrefixToNamespaceMap().values());
+		Iterable<String> result = new SnapshotCloneIterable(getXSDSchema().getQNamePrefixToNamespaceMap().values());
+		if (StringTools.stringIsEmpty(getXSDSchema().getTargetNamespace())) {
+			result = new CompositeIterable<String>("", result);
+		}
+		return result;
 	}
 	
 	public Iterable<XsdTypeDefinition> getAllTypeDefinitions() {

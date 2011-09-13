@@ -84,7 +84,7 @@ public class GenericJavaXmlElementRefsMappingTests
 	}
 	
 	
-	// ***** XmlElements *****
+	// ***** XmlElementRefs *****
 	
 	protected NormalAnnotation newXmlElementRefAnnotation(AST ast, String name) {
 		NormalAnnotation annotation = newNormalAnnotation(ast, JAXB.XML_ELEMENT_REF);
@@ -111,9 +111,9 @@ public class GenericJavaXmlElementRefsMappingTests
 		XmlElementRefsMapping mapping = (XmlElementRefsMapping) CollectionTools.get(persistentClass.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
-		Iterable<XmlElementRef> xmlElementRefs = mapping.getXmlElementRefs();
+		Iterable<XmlElementRef> xmlElementRefs = mapping.getXmlElementRefs().getXmlElementRefs();
 		assertTrue(CollectionTools.isEmpty(xmlElementRefs));
-		assertEquals(0, mapping.getXmlElementRefsSize());
+		assertEquals(0, mapping.getXmlElementRefs().getXmlElementRefsSize());
 		
 		//add 2 XmlElementRef annotations
 		AnnotatedElement annotatedElement = annotatedElement(resourceAttribute);
@@ -126,10 +126,10 @@ public class GenericJavaXmlElementRefsMappingTests
 					}
 				});
 		
-		xmlElementRefs = mapping.getXmlElementRefs();
+		xmlElementRefs = mapping.getXmlElementRefs().getXmlElementRefs();
 		
-		assertFalse(CollectionTools.isEmpty(mapping.getXmlElementRefs()));
-		assertEquals(2, mapping.getXmlElementRefsSize());
+		assertFalse(CollectionTools.isEmpty(mapping.getXmlElementRefs().getXmlElementRefs()));
+		assertEquals(2, mapping.getXmlElementRefs().getXmlElementRefsSize());
 		assertEquals("foo", CollectionTools.get(xmlElementRefs, 0).getQName().getName());
 		assertEquals("bar", CollectionTools.get(xmlElementRefs, 1).getQName().getName());
 		
@@ -142,10 +142,10 @@ public class GenericJavaXmlElementRefsMappingTests
 					}
 				});
 		
-		xmlElementRefs = mapping.getXmlElementRefs();
+		xmlElementRefs = mapping.getXmlElementRefs().getXmlElementRefs();
 		
-		assertFalse(CollectionTools.isEmpty(mapping.getXmlElementRefs()));
-		assertEquals(2, mapping.getXmlElementRefsSize());
+		assertFalse(CollectionTools.isEmpty(mapping.getXmlElementRefs().getXmlElementRefs()));
+		assertEquals(2, mapping.getXmlElementRefs().getXmlElementRefsSize());
 		assertEquals("bar", CollectionTools.get(xmlElementRefs, 0).getQName().getName());
 		assertEquals("foo", CollectionTools.get(xmlElementRefs, 1).getQName().getName());
 		
@@ -159,10 +159,10 @@ public class GenericJavaXmlElementRefsMappingTests
 					}
 				});
 		
-		xmlElementRefs = mapping.getXmlElementRefs();
+		xmlElementRefs = mapping.getXmlElementRefs().getXmlElementRefs();
 		
 		assertTrue(CollectionTools.isEmpty(xmlElementRefs));
-		assertEquals(0, mapping.getXmlElementRefsSize());
+		assertEquals(0, mapping.getXmlElementRefs().getXmlElementRefsSize());
 	}
 
 	public void testModifyXmlElementRefs() throws Exception {
@@ -175,36 +175,36 @@ public class GenericJavaXmlElementRefsMappingTests
 		Iterable<XmlElementRefAnnotation> annotations = annotation.getXmlElementRefs();
 		
 		assertEquals(0, annotation.getXmlElementRefsSize());
-		assertEquals(0, mapping.getXmlElementRefsSize());
+		assertEquals(0, mapping.getXmlElementRefs().getXmlElementRefsSize());
 		
-		mapping.addXmlElementRef(0).getQName().setSpecifiedName("foo");
-		mapping.addXmlElementRef(1).getQName().setSpecifiedName("baz");
-		mapping.addXmlElementRef(1).getQName().setSpecifiedName("bar");
+		mapping.getXmlElementRefs().addXmlElementRef(0).getQName().setSpecifiedName("foo");
+		mapping.getXmlElementRefs().addXmlElementRef(1).getQName().setSpecifiedName("baz");
+		mapping.getXmlElementRefs().addXmlElementRef(1).getQName().setSpecifiedName("bar");
 		
 		annotations = annotation.getXmlElementRefs();
 		
 		assertEquals(3, annotation.getXmlElementRefsSize());
-		assertEquals(3, mapping.getXmlElementRefsSize());
+		assertEquals(3, mapping.getXmlElementRefs().getXmlElementRefsSize());
 		assertEquals("foo", CollectionTools.get(annotations, 0).getName());
 		assertEquals("bar", CollectionTools.get(annotations, 1).getName());
 		assertEquals("baz", CollectionTools.get(annotations, 2).getName());
 		
-		mapping.moveXmlElementRef(1, 2);
+		mapping.getXmlElementRefs().moveXmlElementRef(1, 2);
 		
 		annotations = annotation.getXmlElementRefs();
 		
 		assertEquals(3, annotation.getXmlElementRefsSize());
-		assertEquals(3, mapping.getXmlElementRefsSize());
+		assertEquals(3, mapping.getXmlElementRefs().getXmlElementRefsSize());
 		assertEquals("foo", CollectionTools.get(annotations, 0).getName());
 		assertEquals("baz", CollectionTools.get(annotations, 1).getName());
 		assertEquals("bar", CollectionTools.get(annotations, 2).getName());
 		
-		mapping.removeXmlElementRef(2);
-		mapping.removeXmlElementRef(0);
-		mapping.removeXmlElementRef(0);
+		mapping.getXmlElementRefs().removeXmlElementRef(2);
+		mapping.getXmlElementRefs().removeXmlElementRef(0);
+		mapping.getXmlElementRefs().removeXmlElementRef(0);
 		
 		assertEquals(0, annotation.getXmlElementRefsSize());
-		assertEquals(0, mapping.getXmlElementRefsSize());
+		assertEquals(0, mapping.getXmlElementRefs().getXmlElementRefsSize());
 	}
 
 	public void testChangeMappingType() throws Exception {
@@ -310,7 +310,7 @@ public class GenericJavaXmlElementRefsMappingTests
 		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 	}
 	
-	public void testUpdateXmlElementRefWrapper() throws Exception {
+	public void testUpdateXmlElementWrapper() throws Exception {
 		createTypeWithXmlElementRefs();
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);

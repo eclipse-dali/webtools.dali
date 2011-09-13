@@ -24,6 +24,8 @@ package org.eclipse.jpt.jaxb.core.context;
 public interface XmlElementRefMapping
 		extends JaxbAttributeMapping, XmlAdaptable {
 	
+	// ***** XmlElementRef *****
+	
 	XmlElementRef getXmlElementRef();
 	
 	

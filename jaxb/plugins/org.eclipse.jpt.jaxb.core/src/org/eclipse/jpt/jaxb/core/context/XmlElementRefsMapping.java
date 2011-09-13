@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Represents a JAXB xml element refs mapping (@XmlElementRefs)
@@ -28,19 +27,7 @@ public interface XmlElementRefsMapping
 	
 	// ***** XmlElementRefs *****
 	
-	String XML_ELEMENT_REFS_LIST = "xmlElementRefs"; //$NON-NLS-1$
-	
-	ListIterable<XmlElementRef> getXmlElementRefs();
-	
-	int getXmlElementRefsSize();
-	
-	XmlElementRef addXmlElementRef(int index);
-	
-	void removeXmlElementRef(int index);
-	
-	void removeXmlElementRef(XmlElementRef xmlElementRef);
-	
-	void moveXmlElementRef(int targetIndex, int sourceIndex);
+	XmlElementRefs getXmlElementRefs();
 	
 	
 	// ***** XmlElementWrapper *****

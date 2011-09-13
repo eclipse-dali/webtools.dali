@@ -342,13 +342,9 @@ public class GenericJavaXmlElement
 			extends AbstractJavaElementQName {
 		
 		protected XmlElementQName(JavaContextNode parent) {
-			super(parent);
+			super(parent, new QNameAnnotationProxy());
 		}
 		
-		@Override
-		protected QNameAnnotation getAnnotation(boolean createIfNull) {
-			return GenericJavaXmlElement.this.getAnnotation(createIfNull);
-		}
 		
 		@Override
 		protected JaxbPersistentAttribute getPersistentAttribute() {
@@ -359,6 +355,16 @@ public class GenericJavaXmlElement
 		protected XmlElementWrapper getElementWrapper() {
 			return GenericJavaXmlElement.this.context.getElementWrapper();
 		}	
+	}
+	
+	
+	protected class QNameAnnotationProxy 
+			extends AbstractJavaQName.AbstractQNameAnnotationProxy {
+		
+		@Override
+		protected QNameAnnotation getAnnotation(boolean createIfNull) {
+			return GenericJavaXmlElement.this.getAnnotation(createIfNull);
+		}
 	}
 	
 	

@@ -35,13 +35,13 @@ public class XsdSimpleTypeDefinition
 	}
 	
 	@Override
-	public XsdElementDeclaration getElement(String namespace, String name) {
+	public XsdElementDeclaration getElement(String namespace, String name, boolean recurseChildren) {
 		// simple types have no elements
 		return null;
 	}
 	
 	@Override
-	public Iterable<String> getElementNameProposals(String namespace, Filter<String> filter) {
+	public Iterable<String> getElementNameProposals(String namespace, Filter<String> filter, boolean recurseChildren) {
 		// simple types have no elements
 		return EmptyIterable.instance();
 	}

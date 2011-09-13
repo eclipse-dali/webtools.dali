@@ -29,7 +29,15 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	
 	public abstract Iterable<String> getAttributeNameProposals(String namespace, Filter<String> filter);
 	
-	public abstract XsdElementDeclaration getElement(String namespace, String name);
+	public XsdElementDeclaration getElement(String namespace, String name) {
+		return getElement(namespace, name, false);
+	}
 	
-	public abstract Iterable<String> getElementNameProposals(String namespace, Filter<String> filter);
+	public abstract XsdElementDeclaration getElement(String namespace, String name, boolean recurseChildren);
+	
+	public Iterable<String> getElementNameProposals(String namespace, Filter<String> filter) {
+		return getElementNameProposals(namespace, filter, false);
+	}
+	
+	public abstract Iterable getElementNameProposals(String namespace, Filter<String> filter, boolean recurseChildren);
 }

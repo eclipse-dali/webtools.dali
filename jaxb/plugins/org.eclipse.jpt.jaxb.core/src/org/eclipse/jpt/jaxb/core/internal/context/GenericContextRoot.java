@@ -15,7 +15,6 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 public class GenericContextRoot
 		extends AbstractJaxbContextRoot {
 	
-	
 	public GenericContextRoot(JaxbProject jaxbProject) {
 		super(jaxbProject);
 	}

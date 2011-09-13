@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
@@ -27,65 +26,15 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlElementDeclAnnotation
-		extends Annotation {
+		extends QNameAnnotation {
+	
+	// ***** scope *****
 	
 	/**
-	 * Corresponds to the 'name' element of the XmlElementDecl annotation.
-	 * Return null if the element does not exist in Java.
+	 * String associated with "scope" property changes.
 	 */
-	String getName();
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'name' element of the XmlElementDecl annotation.
-	 * Set to null to remove the element.
-	 */
-	void setName(String name);
-
-	/**
-	 * Return the {@link TextRange} for the 'name' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
-	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlElementDecl annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getNamespace();
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlElementDecl annotation.
-	 * Set to null to remove the element.
-	 */
-	void setNamespace(String namespace);
-
-	/**
-	 * Return the {@link TextRange} for the 'namespace' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
-	 */
-	TextRange getNamespaceTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Corresponds to the 'defaultValue' element of the XmlElementDecl annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getDefaultValue();
-		String DEFAULT_VALUE_PROPERTY = "defaultValue"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'defaultValue' element of the XmlElementDecl annotation.
-	 * Set to null to remove the element.
-	 */
-	void setDefaultValue(String defaultValue);
-
-	/**
-	 * Return the {@link TextRange} for the 'defaultValue' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
-	 */
-	TextRange getDefaultValueTextRange(CompilationUnit astRoot);
-
+	String SCOPE_PROPERTY = "scope"; //$NON-NLS-1$
+	
 	/**
 	 * Corresponds to the 'scope' element of the XmlElementDecl annotation.
 	 * Return null if the element does not exist in Java.
@@ -96,20 +45,24 @@ public interface XmlElementDeclAnnotation
 	 * will return "XmlElementDecl.GLOBAL"
 	 */
 	String getScope();
-		String SCOPE_PROPERTY = "scope"; //$NON-NLS-1$
-
+	
 	/**
 	 * Corresponds to the 'scope' element of the XmlElementDecl annotation.
 	 * Set to null to remove the element.
 	 */
 	void setScope(String scope);
-
+	
 	/**
 	 * Return the {@link TextRange} for the 'scope' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
 	 */
 	TextRange getScopeTextRange(CompilationUnit astRoot);
-
+	
+	/**
+	 * String associated with "fullyQualifiedScopeClassName" property changes.
+	 */
+	String FULLY_QUALIFIED_SCOPE_CLASS_NAME_PROPERTY = "fullyQualifiedScopeClassName"; //$NON-NLS-1$
+	
 	/**
 	 * Return the fully-qualified scope class name as resolved by the AST's bindings.
 	 * <pre>
@@ -118,44 +71,94 @@ public interface XmlElementDeclAnnotation
 	 * will return "javax.xml.bind.annotation.XmlElementDecl.GLOBAL"
 	 */
 	String getFullyQualifiedScopeClassName();
-		String FULLY_QUALIFIED_SCOPE_CLASS_NAME_PROPERTY = "fullyQualifiedScopeClassName"; //$NON-NLS-1$
-
+	
+	
+	// ***** substitution head namespace *****
+	
 	/**
-	 * Corresponds to the 'substitutionHeadName' element of the XmlElementDecl annotation.
-	 * Return null if the element does not exist in Java.
+	 * String associated with "substitutionHeadNamespace" property changes.
 	 */
-	String getSubstitutionHeadName();
-		String SUBSTITUTION_HEAD_NAME_PROPERTY = "substitutionHeadName"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'substitutionHeadName' element of the XmlElementDecl annotation.
-	 * Set to null to remove the element.
-	 */
-	void setSubstitutionHeadName(String substitutionHeadName);
-
-	/**
-	 * Return the {@link TextRange} for the 'substitutionHeadName' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
-	 */
-	TextRange getSubstitutionHeadNameTextRange(CompilationUnit astRoot);
-
+	String SUBSTITUTION_HEAD_NAMESPACE_PROPERTY = "substitutionHeadNamespace"; //$NON-NLS-1$
+	
 	/**
 	 * Corresponds to the 'substitutionHeadNamespace' element of the XmlElementDecl annotation.
 	 * Return null if the element does not exist in Java.
 	 */
 	String getSubstitutionHeadNamespace();
-		String SUBSTITUTION_HEAD_NAMESPACE_PROPERTY = "substitutionHeadNamespace"; //$NON-NLS-1$
-
+	
 	/**
 	 * Corresponds to the 'substitutionHeadNamespace' element of the XmlElementDecl annotation.
 	 * Set to null to remove the element.
 	 */
 	void setSubstitutionHeadNamespace(String substitutionHeadNamespace);
-
+	
 	/**
 	 * Return the {@link TextRange} for the 'substitutionHeadNamespace' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
 	 */
 	TextRange getSubstitutionHeadNamespaceTextRange(CompilationUnit astRoot);
-
+	
+	/**
+	 * Return whether the specified position touches the 'substitutionHeadNamespace' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean substitutionHeadNamespaceTouches(int pos, CompilationUnit astRoot);
+	
+	
+	// ***** substitution head name *****
+	
+	/**
+	 * String associated with "substitutionHeadName" property changes.
+	 */
+	String SUBSTITUTION_HEAD_NAME_PROPERTY = "substitutionHeadName"; //$NON-NLS-1$
+	
+	/**
+	 * Corresponds to the 'substitutionHeadName' element of the XmlElementDecl annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	String getSubstitutionHeadName();
+	
+	/**
+	 * Corresponds to the 'substitutionHeadName' element of the XmlElementDecl annotation.
+	 * Set to null to remove the element.
+	 */
+	void setSubstitutionHeadName(String substitutionHeadName);
+	
+	/**
+	 * Return the {@link TextRange} for the 'substitutionHeadName' element. If the element 
+	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
+	 */
+	TextRange getSubstitutionHeadNameTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return whether the specified position touches the 'substitutionHeadName' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean substitutionHeadNameTouches(int pos, CompilationUnit astRoot);
+	
+	
+	// ***** default value *****
+	
+	/**
+	 * String associated with "defaultValue" property changes.
+	 */
+	String DEFAULT_VALUE_PROPERTY = "defaultValue"; //$NON-NLS-1$
+	
+	/**
+	 * Corresponds to the 'defaultValue' element of the XmlElementDecl annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	String getDefaultValue();
+	
+	/**
+	 * Corresponds to the 'defaultValue' element of the XmlElementDecl annotation.
+	 * Set to null to remove the element.
+	 */
+	void setDefaultValue(String defaultValue);
+	
+	/**
+	 * Return the {@link TextRange} for the 'defaultValue' element. If the element 
+	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
+	 */
+	TextRange getDefaultValueTextRange(CompilationUnit astRoot);
 }

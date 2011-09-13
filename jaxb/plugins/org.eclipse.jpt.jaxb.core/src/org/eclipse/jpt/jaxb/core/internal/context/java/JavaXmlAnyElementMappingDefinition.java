@@ -26,8 +26,11 @@ public class JavaXmlAnyElementMappingDefinition
 		new JavaXmlAnyElementMappingDefinition();
 	
 	private static final String[] SUPPORTING_ANNOTATION_NAMES = {
-			JAXB.XML_JAVA_TYPE_ADAPTER,
-			JAXB.XML_MIXED };
+		JAXB.XML_ELEMENT_REF,
+		JAXB.XML_ELEMENT_REFS,
+		JAXB.XML_ELEMENT_WRAPPER,
+		JAXB.XML_JAVA_TYPE_ADAPTER,
+		JAXB.XML_MIXED };
 	
 	
 	/**

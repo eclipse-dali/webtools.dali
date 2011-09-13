@@ -75,7 +75,7 @@ public class GenericJavaTransientClass
 	// ********** xml transient annotation **********
 
 	protected XmlTransientAnnotation getXmlTransientAnnotation() {
-		return (XmlTransientAnnotation) this.getJavaResourceType().getNonNullAnnotation(JAXB.XML_TRANSIENT);
+		return (XmlTransientAnnotation) this.getJavaResourceType().getAnnotation(JAXB.XML_TRANSIENT);
 	}
 	
 	

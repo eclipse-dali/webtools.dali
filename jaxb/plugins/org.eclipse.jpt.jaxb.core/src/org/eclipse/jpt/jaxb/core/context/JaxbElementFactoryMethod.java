@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
  * Represents a JAXB element factory method  
@@ -25,60 +26,57 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
  * @since 3.0
  */
 public interface JaxbElementFactoryMethod
-		extends JaxbContextNode {
-
+		extends JavaContextNode {
+	
 	JavaResourceMethod getResourceMethod();
-
+	
 	/**
 	 * Return the method name
 	 */
 	String getName();
-
-	/**
-	 * Corresponds to the XmlElementDecl annotation 'name' element
-	 */
-	String getElementName();
-	void setElementName(String elementName);
-		String ELEMENT_NAME_PROPERTY = "elementName"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the XmlElementDecl annotation 'defaultValue' element
-	 */
-	String getDefaultValue();
-	void setDefaultValue(String defaultValue);
-		String DEFAULT_VALUE_PROPERTY = "defaultValue"; //$NON-NLS-1$
-		String DEFAULT_DEFAULT_VALUE = "\u0000"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the XmlElementDecl annotation 'namespace' element
-	 */
-	String getNamespace();
-	void setNamespace(String namespace);
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-		String DEFAULT_NAMESPACE = "##default"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the XmlElementDecl annotation 'substitutionHeadName' element
-	 */
-	String getSubstitutionHeadName();
-	void setSubstitutionHeadName(String substitutionHeadName);
-		String SUBSTIUTION_HEAD_NAME_PROPERTY = "substitutionHeadName"; //$NON-NLS-1$
-		String DEFAULT_SUBSTIUTION_HEAD_NAME = ""; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the XmlElementDecl annotation 'substitutionHeadNamespace' element
-	 */
-	String getSubstitutionHeadNamespace();
-	void setSubstitutionHeadNamespace(String substitutionHeadNamespace);
-		String SUBSTIUTION_HEAD_NAMESPACE_PROPERTY = "substitutionHeadNamespace"; //$NON-NLS-1$
-		String DEFAULT_SUBSTIUTION_HEAD_NAMESPACE = "##default"; //$NON-NLS-1$
-
-
+	
+	
+	// ***** scope *****
+	
 	/**
 	 * Corresponds to the XmlElementDecl annotation 'scope' element
 	 */
+	String SCOPE_PROPERTY = "scope"; //$NON-NLS-1$
+	
 	String getScope();
+	
 	void setScope(String scope);
-		String SCOPE_PROPERTY = "scope"; //$NON-NLS-1$
-		String DEFAULT_SCOPE_CLASS_NAME = "javax.xml.bind.annotation.XmlElementDecl.GLOBAL"; //$NON-NLS-1$
+	
+	String DEFAULT_SCOPE_CLASS_NAME = "javax.xml.bind.annotation.XmlElementDecl.GLOBAL"; //$NON-NLS-1$
+	
+	String getFullyQualifiedScope();
+	
+	/**
+	 * Return true if the scope is default or is specified to be XmlElementDecl.GLOBAL.
+	 */
+	boolean isGlobalScope();
+	
+	
+	// ***** qName *****
+	
+	JaxbQName getQName();
+	
+	
+	// ***** substitution head qName *****
+	
+	JaxbQName getSubstitutionHeadQName();
+	
+	
+	// ***** default value *****
+	
+	/**
+	 * Corresponds to the XmlElementDecl annotation 'defaultValue' element
+	 */
+	String DEFAULT_VALUE_PROPERTY = "defaultValue"; //$NON-NLS-1$
+	
+	String getDefaultValue();
+	
+	void setDefaultValue(String defaultValue);
+	
+	String DEFAULT_DEFAULT_VALUE = "\u0000"; //$NON-NLS-1$	
 }

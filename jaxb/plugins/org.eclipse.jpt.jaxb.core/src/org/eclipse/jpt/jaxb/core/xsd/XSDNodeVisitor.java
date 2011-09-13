@@ -29,6 +29,10 @@ public class XSDNodeVisitor {
 	
 	protected boolean visitChildren = true;
 	
+	protected boolean visitChildren() {
+		return this.visitChildren;
+	}
+	
 	public void visitNode(XSDComponent node) {
 		if (node != null && ! visitedNodeStack.contains(node)) {
 			visitedNodeStack.push(node);
@@ -95,7 +99,7 @@ public class XSDNodeVisitor {
 	public void visitXSDAttributeDeclaration(XSDAttributeDeclaration node) {}
 	
 	public void visitXSDAttributeGroupDefinition(XSDAttributeGroupDefinition node) {
-		if (visitChildren) {
+		if (visitChildren()) {
 			for (XSDAttributeUse attrUse : node.getAttributeUses()) {
 				visitNode(attrUse);
 			}
@@ -109,7 +113,7 @@ public class XSDNodeVisitor {
 			visitNode(node.getBaseType());
 		}
 		
-		if (visitChildren) {
+		if (visitChildren()) {
 			for (XSDAttributeUse attrUse : node.getAttributeUses()) {
 				visitNode(attrUse);
 			}
@@ -125,7 +129,7 @@ public class XSDNodeVisitor {
 			visitNode(element);
 		}
 		
-		if (visitChildren) {
+		if (visitChildren()) {
 			if (node.getTypeDefinition() != null) {
 				visitNode(node.getTypeDefinition());
 			}
@@ -133,7 +137,7 @@ public class XSDNodeVisitor {
 	}
 	
 	public void visitXSDModelGroup(XSDModelGroup node) {
-		if (visitChildren) {
+		if (visitChildren()) {
 			for (XSDParticle particle : node.getParticles()) {
 				visitNode(particle);
 			}
