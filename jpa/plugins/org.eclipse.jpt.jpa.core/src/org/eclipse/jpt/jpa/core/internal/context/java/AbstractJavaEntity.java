@@ -52,6 +52,7 @@ import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
@@ -76,7 +77,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
-import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.EntityTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
@@ -682,6 +683,7 @@ public abstract class AbstractJavaEntity
 
 	// ********** inheritance strategy **********
 
+	@Override
 	public InheritanceType getInheritanceStrategy() {
 		return (this.specifiedInheritanceStrategy != null) ? this.specifiedInheritanceStrategy : this.defaultInheritanceStrategy;
 	}
@@ -719,7 +721,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected InheritanceType buildDefaultInheritanceStrategy() {
-		return this.isRoot() ? InheritanceType.SINGLE_TABLE : this.rootEntity.getInheritanceStrategy();
+		return this.isRootEntity() ? InheritanceType.SINGLE_TABLE : this.rootEntity.getInheritanceStrategy();
 	}
 
 
@@ -867,7 +869,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected boolean buildSpecifiedDiscriminatorColumnIsAllowed() {
-		return ! this.isTablePerClass() && this.isRoot();
+		return ! this.isTablePerClass() && this.isRootEntity();
 	}
 
 	public boolean discriminatorColumnIsUndefined() {
@@ -1130,7 +1132,8 @@ public abstract class AbstractJavaEntity
 		return null;
 	}
 
-	public boolean isRoot() {
+	@Override
+	public boolean isRootEntity() {
 		return this == this.rootEntity;
 	}
 
@@ -1139,7 +1142,7 @@ public abstract class AbstractJavaEntity
 	 * an inheritance hierarchy.
 	 */
 	protected boolean isDescendant() {
-		return ! this.isRoot();
+		return ! this.isRootEntity();
 	}
 
 	/**
@@ -1156,7 +1159,7 @@ public abstract class AbstractJavaEntity
 	 * and has no descendants and no specified inheritance strategy has been defined.
 	 */
 	protected boolean isRootNoDescendantsNoStrategyDefined() {
-		return this.isRoot() &&
+		return this.isRootEntity() &&
 				this.descendants.isEmpty() &&
 				(this.specifiedInheritanceStrategy == null);
 	}
@@ -1422,7 +1425,7 @@ public abstract class AbstractJavaEntity
 		if (tablePerConcreteClassInheritanceIsSupported == Supported.YES) {
 			return;
 		}
-		if ((this.getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS) && this.isRoot()) {
+		if ((this.getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS) && this.isRootEntity()) {
 			if (tablePerConcreteClassInheritanceIsSupported == Supported.NO) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -1551,7 +1554,7 @@ public abstract class AbstractJavaEntity
 			return new AttributeOverrideValidator((ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver) {
 			return new AttributeOverrideColumnValidator((ReadOnlyAttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
 		}
 	}
@@ -1576,7 +1579,7 @@ public abstract class AbstractJavaEntity
 			return new AssociationOverrideValidator((ReadOnlyAssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator((ReadOnlyAssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 		}
 
@@ -1664,13 +1667,13 @@ public abstract class AbstractJavaEntity
 		public int getDefaultLength() {
 			return this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getLength() :
-					this.discriminatorColumnIsUndefined() ? 0 : DiscriminatorColumn.DEFAULT_LENGTH;
+					this.discriminatorColumnIsUndefined() ? 0 : ReadOnlyNamedDiscriminatorColumn.DEFAULT_LENGTH;
 		}
 
 		public DiscriminatorType getDefaultDiscriminatorType() {
 			return this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getDiscriminatorType() :
-					this.discriminatorColumnIsUndefined() ? null : DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
+					this.discriminatorColumnIsUndefined() ? null : ReadOnlyNamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 		}
 
 		protected boolean isDescendant() {

@@ -31,6 +31,10 @@ public interface EclipseLinkMultitenantAnnotation
 {
 	String ANNOTATION_NAME = EclipseLink2_3.MULTITENANT;
 
+	/**
+	 * Return whether the annotation exists in Java.
+	 */
+	boolean isSpecified();
 
 	/**
 	 * Corresponds to the 'value' element of the Multitenant annotation.

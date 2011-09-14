@@ -260,6 +260,6 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends JavaReadOnlyBaseCo
 
 	@Override
 	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaBaseColumnTextRangeResolver(this, astRoot);
+		return new JavaTableColumnTextRangeResolver(this, astRoot);
 	}
 }

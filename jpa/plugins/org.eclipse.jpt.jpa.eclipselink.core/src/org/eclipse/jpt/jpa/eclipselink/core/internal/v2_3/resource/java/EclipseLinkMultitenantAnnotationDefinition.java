@@ -48,7 +48,7 @@ public class EclipseLinkMultitenantAnnotationDefinition
 	}
 	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		throw new UnsupportedOperationException();
+		return new NullEclipseLinkMultitenantAnnotation(parent);
 	}
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
+ *  Copyright (c) 2010, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 /**
  * Interface to resolve text ranges on named columns
  */
-public interface BaseColumnTextRangeResolver extends NamedColumnTextRangeResolver
+public interface TableColumnTextRangeResolver extends NamedColumnTextRangeResolver
 {
 	TextRange getTableTextRange();
 }

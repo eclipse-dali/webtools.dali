@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlBaseDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
@@ -360,6 +361,10 @@ public class XmlTenantDiscriminatorColumn extends AbstractXmlBaseDiscriminatorCo
 		result.append(primaryKey);
 		result.append(')');
 		return result.toString();
+	}
+
+	public TextRange getTableTextRange() {
+		return getAttributeTextRange(EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN__TABLE);
 	}
 
 	// ********** translators **********

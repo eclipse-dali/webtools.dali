@@ -297,6 +297,6 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends O
 
 	@Override
 	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
-		return new OrmBaseColumnTextRangeResolver(this);
+		return new OrmTableColumnTextRangeResolver(this);
 	}
 }

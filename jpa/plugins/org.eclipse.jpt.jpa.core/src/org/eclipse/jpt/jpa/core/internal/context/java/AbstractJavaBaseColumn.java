@@ -358,6 +358,6 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 
 	@Override
 	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaBaseColumnTextRangeResolver(this, astRoot);
+		return new JavaTableColumnTextRangeResolver(this, astRoot);
 	}
 }

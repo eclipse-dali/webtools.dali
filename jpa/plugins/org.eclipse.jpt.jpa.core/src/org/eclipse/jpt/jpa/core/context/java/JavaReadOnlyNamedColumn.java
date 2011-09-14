@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 
 /**
@@ -45,7 +44,7 @@ public interface JavaReadOnlyNamedColumn
 	 * (e.g. basic mappings and attribute overrides)
 	 */
 	interface Owner
-		extends NamedColumn.Owner
+		extends ReadOnlyNamedColumn.Owner
 	{
 		/**
 		 * Return the column owner's text range. This can be returned by the

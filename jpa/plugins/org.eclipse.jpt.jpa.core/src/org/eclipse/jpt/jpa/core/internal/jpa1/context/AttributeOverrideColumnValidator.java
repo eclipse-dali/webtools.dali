@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -26,7 +26,7 @@ public class AttributeOverrideColumnValidator
 	public AttributeOverrideColumnValidator(
 				ReadOnlyAttributeOverride override,
 				ReadOnlyBaseColumn column,
-				BaseColumnTextRangeResolver textRangeResolver,
+				TableColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider message) {
 		super(column, textRangeResolver, message);
 		this.override = override;
@@ -36,7 +36,7 @@ public class AttributeOverrideColumnValidator
 				ReadOnlyPersistentAttribute persistentAttribute,
 				ReadOnlyAttributeOverride override,
 				ReadOnlyBaseColumn column,
-				BaseColumnTextRangeResolver textRangeResolver,
+				TableColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider message) {
 		super(persistentAttribute, column, textRangeResolver, message);
 		this.override = override;

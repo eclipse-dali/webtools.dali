@@ -78,6 +78,16 @@ public interface TypeMapping
 	 */
 	Iterable<TypeMapping> getInheritanceHierarchy();
 	
+	/**
+	 * Return the inheritance strategy or null
+	 */
+	InheritanceType getInheritanceStrategy();
+
+	/**
+	 * Return whether this type mapping is a root entity in an inheritance hierarchy.
+	 */
+	boolean isRootEntity();
+
 
 	// ********** tables **********
 

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable;
 
 /**
@@ -21,7 +21,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3#getMultitenant <em>Multitenant</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3#getNamedStoredFunctionQueries <em>Named Stored Function Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3#getNamedPlsqlStoredFunctionQueries <em>Named Plsql Stored Function Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3#getNamedPlsqlStoredProcedureQueries <em>Named Plsql Stored Procedure Queries</em>}</li>
@@ -33,37 +32,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEntity_2_3()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlEntity_2_3 extends JpaEObject
+public interface XmlEntity_2_3 extends XmlMultitenantHolder
 {
-	/**
-	 * Returns the value of the '<em><b>Multitenant</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Multitenant</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Multitenant</em>' containment reference.
-	 * @see #setMultitenant(XmlMultitenant_2_3)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEntity_2_3_Multitenant()
-	 * @model containment="true"
-	 * @generated
-	 */
-	XmlMultitenant_2_3 getMultitenant();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3#getMultitenant <em>Multitenant</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Multitenant</em>' containment reference.
-	 * @see #getMultitenant()
-	 * @generated
-	 */
-	void setMultitenant(XmlMultitenant_2_3 value);
-
 	/**
 	 * Returns the value of the '<em><b>Named Stored Function Queries</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3}.

@@ -53,6 +53,7 @@ import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -91,7 +92,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
-import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.EntityTextRangeResolver;
@@ -686,7 +687,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
-			return SPECIFIED_SECONDARY_TABLES_LIST;
+			return VIRTUAL_SECONDARY_TABLES_LIST;
 		}
 		@Override
 		protected OrmVirtualSecondaryTable buildContextElement(JavaSecondaryTable resourceElement) {
@@ -1063,6 +1064,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	// ********** inheritance strategy **********
 
+	@Override
 	public InheritanceType getInheritanceStrategy() {
 		return (this.specifiedInheritanceStrategy != null) ? this.specifiedInheritanceStrategy : this.defaultInheritanceStrategy;
 	}
@@ -1123,7 +1125,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if ((javaEntity != null) && (this.xmlTypeMapping.getInheritance() == null)) {
 			return javaEntity.getInheritanceStrategy();
 		}
-		return this.isRoot() ?
+		return this.isRootEntity() ?
 				InheritanceType.SINGLE_TABLE :
 				this.rootEntity.getInheritanceStrategy();
 	}
@@ -1240,7 +1242,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected boolean buildSpecifiedDiscriminatorColumnIsAllowed() {
-		return ! this.isTablePerClass() && this.isRoot();
+		return ! this.isTablePerClass() && this.isRootEntity();
 	}
 
 	public boolean discriminatorColumnIsUndefined() {
@@ -1583,7 +1585,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	/**
 	 * Return whether the entity is the top of an inheritance hierarchy.
 	 */
-	public boolean isRoot() {
+	@Override
+	public boolean isRootEntity() {
 		return this == this.rootEntity;
 	}
 
@@ -1592,7 +1595,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * an inheritance hierarchy.
 	 */
 	protected boolean isDescendant() {
-		return ! this.isRoot();
+		return ! this.isRootEntity();
 	}
 
 	/**
@@ -1609,7 +1612,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * and has no descendants and no specified inheritance strategy has been defined.
 	 */
 	protected boolean isRootNoDescendantsNoStrategyDefined() {
-		return this.isRoot() &&
+		return this.isRootEntity() &&
 				this.descendants.isEmpty() &&
 				(this.specifiedInheritanceStrategy == null);
 	}
@@ -1872,7 +1875,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if (tablePerConcreteClassInheritanceIsSupported == Supported.YES) {
 			return;
 		}
-		if ((this.getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS) && this.isRoot()) {
+		if ((this.getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS) && this.isRootEntity()) {
 			if (tablePerConcreteClassInheritanceIsSupported == Supported.NO) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -2008,7 +2011,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return new AttributeOverrideValidator((ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver) {
 			return new AttributeOverrideColumnValidator((ReadOnlyAttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
 		}
 
@@ -2052,7 +2055,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return new AssociationOverrideValidator((ReadOnlyAssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator((ReadOnlyAssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 		}
 
@@ -2158,7 +2161,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			}
 			return AbstractOrmEntity.this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getLength() :
-					this.isTablePerClass() ? 0 : DiscriminatorColumn.DEFAULT_LENGTH;
+					this.isTablePerClass() ? 0 : ReadOnlyNamedDiscriminatorColumn.DEFAULT_LENGTH;
 		}
 
 		public DiscriminatorType getDefaultDiscriminatorType() {
@@ -2173,7 +2176,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			}
 			return AbstractOrmEntity.this.isDescendant() ?
 					this.getRootDiscriminatorColumn().getDiscriminatorType() :
-					this.isTablePerClass() ? null : DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
+					this.isTablePerClass() ? null : ReadOnlyNamedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 		}
 
 		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {

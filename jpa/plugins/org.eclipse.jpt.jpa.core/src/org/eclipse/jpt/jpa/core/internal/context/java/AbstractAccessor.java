@@ -167,6 +167,11 @@ public abstract class AbstractAccessor
 			return this.member.getNameTextRange(astRoot);
 		}
 
+		public TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot) {
+			// should never be null
+			return this.member.getTextRange(nestableAnnotationName, astRoot);
+		}
+
 		public void resolveTypes(CompilationUnit astRoot) {
 			// NOP
 		}

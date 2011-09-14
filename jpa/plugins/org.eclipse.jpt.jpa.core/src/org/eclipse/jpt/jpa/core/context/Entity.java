@@ -245,11 +245,6 @@ public interface Entity
 	// ********** entity inheritance **********
 
 	/**
-	 * Return whether this entity is a root entity in an inheritance hierarchy.
-	 */
-	boolean isRoot();
-
-	/**
 	 * Return the top of the entity's inheritance hierarchy.
 	 * This method will never return <code>null</code>. The root
 	 * is defined as the persistent type in the inheritance hierarchy

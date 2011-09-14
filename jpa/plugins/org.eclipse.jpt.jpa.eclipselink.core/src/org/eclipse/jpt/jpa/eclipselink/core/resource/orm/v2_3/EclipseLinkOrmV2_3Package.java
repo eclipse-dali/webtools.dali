@@ -303,7 +303,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_23__MULTITENANT = 0;
+	public static final int XML_ENTITY_23__MULTITENANT = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER__MULTITENANT;
 
 	/**
 	 * The feature id for the '<em><b>Named Stored Function Queries</b></em>' containment reference list.
@@ -312,7 +312,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_23__NAMED_STORED_FUNCTION_QUERIES = 1;
+	public static final int XML_ENTITY_23__NAMED_STORED_FUNCTION_QUERIES = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Named Plsql Stored Function Queries</b></em>' containment reference list.
@@ -321,7 +321,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES = 2;
+	public static final int XML_ENTITY_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Named Plsql Stored Procedure Queries</b></em>' containment reference list.
@@ -330,7 +330,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES = 3;
+	public static final int XML_ENTITY_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Plsql Records</b></em>' containment reference list.
@@ -339,7 +339,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_23__PLSQL_RECORDS = 4;
+	public static final int XML_ENTITY_23__PLSQL_RECORDS = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Plsql Tables</b></em>' containment reference list.
@@ -348,7 +348,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_23__PLSQL_TABLES = 5;
+	public static final int XML_ENTITY_23__PLSQL_TABLES = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Struct</b></em>' containment reference.
@@ -357,7 +357,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_23__STRUCT = 6;
+	public static final int XML_ENTITY_23__STRUCT = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity 23</em>' class.
@@ -366,7 +366,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_23_FEATURE_COUNT = 7;
+	public static final int XML_ENTITY_23_FEATURE_COUNT = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.
@@ -438,7 +438,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_23__MULTITENANT = 0;
+	public static final int XML_MAPPED_SUPERCLASS_23__MULTITENANT = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER__MULTITENANT;
 
 	/**
 	 * The feature id for the '<em><b>Named Stored Function Queries</b></em>' containment reference list.
@@ -447,7 +447,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_23__NAMED_STORED_FUNCTION_QUERIES = 1;
+	public static final int XML_MAPPED_SUPERCLASS_23__NAMED_STORED_FUNCTION_QUERIES = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Named Plsql Stored Function Queries</b></em>' containment reference list.
@@ -456,7 +456,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES = 2;
+	public static final int XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Named Plsql Stored Procedure Queries</b></em>' containment reference list.
@@ -465,7 +465,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES = 3;
+	public static final int XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Plsql Records</b></em>' containment reference list.
@@ -474,7 +474,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_23__PLSQL_RECORDS = 4;
+	public static final int XML_MAPPED_SUPERCLASS_23__PLSQL_RECORDS = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Plsql Tables</b></em>' containment reference list.
@@ -483,7 +483,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_23__PLSQL_TABLES = 5;
+	public static final int XML_MAPPED_SUPERCLASS_23__PLSQL_TABLES = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass 23</em>' class.
@@ -492,7 +492,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_23_FEATURE_COUNT = 6;
+	public static final int XML_MAPPED_SUPERCLASS_23_FEATURE_COUNT = EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -1194,20 +1194,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3#getMultitenant <em>Multitenant</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Multitenant</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3#getMultitenant()
-	 * @see #getXmlEntity_2_3()
-	 * @generated
-	 */
-	public EReference getXmlEntity_2_3_Multitenant()
-	{
-		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3#getNamedStoredFunctionQueries <em>Named Stored Function Queries</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1218,7 +1204,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlEntity_2_3_NamedStoredFunctionQueries()
 	{
-		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(1);
+		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -1233,7 +1219,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlEntity_2_3_NamedPlsqlStoredFunctionQueries()
 	{
-		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(2);
+		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(1);
 	}
 
 
@@ -1248,7 +1234,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlEntity_2_3_NamedPlsqlStoredProcedureQueries()
 	{
-		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(3);
+		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(2);
 	}
 
 
@@ -1263,7 +1249,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlEntity_2_3_PlsqlRecords()
 	{
-		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(4);
+		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -1278,7 +1264,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlEntity_2_3_PlsqlTables()
 	{
-		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(5);
+		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(4);
 	}
 
 
@@ -1293,7 +1279,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlEntity_2_3_Struct()
 	{
-		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(6);
+		return (EReference)xmlEntity_2_3EClass.getEStructuralFeatures().get(5);
 	}
 
 
@@ -1311,20 +1297,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMappedSuperclass_2_3#getMultitenant <em>Multitenant</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Multitenant</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMappedSuperclass_2_3#getMultitenant()
-	 * @see #getXmlMappedSuperclass_2_3()
-	 * @generated
-	 */
-	public EReference getXmlMappedSuperclass_2_3_Multitenant()
-	{
-		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMappedSuperclass_2_3#getNamedStoredFunctionQueries <em>Named Stored Function Queries</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1335,7 +1307,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlMappedSuperclass_2_3_NamedStoredFunctionQueries()
 	{
-		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(1);
+		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -1350,7 +1322,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlMappedSuperclass_2_3_NamedPlsqlStoredFunctionQueries()
 	{
-		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(2);
+		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(1);
 	}
 
 
@@ -1365,7 +1337,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlMappedSuperclass_2_3_NamedPlsqlStoredProcedureQueries()
 	{
-		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(3);
+		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(2);
 	}
 
 
@@ -1380,7 +1352,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlMappedSuperclass_2_3_PlsqlRecords()
 	{
-		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(4);
+		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -1395,7 +1367,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	 */
 	public EReference getXmlMappedSuperclass_2_3_PlsqlTables()
 	{
-		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(5);
+		return (EReference)xmlMappedSuperclass_2_3EClass.getEStructuralFeatures().get(4);
 	}
 
 
@@ -1837,7 +1809,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		createEReference(xmlEmbeddable_2_3EClass, XML_EMBEDDABLE_23__STRUCT);
 
 		xmlEntity_2_3EClass = createEClass(XML_ENTITY_23);
-		createEReference(xmlEntity_2_3EClass, XML_ENTITY_23__MULTITENANT);
 		createEReference(xmlEntity_2_3EClass, XML_ENTITY_23__NAMED_STORED_FUNCTION_QUERIES);
 		createEReference(xmlEntity_2_3EClass, XML_ENTITY_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES);
 		createEReference(xmlEntity_2_3EClass, XML_ENTITY_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES);
@@ -1854,7 +1825,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		createEReference(xmlEntityMappings_2_3EClass, XML_ENTITY_MAPPINGS_23__PLSQL_TABLES);
 
 		xmlMappedSuperclass_2_3EClass = createEClass(XML_MAPPED_SUPERCLASS_23);
-		createEReference(xmlMappedSuperclass_2_3EClass, XML_MAPPED_SUPERCLASS_23__MULTITENANT);
 		createEReference(xmlMappedSuperclass_2_3EClass, XML_MAPPED_SUPERCLASS_23__NAMED_STORED_FUNCTION_QUERIES);
 		createEReference(xmlMappedSuperclass_2_3EClass, XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES);
 		createEReference(xmlMappedSuperclass_2_3EClass, XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES);
@@ -1934,6 +1904,8 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		xmlEntity_2_3EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlMultitenantHolder());
+		xmlMappedSuperclass_2_3EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlMultitenantHolder());
 		xmlTenantDiscriminatorColumn_2_3EClass.getESuperTypes().add(theOrmPackage.getXmlBaseDiscriminatorColumn());
 
 		// Initialize classes and features; add operations and parameters
@@ -1949,7 +1921,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		initEReference(getXmlEmbeddable_2_3_Struct(), this.getXmlStruct_2_3(), null, "struct", null, 0, 1, XmlEmbeddable_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntity_2_3EClass, XmlEntity_2_3.class, "XmlEntity_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlEntity_2_3_Multitenant(), this.getXmlMultitenant_2_3(), null, "multitenant", null, 0, 1, XmlEntity_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_2_3_NamedStoredFunctionQueries(), this.getXmlNamedStoredFunctionQuery_2_3(), null, "namedStoredFunctionQueries", null, 0, -1, XmlEntity_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_2_3_NamedPlsqlStoredFunctionQueries(), this.getXmlNamedPlsqlStoredFunctionQuery_2_3(), null, "namedPlsqlStoredFunctionQueries", null, 0, -1, XmlEntity_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_2_3_NamedPlsqlStoredProcedureQueries(), this.getXmlNamedPlsqlStoredProcedureQuery_2_3(), null, "namedPlsqlStoredProcedureQueries", null, 0, -1, XmlEntity_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1966,7 +1937,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		initEReference(getXmlEntityMappings_2_3_PlsqlTables(), theEclipseLinkOrmPackage.getXmlPlsqlTable(), null, "plsqlTables", null, 0, -1, XmlEntityMappings_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclass_2_3EClass, XmlMappedSuperclass_2_3.class, "XmlMappedSuperclass_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlMappedSuperclass_2_3_Multitenant(), this.getXmlMultitenant_2_3(), null, "multitenant", null, 0, 1, XmlMappedSuperclass_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_2_3_NamedStoredFunctionQueries(), this.getXmlNamedStoredFunctionQuery_2_3(), null, "namedStoredFunctionQueries", null, 0, -1, XmlMappedSuperclass_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_2_3_NamedPlsqlStoredFunctionQueries(), this.getXmlNamedPlsqlStoredFunctionQuery_2_3(), null, "namedPlsqlStoredFunctionQueries", null, 0, -1, XmlMappedSuperclass_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_2_3_NamedPlsqlStoredProcedureQueries(), this.getXmlNamedPlsqlStoredProcedureQuery_2_3(), null, "namedPlsqlStoredProcedureQueries", null, 0, -1, XmlMappedSuperclass_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2153,14 +2123,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		public static final EClass XML_ENTITY_23 = eINSTANCE.getXmlEntity_2_3();
 
 		/**
-		 * The meta object literal for the '<em><b>Multitenant</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY_23__MULTITENANT = eINSTANCE.getXmlEntity_2_3_Multitenant();
-
-		/**
 		 * The meta object literal for the '<em><b>Named Stored Function Queries</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2217,14 +2179,6 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MAPPED_SUPERCLASS_23 = eINSTANCE.getXmlMappedSuperclass_2_3();
-
-		/**
-		 * The meta object literal for the '<em><b>Multitenant</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MAPPED_SUPERCLASS_23__MULTITENANT = eINSTANCE.getXmlMappedSuperclass_2_3_Multitenant();
 
 		/**
 		 * The meta object literal for the '<em><b>Named Stored Function Queries</b></em>' containment reference list feature.

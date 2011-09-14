@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmEclipseLinkMultitenancy;
 
 /**
  * EclipseLink <code>orm.xml</code> non-embeddable type mapping
@@ -29,4 +30,6 @@ public interface OrmEclipseLinkNonEmbeddableTypeMapping
 	JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMapping();
 
 	JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMappingForDefaults();
+
+	OrmEclipseLinkMultitenancy getMultitenancy();
 }

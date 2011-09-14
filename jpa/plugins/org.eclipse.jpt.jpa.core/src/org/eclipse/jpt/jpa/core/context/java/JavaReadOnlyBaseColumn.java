@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 
 /**
@@ -23,13 +21,8 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaReadOnlyBaseColumn
-	extends ReadOnlyBaseColumn, JavaReadOnlyNamedColumn
+	extends ReadOnlyBaseColumn, JavaReadOnlyTableColumn
 {
-	/**
-	 * Return the (best guess) text location of the column's table.
-	 */
-	TextRange getTableTextRange(CompilationUnit astRoot);
-
 
 	// ********** owner **********
 
@@ -38,7 +31,7 @@ public interface JavaReadOnlyBaseColumn
 	 * (e.g. basic mappings and attribute overrides)
 	 */
 	interface Owner
-		extends ReadOnlyBaseColumn.Owner, JavaReadOnlyNamedColumn.Owner
+		extends ReadOnlyBaseColumn.Owner, JavaReadOnlyTableColumn.Owner
 	{
 		// combine interfaces
 	}

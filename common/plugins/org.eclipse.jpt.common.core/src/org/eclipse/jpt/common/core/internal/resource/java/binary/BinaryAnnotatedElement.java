@@ -282,6 +282,10 @@ abstract class BinaryAnnotatedElement
 		throw new UnsupportedOperationException();
 	}
 
+	public TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+
 	private static final IMemberValuePair[] EMPTY_MEMBER_VALUE_PAIR_ARRAY = new IMemberValuePair[0];
 
 	class AnnotationContainer

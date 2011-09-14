@@ -1131,7 +1131,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedConverter()
 	 * @generated
 	 */
-	public static final int XML_NAMED_CONVERTER = 45;
+	public static final int XML_NAMED_CONVERTER = 46;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3243,7 +3243,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMutable()
 	 * @generated
 	 */
-	public static final int XML_MUTABLE = 44;
+	public static final int XML_MUTABLE = 45;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery <em>Xml Named Stored Procedure Query</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3252,7 +3252,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedStoredProcedureQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY = 49;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY = 50;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlObjectTypeConverter <em>Xml Object Type Converter</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3261,7 +3261,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverter()
 	 * @generated
 	 */
-	public static final int XML_OBJECT_TYPE_CONVERTER = 50;
+	public static final int XML_OBJECT_TYPE_CONVERTER = 51;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3270,7 +3270,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToMany()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY = 51;
+	public static final int XML_ONE_TO_MANY = 52;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToOne <em>Xml One To One</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3279,7 +3279,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToOne()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE = 52;
+	public static final int XML_ONE_TO_ONE = 53;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOptimisticLocking <em>Xml Optimistic Locking</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3288,7 +3288,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOptimisticLocking()
 	 * @generated
 	 */
-	public static final int XML_OPTIMISTIC_LOCKING = 53;
+	public static final int XML_OPTIMISTIC_LOCKING = 54;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOrderColumn <em>Xml Order Column</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3297,7 +3297,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOrderColumn()
 	 * @generated
 	 */
-	public static final int XML_ORDER_COLUMN = 54;
+	public static final int XML_ORDER_COLUMN = 55;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPersistenceUnitDefaults <em>Xml Persistence Unit Defaults</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3306,7 +3306,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPersistenceUnitDefaults()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS = 56;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS = 57;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPersistenceUnitMetadata <em>Xml Persistence Unit Metadata</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3315,7 +3315,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPersistenceUnitMetadata()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_METADATA = 57;
+	public static final int XML_PERSISTENCE_UNIT_METADATA = 58;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPrimaryKey <em>Xml Primary Key</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3324,7 +3324,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPrimaryKey()
 	 * @generated
 	 */
-	public static final int XML_PRIMARY_KEY = 61;
+	public static final int XML_PRIMARY_KEY = 62;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPrivateOwned <em>Xml Private Owned</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3333,7 +3333,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPrivateOwned()
 	 * @generated
 	 */
-	public static final int XML_PRIVATE_OWNED = 62;
+	public static final int XML_PRIVATE_OWNED = 63;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlProperty <em>Xml Property</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3342,7 +3342,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlProperty()
 	 * @generated
 	 */
-	public static final int XML_PROPERTY = 63;
+	public static final int XML_PROPERTY = 64;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPropertyContainer <em>Xml Property Container</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3351,7 +3351,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPropertyContainer()
 	 * @generated
 	 */
-	public static final int XML_PROPERTY_CONTAINER = 64;
+	public static final int XML_PROPERTY_CONTAINER = 65;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryContainer <em>Xml Query Container</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3360,7 +3360,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryContainer()
 	 * @generated
 	 */
-	public static final int XML_QUERY_CONTAINER = 65;
+	public static final int XML_QUERY_CONTAINER = 66;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryRedirectors <em>Xml Query Redirectors</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3369,7 +3369,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors()
 	 * @generated
 	 */
-	public static final int XML_QUERY_REDIRECTORS = 66;
+	public static final int XML_QUERY_REDIRECTORS = 67;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlReadOnly <em>Xml Read Only</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3378,7 +3378,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlReadOnly()
 	 * @generated
 	 */
-	public static final int XML_READ_ONLY = 68;
+	public static final int XML_READ_ONLY = 69;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlReturnInsert <em>Xml Return Insert</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3387,7 +3387,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlReturnInsert()
 	 * @generated
 	 */
-	public static final int XML_RETURN_INSERT = 70;
+	public static final int XML_RETURN_INSERT = 71;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlSecondaryTable <em>Xml Secondary Table</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3396,7 +3396,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlSecondaryTable()
 	 * @generated
 	 */
-	public static final int XML_SECONDARY_TABLE = 72;
+	public static final int XML_SECONDARY_TABLE = 73;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter <em>Xml Stored Procedure Parameter</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3405,7 +3405,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStoredProcedureParameter()
 	 * @generated
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER = 73;
+	public static final int XML_STORED_PROCEDURE_PARAMETER = 74;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter <em>Xml Struct Converter</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3414,7 +3414,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructConverter()
 	 * @generated
 	 */
-	public static final int XML_STRUCT_CONVERTER = 75;
+	public static final int XML_STRUCT_CONVERTER = 76;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTable <em>Xml Table</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3423,7 +3423,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTable()
 	 * @generated
 	 */
-	public static final int XML_TABLE = 77;
+	public static final int XML_TABLE = 78;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTableGenerator <em>Xml Table Generator</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3432,7 +3432,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTableGenerator()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR = 78;
+	public static final int XML_TABLE_GENERATOR = 79;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTimeOfDay <em>Xml Time Of Day</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3441,7 +3441,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTimeOfDay()
 	 * @generated
 	 */
-	public static final int XML_TIME_OF_DAY = 80;
+	public static final int XML_TIME_OF_DAY = 81;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTransformation <em>Xml Transformation</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3450,7 +3450,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformation()
 	 * @generated
 	 */
-	public static final int XML_TRANSFORMATION = 81;
+	public static final int XML_TRANSFORMATION = 82;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTransient <em>Xml Transient</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3459,7 +3459,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransient()
 	 * @generated
 	 */
-	public static final int XML_TRANSIENT = 82;
+	public static final int XML_TRANSIENT = 83;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter <em>Xml Type Converter</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3468,7 +3468,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeConverter()
 	 * @generated
 	 */
-	public static final int XML_TYPE_CONVERTER = 83;
+	public static final int XML_TYPE_CONVERTER = 84;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne <em>Xml Variable One To One</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3477,7 +3477,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVariableOneToOne()
 	 * @generated
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE = 86;
+	public static final int XML_VARIABLE_ONE_TO_ONE = 87;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion <em>Xml Version</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3486,7 +3486,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int XML_VERSION = 87;
+	public static final int XML_VERSION = 88;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlHashPartitioning <em>Xml Hash Partitioning</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -4834,6 +4834,31 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MULTITENANT_FEATURE_COUNT = EclipseLinkOrmV2_3Package.XML_MULTITENANT_23_FEATURE_COUNT + 1;
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder <em>Xml Multitenant Holder</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMultitenantHolder()
+	 * @generated
+	 */
+	public static final int XML_MULTITENANT_HOLDER = 44;
+	/**
+	 * The feature id for the '<em><b>Multitenant</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTITENANT_HOLDER__MULTITENANT = 0;
+	/**
+	 * The number of structural features of the '<em>Xml Multitenant Holder</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTITENANT_HOLDER_FEATURE_COUNT = 1;
+	/**
 	 * The feature id for the '<em><b>Mutable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4857,7 +4882,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedPlsqlStoredFunctionQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY = 46;
+	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY = 47;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4882,7 +4907,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedPlsqlStoredProcedureQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY = 47;
+	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY = 48;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4907,7 +4932,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedStoredFunctionQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_STORED_FUNCTION_QUERY = 48;
+	public static final int XML_NAMED_STORED_FUNCTION_QUERY = 49;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5716,7 +5741,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioning()
 	 * @generated
 	 */
-	public static final int XML_PARTITIONING = 55;
+	public static final int XML_PARTITIONING = 56;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5861,7 +5886,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPinnedPartitioning()
 	 * @generated
 	 */
-	public static final int XML_PINNED_PARTITIONING = 58;
+	public static final int XML_PINNED_PARTITIONING = 59;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5886,7 +5911,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPlsqlRecord()
 	 * @generated
 	 */
-	public static final int XML_PLSQL_RECORD = 59;
+	public static final int XML_PLSQL_RECORD = 60;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5911,7 +5936,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPlsqlTable()
 	 * @generated
 	 */
-	public static final int XML_PLSQL_TABLE = 60;
+	public static final int XML_PLSQL_TABLE = 61;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6112,7 +6137,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlRangePartitioning()
 	 * @generated
 	 */
-	public static final int XML_RANGE_PARTITIONING = 67;
+	public static final int XML_RANGE_PARTITIONING = 68;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6153,7 +6178,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlReplicationPartitioning()
 	 * @generated
 	 */
-	public static final int XML_REPLICATION_PARTITIONING = 69;
+	public static final int XML_REPLICATION_PARTITIONING = 70;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6194,7 +6219,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlRoundRobinPartitioning()
 	 * @generated
 	 */
-	public static final int XML_ROUND_ROBIN_PARTITIONING = 71;
+	public static final int XML_ROUND_ROBIN_PARTITIONING = 72;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6331,7 +6356,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStruct()
 	 * @generated
 	 */
-	public static final int XML_STRUCT = 74;
+	public static final int XML_STRUCT = 75;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6380,7 +6405,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructure()
 	 * @generated
 	 */
-	public static final int XML_STRUCTURE = 76;
+	public static final int XML_STRUCTURE = 77;
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6581,7 +6606,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminatorColumn()
 	 * @generated
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN = 79;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN = 80;
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6814,7 +6839,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlUnionPartitioning()
 	 * @generated
 	 */
-	public static final int XML_UNION_PARTITIONING = 84;
+	public static final int XML_UNION_PARTITIONING = 85;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6839,7 +6864,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlValuePartitioning()
 	 * @generated
 	 */
-	public static final int XML_VALUE_PARTITIONING = 85;
+	public static final int XML_VALUE_PARTITIONING = 86;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -7120,7 +7145,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheCoordinationType()
 	 * @generated
 	 */
-	public static final int CACHE_COORDINATION_TYPE = 88;
+	public static final int CACHE_COORDINATION_TYPE = 89;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.CacheType <em>Cache Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7129,7 +7154,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheType()
 	 * @generated
 	 */
-	public static final int CACHE_TYPE = 89;
+	public static final int CACHE_TYPE = 90;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlChangeTrackingType <em>Xml Change Tracking Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7138,7 +7163,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingType()
 	 * @generated
 	 */
-	public static final int XML_CHANGE_TRACKING_TYPE = 90;
+	public static final int XML_CHANGE_TRACKING_TYPE = 91;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlDirection <em>Xml Direction</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7147,7 +7172,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlDirection()
 	 * @generated
 	 */
-	public static final int XML_DIRECTION = 91;
+	public static final int XML_DIRECTION = 92;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.ExistenceType <em>Existence Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7156,7 +7181,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getExistenceType()
 	 * @generated
 	 */
-	public static final int EXISTENCE_TYPE = 92;
+	public static final int EXISTENCE_TYPE = 93;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinFetchType <em>Xml Join Fetch Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7165,7 +7190,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH_TYPE = 93;
+	public static final int XML_JOIN_FETCH_TYPE = 94;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOptimisticLockingType <em>Xml Optimistic Locking Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7174,7 +7199,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOptimisticLockingType()
 	 * @generated
 	 */
-	public static final int XML_OPTIMISTIC_LOCKING_TYPE = 94;
+	public static final int XML_OPTIMISTIC_LOCKING_TYPE = 95;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7433,6 +7458,12 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlMultitenantEClass = null;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlMultitenantHolderEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -9136,6 +9167,33 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder <em>Xml Multitenant Holder</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Multitenant Holder</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder
+	 * @generated
+	 */
+	public EClass getXmlMultitenantHolder()
+	{
+		return xmlMultitenantHolderEClass;
+	}
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder#getMultitenant <em>Multitenant</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Multitenant</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder#getMultitenant()
+	 * @see #getXmlMultitenantHolder()
+	 * @generated
+	 */
+	public EReference getXmlMultitenantHolder_Multitenant()
+	{
+		return (EReference)xmlMultitenantHolderEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMutable <em>Xml Mutable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10502,6 +10560,9 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		xmlMultitenantEClass = createEClass(XML_MULTITENANT);
 
+		xmlMultitenantHolderEClass = createEClass(XML_MULTITENANT_HOLDER);
+		createEReference(xmlMultitenantHolderEClass, XML_MULTITENANT_HOLDER__MULTITENANT);
+
 		xmlMutableEClass = createEClass(XML_MUTABLE);
 		createEAttribute(xmlMutableEClass, XML_MUTABLE__MUTABLE);
 
@@ -11000,6 +11061,9 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEAttribute(getXmlMappedSuperclass_ExcludeDefaultMappings(), theXMLTypePackage.getBooleanObject(), "excludeDefaultMappings", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMultitenantEClass, XmlMultitenant.class, "XmlMultitenant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlMultitenantHolderEClass, XmlMultitenantHolder.class, "XmlMultitenantHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlMultitenantHolder_Multitenant(), this.getXmlMultitenant(), null, "multitenant", null, 0, 1, XmlMultitenantHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMutableEClass, XmlMutable.class, "XmlMutable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMutable_Mutable(), theXMLTypePackage.getBooleanObject(), "mutable", null, 0, 1, XmlMutable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -12041,6 +12105,24 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MULTITENANT = eINSTANCE.getXmlMultitenant();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder <em>Xml Multitenant Holder</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMultitenantHolder()
+		 * @generated
+		 */
+		public static final EClass XML_MULTITENANT_HOLDER = eINSTANCE.getXmlMultitenantHolder();
+
+		/**
+		 * The meta object literal for the '<em><b>Multitenant</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MULTITENANT_HOLDER__MULTITENANT = eINSTANCE.getXmlMultitenantHolder_Multitenant();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMutable <em>Xml Mutable</em>}' class.

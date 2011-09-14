@@ -79,7 +79,11 @@ public class SourceEclipseLinkMultitenantAnnotation
 		sb.append(this.value);
 	}
 
-	// ********** MultitenantAnnotation implementation **********
+	// ********** EclipseLinkMultitenantAnnotation implementation **********
+
+	public boolean isSpecified() {
+		return true;
+	}
 
 	// ***** value
 	public MultitenantType getValue() {

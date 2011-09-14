@@ -11,14 +11,14 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyTableColumn;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 
-public class JavaBaseColumnTextRangeResolver
-	extends AbstractJavaNamedColumnTextRangeResolver<JavaReadOnlyBaseColumn>
-	implements BaseColumnTextRangeResolver
+public class JavaTableColumnTextRangeResolver
+	extends AbstractJavaNamedColumnTextRangeResolver<JavaReadOnlyTableColumn>
+	implements TableColumnTextRangeResolver
 {
-	public JavaBaseColumnTextRangeResolver(JavaReadOnlyBaseColumn column, CompilationUnit astRoot) {
+	public JavaTableColumnTextRangeResolver(JavaReadOnlyTableColumn column, CompilationUnit astRoot) {
 		super(column, astRoot);
 	}
 

@@ -18,43 +18,13 @@ package org.eclipse.jpt.jpa.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
+ * @version 3.1
  * @since 2.0
  */
 public interface DiscriminatorColumn
-	extends NamedColumn
+	extends NamedDiscriminatorColumn
 {
 	String DEFAULT_NAME = "DTYPE"; //$NON-NLS-1$
-
-
-	// ********** discriminator type **********
-
-	/**
-	 * Return the specified discriminator type if present,
-	 * otherwise return the default discriminator type.
-	 */
-	DiscriminatorType getDiscriminatorType();
-	DiscriminatorType getSpecifiedDiscriminatorType();
-	void setSpecifiedDiscriminatorType(DiscriminatorType newSpecifiedDiscriminatorType);
-		String SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY = "specifiedDiscriminatorType"; //$NON-NLS-1$
-	DiscriminatorType getDefaultDiscriminatorType();
-		String DEFAULT_DISCRIMINATOR_TYPE_PROPERTY = "defaultDiscriminatorType"; //$NON-NLS-1$
-		DiscriminatorType DEFAULT_DISCRIMINATOR_TYPE = DiscriminatorType.STRING;
-
-
-	// ********** length **********
-
-	/**
-	 * Return the specified length if present,
-	 * otherwise return the default length.
-	 */
-	int getLength();
-	Integer getSpecifiedLength();
-	void setSpecifiedLength(Integer value);
-		String SPECIFIED_LENGTH_PROPERTY = "specifiedLength"; //$NON-NLS-1$
-	int getDefaultLength();
-		String DEFAULT_LENGTH_PROPERTY = "defaultLength"; //$NON-NLS-1$
-		int DEFAULT_LENGTH = 31;
 
 
 	// ********** validation **********
@@ -63,25 +33,5 @@ public interface DiscriminatorColumn
 	 * Return whether the column is specified in the resource.
 	 */
 	boolean isResourceSpecified();
-		
 
-	// ********** owner **********
-
-	/**
-	 * interface allowing discriminator columns to be used in multiple places
-	 * (but pretty much just entities)
-	 */
-	interface Owner
-		extends ReadOnlyNamedColumn.Owner
-	{
-		/**
-		 * Return the default discriminator column length
-		 */
-		int getDefaultLength();
-		
-		/**
-		 * Return the default discriminator column type
-		 */
-		DiscriminatorType getDefaultDiscriminatorType();
-	}
 }

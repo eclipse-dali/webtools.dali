@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -181,8 +181,8 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 			return true;
 		}
 	
-		protected ReadOnlyBaseColumn getColumn() {
-			return (ReadOnlyBaseColumn) AbstractNamedColumnValidator.this.column;
+		protected ReadOnlyTableColumn getColumn() {
+			return (ReadOnlyTableColumn) AbstractNamedColumnValidator.this.column;
 		}
 
 		protected IMessage buildTableNotValidMessage() {
@@ -213,8 +213,8 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 			return AbstractNamedColumnValidator.this.tableDescriptionProvider.getColumnTableDescriptionMessage();
 		}
 	
-		protected BaseColumnTextRangeResolver getTextRangeResolver() {
-			return (BaseColumnTextRangeResolver) AbstractNamedColumnValidator.this.textRangeResolver;
+		protected TableColumnTextRangeResolver getTextRangeResolver() {
+			return (TableColumnTextRangeResolver) AbstractNamedColumnValidator.this.textRangeResolver;
 		}
 
 		protected IMessage buildVirtualAttributeTableNotValidMessage() {

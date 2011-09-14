@@ -24,6 +24,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -152,6 +153,13 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		};
 	}
 
+	public InheritanceType getInheritanceStrategy() {
+		return null;
+	}
+
+	public boolean isRootEntity() {
+		return false;
+	}
 
 	// ********** attribute mappings **********
 

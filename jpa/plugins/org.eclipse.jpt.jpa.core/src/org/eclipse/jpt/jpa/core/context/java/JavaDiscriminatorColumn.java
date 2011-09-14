@@ -21,11 +21,11 @@ import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.1
  * @since 2.0
  */
 public interface JavaDiscriminatorColumn
-	extends DiscriminatorColumn, JavaNamedColumn
+	extends DiscriminatorColumn, JavaNamedDiscriminatorColumn
 {
 	DiscriminatorColumnAnnotation getColumnAnnotation();
 		
@@ -36,7 +36,7 @@ public interface JavaDiscriminatorColumn
 	 * interface allowing columns to be used in multiple places
 	 */
 	interface Owner
-		extends DiscriminatorColumn.Owner, JavaReadOnlyNamedColumn.Owner
+		extends JavaReadOnlyNamedDiscriminatorColumn.Owner
 	{
 		// combine interfaces
 	}

@@ -18,13 +18,12 @@ package org.eclipse.jpt.jpa.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.1
  * @since 2.0
  */
 public interface BaseColumn
-	extends NamedColumn, ReadOnlyBaseColumn
+	extends TableColumn, ReadOnlyBaseColumn
 {
-	void setSpecifiedTable(String table);
 	void setSpecifiedUnique(Boolean unique);
 	void setSpecifiedNullable(Boolean nullable);
 	void setSpecifiedInsertable(Boolean insertable);

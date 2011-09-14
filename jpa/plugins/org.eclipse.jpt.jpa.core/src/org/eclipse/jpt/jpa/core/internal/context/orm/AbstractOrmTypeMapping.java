@@ -26,6 +26,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -374,6 +375,13 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		};
 	}
 
+	public InheritanceType getInheritanceStrategy() {
+		return null;
+	}
+
+	public boolean isRootEntity() {
+		return false;
+	}
 
 	// ********** text ranges **********
 

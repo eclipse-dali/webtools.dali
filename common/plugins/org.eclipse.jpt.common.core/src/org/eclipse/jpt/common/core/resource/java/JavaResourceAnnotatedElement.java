@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
@@ -151,6 +152,14 @@ public interface JavaResourceAnnotatedElement
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
 	
+	/**
+	 * Return the text range for the nestable annotation if it is currently
+	 * unnested. If it is nested, return the text range for the corresponding
+	 * container annotation.
+	 * 
+	 * @see AnnotationProvider#getContainerAnnotationName(String)
+	 */
+	TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot);
 	
 	/**
 	 * The kind of java element.

@@ -172,6 +172,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlMappedSuperclass/excludeDefaultMappings"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlMultitenant"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlMultitenantHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMultitenantHolder/multitenant"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlMutable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlMutable/mutable"/>
     </genClasses>
@@ -544,7 +547,6 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEmbeddable_2_3/struct"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlEntity_2_3">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntity_2_3/multitenant"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntity_2_3/namedStoredFunctionQueries"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntity_2_3/namedPlsqlStoredFunctionQueries"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntity_2_3/namedPlsqlStoredProcedureQueries"/>
@@ -561,7 +563,6 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEntityMappings_2_3/plsqlTables"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlMappedSuperclass_2_3">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlMappedSuperclass_2_3/multitenant"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlMappedSuperclass_2_3/namedStoredFunctionQueries"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlMappedSuperclass_2_3/namedPlsqlStoredFunctionQueries"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlMappedSuperclass_2_3/namedPlsqlStoredProcedureQueries"/>

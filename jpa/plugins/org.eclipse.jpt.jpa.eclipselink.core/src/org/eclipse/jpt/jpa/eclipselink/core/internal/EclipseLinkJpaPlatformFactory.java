@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
+import java.util.Comparator;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -19,6 +20,7 @@ import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -70,6 +72,8 @@ public class EclipseLinkJpaPlatformFactory
 
 
 	public static class EclipseLinkVersion extends SimpleVersion {
+		public static final Comparator<String> VERSION_COMPARATOR = new DefaultVersionComparator();
+
 		protected final String eclipseLinkVersion;
 
 		public EclipseLinkVersion(String eclipseLinkVersion, String jpaVersion) {
@@ -80,6 +84,20 @@ public class EclipseLinkJpaPlatformFactory
 		@Override
 		public String getVersion() {
 			return this.eclipseLinkVersion;
+		}
+		
+		/**
+		 * Return whether the platform is compatible with the specified EclipseLink version.
+		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_1_0
+		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_1_1
+		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_1_2
+		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_2_0
+		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_2_1
+		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_2_2
+		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_2_3
+		 */
+		public boolean isCompatibleWithVersion(String version) {
+			return VERSION_COMPARATOR.compare(this.eclipseLinkVersion, version) >= 0;
 		}
 
 		@Override

@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
@@ -32,7 +34,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverte
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassValidator;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context.java.JavaEclipseLinkMultitenancyImpl;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context.java.NullJavaEclipseLinkMultitenancy;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.java.JavaEclipseLinkMultitenancy;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -54,6 +59,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 
 	protected final JavaEclipseLinkCustomizer customizer;
 
+	protected final JavaEclipseLinkMultitenancy multitenancy;
 
 	public JavaEclipseLinkMappedSuperclassImpl(JavaPersistentType parent, MappedSuperclassAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
@@ -62,6 +68,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		this.converterContainer = this.buildConverterContainer();
 		this.changeTracking = this.buildChangeTracking();
 		this.customizer = this.buildCustomizer();
+		this.multitenancy = this.buildMultitenancy();
 	}
 
 
@@ -75,6 +82,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		this.converterContainer.synchronizeWithResourceModel();
 		this.changeTracking.synchronizeWithResourceModel();
 		this.customizer.synchronizeWithResourceModel();
+		this.multitenancy.synchronizeWithResourceModel();
 	}
 
 	@Override
@@ -85,6 +93,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		this.converterContainer.update();
 		this.changeTracking.update();
 		this.customizer.update();
+		this.multitenancy.update();
 	}
 
 
@@ -159,6 +168,24 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	}
 
 
+	// ********** multitenancy **********
+
+	public JavaEclipseLinkMultitenancy getMultitenancy() {
+		return this.multitenancy;
+	}
+
+
+	protected JavaEclipseLinkMultitenancy buildMultitenancy() {
+		return this.isEclipseLink2_3Compatible() ?
+			new JavaEclipseLinkMultitenancyImpl(this) :
+			new NullJavaEclipseLinkMultitenancy(this);
+	}
+
+	protected boolean isEclipseLink2_3Compatible() {
+		return JptJpaEclipseLinkCorePlugin.nodeIsEclipseLink2_3Compatible(this);
+	}
+
+
 	// ********** misc **********
 
 	public boolean usesPrimaryKeyColumns() {
@@ -174,6 +201,21 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	}
 
 
+	// ********** Java completion proposals **********
+
+	@Override
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.multitenancy.getJavaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
+
 	// ********** validation **********
 
 	@Override
@@ -184,6 +226,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		this.converterContainer.validate(messages, reporter, astRoot);
 		this.changeTracking.validate(messages, reporter, astRoot);
 		this.customizer.validate(messages, reporter, astRoot);
+		this.multitenancy.validate(messages, reporter, astRoot);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
@@ -23,7 +23,7 @@ public class MapKeyAttributeOverrideColumnValidator
 				ReadOnlyPersistentAttribute persistentAttribute,
 				ReadOnlyAttributeOverride override,
 				ReadOnlyBaseColumn column,
-				BaseColumnTextRangeResolver textRangeResolver,
+				TableColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, override, column, textRangeResolver, provider);
 	}

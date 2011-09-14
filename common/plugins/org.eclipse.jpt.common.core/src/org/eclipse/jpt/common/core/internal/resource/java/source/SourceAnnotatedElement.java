@@ -373,6 +373,16 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 		return (astRoot == null) ? null : this.annotatedElement.getNameTextRange(astRoot);
 	}
 
+	public TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot) {
+		Annotation containerAnnotation = getContainerAnnotation(getAnnotationProvider().getContainerAnnotationName(nestableAnnotationName));
+		if (containerAnnotation != null) {
+			return containerAnnotation.getTextRange(astRoot);
+		}
+		Annotation nestableAnnotation = getAnnotation(0, nestableAnnotationName);
+		return nestableAnnotation == null ? null : nestableAnnotation.getTextRange(astRoot);
+	}
+
+
 	private Annotation selectAnnotationNamed(Iterable<Annotation> list, String annotationName) {
 		for (Annotation annotation : list) {
 			if (annotation.getAnnotationName().equals(annotationName)) {

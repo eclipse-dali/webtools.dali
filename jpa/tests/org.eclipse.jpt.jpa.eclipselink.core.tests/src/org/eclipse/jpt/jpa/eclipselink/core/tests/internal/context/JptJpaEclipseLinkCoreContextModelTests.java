@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.JptJpaEclipseLinkCore
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v1_1.context.JptEclipseLink1_1CoreContextModelTests;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v1_2.context.JptEclipseLink1_2CoreContextModelTests;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.JptEclipseLink2_0CoreContextModelTests;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_3.context.JptEclipseLink2_3CoreContextModelTests;
 
 /**
  * Required Java system property:
@@ -31,6 +32,7 @@ public class JptJpaEclipseLinkCoreContextModelTests extends TestCase
 			suite.addTest(JptEclipseLink1_1CoreContextModelTests.suite());
 			suite.addTest(JptEclipseLink1_2CoreContextModelTests.suite());
 			suite.addTest(JptEclipseLink2_0CoreContextModelTests.suite());
+			suite.addTest(JptEclipseLink2_3CoreContextModelTests.suite());
 		}
 		else {
 			suite.addTest(TestSuite.warning(JptJpaEclipseLinkCoreTests.buildMissingJarErrorMessage()));

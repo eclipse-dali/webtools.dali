@@ -53,7 +53,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioni
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEntity_2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlMultitenant_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredFunctionQuery_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedPlsqlStoredProcedureQuery_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3;
@@ -327,7 +326,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlMultitenant_2_3 multitenant;
+	protected XmlMultitenant multitenant;
 
 	/**
 	 * The cached value of the '{@link #getNamedStoredFunctionQueries() <em>Named Stored Function Queries</em>}' containment reference list.
@@ -2215,12 +2214,12 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Multitenant</em>' containment reference.
-	 * @see #setMultitenant(XmlMultitenant_2_3)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_3_Multitenant()
+	 * @see #setMultitenant(XmlMultitenant)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMultitenantHolder_Multitenant()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlMultitenant_2_3 getMultitenant()
+	public XmlMultitenant getMultitenant()
 	{
 		return multitenant;
 	}
@@ -2230,9 +2229,9 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetMultitenant(XmlMultitenant_2_3 newMultitenant, NotificationChain msgs)
+	public NotificationChain basicSetMultitenant(XmlMultitenant newMultitenant, NotificationChain msgs)
 	{
-		XmlMultitenant_2_3 oldMultitenant = multitenant;
+		XmlMultitenant oldMultitenant = multitenant;
 		multitenant = newMultitenant;
 		if (eNotificationRequired())
 		{
@@ -2250,7 +2249,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	 * @see #getMultitenant()
 	 * @generated
 	 */
-	public void setMultitenant(XmlMultitenant_2_3 newMultitenant)
+	public void setMultitenant(XmlMultitenant newMultitenant)
 	{
 		if (newMultitenant != multitenant)
 		{
@@ -2854,7 +2853,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				setIndex((XmlIndex_2_2)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT:
-				setMultitenant((XmlMultitenant_2_3)newValue);
+				setMultitenant((XmlMultitenant)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES:
 				getNamedStoredFunctionQueries().clear();
@@ -3008,7 +3007,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				setIndex((XmlIndex_2_2)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT:
-				setMultitenant((XmlMultitenant_2_3)null);
+				setMultitenant((XmlMultitenant)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES:
 				getNamedStoredFunctionQueries().clear();
@@ -3259,11 +3258,18 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMultitenantHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT: return EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER__MULTITENANT;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlEntity_2_3.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__MULTITENANT;
 				case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_STORED_FUNCTION_QUERIES;
 				case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_FUNCTION_QUERIES: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES;
 				case EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
@@ -3420,11 +3426,18 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMultitenantHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MULTITENANT_HOLDER__MULTITENANT: return EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlEntity_2_3.class)
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__MULTITENANT: return EclipseLinkOrmPackage.XML_ENTITY__MULTITENANT;
 				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_STORED_FUNCTION_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_FUNCTION_QUERIES;
 				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_PLSQL_STORED_FUNCTION_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_FUNCTION_QUERIES;
 				case EclipseLinkOrmV2_3Package.XML_ENTITY_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
@@ -3559,7 +3572,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			buildExcludeDefaultMappingsTranslator(),
 			buildDescriptionTranslator(),
 			buildAccessMethodsTranslator(),
-		    XmlMultitenant.buildTranslator(EclipseLink2_3.MULTITENANT, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_Multitenant()),
+		    XmlMultitenant.buildTranslator(EclipseLink2_3.MULTITENANT, EclipseLinkOrmPackage.eINSTANCE.getXmlMultitenantHolder_Multitenant()),
 			buildAdditionalCriteriaTranslator(),
 			buildCustomizerTranslator(),
 			buildChangeTrackingTranslator(),

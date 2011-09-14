@@ -10,15 +10,15 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyTableColumn;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 
-public class OrmBaseColumnTextRangeResolver
-	extends AbstractOrmNamedColumnTextRangeResolver<OrmReadOnlyBaseColumn>
-	implements BaseColumnTextRangeResolver
+public class OrmTableColumnTextRangeResolver
+	extends AbstractOrmNamedColumnTextRangeResolver<OrmReadOnlyTableColumn>
+	implements TableColumnTextRangeResolver
 {
 
-	public OrmBaseColumnTextRangeResolver(OrmReadOnlyBaseColumn column) {
+	public OrmTableColumnTextRangeResolver(OrmReadOnlyTableColumn column) {
 		super(column);
 	}
 

@@ -51,6 +51,10 @@ public class BinaryEclipseLinkMultitenantAnnotation
 
 	// ********** EclipseLinkMultitenantAnnotation implementation **********
 
+	public boolean isSpecified() {
+		return true;
+	}
+
 	// ***** value
 	public MultitenantType getValue() {
 		return this.value;

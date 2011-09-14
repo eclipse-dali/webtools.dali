@@ -23,6 +23,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmMappedSuperclass
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
@@ -32,7 +33,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterC
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassValidator;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context.orm.NullOrmEclipseLinkMultitenancy;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context.orm.OrmEclipseLinkMultitenancyImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmEclipseLinkMultitenancy;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -55,6 +59,8 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
+	protected final OrmEclipseLinkMultitenancy multitenancy;
+
 
 	public OrmEclipseLinkMappedSuperclassImpl(OrmPersistentType parent, XmlMappedSuperclass xmlMappedSuperclass) {
 		super(parent, xmlMappedSuperclass);
@@ -63,6 +69,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.converterContainer = this.buildConverterContainer();
 		this.changeTracking = this.buildChangeTracking();
 		this.customizer = this.buildCustomizer();
+		this.multitenancy = this.buildMultitenancy();
 	}
 
 
@@ -76,6 +83,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.converterContainer.synchronizeWithResourceModel();
 		this.changeTracking.synchronizeWithResourceModel();
 		this.customizer.synchronizeWithResourceModel();
+		this.multitenancy.synchronizeWithResourceModel();
 	}
 
 	@Override
@@ -86,6 +94,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.converterContainer.update();
 		this.changeTracking.update();
 		this.customizer.update();
+		this.multitenancy.update();
 	}
 
 
@@ -157,6 +166,24 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected OrmEclipseLinkCustomizer buildCustomizer() {
 		return new OrmEclipseLinkCustomizer(this);
+	}
+
+
+	// ********** multitenancy **********
+
+	public OrmEclipseLinkMultitenancy getMultitenancy() {
+		return this.multitenancy;
+	}
+
+
+	protected OrmEclipseLinkMultitenancy buildMultitenancy() {
+		return this.isEclipseLink2_3Compatible() ?
+			new OrmEclipseLinkMultitenancyImpl(this) :
+			new NullOrmEclipseLinkMultitenancy(this);
+	}
+
+	protected boolean isEclipseLink2_3Compatible() {
+		return JptJpaEclipseLinkCorePlugin.nodeIsEclipseLink2_3Compatible(this);
 	}
 
 
@@ -267,6 +294,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.converterContainer.validate(messages, reporter);
 		this.changeTracking.validate(messages, reporter);
 		this.customizer.validate(messages, reporter);
+		this.multitenancy.validate(messages, reporter);
 	}
 
 	@Override

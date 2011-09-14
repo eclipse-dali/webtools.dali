@@ -21,11 +21,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlDiscriminatorColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
+ * @version 3.1
  * @since 2.0
  */
 public interface OrmDiscriminatorColumn
-	extends DiscriminatorColumn, OrmNamedColumn
+	extends DiscriminatorColumn, OrmNamedDiscriminatorColumn
 {
 	XmlDiscriminatorColumn getXmlColumn();
 	
@@ -36,7 +36,7 @@ public interface OrmDiscriminatorColumn
 	 * interface allowing discriminator columns to be used in multiple places
 	 */
 	interface Owner
-		extends DiscriminatorColumn.Owner, OrmReadOnlyNamedColumn.Owner
+		extends OrmReadOnlyNamedDiscriminatorColumn.Owner
 	{
 		XmlDiscriminatorColumn getXmlColumn();
 		XmlDiscriminatorColumn buildXmlColumn();

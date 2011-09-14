@@ -17,6 +17,8 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
@@ -133,7 +135,14 @@ public class JptJpaEclipseLinkCorePlugin extends Plugin
 	public static JptJpaEclipseLinkCorePlugin instance() {
 		return INSTANCE;
 	}	
-	
+
+
+	// ********** public static methods **********
+
+	public static boolean nodeIsEclipseLink2_3Compatible(JpaNode jpaNode) {
+		return ((EclipseLinkVersion) jpaNode.getJpaProject().getJpaPlatform().getJpaVersion()).isCompatibleWithVersion(ECLIPSELINK_PLATFORM_VERSION_2_3);
+	}
+
 	/**
 	 * Log the specified message.
 	 */

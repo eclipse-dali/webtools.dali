@@ -23,15 +23,8 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ReadOnlyBaseColumn
-	extends ReadOnlyNamedColumn
+	extends ReadOnlyTableColumn
 {
-	// ********** table **********
-
-	String getSpecifiedTable();
-		String SPECIFIED_TABLE_PROPERTY = "specifiedTable"; //$NON-NLS-1$
-	String getDefaultTable();
-		String DEFAULT_TABLE_PROPERTY = "defaultTable"; //$NON-NLS-1$
-
 
 	// ********** unique **********
 
@@ -87,36 +80,4 @@ public interface ReadOnlyBaseColumn
 	boolean isDefaultUpdatable();
 		String DEFAULT_UPDATABLE_PROPERTY = "defaultUpdatable"; //$NON-NLS-1$
 	boolean DEFAULT_UPDATABLE = true;
-
-
-	// ********** misc **********
-
-	boolean tableNameIsInvalid();
-
-	/**
-	 * Return a list of table names that are valid for this column
-	 */
-	Iterable<String> getCandidateTableNames();
-
-
-	// ********** owner **********
-
-	/**
-	 * Interface allowing columns to be used in multiple places
-	 * (e.g. basic mappings and attribute overrides).
-	 */
-	interface Owner
-		extends NamedColumn.Owner
-	{
-		/**
-		 * return whether the given table cannot be explicitly specified
-		 * in the column's 'table' element
-		 */
-		boolean tableNameIsInvalid(String tableName);
-		
-		/**
-		 * Return a list of table names that are valid for this column
-		 */
-		Iterable<String> getCandidateTableNames();
-	}
 }

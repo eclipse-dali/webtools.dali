@@ -11,17 +11,17 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
 public class NamedColumnValidator
-	extends AbstractNamedColumnValidator<ReadOnlyBaseColumn, BaseColumnTextRangeResolver>
+	extends AbstractNamedColumnValidator<ReadOnlyBaseColumn, TableColumnTextRangeResolver>
 {
 
 	protected NamedColumnValidator(
 				ReadOnlyBaseColumn column,
-				BaseColumnTextRangeResolver textRangeResolver,
+				TableColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
 		super(column, textRangeResolver, provider);
 	}
@@ -29,7 +29,7 @@ public class NamedColumnValidator
 	public NamedColumnValidator(
 				ReadOnlyPersistentAttribute persistentAttribute,
 				ReadOnlyBaseColumn column,
-				BaseColumnTextRangeResolver textRangeResolver,
+				TableColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
 		super(persistentAttribute, column, textRangeResolver, provider);
 	}

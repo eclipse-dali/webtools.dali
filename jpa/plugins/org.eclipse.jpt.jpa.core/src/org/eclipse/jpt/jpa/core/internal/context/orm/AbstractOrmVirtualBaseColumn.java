@@ -258,6 +258,6 @@ public abstract class AbstractOrmVirtualBaseColumn<O extends OrmReadOnlyBaseColu
 
 	@Override
 	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
-		return new OrmBaseColumnTextRangeResolver(this);
+		return new OrmTableColumnTextRangeResolver(this);
 	}
 }

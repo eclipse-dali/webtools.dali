@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jpt.jpa.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -53,7 +53,7 @@ public interface ReadOnlyOverrideRelationship
 
 	String getDefaultTableName();
 
-	JptValidator buildColumnValidator(ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver);
+	JptValidator buildColumnValidator(ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver);
 
 	void initializeOnSpecified(OverrideRelationship specifiedRelationship);
 }

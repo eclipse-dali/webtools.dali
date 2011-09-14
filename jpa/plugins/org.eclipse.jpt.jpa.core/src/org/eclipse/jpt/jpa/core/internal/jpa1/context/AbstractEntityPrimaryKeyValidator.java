@@ -39,7 +39,7 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 	
 	public boolean validate(List<IMessage> messages, IReporter reporter) {
 		// if an entity is non-root, it is not allowed to define primary keys
-		if (! entity().isRoot()) {
+		if (! entity().isRootEntity()) {
 			validatePrimaryKeyForNonRoot(messages, reporter);
 		}
 		else {

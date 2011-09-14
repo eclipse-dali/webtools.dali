@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseDiscriminatorColumn;
 
 
@@ -110,4 +111,6 @@ public interface XmlTenantDiscriminatorColumn_2_3 extends XmlBaseDiscriminatorCo
 	 * @generated
 	 */
 	void setPrimaryKey(Boolean value);
+
+	TextRange getTableTextRange();
 } // XmlTenantDiscriminator2_3
