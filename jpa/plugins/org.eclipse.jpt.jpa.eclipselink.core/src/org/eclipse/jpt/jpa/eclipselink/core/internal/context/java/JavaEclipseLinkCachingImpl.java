@@ -232,7 +232,7 @@ public class JavaEclipseLinkCachingImpl
 
 	public boolean isDefaultShared() {
 		String puDefaultSharedCache = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheSharedPropertyValue();
-		return !StringTools.stringIsEmpty(puDefaultSharedCache) ? Boolean.valueOf(puDefaultSharedCache) : DEFAULT_SHARED;
+		return !StringTools.stringIsEmpty(puDefaultSharedCache) ? Boolean.valueOf(puDefaultSharedCache).booleanValue() : DEFAULT_SHARED;
 	}
 
 
