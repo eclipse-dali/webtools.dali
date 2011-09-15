@@ -25,7 +25,6 @@ import java.util.Properties;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.filesystem.IFileSystem;
 import org.eclipse.core.resources.IContainer;
@@ -133,7 +132,7 @@ public class ModelIntegrationUtil {
 		return null;
 	}
 
-	private static IPath copyExistingXMIContentAndDeleteFile(IProject project,
+	public static IPath copyExistingXMIContentAndDeleteFile(IProject project,
 			String diagramName, IFileStore newXMIFile) throws JavaModelException,	CoreException {
 		String xmiFileName = diagramName + "." + DIAGRAM_FILE_EXTENSION;		//$NON-NLS-1$
 		IPath folderPath = copyExistingXMIContent(project, xmiFileName, newXMIFile);
@@ -141,11 +140,6 @@ public class ModelIntegrationUtil {
 			return folderPath;
 	    IPath projectPath = project.getFullPath();
 	    folderPath = projectPath.append(getDiagramsXMLFolderPath(project));
-	    IFileStore xmlFileStore = EFS.getLocalFileSystem().getStore(folderPath.append(diagramName).addFileExtension(DIAGRAM_XML_FILE_EXTENSION));
-	    IFileInfo info = xmlFileStore.fetchInfo();
-	    if(!info.exists()){
-	    	xmlFileStore.mkdir(EFS.NONE, null);
-	    }
 	    return folderPath;
 	}
 	

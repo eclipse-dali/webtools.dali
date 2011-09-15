@@ -24,8 +24,17 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.BasicInternalEList;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.preferences.JPAEditorPreferenceInitializer;
+import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.junit.Test;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleListener;
 
 
 @SuppressWarnings("unchecked")
@@ -55,5 +64,28 @@ public class ModelIntegrationUtilTest {
 		assertNotNull(p);
 		assertEquals(2, p.segmentCount());
 		assertEquals(p.segment(0), "src");
-	}		
+	}
+	
+	@Test
+	public void copyExistingXMIContentAndDeleteFileTest() throws Exception {
+		Bundle b = EasyMock.createMock(Bundle.class);
+		BundleContext bc = EasyMock.createMock(BundleContext.class);
+		EasyMock.expect(bc.getBundle()).andStubReturn(b);
+		EasyMock.expect(b.getSymbolicName()).andStubReturn("jpa_editor");
+		bc.addBundleListener(EasyMock.isA(BundleListener.class));
+		EasyMock.replay(bc, b);
+		
+		JPADiagramEditorPlugin p = new JPADiagramEditorPlugin();
+		p.start(bc);
+		JptJpaCorePlugin.getJpaProjectManager();
+		
+		IPreferenceStore store = JPADiagramEditorPlugin.getDefault().getPreferenceStore();
+		store.putValue(JPAEditorPreferenceInitializer.PROPERTY_DIAGRAM_FOLDER, "diagrams");
+		store.getString(JPAEditorPreferenceInitializer.PROPERTY_DIAGRAM_FOLDER);
+		
+		JPACreateFactory factory = JPACreateFactory.instance();
+		JpaProject jpaProject = factory.createJPAProject("Test_" + System.currentTimeMillis());
+		assertNotNull(jpaProject);		
+		ModelIntegrationUtil.copyExistingXMIContentAndDeleteFile(jpaProject.getProject(), "diagram_name", null);
+	}
 }
