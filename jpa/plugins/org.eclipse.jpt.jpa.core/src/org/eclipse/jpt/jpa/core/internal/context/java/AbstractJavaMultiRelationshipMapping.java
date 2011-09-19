@@ -748,10 +748,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		this.specifiedMapKeyJoinColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected void updateSpecifiedMapKeyJoinColumns() {
-		this.specifiedMapKeyJoinColumnContainer.update();
-	}
-
 	protected ContextListContainer<JavaJoinColumn, MapKeyJoinColumn2_0Annotation> buildSpecifiedMapKeyJoinColumnContainer() {
 		return new SpecifiedMapKeyJoinColumnContainer();
 	}

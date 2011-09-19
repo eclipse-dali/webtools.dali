@@ -48,8 +48,8 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 
 	public GenericOrmPrimaryKeyJoinColumnRelationshipStrategy(OrmPrimaryKeyJoinColumnRelationship parent) {
 		super(parent);
-		this.primaryKeyJoinColumnContainer = new PrimaryKeyJoinColumnContainer();
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
+		this.primaryKeyJoinColumnContainer = new PrimaryKeyJoinColumnContainer();
 	}
 
 

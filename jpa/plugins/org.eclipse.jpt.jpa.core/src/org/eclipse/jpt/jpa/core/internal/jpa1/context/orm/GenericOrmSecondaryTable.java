@@ -172,10 +172,6 @@ public class GenericOrmSecondaryTable
 		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected void updateSpecifiedPrimaryKeyJoinColumns() {
-		this.specifiedPrimaryKeyJoinColumnContainer.update();
-	}
-
 	protected ListIterable<XmlPrimaryKeyJoinColumn> getXmlPrimaryKeyJoinColumns() {
 		// clone to reduce chance of concurrency problems
 		return new LiveCloneListIterable<XmlPrimaryKeyJoinColumn>(this.xmlSecondaryTable.getPrimaryKeyJoinColumns());

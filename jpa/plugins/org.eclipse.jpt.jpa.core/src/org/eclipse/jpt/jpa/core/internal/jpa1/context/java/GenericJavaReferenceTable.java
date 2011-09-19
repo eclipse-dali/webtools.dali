@@ -61,7 +61,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	@Override
 	public void update() {
 		super.update();
-		this.updateSpecifiedJoinColumns();
+		this.updateNodes(this.getSpecifiedJoinColumns());
 		this.updateDefaultJoinColumn();
 	}
 
@@ -125,10 +125,6 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 
 	protected void syncSpecifiedJoinColumns() {
 		this.specifiedJoinColumnContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateSpecifiedJoinColumns() {
-		this.specifiedJoinColumnContainer.update();
 	}
 
 	protected ListIterable<JoinColumnAnnotation> getJoinColumnAnnotations() {

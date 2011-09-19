@@ -69,7 +69,7 @@ public class GenericJavaSecondaryTable
 	@Override
 	public void update() {
 		super.update();
-		this.updateSpecifiedPrimaryKeyJoinColumns();
+		this.updateNodes(this.getSpecifiedPrimaryKeyJoinColumns());
 		this.updateDefaultPrimaryKeyJoinColumn();
 	}
 
@@ -153,10 +153,6 @@ public class GenericJavaSecondaryTable
 
 	protected void syncSpecifiedPrimaryKeyJoinColumns() {
 		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateSpecifiedPrimaryKeyJoinColumns() {
-		this.specifiedPrimaryKeyJoinColumnContainer.update();
 	}
 
 	protected ListIterable<PrimaryKeyJoinColumnAnnotation> getPrimaryKeyJoinColumnAnnotations() {

@@ -228,18 +228,18 @@ public abstract class AbstractPersistenceUnit
 		// update specified class refs before mapping file refs because of
 		// JpaFile root structure nodes - we want the mapping file to "win",
 		// as it would in a JPA runtime implementation
-		this.updateSpecifiedClassRefs();
+		this.updateNodes(this.getSpecifiedClassRefs());
 
-		this.updateSpecifiedMappingFileRefs();
+		this.updateNodes(this.getSpecifiedMappingFileRefs());
 		this.updateImpliedMappingFileRef();
 
-		this.updateJarFileRefs();
+		this.updateNodes(this.getJarFileRefs());
 
 		// update the implied class refs after all the other types, both
 		// specified here and specified in the mapping files, are in place
 		this.updateImpliedClassRefs();
 
-		this.updateProperties();
+		this.updateNodes(this.getProperties());
 
 		this.updatePersistenceUnitMetadata();
 
@@ -526,10 +526,6 @@ public abstract class AbstractPersistenceUnit
 		this.specifiedMappingFileRefContainer.synchronizeWithResourceModel();
 	}
 
-	protected void updateSpecifiedMappingFileRefs() {
-		this.specifiedMappingFileRefContainer.update();
-	}
-
 	protected ListIterable<XmlMappingFileRef> getXmlMappingFileRefs() {
 		// clone to reduce chance of concurrency problems
 		return new LiveCloneListIterable<XmlMappingFileRef>(this.xmlPersistenceUnit.getMappingFiles());
@@ -690,10 +686,6 @@ public abstract class AbstractPersistenceUnit
 		this.jarFileRefContainer.synchronizeWithResourceModel();
 	}
 
-	protected void updateJarFileRefs() {
-		this.jarFileRefContainer.update();
-	}
-
 	protected ListIterable<XmlJarFileRef> getXmlJarFileRefs() {
 		// clone to reduce chance of concurrency problems
 		return new LiveCloneListIterable<XmlJarFileRef>(this.xmlPersistenceUnit.getJarFiles());
@@ -791,10 +783,6 @@ public abstract class AbstractPersistenceUnit
 
 	protected void syncSpecifiedClassRefs() {
 		this.specifiedClassRefContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateSpecifiedClassRefs() {
-		this.specifiedClassRefContainer.update();
 	}
 
 	protected ListIterable<XmlJavaClassRef> getXmlClassRefs() {
@@ -1144,10 +1132,6 @@ public abstract class AbstractPersistenceUnit
 
 	protected void syncProperties() {
 		this.propertyContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateProperties() {
-		this.propertyContainer.update();
 	}
 
 	protected ListIterable<XmlProperty> getXmlProperties() {

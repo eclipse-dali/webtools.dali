@@ -62,8 +62,8 @@ public class GenericJavaQueryContainer
 	@Override
 	public void update() {
 		super.update();
-		this.updateNamedQueries();
-		this.updateNamedNativeQueries();
+		this.updateNodes(this.getNamedQueries());
+		this.updateNodes(this.getNamedNativeQueries());
 	}
 
 
@@ -119,10 +119,6 @@ public class GenericJavaQueryContainer
 
 	protected void syncNamedQueries() {
 		this.namedQueryContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateNamedQueries() {
-		this.namedQueryContainer.update();
 	}
 
 	protected ListIterable<NamedQueryAnnotation> getNamedQueryAnnotations() {
@@ -205,10 +201,6 @@ public class GenericJavaQueryContainer
 
 	protected void syncNamedNativeQueries() {
 		this.namedNativeQueryContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateNamedNativeQueries() {
-		this.namedNativeQueryContainer.update();
 	}
 
 	protected ListIterable<NamedNativeQueryAnnotation> getNamedNativeQueryAnnotations() {

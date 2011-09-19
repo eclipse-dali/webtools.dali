@@ -119,10 +119,6 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 		this.specifiedJoinColumnContainer.synchronizeWithResourceModel();
 	}
 
-	protected void updateSpecifiedJoinColumns() {
-		this.specifiedJoinColumnContainer.update();
-	}
-
 	protected ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer() {
 		return new SpecifiedJoinColumnContainer();
 	}

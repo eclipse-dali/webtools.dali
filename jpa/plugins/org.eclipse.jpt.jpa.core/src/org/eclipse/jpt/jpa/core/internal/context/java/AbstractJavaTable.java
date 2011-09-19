@@ -295,10 +295,6 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		this.uniqueConstraintContainer.synchronizeWithResourceModel();
 	}
 
-	protected void updateUniqueConstraints() {
-		this.uniqueConstraintContainer.update();
-	}
-
 	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation constraintAnnotation) {
 		return this.getJpaFactory().buildJavaUniqueConstraint(this, this, constraintAnnotation);
 	}

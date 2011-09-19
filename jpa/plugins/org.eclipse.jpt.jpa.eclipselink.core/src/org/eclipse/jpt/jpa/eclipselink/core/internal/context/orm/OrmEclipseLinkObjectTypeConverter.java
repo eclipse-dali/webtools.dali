@@ -72,7 +72,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	@Override
 	public void update() {
 		super.update();
-		this.updateConversionValues();
+		this.updateNodes(this.getConversionValues());
 	}
 
 
@@ -182,10 +182,6 @@ public class OrmEclipseLinkObjectTypeConverter
 
 	protected void syncConversionValues() {
 		this.conversionValueContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateConversionValues() {
-		this.conversionValueContainer.update();
 	}
 
 	protected ListIterable<XmlConversionValue> getXmlConversionValues() {

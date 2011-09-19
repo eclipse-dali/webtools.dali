@@ -85,7 +85,7 @@ public class GenericJavaJoinTable
 	@Override
 	public void update() {
 		super.update();
-		this.updateSpecifiedInverseJoinColumns();
+		this.updateNodes(this.getSpecifiedInverseJoinColumns());
 		this.updateDefaultInverseJoinColumn();
 	}
 
@@ -169,10 +169,6 @@ public class GenericJavaJoinTable
 
 	protected void syncSpecifiedInverseJoinColumns() {
 		this.specifiedInverseJoinColumnContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateSpecifiedInverseJoinColumns() {
-		this.specifiedInverseJoinColumnContainer.update();
 	}
 
 	protected ListIterable<JoinColumnAnnotation> getInverseJoinColumnAnnotations() {

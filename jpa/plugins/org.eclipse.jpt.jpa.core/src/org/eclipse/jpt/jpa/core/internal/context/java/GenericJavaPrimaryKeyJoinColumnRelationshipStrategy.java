@@ -50,8 +50,8 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 
 	public GenericJavaPrimaryKeyJoinColumnRelationshipStrategy(JavaPrimaryKeyJoinColumnRelationship parent) {
 		super(parent);
-		this.primaryKeyJoinColumnContainer = this.buildPrimaryKeyJoinColumnContainer();
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
+		this.primaryKeyJoinColumnContainer = this.buildPrimaryKeyJoinColumnContainer();
 	}
 
 
@@ -66,7 +66,7 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	@Override
 	public void update() {
 		super.update();
-		this.updatePrimaryKeyJoinColumns();
+		this.updateNodes(this.getPrimaryKeyJoinColumns());
 	}
 
 
@@ -113,10 +113,6 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 
 	protected void syncPrimaryKeyJoinColumns() {
 		this.primaryKeyJoinColumnContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updatePrimaryKeyJoinColumns() {
-		this.primaryKeyJoinColumnContainer.update();
 	}
 
 	protected ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildPrimaryKeyJoinColumnContainer() {

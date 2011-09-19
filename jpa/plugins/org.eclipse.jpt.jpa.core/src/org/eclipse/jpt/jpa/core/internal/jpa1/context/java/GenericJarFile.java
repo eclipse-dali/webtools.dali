@@ -63,7 +63,7 @@ public class GenericJarFile
 	@Override
 	public void update() {
 		super.update();
-		this.updateJavaPersistentTypes();
+		this.updateNodes(this.getJavaPersistentTypes());
 	}
 
 	public JavaResourcePackageFragmentRoot getJarResourcePackageFragmentRoot() {
@@ -119,10 +119,6 @@ public class GenericJarFile
 
 	protected void syncJavaPersistentTypes() {
 		this.javaPersistentTypeContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateJavaPersistentTypes() {
-		this.javaPersistentTypeContainer.update();
 	}
 
 	protected void addJavaPersistentType(JavaResourceType jrt) {

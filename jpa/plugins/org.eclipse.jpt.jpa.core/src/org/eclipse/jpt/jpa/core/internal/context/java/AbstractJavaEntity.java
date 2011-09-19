@@ -220,10 +220,10 @@ public abstract class AbstractJavaEntity
 		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
 		this.setTableIsUndefined(this.buildTableIsUndefined());
 
-		this.updateSpecifiedSecondaryTables();
+		this.updateNodes(this.getSecondaryTables());
 
 		this.updateDefaultPrimaryKeyJoinColumn();
-		this.updateSpecifiedPrimaryKeyJoinColumns();
+		this.updateNodes(this.getPrimaryKeyJoinColumns());
 
 		this.setDefaultInheritanceStrategy(this.buildDefaultInheritanceStrategy());
 
@@ -481,10 +481,6 @@ public abstract class AbstractJavaEntity
 		this.specifiedSecondaryTableContainer.synchronizeWithResourceModel();
 	}
 
-	protected void updateSpecifiedSecondaryTables() {
-		this.specifiedSecondaryTableContainer.update();
-	}
-
 	protected ListIterable<SecondaryTableAnnotation> getSecondaryTableAnnotations() {
 		return this.getSecondaryTableAnnotations_();
 	}
@@ -584,10 +580,6 @@ public abstract class AbstractJavaEntity
 
 	protected void syncSpecifiedPrimaryKeyJoinColumns() {
 		this.specifiedPrimaryKeyJoinColumnContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateSpecifiedPrimaryKeyJoinColumns() {
-		this.specifiedPrimaryKeyJoinColumnContainer.update();
 	}
 
 	protected ListIterable<PrimaryKeyJoinColumnAnnotation> getPrimaryKeyJoinColumnAnnotations() {

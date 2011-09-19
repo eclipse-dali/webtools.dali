@@ -370,10 +370,6 @@ public class GenericOrmTableGenerator
 		this.uniqueConstraintContainer.synchronizeWithResourceModel();
 	}
 
-	protected void updateUniqueConstraints() {
-		this.uniqueConstraintContainer.update();
-	}
-
 	protected ListIterable<XmlUniqueConstraint> getXmlUniqueConstraints() {
 		// clone to reduce chance of concurrency problems
 		return new LiveCloneListIterable<XmlUniqueConstraint>(this.xmlGenerator.getUniqueConstraints());

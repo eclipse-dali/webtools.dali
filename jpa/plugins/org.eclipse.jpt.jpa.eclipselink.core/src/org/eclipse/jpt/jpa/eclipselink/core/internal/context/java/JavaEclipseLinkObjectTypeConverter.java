@@ -71,7 +71,7 @@ public class JavaEclipseLinkObjectTypeConverter
 		super.update();
 		this.setFullyQualifiedDataType(this.converterAnnotation.getFullyQualifiedDataType());
 		this.setFullyQualifiedObjectType(this.converterAnnotation.getFullyQualifiedObjectType());
-		this.updateConversionValues();
+		this.updateNodes(this.getConversionValues());
 	}
 
 
@@ -176,10 +176,6 @@ public class JavaEclipseLinkObjectTypeConverter
 	
 	protected void syncConversionValues() {
 		this.conversionValueContainer.synchronizeWithResourceModel();
-	}
-	
-	protected void updateConversionValues() {
-		this.conversionValueContainer.update();
 	}
 
 	protected ListIterable<EclipseLinkConversionValueAnnotation> getConversionValueAnnotations() {

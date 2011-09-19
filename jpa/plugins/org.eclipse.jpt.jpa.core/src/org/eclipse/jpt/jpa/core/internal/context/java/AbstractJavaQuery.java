@@ -14,12 +14,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
@@ -144,10 +142,6 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	protected void syncHints() {
 		this.queryHintContainer.synchronizeWithResourceModel();
-	}
-
-	protected void updateHints() {
-		this.queryHintContainer.update();
 	}
 
 	protected ListIterable<QueryHintAnnotation> getHintAnnotations() {
