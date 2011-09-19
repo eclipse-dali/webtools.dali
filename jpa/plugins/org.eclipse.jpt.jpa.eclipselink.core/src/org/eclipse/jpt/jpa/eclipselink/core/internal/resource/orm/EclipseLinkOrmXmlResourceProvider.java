@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.jpa.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.resource.orm.AccessType;
-import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
@@ -76,7 +75,7 @@ public class EclipseLinkOrmXmlResourceProvider
 		if (defaultAccess != null) {
 			XmlPersistenceUnitMetadata puMetadata = EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
 			entityMappings.setPersistenceUnitMetadata(puMetadata);
-			XmlPersistenceUnitDefaults puDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
+			XmlPersistenceUnitDefaults puDefaults = EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 			puMetadata.setPersistenceUnitDefaults(puDefaults);
 			puDefaults.setAccess(defaultAccess);
 		}
