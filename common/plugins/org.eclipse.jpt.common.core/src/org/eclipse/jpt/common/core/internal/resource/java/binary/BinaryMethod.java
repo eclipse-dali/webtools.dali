@@ -33,28 +33,24 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
  * binary method
  */
 final class BinaryMethod
-	extends BinaryAttribute
-	implements JavaResourceMethod
-{
-
+		extends BinaryAttribute
+		implements JavaResourceMethod {
+	
 	private boolean constructor;
-
+	
 	private final Vector<String> parameterTypeNames = new Vector<String>();
-
+	
+	
 	BinaryMethod(JavaResourceType parent, IMethod method) {
 		super(parent, new MethodAdapter(method));
 	}
-
+	
 	public Kind getKind() {
 		return JavaResourceAnnotatedElement.Kind.METHOD;
 	}
-
-	public String getMethodName() {
-		return getMember().getElementName();
-	}
-
-	// ******** overrides ********
-
+	
+	// ***** overrides *****
+	
 	@Override
 	public void update() {
 		super.update();
@@ -62,51 +58,34 @@ final class BinaryMethod
 
 		this.setParameterTypeNames(this.buildParameterTypeNames());
 	}
-
+	
 	@Override
 	IMethod getMember() {
 		return (IMethod) super.getMember();
 	}
 	
 	
-	// ********** JavaResourcePersistentAttribute implementation **********
-
-
-	public boolean isFor(MethodSignature methodSignature, int occurrence) {
-		throw new UnsupportedOperationException();
+	// ***** method name *****
+	
+	public String getMethodName() {
+		return getMember().getElementName();
 	}
-
-
-	// ***** type is interface
-	public boolean isConstructor() {
-		return this.constructor;
-	}
-
-	private void setConstructor(boolean isConstructor) {
-		boolean old = this.constructor;
-		this.constructor = isConstructor;
-		this.firePropertyChanged(CONSTRUCTOR_PROPERTY, old, isConstructor);
-	}
-
-	private boolean buildConstructor() {
-		try {
-			return this.getMember().isConstructor();
-		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
-			return false;
-		}
-	}
-
-
-	// ***** parameter type names
+	
+	
+	// ***** parameter type names *****
+	
 	public ListIterable<String> getParameterTypeNames() {
 		return new LiveCloneListIterable<String>(this.parameterTypeNames);
 	}
-
+	
+	public String getParameterTypeName(int index) {
+		return this.parameterTypeNames.get(index);
+	}
+	
 	public int getParametersSize() {
 		return this.parameterTypeNames.size();
 	}
-
+	
 	private List<String> buildParameterTypeNames() {
 		ArrayList<String> names = new ArrayList<String>();
 		for (ILocalVariable parameter : this.getParameters(this.getMember())) {
@@ -114,7 +93,7 @@ final class BinaryMethod
 		}
 		return names;
 	}
-
+	
 	private ILocalVariable[] getParameters(IMethod jdtMethod) {
 		try {
 			return jdtMethod.getParameters();
@@ -123,11 +102,40 @@ final class BinaryMethod
 			return null;
 		}
 	}
-
+	
 	private void setParameterTypeNames(List<String> parameterTypeNames) {
 		this.synchronizeList(parameterTypeNames, this.parameterTypeNames, PARAMETER_TYPE_NAMES_LIST);
 	}
-
+	
+	
+	// ***** constructor *****
+	
+	public boolean isConstructor() {
+		return this.constructor;
+	}
+	
+	private void setConstructor(boolean isConstructor) {
+		boolean old = this.constructor;
+		this.constructor = isConstructor;
+		this.firePropertyChanged(CONSTRUCTOR_PROPERTY, old, isConstructor);
+	}
+	
+	private boolean buildConstructor() {
+		try {
+			return this.getMember().isConstructor();
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.log(ex);
+			return false;
+		}
+	}
+	
+	
+	// ***** misc *****
+	
+	public boolean isFor(MethodSignature methodSignature, int occurrence) {
+		throw new UnsupportedOperationException();
+	}
+	
 	
 	// ********** adapters **********
 

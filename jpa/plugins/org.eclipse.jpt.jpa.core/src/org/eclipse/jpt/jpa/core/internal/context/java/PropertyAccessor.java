@@ -104,35 +104,40 @@ public class PropertyAccessor
 	 * Wrap another Java resource method and suppress all its annotations.
 	 */
 	protected class UnannotatedJavaResourceMethod
-		extends UnannotatedJavaResourceAttribute<JavaResourceMethod>
-		implements JavaResourceMethod
-	{
+			extends UnannotatedJavaResourceAttribute<JavaResourceMethod>
+			implements JavaResourceMethod {
+		
 		protected UnannotatedJavaResourceMethod(JavaResourceMethod method){
 			super(method);
 		}
-
+		
+		
 		public Kind getKind() {
 			return Kind.METHOD;
 		}
-
+		
 		public String getMethodName() {
 			return this.member.getMethodName();
 		}
-
-		public boolean isFor(MethodSignature methodSignature, int occurrence) {
-			return this.member.isFor(methodSignature, occurrence);
-		}
-
+		
 		public ListIterable<String> getParameterTypeNames() {
 			return this.member.getParameterTypeNames();
 		}
-
-		public int getParametersSize() {
-			return 0;
+		
+		public String getParameterTypeName(int index) {
+			return this.member.getParameterTypeName(index);
 		}
-
+		
+		public int getParametersSize() {
+			return this.member.getParametersSize();
+		}
+		
 		public boolean isConstructor() {
 			return this.member.isConstructor();
+		}
+		
+		public boolean isFor(MethodSignature methodSignature, int occurrence) {
+			return this.member.isFor(methodSignature, occurrence);
 		}
 	}
 

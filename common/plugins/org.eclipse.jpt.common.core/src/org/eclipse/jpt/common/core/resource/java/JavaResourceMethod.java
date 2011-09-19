@@ -25,26 +25,39 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface JavaResourceMethod
-	extends JavaResourceAttribute
-{
-
+		extends JavaResourceAttribute {
+	
+	// ***** method name *****
+	
 	/**
 	 * The Java resource method's name does not change.
 	 */
 	String getMethodName();
-
+	
+	
+	// ***** parameter type names *****
+	
+	String PARAMETER_TYPE_NAMES_LIST = "parameterTypeNames"; //$NON-NLS-1$
+	
+	ListIterable<String> getParameterTypeNames();
+		
+	String getParameterTypeName(int index);
+	
+	int getParametersSize();
+	
+	
+	// ***** constructor *****
+	
+	String CONSTRUCTOR_PROPERTY = "constructor"; //$NON-NLS-1$
+	
+	boolean isConstructor();
+	
+	
+	// ***** misc *****
+	
 	/**
 	 * Return whether the Java resource persistent attribute is for the specified
 	 * method.
 	 */
 	boolean isFor(MethodSignature methodSignature, int occurrence);
-
-	ListIterable<String> getParameterTypeNames();
-		String PARAMETER_TYPE_NAMES_LIST = "parameterTypeNames"; //$NON-NLS-1$
-
-	int getParametersSize();
-
-	boolean isConstructor();
-		String CONSTRUCTOR_PROPERTY = "constructor"; //$NON-NLS-1$
-	
 }

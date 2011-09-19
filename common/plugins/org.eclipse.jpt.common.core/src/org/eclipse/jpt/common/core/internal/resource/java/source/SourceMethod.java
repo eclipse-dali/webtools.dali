@@ -30,14 +30,14 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
  * Java source method
  */
 final class SourceMethod
-	extends SourceAttribute<MethodAttribute>
-	implements JavaResourceMethod
-{
-
+		extends SourceAttribute<MethodAttribute>
+		implements JavaResourceMethod {
+	
 	boolean constructor;
 	
 	private final Vector<String> parameterTypeNames = new Vector<String>();
-
+	
+	
 	/**
 	 * construct method
 	 */
@@ -48,6 +48,7 @@ final class SourceMethod
 			int occurrence,
 			JavaResourceCompilationUnit javaResourceCompilationUnit,
 			CompilationUnit astRoot) {
+		
 		MethodAttribute method = JDTMethodAttribute.newInstance(
 				declaringType,
 				signature,
@@ -59,13 +60,13 @@ final class SourceMethod
 		jrm.initialize(astRoot);
 		return jrm;
 	}
-
-
+	
+	
 	private SourceMethod(JavaResourceType parent, MethodAttribute method){
 		super(parent, method);
 	}
-
-
+	
+	
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
@@ -73,22 +74,22 @@ final class SourceMethod
 		this.constructor = this.buildConstructor(binding);
 		this.parameterTypeNames.addAll(this.buildParameterTypeNames(binding));
 	}
-
-
+	
+	
 	// ******** JavaResourceAnnotatedElement implementation ********
-
+	
 	public Kind getKind() {
 		return Kind.METHOD;
 	}
-
-
+	
+	
 	// ******** overrides ********
-
+	
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
 	}
-
+	
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
@@ -96,51 +97,38 @@ final class SourceMethod
 		this.syncConstructor(this.buildConstructor(binding));
 		this.syncParameterTypeNames(this.buildParameterTypeNames(binding));
 	}
-
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getMethodName());
 	}
-
-
-	// ******** JavaResourceMethod implementation ********
-
+	
+	
+	// ***** method name *****
+	
 	public String getMethodName() {
 		return this.annotatedElement.getName();
 	}
-
-	// ***** constructor
-	public boolean isConstructor() {
-		return this.constructor;
-	}
-
-	private void syncConstructor(boolean astConstructor) {
-		boolean old = this.constructor;
-		this.constructor = astConstructor;
-		this.firePropertyChanged(CONSTRUCTOR_PROPERTY, old, astConstructor);
-	}
-
-	private boolean buildConstructor(IMethodBinding methodBinding) {
-		return methodBinding == null ? false : methodBinding.isConstructor();
-	}
-
-	public boolean isFor(MethodSignature signature, int occurrence) {
-		return this.annotatedElement.matches(signature, occurrence);
-	}
-
-	// ***** parameter type names
+	
+	
+	// ***** parameter type names *****
+	
 	public ListIterable<String> getParameterTypeNames() {
 		return new LiveCloneListIterable<String>(this.parameterTypeNames);
 	}
-
+	
+	public String getParameterTypeName(int index) {
+		return this.parameterTypeNames.get(index);
+	}
+	
 	public int getParametersSize() {
 		return this.parameterTypeNames.size();
 	}
-
+	
 	private void syncParameterTypeNames(List<String> astParameterTypeNames) {
 		this.synchronizeList(astParameterTypeNames, this.parameterTypeNames, PARAMETER_TYPE_NAMES_LIST);
 	}
-
+	
 	private List<String> buildParameterTypeNames(IMethodBinding methodBinding) {
 		if (methodBinding == null) {
 			return Collections.emptyList();
@@ -155,5 +143,29 @@ final class SourceMethod
 			names.add(ptName);
 		}
 		return names;
+	}
+	
+	
+	// ***** constructor *****
+	
+	public boolean isConstructor() {
+		return this.constructor;
+	}
+	
+	private void syncConstructor(boolean astConstructor) {
+		boolean old = this.constructor;
+		this.constructor = astConstructor;
+		this.firePropertyChanged(CONSTRUCTOR_PROPERTY, old, astConstructor);
+	}
+	
+	private boolean buildConstructor(IMethodBinding methodBinding) {
+		return methodBinding == null ? false : methodBinding.isConstructor();
+	}
+	
+	
+	// ***** misc *****
+	
+	public boolean isFor(MethodSignature signature, int occurrence) {
+		return this.annotatedElement.matches(signature, occurrence);
 	}
 }
