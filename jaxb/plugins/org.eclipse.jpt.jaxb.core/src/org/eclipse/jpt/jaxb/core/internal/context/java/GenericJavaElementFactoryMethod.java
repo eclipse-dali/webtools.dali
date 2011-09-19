@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
@@ -207,6 +208,25 @@ public class GenericJavaElementFactoryMethod
 		super.validate(messages, reporter, astRoot);
 		this.qName.validate(messages, reporter, astRoot);
 		this.substitutionHeadQName.validate(messages, reporter, astRoot);
+		
+		JavaResourceMethod resourceMethod = getResourceMethod();
+		if (! JAXB.JAXB_ELEMENT.equals(resourceMethod.getTypeName())) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE,
+							this,
+							getValidationTextRange(astRoot)));
+		}
+		if (resourceMethod.getParametersSize() != 1 || 
+				! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), resourceMethod.getParameterTypeName(0), Object.class.getName())) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_PARAM,
+							this,
+							getValidationTextRange(astRoot)));
+		}
 	}
 	
 	
