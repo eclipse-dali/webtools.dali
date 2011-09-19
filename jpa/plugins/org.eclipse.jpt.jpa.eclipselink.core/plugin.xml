@@ -86,6 +86,13 @@
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
 		
+		<jpaPlatform
+	        id="eclipselink2_4"
+	        label="%ECLIPSELINK2_4_x_PLATFORM"
+	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.v2_4.EclipseLink2_4JpaPlatformFactory"
+	        group="eclipselink"
+			jpaFacetVersion="2.0"/>
+		
 	</extension>
 	
 	

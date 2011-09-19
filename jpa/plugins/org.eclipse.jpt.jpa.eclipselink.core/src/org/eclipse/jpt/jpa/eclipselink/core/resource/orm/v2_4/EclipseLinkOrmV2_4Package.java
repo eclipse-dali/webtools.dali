@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.EReference;
@@ -91,25 +92,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlMultitenant_2_4()
 	 * @generated
 	 */
-	public static final int XML_MULTITENANT_24 = 0;
-
-	/**
-	 * The feature id for the '<em><b>Include Criteria</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MULTITENANT_24__INCLUDE_CRITERIA = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Multitenant 24</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MULTITENANT_24_FEATURE_COUNT = 1;
+	public static final int XML_MULTITENANT_24 = 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlElementCollection_2_4 <em>Xml Element Collection 24</em>}' class.
@@ -119,25 +102,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlElementCollection_2_4()
 	 * @generated
 	 */
-	public static final int XML_ELEMENT_COLLECTION_24 = 1;
-
-	/**
-	 * The feature id for the '<em><b>Delete All</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_24__DELETE_ALL = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Element Collection 24</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_24_FEATURE_COUNT = 1;
+	public static final int XML_ELEMENT_COLLECTION_24 = 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToMany_2_4 <em>Xml One To Many 24</em>}' class.
@@ -147,25 +112,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlOneToMany_2_4()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_24 = 2;
-
-	/**
-	 * The feature id for the '<em><b>Delete All</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY_24__DELETE_ALL = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml One To Many 24</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY_24_FEATURE_COUNT = 1;
+	public static final int XML_ONE_TO_MANY_24 = 8;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntity_2_4 <em>Xml Entity 24</em>}' class.
@@ -175,25 +122,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEntity_2_4()
 	 * @generated
 	 */
-	public static final int XML_ENTITY_24 = 3;
-
-	/**
-	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY_24__CACHE_INDEX = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Entity 24</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY_24_FEATURE_COUNT = 1;
+	public static final int XML_ENTITY_24 = 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlBasic_2_4 <em>Xml Basic 24</em>}' class.
@@ -203,7 +132,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlBasic_2_4()
 	 * @generated
 	 */
-	public static final int XML_BASIC_24 = 4;
+	public static final int XML_BASIC_24 = 0;
 
 	/**
 	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
@@ -224,6 +153,34 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	public static final int XML_BASIC_24_FEATURE_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCache_2_4 <em>Xml Cache 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCache_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlCache_2_4()
+	 * @generated
+	 */
+	public static final int XML_CACHE_24 = 1;
+
+	/**
+	 * The feature id for the '<em><b>Database Change Notification Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE_24__DATABASE_CHANGE_NOTIFICATION_TYPE = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Cache 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE_24_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4 <em>Xml Cache Index 24</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -231,7 +188,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlCacheIndex_2_4()
 	 * @generated
 	 */
-	public static final int XML_CACHE_INDEX_24 = 5;
+	public static final int XML_CACHE_INDEX_24 = 2;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -252,6 +209,42 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	public static final int XML_CACHE_INDEX_24_FEATURE_COUNT = 1;
 
 	/**
+	 * The feature id for the '<em><b>Delete All</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION_24__DELETE_ALL = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Element Collection 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION_24_FEATURE_COUNT = 1;
+
+	/**
+	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_24__CACHE_INDEX = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Entity 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_24_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlId_2_4 <em>Xml Id 24</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -259,7 +252,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlId_2_4()
 	 * @generated
 	 */
-	public static final int XML_ID_24 = 6;
+	public static final int XML_ID_24 = 5;
 
 	/**
 	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
@@ -287,7 +280,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlMappedSuperclass_2_4()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_24 = 7;
+	public static final int XML_MAPPED_SUPERCLASS_24 = 6;
 
 	/**
 	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
@@ -306,6 +299,52 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MAPPED_SUPERCLASS_24_FEATURE_COUNT = 1;
+
+	/**
+	 * The feature id for the '<em><b>Include Criteria</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTITENANT_24__INCLUDE_CRITERIA = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Multitenant 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTITENANT_24_FEATURE_COUNT = 1;
+
+	/**
+	 * The feature id for the '<em><b>Delete All</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY_24__DELETE_ALL = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml One To Many 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY_24_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType <em>Database Change Notification Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getDatabaseChangeNotificationType()
+	 * @generated
+	 */
+	public static final int DATABASE_CHANGE_NOTIFICATION_TYPE = 9;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -347,6 +386,13 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass xmlCache_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass xmlCacheIndex_2_4EClass = null;
 
 	/**
@@ -362,6 +408,13 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlMappedSuperclass_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum databaseChangeNotificationTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -596,6 +649,35 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCache_2_4 <em>Xml Cache 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Cache 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCache_2_4
+	 * @generated
+	 */
+	public EClass getXmlCache_2_4()
+	{
+		return xmlCache_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCache_2_4#getDatabaseChangeNotificationType <em>Database Change Notification Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Database Change Notification Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCache_2_4#getDatabaseChangeNotificationType()
+	 * @see #getXmlCache_2_4()
+	 * @generated
+	 */
+	public EAttribute getXmlCache_2_4_DatabaseChangeNotificationType()
+	{
+		return (EAttribute)xmlCache_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4 <em>Xml Cache Index 24</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -683,6 +765,20 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType <em>Database Change Notification Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Database Change Notification Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType
+	 * @generated
+	 */
+	public EEnum getDatabaseChangeNotificationType()
+	{
+		return databaseChangeNotificationTypeEEnum;
+	}
+
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -714,29 +810,35 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		isCreated = true;
 
 		// Create classes and their features
-		xmlMultitenant_2_4EClass = createEClass(XML_MULTITENANT_24);
-		createEAttribute(xmlMultitenant_2_4EClass, XML_MULTITENANT_24__INCLUDE_CRITERIA);
+		xmlBasic_2_4EClass = createEClass(XML_BASIC_24);
+		createEReference(xmlBasic_2_4EClass, XML_BASIC_24__CACHE_INDEX);
+
+		xmlCache_2_4EClass = createEClass(XML_CACHE_24);
+		createEAttribute(xmlCache_2_4EClass, XML_CACHE_24__DATABASE_CHANGE_NOTIFICATION_TYPE);
+
+		xmlCacheIndex_2_4EClass = createEClass(XML_CACHE_INDEX_24);
+		createEAttribute(xmlCacheIndex_2_4EClass, XML_CACHE_INDEX_24__COLUMN_NAMES);
 
 		xmlElementCollection_2_4EClass = createEClass(XML_ELEMENT_COLLECTION_24);
 		createEAttribute(xmlElementCollection_2_4EClass, XML_ELEMENT_COLLECTION_24__DELETE_ALL);
 
-		xmlOneToMany_2_4EClass = createEClass(XML_ONE_TO_MANY_24);
-		createEAttribute(xmlOneToMany_2_4EClass, XML_ONE_TO_MANY_24__DELETE_ALL);
-
 		xmlEntity_2_4EClass = createEClass(XML_ENTITY_24);
 		createEReference(xmlEntity_2_4EClass, XML_ENTITY_24__CACHE_INDEX);
-
-		xmlBasic_2_4EClass = createEClass(XML_BASIC_24);
-		createEReference(xmlBasic_2_4EClass, XML_BASIC_24__CACHE_INDEX);
-
-		xmlCacheIndex_2_4EClass = createEClass(XML_CACHE_INDEX_24);
-		createEAttribute(xmlCacheIndex_2_4EClass, XML_CACHE_INDEX_24__COLUMN_NAMES);
 
 		xmlId_2_4EClass = createEClass(XML_ID_24);
 		createEReference(xmlId_2_4EClass, XML_ID_24__CACHE_INDEX);
 
 		xmlMappedSuperclass_2_4EClass = createEClass(XML_MAPPED_SUPERCLASS_24);
 		createEReference(xmlMappedSuperclass_2_4EClass, XML_MAPPED_SUPERCLASS_24__CACHE_INDEX);
+
+		xmlMultitenant_2_4EClass = createEClass(XML_MULTITENANT_24);
+		createEAttribute(xmlMultitenant_2_4EClass, XML_MULTITENANT_24__INCLUDE_CRITERIA);
+
+		xmlOneToMany_2_4EClass = createEClass(XML_ONE_TO_MANY_24);
+		createEAttribute(xmlOneToMany_2_4EClass, XML_ONE_TO_MANY_24__DELETE_ALL);
+
+		// Create enums
+		databaseChangeNotificationTypeEEnum = createEEnum(DATABASE_CHANGE_NOTIFICATION_TYPE);
 	}
 
 	/**
@@ -773,29 +875,37 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		// Add supertypes to classes
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(xmlMultitenant_2_4EClass, XmlMultitenant_2_4.class, "XmlMultitenant_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlMultitenant_2_4_IncludeCriteria(), theXMLTypePackage.getBooleanObject(), "includeCriteria", null, 0, 1, XmlMultitenant_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlBasic_2_4EClass, XmlBasic_2_4.class, "XmlBasic_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlBasic_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlBasic_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlCache_2_4EClass, XmlCache_2_4.class, "XmlCache_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlCache_2_4_DatabaseChangeNotificationType(), this.getDatabaseChangeNotificationType(), "databaseChangeNotificationType", "", 0, 1, XmlCache_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlCacheIndex_2_4EClass, XmlCacheIndex_2_4.class, "XmlCacheIndex_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlCacheIndex_2_4_ColumnNames(), theXMLTypePackage.getString(), "columnNames", null, 0, -1, XmlCacheIndex_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlElementCollection_2_4EClass, XmlElementCollection_2_4.class, "XmlElementCollection_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlElementCollection_2_4_DeleteAll(), theXMLTypePackage.getBoolean(), "deleteAll", null, 0, 1, XmlElementCollection_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(xmlOneToMany_2_4EClass, XmlOneToMany_2_4.class, "XmlOneToMany_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlOneToMany_2_4_DeleteAll(), theXMLTypePackage.getBoolean(), "deleteAll", null, 0, 1, XmlOneToMany_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(xmlEntity_2_4EClass, XmlEntity_2_4.class, "XmlEntity_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlEntity_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlEntity_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(xmlBasic_2_4EClass, XmlBasic_2_4.class, "XmlBasic_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlBasic_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlBasic_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(xmlCacheIndex_2_4EClass, XmlCacheIndex_2_4.class, "XmlCacheIndex_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlCacheIndex_2_4_ColumnNames(), theXMLTypePackage.getString(), "columnNames", null, 0, -1, XmlCacheIndex_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlId_2_4EClass, XmlId_2_4.class, "XmlId_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlId_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlId_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclass_2_4EClass, XmlMappedSuperclass_2_4.class, "XmlMappedSuperclass_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlMappedSuperclass_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlMappedSuperclass_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlMultitenant_2_4EClass, XmlMultitenant_2_4.class, "XmlMultitenant_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlMultitenant_2_4_IncludeCriteria(), theXMLTypePackage.getBooleanObject(), "includeCriteria", null, 0, 1, XmlMultitenant_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlOneToMany_2_4EClass, XmlOneToMany_2_4.class, "XmlOneToMany_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlOneToMany_2_4_DeleteAll(), theXMLTypePackage.getBoolean(), "deleteAll", null, 0, 1, XmlOneToMany_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(databaseChangeNotificationTypeEEnum, DatabaseChangeNotificationType.class, "DatabaseChangeNotificationType");
+		addEEnumLiteral(databaseChangeNotificationTypeEEnum, DatabaseChangeNotificationType.NONE);
+		addEEnumLiteral(databaseChangeNotificationTypeEEnum, DatabaseChangeNotificationType.INVALIDATION);
 	}
 
 	/**
@@ -903,6 +1013,24 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		public static final EReference XML_BASIC_24__CACHE_INDEX = eINSTANCE.getXmlBasic_2_4_CacheIndex();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCache_2_4 <em>Xml Cache 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCache_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlCache_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_CACHE_24 = eINSTANCE.getXmlCache_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Database Change Notification Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE_24__DATABASE_CHANGE_NOTIFICATION_TYPE = eINSTANCE.getXmlCache_2_4_DatabaseChangeNotificationType();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4 <em>Xml Cache Index 24</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -955,6 +1083,16 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_MAPPED_SUPERCLASS_24__CACHE_INDEX = eINSTANCE.getXmlMappedSuperclass_2_4_CacheIndex();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType <em>Database Change Notification Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getDatabaseChangeNotificationType()
+		 * @generated
+		 */
+		public static final EEnum DATABASE_CHANGE_NOTIFICATION_TYPE = eINSTANCE.getDatabaseChangeNotificationType();
 
 	}
 

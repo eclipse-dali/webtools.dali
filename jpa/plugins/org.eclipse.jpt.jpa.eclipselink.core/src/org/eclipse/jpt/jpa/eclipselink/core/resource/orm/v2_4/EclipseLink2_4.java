@@ -22,9 +22,10 @@ public interface EclipseLink2_4
 	String SCHEMA_VERSION	= "2.4";
 
 	// EclipseLink 2.4 specific nodes
-	String DELETE_ALL = "delete-all";
+	String CACHE__DATABASE_CHANGE_NOTIFICATION_TYPE = "database-change-notification-type";
 	String CACHE_INDEX = "cache-index";
 		String CACHE_INDEX__COLUMN_NAME = "column-name";
+	String DELETE_ALL = "delete-all";
 	String MULTITENANT__INCLUDE_CRITERIA = "include-criteria";
 
 

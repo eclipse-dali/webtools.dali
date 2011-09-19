@@ -35,7 +35,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="batchFetch" eType="#//XmlBatchFetch"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlCache">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlCache" eSuperTypes="#//v2_2/XmlCache_2_2 #//v2_4/XmlCache_2_4">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="expiry" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="shared" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
@@ -511,6 +511,10 @@
     <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMap_2_2" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeOnDelete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlCache_2_2" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isolation" eType="#//v2_2/CacheIsolationType"
+          defaultValueLiteral=""/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlCollectionTable_2_2" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="creationSuffix" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -663,6 +667,11 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//v2_2/XmlIndex_2_2"
           containment="true"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="CacheIsolationType">
+      <eLiterals name="SHARED"/>
+      <eLiterals name="PROTECTED" value="1" literal="PROTECTED"/>
+      <eLiterals name="ISOLATED" value="2"/>
+    </eClassifiers>
   </eSubpackages>
   <eSubpackages name="v2_3" nsURI="jpt.eclipselink.orm.v2_3.xmi" nsPrefix="org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3">
     <eClassifiers xsi:type="ecore:EClass" name="XmlArray_2_3" abstract="true" interface="true"/>
@@ -672,6 +681,10 @@
           eType="#//v2_3/XmlStructure_2_3" containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="arrays" upperBound="-1"
           eType="#//v2_3/XmlArray_2_3" containment="true" resolveProxies="false"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_3" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="compositeMember" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable_2_3" abstract="true"
         interface="true">
@@ -767,40 +780,33 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlStructure_2_3" abstract="true"
         interface="true"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_3" abstract="true"
-        interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="compositeMember" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-    </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="MultitenantType">
       <eLiterals name="SINGLE_TABLE"/>
       <eLiterals name="TABLE_PER_TENANT" value="1" literal="TABLE_PER_TENANT"/>
+      <eLiterals name="VPD" value="2"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="v2_4" nsURI="jpt.eclipselink.orm.v2_4.xmi" nsPrefix="org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4">
-    <eClassifiers xsi:type="ecore:EClass" name="XmlMultitenant_2_4" abstract="true"
+    <eClassifiers xsi:type="ecore:EClass" name="XmlBasic_2_4" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="cacheIndex" eType="#//v2_4/XmlCacheIndex_2_4"
+          containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlCache_2_4" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="databaseChangeNotificationType"
+          eType="#//v2_4/DatabaseChangeNotificationType" defaultValueLiteral=""/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlCacheIndex_2_4" abstract="true"
         interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="includeCriteria" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnNames" unique="false"
+          upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_4" abstract="true"
-        interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="deleteAll" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany_2_4" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="deleteAll" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlEntity_2_4" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cacheIndex" eType="#//v2_4/XmlCacheIndex_2_4"
           containment="true"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlBasic_2_4" abstract="true" interface="true">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="cacheIndex" eType="#//v2_4/XmlCacheIndex_2_4"
-          containment="true"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlCacheIndex_2_4" abstract="true"
-        interface="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnNames" unique="false"
-          upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlId_2_4" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cacheIndex" eType="#//v2_4/XmlCacheIndex_2_4"
@@ -810,6 +816,18 @@
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cacheIndex" eType="#//v2_4/XmlCacheIndex_2_4"
           containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlMultitenant_2_4" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="includeCriteria" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany_2_4" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="deleteAll" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="DatabaseChangeNotificationType">
+      <eLiterals name="NONE"/>
+      <eLiterals name="INVALIDATION" value="1" literal="INVALIDATION"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

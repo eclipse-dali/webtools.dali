@@ -805,13 +805,29 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_CACHE = 11;
 	/**
+	 * The feature id for the '<em><b>Isolation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__ISOLATION = EclipseLinkOrmV2_2Package.XML_CACHE_22__ISOLATION;
+	/**
+	 * The feature id for the '<em><b>Database Change Notification Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE__DATABASE_CHANGE_NOTIFICATION_TYPE = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 0;
+	/**
 	 * The feature id for the '<em><b>Expiry</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE__EXPIRY = 0;
+	public static final int XML_CACHE__EXPIRY = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 1;
 	/**
 	 * The feature id for the '<em><b>Size</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -819,7 +835,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE__SIZE = 1;
+	public static final int XML_CACHE__SIZE = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 2;
 	/**
 	 * The feature id for the '<em><b>Shared</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -827,7 +843,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE__SHARED = 2;
+	public static final int XML_CACHE__SHARED = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 3;
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -835,7 +851,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE__TYPE = 3;
+	public static final int XML_CACHE__TYPE = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 4;
 	/**
 	 * The feature id for the '<em><b>Always Refresh</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -843,7 +859,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE__ALWAYS_REFRESH = 4;
+	public static final int XML_CACHE__ALWAYS_REFRESH = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 5;
 	/**
 	 * The feature id for the '<em><b>Refresh Only If Newer</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -851,7 +867,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE__REFRESH_ONLY_IF_NEWER = 5;
+	public static final int XML_CACHE__REFRESH_ONLY_IF_NEWER = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 6;
 	/**
 	 * The feature id for the '<em><b>Disable Hits</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -859,7 +875,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE__DISABLE_HITS = 6;
+	public static final int XML_CACHE__DISABLE_HITS = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 7;
 	/**
 	 * The feature id for the '<em><b>Coordination Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -867,7 +883,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE__COORDINATION_TYPE = 7;
+	public static final int XML_CACHE__COORDINATION_TYPE = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 8;
 	/**
 	 * The feature id for the '<em><b>Expiry Time Of Day</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -875,7 +891,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE__EXPIRY_TIME_OF_DAY = 8;
+	public static final int XML_CACHE__EXPIRY_TIME_OF_DAY = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 9;
 	/**
 	 * The number of structural features of the '<em>Xml Cache</em>' class.
 	 * <!-- begin-user-doc -->
@@ -883,7 +899,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CACHE_FEATURE_COUNT = 9;
+	public static final int XML_CACHE_FEATURE_COUNT = EclipseLinkOrmV2_2Package.XML_CACHE_22_FEATURE_COUNT + 10;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCacheHolder <em>Xml Cache Holder</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -10769,6 +10785,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlBasicMapEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlBasicMapEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlBasicMap_2_2());
 		xmlBatchFetchEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlBatchFetch_2_1());
+		xmlCacheEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlCache_2_2());
+		xmlCacheEClass.getESuperTypes().add(theEclipseLinkOrmV2_4Package.getXmlCache_2_4());
 		xmlCacheIndexEClass.getESuperTypes().add(theEclipseLinkOrmV2_4Package.getXmlCacheIndex_2_4());
 		xmlCollectionTableEClass.getESuperTypes().add(theOrmPackage.getXmlCollectionTable());
 		xmlCollectionTableEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlCollectionTable_2_2());

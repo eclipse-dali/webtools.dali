@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
@@ -192,6 +193,34 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	public static final int XML_BASIC_MAP_22_FEATURE_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCache_2_2 <em>Xml Cache 22</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCache_2_2
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlCache_2_2()
+	 * @generated
+	 */
+	public static final int XML_CACHE_22 = 4;
+
+	/**
+	 * The feature id for the '<em><b>Isolation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE_22__ISOLATION = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Cache 22</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CACHE_22_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCollectionTable_2_2 <em>Xml Collection Table 22</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -199,7 +228,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlCollectionTable_2_2()
 	 * @generated
 	 */
-	public static final int XML_COLLECTION_TABLE_22 = 4;
+	public static final int XML_COLLECTION_TABLE_22 = 5;
 
 	/**
 	 * The feature id for the '<em><b>Creation Suffix</b></em>' attribute.
@@ -227,7 +256,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlPartitioningGroup_2_2()
 	 * @generated
 	 */
-	public static final int XML_PARTITIONING_GROUP_22 = 19;
+	public static final int XML_PARTITIONING_GROUP_22 = 20;
 
 	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
@@ -327,7 +356,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlElementCollection_2_2()
 	 * @generated
 	 */
-	public static final int XML_ELEMENT_COLLECTION_22 = 5;
+	public static final int XML_ELEMENT_COLLECTION_22 = 6;
 
 	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
@@ -445,7 +474,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlEntity_2_2()
 	 * @generated
 	 */
-	public static final int XML_ENTITY_22 = 7;
+	public static final int XML_ENTITY_22 = 8;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlEntityMappings_2_2 <em>Xml Entity Mappings 22</em>}' class.
@@ -455,7 +484,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlEntityMappings_2_2()
 	 * @generated
 	 */
-	public static final int XML_ENTITY_MAPPINGS_22 = 8;
+	public static final int XML_ENTITY_MAPPINGS_22 = 9;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlHashPartitioning_2_2 <em>Xml Hash Partitioning 22</em>}' class.
@@ -465,7 +494,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlHashPartitioning_2_2()
 	 * @generated
 	 */
-	public static final int XML_HASH_PARTITIONING_22 = 9;
+	public static final int XML_HASH_PARTITIONING_22 = 10;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlManyToMany_2_2 <em>Xml Many To Many 22</em>}' class.
@@ -475,7 +504,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlManyToMany_2_2()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY_22 = 13;
+	public static final int XML_MANY_TO_MANY_22 = 14;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlManyToOne_2_2 <em>Xml Many To One 22</em>}' class.
@@ -485,7 +514,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlManyToOne_2_2()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE_22 = 14;
+	public static final int XML_MANY_TO_ONE_22 = 15;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToOne_2_2 <em>Xml One To One 22</em>}' class.
@@ -495,7 +524,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlOneToOne_2_2()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE_22 = 16;
+	public static final int XML_ONE_TO_ONE_22 = 17;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlOneToMany_2_2 <em>Xml One To Many 22</em>}' class.
@@ -505,7 +534,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlOneToMany_2_2()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_22 = 17;
+	public static final int XML_ONE_TO_MANY_22 = 18;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlPartitioning_2_2 <em>Xml Partitioning 22</em>}' class.
@@ -515,7 +544,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlPartitioning_2_2()
 	 * @generated
 	 */
-	public static final int XML_PARTITIONING_22 = 18;
+	public static final int XML_PARTITIONING_22 = 19;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlPinnedPartitioning_2_2 <em>Xml Pinned Partitioning 22</em>}' class.
@@ -525,7 +554,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlPinnedPartitioning_2_2()
 	 * @generated
 	 */
-	public static final int XML_PINNED_PARTITIONING_22 = 20;
+	public static final int XML_PINNED_PARTITIONING_22 = 21;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlRangePartitioning_2_2 <em>Xml Range Partitioning 22</em>}' class.
@@ -535,7 +564,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlRangePartitioning_2_2()
 	 * @generated
 	 */
-	public static final int XML_RANGE_PARTITIONING_22 = 21;
+	public static final int XML_RANGE_PARTITIONING_22 = 22;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlReplicationPartitioning_2_2 <em>Xml Replication Partitioning 22</em>}' class.
@@ -545,7 +574,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlReplicationPartitioning_2_2()
 	 * @generated
 	 */
-	public static final int XML_REPLICATION_PARTITIONING_22 = 22;
+	public static final int XML_REPLICATION_PARTITIONING_22 = 23;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2 <em>Xml Round Robin Partitioning 22</em>}' class.
@@ -555,7 +584,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlRoundRobinPartitioning_2_2()
 	 * @generated
 	 */
-	public static final int XML_ROUND_ROBIN_PARTITIONING_22 = 23;
+	public static final int XML_ROUND_ROBIN_PARTITIONING_22 = 24;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlEmbeddable_2_2 <em>Xml Embeddable 22</em>}' class.
@@ -565,7 +594,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlEmbeddable_2_2()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDABLE_22 = 6;
+	public static final int XML_EMBEDDABLE_22 = 7;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
@@ -827,7 +856,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlId_2_2()
 	 * @generated
 	 */
-	public static final int XML_ID_22 = 10;
+	public static final int XML_ID_22 = 11;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' containment reference.
@@ -855,7 +884,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlIndex_2_2()
 	 * @generated
 	 */
-	public static final int XML_INDEX_22 = 11;
+	public static final int XML_INDEX_22 = 12;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -928,7 +957,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlJoinTable_2_2()
 	 * @generated
 	 */
-	public static final int XML_JOIN_TABLE_22 = 12;
+	public static final int XML_JOIN_TABLE_22 = 13;
 
 	/**
 	 * The feature id for the '<em><b>Creation Suffix</b></em>' attribute.
@@ -1163,7 +1192,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlMappedSuperclass_2_2()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_22 = 15;
+	public static final int XML_MAPPED_SUPERCLASS_22 = 16;
 
 	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
@@ -1578,7 +1607,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlSecondaryTable_2_2()
 	 * @generated
 	 */
-	public static final int XML_SECONDARY_TABLE_22 = 24;
+	public static final int XML_SECONDARY_TABLE_22 = 25;
 
 	/**
 	 * The feature id for the '<em><b>Creation Suffix</b></em>' attribute.
@@ -1606,7 +1635,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlTable_2_2()
 	 * @generated
 	 */
-	public static final int XML_TABLE_22 = 25;
+	public static final int XML_TABLE_22 = 26;
 
 	/**
 	 * The feature id for the '<em><b>Creation Suffix</b></em>' attribute.
@@ -1634,7 +1663,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlTableGenerator_2_2()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR_22 = 26;
+	public static final int XML_TABLE_GENERATOR_22 = 27;
 
 	/**
 	 * The feature id for the '<em><b>Creation Suffix</b></em>' attribute.
@@ -1662,7 +1691,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlUnionPartitioning_2_2()
 	 * @generated
 	 */
-	public static final int XML_UNION_PARTITIONING_22 = 27;
+	public static final int XML_UNION_PARTITIONING_22 = 28;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1690,7 +1719,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlValuePartitioning_2_2()
 	 * @generated
 	 */
-	public static final int XML_VALUE_PARTITIONING_22 = 28;
+	public static final int XML_VALUE_PARTITIONING_22 = 29;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1718,7 +1747,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlVariableOneToOne_2_2()
 	 * @generated
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE_22 = 29;
+	public static final int XML_VARIABLE_ONE_TO_ONE_22 = 30;
 
 	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
@@ -1827,7 +1856,7 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlVersion_2_2()
 	 * @generated
 	 */
-	public static final int XML_VERSION_22 = 30;
+	public static final int XML_VERSION_22 = 31;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' containment reference.
@@ -1846,6 +1875,16 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_VERSION_22_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType <em>Cache Isolation Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getCacheIsolationType()
+	 * @generated
+	 */
+	public static final int CACHE_ISOLATION_TYPE = 32;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1874,6 +1913,13 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlBasicMap_2_2EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlCache_2_2EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2063,6 +2109,13 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlVersion_2_2EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum cacheIsolationTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -2260,6 +2313,35 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	{
 		return (EAttribute)xmlBasicMap_2_2EClass.getEStructuralFeatures().get(0);
 	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCache_2_2 <em>Xml Cache 22</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Cache 22</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCache_2_2
+	 * @generated
+	 */
+	public EClass getXmlCache_2_2()
+	{
+		return xmlCache_2_2EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCache_2_2#getIsolation <em>Isolation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Isolation</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCache_2_2#getIsolation()
+	 * @see #getXmlCache_2_2()
+	 * @generated
+	 */
+	public EAttribute getXmlCache_2_2_Isolation()
+	{
+		return (EAttribute)xmlCache_2_2EClass.getEStructuralFeatures().get(0);
+	}
+
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCollectionTable_2_2 <em>Xml Collection Table 22</em>}'.
@@ -3409,6 +3491,20 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType <em>Cache Isolation Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Cache Isolation Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType
+	 * @generated
+	 */
+	public EEnum getCacheIsolationType()
+	{
+		return cacheIsolationTypeEEnum;
+	}
+
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3451,6 +3547,9 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 
 		xmlBasicMap_2_2EClass = createEClass(XML_BASIC_MAP_22);
 		createEAttribute(xmlBasicMap_2_2EClass, XML_BASIC_MAP_22__CASCADE_ON_DELETE);
+
+		xmlCache_2_2EClass = createEClass(XML_CACHE_22);
+		createEAttribute(xmlCache_2_2EClass, XML_CACHE_22__ISOLATION);
 
 		xmlCollectionTable_2_2EClass = createEClass(XML_COLLECTION_TABLE_22);
 		createEAttribute(xmlCollectionTable_2_2EClass, XML_COLLECTION_TABLE_22__CREATION_SUFFIX);
@@ -3558,6 +3657,9 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 
 		xmlVersion_2_2EClass = createEClass(XML_VERSION_22);
 		createEReference(xmlVersion_2_2EClass, XML_VERSION_22__INDEX);
+
+		// Create enums
+		cacheIsolationTypeEEnum = createEEnum(CACHE_ISOLATION_TYPE);
 	}
 
 	/**
@@ -3616,6 +3718,9 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 
 		initEClass(xmlBasicMap_2_2EClass, XmlBasicMap_2_2.class, "XmlBasicMap_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlBasicMap_2_2_CascadeOnDelete(), theXMLTypePackage.getBooleanObject(), "cascadeOnDelete", null, 0, 1, XmlBasicMap_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlCache_2_2EClass, XmlCache_2_2.class, "XmlCache_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlCache_2_2_Isolation(), this.getCacheIsolationType(), "isolation", "", 0, 1, XmlCache_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlCollectionTable_2_2EClass, XmlCollectionTable_2_2.class, "XmlCollectionTable_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlCollectionTable_2_2_CreationSuffix(), theXMLTypePackage.getString(), "creationSuffix", null, 0, 1, XmlCollectionTable_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3723,6 +3828,12 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 
 		initEClass(xmlVersion_2_2EClass, XmlVersion_2_2.class, "XmlVersion_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlVersion_2_2_Index(), this.getXmlIndex_2_2(), null, "index", null, 0, 1, XmlVersion_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(cacheIsolationTypeEEnum, CacheIsolationType.class, "CacheIsolationType");
+		addEEnumLiteral(cacheIsolationTypeEEnum, CacheIsolationType.SHARED);
+		addEEnumLiteral(cacheIsolationTypeEEnum, CacheIsolationType.PROTECTED);
+		addEEnumLiteral(cacheIsolationTypeEEnum, CacheIsolationType.ISOLATED);
 	}
 
 	/**
@@ -3810,6 +3921,24 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_BASIC_MAP_22__CASCADE_ON_DELETE = eINSTANCE.getXmlBasicMap_2_2_CascadeOnDelete();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCache_2_2 <em>Xml Cache 22</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCache_2_2
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlCache_2_2()
+		 * @generated
+		 */
+		public static final EClass XML_CACHE_22 = eINSTANCE.getXmlCache_2_2();
+
+		/**
+		 * The meta object literal for the '<em><b>Isolation</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CACHE_22__ISOLATION = eINSTANCE.getXmlCache_2_2_Isolation();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCollectionTable_2_2 <em>Xml Collection Table 22</em>}' class.
@@ -4504,6 +4633,16 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_VERSION_22__INDEX = eINSTANCE.getXmlVersion_2_2_Index();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType <em>Cache Isolation Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getCacheIsolationType()
+		 * @generated
+		 */
+		public static final EEnum CACHE_ISOLATION_TYPE = eINSTANCE.getCacheIsolationType();
 
 	}
 

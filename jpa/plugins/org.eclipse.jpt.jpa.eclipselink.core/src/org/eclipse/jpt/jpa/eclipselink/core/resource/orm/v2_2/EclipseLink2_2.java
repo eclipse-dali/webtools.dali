@@ -23,9 +23,10 @@ public interface EclipseLink2_2
 	
 	// EclipseLink 2.2 specific nodes
 	String ADDITIONAL_CRITERIA = "additional-criteria";
+	String CACHE__ISOLATION = "isolation";
 	String CASCADE_ON_DELETE = "cascade-on-delete";
-	String CRITERIA = "criteria";
 	String CREATION_SUFFIX = "creation-suffix";
+	String CRITERIA = "criteria";
 	String HASH_PARTITIONING = "hash-partitioning";
 	String INDEX = "index";
 		String INDEX__COLUMN_NAME = "column-name";

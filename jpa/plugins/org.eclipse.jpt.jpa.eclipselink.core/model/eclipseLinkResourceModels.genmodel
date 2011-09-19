@@ -409,6 +409,11 @@
     <nestedGenPackages prefix="EclipseLinkOrmV2_2" basePackage="org.eclipse.jpt.jpa.eclipselink.core.resource.orm"
         disposableProviderFactory="true" adapterFactory="false" fileExtensions="EclipseLinkOrmV2_2"
         ecorePackage="eclipselink_orm.ecore#//v2_2">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v2_2/CacheIsolationType">
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_2/CacheIsolationType/SHARED"/>
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_2/CacheIsolationType/PROTECTED"/>
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_2/CacheIsolationType/ISOLATED"/>
+      </genEnums>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlAdditionalCriteria_2_2">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlAdditionalCriteria_2_2/criteria"/>
       </genClasses>
@@ -420,6 +425,9 @@
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlBasicMap_2_2">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlBasicMap_2_2/cascadeOnDelete"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlCache_2_2">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlCache_2_2/isolation"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlCollectionTable_2_2">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlCollectionTable_2_2/creationSuffix"/>
@@ -535,11 +543,15 @@
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v2_3/MultitenantType">
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_3/MultitenantType/SINGLE_TABLE"/>
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_3/MultitenantType/TABLE_PER_TENANT"/>
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_3/MultitenantType/VPD"/>
       </genEnums>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlArray_2_3"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3/structures"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3/arrays"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlElementCollection_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlElementCollection_2_3/compositeMember"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlEmbeddable_2_3">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlEmbeddable_2_3/plsqlRecords"/>
@@ -600,36 +612,40 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminatorColumn_2_3/primaryKey"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStructure_2_3"/>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlElementCollection_2_3">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlElementCollection_2_3/compositeMember"/>
-      </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="EclipseLinkOrmV2_4" basePackage="org.eclipse.jpt.jpa.eclipselink.core.resource.orm"
         disposableProviderFactory="true" adapterFactory="false" fileExtensions="EclipselinkOrmV2_4"
         ecorePackage="eclipselink_orm.ecore#//v2_4">
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlMultitenant_2_4">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_4/XmlMultitenant_2_4/includeCriteria"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//v2_4/DatabaseChangeNotificationType">
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_4/DatabaseChangeNotificationType/NONE"/>
+        <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_4/DatabaseChangeNotificationType/INVALIDATION"/>
+      </genEnums>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlBasic_2_4">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_4/XmlBasic_2_4/cacheIndex"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlCache_2_4">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_4/XmlCache_2_4/databaseChangeNotificationType"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlCacheIndex_2_4">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_4/XmlCacheIndex_2_4/columnNames"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlElementCollection_2_4">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_4/XmlElementCollection_2_4/deleteAll"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlOneToMany_2_4">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_4/XmlOneToMany_2_4/deleteAll"/>
-      </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlEntity_2_4">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_4/XmlEntity_2_4/cacheIndex"/>
-      </genClasses>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlBasic_2_4">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_4/XmlBasic_2_4/cacheIndex"/>
-      </genClasses>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlCacheIndex_2_4">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_4/XmlCacheIndex_2_4/columnNames"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlId_2_4">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_4/XmlId_2_4/cacheIndex"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlMappedSuperclass_2_4">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_4/XmlMappedSuperclass_2_4/cacheIndex"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlMultitenant_2_4">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_4/XmlMultitenant_2_4/includeCriteria"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_4/XmlOneToMany_2_4">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_4/XmlOneToMany_2_4/deleteAll"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

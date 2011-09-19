@@ -7,7 +7,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
+package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,121 +17,97 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Multitenant Type</b></em>',
+ * A representation of the literals of the enumeration '<em><b>Database Change Notification Type</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getMultitenantType()
+ * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getDatabaseChangeNotificationType()
  * @model
  * @generated
  */
-public enum MultitenantType implements Enumerator
+public enum DatabaseChangeNotificationType implements Enumerator
 {
 	/**
-	 * The '<em><b>SINGLE TABLE</b></em>' literal object.
+	 * The '<em><b>NONE</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #SINGLE_TABLE_VALUE
+	 * @see #NONE_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	SINGLE_TABLE(0, "SINGLE_TABLE", "SINGLE_TABLE"),
+	NONE(0, "NONE", "NONE"),
 
 	/**
-	 * The '<em><b>TABLE PER TENANT</b></em>' literal object.
+	 * The '<em><b>INVALIDATION</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #TABLE_PER_TENANT_VALUE
+	 * @see #INVALIDATION_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	TABLE_PER_TENANT(1, "TABLE_PER_TENANT", "TABLE_PER_TENANT"), /**
-	 * The '<em><b>VPD</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #VPD_VALUE
-	 * @generated
-	 * @ordered
-	 */
-	VPD(2, "VPD", "VPD");
+	INVALIDATION(1, "INVALIDATION", "INVALIDATION");
 
 	/**
-	 * The '<em><b>SINGLE TABLE</b></em>' literal value.
+	 * The '<em><b>NONE</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>SINGLE TABLE</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>NONE</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #SINGLE_TABLE
+	 * @see #NONE
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SINGLE_TABLE_VALUE = 0;
+	public static final int NONE_VALUE = 0;
 
 	/**
-	 * The '<em><b>TABLE PER TENANT</b></em>' literal value.
+	 * The '<em><b>INVALIDATION</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>TABLE PER TENANT</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>INVALIDATION</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #TABLE_PER_TENANT
+	 * @see #INVALIDATION
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TABLE_PER_TENANT_VALUE = 1;
+	public static final int INVALIDATION_VALUE = 1;
 
 	/**
-	 * The '<em><b>VPD</b></em>' literal value.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>VPD</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @see #VPD
-	 * @model
-	 * @generated
-	 * @ordered
-	 */
-	public static final int VPD_VALUE = 2;
-
-	/**
-	 * An array of all the '<em><b>Multitenant Type</b></em>' enumerators.
+	 * An array of all the '<em><b>Database Change Notification Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final MultitenantType[] VALUES_ARRAY =
-		new MultitenantType[]
+	private static final DatabaseChangeNotificationType[] VALUES_ARRAY =
+		new DatabaseChangeNotificationType[]
 		{
-			SINGLE_TABLE,
-			TABLE_PER_TENANT,
-			VPD,
+			NONE,
+			INVALIDATION,
 		};
 
 	/**
-	 * A public read-only list of all the '<em><b>Multitenant Type</b></em>' enumerators.
+	 * A public read-only list of all the '<em><b>Database Change Notification Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<MultitenantType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<DatabaseChangeNotificationType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Multitenant Type</b></em>' literal with the specified literal value.
+	 * Returns the '<em><b>Database Change Notification Type</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static MultitenantType get(String literal)
+	public static DatabaseChangeNotificationType get(String literal)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			MultitenantType result = VALUES_ARRAY[i];
+			DatabaseChangeNotificationType result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal))
 			{
 				return result;
@@ -141,16 +117,16 @@ public enum MultitenantType implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Multitenant Type</b></em>' literal with the specified name.
+	 * Returns the '<em><b>Database Change Notification Type</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static MultitenantType getByName(String name)
+	public static DatabaseChangeNotificationType getByName(String name)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			MultitenantType result = VALUES_ARRAY[i];
+			DatabaseChangeNotificationType result = VALUES_ARRAY[i];
 			if (result.getName().equals(name))
 			{
 				return result;
@@ -160,18 +136,17 @@ public enum MultitenantType implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Multitenant Type</b></em>' literal with the specified integer value.
+	 * Returns the '<em><b>Database Change Notification Type</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static MultitenantType get(int value)
+	public static DatabaseChangeNotificationType get(int value)
 	{
 		switch (value)
 		{
-			case SINGLE_TABLE_VALUE: return SINGLE_TABLE;
-			case TABLE_PER_TENANT_VALUE: return TABLE_PER_TENANT;
-			case VPD_VALUE: return VPD;
+			case NONE_VALUE: return NONE;
+			case INVALIDATION_VALUE: return INVALIDATION;
 		}
 		return null;
 	}
@@ -203,7 +178,7 @@ public enum MultitenantType implements Enumerator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private MultitenantType(int value, String name, String literal)
+	private DatabaseChangeNotificationType(int value, String name, String literal)
 	{
 		this.value = value;
 		this.name = name;
@@ -252,4 +227,4 @@ public enum MultitenantType implements Enumerator
 		return literal;
 	}
 	
-} //XmlMultitenantType
+} //DatabaseChangeNotificationType

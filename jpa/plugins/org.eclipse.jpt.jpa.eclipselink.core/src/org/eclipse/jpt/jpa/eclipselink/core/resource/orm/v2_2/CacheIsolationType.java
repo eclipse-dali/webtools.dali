@@ -7,7 +7,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
+package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,121 +17,123 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Multitenant Type</b></em>',
+ * A representation of the literals of the enumeration '<em><b>Cache Isolation Type</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getMultitenantType()
+ * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getCacheIsolationType()
  * @model
  * @generated
  */
-public enum MultitenantType implements Enumerator
+public enum CacheIsolationType implements Enumerator
 {
 	/**
-	 * The '<em><b>SINGLE TABLE</b></em>' literal object.
+	 * The '<em><b>SHARED</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #SINGLE_TABLE_VALUE
+	 * @see #SHARED_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	SINGLE_TABLE(0, "SINGLE_TABLE", "SINGLE_TABLE"),
+	SHARED(0, "SHARED", "SHARED"),
 
 	/**
-	 * The '<em><b>TABLE PER TENANT</b></em>' literal object.
+	 * The '<em><b>PROTECTED</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #TABLE_PER_TENANT_VALUE
+	 * @see #PROTECTED_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	TABLE_PER_TENANT(1, "TABLE_PER_TENANT", "TABLE_PER_TENANT"), /**
-	 * The '<em><b>VPD</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #VPD_VALUE
-	 * @generated
-	 * @ordered
-	 */
-	VPD(2, "VPD", "VPD");
+	PROTECTED(1, "PROTECTED", "PROTECTED"),
 
 	/**
-	 * The '<em><b>SINGLE TABLE</b></em>' literal value.
+	 * The '<em><b>ISOLATED</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #ISOLATED_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	ISOLATED(2, "ISOLATED", "ISOLATED");
+
+	/**
+	 * The '<em><b>SHARED</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>SINGLE TABLE</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>SHARED</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #SINGLE_TABLE
+	 * @see #SHARED
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SINGLE_TABLE_VALUE = 0;
+	public static final int SHARED_VALUE = 0;
 
 	/**
-	 * The '<em><b>TABLE PER TENANT</b></em>' literal value.
+	 * The '<em><b>PROTECTED</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>TABLE PER TENANT</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>PROTECTED</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #TABLE_PER_TENANT
+	 * @see #PROTECTED
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TABLE_PER_TENANT_VALUE = 1;
+	public static final int PROTECTED_VALUE = 1;
 
 	/**
-	 * The '<em><b>VPD</b></em>' literal value.
+	 * The '<em><b>ISOLATED</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>VPD</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>ISOLATED</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #VPD
+	 * @see #ISOLATED
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int VPD_VALUE = 2;
+	public static final int ISOLATED_VALUE = 2;
 
 	/**
-	 * An array of all the '<em><b>Multitenant Type</b></em>' enumerators.
+	 * An array of all the '<em><b>Cache Isolation Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final MultitenantType[] VALUES_ARRAY =
-		new MultitenantType[]
+	private static final CacheIsolationType[] VALUES_ARRAY =
+		new CacheIsolationType[]
 		{
-			SINGLE_TABLE,
-			TABLE_PER_TENANT,
-			VPD,
+			SHARED,
+			PROTECTED,
+			ISOLATED,
 		};
 
 	/**
-	 * A public read-only list of all the '<em><b>Multitenant Type</b></em>' enumerators.
+	 * A public read-only list of all the '<em><b>Cache Isolation Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<MultitenantType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<CacheIsolationType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Multitenant Type</b></em>' literal with the specified literal value.
+	 * Returns the '<em><b>Cache Isolation Type</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static MultitenantType get(String literal)
+	public static CacheIsolationType get(String literal)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			MultitenantType result = VALUES_ARRAY[i];
+			CacheIsolationType result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal))
 			{
 				return result;
@@ -141,16 +143,16 @@ public enum MultitenantType implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Multitenant Type</b></em>' literal with the specified name.
+	 * Returns the '<em><b>Cache Isolation Type</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static MultitenantType getByName(String name)
+	public static CacheIsolationType getByName(String name)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			MultitenantType result = VALUES_ARRAY[i];
+			CacheIsolationType result = VALUES_ARRAY[i];
 			if (result.getName().equals(name))
 			{
 				return result;
@@ -160,18 +162,18 @@ public enum MultitenantType implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Multitenant Type</b></em>' literal with the specified integer value.
+	 * Returns the '<em><b>Cache Isolation Type</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static MultitenantType get(int value)
+	public static CacheIsolationType get(int value)
 	{
 		switch (value)
 		{
-			case SINGLE_TABLE_VALUE: return SINGLE_TABLE;
-			case TABLE_PER_TENANT_VALUE: return TABLE_PER_TENANT;
-			case VPD_VALUE: return VPD;
+			case SHARED_VALUE: return SHARED;
+			case PROTECTED_VALUE: return PROTECTED;
+			case ISOLATED_VALUE: return ISOLATED;
 		}
 		return null;
 	}
@@ -203,7 +205,7 @@ public enum MultitenantType implements Enumerator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private MultitenantType(int value, String name, String literal)
+	private CacheIsolationType(int value, String name, String literal)
 	{
 		this.value = value;
 		this.name = name;
@@ -252,4 +254,4 @@ public enum MultitenantType implements Enumerator
 		return literal;
 	}
 	
-} //XmlMultitenantType
+} //CacheIsolationType

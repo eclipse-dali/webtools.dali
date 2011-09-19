@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,14 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlCache_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCache_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -54,11 +61,42 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCache()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class XmlCache extends AbstractJpaEObject implements JpaEObject
+public class XmlCache extends AbstractJpaEObject implements XmlCache_2_2, XmlCache_2_4
 {
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final CacheIsolationType ISOLATION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getIsolation() <em>Isolation</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIsolation()
+	 * @generated
+	 * @ordered
+	 */
+	protected CacheIsolationType isolation = ISOLATION_EDEFAULT;
+
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final DatabaseChangeNotificationType DATABASE_CHANGE_NOTIFICATION_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDatabaseChangeNotificationType() <em>Database Change Notification Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDatabaseChangeNotificationType()
+	 * @generated
+	 * @ordered
+	 */
+	protected DatabaseChangeNotificationType databaseChangeNotificationType = DATABASE_CHANGE_NOTIFICATION_TYPE_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getExpiry() <em>Expiry</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -240,6 +278,84 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	protected EClass eStaticClass()
 	{
 		return EclipseLinkOrmPackage.Literals.XML_CACHE;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Isolation</b></em>' attribute.
+	 * The default value is <code>""</code>.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Isolation</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Isolation</em>' attribute.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType
+	 * @see #setIsolation(CacheIsolationType)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCache_2_2_Isolation()
+	 * @model default=""
+	 * @generated
+	 */
+	public CacheIsolationType getIsolation()
+	{
+		return isolation;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCache#getIsolation <em>Isolation</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Isolation</em>' attribute.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType
+	 * @see #getIsolation()
+	 * @generated
+	 */
+	public void setIsolation(CacheIsolationType newIsolation)
+	{
+		CacheIsolationType oldIsolation = isolation;
+		isolation = newIsolation == null ? ISOLATION_EDEFAULT : newIsolation;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_CACHE__ISOLATION, oldIsolation, isolation));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Database Change Notification Type</b></em>' attribute.
+	 * The default value is <code>""</code>.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Database Change Notification Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Database Change Notification Type</em>' attribute.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType
+	 * @see #setDatabaseChangeNotificationType(DatabaseChangeNotificationType)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCache_2_4_DatabaseChangeNotificationType()
+	 * @model default=""
+	 * @generated
+	 */
+	public DatabaseChangeNotificationType getDatabaseChangeNotificationType()
+	{
+		return databaseChangeNotificationType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCache#getDatabaseChangeNotificationType <em>Database Change Notification Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Database Change Notification Type</em>' attribute.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType
+	 * @see #getDatabaseChangeNotificationType()
+	 * @generated
+	 */
+	public void setDatabaseChangeNotificationType(DatabaseChangeNotificationType newDatabaseChangeNotificationType)
+	{
+		DatabaseChangeNotificationType oldDatabaseChangeNotificationType = databaseChangeNotificationType;
+		databaseChangeNotificationType = newDatabaseChangeNotificationType == null ? DATABASE_CHANGE_NOTIFICATION_TYPE_EDEFAULT : newDatabaseChangeNotificationType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_CACHE__DATABASE_CHANGE_NOTIFICATION_TYPE, oldDatabaseChangeNotificationType, databaseChangeNotificationType));
 	}
 
 	/**
@@ -615,6 +731,10 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_CACHE__ISOLATION:
+				return getIsolation();
+			case EclipseLinkOrmPackage.XML_CACHE__DATABASE_CHANGE_NOTIFICATION_TYPE:
+				return getDatabaseChangeNotificationType();
 			case EclipseLinkOrmPackage.XML_CACHE__EXPIRY:
 				return getExpiry();
 			case EclipseLinkOrmPackage.XML_CACHE__SIZE:
@@ -647,6 +767,12 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_CACHE__ISOLATION:
+				setIsolation((CacheIsolationType)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_CACHE__DATABASE_CHANGE_NOTIFICATION_TYPE:
+				setDatabaseChangeNotificationType((DatabaseChangeNotificationType)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_CACHE__EXPIRY:
 				setExpiry((Integer)newValue);
 				return;
@@ -688,6 +814,12 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_CACHE__ISOLATION:
+				setIsolation(ISOLATION_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_CACHE__DATABASE_CHANGE_NOTIFICATION_TYPE:
+				setDatabaseChangeNotificationType(DATABASE_CHANGE_NOTIFICATION_TYPE_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_CACHE__EXPIRY:
 				setExpiry(EXPIRY_EDEFAULT);
 				return;
@@ -729,6 +861,10 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_CACHE__ISOLATION:
+				return isolation != ISOLATION_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_CACHE__DATABASE_CHANGE_NOTIFICATION_TYPE:
+				return databaseChangeNotificationType != DATABASE_CHANGE_NOTIFICATION_TYPE_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_CACHE__EXPIRY:
 				return EXPIRY_EDEFAULT == null ? expiry != null : !EXPIRY_EDEFAULT.equals(expiry);
 			case EclipseLinkOrmPackage.XML_CACHE__SIZE:
@@ -757,12 +893,54 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	 * @generated
 	 */
 	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlCache_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_CACHE__DATABASE_CHANGE_NOTIFICATION_TYPE: return EclipseLinkOrmV2_4Package.XML_CACHE_24__DATABASE_CHANGE_NOTIFICATION_TYPE;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlCache_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_CACHE_24__DATABASE_CHANGE_NOTIFICATION_TYPE: return EclipseLinkOrmPackage.XML_CACHE__DATABASE_CHANGE_NOTIFICATION_TYPE;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public String toString()
 	{
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (expiry: ");
+		result.append(" (isolation: ");
+		result.append(isolation);
+		result.append(", databaseChangeNotificationType: ");
+		result.append(databaseChangeNotificationType);
+		result.append(", expiry: ");
 		result.append(expiry);
 		result.append(", size: ");
 		result.append(size);
@@ -794,11 +972,13 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 			buildExpiryTimeOfDayTranslator(),
 			buildSizeTranslator(),
 			buildSharedTranslator(),
+			buildIsolationTranslator(),
 			buildTypeTranslator(),
 			buildAlwaysRefreshTranslator(),
 			buildRefreshOnlyIfNewerTranslator(),
 			buildDisableHitsTranslator(),
 			buildCoordinationTypeTranslator(),
+			buildDatabaseChangeNotificationTypeTranslator(),
 		};
 	}
 
@@ -836,6 +1016,14 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 	
 	protected static Translator buildCoordinationTypeTranslator() {
 		return new Translator(EclipseLink.CACHE__COORDINATION_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_CoordinationType(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildIsolationTranslator() {
+		return new Translator(EclipseLink2_2.CACHE__ISOLATION, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlCache_2_2_Isolation(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildDatabaseChangeNotificationTypeTranslator() {
+		return new Translator(EclipseLink2_4.CACHE__DATABASE_CHANGE_NOTIFICATION_TYPE, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlCache_2_4_DatabaseChangeNotificationType(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlCache
