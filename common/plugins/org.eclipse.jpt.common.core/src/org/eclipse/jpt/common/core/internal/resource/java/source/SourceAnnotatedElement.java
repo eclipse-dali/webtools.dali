@@ -130,7 +130,8 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 
 	public Annotation getAnnotation(String annotationName) {
 		if (this.annotationIsValidContainer(annotationName)) {
-			return this.annotationContainers.get(getAnnotationProvider().getNestableAnnotationName(annotationName)).getContainerAnnotation();
+			AnnotationContainer container = this.annotationContainers.get(getAnnotationProvider().getNestableAnnotationName(annotationName));
+			return container == null ? null : container.getContainerAnnotation();
 		}
 		return this.selectAnnotationNamed(this.getAnnotations(), annotationName);
 	}
@@ -203,6 +204,9 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 	public void removeAnnotation(int index, String nestableAnnotationName) {
 		AnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
 		container.removeNestedAnnotation(index);
+		if (container.isEmpty()) {
+			this.annotationContainers.remove(nestableAnnotationName);
+		}
 	}
 
 	protected boolean annotationIsValid(String annotationName) {
@@ -544,6 +548,7 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 				//ignore the new standalone annotation as a container annotation already exists
 			}
 			else if (this.getNestedAnnotationsSize() == 1) {
+				this.containerAnnotation = null;
 				this.nestedAnnotationAt(0).synchronizeWith((CompilationUnit) standaloneNestableAnnotation.getRoot());
 			}
 		}
