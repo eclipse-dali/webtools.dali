@@ -137,6 +137,7 @@ public abstract class SourceNode
 			T nestedAnnotation = this.buildNestedAnnotation(sourceIndex);
 			this.nestedAnnotations.add(sourceIndex, nestedAnnotation);
 			nestedAnnotation.newAnnotation();
+			nestedAnnotation.initialize(nestedAnnotation.getJavaResourceCompilationUnit().buildASTRoot());
 			// ...then move it to the specified index
 			this.moveNestedAnnotation(index, sourceIndex);
 			return nestedAnnotation;
