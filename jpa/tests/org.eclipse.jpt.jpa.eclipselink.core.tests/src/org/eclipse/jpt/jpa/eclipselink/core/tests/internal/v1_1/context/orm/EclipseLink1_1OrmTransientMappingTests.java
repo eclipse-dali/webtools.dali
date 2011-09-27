@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,16 +11,16 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v1_1.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase.DefaultAnnotationWriter;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v1_1.context.EclipseLink1_1ContextModelTestCase;
 
 @SuppressWarnings("nls")
 public class EclipseLink1_1OrmTransientMappingTests
-	extends EclipseLink1_1OrmContextModelTestCase
+	extends EclipseLink1_1ContextModelTestCase
 {
 	public EclipseLink1_1OrmTransientMappingTests(String name) {
 		super(name);

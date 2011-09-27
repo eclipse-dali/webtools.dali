@@ -32,11 +32,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.EclipseLinkOneToManyRelationship2_0;
 
 @SuppressWarnings("nls")
 public class EclipseLinkOrmOneToManyMappingTests
-	extends EclipseLinkOrmContextModelTestCase
+	extends EclipseLinkContextModelTestCase
 {
 	public EclipseLinkOrmOneToManyMappingTests(String name) {
 		super(name);

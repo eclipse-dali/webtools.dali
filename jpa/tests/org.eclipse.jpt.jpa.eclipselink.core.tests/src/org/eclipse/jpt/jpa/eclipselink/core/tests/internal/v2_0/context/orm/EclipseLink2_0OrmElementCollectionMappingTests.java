@@ -58,10 +58,12 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlElementCollection_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.EclipseLinkElementCollectionMapping2_0;
 
 @SuppressWarnings("nls")
-public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2_0OrmContextModelTestCase
+public class EclipseLink2_0OrmElementCollectionMappingTests
+	extends EclipseLink2_0ContextModelTestCase
 {
 	private static final String ATTRIBUTE_OVERRIDE_NAME = "city";
 	private static final String ATTRIBUTE_OVERRIDE_COLUMN_NAME = "E_CITY";
@@ -1208,7 +1210,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		createTestEmbeddableState();
 		
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentType persistentType2 = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		OrmPersistentType persistentType3 = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".State");
 		
 		//embedded mapping is virtual, specified attribute overrides should exist

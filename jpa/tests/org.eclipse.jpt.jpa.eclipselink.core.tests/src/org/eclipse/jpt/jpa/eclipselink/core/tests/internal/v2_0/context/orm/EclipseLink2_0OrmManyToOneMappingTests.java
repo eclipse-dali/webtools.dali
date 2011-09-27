@@ -43,10 +43,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
 public class EclipseLink2_0OrmManyToOneMappingTests
-	extends EclipseLink2_0OrmContextModelTestCase
+	extends EclipseLink2_0ContextModelTestCase
 {
 	public EclipseLink2_0OrmManyToOneMappingTests(String name) {
 		super(name);

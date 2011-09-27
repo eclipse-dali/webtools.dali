@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.jpa.core.platform.GenericPlatform;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
@@ -88,15 +89,27 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
-		// default facet version is 2.0 - most tests use 1.0
-		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_1_0.getVersionString());
-		// most tests use the basic generic platform
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, GenericPlatform.VERSION_1_0);
-		// most tests do use an orm.xml
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
+		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, this.getJpaFacetVersionString());
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, this.getJpaPlatformDescription());
+		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.valueOf(this.createOrmXml()));
 		return dataModel;
 	}
+
+	// default facet version is 2.0 - most tests use 1.0
+	protected String getJpaFacetVersionString() {
+		return JpaFacet.VERSION_1_0.getVersionString();
+	}
 	
+	// most tests use the basic generic platform
+	protected JpaPlatformDescription getJpaPlatformDescription() {
+		return GenericPlatform.VERSION_1_0;
+	}
+
+	// most tests do use an orm.xml
+	protected boolean createOrmXml() {
+		return true;
+	}
+
 	protected JpaProject getJpaProject() {
 		return getJavaProject().getJpaProject();
 	}

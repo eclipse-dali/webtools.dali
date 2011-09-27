@@ -24,9 +24,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
-public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTestCase
+public class EclipseLinkEntityMappingsTests
+	extends EclipseLinkContextModelTestCase
 {
 	public EclipseLinkEntityMappingsTests(String name) {
 		super(name);

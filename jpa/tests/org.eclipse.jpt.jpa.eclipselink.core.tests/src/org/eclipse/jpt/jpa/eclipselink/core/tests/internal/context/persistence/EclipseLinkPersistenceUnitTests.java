@@ -19,7 +19,6 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
@@ -31,26 +30,23 @@ import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.orm.EclipseLinkOrmContextModelTestCase;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
 public class EclipseLinkPersistenceUnitTests
-	extends EclipseLinkOrmContextModelTestCase
+	extends EclipseLinkContextModelTestCase
 {
 	public EclipseLinkPersistenceUnitTests(String name) {
 		super(name);
 	}
-	
-	
+
 	@Override
-	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = super.buildJpaConfigDataModel();
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
-		return dataModel;
+	protected boolean createOrmXml() {
+		return true;
 	}
-	
+
 	@Override
 	protected IDataModel buildEclipseLinkOrmConfig(TestJpaProject testJpaProject) {
 		IDataModel dataModel = 

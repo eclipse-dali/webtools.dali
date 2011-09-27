@@ -31,10 +31,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
 public class EclipseLinkOrmManyToOneMappingTests
-	extends EclipseLinkOrmContextModelTestCase
+	extends EclipseLinkContextModelTestCase
 {
 	public EclipseLinkOrmManyToOneMappingTests(String name) {
 		super(name);

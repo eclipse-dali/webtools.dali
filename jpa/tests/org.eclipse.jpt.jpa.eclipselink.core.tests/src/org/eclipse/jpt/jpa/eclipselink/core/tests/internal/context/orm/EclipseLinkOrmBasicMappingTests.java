@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,10 +25,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkB
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
 public class EclipseLinkOrmBasicMappingTests
-	extends EclipseLinkOrmContextModelTestCase
+	extends EclipseLinkContextModelTestCase
 {
 	
 	private ICompilationUnit createTestEntityWithBasicMapping() throws Exception {

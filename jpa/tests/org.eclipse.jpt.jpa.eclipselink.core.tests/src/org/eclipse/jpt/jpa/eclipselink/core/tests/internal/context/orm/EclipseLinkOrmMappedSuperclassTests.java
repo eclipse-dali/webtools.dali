@@ -40,9 +40,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
-public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextModelTestCase
+public class EclipseLinkOrmMappedSuperclassTests
+	extends EclipseLinkContextModelTestCase
 {
 	public EclipseLinkOrmMappedSuperclassTests(String name) {
 		super(name);

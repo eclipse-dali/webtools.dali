@@ -17,12 +17,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenant;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_3.context.EclipseLink2_3ContextModelTestCase;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.EclipseLinkMultitenantType;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmEclipseLinkMultitenancy;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmTenantDiscriminatorColumn;
 
 @SuppressWarnings("nls")
-public class OrmEclipseLinkMultitenancyTests extends EclipseLink2_3OrmContextModelTestCase
+public class OrmEclipseLinkMultitenancyTests
+	extends EclipseLink2_3ContextModelTestCase
 {
 	protected static final String SUB_TYPE_NAME = "AnnotationTestTypeChild";
 	protected static final String FULLY_QUALIFIED_SUB_TYPE_NAME = PACKAGE_NAME + "." + SUB_TYPE_NAME;

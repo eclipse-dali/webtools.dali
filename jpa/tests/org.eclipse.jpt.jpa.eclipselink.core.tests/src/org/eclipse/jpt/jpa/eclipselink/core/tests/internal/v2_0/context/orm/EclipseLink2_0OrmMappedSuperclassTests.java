@@ -46,9 +46,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
-public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmContextModelTestCase
+public class EclipseLink2_0OrmMappedSuperclassTests
+	extends EclipseLink2_0ContextModelTestCase
 {
 	protected static final String SUB_TYPE_NAME = "AnnotationTestTypeChild";
 	protected static final String FULLY_QUALIFIED_SUB_TYPE_NAME = PACKAGE_NAME + "." + SUB_TYPE_NAME;

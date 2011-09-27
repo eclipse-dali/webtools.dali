@@ -12,33 +12,50 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
-public class EclipseLinkJpaProjectTests extends EclipseLinkContextModelTestCase
+public class EclipseLinkJpaProjectTests
+	extends ContextModelTestCase
 {
 	
 	public EclipseLinkJpaProjectTests(String name) {
 		super(name);
 	}
-	
-	
+
 	@Override
-	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = super.buildJpaConfigDataModel();
-		// don't build orm.xml
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.FALSE);
-		return dataModel;
+	protected boolean createOrmXml() {
+		return true;
+	}
+
+	@Override
+	protected JpaPlatformDescription getJpaPlatformDescription() {
+		return  EclipseLinkPlatform.VERSION_1_0;
+	}
+
+	@Override
+	protected EclipseLinkJpaProject getJpaProject() {
+		return (EclipseLinkJpaProject) super.getJpaProject();
 	}
 	
 	public void testGetDefaultOrmXmlResource() throws Exception {
 		JpaXmlResource resource = this.getJpaProject().getDefaultOrmXmlResource();
+		assertNotNull(resource);
+		assertEquals(JptJpaCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
+		assertEquals("src/META-INF/orm.xml", resource.getFile().getProjectRelativePath().toString());	
+		
+		//delete the orm.xml file and verify it is not returned from getDefaultOrmXmlResource()
+		resource.delete(null);
+		resource = this.getJpaProject().getDefaultOrmXmlResource();
 		assertNull(resource);
 		
 		//add the orm.xml file with eclipselink orm content type

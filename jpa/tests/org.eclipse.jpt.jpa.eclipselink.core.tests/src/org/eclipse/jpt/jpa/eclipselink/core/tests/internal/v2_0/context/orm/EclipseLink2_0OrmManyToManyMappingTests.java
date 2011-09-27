@@ -47,15 +47,15 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkManyToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
 public class EclipseLink2_0OrmManyToManyMappingTests
-	extends EclipseLink2_0OrmContextModelTestCase
+	extends EclipseLink2_0ContextModelTestCase
 {
 	public EclipseLink2_0OrmManyToManyMappingTests(String name) {
 		super(name);
 	}
-	
 
 	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {

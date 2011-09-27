@@ -41,9 +41,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlElementCollection_2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
-public class EclipseLink2_0OrmCollectionTableTests extends EclipseLink2_0OrmContextModelTestCase
+public class EclipseLink2_0OrmCollectionTableTests 
+	extends EclipseLink2_0ContextModelTestCase
 {
 	public EclipseLink2_0OrmCollectionTableTests(String name) {
 		super(name);

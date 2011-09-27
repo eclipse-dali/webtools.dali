@@ -25,28 +25,19 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToOneMapping;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v1_1.context.EclipseLink1_1ContextModelTestCase;
 
 @SuppressWarnings("nls")
 public class EclipseLink1_1OrmPersistentAttributeTests 
-	extends EclipseLink1_1OrmContextModelTestCase
+	extends EclipseLink1_1ContextModelTestCase
 {
 	public EclipseLink1_1OrmPersistentAttributeTests(String name) {
 		super(name);
 	}
 	
-	
-	@Override
-	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = super.buildJpaConfigDataModel();
-		// create both orm.xml and eclipselink-orm.xml
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
-		return dataModel;
-	}	
 	
 	private ICompilationUnit createTestTypeNullAttributeMapping() throws Exception {
 	

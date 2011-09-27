@@ -31,10 +31,11 @@ import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
 public class EclipseLinkOrmPersistentAttributeTests
-	extends EclipseLinkOrmContextModelTestCase
+	extends EclipseLinkContextModelTestCase
 {
 	public EclipseLinkOrmPersistentAttributeTests(String name) {
 		super(name);

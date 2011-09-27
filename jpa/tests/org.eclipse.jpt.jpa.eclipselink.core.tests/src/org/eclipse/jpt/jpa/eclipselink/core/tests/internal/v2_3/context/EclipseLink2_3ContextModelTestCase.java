@@ -10,12 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_3.context;
 
 import org.eclipse.jpt.jpa.core.JpaFacet;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
-import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public abstract class EclipseLink2_3ContextModelTestCase extends EclipseLinkContextModelTestCase
 {
@@ -24,11 +22,17 @@ public abstract class EclipseLink2_3ContextModelTestCase extends EclipseLinkCont
 	}
 
 	@Override
-	protected IDataModel buildJpaConfigDataModel() {
-		IDataModel dataModel = super.buildJpaConfigDataModel();
-		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_2_0.getVersionString());
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, EclipseLinkPlatform.VERSION_2_3);
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
-		return dataModel;
+	protected String getJpaFacetVersionString() {
+		return JpaFacet.VERSION_2_0.getVersionString();
+	}
+
+	@Override
+	protected JpaPlatformDescription getJpaPlatformDescription() {
+		return EclipseLinkPlatform.VERSION_2_3;
+	}
+
+	@Override
+	protected String getEclipseLinkSchemaVersion() {
+		return EclipseLink2_3.SCHEMA_VERSION;
 	}
 }

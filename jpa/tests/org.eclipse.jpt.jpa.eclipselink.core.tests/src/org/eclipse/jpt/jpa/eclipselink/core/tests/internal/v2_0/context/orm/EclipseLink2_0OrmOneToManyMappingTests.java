@@ -55,6 +55,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.EclipseLinkOneToManyRelationship2_0;
 
 /**
@@ -62,11 +63,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.EclipseLinkOneToManyRel
  */
 @SuppressWarnings("nls")
 public class EclipseLink2_0OrmOneToManyMappingTests
-	extends EclipseLink2_0OrmContextModelTestCase
+	extends EclipseLink2_0ContextModelTestCase
 {
 	public EclipseLink2_0OrmOneToManyMappingTests(String name) {
 		super(name);
 	}
+	
+	
 	private void createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {

@@ -44,9 +44,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.EclipseLink2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
-public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelTestCase
+public class EclipseLink2_0OrmEntityTests
+	extends EclipseLink2_0ContextModelTestCase
 {
 	protected static final String SUB_TYPE_NAME = "AnnotationTestTypeChild";
 	protected static final String FULLY_QUALIFIED_SUB_TYPE_NAME = PACKAGE_NAME + "." + SUB_TYPE_NAME;
@@ -1351,7 +1353,7 @@ public class EclipseLink2_0OrmEntityTests extends EclipseLink2_0OrmContextModelT
 		createTestEmbeddableAddress();
 		createTestEmbeddableZipCode();
 		
-		OrmPersistentType customerPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Customer");
+		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Customer");
 		OrmPersistentType longTimeCustomerPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".LongTimeCustomer");
 		OrmPersistentType addressPersistentType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		OrmPersistentType zipCodePersistentType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".ZipCode");

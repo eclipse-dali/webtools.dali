@@ -26,10 +26,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkT
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
 public class EclipseLinkOrmTypeConverterTests
-	extends EclipseLinkOrmContextModelTestCase
+	extends EclipseLinkContextModelTestCase
 {
 	
 	private ICompilationUnit createTestEntityWithBasicMapping() throws Exception {

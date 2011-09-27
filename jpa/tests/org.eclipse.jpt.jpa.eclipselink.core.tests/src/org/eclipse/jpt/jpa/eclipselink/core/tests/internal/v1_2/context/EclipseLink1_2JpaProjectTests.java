@@ -14,19 +14,34 @@ import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelP
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.operations.JpaFileCreationDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
-public class EclipseLink1_2JpaProjectTests extends EclipseLink1_2ContextModelTestCase
+public class EclipseLink1_2JpaProjectTests 
+	extends ContextModelTestCase
 {
 	
 	public EclipseLink1_2JpaProjectTests(String name) {
 		super(name);
+	}
+
+	@Override
+	protected JpaPlatformDescription getJpaPlatformDescription() {
+		return  EclipseLinkPlatform.VERSION_1_2;
+	}
+
+	@Override
+	protected EclipseLinkJpaProject getJpaProject() {
+		return (EclipseLinkJpaProject) super.getJpaProject();
 	}
 	
 	public void testGetDefaultOrmXmlResource() throws Exception {
