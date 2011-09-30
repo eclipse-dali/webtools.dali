@@ -42,11 +42,11 @@ import org.eclipse.persistence.jpa.jpql.spi.IType;
  * The abstract implementation of {@link IManagedTypeProvider} that is wrapping the design-time
  * representation of a provider of managed types.
  *
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-abstract class JpaManagedTypeProvider implements IManagedTypeProvider {
+public final class JpaManagedTypeProvider implements IManagedTypeProvider {
 
 	/**
 	 * The filtered collection of managed types that are the abstract schema types.
@@ -84,7 +84,8 @@ abstract class JpaManagedTypeProvider implements IManagedTypeProvider {
 	 * @param jpaProject The project that gives access to the application's metadata
 	 * @param persistentTypeContainer The design-time provider of managed types
 	 */
-	JpaManagedTypeProvider(JpaProject jpaProject, PersistentTypeContainer persistentTypeContainer) {
+	public JpaManagedTypeProvider(JpaProject jpaProject,
+	                              PersistentTypeContainer persistentTypeContainer) {
 
 		super();
 		this.jpaProject = jpaProject;
@@ -106,14 +107,14 @@ abstract class JpaManagedTypeProvider implements IManagedTypeProvider {
 		return Collections.unmodifiableCollection(abstractSchemaTypes);
 	}
 
-	abstract JpaEntity buildEntity(TypeMapping mappedClass);
+//	abstract JpaEntity buildEntity(TypeMapping mappedClass);
 
 	private IManagedType buildManagedType(PersistentType persistentType) {
 
 		TypeMapping mappedClass = persistentType.getMapping();
 
 		if (mappedClass instanceof Entity) {
-			return buildEntity(mappedClass);
+			return new JpaEntity(this, (Entity) mappedClass);
 		}
 
 		if (mappedClass instanceof MappedSuperclass) {
@@ -128,12 +129,24 @@ abstract class JpaManagedTypeProvider implements IManagedTypeProvider {
 	}
 
 	private Map<String, IManagedType> buildManagedTypes() {
+
 		Map<String, IManagedType> managedTypes = new HashMap<String, IManagedType>();
-		for (PersistentType persistentType : persistenceTypes()) {
+
+		for (PersistentType persistentType : getPersistentTypeContainer().getPersistentTypes()) {
+
 			if (persistentType != null) {
-				managedTypes.put(persistentType.getMapping().getName(), buildManagedType(persistentType));
+				String name = persistentType.getMapping().getName();
+
+				// If the persistent type is the overridden (annotation) one and the ORM
+				// one is already added, then don't override the ORM one
+				if (managedTypes.containsKey(name) && persistentType.getOverriddenPersistentType() == null) {
+					continue;
+				}
+
+				managedTypes.put(name, buildManagedType(persistentType));
 			}
 		}
+
 		return managedTypes;
 	}
 
@@ -236,7 +249,7 @@ abstract class JpaManagedTypeProvider implements IManagedTypeProvider {
 	 *
 	 * @return The managed types that are defined only in the provider
 	 */
-	abstract Iterable<? extends PersistentType> persistenceTypes();
+//	abstract Iterable<? extends PersistentType> persistenceTypes();
 
 	private static class EntityCollector implements IManagedTypeVisitor {
 

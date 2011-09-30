@@ -26,12 +26,12 @@ import org.eclipse.persistence.jpa.jpql.spi.IQuery;
  * The concrete implementation of {@link IEntity} that is wrapping the design-time representation
  * of a JPA entity.
  *
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-abstract class JpaEntity extends JpaManagedType
-                         implements IEntity {
+final class JpaEntity extends JpaManagedType
+                      implements IEntity {
 
 	/**
 	 * The cached used to quickly retrieve any queries that have been cached.
@@ -55,7 +55,7 @@ abstract class JpaEntity extends JpaManagedType
 		visitor.visit(this);
 	}
 
-	final IQuery buildQuery(JpaManagedTypeProvider provider, NamedQuery namedQuery) {
+	private IQuery buildQuery(JpaManagedTypeProvider provider, NamedQuery namedQuery) {
 		return new JpaQuery(provider, namedQuery);
 	}
 
@@ -70,7 +70,7 @@ abstract class JpaEntity extends JpaManagedType
 	/**
 	 * {@inheritDoc}
 	 */
-	public final String getName() {
+	public String getName() {
 		return getManagedType().getName();
 	}
 
@@ -89,7 +89,7 @@ abstract class JpaEntity extends JpaManagedType
 		}
 	}
 
-	void initializeQueries(Map<String, IQuery> queries) {
+	private void initializeQueries(Map<String, IQuery> queries) {
 		JpaManagedTypeProvider provider = getProvider();
 		for (NamedQuery namedQuery : getNamedQueries()) {
 			queries.put(namedQuery.getName(), buildQuery(provider, namedQuery));

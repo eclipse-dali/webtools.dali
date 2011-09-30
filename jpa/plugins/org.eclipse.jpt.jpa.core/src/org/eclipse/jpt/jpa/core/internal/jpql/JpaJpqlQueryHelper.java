@@ -150,12 +150,7 @@ public final class JpaJpqlQueryHelper extends JPQLQueryHelper {
 	}
 
 	private JpaManagedTypeProvider buildProvider(NamedQuery query) {
-		try {
-			return new JpaPersistenceUnit(query.getJpaProject(), query.getPersistenceUnit());
-		}
-		catch (Exception e) {
-			return new JpaMappingFile(query.getJpaProject(), query.getMappingFileRoot().getParent());
-		}
+		return new JpaManagedTypeProvider(query.getJpaProject(), query.getPersistenceUnit());
 	}
 
 	/**
