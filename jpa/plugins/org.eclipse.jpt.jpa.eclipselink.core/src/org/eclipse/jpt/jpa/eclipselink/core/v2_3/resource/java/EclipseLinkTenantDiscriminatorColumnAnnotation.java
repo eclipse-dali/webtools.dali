@@ -46,7 +46,7 @@ public interface EclipseLinkTenantDiscriminatorColumnAnnotation
 	 * Corresponds to the 'contextProperty' element of the TenantDiscriminatorColumn annotation.
 	 * Set to null to remove the element.
 	 */
-	void setContextProperty(String table);
+	void setContextProperty(String contextProperty);
 
 	/**
 	 * Return the {@link TextRange} for the 'contextProperty' element. If the element

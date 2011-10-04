@@ -28,6 +28,13 @@ public interface EclipseLinkMultitenancy
 	extends JpaContextNode
 {
 
+	boolean isMultitenant();
+	boolean isDefaultMultitenant();
+		String DEFAULT_MULTITENANT_PROPERTY = "defaultMultitenant"; //$NON-NLS-1$
+	boolean isSpecifiedMultitenant();
+	void setSpecifiedMultitenant(boolean isMultitenant);
+		String SPECIFIED_MULTITENANT_PROPERTY = "specifiedMultitenant"; //$NON-NLS-1$
+
 	// ********** type **********
 
 	/**
@@ -65,6 +72,19 @@ public interface EclipseLinkMultitenancy
 	// ********** tenant discriminator columns **********
 
 	/**
+	 * Return the tenant discriminator columns whether specified or default.
+	 */
+	ListIterable<? extends ReadOnlyTenantDiscriminatorColumn> getTenantDiscriminatorColumns();
+
+	/**
+	 * Return the number of tenant discriminator columns, whether specified and default.
+	 */
+	int getTenantDiscriminatorColumnsSize();
+
+
+	// ********** specified tenant discriminator columns **********
+
+	/**
 	 * Return a list iterable of the specified tenant discriminator columns.
 	 * This will not be null.
 	 */
@@ -75,6 +95,11 @@ public interface EclipseLinkMultitenancy
 	 * Return the number of specified tenant discriminator columns.
 	 */
 	int getSpecifiedTenantDiscriminatorColumnsSize();
+
+	/**
+	 * Return whether there are any specified tenant discriminator columns.
+	 */
+	boolean hasSpecifiedTenantDiscriminatorColumns();
 
 	/**
 	 * Add a specified tenant discriminator column and return the object
@@ -102,5 +127,21 @@ public interface EclipseLinkMultitenancy
 	 * Move the specified tenant discriminator column from the source index to the target index.
 	 */
 	void moveSpecifiedTenantDiscriminatorColumn(int targetIndex, int sourceIndex);
+
+
+	// ********** default tenant discriminator columns **********
+
+	/**
+	 * Return a list iterable of the default tenant discriminator columns.
+	 * This will not be null. If there are specified tenant discriminator columns
+	 * then there will be no default tenant discriminator columns.
+	 */
+	ListIterable<? extends VirtualTenantDiscriminatorColumn> getDefaultTenantDiscriminatorColumns();
+		String DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST = "defaultTenantDiscriminatorColumns"; //$NON-NLS-1$
+
+	/**
+	 * Return the number of default tenant discriminator columns.
+	 */
+	int getDefaultTenantDiscriminatorColumnsSize();
 
 }

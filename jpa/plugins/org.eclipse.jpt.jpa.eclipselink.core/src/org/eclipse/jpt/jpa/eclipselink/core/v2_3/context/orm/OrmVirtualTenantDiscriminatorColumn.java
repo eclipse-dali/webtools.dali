@@ -9,23 +9,27 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm;
 
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.TenantDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyTableColumn;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.ReadOnlyTenantDiscriminatorColumn;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.VirtualTenantDiscriminatorColumn;
 
 /**
- * orm tenant discriminator column
+ * <code>orm.xml</code> virtual tenant discriminator column
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 3.1
- * @since 3.1
  */
-public interface OrmTenantDiscriminatorColumn
-	extends TenantDiscriminatorColumn, OrmReadOnlyTenantDiscriminatorColumn
+public interface OrmVirtualTenantDiscriminatorColumn
+	extends VirtualTenantDiscriminatorColumn, OrmReadOnlyTenantDiscriminatorColumn, OrmReadOnlyTableColumn
 {
-	XmlTenantDiscriminatorColumn_2_3 getXmlColumn();
+	/**
+	 * The overridden column can be either a Java tenant discriminator column or an
+	 * <code>orm.xml</code> tenant discriminator column; so we don't change the return type
+	 * here.
+	 */
+	ReadOnlyTenantDiscriminatorColumn getOverriddenColumn();
+
 }

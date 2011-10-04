@@ -39,6 +39,8 @@ public interface EclipseLink2_3 {
 		String MULTITENANT_TYPE_ = MULTITENANT_TYPE + ".";
 		String MULTITENANT_TYPE__SINGLE_TABLE = MULTITENANT_TYPE_ + "SINGLE_TABLE";
 		String MULTITENANT_TYPE__TABLE_PER_TENANT = MULTITENANT_TYPE_ + "TABLE_PER_TENANT";
+		//TODO kfb 2.4 eclipselink only? do we want to only support multitenancy in eclipselink 2.4
+		String MULTITENANT_TYPE__VPD = MULTITENANT_TYPE_ + "VPD";
 
 	String TENANT_DISCRIMINATOR_COLUMN = PACKAGE_ + "TenantDiscriminatorColumn";
 		String TENANT_DISCRIMINATOR_COLUMN__NAME = "name";

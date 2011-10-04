@@ -16,8 +16,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.EclipseLinkMultitenancy
 public interface JavaEclipseLinkMultitenancy
 	extends EclipseLinkMultitenancy, JavaJpaContextNode
 {
+
+	ListIterable<JavaReadOnlyTenantDiscriminatorColumn> getTenantDiscriminatorColumns();
+
 	ListIterable<JavaTenantDiscriminatorColumn> getSpecifiedTenantDiscriminatorColumns();
 	JavaTenantDiscriminatorColumn addSpecifiedTenantDiscriminatorColumn();
 	JavaTenantDiscriminatorColumn addSpecifiedTenantDiscriminatorColumn(int index);
 
+	ListIterable<JavaVirtualTenantDiscriminatorColumn> getDefaultTenantDiscriminatorColumns();
 }

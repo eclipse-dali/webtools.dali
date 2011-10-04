@@ -7,25 +7,36 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm;
+package org.eclipse.jpt.jpa.eclipselink.core.v2_3.context;
 
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.TenantDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualTableColumn;
 
 /**
- * orm tenant discriminator column
+ * Virtual tenant discriminator column
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 3.1
- * @since 3.1
  */
-public interface OrmTenantDiscriminatorColumn
-	extends TenantDiscriminatorColumn, OrmReadOnlyTenantDiscriminatorColumn
+public interface VirtualTenantDiscriminatorColumn
+	extends VirtualNamedDiscriminatorColumn, VirtualTableColumn, ReadOnlyTenantDiscriminatorColumn
 {
-	XmlTenantDiscriminatorColumn_2_3 getXmlColumn();
+	ReadOnlyTenantDiscriminatorColumn getOverriddenColumn();
+
+	// ********** owner **********
+
+	/**
+	 * Interface allowing the virtual column to be get the column it overrides.
+	 */
+	interface Owner
+		extends ReadOnlyTenantDiscriminatorColumn.Owner
+	{
+		/**
+		 * Return the column overridden by the virtual column.
+		 */
+		ReadOnlyTenantDiscriminatorColumn resolveOverriddenColumn();
+	}
 }

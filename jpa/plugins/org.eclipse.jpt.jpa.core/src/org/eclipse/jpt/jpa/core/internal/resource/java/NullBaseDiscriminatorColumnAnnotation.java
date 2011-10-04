@@ -11,19 +11,39 @@ package org.eclipse.jpt.jpa.core.internal.resource.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorType;
 
 /**
  * <code>javax.persistence.DiscriminatorColumn</code>
  */
-public final class NullDiscriminatorColumnAnnotation
-	extends NullBaseDiscriminatorColumnAnnotation<DiscriminatorColumnAnnotation>
-{	
+public abstract class NullBaseDiscriminatorColumnAnnotation<A extends DiscriminatorColumnAnnotation>
+	extends NullNamedColumnAnnotation<A>
+	implements DiscriminatorColumnAnnotation
+{
 
-	public NullDiscriminatorColumnAnnotation(JavaResourceAnnotatedElement parent) {
+	public NullBaseDiscriminatorColumnAnnotation(JavaResourceAnnotatedElement parent) {
 		super(parent);
 	}
 
-	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+	// ***** discriminator type
+	public DiscriminatorType getDiscriminatorType() {
+		return null;
+	}
+
+	public void setDiscriminatorType(DiscriminatorType discriminatorType) {
+		if (discriminatorType != null) {
+			this.addAnnotation().setDiscriminatorType(discriminatorType);
+		}
+	}
+
+	// ***** length
+	public Integer getLength() {
+		return null;
+	}
+
+	public void setLength(Integer length) {
+		if (length != null) {
+			this.addAnnotation().setLength(length);
+		}
 	}
 }

@@ -29,6 +29,8 @@ public interface ReadOnlyTenantDiscriminatorColumn
 {
 	String DEFAULT_NAME = "TENANT_ID"; //$NON-NLS-1$
 
+	boolean isVirtual();
+
 
 	// ********** context property **********
 

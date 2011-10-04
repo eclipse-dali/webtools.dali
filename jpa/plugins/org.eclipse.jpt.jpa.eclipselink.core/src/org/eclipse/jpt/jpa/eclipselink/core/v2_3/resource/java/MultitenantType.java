@@ -25,7 +25,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.v2_3.resource.java;
 public enum MultitenantType {
 
 	SINGLE_TABLE(EclipseLink2_3.MULTITENANT_TYPE__SINGLE_TABLE),
-	TABLE_PER_TENANT(EclipseLink2_3.MULTITENANT_TYPE__TABLE_PER_TENANT);
+	TABLE_PER_TENANT(EclipseLink2_3.MULTITENANT_TYPE__TABLE_PER_TENANT),
+	VPD(EclipseLink2_3.MULTITENANT_TYPE__VPD);
 
 
 	private String javaAnnotationValue;

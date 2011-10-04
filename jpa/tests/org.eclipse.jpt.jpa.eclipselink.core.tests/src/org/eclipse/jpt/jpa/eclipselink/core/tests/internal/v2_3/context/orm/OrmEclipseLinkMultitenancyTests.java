@@ -9,10 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_3.context.orm;
 
+import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.InheritanceType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenant;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenantHolder;
@@ -21,6 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_3.context.EclipseL
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.EclipseLinkMultitenantType;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmEclipseLinkMultitenancy;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmTenantDiscriminatorColumn;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.resource.java.EclipseLink2_3;
 
 @SuppressWarnings("nls")
 public class OrmEclipseLinkMultitenancyTests
@@ -32,6 +44,75 @@ public class OrmEclipseLinkMultitenancyTests
 
 	public OrmEclipseLinkMultitenancyTests(String name) {
 		super(name);
+	}
+
+	private ICompilationUnit createTestEntity() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+		});
+	}
+
+	private ICompilationUnit createTestMultitenantMappedSuperclass() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(
+					JPA.MAPPED_SUPERCLASS,
+					EclipseLink2_3.MULTITENANT,
+					EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@MappedSuperclass").append(CR);
+				sb.append("@Multitenant").append(CR);
+				sb.append("@TenantDiscriminatorColumn(name=\"MS_TENANT_ID\")").append(CR);
+			}
+		});
+	}
+
+	private ICompilationUnit createTestMultitenantRootEntity() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(
+					JPA.ENTITY,
+					JPA.INHERITANCE,
+					EclipseLink2_3.MULTITENANT,
+					EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+				sb.append("@Inheritenace").append(CR);
+				sb.append("@Multitenant").append(CR);
+				sb.append("@TenantDiscriminatorColumn(name=\"ROOT_ENTITY_TENANT_ID\")").append(CR);
+			}
+		});
+	}
+
+	private void createTestSubType() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("AnnotationTestTypeChild").append(" ");
+				sb.append("extends " + TYPE_NAME + " ");
+				sb.append("{}").append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 
 	public void testUpdateSpecifiedType() throws Exception {
@@ -289,4 +370,169 @@ public class OrmEclipseLinkMultitenancyTests
 		assertFalse(ormMultitenancy.getSpecifiedTenantDiscriminatorColumns().iterator().hasNext());
 	}
 
+	//MappedSuperclass specifies multitenancy, all subclass entities are multitenant by default.
+	public void testTenantDiscriminatorColumnsWithMappedSuperclass() throws Exception {
+		createTestMultitenantMappedSuperclass();
+		createTestSubType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType2 = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+
+		OrmEclipseLinkMultitenancy multitenancy = ((OrmEclipseLinkEntity) ormPersistentType2.getMapping()).getMultitenancy();
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("MS_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+
+		//if the entity specifies multitenant, then it does not get the tenant discriminator columns from the mapped superclass
+		multitenancy.setSpecifiedType(EclipseLinkMultitenantType.SINGLE_TABLE);
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+
+
+		multitenancy.setSpecifiedMultitenant(false);
+		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		assertFalse(multitenancy.isMultitenant());
+		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
+
+		OrmEclipseLinkMultitenancy mappedSuperclassMultitenancy = ((OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping()).getMultitenancy();
+		mappedSuperclassMultitenancy.setSpecifiedMultitenant(true);
+		mappedSuperclassMultitenancy.addSpecifiedTenantDiscriminatorColumn().setSpecifiedName("MS_TENANT_ID");
+	
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("MS_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+
+		multitenancy.setSpecifiedType(EclipseLinkMultitenantType.SINGLE_TABLE);
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+	}
+
+	//Root entity specifies multitenancy and SINGLE_TABLE inheritance, all subclass entities are multitenant by default.
+	public void testTenantDiscriminatorColumnsWithInheritance() throws Exception {
+		createTestMultitenantRootEntity();
+		createTestSubType();
+
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+
+		OrmEclipseLinkMultitenancy multitenancy = ((OrmEclipseLinkEntity) ormPersistentType.getMapping()).getMultitenancy();
+		assertTrue(multitenancy.isMultitenant()); //multitenant by default from root entity
+		assertFalse(multitenancy.isSpecifiedMultitenant());
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("ROOT_ENTITY_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+
+		ormPersistentType.getMapping().getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		assertTrue(multitenancy.isMultitenant()); //multitenant by default from root entity
+		assertFalse(multitenancy.isSpecifiedMultitenant());
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("ROOT_ENTITY_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+
+		ormPersistentType.getMapping().getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		assertFalse(multitenancy.isMultitenant()); //not multitenant since inheritance strategy is table per class
+		assertFalse(multitenancy.isSpecifiedMultitenant());
+		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
+
+		OrmEclipseLinkPersistenceUnitDefaults persistenceUnitDefaults = (OrmEclipseLinkPersistenceUnitDefaults) getMappingFile().getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
+		persistenceUnitDefaults.addTenantDiscriminatorColumn().setSpecifiedName("PU_TENANT_ID");
+		assertFalse(multitenancy.isMultitenant()); //not multitenant since inheritance strategy is table per class
+		assertFalse(multitenancy.isSpecifiedMultitenant());
+		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
+
+		//get the default tenant discriminator column from the persistence unit defaults instead of the root entity since inheritance strategy is table per class
+		multitenancy.setSpecifiedMultitenant(true);
+		assertTrue(multitenancy.isSpecifiedMultitenant());
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("PU_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());		
+
+		multitenancy.addSpecifiedTenantDiscriminatorColumn().setSpecifiedName("CHILD_TENANT_ID");
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("CHILD_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());		
+
+		ormPersistentType.getMapping().getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("CHILD_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());		
+	}
+
+	public void testTenantDiscriminatorColumnsWithPersistenceUnitDefaults() throws Exception {
+		createTestEntity();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+
+		OrmEclipseLinkPersistenceUnitDefaults persistenceUnitDefaults = (OrmEclipseLinkPersistenceUnitDefaults) getMappingFile().getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
+		persistenceUnitDefaults.addTenantDiscriminatorColumn().setSpecifiedName("PU_TENANT_ID");
+
+		OrmEclipseLinkMultitenancy multitenancy = ((OrmEclipseLinkEntity) ormPersistentType.getMapping()).getMultitenancy();
+		assertFalse(multitenancy.isMultitenant());
+		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
+
+		multitenancy.setSpecifiedType(EclipseLinkMultitenantType.SINGLE_TABLE);
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("PU_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+
+		//if there are specified tenant discriminator columns then there should not be any default ones
+		multitenancy.addSpecifiedTenantDiscriminatorColumn().setSpecifiedName("ENTITY_TENANT_ID");
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals(0, multitenancy.getDefaultTenantDiscriminatorColumnsSize());
+		assertEquals("ENTITY_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+
+		//if entity is not SINGLE_TABLE multitenant than there are no default tenant discriminator columns
+		multitenancy.setSpecifiedType(EclipseLinkMultitenantType.TABLE_PER_TENANT);
+		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
+
+		//if entity is not SINGLE_TABLE multitenant than there are no default tenant discriminator columns
+		multitenancy.setSpecifiedMultitenant(false);
+		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
+	}
+
+	public void testTenantDiscriminatorColumnsWithEntityMappingsDefaults() throws Exception {
+		createTestEntity();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+
+		EclipseLinkEntityMappings entityMappings = (EclipseLinkEntityMappings) getMappingFile().getRoot();
+		entityMappings.addSpecifiedTenantDiscriminatorColumn().setSpecifiedName("EM_TENANT_ID");
+
+		OrmEclipseLinkMultitenancy multitenancy = ((OrmEclipseLinkEntity) ormPersistentType.getMapping()).getMultitenancy();
+		assertFalse(multitenancy.isMultitenant());
+		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
+
+		multitenancy.setSpecifiedType(EclipseLinkMultitenantType.SINGLE_TABLE);
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("EM_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+
+		//if entity is not SINGLE_TABLE multitenant than there are no default tenant discriminator columns
+		multitenancy.setSpecifiedType(EclipseLinkMultitenantType.TABLE_PER_TENANT);
+		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
+
+		//if entity is not SINGLE_TABLE multitenant than there are no default tenant discriminator columns
+		multitenancy.setSpecifiedMultitenant(false);
+		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
+
+
+		OrmEclipseLinkPersistenceUnitDefaults persistenceUnitDefaults = (OrmEclipseLinkPersistenceUnitDefaults) getMappingFile().getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
+		persistenceUnitDefaults.addTenantDiscriminatorColumn().setSpecifiedName("PU_TENANT_ID");
+
+		multitenancy.setSpecifiedType(EclipseLinkMultitenantType.SINGLE_TABLE);
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("EM_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+	}
+
+	public void testTenantDiscriminatorColumnsWithJavaMultitenant() throws Exception {
+		createTestEntity();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		((EclipseLinkEntity) ormPersistentType.getJavaPersistentType().getMapping()).getMultitenancy().setSpecifiedMultitenant(true);
+				
+		OrmEclipseLinkMultitenancy multitenancy = ((OrmEclipseLinkEntity) ormPersistentType.getMapping()).getMultitenancy();
+		assertTrue(multitenancy.isMultitenant()); //isMultitenant is true because the java entity specifies @Multitenant
+		assertFalse(multitenancy.isSpecifiedMultitenant());
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+
+		EclipseLinkEntityMappings entityMappings = (EclipseLinkEntityMappings) getMappingFile().getRoot();
+		entityMappings.addSpecifiedTenantDiscriminatorColumn().setSpecifiedName("EM_TENANT_ID");
+
+		assertEquals(1, multitenancy.getTenantDiscriminatorColumnsSize());
+		assertEquals("EM_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
+
+
+		OrmPersistenceUnitMetadata persistenceUnitMetadata = (OrmPersistenceUnitMetadata) getMappingFile().getRoot().getPersistenceUnitMetadata();
+		persistenceUnitMetadata.setXmlMappingMetadataComplete(true);
+		assertFalse(multitenancy.isMultitenant());
+		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
+	}
 }

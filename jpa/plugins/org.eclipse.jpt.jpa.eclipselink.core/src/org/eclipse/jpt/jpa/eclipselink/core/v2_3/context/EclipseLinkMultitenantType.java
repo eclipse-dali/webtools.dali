@@ -25,7 +25,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.v2_3.context;
 public enum EclipseLinkMultitenantType {
 
 	SINGLE_TABLE,
-	TABLE_PER_TENANT;
+	TABLE_PER_TENANT,
+	VPD;
 
 
 	public static EclipseLinkMultitenantType fromJavaResourceModel(org.eclipse.jpt.jpa.eclipselink.core.v2_3.resource.java.MultitenantType javaMultitenantType) {
@@ -37,6 +38,8 @@ public enum EclipseLinkMultitenantType {
 				return SINGLE_TABLE;
 			case TABLE_PER_TENANT:
 				return TABLE_PER_TENANT;
+			case VPD:
+				return VPD;
 			default:
 				throw new IllegalArgumentException("unknown multitenant type: " + javaMultitenantType); //$NON-NLS-1$
 		}
@@ -65,6 +68,8 @@ public enum EclipseLinkMultitenantType {
 				return SINGLE_TABLE;
 			case TABLE_PER_TENANT:
 				return TABLE_PER_TENANT;
+			case VPD:
+				return VPD;
 			default:
 				throw new IllegalArgumentException("unknown multitenant type: " + ormMultitenantType); //$NON-NLS-1$
 		}
@@ -79,6 +84,8 @@ public enum EclipseLinkMultitenantType {
 				return org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType.SINGLE_TABLE;
 			case TABLE_PER_TENANT:
 				return org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType.TABLE_PER_TENANT;
+			case VPD:
+				return org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType.VPD;
 			default:
 				throw new IllegalArgumentException("unknown multitenant type: " + multitenantType); //$NON-NLS-1$
 		}

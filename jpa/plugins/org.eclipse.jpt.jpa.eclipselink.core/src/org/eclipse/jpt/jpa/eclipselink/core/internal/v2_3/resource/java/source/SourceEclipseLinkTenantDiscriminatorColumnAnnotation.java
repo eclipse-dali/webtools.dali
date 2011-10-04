@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.v2_3.resource.java.EclipseLinkTenant
 /**
  * org.eclipse.persistence.annotations.TenantDiscriminatorColumn
  */
-public class SourceEclipseLinkTenantDiscriminatorColumnAnnotation
+public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation
 	extends SourceBaseDiscriminatorColumnAnnotation
 	implements EclipseLinkTenantDiscriminatorColumnAnnotation
 {

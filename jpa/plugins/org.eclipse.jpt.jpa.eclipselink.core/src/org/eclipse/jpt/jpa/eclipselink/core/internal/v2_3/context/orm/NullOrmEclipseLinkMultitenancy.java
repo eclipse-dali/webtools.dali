@@ -17,7 +17,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbedda
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.EclipseLinkMultitenantType;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.TenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmEclipseLinkMultitenancy;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmReadOnlyTenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmTenantDiscriminatorColumn;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmVirtualTenantDiscriminatorColumn;
 
 public class NullOrmEclipseLinkMultitenancy
 	extends AbstractOrmXmlContextNode
@@ -27,6 +29,26 @@ public class NullOrmEclipseLinkMultitenancy
 	public NullOrmEclipseLinkMultitenancy(OrmEclipseLinkNonEmbeddableTypeMapping parent) {
 		super(parent);
 	}
+
+
+	// ********** multitenant **********
+
+	public boolean isMultitenant() {
+		return false;
+	}
+
+	public boolean isDefaultMultitenant() {
+		return false;
+	}
+
+	public boolean isSpecifiedMultitenant() {
+		return false;
+	}
+
+	public void setSpecifiedMultitenant(boolean isMultitenant) {
+		throw new UnsupportedOperationException("Multitenancy is only supported in EclipseLink version 2.3 and higher"); //$NON-NLS-1$
+	}
+
 
 	// ********** type **********
 
@@ -69,12 +91,24 @@ public class NullOrmEclipseLinkMultitenancy
 
 	// ********** tenant discriminator columns **********
 
+	public ListIterable<OrmReadOnlyTenantDiscriminatorColumn> getTenantDiscriminatorColumns() {
+		return EmptyListIterable.instance();
+	}
+
+	public int getTenantDiscriminatorColumnsSize() {
+		return 0;
+	}
+
 	public ListIterable<OrmTenantDiscriminatorColumn> getSpecifiedTenantDiscriminatorColumns() {
 		return EmptyListIterable.instance();
 	}
 
 	public int getSpecifiedTenantDiscriminatorColumnsSize() {
 		return 0;
+	}
+
+	public boolean hasSpecifiedTenantDiscriminatorColumns() {
+		return false;
 	}
 
 	public OrmTenantDiscriminatorColumn addSpecifiedTenantDiscriminatorColumn() {
@@ -100,4 +134,13 @@ public class NullOrmEclipseLinkMultitenancy
 	public TextRange getValidationTextRange() {
 		throw new UnsupportedOperationException("Multitenancy is only supported in EclipseLink version 2.3 and higher"); //$NON-NLS-1$
 	}
+
+	public ListIterable<OrmVirtualTenantDiscriminatorColumn> getDefaultTenantDiscriminatorColumns() {
+		return EmptyListIterable.instance();
+	}
+
+	public int getDefaultTenantDiscriminatorColumnsSize() {
+		return 0;
+	}
+
 }

@@ -11,20 +11,29 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
+import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context.TenantDiscriminatorColumnValidator;
@@ -38,9 +47,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.EclipseLinkMultitenantT
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.ReadOnlyTenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.TenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.java.JavaEclipseLinkMultitenancy;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.java.JavaTenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmEclipseLinkMultitenancy;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmReadOnlyTenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmTenantDiscriminatorColumn;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmVirtualTenantDiscriminatorColumn;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -48,6 +59,9 @@ public class OrmEclipseLinkMultitenancyImpl
 	extends AbstractOrmXmlContextNode
 	implements OrmEclipseLinkMultitenancy
 {
+	protected boolean specifiedMultitenant;
+	protected boolean defaultMultitenant;
+
 	protected EclipseLinkMultitenantType specifiedType;
 	protected EclipseLinkMultitenantType defaultType;
 
@@ -57,13 +71,20 @@ public class OrmEclipseLinkMultitenancyImpl
 	protected final ContextListContainer<OrmTenantDiscriminatorColumn, XmlTenantDiscriminatorColumn_2_3> specifiedTenantDiscriminatorColumnContainer;
 	protected final OrmReadOnlyTenantDiscriminatorColumn.Owner tenantDiscriminatorColumnOwner;
 
+	protected final ContextListContainer<OrmVirtualTenantDiscriminatorColumn, ReadOnlyTenantDiscriminatorColumn> defaultTenantDiscriminatorColumnContainer;
+
+	protected final OrmReadOnlyTenantDiscriminatorColumn defaultTenantDiscriminatorColumn;
+
 	public OrmEclipseLinkMultitenancyImpl(OrmEclipseLinkNonEmbeddableTypeMapping parent) {
 		super(parent);
 
-		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
-		this.specifiedTenantDiscriminatorColumnContainer = new SpecifiedTenantDiscriminatorColumnContainer();
+		this.specifiedMultitenant = isMultitenantElementSpecified();
 		this.specifiedType = this.buildSpecifiedType();
 		this.specifiedIncludeCriteria = this.buildSpecifiedIncludeCriteria();
+		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
+		this.specifiedTenantDiscriminatorColumnContainer = new SpecifiedTenantDiscriminatorColumnContainer();
+		this.defaultTenantDiscriminatorColumn = this.buildTenantDiscriminatorColumn(null);
+		this.defaultTenantDiscriminatorColumnContainer = new DefaultTenantDiscriminatorColumnContainer();
 	}
 
 
@@ -72,9 +93,10 @@ public class OrmEclipseLinkMultitenancyImpl
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.syncTenantDiscriminatorColumns();
+		this.setSpecifiedMultitenant_(isMultitenantElementSpecified());
 		this.setSpecifiedType_(this.buildSpecifiedType());
 		this.setSpecifiedIncludeCriteria_(this.buildSpecifiedIncludeCriteria());
+		this.syncSpecifiedTenantDiscriminatorColumns();
 	}
 
 	@Override
@@ -84,13 +106,62 @@ public class OrmEclipseLinkMultitenancyImpl
 
 		boolean xmlMultitenantNotSpecified = (this.getXmlMultitenant() == null);
 		JavaEclipseLinkMultitenancy javaMultitenantPolicy = this.getJavaMultitenancyPolicyForDefaults();
-		boolean javaMultitenantPolicySpecified = (javaMultitenantPolicy != null);
+		boolean javaMultitenantPolicySpecified = javaMultitenantPolicy != null;
 		boolean useJavaValue = (xmlMultitenantNotSpecified && javaMultitenantPolicySpecified);
 
-		this.setDefaultType(useJavaValue ? javaMultitenantPolicy.getType() : (isMultitenant() ? DEFAULT_TYPE : null));
+		this.setDefaultMultitenant(useJavaValue ? javaMultitenantPolicy.isMultitenant() : this.buildDefaultMultitenant());
+		this.setDefaultType(useJavaValue ? javaMultitenantPolicy.getType() : this.buildDefaultType());
 		this.setDefaultIncludeCriteria(useJavaValue ? javaMultitenantPolicy.isIncludeCriteria() : DEFAULT_INCLUDE_CRITERIA);
-
+		this.updateDefaultTenantDiscriminatorColumns();
 	}
+
+
+	// ********** multitenant **********
+
+	public boolean isMultitenant() {
+		return isSpecifiedMultitenant() || isDefaultMultitenant();
+	}
+
+	public boolean isDefaultMultitenant() {
+		return this.defaultMultitenant;
+	}
+
+	public void setDefaultMultitenant(boolean defaultMultitenant) {
+		boolean old = this.defaultMultitenant;
+		this.defaultMultitenant = defaultMultitenant;
+		this.firePropertyChanged(DEFAULT_MULTITENANT_PROPERTY, old, defaultMultitenant);
+	}
+
+	protected boolean buildDefaultMultitenant() {
+		return this.isMultitenantInheritanceHierarchy() || this.isSuperMappedSuperclassMultitenant();
+	}
+
+	public boolean isSpecifiedMultitenant() {
+		return this.specifiedMultitenant;
+	}
+
+	public void setSpecifiedMultitenant(boolean isMultitenant) {
+		if (isMultitenant() && isMultitenant) {
+			return;
+		}
+		if (!isMultitenant() && !isMultitenant) {
+			return;
+		}
+		if (isMultitenant) {
+			this.addXmlMultitenant();
+		}
+		else {
+			this.removeXmlMultitenant();
+		}
+		this.setSpecifiedMultitenant_(isMultitenant);
+	}
+
+	protected void setSpecifiedMultitenant_(boolean isMultitenant) {
+		boolean old = this.specifiedMultitenant;
+		this.specifiedMultitenant = isMultitenant;
+		this.firePropertyChanged(SPECIFIED_MULTITENANT_PROPERTY, old, isMultitenant);
+	}
+
 
 	// ********** type **********
 
@@ -107,6 +178,9 @@ public class OrmEclipseLinkMultitenancyImpl
 			XmlMultitenant xmlMultitenant = this.getXmlMultitenantForUpdate();
 			this.setSpecifiedType_(type);
 			xmlMultitenant.setType(EclipseLinkMultitenantType.toOrmResourceModel(type));
+			if (getType() != EclipseLinkMultitenantType.SINGLE_TABLE) {
+				this.specifiedTenantDiscriminatorColumnContainer.clearContextList();
+			}
 		}
 	}
 
@@ -129,6 +203,20 @@ public class OrmEclipseLinkMultitenancyImpl
 		EclipseLinkMultitenantType old = this.defaultType;
 		this.defaultType = type;
 		this.firePropertyChanged(DEFAULT_TYPE_PROPERTY, old, type);
+	}
+
+	protected EclipseLinkMultitenantType buildDefaultType() {
+		if (!isMultitenant()) {
+			return null;
+		}
+		if (isSpecifiedMultitenant()) {
+			return DEFAULT_TYPE;
+		}
+		if (this.isMultitenantInheritanceHierarchy()) {
+			return getRootEntity().getMultitenancy().getType();
+		}
+		EclipseLinkMappedSuperclass superMappedSuperclass = getSuperMappedSuperclass();
+		return superMappedSuperclass != null ? superMappedSuperclass.getMultitenancy().getType() : DEFAULT_TYPE;
 	}
 
 
@@ -175,12 +263,34 @@ public class OrmEclipseLinkMultitenancyImpl
 
 	// ********** tenant discriminator columns **********
 
+	public ListIterable<OrmReadOnlyTenantDiscriminatorColumn> getTenantDiscriminatorColumns() {
+		return this.hasSpecifiedTenantDiscriminatorColumns() ?
+			this.getReadOnlySpecifiedTenantDiscriminatorColumns() : 
+			this.getReadOnlyDefaultTenantDiscriminatorColumns();
+	}
+
+	public int getTenantDiscriminatorColumnsSize() {
+		return this.hasSpecifiedTenantDiscriminatorColumns() ?
+			this.getSpecifiedTenantDiscriminatorColumnsSize() : 
+			this.getDefaultTenantDiscriminatorColumnsSize();
+	}
+
+	// ********** specified tenant discriminator columns **********
+
 	public ListIterable<OrmTenantDiscriminatorColumn> getSpecifiedTenantDiscriminatorColumns() {
 		return this.specifiedTenantDiscriminatorColumnContainer.getContextElements();
 	}
 
+	protected ListIterable<OrmReadOnlyTenantDiscriminatorColumn> getReadOnlySpecifiedTenantDiscriminatorColumns() {
+		return new SuperListIterableWrapper<OrmReadOnlyTenantDiscriminatorColumn>(this.getSpecifiedTenantDiscriminatorColumns());
+	}
+
 	public int getSpecifiedTenantDiscriminatorColumnsSize() {
 		return this.specifiedTenantDiscriminatorColumnContainer.getContextElementsSize();
+	}
+
+	public boolean hasSpecifiedTenantDiscriminatorColumns() {
+		return this.getSpecifiedTenantDiscriminatorColumnsSize() != 0;
 	}
 
 	public OrmTenantDiscriminatorColumn addSpecifiedTenantDiscriminatorColumn() {
@@ -213,7 +323,7 @@ public class OrmEclipseLinkMultitenancyImpl
 	}
 
 
-	protected void syncTenantDiscriminatorColumns() {
+	protected void syncSpecifiedTenantDiscriminatorColumns() {
 		this.specifiedTenantDiscriminatorColumnContainer.synchronizeWithResourceModel();
 	}
 
@@ -255,6 +365,116 @@ public class OrmEclipseLinkMultitenancyImpl
 
 	protected OrmTenantDiscriminatorColumn buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn_2_3 xmlTenantDiscriminatorColumn) {
 		return new EclipseLinkOrmTenantDiscriminatorColumn(this, this.tenantDiscriminatorColumnOwner, xmlTenantDiscriminatorColumn);
+	}
+
+
+	// ********** default tenant discriminator columns **********
+
+	public ListIterable<OrmVirtualTenantDiscriminatorColumn> getDefaultTenantDiscriminatorColumns() {
+		return this.defaultTenantDiscriminatorColumnContainer.getContextElements();
+	}
+
+	protected ListIterable<OrmReadOnlyTenantDiscriminatorColumn> getReadOnlyDefaultTenantDiscriminatorColumns() {
+		return new SuperListIterableWrapper<OrmReadOnlyTenantDiscriminatorColumn>(this.getDefaultTenantDiscriminatorColumns());
+	}
+
+	public int getDefaultTenantDiscriminatorColumnsSize() {
+		return this.defaultTenantDiscriminatorColumnContainer.getContextElementsSize();
+	}
+
+	protected void clearDefaultTenantDiscriminatorColumns() {
+		this.defaultTenantDiscriminatorColumnContainer.clearContextList();
+	}
+
+	/**
+	 * If there are any specified tenant discriminator columns, then there are no default
+	 * tenant discriminator columns.
+	 * If there are Java specified tenant discriminator columns, then those are the default
+	 * tenant discriminator columns.
+	 * @see #getTenantDiscriminatorColumnsForDefaults()
+	 */
+	protected void updateDefaultTenantDiscriminatorColumns() {
+		this.defaultTenantDiscriminatorColumnContainer.update();
+	}
+
+	protected ListIterable<ReadOnlyTenantDiscriminatorColumn> getTenantDiscriminatorColumnsForDefaults() {
+		if (this.getType() != EclipseLinkMultitenantType.SINGLE_TABLE) {
+			return EmptyListIterable.instance();
+		}
+		JavaEclipseLinkMultitenancy javaMultitenancy = this.getJavaMultitenancyPolicyForDefaults();
+		if (javaMultitenancy != null && !this.isSpecifiedMultitenant()) {
+			if (javaMultitenancy.hasSpecifiedTenantDiscriminatorColumns()) {
+				return new SuperListIterableWrapper<ReadOnlyTenantDiscriminatorColumn>(javaMultitenancy.getSpecifiedTenantDiscriminatorColumns());
+			}
+		}
+		if (this.isMultitenantInheritanceHierarchy()) {
+			return new SuperListIterableWrapper<ReadOnlyTenantDiscriminatorColumn>(this.getRootEntity().getMultitenancy().getTenantDiscriminatorColumns());
+		}
+		if (!isSpecifiedMultitenant()) {
+			EclipseLinkMappedSuperclass superMappedSuperclass = this.getSuperMappedSuperclass();
+			if (superMappedSuperclass != null && superMappedSuperclass.getMultitenancy().isMultitenant()) {
+				return new SuperListIterableWrapper<ReadOnlyTenantDiscriminatorColumn>(superMappedSuperclass.getMultitenancy().getTenantDiscriminatorColumns());
+			}
+		}
+		if (this.getSpecifiedTenantDiscriminatorColumnsSize() == 0) {
+			ListIterable<ReadOnlyTenantDiscriminatorColumn> contextColumns = this.getContextDefaultTenantDiscriminatorColumns();
+			if (CollectionTools.isEmpty(contextColumns)) {
+				return new SingleElementListIterable<ReadOnlyTenantDiscriminatorColumn>(this.defaultTenantDiscriminatorColumn);
+			}
+			return contextColumns;
+		}
+		return EmptyListIterable.instance();
+	}
+
+	protected ListIterable<ReadOnlyTenantDiscriminatorColumn> getContextDefaultTenantDiscriminatorColumns() {
+		EclipseLinkEntityMappings entityMappings = this.getEclipseLinkEntityMappings();
+		return (entityMappings != null) ? entityMappings.getTenantDiscriminatorColumns() : this.getPersistenceUnit().getDefaultTenantDiscriminatorColumns();
+	}
+
+
+	protected void moveDefaultTenantDiscriminatorColumn(int index, OrmVirtualTenantDiscriminatorColumn tenantDiscriminatorColumn) {
+		this.defaultTenantDiscriminatorColumnContainer.moveContextElement(index, tenantDiscriminatorColumn);
+	}
+
+	protected OrmVirtualTenantDiscriminatorColumn addDefaultTenantDiscriminatorColumn(int index, JavaTenantDiscriminatorColumn javaTenantDiscriminatorColumn) {
+		return this.defaultTenantDiscriminatorColumnContainer.addContextElement(index, javaTenantDiscriminatorColumn);
+	}
+
+	protected OrmVirtualTenantDiscriminatorColumn buildVirtualTenantDiscriminatorColumn(ReadOnlyTenantDiscriminatorColumn tenantDiscriminatorColumn) {
+		return new GenericOrmVirtualTenantDiscriminatorColumn(this, this.tenantDiscriminatorColumnOwner, tenantDiscriminatorColumn);
+	}
+
+	protected void removeDefaultTenantDiscriminatorColumn(OrmVirtualTenantDiscriminatorColumn tenantDiscriminatorColumn) {
+		this.defaultTenantDiscriminatorColumnContainer.removeContextElement(tenantDiscriminatorColumn);
+	}
+
+	protected ContextListContainer<OrmVirtualTenantDiscriminatorColumn, ReadOnlyTenantDiscriminatorColumn> buildDefaultTenantDiscriminatorColumnContainer() {
+		return new DefaultTenantDiscriminatorColumnContainer();
+	}
+
+
+	/**
+	 * default tenant discriminator column container
+	 */
+	protected class DefaultTenantDiscriminatorColumnContainer
+		extends ContextListContainer<OrmVirtualTenantDiscriminatorColumn, ReadOnlyTenantDiscriminatorColumn>
+	{
+		@Override
+		protected String getContextElementsPropertyName() {
+			return DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST;
+		}
+		@Override
+		protected OrmVirtualTenantDiscriminatorColumn buildContextElement(ReadOnlyTenantDiscriminatorColumn resourceElement) {
+			return OrmEclipseLinkMultitenancyImpl.this.buildVirtualTenantDiscriminatorColumn(resourceElement);
+		}
+		@Override
+		protected ListIterable<ReadOnlyTenantDiscriminatorColumn> getResourceElements() {
+			return OrmEclipseLinkMultitenancyImpl.this.getTenantDiscriminatorColumnsForDefaults();
+		}
+		@Override
+		protected ReadOnlyTenantDiscriminatorColumn getResourceElement(OrmVirtualTenantDiscriminatorColumn contextElement) {
+			return contextElement.getOverriddenColumn();
+		}
 	}
 
 
@@ -301,7 +521,7 @@ public class OrmEclipseLinkMultitenancyImpl
 		}
 
 		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new TenantDiscriminatorColumnValidator(column, textRangeResolver);
+			return new TenantDiscriminatorColumnValidator((ReadOnlyTenantDiscriminatorColumn) column, textRangeResolver);
 		}
 
 		public TextRange getValidationTextRange() {
@@ -340,10 +560,15 @@ public class OrmEclipseLinkMultitenancyImpl
 		return this.getXmlMultitenant() != null;
 	}
 
-	public boolean isMultitenant() {
-		return isMultitenantElementSpecified();
+	protected XmlMultitenant addXmlMultitenant() {
+		XmlMultitenant xmlMultitenant = this.buildXmlMultitenant();
+		this.getXmlMultitenantHolder().setMultitenant(xmlMultitenant);
+		return xmlMultitenant;
 	}
 
+	protected void removeXmlMultitenant() {
+		this.getXmlMultitenantHolder().setMultitenant(null);
+	}
 
 	// ********** misc **********
 
@@ -360,6 +585,15 @@ public class OrmEclipseLinkMultitenancyImpl
 		return this.getTypeMapping().getXmlTypeMapping();
 	}
 
+	public EclipseLinkEntityMappings getEclipseLinkEntityMappings() {
+		return (EclipseLinkEntityMappings) super.getMappingFileRoot();
+	}
+
+	@Override
+	public EclipseLinkPersistenceUnit getPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
+	}
+
 	protected JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMappingForDefaults() {
 		return this.getTypeMapping().getJavaTypeMappingForDefaults();
 	}
@@ -369,13 +603,55 @@ public class OrmEclipseLinkMultitenancyImpl
 		return (javaTypeMapping == null) ? null : javaTypeMapping.getMultitenancy();
 	}
 
-	protected boolean isParentInheritanceStrategySingleTableOrJoined() {
-		InheritanceType inheritanceStrategy = getParent().getInheritanceStrategy();
-		return inheritanceStrategy == InheritanceType.SINGLE_TABLE || inheritanceStrategy == InheritanceType.JOINED;
+	protected boolean isMultitenantMetadataAllowed() {
+		return this.isRootEntity() || this.isInheritanceStrategyTablePerClass();
 	}
 
-	protected boolean isParentRootEntity() {
-		return getParent().isRootEntity();
+	protected boolean isRootEntity() {
+		return this.getParent().isRootEntity();
+	}
+
+	protected boolean isInheritanceStrategyTablePerClass() {
+		return this.getParent().getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS;
+	}
+
+	protected boolean isMultitenantInheritanceHierarchy() {
+		if (this.isInheritanceStrategyTablePerClass()) {
+			return false;
+		}
+		return this.isRootEntityMultitenant();
+	}
+
+	protected boolean isRootEntityMultitenant() {
+		EclipseLinkEntity rootEntity = this.getRootEntity();
+		return rootEntity != null && rootEntity != getParent() && rootEntity.getMultitenancy().isMultitenant();
+	}
+
+	protected EclipseLinkEntity getRootEntity() {
+		//instanceof check in case the rootEntity is in an orm.xml instead of an eclipselinkorm.xml file.
+		Entity entity = getParent().getRootEntity();
+		return entity instanceof EclipseLinkEntity ? (EclipseLinkEntity) entity : null;
+	}
+
+	protected boolean isSuperMappedSuperclassMultitenant() {
+		EclipseLinkMappedSuperclass mappedSuperclass = this.getSuperMappedSuperclass(getParent());
+		return mappedSuperclass != null && mappedSuperclass.getMultitenancy().isMultitenant();
+	}
+
+	protected EclipseLinkMappedSuperclass getSuperMappedSuperclass() {
+		return this.getSuperMappedSuperclass(this.getParent());
+	}
+
+	protected EclipseLinkMappedSuperclass getSuperMappedSuperclass(TypeMapping typeMapping) {
+		TypeMapping superTypeMapping = typeMapping.getSuperTypeMapping();
+		if (superTypeMapping == null) {
+			return null;
+		}
+		//instanceof check in case the mapped superclass is in an orm.xml instead of an eclipselinkorm.xml file.
+		if (superTypeMapping instanceof EclipseLinkMappedSuperclass) {
+			return (EclipseLinkMappedSuperclass) superTypeMapping;
+		}
+		return this.getSuperMappedSuperclass(superTypeMapping);
 	}
 
 
@@ -385,9 +661,7 @@ public class OrmEclipseLinkMultitenancyImpl
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		if (getSpecifiedTenantDiscriminatorColumnsSize() > 0) {
-			if (this.isParentInheritanceStrategySingleTableOrJoined() && !isParentRootEntity()) {
-				//TODO need to validate this if the multitenant annotation exists, 
-				//but not the multitenant xml element , I think it is defaulted in
+			if (!this.isMultitenantMetadataAllowed()) {
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
@@ -403,6 +677,9 @@ public class OrmEclipseLinkMultitenancyImpl
 					column.validate(messages, reporter);
 				}
 			}
+		}
+		for (OrmVirtualTenantDiscriminatorColumn column : this.getDefaultTenantDiscriminatorColumns()) {
+			column.validate(messages, reporter);
 		}
 	}
 

@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.v2_3.resource.java.EclipseLinkTenant
 /**
  * org.eclipse.persistence.annotations.TenantDiscriminatorColumn
  */
-public class BinaryEclipseLinkTenantDiscriminatorColumnAnnotation
+public final class BinaryEclipseLinkTenantDiscriminatorColumnAnnotation
 	extends BinaryBaseDiscriminatorColumnAnnotation
 	implements EclipseLinkTenantDiscriminatorColumnAnnotation
 {

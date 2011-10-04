@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyTableColumn;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.ReadOnlyTenantDiscriminatorColumn;
 
 /**
@@ -29,7 +28,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.ReadOnlyTenantDiscrimin
 public interface OrmReadOnlyTenantDiscriminatorColumn
 	extends OrmReadOnlyNamedDiscriminatorColumn, ReadOnlyTenantDiscriminatorColumn, OrmReadOnlyTableColumn
 {
-	XmlTenantDiscriminatorColumn_2_3 getXmlColumn();
 
 	// ********** owner **********
 

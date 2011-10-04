@@ -29,6 +29,11 @@ public class OrmEclipseLinkPersistenceUnitMetadata
 	}
 	
 	@Override
+	public OrmEclipseLinkPersistenceUnitDefaults getPersistenceUnitDefaults() {
+		return (OrmEclipseLinkPersistenceUnitDefaults) super.getPersistenceUnitDefaults();
+	}
+
+	@Override
 	protected XmlPersistenceUnitMetadata buildXmlPersistenceUnitMetadata_() {
 		return EmfTools.create(
 				this.getResourceNodeFactory(),

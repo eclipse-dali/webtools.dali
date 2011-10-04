@@ -9,20 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context;
 
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractNamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.ReadOnlyTenantDiscriminatorColumn;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class TenantDiscriminatorColumnValidator
-	extends AbstractNamedColumnValidator<ReadOnlyNamedColumn, NamedColumnTextRangeResolver>
+	extends AbstractNamedColumnValidator<ReadOnlyTenantDiscriminatorColumn, NamedColumnTextRangeResolver>
 {
 	public TenantDiscriminatorColumnValidator(
-			ReadOnlyNamedColumn namedColumn,
+			ReadOnlyTenantDiscriminatorColumn namedColumn,
 			NamedColumnTextRangeResolver textRangeResolver) {
 		super(namedColumn, textRangeResolver, new EntityTableDescriptionProvider());
 	}
@@ -47,13 +47,24 @@ public class TenantDiscriminatorColumnValidator
 	}
 
 	@Override
+	protected IMessage buildUnresolvedNameMessage() {
+		return this.column.isVirtual() ?
+				this.buildUnresolvedNameMessage(this.getVirtualTenantDiscriminatorColumnUnresolvedNameMessage()) :
+				super.buildUnresolvedNameMessage();
+	}
+
+	protected String getVirtualTenantDiscriminatorColumnUnresolvedNameMessage() {
+		return EclipseLinkJpaValidationMessages.VIRTUAL_TENANT_DISCRIMINATOR_COLUMN_UNRESOLVED_NAME;
+	}
+
+	@Override
 	protected String getUnresolvedNameMessage() {
 		return EclipseLinkJpaValidationMessages.TENANT_DISCRIMINATOR_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		throw new UnsupportedOperationException();
+		return EclipseLinkJpaValidationMessages.VIRTUAL_ATTRIBUTE_TENANT_DISCRIMINATOR_COLUMN_UNRESOLVED_NAME;
 	}
 
 
@@ -64,6 +75,11 @@ public class TenantDiscriminatorColumnValidator
 	{
 		protected TableValidator() {
 			super();
+		}
+
+		@Override
+		protected ReadOnlyTenantDiscriminatorColumn getColumn() {
+			return (ReadOnlyTenantDiscriminatorColumn) super.getColumn();
 		}
 
 		@Override
@@ -83,12 +99,22 @@ public class TenantDiscriminatorColumnValidator
 
 		@Override
 		protected String getColumnTableNotValidMessage() {
+			return this.getColumn().isVirtual() ?
+					this.getVirtualTenantDiscriminatorColumnTableNotValidMessage() :
+					this.getColumnTableNotValidMessage_();
+		}
+
+		protected String getVirtualTenantDiscriminatorColumnTableNotValidMessage() {
+			return EclipseLinkJpaValidationMessages.VIRTUAL_TENANT_DISCRIMINATOR_COLUMN_TABLE_NOT_VALID;
+		}
+
+		protected String getColumnTableNotValidMessage_() {
 			return EclipseLinkJpaValidationMessages.TENANT_DISCRIMINATOR_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override
 		protected String getVirtualAttributeColumnTableNotValidMessage() {
-			throw new UnsupportedOperationException();
+			return EclipseLinkJpaValidationMessages.VIRTUAL_ATTRIBUTE_TENANT_DISCRIMINATOR_COLUMN_TABLE_NOT_VALID;
 		}
 	}
 }

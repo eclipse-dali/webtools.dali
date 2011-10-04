@@ -88,6 +88,10 @@ public interface TypeMapping
 	 */
 	boolean isRootEntity();
 
+	/**
+	 * Return the root entity of the inheritance hierarchy or null.
+	 */
+	Entity getRootEntity();
 
 	// ********** tables **********
 

@@ -27,12 +27,16 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
+import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -57,10 +61,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValida
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitDefaults;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.general.EclipseLinkGeneralProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.ReadOnlyTenantDiscriminatorColumn;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -87,6 +94,7 @@ public class EclipseLinkPersistenceUnit
 	/* global converter definitions, defined elsewhere in model */
 	protected final Vector<EclipseLinkConverter> converters = new Vector<EclipseLinkConverter>();
 
+	protected final Vector<ReadOnlyTenantDiscriminatorColumn> defaultTenantDiscriminatorColumns = new Vector<ReadOnlyTenantDiscriminatorColumn>();
 
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
@@ -99,8 +107,20 @@ public class EclipseLinkPersistenceUnit
 	public void update() {
 		super.update();
 		this.setConverters(this.buildConverters());
+
+		OrmEclipseLinkPersistenceUnitMetadata metadata = this.getEclipseLinkMetadata();
+
+		OrmEclipseLinkPersistenceUnitDefaults defaults = (metadata == null) ? null : metadata.getPersistenceUnitDefaults();
+		this.setDefaultTenantDiscriminatorColumns(this.buildDefaultTenantDiscriminatorColumns(defaults));
 	}
-	
+
+	protected OrmEclipseLinkPersistenceUnitMetadata getEclipseLinkMetadata() {
+		MappingFilePersistenceUnitMetadata metadata = super.getMetadata();
+		if (metadata instanceof OrmEclipseLinkPersistenceUnitMetadata) {
+			return (OrmEclipseLinkPersistenceUnitMetadata) metadata;
+		}
+		return null;
+	}
 
 	// ********** properties **********
 
@@ -311,6 +331,27 @@ public class EclipseLinkPersistenceUnit
 
 	protected boolean impliedEclipseLinkMappingFileExists() {
 		return this.getJpaProject().getDefaultEclipseLinkOrmXmlResource() != null;
+	}
+
+
+	// ********** default tenant discriminator columns **********
+
+	/**
+	 * String constant associated with changes to the persistence unit's
+	 * list of default tenant discriminator Columns
+	 */
+	public static final String DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST = "defaultTenantDiscriminatorColumns"; //$NON-NLS-1$
+
+	public ListIterable<ReadOnlyTenantDiscriminatorColumn> getDefaultTenantDiscriminatorColumns() {
+		return new LiveCloneListIterable<ReadOnlyTenantDiscriminatorColumn>(this.defaultTenantDiscriminatorColumns);
+	}
+
+	protected void setDefaultTenantDiscriminatorColumns(Iterable<ReadOnlyTenantDiscriminatorColumn> tenantDiscriminatorColumns) {
+		this.synchronizeList(tenantDiscriminatorColumns, this.defaultTenantDiscriminatorColumns, DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST);
+	}
+
+	protected ListIterable<ReadOnlyTenantDiscriminatorColumn> buildDefaultTenantDiscriminatorColumns(OrmEclipseLinkPersistenceUnitDefaults defaults) {
+		return (defaults == null) ? EmptyListIterable.<ReadOnlyTenantDiscriminatorColumn> instance() : new SuperListIterableWrapper<ReadOnlyTenantDiscriminatorColumn>(defaults.getTenantDiscriminatorColumns());
 	}
 
 

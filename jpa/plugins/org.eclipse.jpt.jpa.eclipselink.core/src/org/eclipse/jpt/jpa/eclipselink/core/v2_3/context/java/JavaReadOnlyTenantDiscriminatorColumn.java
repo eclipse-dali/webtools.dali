@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.java;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyTableColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.ReadOnlyTenantDiscriminatorColumn;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_3.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation;
 
 /**
  * tenant discriminator column
@@ -29,7 +28,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.v2_3.resource.java.EclipseLinkTenant
 public interface JavaReadOnlyTenantDiscriminatorColumn
 	extends JavaReadOnlyNamedDiscriminatorColumn, ReadOnlyTenantDiscriminatorColumn, JavaReadOnlyTableColumn
 {
-	EclipseLinkTenantDiscriminatorColumnAnnotation getColumnAnnotation();
 
 	// ********** owner **********
 

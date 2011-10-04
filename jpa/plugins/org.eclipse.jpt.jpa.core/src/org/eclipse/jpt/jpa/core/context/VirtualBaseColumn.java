@@ -22,7 +22,7 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface VirtualBaseColumn
-	extends VirtualNamedColumn, ReadOnlyBaseColumn
+	extends VirtualTableColumn, ReadOnlyBaseColumn
 {
 	ReadOnlyBaseColumn getOverriddenColumn();
 }
