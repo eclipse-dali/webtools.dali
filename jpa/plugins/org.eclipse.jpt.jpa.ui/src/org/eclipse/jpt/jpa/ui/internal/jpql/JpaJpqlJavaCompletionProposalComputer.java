@@ -27,6 +27,7 @@ import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IExtendedModifier;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
@@ -282,11 +283,22 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 						// @NamedQueries({...})
 						if (annotation.isSingleMemberAnnotation()) {
 							SingleMemberAnnotation singleMemberAnnotation = (SingleMemberAnnotation) annotation;
-							ArrayInitializer array = (ArrayInitializer) singleMemberAnnotation.getValue();
+							Expression value = singleMemberAnnotation.getValue();
 
-							for (org.eclipse.jdt.core.dom.Expression expression : (List<org.eclipse.jdt.core.dom.Expression>) array.expressions()) {
-								if (isInsideNode(expression, tokenStart, tokenEnd)) {
-									return retrieveQuery((NormalAnnotation) expression, tokenStart, tokenEnd);
+							if (value instanceof ArrayInitializer) {
+								ArrayInitializer array = (ArrayInitializer) singleMemberAnnotation.getValue();
+
+								for (Expression expression : (List<Expression>) array.expressions()) {
+									if (isInsideNode(expression, tokenStart, tokenEnd)) {
+										return retrieveQuery((NormalAnnotation) expression, tokenStart, tokenEnd);
+									}
+								}
+							}
+							else {
+								NormalAnnotation childAnnotation = (NormalAnnotation) value;
+
+								if (isInsideNode(childAnnotation, tokenStart, tokenEnd)) {
+									return retrieveQuery(childAnnotation, tokenStart, tokenEnd);
 								}
 							}
 						}
