@@ -212,6 +212,30 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 			}
 		});
 	}
+
+	private ICompilationUnit createTestEntityAnnotatedConstructor() throws Exception {	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("@Id").append(CR);
+				sb.append("    public " + TYPE_NAME + "() {").append(CR);
+				sb.append("        super();").append(CR);
+				sb.append("    }").append(CR);
+				sb.append(CR);
+				sb.append("    ");
+			}
+		});
+	}
 		
 	public GenericJavaPersistentTypeTests(String name) {
 		super(name);
@@ -835,6 +859,17 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 		assertEquals(AccessType.FIELD, javaPersistentType.getDefaultAccess());
+		assertNull(javaPersistentType.getSpecifiedAccess());
+	}
+
+	//this is invalid and covered by validation (bug 360002)
+	public void testGetAccessConstructorAnnotated() throws Exception {
+		createTestEntityAnnotatedConstructor();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
+		
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getDefaultAccess());
 		assertNull(javaPersistentType.getSpecifiedAccess());
 	}
 	

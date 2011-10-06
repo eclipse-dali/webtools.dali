@@ -39,7 +39,7 @@ public class PropertyAccessor
 	}
 
 	public JavaResourceAttribute getResourceAttribute() {
-		return this.resourceGetter;
+		return this.resourceGetter != null ? this.resourceGetter : this.resourceSetter;
 	}
 
 	public boolean isFor(JavaResourceField resourceField) {
