@@ -17,12 +17,16 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCache;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -433,5 +437,61 @@ public class EclipseLinkOrmCachingTests
 		
 		assertEquals(new Integer(50), entity.getCaching().getSpecifiedSize());
 		assertEquals(50, entity.getCaching().getSize());
+	}
+
+	public void testSetSpecifiedIsolation() throws Exception {
+		createTestEntity();
+
+		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		OrmEclipseLinkCaching caching = entity.getCaching();
+		XmlCache xmlCache = entity.getXmlTypeMapping().getCache();
+
+		assertEquals(EclipseLinkCacheIsolationType2_2.SHARED, caching.getIsolation());
+		assertNull(xmlCache);
+
+		caching.setSpecifiedIsolation(EclipseLinkCacheIsolationType2_2.PROTECTED);		
+		xmlCache = entity.getXmlTypeMapping().getCache();
+		assertEquals(EclipseLinkCacheIsolationType2_2.PROTECTED, entity.getCaching().getSpecifiedIsolation());
+		assertEquals(EclipseLinkCacheIsolationType2_2.PROTECTED, entity.getCaching().getIsolation());
+		assertEquals(CacheIsolationType.PROTECTED, xmlCache.getIsolation());
+
+		//set specified isolation to the same as the default, verify it is not set to default
+		caching.setSpecifiedIsolation(EclipseLinkCacheIsolationType2_2.SHARED);
+		assertEquals(EclipseLinkCacheIsolationType2_2.SHARED, caching.getSpecifiedIsolation());
+		assertEquals(EclipseLinkCacheIsolationType2_2.SHARED, caching.getIsolation());
+		assertEquals(CacheIsolationType.SHARED, xmlCache.getIsolation());
+
+		caching.setSpecifiedIsolation(null);
+		xmlCache = entity.getXmlTypeMapping().getCache();
+		assertNull(caching.getSpecifiedIsolation());
+		assertEquals(EclipseLinkCacheIsolationType2_2.SHARED, caching.getIsolation());
+		assertNull(xmlCache);
+	}
+
+	public void testGetSpecifiedIsolation() throws Exception {
+		createTestEntity();
+
+		OrmPersistentType type = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEclipseLinkEntity entity = (OrmEclipseLinkEntity)type.getMapping();
+		OrmEclipseLinkCaching caching = entity.getCaching();
+		XmlCache xmlCache = entity.getXmlTypeMapping().getCache();
+
+		assertEquals(EclipseLinkCacheIsolationType2_2.SHARED, caching.getIsolation());
+		assertNull(xmlCache);
+
+		entity.getXmlTypeMapping().setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		xmlCache = entity.getXmlTypeMapping().getCache();
+		xmlCache.setIsolation(CacheIsolationType.ISOLATED);
+		assertEquals(EclipseLinkCacheIsolationType2_2.ISOLATED, caching.getIsolation());
+		assertEquals(EclipseLinkCacheIsolationType2_2.ISOLATED, caching.getSpecifiedIsolation());
+
+		xmlCache.setIsolation(CacheIsolationType.PROTECTED);
+		assertEquals(EclipseLinkCacheIsolationType2_2.PROTECTED, caching.getIsolation());
+		assertEquals(EclipseLinkCacheIsolationType2_2.PROTECTED, caching.getSpecifiedIsolation());
+
+		xmlCache.setIsolation(null);
+		assertEquals(EclipseLinkCacheIsolationType2_2.SHARED, caching.getIsolation());
+		assertNull(caching.getSpecifiedIsolation());
 	}
 }

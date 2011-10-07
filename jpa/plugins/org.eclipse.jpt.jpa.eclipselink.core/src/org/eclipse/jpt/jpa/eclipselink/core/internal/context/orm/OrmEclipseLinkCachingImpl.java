@@ -23,6 +23,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
@@ -69,6 +70,9 @@ public class OrmEclipseLinkCachingImpl
 
 	protected final OrmCacheable2_0 cacheable;
 
+	protected EclipseLinkCacheIsolationType2_2 specifiedIsolation;
+	protected EclipseLinkCacheIsolationType2_2 defaultIsolation;
+
 
 	public OrmEclipseLinkCachingImpl(OrmEclipseLinkNonEmbeddableTypeMapping parent) {
 		super(parent);
@@ -88,6 +92,8 @@ public class OrmEclipseLinkCachingImpl
 		this.specifiedExistenceType = this.buildSpecifiedExistenceType();
 
 		this.cacheable = this.buildCacheable();
+
+		this.specifiedIsolation = this.buildSpecifiedIsolation();
 	}
 
 
@@ -112,6 +118,8 @@ public class OrmEclipseLinkCachingImpl
 		this.setSpecifiedExistenceType_(this.buildSpecifiedExistenceType());
 
 		this.cacheable.synchronizeWithResourceModel();
+
+		this.setSpecifiedIsolation_(this.buildSpecifiedIsolation());
 	}
 
 	@Override
@@ -140,6 +148,8 @@ public class OrmEclipseLinkCachingImpl
 		this.setDefaultExistenceType(javaCacheSpecified ? javaCaching.getExistenceType() : DEFAULT_EXISTENCE_TYPE);
 
 		this.cacheable.update();
+
+		this.setDefaultIsolation(useJavaValue ? javaCaching.getIsolation() : DEFAULT_ISOLATION);
 	}
 
 
@@ -669,6 +679,50 @@ public class OrmEclipseLinkCachingImpl
 				this.getCacheableSuperPersistentType(superPersistentType);  // recurse
 	}
 
+
+	// ********** isolation **********
+
+	public EclipseLinkCacheIsolationType2_2 getIsolation() {
+		return (this.specifiedIsolation != null) ? this.specifiedIsolation : this.defaultIsolation;
+	}
+
+	public EclipseLinkCacheIsolationType2_2 getSpecifiedIsolation() {
+		return this.specifiedIsolation;
+	}
+
+	public void setSpecifiedIsolation(EclipseLinkCacheIsolationType2_2 isolation) {
+		if (this.valuesAreDifferent(this.specifiedIsolation, isolation)) {
+			XmlCache xmlCache = this.getXmlCacheForUpdate();
+			this.setSpecifiedIsolation_(isolation);
+			xmlCache.setIsolation(EclipseLinkCacheIsolationType2_2.toOrmResourceModel(isolation));
+			this.removeXmlCacheIfUnset();
+		}
+
+		if (isolation != null) {
+			this.setSpecifiedShared(null);
+		}
+	}
+
+	protected void setSpecifiedIsolation_(EclipseLinkCacheIsolationType2_2 isolation) {
+		EclipseLinkCacheIsolationType2_2 old = this.specifiedIsolation;
+		this.specifiedIsolation = isolation;
+		this.firePropertyChanged(SPECIFIED_ISOLATION_PROPERTY, old, isolation);
+	}
+
+	protected EclipseLinkCacheIsolationType2_2 buildSpecifiedIsolation() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : EclipseLinkCacheIsolationType2_2.fromOrmResourceModel(xmlCache.getIsolation());
+	}
+
+	public EclipseLinkCacheIsolationType2_2 getDefaultIsolation() {
+		return this.defaultIsolation;
+	}
+
+	protected void setDefaultIsolation(EclipseLinkCacheIsolationType2_2 isolation) {
+		EclipseLinkCacheIsolationType2_2 old = this.defaultIsolation;
+		this.defaultIsolation = isolation;
+		this.firePropertyChanged(DEFAULT_ISOLATION_PROPERTY, old, isolation);
+	}
 
 	// ********** XML cache **********
 

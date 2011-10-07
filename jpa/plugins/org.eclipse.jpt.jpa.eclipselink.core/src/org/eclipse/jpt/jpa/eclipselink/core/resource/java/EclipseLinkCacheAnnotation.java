@@ -216,5 +216,27 @@ public interface EclipseLinkCacheAnnotation
 	 * for the Cache annotation.
 	 */
 	TextRange getCoordinationTypeTextRange(CompilationUnit astRoot);
+
+
+	/**
+	 * Corresponds to the 'isolation' element of the Cache annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	CacheIsolationType2_2 getIsolation();
+		String ISOLATION_PROPERTY = "isolation"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'isolation' element of the Cache annotation.
+	 * Set to null to remove the element.
+	 */
+	void setIsolation(CacheIsolationType2_2 isolation);
+
+	/**
+	 * Return the {@link TextRange} for the 'isolation' element.
+	 * If the element does not exist return the {@link TextRange}
+	 * for the Cache annotation.
+	 */
+	TextRange getIsolationTextRange(CompilationUnit astRoot);
+
 	
 }

@@ -16,12 +16,13 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Ki
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
@@ -687,4 +688,55 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		assertEquals(50, entity.getCaching().getSize());
 	}
 
+	public void testSetSpecifiedIsolation() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		JavaEclipseLinkEntity entity = (JavaEclipseLinkEntity) getJavaPersistentType().getMapping();
+		JavaEclipseLinkCaching caching = entity.getCaching();
+
+		assertEquals(EclipseLinkCacheIsolationType2_2.SHARED, caching.getIsolation());
+
+		caching.setSpecifiedIsolation(EclipseLinkCacheIsolationType2_2.PROTECTED);
+
+
+		assertEquals(EclipseLinkCacheIsolationType2_2.PROTECTED, entity.getCaching().getSpecifiedIsolation());
+		assertEquals(EclipseLinkCacheIsolationType2_2.PROTECTED, entity.getCaching().getIsolation());
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+
+		EclipseLinkCacheAnnotation cacheAnnotation = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
+
+		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2.PROTECTED, cacheAnnotation.getIsolation());		
+
+
+		//set specified coordination type to the same as the default, verify it is not set to default
+		caching.setSpecifiedIsolation(EclipseLinkCacheIsolationType2_2.SHARED);
+		assertEquals(EclipseLinkCacheIsolationType2_2.SHARED, caching.getSpecifiedIsolation());
+		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2.SHARED, cacheAnnotation.getIsolation());		
+
+		caching.setSpecifiedIsolation(null);
+		assertNull(caching.getSpecifiedIsolation());
+		assertEquals(EclipseLinkCacheIsolationType2_2.SHARED, caching.getIsolation());
+	}
+
+	public void testGetSpecifiedIsolation() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		JavaEclipseLinkEntity entity = (JavaEclipseLinkEntity) getJavaPersistentType().getMapping();
+		JavaEclipseLinkCaching caching = entity.getCaching();
+
+		assertEquals(EclipseLinkCacheIsolationType2_2.SHARED, caching.getIsolation());
+		assertNull(caching.getSpecifiedIsolation());
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		EclipseLinkCacheAnnotation cacheAnnotation = (EclipseLinkCacheAnnotation) resourceType.addAnnotation(EclipseLink.CACHE);
+		cacheAnnotation.setIsolation(org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2.PROTECTED);
+		getJpaProject().synchronizeContextModel();
+
+		assertEquals(org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2.PROTECTED, cacheAnnotation.getIsolation());				
+		assertEquals(EclipseLinkCacheIsolationType2_2.PROTECTED, entity.getCaching().getSpecifiedIsolation());
+		assertEquals(EclipseLinkCacheIsolationType2_2.PROTECTED, entity.getCaching().getIsolation());
+	}
 }

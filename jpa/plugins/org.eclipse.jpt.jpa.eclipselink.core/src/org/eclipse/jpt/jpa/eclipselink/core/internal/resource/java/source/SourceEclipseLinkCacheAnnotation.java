@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheCoordinationType;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
@@ -76,6 +77,10 @@ public final class SourceEclipseLinkCacheAnnotation
 	private final ElementAnnotationAdapter expiryTimeOfDayAdapter;
 	private EclipseLinkTimeOfDayAnnotation expiryTimeOfDay;
 
+	private static final DeclarationAnnotationElementAdapter<String> ISOLATION_ADAPTER = buildIsolationAdapter();
+	private final AnnotationElementAdapter<String> isolationAdapter;
+	private CacheIsolationType2_2 isolation;
+
 
 	public SourceEclipseLinkCacheAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
@@ -88,6 +93,7 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.coordinationTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, COORDINATION_TYPE_ADAPTER);
 		this.expiryAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(element, EXPIRY_ADAPTER);
 		this.expiryTimeOfDayAdapter = new ElementAnnotationAdapter(element, EXPIRY_TIME_OF_DAY_ADAPTER);
+		this.isolationAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, ISOLATION_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -104,6 +110,7 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.coordinationType = this.buildCoordinationType(astRoot);
 		this.expiry = this.buildExpiry(astRoot);
 		this.initializeExpiryTimeOfDay(astRoot);
+		this.isolation = this.buildIsolation(astRoot);
 	}
 
 	private void initializeExpiryTimeOfDay(CompilationUnit astRoot) {
@@ -123,6 +130,7 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.syncCoordinationType(this.buildCoordinationType(astRoot));
 		this.syncExpiry(this.buildExpiry(astRoot));
 		this.syncExpiryTimeOfDay(astRoot);
+		this.syncIsolation(this.buildIsolation(astRoot));
 	}
 
 	@Override
@@ -136,7 +144,8 @@ public final class SourceEclipseLinkCacheAnnotation
 				(this.disableHits == null) &&
 				(this.coordinationType == null) &&
 				(this.expiry == null) &&
-				(this.expiryTimeOfDay == null);
+				(this.expiryTimeOfDay == null) &&
+				(this.isolation == null);
 	}
 
 	@Override
@@ -406,6 +415,32 @@ public final class SourceEclipseLinkCacheAnnotation
 		return this.getTextRange(this.expiryTimeOfDayAdapter.getAstNode(astRoot));
 	}
 
+	// ***** isolation
+	public CacheIsolationType2_2 getIsolation() {
+		return this.isolation;
+	}
+
+	public void setIsolation(CacheIsolationType2_2 isolation) {
+		if (this.attributeValueHasChanged(this.isolation, isolation)) {
+			this.isolation = isolation;
+			this.isolationAdapter.setValue(CacheIsolationType2_2.toJavaAnnotationValue(isolation));
+		}
+	}
+
+	private void syncIsolation(CacheIsolationType2_2 astIsolation) {
+		CacheIsolationType2_2 old = this.isolation;
+		this.isolation = astIsolation;
+		this.firePropertyChanged(ISOLATION_PROPERTY, old, astIsolation);
+	}
+
+	private CacheIsolationType2_2 buildIsolation(CompilationUnit astRoot) {
+		return CacheIsolationType2_2.fromJavaAnnotationValue(this.isolationAdapter.getValue(astRoot));
+	}
+
+	public TextRange getIsolationTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(ISOLATION_ADAPTER, astRoot);
+	}
+
 
 	// ********** static methods **********
 
@@ -443,6 +478,10 @@ public final class SourceEclipseLinkCacheAnnotation
 
 	private static NestedDeclarationAnnotationAdapter buildExpiryTimeOfDayAdapter() {
 		return new NestedDeclarationAnnotationAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__EXPIRY_TIME_OF_DAY, EclipseLink.TIME_OF_DAY);
+	}
+
+	private static DeclarationAnnotationElementAdapter<String> buildIsolationAdapter() {
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CACHE__ISOLATION);
 	}
 
 }

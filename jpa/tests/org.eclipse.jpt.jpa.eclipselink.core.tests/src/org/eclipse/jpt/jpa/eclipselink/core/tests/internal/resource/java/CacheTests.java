@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheCoordinationType;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
@@ -143,7 +144,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		});
 	}
 	
-	private ICompilationUnit createTestExistenceCheckingWithCoordinationType() throws Exception {
+	private ICompilationUnit createTestCacheWithCoordinationType() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -152,6 +153,19 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Cache(coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS)");
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestCacheWithIsolation() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(EclipseLink.CACHE, EclipseLink.CACHE_ISOLATION_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Cache(isolation = CacheIsolationType.ISOLATED)");
 			}
 		});
 	}
@@ -420,7 +434,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 
 	
 	public void testGetCoordinationType() throws Exception {
-		ICompilationUnit cu = this.createTestExistenceCheckingWithCoordinationType();
+		ICompilationUnit cu = this.createTestCacheWithCoordinationType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
 		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
@@ -428,7 +442,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 
 	public void testSetCoordinationType() throws Exception {
-		ICompilationUnit cu = this.createTestExistenceCheckingWithCoordinationType();
+		ICompilationUnit cu = this.createTestCacheWithCoordinationType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		
 		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
@@ -443,6 +457,38 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		assertNull(cache.getCoordinationType());
 		
 		assertSourceDoesNotContain("(coordinationType = SEND_NEW_OBJECTS_WITH_CHANGES)", cu);
+		assertSourceDoesNotContain("@Cache(", cu);
+	}
+
+	public void testGetIsolation() throws Exception {
+		ICompilationUnit cu = this.createTestCacheWithIsolation();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
+		assertEquals(CacheIsolationType2_2.ISOLATED, cache.getIsolation());
+	}
+
+	public void testSetIsolation() throws Exception {
+		ICompilationUnit cu = this.createTestCacheWithIsolation();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+
+		EclipseLinkCacheAnnotation cache = (EclipseLinkCacheAnnotation) resourceType.getAnnotation(EclipseLink.CACHE);
+		assertEquals(CacheIsolationType2_2.ISOLATED, cache.getIsolation());
+
+		cache.setIsolation(CacheIsolationType2_2.SHARED);
+		assertEquals(CacheIsolationType2_2.SHARED, cache.getIsolation());
+
+		assertSourceContains("@Cache(isolation = SHARED)", cu);
+
+		cache.setIsolation(CacheIsolationType2_2.PROTECTED);
+		assertEquals(CacheIsolationType2_2.PROTECTED, cache.getIsolation());
+
+		assertSourceContains("@Cache(isolation = PROTECTED)", cu);
+
+		cache.setIsolation(null);
+		assertNull(cache.getIsolation());
+
+		assertSourceDoesNotContain("(isolation = SHARED)", cu);
 		assertSourceDoesNotContain("@Cache(", cu);
 	}
 }

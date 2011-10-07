@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheCoordinationType;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
@@ -36,6 +37,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 	private Boolean refreshOnlyIfNewer;
 	private Boolean disableHits;
 	private CacheCoordinationType coordinationType;
+	private CacheIsolationType2_2 isolation;
 
 
 	public BinaryEclipseLinkCacheAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
@@ -49,6 +51,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		this.refreshOnlyIfNewer = this.buildRefreshOnlyIfNewer();
 		this.disableHits = this.buildDisableHits();
 		this.coordinationType = this.buildCoordinationType();
+		this.isolation = this.buildIsolation();
 	}
 
 	public String getAnnotationName() {
@@ -68,6 +71,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		this.setRefreshOnlyIfNewer_(this.buildRefreshOnlyIfNewer());
 		this.setDisableHits_(this.buildDisableHits());
 		this.setCoordinationType_(this.buildCoordinationType());
+		this.setIsolation_(this.buildIsolation());
 	}
 
 
@@ -305,6 +309,29 @@ public final class BinaryEclipseLinkCacheAnnotation
 	}
 
 	public TextRange getCoordinationTypeTextRange(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+
+	// ***** isolation
+	public CacheIsolationType2_2 getIsolation() {
+		return this.isolation;
+	}
+
+	public void setIsolation(CacheIsolationType2_2 isolation) {
+		throw new UnsupportedOperationException();
+	}
+
+	private void setIsolation_(CacheIsolationType2_2 isolation) {
+		CacheIsolationType2_2 old = this.isolation;
+		this.isolation = isolation;
+		this.firePropertyChanged(ISOLATION_PROPERTY, old, isolation);
+	}
+
+	private CacheIsolationType2_2 buildIsolation() {
+		return CacheIsolationType2_2.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLink.CACHE__ISOLATION));
+	}
+
+	public TextRange getIsolationTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

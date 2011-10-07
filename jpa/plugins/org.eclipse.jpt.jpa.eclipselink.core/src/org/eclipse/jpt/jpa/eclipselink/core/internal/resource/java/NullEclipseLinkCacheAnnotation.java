@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheCoordinationType;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
@@ -169,4 +170,21 @@ public final class NullEclipseLinkCacheAnnotation
 	public TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
 		return null;
 	}
+
+
+	// ***** isolation
+	public CacheIsolationType2_2 getIsolation() {
+		return null;
+	}
+
+	public void setIsolation(CacheIsolationType2_2 isolation) {
+		if (isolation != null) {
+			this.addAnnotation().setIsolation(isolation);
+		}
+	}
+
+	public TextRange getIsolationTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+
 }

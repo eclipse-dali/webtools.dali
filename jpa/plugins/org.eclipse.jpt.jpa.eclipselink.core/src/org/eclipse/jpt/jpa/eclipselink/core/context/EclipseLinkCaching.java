@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.1
  * @since 2.1
  */
 // TODO bjv EclipseLinkCachingPolicy
@@ -216,4 +216,22 @@ public interface EclipseLinkCaching
 	EclipseLinkExistenceType getDefaultExistenceType();		
 		String DEFAULT_EXISTENCE_TYPE_PROPERTY = "defaultExistenceType"; //$NON-NLS-1$
 		EclipseLinkExistenceType DEFAULT_EXISTENCE_TYPE = EclipseLinkExistenceType.CHECK_DATABASE;
+
+
+	// ********** isolation added in EclipseLink 2.2 **********
+
+	/**
+	 * This is the combination of defaultIsolation and specifiedIsolation.
+	 * If getSpecifiedIsolation() returns null, then return getDefaultIsolation()
+	 */
+	EclipseLinkCacheIsolationType2_2 getIsolation();
+
+	EclipseLinkCacheIsolationType2_2 getSpecifiedIsolation();	
+	void setSpecifiedIsolation(EclipseLinkCacheIsolationType2_2 isolation);
+		String SPECIFIED_ISOLATION_PROPERTY = "specifiedIsolation"; //$NON-NLS-1$
+
+		EclipseLinkCacheIsolationType2_2 getDefaultIsolation();		
+		String DEFAULT_ISOLATION_PROPERTY = "defaultIsolation"; //$NON-NLS-1$
+		EclipseLinkCacheIsolationType2_2 DEFAULT_ISOLATION = EclipseLinkCacheIsolationType2_2.SHARED;
+
 }

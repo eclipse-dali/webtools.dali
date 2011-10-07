@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -25,6 +24,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
@@ -61,6 +61,7 @@ public class JavaEclipseLinkCachingImpl
 
 	protected final JavaCacheable2_0 cacheable;
 
+	protected EclipseLinkCacheIsolationType2_2 specifiedIsolation;
 
 	public JavaEclipseLinkCachingImpl(JavaEclipseLinkNonEmbeddableTypeMapping parent) {
 		super(parent);
@@ -83,6 +84,8 @@ public class JavaEclipseLinkCachingImpl
 		this.specifiedExistenceType = this.buildSpecifiedExistenceType(ecAnnotation);
 
 		this.cacheable = this.buildCacheable();
+
+		this.specifiedIsolation = EclipseLinkCacheIsolationType2_2.fromJavaResourceModel(cacheAnnotation.getIsolation());
 	}
 
 
@@ -110,6 +113,8 @@ public class JavaEclipseLinkCachingImpl
 		this.setSpecifiedExistenceType_(this.buildSpecifiedExistenceType(ecAnnotation));
 
 		this.cacheable.synchronizeWithResourceModel();
+
+		this.setSpecifiedIsolation_(EclipseLinkCacheIsolationType2_2.fromJavaResourceModel(cacheAnnotation.getIsolation()));
 	}
 
 	@Override
@@ -542,6 +547,35 @@ public class JavaEclipseLinkCachingImpl
 				new NullJavaCacheable2_0(this);
 	}
 
+
+	// ********** isolation **********
+
+	public EclipseLinkCacheIsolationType2_2 getIsolation() {
+		return (this.specifiedIsolation != null) ? this.specifiedIsolation : this.getDefaultIsolation();
+	}
+
+	public EclipseLinkCacheIsolationType2_2 getSpecifiedIsolation() {
+		return this.specifiedIsolation;
+	}
+
+	public void setSpecifiedIsolation(EclipseLinkCacheIsolationType2_2 isolation) {
+		this.getCacheAnnotation().setIsolation(EclipseLinkCacheIsolationType2_2.toJavaResourceModel(isolation));
+		this.setSpecifiedIsolation_(isolation);
+
+		if (isolation != null) {
+			this.setSpecifiedShared(null);
+		}
+	}
+
+	protected void setSpecifiedIsolation_(EclipseLinkCacheIsolationType2_2 isolation) {
+		EclipseLinkCacheIsolationType2_2 old = this.specifiedIsolation;
+		this.specifiedIsolation = isolation;
+		this.firePropertyChanged(SPECIFIED_ISOLATION_PROPERTY, old, isolation);
+	}
+
+	public EclipseLinkCacheIsolationType2_2 getDefaultIsolation() {
+		return DEFAULT_ISOLATION;
+	}
 
 	// ********** cache annotation **********
 
