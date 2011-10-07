@@ -48,12 +48,12 @@
 			id="eclipselink2_3.ui"
 			jpaPlatform="eclipselink2_3"
 			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLink2_3JpaPlatformUiFactory"/>
-		
+<!-- post Dali 3.1
 		<jpaPlatformUi
 			id="eclipselink2_4.ui"
 			jpaPlatform="eclipselink2_4"
 			factoryClass="org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLink2_4JpaPlatformUiFactory"/>
-		
+-->		
 	</extension>
 	
 	

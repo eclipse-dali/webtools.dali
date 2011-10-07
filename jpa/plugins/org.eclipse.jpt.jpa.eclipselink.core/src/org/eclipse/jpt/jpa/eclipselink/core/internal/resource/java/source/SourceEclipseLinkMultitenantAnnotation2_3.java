@@ -13,8 +13,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.BooleanExpressionConverter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -40,15 +38,15 @@ public class SourceEclipseLinkMultitenantAnnotation2_3
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private MultitenantType2_3 value;
-
-	private static final DeclarationAnnotationElementAdapter<Boolean> INCLUDE_CRITERIA_ADAPTER = buildIncludeCriteriaAdapter();
-	private final AnnotationElementAdapter<Boolean> includeCriteriaAdapter;
-	private Boolean includeCriteria;
+//
+//	private static final DeclarationAnnotationElementAdapter<Boolean> INCLUDE_CRITERIA_ADAPTER = buildIncludeCriteriaAdapter();
+//	private final AnnotationElementAdapter<Boolean> includeCriteriaAdapter;
+//	private Boolean includeCriteria;
 
 	public SourceEclipseLinkMultitenantAnnotation2_3(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, VALUE_ADAPTER);
-		this.includeCriteriaAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(element, INCLUDE_CRITERIA_ADAPTER);
+//		this.includeCriteriaAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(element, INCLUDE_CRITERIA_ADAPTER);
 	}
 
 
@@ -58,19 +56,19 @@ public class SourceEclipseLinkMultitenantAnnotation2_3
 
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
-		this.includeCriteria = this.buildIncludeCriteria(astRoot);
+//		this.includeCriteria = this.buildIncludeCriteria(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
-		this.syncIncludeCriteria(this.buildIncludeCriteria(astRoot));
+//		this.syncIncludeCriteria(this.buildIncludeCriteria(astRoot));
 	}
 
 	@Override
 	public boolean isUnset() {
 		return super.isUnset() &&
-				(this.value == null) &&
-				(this.includeCriteria == null);
+				(this.value == null)/* &&
+				(this.includeCriteria == null)*/;
 	}
 
 	@Override
@@ -110,31 +108,31 @@ public class SourceEclipseLinkMultitenantAnnotation2_3
 		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
 	}
 
-	// ***** include criteria
-	public Boolean getIncludeCriteria() {
-		return this.includeCriteria;
-	}
-
-	public void setIncludeCriteria(Boolean includeCriteria) {
-		if (this.attributeValueHasChanged(this.includeCriteria, includeCriteria)) {
-			this.includeCriteria = includeCriteria;
-			this.includeCriteriaAdapter.setValue(includeCriteria);
-		}
-	}
-
-	private void syncIncludeCriteria(Boolean astIncludeCriteria) {
-		Boolean old = this.includeCriteria;
-		this.includeCriteria = astIncludeCriteria;
-		this.firePropertyChanged(INCLUDE_CRITERIA_PROPERTY, old, astIncludeCriteria);
-	}
-
-	private Boolean buildIncludeCriteria(CompilationUnit astRoot) {
-		return this.includeCriteriaAdapter.getValue(astRoot);
-	}
-
-	public TextRange getIncludeCriteriaTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(INCLUDE_CRITERIA_ADAPTER, astRoot);
-	}
+//	// ***** include criteria
+//	public Boolean getIncludeCriteria() {
+//		return this.includeCriteria;
+//	}
+//
+//	public void setIncludeCriteria(Boolean includeCriteria) {
+//		if (this.attributeValueHasChanged(this.includeCriteria, includeCriteria)) {
+//			this.includeCriteria = includeCriteria;
+//			this.includeCriteriaAdapter.setValue(includeCriteria);
+//		}
+//	}
+//
+//	private void syncIncludeCriteria(Boolean astIncludeCriteria) {
+//		Boolean old = this.includeCriteria;
+//		this.includeCriteria = astIncludeCriteria;
+//		this.firePropertyChanged(INCLUDE_CRITERIA_PROPERTY, old, astIncludeCriteria);
+//	}
+//
+//	private Boolean buildIncludeCriteria(CompilationUnit astRoot) {
+//		return this.includeCriteriaAdapter.getValue(astRoot);
+//	}
+//
+//	public TextRange getIncludeCriteriaTextRange(CompilationUnit astRoot) {
+//		return this.getElementTextRange(INCLUDE_CRITERIA_ADAPTER, astRoot);
+//	}
 
 
 	// ********** static methods **********
@@ -142,9 +140,9 @@ public class SourceEclipseLinkMultitenantAnnotation2_3
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.MULTITENANT__VALUE);
 	}
-
-	private static DeclarationAnnotationElementAdapter<Boolean> buildIncludeCriteriaAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.MULTITENANT__INCLUDE_CRITERIA, BooleanExpressionConverter.instance());
-	}
+//
+//	private static DeclarationAnnotationElementAdapter<Boolean> buildIncludeCriteriaAdapter() {
+//		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.MULTITENANT__INCLUDE_CRITERIA, BooleanExpressionConverter.instance());
+//	}
 
 }

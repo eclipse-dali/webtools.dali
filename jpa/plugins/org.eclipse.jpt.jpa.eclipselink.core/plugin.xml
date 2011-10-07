@@ -85,14 +85,14 @@
 	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory"
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
-		
+<!-- post dali 3.1		
 		<jpaPlatform
 	        id="eclipselink2_4"
 	        label="%ECLIPSELINK2_4_x_PLATFORM"
 	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory"
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
-		
+-->		
 	</extension>
 	
 	

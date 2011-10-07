@@ -166,57 +166,57 @@ public class EclipseLink2_3OrmMultitenancyTests
 		assertNull(multitenantResource.getType());	
 	}
 
-	public void testUpdateSpecifiedIncludeCriteria() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		XmlMultitenantHolder multitenantHolder = (XmlMultitenantHolder) getXmlEntityMappings().getEntities().get(0);
-		multitenantHolder.setMultitenant(EclipseLinkOrmFactory.eINSTANCE.createXmlMultitenant());
-
-		OrmEclipseLinkMultitenancy2_3 ormMultitenancy = ((OrmEclipseLinkEntity) ormPersistentType.getMapping()).getMultitenancy();
-		XmlMultitenant multitenantResource = multitenantHolder.getMultitenant();
-
-		assertNull(ormMultitenancy.getSpecifiedIncludeCriteria());
-		assertNull(multitenantResource.getIncludeCriteria());
-
-		//set enumerated in the resource model, verify context model updated
-		multitenantResource.setIncludeCriteria(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, ormMultitenancy.getSpecifiedIncludeCriteria());
-		assertEquals(Boolean.TRUE, multitenantResource.getIncludeCriteria());
-
-		multitenantResource.setIncludeCriteria(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, ormMultitenancy.getSpecifiedIncludeCriteria());
-		assertEquals(Boolean.FALSE, multitenantResource.getIncludeCriteria());
-
-		//set enumerated to null in the resource model
-		multitenantResource.setIncludeCriteria(null);
-		assertNull(ormMultitenancy.getSpecifiedIncludeCriteria());
-		assertNull(multitenantResource.getIncludeCriteria());
-	}
-
-	public void testModifySpecifiedIncludeCriteria() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		XmlMultitenantHolder multitenantHolder = (XmlMultitenantHolder) getXmlEntityMappings().getEntities().get(0);
-		multitenantHolder.setMultitenant(EclipseLinkOrmFactory.eINSTANCE.createXmlMultitenant());
-
-		OrmEclipseLinkMultitenancy2_3 ormMultitenancy = ((OrmEclipseLinkEntity) ormPersistentType.getMapping()).getMultitenancy();
-		XmlMultitenant multitenantResource = multitenantHolder.getMultitenant();
-
-		assertNull(ormMultitenancy.getSpecifiedIncludeCriteria());
-		assertNull(multitenantResource.getIncludeCriteria());
-
-		//set enumerated in the context model, verify resource model updated
-		ormMultitenancy.setSpecifiedIncludeCriteria(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, multitenantResource.getIncludeCriteria());
-		assertEquals(Boolean.TRUE, ormMultitenancy.getSpecifiedIncludeCriteria());
-
-		ormMultitenancy.setSpecifiedIncludeCriteria(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, multitenantResource.getIncludeCriteria());
-		assertEquals(Boolean.FALSE, ormMultitenancy.getSpecifiedIncludeCriteria());
-
-		//set enumerated to null in the context model
-		ormMultitenancy.setSpecifiedIncludeCriteria(null);
-		assertNull(multitenantResource.getIncludeCriteria());
-		assertNull(ormMultitenancy.getSpecifiedIncludeCriteria());
-	}
+//	public void testUpdateSpecifiedIncludeCriteria() throws Exception {
+//		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+//		XmlMultitenantHolder multitenantHolder = (XmlMultitenantHolder) getXmlEntityMappings().getEntities().get(0);
+//		multitenantHolder.setMultitenant(EclipseLinkOrmFactory.eINSTANCE.createXmlMultitenant());
+//
+//		OrmEclipseLinkMultitenancy2_3 ormMultitenancy = ((OrmEclipseLinkEntity) ormPersistentType.getMapping()).getMultitenancy();
+//		XmlMultitenant multitenantResource = multitenantHolder.getMultitenant();
+//
+//		assertNull(ormMultitenancy.getSpecifiedIncludeCriteria());
+//		assertNull(multitenantResource.getIncludeCriteria());
+//
+//		//set enumerated in the resource model, verify context model updated
+//		multitenantResource.setIncludeCriteria(Boolean.TRUE);
+//		assertEquals(Boolean.TRUE, ormMultitenancy.getSpecifiedIncludeCriteria());
+//		assertEquals(Boolean.TRUE, multitenantResource.getIncludeCriteria());
+//
+//		multitenantResource.setIncludeCriteria(Boolean.FALSE);
+//		assertEquals(Boolean.FALSE, ormMultitenancy.getSpecifiedIncludeCriteria());
+//		assertEquals(Boolean.FALSE, multitenantResource.getIncludeCriteria());
+//
+//		//set enumerated to null in the resource model
+//		multitenantResource.setIncludeCriteria(null);
+//		assertNull(ormMultitenancy.getSpecifiedIncludeCriteria());
+//		assertNull(multitenantResource.getIncludeCriteria());
+//	}
+//
+//	public void testModifySpecifiedIncludeCriteria() throws Exception {
+//		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+//		XmlMultitenantHolder multitenantHolder = (XmlMultitenantHolder) getXmlEntityMappings().getEntities().get(0);
+//		multitenantHolder.setMultitenant(EclipseLinkOrmFactory.eINSTANCE.createXmlMultitenant());
+//
+//		OrmEclipseLinkMultitenancy2_3 ormMultitenancy = ((OrmEclipseLinkEntity) ormPersistentType.getMapping()).getMultitenancy();
+//		XmlMultitenant multitenantResource = multitenantHolder.getMultitenant();
+//
+//		assertNull(ormMultitenancy.getSpecifiedIncludeCriteria());
+//		assertNull(multitenantResource.getIncludeCriteria());
+//
+//		//set enumerated in the context model, verify resource model updated
+//		ormMultitenancy.setSpecifiedIncludeCriteria(Boolean.TRUE);
+//		assertEquals(Boolean.TRUE, multitenantResource.getIncludeCriteria());
+//		assertEquals(Boolean.TRUE, ormMultitenancy.getSpecifiedIncludeCriteria());
+//
+//		ormMultitenancy.setSpecifiedIncludeCriteria(Boolean.FALSE);
+//		assertEquals(Boolean.FALSE, multitenantResource.getIncludeCriteria());
+//		assertEquals(Boolean.FALSE, ormMultitenancy.getSpecifiedIncludeCriteria());
+//
+//		//set enumerated to null in the context model
+//		ormMultitenancy.setSpecifiedIncludeCriteria(null);
+//		assertNull(multitenantResource.getIncludeCriteria());
+//		assertNull(ormMultitenancy.getSpecifiedIncludeCriteria());
+//	}
 
 	public void testAddSpecifiedTenantDiscriminatorColumn() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");

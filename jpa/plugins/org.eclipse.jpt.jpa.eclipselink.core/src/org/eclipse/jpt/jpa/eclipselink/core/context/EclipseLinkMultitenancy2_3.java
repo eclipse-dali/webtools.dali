@@ -52,21 +52,21 @@ public interface EclipseLinkMultitenancy2_3
 		EclipseLinkMultitenantType2_3 DEFAULT_TYPE = EclipseLinkMultitenantType2_3.SINGLE_TABLE;
 
 
-	// ********** include criteria (EclipseLink 2.4+) **********
-
-	/**
-	 * This is the combination of defaultIncludeCriteria and specifiedIncludeCriteria.
-	 * If getSpecifiedIncludeCriteria() returns null, then return isDefaultIncludeCriteria()
-	 */
-	boolean isIncludeCriteria();
-
-	Boolean getSpecifiedIncludeCriteria();
-	void setSpecifiedIncludeCriteria(Boolean includeCriteria);
-		String SPECIFIED_INCLUDE_CRITERIA_PROPERTY = "specifiedIncludeCriteria"; //$NON-NLS-1$
-
-	boolean isDefaultIncludeCriteria();
-		String DEFAULT_INCLUDE_CRITERIA_PROPERTY = "defaultIncludeCriteria"; //$NON-NLS-1$
-		boolean DEFAULT_INCLUDE_CRITERIA = true;
+//	// ********** include criteria (EclipseLink 2.4+) **********
+//
+//	/**
+//	 * This is the combination of defaultIncludeCriteria and specifiedIncludeCriteria.
+//	 * If getSpecifiedIncludeCriteria() returns null, then return isDefaultIncludeCriteria()
+//	 */
+//	boolean isIncludeCriteria();
+//
+//	Boolean getSpecifiedIncludeCriteria();
+//	void setSpecifiedIncludeCriteria(Boolean includeCriteria);
+//		String SPECIFIED_INCLUDE_CRITERIA_PROPERTY = "specifiedIncludeCriteria"; //$NON-NLS-1$
+//
+//	boolean isDefaultIncludeCriteria();
+//		String DEFAULT_INCLUDE_CRITERIA_PROPERTY = "defaultIncludeCriteria"; //$NON-NLS-1$
+//		boolean DEFAULT_INCLUDE_CRITERIA = true;
 
 
 	// ********** tenant discriminator columns **********

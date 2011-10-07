@@ -64,7 +64,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	protected EclipseLinkMultitenantType2_3 specifiedType;
 	protected EclipseLinkMultitenantType2_3 defaultType;
 
-	protected Boolean specifiedIncludeCriteria;
+//	protected Boolean specifiedIncludeCriteria;
 
 	protected final JavaReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
 	protected final ContextListContainer<JavaTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3> specifiedTenantDiscriminatorColumnContainer;
@@ -78,7 +78,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		EclipseLinkMultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
 		this.specifiedMultitenant = multitenantAnnotation.isSpecified();
 		this.specifiedType = EclipseLinkMultitenantType2_3.fromJavaResourceModel(multitenantAnnotation.getValue());
-		this.specifiedIncludeCriteria = multitenantAnnotation.getIncludeCriteria();
+//		this.specifiedIncludeCriteria = multitenantAnnotation.getIncludeCriteria();
 		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
 		this.specifiedTenantDiscriminatorColumnContainer = this.buildSpecifiedTenantDiscriminatorColumnContainer();
 		this.defaultTenantDiscriminatorColumn = this.buildTenantDiscriminatorColumn(this.buildNullTenantDiscriminatorColumnAnnotation());
@@ -94,7 +94,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 
 		EclipseLinkMultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
 		this.setSpecifiedType_(EclipseLinkMultitenantType2_3.fromJavaResourceModel(multitenantAnnotation.getValue()));
-		this.setSpecifiedIncludeCriteria_(multitenantAnnotation.getIncludeCriteria());
+//		this.setSpecifiedIncludeCriteria_(multitenantAnnotation.getIncludeCriteria());
 		this.syncSpecifiedTenantDiscriminatorColumns();
 	}
 
@@ -205,30 +205,30 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 
-	// ********** include criteria **********
-
-	public boolean isIncludeCriteria() {
-		return (this.specifiedIncludeCriteria != null) ? this.specifiedIncludeCriteria.booleanValue() : this.isDefaultIncludeCriteria();
-	}
-
-	public Boolean getSpecifiedIncludeCriteria() {
-		return this.specifiedIncludeCriteria;
-	}
-
-	public void setSpecifiedIncludeCriteria(Boolean includeCriteria) {
-		this.getMultitenantAnnotation().setIncludeCriteria(includeCriteria);
-		this.setSpecifiedIncludeCriteria_(includeCriteria);
-	}
-
-	protected void setSpecifiedIncludeCriteria_(Boolean includeCriteria) {
-		Boolean old = this.specifiedIncludeCriteria;
-		this.specifiedIncludeCriteria = includeCriteria;
-		this.firePropertyChanged(SPECIFIED_INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
-	}
-
-	public boolean isDefaultIncludeCriteria() {
-		return DEFAULT_INCLUDE_CRITERIA;
-	}
+//	// ********** include criteria **********
+//
+//	public boolean isIncludeCriteria() {
+//		return (this.specifiedIncludeCriteria != null) ? this.specifiedIncludeCriteria.booleanValue() : this.isDefaultIncludeCriteria();
+//	}
+//
+//	public Boolean getSpecifiedIncludeCriteria() {
+//		return this.specifiedIncludeCriteria;
+//	}
+//
+//	public void setSpecifiedIncludeCriteria(Boolean includeCriteria) {
+//		this.getMultitenantAnnotation().setIncludeCriteria(includeCriteria);
+//		this.setSpecifiedIncludeCriteria_(includeCriteria);
+//	}
+//
+//	protected void setSpecifiedIncludeCriteria_(Boolean includeCriteria) {
+//		Boolean old = this.specifiedIncludeCriteria;
+//		this.specifiedIncludeCriteria = includeCriteria;
+//		this.firePropertyChanged(SPECIFIED_INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
+//	}
+//
+//	public boolean isDefaultIncludeCriteria() {
+//		return DEFAULT_INCLUDE_CRITERIA;
+//	}
 
 
 	// ********** tenant discriminator columns **********
