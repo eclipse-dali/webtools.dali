@@ -18,9 +18,9 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.CacheType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Entity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.swt.widgets.Composite;
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * CacheTypeComposite
  */
-public class CacheTypeComposite extends Pane<Entity>
+public class CacheTypeComposite extends Pane<CachingEntity>
 {
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -38,7 +38,7 @@ public class CacheTypeComposite extends Pane<Entity>
 	 * @param parent
 	 *            The parent container
 	 */
-	public CacheTypeComposite(Pane<Entity> parentComposite,
+	public CacheTypeComposite(Pane<CachingEntity> parentComposite,
 	                          Composite parent) {
 
 		super(parentComposite, parent);
@@ -55,7 +55,7 @@ public class CacheTypeComposite extends Pane<Entity>
 		);
 	}
 
-	private class CacheTypeCombo extends EnumFormComboViewer<Entity, CacheType> {
+	private class CacheTypeCombo extends EnumFormComboViewer<CachingEntity, CacheType> {
 
 		private CacheTypeCombo(Composite parent) {
 			super(CacheTypeComposite.this, parent);
@@ -64,13 +64,13 @@ public class CacheTypeComposite extends Pane<Entity>
 		@Override
 		protected void addPropertyNames(Collection<String> propertyNames) {
 			super.addPropertyNames(propertyNames);
-			propertyNames.add(Entity.CACHE_TYPE_PROPERTY);
+			propertyNames.add(CachingEntity.CACHE_TYPE_PROPERTY);
 		}
 
 		private PropertyValueModel<Caching> buildCachingHolder() {
-			return new TransformationPropertyValueModel<Entity, Caching>(getSubjectHolder()) {
+			return new TransformationPropertyValueModel<CachingEntity, Caching>(getSubjectHolder()) {
 				@Override
-				protected Caching transform_(Entity value) {
+				protected Caching transform_(CachingEntity value) {
 					return value.getParent();
 				}
 			};

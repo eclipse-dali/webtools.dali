@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkEmbeddableAdvancedComposite;
@@ -34,8 +35,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.3
  * @since 2.1
  */
-public class OrmEclipseLinkEmbeddableComposite<T extends OrmEclipseLinkEmbeddable> 
-	extends AbstractEmbeddableComposite<T>
+public class OrmEclipseLinkEmbeddableComposite
+	extends AbstractEmbeddableComposite<OrmEmbeddable>
 	implements JpaComposite
 {
 	/**
@@ -45,7 +46,7 @@ public class OrmEclipseLinkEmbeddableComposite<T extends OrmEclipseLinkEmbeddabl
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkEmbeddableComposite(PropertyValueModel<? extends T> subjectHolder,
+	public OrmEclipseLinkEmbeddableComposite(PropertyValueModel<? extends OrmEmbeddable> subjectHolder,
 	                           Composite parent,
 	                           WidgetFactory widgetFactory) {
 
@@ -67,7 +68,7 @@ public class OrmEclipseLinkEmbeddableComposite<T extends OrmEclipseLinkEmbeddabl
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<T, AccessHolder>(
+		return new PropertyAspectAdapter<OrmEmbeddable, AccessHolder>(
 			getSubjectHolder())
 		{
 			@Override
@@ -90,10 +91,10 @@ public class OrmEclipseLinkEmbeddableComposite<T extends OrmEclipseLinkEmbeddabl
 	}
 	
 	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<T, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmEmbeddable, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected OrmEclipseLinkConverterContainer buildValue_() {
-				return this.subject.getConverterContainer();
+				return ((OrmEclipseLinkEmbeddable) this.subject).getConverterContainer();
 			}
 		};
 	}

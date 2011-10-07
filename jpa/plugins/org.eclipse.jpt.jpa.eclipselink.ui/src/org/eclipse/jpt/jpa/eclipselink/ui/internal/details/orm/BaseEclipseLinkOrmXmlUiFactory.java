@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,6 @@ public abstract class BaseEclipseLinkOrmXmlUiFactory extends BaseOrmXmlUiFactory
 	// **************** orm type mapping composites ****************************
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public JpaComposite createOrmMappedSuperclassComposite(
 			PropertyValueModel<OrmMappedSuperclass> subjectHolder,
 			Composite parent,
@@ -49,7 +48,6 @@ public abstract class BaseEclipseLinkOrmXmlUiFactory extends BaseOrmXmlUiFactory
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public JpaComposite createOrmEmbeddableComposite(
 			PropertyValueModel<OrmEmbeddable> subjectHolder,
 			Composite parent,

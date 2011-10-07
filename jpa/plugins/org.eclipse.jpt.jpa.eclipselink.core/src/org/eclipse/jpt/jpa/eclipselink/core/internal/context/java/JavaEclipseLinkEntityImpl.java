@@ -31,13 +31,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context.java.JavaEclipseLinkMultitenancyImpl;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context.java.NullJavaEclipseLinkMultitenancy;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_1.resource.java.EclipseLinkClassExtractorAnnotation2_1;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.java.JavaEclipseLinkMultitenancy;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkClassExtractorAnnotation2_1;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -59,7 +57,7 @@ public class JavaEclipseLinkEntityImpl
 
 	protected final JavaEclipseLinkCustomizer customizer;
 
-	protected final JavaEclipseLinkMultitenancy multitenancy;
+	protected final JavaEclipseLinkMultitenancy2_3 multitenancy;
 
 	public JavaEclipseLinkEntityImpl(JavaPersistentType parent, EntityAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
@@ -170,14 +168,14 @@ public class JavaEclipseLinkEntityImpl
 
 	// ********** multitenancy **********
 
-	public JavaEclipseLinkMultitenancy getMultitenancy() {
+	public JavaEclipseLinkMultitenancy2_3 getMultitenancy() {
 		return this.multitenancy;
 	}
 
-	protected JavaEclipseLinkMultitenancy buildMultitenancy() {
+	protected JavaEclipseLinkMultitenancy2_3 buildMultitenancy() {
 		return this.isEclipseLink2_3Compatible() ?
-			new JavaEclipseLinkMultitenancyImpl(this) :
-			new NullJavaEclipseLinkMultitenancy(this);
+			new JavaEclipseLinkMultitenancyImpl2_3(this) :
+			new NullJavaEclipseLinkMultitenancy2_3(this);
 	}
 
 	protected boolean isEclipseLink2_3Compatible() {

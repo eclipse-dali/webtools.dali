@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.java;
 
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkNonEmbeddableTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.java.JavaEclipseLinkMultitenancy;
 
 /**
  * EclipseLink Java non-embeddable type mapping
@@ -26,5 +25,5 @@ public interface JavaEclipseLinkNonEmbeddableTypeMapping
 {
 	JavaEclipseLinkCaching getCaching();
 
-	JavaEclipseLinkMultitenancy getMultitenancy();
+	JavaEclipseLinkMultitenancy2_3 getMultitenancy();
 }

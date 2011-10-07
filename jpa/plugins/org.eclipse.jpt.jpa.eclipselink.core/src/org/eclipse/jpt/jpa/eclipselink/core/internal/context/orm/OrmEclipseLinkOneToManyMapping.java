@@ -14,10 +14,10 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToManyMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmOneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.EclipseLinkOneToManyMapping2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.orm.EclipseLinkOrmOneToManyRelationship2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 

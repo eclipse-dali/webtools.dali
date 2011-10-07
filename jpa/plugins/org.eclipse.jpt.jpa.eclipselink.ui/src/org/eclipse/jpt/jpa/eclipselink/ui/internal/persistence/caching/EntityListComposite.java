@@ -32,8 +32,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelec
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Entity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -47,7 +47,7 @@ import org.eclipse.ui.progress.IProgressService;
  */
 public class EntityListComposite<T extends Caching> extends Pane<T>
 {
-	WritablePropertyValueModel<Entity> entityHolder;
+	WritablePropertyValueModel<CachingEntity> entityHolder;
 	
 	public EntityListComposite(Pane<T> parentComposite, Composite parent) {
 
@@ -97,7 +97,7 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				Caching caching = getSubject();
 				for (Object item : listSelectionModel.selectedValues()) {
-					Entity entityCaching = (Entity) item;
+					CachingEntity entityCaching = (CachingEntity) item;
 					caching.removeEntity(entityCaching.getName());
 				}
 			}
@@ -117,7 +117,7 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 			if( ! this.getSubject().entityExists(entityName)) {
 				this.getSubject().addEntity(entityName);
 				int index = CollectionTools.indexOf(this.getSubject().getEntityNames(), entityName);
-				Entity entity = (Entity) listSelectionModel.getListModel().getElementAt(index);
+				CachingEntity entity = (CachingEntity) listSelectionModel.getListModel().getElementAt(index);
 				listSelectionModel.setSelectedValue(entity);
 				this.entityHolder.setValue(entity);
 			}
@@ -168,21 +168,21 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				Entity entityCaching = (Entity) element;
+				CachingEntity entityCaching = (CachingEntity) element;
 				return entityCaching.getName();
 			}
 		};
 	}
 
-	private WritablePropertyValueModel<Entity> buildEntityHolder() {
-		return new SimplePropertyValueModel<Entity>();
+	private WritablePropertyValueModel<CachingEntity> buildEntityHolder() {
+		return new SimplePropertyValueModel<CachingEntity>();
 	}
 
-	private ListValueModel<Entity> buildEntitiesListHolder() {
-		return new ListAspectAdapter<Caching, Entity>(
+	private ListValueModel<CachingEntity> buildEntitiesListHolder() {
+		return new ListAspectAdapter<Caching, CachingEntity>(
 					this.getSubjectHolder(), Caching.ENTITIES_LIST) {
 			@Override
-			protected ListIterable<Entity> getListIterable() {
+			protected ListIterable<CachingEntity> getListIterable() {
 				return this.subject.getEntities();
 			}
 			@Override
@@ -192,7 +192,7 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 		};
 	}
 
-	private void installPaneEnabler(WritablePropertyValueModel<Entity> entityHolder,
+	private void installPaneEnabler(WritablePropertyValueModel<CachingEntity> entityHolder,
 	                                EntityCachingPropertyComposite pane) {
 
 		new PaneEnabler(
@@ -201,10 +201,10 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 		);
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<Entity> entityHolder) {
-		return new TransformationPropertyValueModel<Entity, Boolean>(entityHolder) {
+	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<CachingEntity> entityHolder) {
+		return new TransformationPropertyValueModel<CachingEntity, Boolean>(entityHolder) {
 			@Override
-			protected Boolean transform_(Entity value) {
+			protected Boolean transform_(CachingEntity value) {
 				return value.entityNameIsValid();
 			}
 		};

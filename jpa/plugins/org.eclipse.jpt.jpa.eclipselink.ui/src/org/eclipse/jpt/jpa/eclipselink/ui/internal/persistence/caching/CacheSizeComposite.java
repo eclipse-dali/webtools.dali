@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Entity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.swt.widgets.Composite;
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * CacheSizeComposite
  */
-public class CacheSizeComposite extends Pane<Entity>
+public class CacheSizeComposite extends Pane<CachingEntity>
 {
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -34,7 +34,7 @@ public class CacheSizeComposite extends Pane<Entity>
 	 * @param parent
 	 *            The parent container
 	 */
-	public CacheSizeComposite(Pane<Entity> parentComposite,
+	public CacheSizeComposite(Pane<CachingEntity> parentComposite,
 	                          Composite parent) {
 
 		super(parentComposite, parent);
@@ -46,7 +46,7 @@ public class CacheSizeComposite extends Pane<Entity>
 	}	
 	
 	private void addCacheSizeCombo(Composite container) {
-		new IntegerCombo<Entity>(this, container) {
+		new IntegerCombo<CachingEntity>(this, container) {
 			
 			@Override
 			protected String getLabelText() {
@@ -74,7 +74,7 @@ public class CacheSizeComposite extends Pane<Entity>
 		
 			@Override
 			protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Entity, Integer>(this.getSubjectHolder(), Entity.CACHE_SIZE_PROPERTY) {
+				return new PropertyAspectAdapter<CachingEntity, Integer>(this.getSubjectHolder(), CachingEntity.CACHE_SIZE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return getSubjectParent().getCacheSizeOf(getSubjectName());
@@ -98,9 +98,9 @@ public class CacheSizeComposite extends Pane<Entity>
 	}
 	
 	private PropertyValueModel<Caching> buildCachingHolder() {
-		return new TransformationPropertyValueModel<Entity, Caching>(this.getSubjectHolder()) {
+		return new TransformationPropertyValueModel<CachingEntity, Caching>(this.getSubjectHolder()) {
 			@Override
-			protected Caching transform_(Entity value) {
+			protected Caching transform_(CachingEntity value) {
 				return value.getParent();
 			}
 		};

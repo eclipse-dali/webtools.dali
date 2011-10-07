@@ -49,25 +49,18 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.connection.Connection;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.general.GeneralProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.logging.Logging;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.options.Options;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.general.EclipseLinkGeneralProperties;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.ReadOnlyTenantDiscriminatorColumn;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkGeneralProperties;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkSchemaGeneration;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -94,7 +87,7 @@ public class EclipseLinkPersistenceUnit
 	/* global converter definitions, defined elsewhere in model */
 	protected final Vector<EclipseLinkConverter> converters = new Vector<EclipseLinkConverter>();
 
-	protected final Vector<ReadOnlyTenantDiscriminatorColumn> defaultTenantDiscriminatorColumns = new Vector<ReadOnlyTenantDiscriminatorColumn>();
+	protected final Vector<ReadOnlyTenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumns = new Vector<ReadOnlyTenantDiscriminatorColumn2_3>();
 
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
@@ -342,16 +335,16 @@ public class EclipseLinkPersistenceUnit
 	 */
 	public static final String DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST = "defaultTenantDiscriminatorColumns"; //$NON-NLS-1$
 
-	public ListIterable<ReadOnlyTenantDiscriminatorColumn> getDefaultTenantDiscriminatorColumns() {
-		return new LiveCloneListIterable<ReadOnlyTenantDiscriminatorColumn>(this.defaultTenantDiscriminatorColumns);
+	public ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns() {
+		return new LiveCloneListIterable<ReadOnlyTenantDiscriminatorColumn2_3>(this.defaultTenantDiscriminatorColumns);
 	}
 
-	protected void setDefaultTenantDiscriminatorColumns(Iterable<ReadOnlyTenantDiscriminatorColumn> tenantDiscriminatorColumns) {
+	protected void setDefaultTenantDiscriminatorColumns(Iterable<ReadOnlyTenantDiscriminatorColumn2_3> tenantDiscriminatorColumns) {
 		this.synchronizeList(tenantDiscriminatorColumns, this.defaultTenantDiscriminatorColumns, DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST);
 	}
 
-	protected ListIterable<ReadOnlyTenantDiscriminatorColumn> buildDefaultTenantDiscriminatorColumns(OrmEclipseLinkPersistenceUnitDefaults defaults) {
-		return (defaults == null) ? EmptyListIterable.<ReadOnlyTenantDiscriminatorColumn> instance() : new SuperListIterableWrapper<ReadOnlyTenantDiscriminatorColumn>(defaults.getTenantDiscriminatorColumns());
+	protected ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> buildDefaultTenantDiscriminatorColumns(OrmEclipseLinkPersistenceUnitDefaults defaults) {
+		return (defaults == null) ? EmptyListIterable.<ReadOnlyTenantDiscriminatorColumn2_3> instance() : new SuperListIterableWrapper<ReadOnlyTenantDiscriminatorColumn2_3>(defaults.getTenantDiscriminatorColumns());
 	}
 
 

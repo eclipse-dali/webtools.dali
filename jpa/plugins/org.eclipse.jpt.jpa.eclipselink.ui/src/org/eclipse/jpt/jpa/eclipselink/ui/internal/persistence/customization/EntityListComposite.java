@@ -32,8 +32,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelec
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Entity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -47,7 +47,7 @@ import org.eclipse.ui.progress.IProgressService;
  */
 public class EntityListComposite extends Pane<Customization>
 {
-	private WritablePropertyValueModel<Entity> entityHolder;
+	private WritablePropertyValueModel<CustomizationEntity> entityHolder;
 
 	public EntityListComposite(Pane<? extends Customization> parentComposite, Composite parent) {
 
@@ -97,7 +97,7 @@ public class EntityListComposite extends Pane<Customization>
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				Customization customization = getSubject();
 				for (Object item : listSelectionModel.selectedValues()) {
-					Entity entityCustomization = (Entity) item;
+					CustomizationEntity entityCustomization = (CustomizationEntity) item;
 					customization.removeEntity(entityCustomization.getName());
 				}
 			}
@@ -117,7 +117,7 @@ public class EntityListComposite extends Pane<Customization>
 			if( ! this.getSubject().entityExists(entityName)) {
 				this.getSubject().addEntity(entityName);
 				int index = CollectionTools.indexOf(this.getSubject().getEntityNames(), entityName);
-				Entity entity = (Entity) listSelectionModel.getListModel().getElementAt(index);
+				CustomizationEntity entity = (CustomizationEntity) listSelectionModel.getListModel().getElementAt(index);
 				listSelectionModel.setSelectedValue(entity);
 				this.entityHolder.setValue(entity);
 			}
@@ -168,21 +168,21 @@ public class EntityListComposite extends Pane<Customization>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				Entity entityCustomization = (Entity) element;
+				CustomizationEntity entityCustomization = (CustomizationEntity) element;
 				return entityCustomization.getName();
 			}
 		};
 	}
 
-	private WritablePropertyValueModel<Entity> buildEntityHolder() {
-		return new SimplePropertyValueModel<Entity>();
+	private WritablePropertyValueModel<CustomizationEntity> buildEntityHolder() {
+		return new SimplePropertyValueModel<CustomizationEntity>();
 	}
 
-	private ListValueModel<Entity> buildEntitiesListHolder() {
-		return new ListAspectAdapter<Customization, Entity>(
+	private ListValueModel<CustomizationEntity> buildEntitiesListHolder() {
+		return new ListAspectAdapter<Customization, CustomizationEntity>(
 				this.getSubjectHolder(), Customization.ENTITIES_LIST) {
 			@Override
-			protected ListIterable<Entity> getListIterable() {
+			protected ListIterable<CustomizationEntity> getListIterable() {
 				return this.subject.getEntities();
 			}
 			@Override
@@ -192,7 +192,7 @@ public class EntityListComposite extends Pane<Customization>
 		};
 	}
 
-	private void installPaneEnabler(WritablePropertyValueModel<Entity> entityHolder,
+	private void installPaneEnabler(WritablePropertyValueModel<CustomizationEntity> entityHolder,
 	                                EntityCustomizationPropertyComposite pane) {
 
 		new PaneEnabler(
@@ -201,10 +201,10 @@ public class EntityListComposite extends Pane<Customization>
 		);
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<Entity> entityHolder) {
-		return new TransformationPropertyValueModel<Entity, Boolean>(entityHolder) {
+	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<CustomizationEntity> entityHolder) {
+		return new TransformationPropertyValueModel<CustomizationEntity, Boolean>(entityHolder) {
 			@Override
-			protected Boolean transform_(Entity value) {
+			protected Boolean transform_(CustomizationEntity value) {
 				return value.entityNameIsValid();
 			}
 		};

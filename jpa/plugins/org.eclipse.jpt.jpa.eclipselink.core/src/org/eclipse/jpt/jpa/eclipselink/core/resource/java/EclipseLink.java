@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -132,4 +132,54 @@ public interface EclipseLink {
 		String JOIN_FETCH_TYPE_ = JOIN_FETCH_TYPE + ".";
 		String JOIN_FETCH_TYPE__INNER = JOIN_FETCH_TYPE_ + "INNER";
 		String JOIN_FETCH_TYPE__OUTER = JOIN_FETCH_TYPE_ + "OUTER";
+
+
+	// EclispeLink 2.0 annotations
+	String MAP_KEY_CONVERT = PACKAGE_ + "MapKeyConvert";
+		String MAP_KEY_CONVERT__VALUE = "value";
+
+
+	// EclispeLink 2.1 annotations
+	String CLASS_EXTRACTOR = PACKAGE_ + "ClassExtractor";
+		String CLASS_EXTRACTOR__VALUE = "value";
+
+
+	// EclispeLink 2.2 annotations
+	String CACHE__ISOLATION = "isolation";
+
+	// EclipseLink 2.2 enums
+	String CACHE_ISOLATION_TYPE = "org.eclipse.persistence.config.CacheIsolationType";
+		String CACHE_ISOLATION_TYPE_ = CACHE_ISOLATION_TYPE + ".";
+		String CACHE_ISOLATION_TYPE__SHARED = CACHE_ISOLATION_TYPE_ + "SHARED";
+		String CACHE_ISOLATION_TYPE__PROTECTED = CACHE_ISOLATION_TYPE_ + "PROTECTED";
+		String CACHE_ISOLATION_TYPE__ISOLATED = CACHE_ISOLATION_TYPE_ + "ISOLATED";
+
+
+	// EclispeLink 2.3 annotations
+	String MULTITENANT = PACKAGE_ + "Multitenant";
+		String MULTITENANT__VALUE = "value";
+
+	String MULTITENANT_TYPE = PACKAGE_ + "MultitenantType";
+		String MULTITENANT_TYPE_ = MULTITENANT_TYPE + ".";
+		String MULTITENANT_TYPE__SINGLE_TABLE = MULTITENANT_TYPE_ + "SINGLE_TABLE";
+		String MULTITENANT_TYPE__TABLE_PER_TENANT = MULTITENANT_TYPE_ + "TABLE_PER_TENANT";
+		//TODO kfb 2.4 eclipselink only? do we want to only support multitenancy in eclipselink 2.4
+		String MULTITENANT_TYPE__VPD = MULTITENANT_TYPE_ + "VPD";
+
+	String TENANT_DISCRIMINATOR_COLUMN = PACKAGE_ + "TenantDiscriminatorColumn";
+		String TENANT_DISCRIMINATOR_COLUMN__NAME = "name";
+		String TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY = "contextProperty";
+		String TENANT_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = "discriminatorType";
+		String TENANT_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION = "columnDefinition";
+		String TENANT_DISCRIMINATOR_COLUMN__LENGTH = "length";
+		String TENANT_DISCRIMINATOR_COLUMN__TABLE = "table";
+		String TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY = "primaryKey";
+
+	String TENANT_DISCRIMINATOR_COLUMNS = PACKAGE_ + "TenantDiscriminatorColumns";
+		String TENANT_DISCRIMINATOR_COLUMNS__VALUE = "value";
+
+
+	// EclispeLink 2.4 annotations
+	String MULTITENANT__INCLUDE_CRITERIA = "includeCriteria";
+
 }

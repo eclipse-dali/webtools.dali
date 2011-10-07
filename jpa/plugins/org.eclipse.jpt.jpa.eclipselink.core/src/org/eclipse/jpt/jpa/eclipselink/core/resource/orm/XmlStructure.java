@@ -10,25 +10,19 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlAttributeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_3.EclipseLinkMappingKeys2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -346,7 +340,7 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 	}
 
 	public String getMappingKey() {
-		return EclipseLinkMappingKeys2_3.STRUCTURE_ATTRIBUTE_MAPPING_KEY;
+		return EclipseLinkMappingKeys.STRUCTURE_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	// ********** translators **********

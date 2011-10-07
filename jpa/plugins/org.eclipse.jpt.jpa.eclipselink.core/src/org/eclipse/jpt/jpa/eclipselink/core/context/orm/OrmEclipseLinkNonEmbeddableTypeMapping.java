@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmEclipseLinkMultitenancy;
 
 /**
  * EclipseLink <code>orm.xml</code> non-embeddable type mapping
@@ -31,5 +30,5 @@ public interface OrmEclipseLinkNonEmbeddableTypeMapping
 
 	JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMappingForDefaults();
 
-	OrmEclipseLinkMultitenancy getMultitenancy();
+	OrmEclipseLinkMultitenancy2_3 getMultitenancy();
 }

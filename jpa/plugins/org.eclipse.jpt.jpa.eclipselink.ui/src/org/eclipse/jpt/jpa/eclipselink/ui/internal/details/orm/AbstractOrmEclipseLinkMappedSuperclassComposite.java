@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
@@ -26,12 +27,12 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends OrmEclipseLinkMappedSuperclass> 
-	extends AbstractMappedSuperclassComposite<T> 
+public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite
+	extends AbstractMappedSuperclassComposite<OrmMappedSuperclass> 
 	implements JpaComposite
 {
 	protected AbstractOrmEclipseLinkMappedSuperclassComposite(
-			PropertyValueModel<? extends T> subjectHolder,
+			PropertyValueModel<? extends OrmMappedSuperclass> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
 		
 		super(subjectHolder, parent, widgetFactory);
@@ -66,7 +67,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<T, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmMappedSuperclass, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentType();
@@ -74,11 +75,11 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 		};
 	}
 	
-	private PropertyAspectAdapter<T, OrmEclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<T, OrmEclipseLinkCaching>(getSubjectHolder()) {
+	private PropertyAspectAdapter<OrmMappedSuperclass, OrmEclipseLinkCaching> buildCachingHolder() {
+		return new PropertyAspectAdapter<OrmMappedSuperclass, OrmEclipseLinkCaching>(getSubjectHolder()) {
 			@Override
 			protected OrmEclipseLinkCaching buildValue_() {
-				return this.subject.getCaching();
+				return ((OrmEclipseLinkMappedSuperclass) this.subject).getCaching();
 			}
 		};
 	}
@@ -95,10 +96,10 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 	}
 	
 	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterContainerModel() {
-		return new PropertyAspectAdapter<T, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmMappedSuperclass, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
 			protected OrmEclipseLinkConverterContainer buildValue_() {
-				return this.subject.getConverterContainer();
+				return ((OrmEclipseLinkMappedSuperclass) this.subject).getConverterContainer();
 			}
 		};
 	}

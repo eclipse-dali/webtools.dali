@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2009 Oracle. 
+ *  Copyright (c) 2007, 2011 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -38,6 +38,18 @@ public class JptEclipseLinkCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLinkOrmStructConverterTests.class);
 		suite.addTestSuite(EclipseLinkOrmTypeConverterTests.class);
 		suite.addTestSuite(EclipseLinkOrmCachingTests.class);
+		suite.addTestSuite(EclipseLink2_3OrmMultitenancyTests.class);		
+		suite.addTestSuite(EclipseLink1_1OrmPersistentAttributeTests.class);		
+		suite.addTestSuite(EclipseLink1_1OrmPersistentTypeTests.class);	
+		suite.addTestSuite(EclipseLink1_1OrmTransientMappingTests.class);	
+		suite.addTestSuite(EclipseLink2_0OrmCollectionTableTests.class);
+		suite.addTestSuite(EclipseLink2_0OrmElementCollectionMappingTests.class);
+		suite.addTestSuite(EclipseLink2_0OrmEntityTests.class);
+		suite.addTestSuite(EclipseLink2_0OrmManyToManyMappingTests.class);
+		suite.addTestSuite(EclipseLink2_0OrmManyToOneMappingTests.class);
+		suite.addTestSuite(EclipseLink2_0OrmMappedSuperclassTests.class);
+		suite.addTestSuite(EclipseLink2_0OrmOneToOneMappingTests.class);
+		suite.addTestSuite(EclipseLink2_0OrmOneToManyMappingTests.class);
 		return suite;
 	}
 	

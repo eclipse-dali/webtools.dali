@@ -31,12 +31,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSu
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassValidator;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context.orm.NullOrmEclipseLinkMultitenancy;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.context.orm.OrmEclipseLinkMultitenancyImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.orm.OrmEclipseLinkMultitenancy;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -59,7 +57,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
-	protected final OrmEclipseLinkMultitenancy multitenancy;
+	protected final OrmEclipseLinkMultitenancy2_3 multitenancy;
 
 
 	public OrmEclipseLinkMappedSuperclassImpl(OrmPersistentType parent, XmlMappedSuperclass xmlMappedSuperclass) {
@@ -171,15 +169,15 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	// ********** multitenancy **********
 
-	public OrmEclipseLinkMultitenancy getMultitenancy() {
+	public OrmEclipseLinkMultitenancy2_3 getMultitenancy() {
 		return this.multitenancy;
 	}
 
 
-	protected OrmEclipseLinkMultitenancy buildMultitenancy() {
+	protected OrmEclipseLinkMultitenancy2_3 buildMultitenancy() {
 		return this.isEclipseLink2_3Compatible() ?
-			new OrmEclipseLinkMultitenancyImpl(this) :
-			new NullOrmEclipseLinkMultitenancy(this);
+			new OrmEclipseLinkMultitenancyImpl2_3(this) :
+			new NullOrmEclipseLinkMultitenancy2_3(this);
 	}
 
 	protected boolean isEclipseLink2_3Compatible() {

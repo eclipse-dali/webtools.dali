@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.jpa.eclipselink.core.v2_3.context.EclipseLinkMultitenancy;
 
 /**
  * EclipseLink non-embeddable type mapping
@@ -27,5 +26,5 @@ public interface EclipseLinkNonEmbeddableTypeMapping
 
 	EclipseLinkReadOnly getReadOnly();
 
-	EclipseLinkMultitenancy getMultitenancy();
+	EclipseLinkMultitenancy2_3 getMultitenancy();
 }

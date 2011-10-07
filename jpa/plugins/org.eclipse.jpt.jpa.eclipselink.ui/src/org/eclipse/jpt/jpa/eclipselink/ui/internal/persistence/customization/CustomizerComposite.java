@@ -15,15 +15,15 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Entity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  *  CustomizerComposite
  */
-public class CustomizerComposite extends Pane<Entity>
+public class CustomizerComposite extends Pane<CustomizationEntity>
 {
 	/**
 	 * Creates a new <code>CustomizerComposite</code>.
@@ -31,20 +31,20 @@ public class CustomizerComposite extends Pane<Entity>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public CustomizerComposite(Pane<? extends Entity> parentPane,
+	public CustomizerComposite(Pane<? extends CustomizationEntity> parentPane,
                            Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private ClassChooserPane<Entity> initializeClassChooser(Composite container) {
+	private ClassChooserPane<CustomizationEntity> initializeClassChooser(Composite container) {
 
-		return new ClassChooserPane<Entity>(this, container) {
+		return new ClassChooserPane<CustomizationEntity>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<Entity, String>(
-					this.getSubjectHolder(), Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
+				return new PropertyAspectAdapter<CustomizationEntity, String>(
+					this.getSubjectHolder(), CustomizationEntity.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return getSubjectParent().getDescriptorCustomizerOf(getSubjectName());

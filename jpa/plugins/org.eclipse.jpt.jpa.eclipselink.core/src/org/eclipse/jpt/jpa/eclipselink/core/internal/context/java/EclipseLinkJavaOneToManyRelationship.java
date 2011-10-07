@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaOneToManyRelationship;
-import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.java.EclipseLinkJavaOneToManyRelationship2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaOneToManyRelationship2_0;
 
 /**
  * We need this class because the EclipseLink 1.0 1:m mapping supports a join

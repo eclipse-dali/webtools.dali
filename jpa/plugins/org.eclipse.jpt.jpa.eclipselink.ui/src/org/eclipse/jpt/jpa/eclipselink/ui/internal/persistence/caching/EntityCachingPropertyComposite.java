@@ -11,15 +11,15 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Entity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * @version 2.0
  * @since 2.0
  */
-public class EntityCachingPropertyComposite extends Pane<Entity> {
+public class EntityCachingPropertyComposite extends Pane<CachingEntity> {
 
 	/**
 	 * Creates a new <code>EntityCachingPropertyComposite</code>.
@@ -29,7 +29,7 @@ public class EntityCachingPropertyComposite extends Pane<Entity> {
 	 * @param parent The parent container
 	 */
 	public EntityCachingPropertyComposite(Pane<? extends Caching> parentComposite,
-	                                      PropertyValueModel<Entity> subjectHolder,
+	                                      PropertyValueModel<CachingEntity> subjectHolder,
 	                                      Composite parent) {
 
 		super(parentComposite, subjectHolder, parent);

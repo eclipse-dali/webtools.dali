@@ -13,10 +13,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.JptJpaEclipseLinkCoreTests;
-import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v1_1.context.JptEclipseLink1_1CoreContextModelTests;
-import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v1_2.context.JptEclipseLink1_2CoreContextModelTests;
-import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.JptEclipseLink2_0CoreContextModelTests;
-import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_3.context.JptEclipseLink2_3CoreContextModelTests;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.java.JptEclipseLinkCoreJavaContextModelTests;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.orm.JptEclipseLinkCoreOrmContextModelTests;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence.JptEclipseLinkCorePersistenceContextModelTests;
 
 /**
  * Required Java system property:
@@ -28,11 +27,12 @@ public class JptJpaEclipseLinkCoreContextModelTests extends TestCase
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptJpaEclipseLinkCoreContextModelTests.class.getName());
 		if(JptJpaEclipseLinkCoreTests.requiredJarsExists()) {
-			suite.addTest(JptEclipseLink1_0CoreContextModelTests.suite());
-			suite.addTest(JptEclipseLink1_1CoreContextModelTests.suite());
-			suite.addTest(JptEclipseLink1_2CoreContextModelTests.suite());
-			suite.addTest(JptEclipseLink2_0CoreContextModelTests.suite());
-			suite.addTest(JptEclipseLink2_3CoreContextModelTests.suite());
+			suite.addTestSuite(EclipseLinkJpaProjectTests.class);
+			suite.addTestSuite(EclipseLink1_1JpaProjectTests.class);
+			suite.addTestSuite(EclipseLink1_2JpaProjectTests.class);
+			suite.addTest(JptEclipseLinkCorePersistenceContextModelTests.suite());
+			suite.addTest(JptEclipseLinkCoreJavaContextModelTests.suite());
+			suite.addTest(JptEclipseLinkCoreOrmContextModelTests.suite());
 		}
 		else {
 			suite.addTest(TestSuite.warning(JptJpaEclipseLinkCoreTests.buildMissingJarErrorMessage()));

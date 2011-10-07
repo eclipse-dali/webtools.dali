@@ -21,8 +21,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Entity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.osgi.util.NLS;
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  SharedCacheComposite
  */
-public class SharedCacheComposite extends Pane<Entity>
+public class SharedCacheComposite extends Pane<CachingEntity>
 {
 	private TriStateCheckBox sharedCacheCheckBox;
 
@@ -41,16 +41,16 @@ public class SharedCacheComposite extends Pane<Entity>
 	 * @param parentController The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SharedCacheComposite(Pane<Entity> parentComposite,
+	public SharedCacheComposite(Pane<CachingEntity> parentComposite,
 	                           Composite parent) {
 
 		super(parentComposite, parent);
 	}
 
 	private PropertyValueModel<Caching> buildCachingHolder() {
-		return new TransformationPropertyValueModel<Entity, Caching>(this.getSubjectHolder()) {
+		return new TransformationPropertyValueModel<CachingEntity, Caching>(this.getSubjectHolder()) {
 			@Override
-			protected Caching transform_(Entity value) {
+			protected Caching transform_(CachingEntity value) {
 				return value.getParent();
 			}
 		};
@@ -103,8 +103,8 @@ public class SharedCacheComposite extends Pane<Entity>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildSharedCacheHolder() {
-		return new PropertyAspectAdapter<Entity, Boolean>(
-					getSubjectHolder(), Entity.SHARED_CACHE_PROPERTY) {
+		return new PropertyAspectAdapter<CachingEntity, Boolean>(
+					getSubjectHolder(), CachingEntity.SHARED_CACHE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return getSubjectParent().getSharedCacheOf(getSubjectName());

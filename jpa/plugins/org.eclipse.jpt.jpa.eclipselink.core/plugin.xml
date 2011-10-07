@@ -47,49 +47,49 @@
 	    <jpaPlatform
 	        id="eclipselink1_1"
 	        label="%ECLIPSELINK1_1_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink1_1JpaPlatformFactory"
 	        group="eclipselink"
 			jpaFacetVersion="1.0"/>
 	    
 	    <jpaPlatform
 			id="eclipselink1_2"
 			label="%ECLIPSELINK1_2_x_PLATFORM"
-			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.v1_2.EclipseLink1_2JpaPlatformFactory"
+			factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink1_2JpaPlatformFactory"
 			group="eclipselink"
 			jpaFacetVersion="1.0"/>
 		
 	    <jpaPlatform
 	        id="eclipselink2_0"
 	        label="%ECLIPSELINK2_0_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.v2_0.EclipseLink2_0JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_0JpaPlatformFactory"
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
 		
 		<jpaPlatform
 	        id="eclipselink2_1"
 	        label="%ECLIPSELINK2_1_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.v2_1.EclipseLink2_1JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory"
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
 		
 		<jpaPlatform
 	        id="eclipselink2_2"
 	        label="%ECLIPSELINK2_2_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.v2_2.EclipseLink2_2JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_2JpaPlatformFactory"
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
 		
 		<jpaPlatform
 	        id="eclipselink2_3"
 	        label="%ECLIPSELINK2_3_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.v2_3.EclipseLink2_3JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory"
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
 		
 		<jpaPlatform
 	        id="eclipselink2_4"
 	        label="%ECLIPSELINK2_4_x_PLATFORM"
-	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.v2_4.EclipseLink2_4JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory"
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
 		

@@ -17,9 +17,6 @@ import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistence
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.connection.EclipseLinkConnection;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.logging.EclipseLinkLogging;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
 
 
 public class EclipseLinkPersistenceXmlContextNodeFactory
