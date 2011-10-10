@@ -300,7 +300,9 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected ContextListContainer<JavaTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3> buildSpecifiedTenantDiscriminatorColumnContainer() {
-		return new SpecifiedTenantDiscriminatorColumnContainer();
+		SpecifiedTenantDiscriminatorColumnContainer container = new SpecifiedTenantDiscriminatorColumnContainer();
+		container.initialize();
+		return container;
 	}
 
 	protected JavaReadOnlyTenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {

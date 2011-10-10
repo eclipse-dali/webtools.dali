@@ -42,14 +42,14 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	extends AbstractOrmXmlContextNode
 	implements OrmMappingPrimaryKeyJoinColumnRelationshipStrategy2_0
 {
-	protected final PrimaryKeyJoinColumnContainer primaryKeyJoinColumnContainer;
+	protected final ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> primaryKeyJoinColumnContainer;
 	protected final OrmReadOnlyJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 
 	public GenericOrmPrimaryKeyJoinColumnRelationshipStrategy(OrmPrimaryKeyJoinColumnRelationship parent) {
 		super(parent);
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
-		this.primaryKeyJoinColumnContainer = new PrimaryKeyJoinColumnContainer();
+		this.primaryKeyJoinColumnContainer = this.buildPrimaryKeyJoinColumnContainer();
 	}
 
 
@@ -155,6 +155,12 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlJoinColumn) {
 		return this.getContextNodeFactory().buildOrmPrimaryKeyJoinColumn(this, this.primaryKeyJoinColumnOwner, xmlJoinColumn);
+	}
+
+	protected ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnContainer() {
+		PrimaryKeyJoinColumnContainer container = new PrimaryKeyJoinColumnContainer();
+		container.initialize();
+		return container;
 	}
 
 

@@ -59,7 +59,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
-	protected final UniqueConstraintContainer uniqueConstraintContainer;
+	protected final ContextListContainer<OrmUniqueConstraint, XmlUniqueConstraint> uniqueConstraintContainer;
 
 
 	// ********** constructor/initialization **********
@@ -75,7 +75,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 		this.specifiedName = this.buildSpecifiedName();
 		this.specifiedSchema = this.buildSpecifiedSchema();
 		this.specifiedCatalog = this.buildSpecifiedCatalog();
-		this.uniqueConstraintContainer = new UniqueConstraintContainer();
+		this.uniqueConstraintContainer = this.buildUniqueConstraintContainer();
 	}
 
 
@@ -326,6 +326,12 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 				EmptyListIterable.<XmlUniqueConstraint>instance() :
 				// clone to reduce chance of concurrency problems
 				new LiveCloneListIterable<XmlUniqueConstraint>(xmlTable.getUniqueConstraints());
+	}
+
+	protected ContextListContainer<OrmUniqueConstraint, XmlUniqueConstraint> buildUniqueConstraintContainer() {
+		UniqueConstraintContainer container = new UniqueConstraintContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

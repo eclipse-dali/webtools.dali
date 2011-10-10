@@ -203,6 +203,11 @@ public class GenericJavaJoinTable
 		return new InverseJoinColumnOwner();
 	}
 
+	protected ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> buildSpecifiedInverseJoinColumnContainer() {
+		SpecifiedInverseJoinColumnContainer container = new SpecifiedInverseJoinColumnContainer();
+		container.initialize();
+		return container;
+	}
 
 	// ********** default inverse join column **********
 

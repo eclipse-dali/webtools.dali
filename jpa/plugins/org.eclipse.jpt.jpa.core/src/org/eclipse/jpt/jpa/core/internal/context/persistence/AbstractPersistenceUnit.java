@@ -532,7 +532,9 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ContextListContainer<MappingFileRef, XmlMappingFileRef> buildSpecifiedMappingFileRefContainer() {
-		return new SpecifiedMappingFileRefContainer();
+		SpecifiedMappingFileRefContainer container = new SpecifiedMappingFileRefContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**
@@ -692,7 +694,9 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ContextListContainer<JarFileRef, XmlJarFileRef> buildJarFileRefContainer() {
-		return new JarFileRefContainer();
+		JarFileRefContainer container = new JarFileRefContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**
@@ -791,7 +795,9 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ContextListContainer<ClassRef, XmlJavaClassRef> buildSpecifiedClassRefContainer() {
-		return new SpecifiedClassRefContainer();
+		SpecifiedClassRefContainer container = new SpecifiedClassRefContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**
@@ -1158,7 +1164,9 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected ContextListContainer<Property, XmlProperty> buildPropertyContainer() {
-		return new PropertyContainer();
+		PropertyContainer container = new PropertyContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

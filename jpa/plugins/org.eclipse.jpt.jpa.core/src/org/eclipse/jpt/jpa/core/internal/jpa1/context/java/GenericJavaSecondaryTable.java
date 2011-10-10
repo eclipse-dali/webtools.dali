@@ -45,7 +45,7 @@ public class GenericJavaSecondaryTable
 	/** @see AbstractJavaTable#AbstractJavaTable(org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.Table.Owner, org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation) */
 	protected /* final */ SecondaryTableAnnotation tableAnnotation;
 
-	protected final JavaPrimaryKeyJoinColumnContainer specifiedPrimaryKeyJoinColumnContainer;
+	protected final ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> specifiedPrimaryKeyJoinColumnContainer;
 	protected final JavaReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected JavaPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
@@ -54,7 +54,7 @@ public class GenericJavaSecondaryTable
 	public GenericJavaSecondaryTable(JavaEntity parent, Owner owner, SecondaryTableAnnotation tableAnnotation) {
 		super(parent, owner, tableAnnotation);
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
-		this.specifiedPrimaryKeyJoinColumnContainer = new JavaPrimaryKeyJoinColumnContainer();
+		this.specifiedPrimaryKeyJoinColumnContainer = this.buildSpecifiedPrimaryKeyJoinColumnContainer();
 	}
 
 
@@ -162,7 +162,7 @@ public class GenericJavaSecondaryTable
 	/**
 	 * specified primary key join column container
 	 */
-	protected class JavaPrimaryKeyJoinColumnContainer
+	protected class SpecifiedPrimaryKeyJoinColumnContainer
 		extends ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation>
 	{
 		@Override
@@ -187,6 +187,11 @@ public class GenericJavaSecondaryTable
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
+	protected ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildSpecifiedPrimaryKeyJoinColumnContainer() {
+		SpecifiedPrimaryKeyJoinColumnContainer container = new SpecifiedPrimaryKeyJoinColumnContainer();
+		container.initialize();
+		return container;
+	}
 
 	// ********** default primary key join column **********
 

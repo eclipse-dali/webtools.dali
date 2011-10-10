@@ -246,7 +246,6 @@ public abstract class AbstractJpaNode
 
 		protected CollectionContainer() {
 			super();
-			this.initializeContextElements();
 		}
 
 		/**
@@ -271,7 +270,10 @@ public abstract class AbstractJpaNode
 		 */
 		protected abstract String getContextElementsPropertyName();
 
-		protected void initializeContextElements() {
+		/**
+		 * clients needs to call initialize if necessary
+		 */
+		public void initialize() {
 			for (R resourceElement : this.getResourceElements()) {
 				this.contextElements.add(this.buildContextElement(resourceElement));
 			}

@@ -1113,7 +1113,9 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected ContextListContainer<JavaJoinColumn, MapKeyJoinColumn2_0Annotation> buildSpecifiedMapKeyJoinColumnContainer() {
-		return new SpecifiedMapKeyJoinColumnContainer();
+		SpecifiedMapKeyJoinColumnContainer container = new SpecifiedMapKeyJoinColumnContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

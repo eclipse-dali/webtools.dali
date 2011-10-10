@@ -50,9 +50,9 @@ public class GenericJavaPackageInfo
 
 	protected XmlAccessOrder specifiedAccessOrder;
 
-	protected final XmlSchemaTypeContainer xmlSchemaTypeContainer;
+	protected final ContextListContainer<XmlSchemaType, XmlSchemaTypeAnnotation> xmlSchemaTypeContainer;
 
-	protected final XmlJavaTypeAdapterContainer xmlJavaTypeAdapterContainer;
+	protected final ContextListContainer<XmlJavaTypeAdapter, XmlJavaTypeAdapterAnnotation> xmlJavaTypeAdapterContainer;
 
 	public GenericJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage) {
 		super(parent);
@@ -60,8 +60,8 @@ public class GenericJavaPackageInfo
 		this.xmlSchema = getFactory().buildJavaXmlSchema(this);
 		this.specifiedAccessType = getResourceAccessType();
 		this.specifiedAccessOrder = getResourceAccessOrder();
-		this.xmlSchemaTypeContainer = new XmlSchemaTypeContainer();
-		this.xmlJavaTypeAdapterContainer = new XmlJavaTypeAdapterContainer();
+		this.xmlSchemaTypeContainer = this.buildXmlSchemaTypeContainer();
+		this.xmlJavaTypeAdapterContainer = this.buildXmlJavaTypeAdapterContainer();
 	}
 	
 	@Override
@@ -229,6 +229,12 @@ public class GenericJavaPackageInfo
 				this.resourcePackage.getAnnotations(JAXB.XML_SCHEMA_TYPE));
 	}
 
+	protected ContextListContainer<XmlSchemaType, XmlSchemaTypeAnnotation> buildXmlSchemaTypeContainer() {
+		XmlSchemaTypeContainer container = new XmlSchemaTypeContainer();
+		container.initialize();
+		return container;
+	}
+
 
 	// ********** xml java type adapters **********
 
@@ -274,6 +280,12 @@ public class GenericJavaPackageInfo
 	protected ListIterable<XmlJavaTypeAdapterAnnotation> getXmlJavaTypeAdapterAnnotations() {
 		return new SubListIterableWrapper<NestableAnnotation, XmlJavaTypeAdapterAnnotation>(
 				this.resourcePackage.getAnnotations(JAXB.XML_JAVA_TYPE_ADAPTER));
+	}
+
+	protected ContextListContainer<XmlJavaTypeAdapter, XmlJavaTypeAdapterAnnotation> buildXmlJavaTypeAdapterContainer() {
+		XmlJavaTypeAdapterContainer container = new XmlJavaTypeAdapterContainer();
+		container.initialize();
+		return container;
 	}
 
 

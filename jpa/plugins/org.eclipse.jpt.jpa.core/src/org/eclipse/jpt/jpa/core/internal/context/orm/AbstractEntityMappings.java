@@ -711,7 +711,9 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected ContextListContainer<OrmSequenceGenerator, XmlSequenceGenerator> buildSequenceGeneratorContainer() {
-		return new SequenceGeneratorContainer();
+		SequenceGeneratorContainer container = new SequenceGeneratorContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**
@@ -792,7 +794,9 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected ContextListContainer<OrmTableGenerator, XmlTableGenerator> buildTableGeneratorContainer() {
-		return new TableGeneratorContainer();
+		TableGeneratorContainer container = new TableGeneratorContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

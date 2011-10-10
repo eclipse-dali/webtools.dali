@@ -64,8 +64,8 @@ public class EclipseLinkEntityMappingsImpl
 		super(parent, resource);
 		this.converterContainer = this.buildConverterContainer();
 		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
-		this.specifiedTenantDiscriminatorColumnContainer = new SpecifiedTenantDiscriminatorColumnContainer();
-		this.defaultTenantDiscriminatorColumnContainer = new DefaultTenantDiscriminatorColumnContainer();
+		this.specifiedTenantDiscriminatorColumnContainer = this.buildSpecifiedTenantDiscriminatorColumnContainer();
+		this.defaultTenantDiscriminatorColumnContainer = this.buildDefaultTenantDiscriminatorColumnContainer();
 	}
 
 
@@ -228,6 +228,12 @@ public class EclipseLinkEntityMappingsImpl
 		return new TenantDiscriminatorColumnOwner();
 	}
 
+	protected SpecifiedTenantDiscriminatorColumnContainer buildSpecifiedTenantDiscriminatorColumnContainer() {
+		SpecifiedTenantDiscriminatorColumnContainer container = new SpecifiedTenantDiscriminatorColumnContainer();
+		container.initialize();
+		return container;
+	}
+
 	protected OrmTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn_2_3 xmlTenantDiscriminatorColumn) {
 		return new EclipseLinkOrmTenantDiscriminatorColumn2_3(this, this.tenantDiscriminatorColumnOwner, xmlTenantDiscriminatorColumn);
 	}
@@ -285,6 +291,10 @@ public class EclipseLinkEntityMappingsImpl
 
 	protected void removeDefaultTenantDiscriminatorColumn(OrmVirtualTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
 		this.defaultTenantDiscriminatorColumnContainer.removeContextElement(tenantDiscriminatorColumn);
+	}
+
+	protected DefaultTenantDiscriminatorColumnContainer buildDefaultTenantDiscriminatorColumnContainer() {
+		return new DefaultTenantDiscriminatorColumnContainer();
 	}
 
 

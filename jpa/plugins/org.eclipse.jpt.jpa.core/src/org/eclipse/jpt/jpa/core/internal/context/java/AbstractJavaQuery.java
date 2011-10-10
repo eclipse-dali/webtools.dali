@@ -149,7 +149,9 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	}
 
 	protected ContextListContainer<JavaQueryHint, QueryHintAnnotation> buildHintContainer() {
-		return new HintContainer();
+		HintContainer container = new HintContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

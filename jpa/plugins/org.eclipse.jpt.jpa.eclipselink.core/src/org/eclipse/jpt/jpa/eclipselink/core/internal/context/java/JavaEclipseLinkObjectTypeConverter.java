@@ -183,7 +183,9 @@ public class JavaEclipseLinkObjectTypeConverter
 	}
 
 	protected ContextListContainer<JavaEclipseLinkConversionValue, EclipseLinkConversionValueAnnotation> buildConversionValueContainer() {
-		return new ConversionValueContainer();
+		ConversionValueContainer container = new ConversionValueContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

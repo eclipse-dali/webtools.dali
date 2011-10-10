@@ -22,13 +22,13 @@ public class GenericJavaXmlSeeAlso
 	
 	protected final XmlSeeAlsoAnnotation annotation;
 	
-	protected final ValueContainer valueContainer;
+	protected final ListContainer<String, String> valueContainer;
 	
 	
 	public GenericJavaXmlSeeAlso(JaxbPersistentClass parent, XmlSeeAlsoAnnotation annotation) {
 		super(parent);
 		this.annotation = annotation;
-		this.valueContainer = new ValueContainer();
+		this.valueContainer = this.buildValueContainer();
 	}
 	
 	
@@ -72,6 +72,12 @@ public class GenericJavaXmlSeeAlso
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.annotation.getTextRange(astRoot);
+	}
+	
+	protected ListContainer<String, String> buildValueContainer() {
+		ValueContainer container = new ValueContainer();
+		container.initialize();
+		return container;
 	}
 	
 	

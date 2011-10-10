@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,12 +23,12 @@ public class GenericJavaPersistentEnum
 
 	protected String enumType;
 
-	protected final EnumConstantContainer enumConstantContainer;
+	protected final ContextCollectionContainer<JaxbEnumConstant, JavaResourceEnumConstant> enumConstantContainer;
 
 	public GenericJavaPersistentEnum(JaxbContextRoot parent, JavaResourceEnum resourceEnum) {
 		super(parent, resourceEnum);
 		this.enumType = this.getResourceEnumType();
-		this.enumConstantContainer = new EnumConstantContainer();
+		this.enumConstantContainer = this.buildEnumConstantContainer();
 	}
 
 	@Override
@@ -103,6 +103,12 @@ public class GenericJavaPersistentEnum
 	
 	private JaxbEnumConstant buildEnumConstant(JavaResourceEnumConstant resourceEnumConstant) {
 		return getFactory().buildJavaEnumConstant(this, resourceEnumConstant);
+	}
+
+	protected ContextCollectionContainer<JaxbEnumConstant, JavaResourceEnumConstant> buildEnumConstantContainer() {
+		EnumConstantContainer container = new EnumConstantContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

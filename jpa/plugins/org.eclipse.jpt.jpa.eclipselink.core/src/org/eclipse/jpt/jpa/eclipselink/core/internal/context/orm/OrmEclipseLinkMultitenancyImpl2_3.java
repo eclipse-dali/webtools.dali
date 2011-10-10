@@ -82,9 +82,9 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		this.specifiedType = this.buildSpecifiedType();
 //		this.specifiedIncludeCriteria = this.buildSpecifiedIncludeCriteria();
 		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
-		this.specifiedTenantDiscriminatorColumnContainer = new SpecifiedTenantDiscriminatorColumnContainer();
+		this.specifiedTenantDiscriminatorColumnContainer = this.buildSpecifiedTenantDiscriminatorColumnContainer();
 		this.defaultTenantDiscriminatorColumn = this.buildTenantDiscriminatorColumn(null);
-		this.defaultTenantDiscriminatorColumnContainer = new DefaultTenantDiscriminatorColumnContainer();
+		this.defaultTenantDiscriminatorColumnContainer = this.buildDefaultTenantDiscriminatorColumnContainer();
 	}
 
 
@@ -361,6 +361,12 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 
 	protected OrmReadOnlyTenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {
 		return new TenantDiscriminatorColumnOwner();
+	}
+
+	protected ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3> buildSpecifiedTenantDiscriminatorColumnContainer() {
+		SpecifiedTenantDiscriminatorColumnContainer container = new SpecifiedTenantDiscriminatorColumnContainer();
+		container.initialize();
+		return container;
 	}
 
 	protected OrmTenantDiscriminatorColumn2_3 buildTenantDiscriminatorColumn(XmlTenantDiscriminatorColumn_2_3 xmlTenantDiscriminatorColumn) {

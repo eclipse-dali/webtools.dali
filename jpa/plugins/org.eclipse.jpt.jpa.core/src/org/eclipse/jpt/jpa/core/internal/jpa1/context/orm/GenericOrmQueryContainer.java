@@ -128,7 +128,9 @@ public class GenericOrmQueryContainer
 	}
 
 	protected ContextListContainer<OrmNamedQuery, XmlNamedQuery> buildNamedQueryContainer() {
-		return new NamedQueryContainer();
+		NamedQueryContainer container = new NamedQueryContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**
@@ -208,7 +210,9 @@ public class GenericOrmQueryContainer
 	}
 
 	protected ContextListContainer<OrmNamedNativeQuery, XmlNamedNativeQuery> buildNamedNativeQueryContainer() {
-		return new NamedNativeQueryContainer();
+		NamedNativeQueryContainer container = new NamedNativeQueryContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

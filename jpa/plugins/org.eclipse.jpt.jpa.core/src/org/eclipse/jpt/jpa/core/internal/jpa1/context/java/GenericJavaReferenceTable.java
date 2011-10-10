@@ -37,7 +37,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	extends AbstractJavaTable<A>
 	implements JavaReferenceTable
 {
-	protected final SpecifiedJoinColumnContainer specifiedJoinColumnContainer;
+	protected final ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
 	protected final JavaReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected JavaJoinColumn defaultJoinColumn;
@@ -46,7 +46,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	protected GenericJavaReferenceTable(JavaJpaContextNode parent, Owner owner) {
 		super(parent, owner);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
-		this.specifiedJoinColumnContainer = new SpecifiedJoinColumnContainer();
+		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
 
@@ -158,6 +158,11 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 
 	protected abstract JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
+	protected ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer(){
+		SpecifiedJoinColumnContainer container = new SpecifiedJoinColumnContainer();
+		container.initialize();
+		return container;
+	}
 
 	// ********** default join column **********
 

@@ -153,7 +153,9 @@ public class GenericJarFile
 	}
 
 	protected ContextCollectionContainer<JavaPersistentType, JavaResourceType> buildJavaPersistentTypeContainer() {
-		return new JavaPersistentTypeContainer();
+		JavaPersistentTypeContainer container = new JavaPersistentTypeContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

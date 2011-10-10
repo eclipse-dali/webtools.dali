@@ -43,7 +43,7 @@ public class GenericJavaXmlSchema
 	
 	protected XmlNsForm specifiedElementFormDefault;
 	
-	protected final XmlNsPrefixContainer xmlNsPrefixContainer;
+	protected final ContextListContainer<XmlNs, XmlNsAnnotation> xmlNsPrefixContainer;
 	
 	
 	public GenericJavaXmlSchema(JaxbPackageInfo parent) {
@@ -52,7 +52,7 @@ public class GenericJavaXmlSchema
 		this.location = this.getResourceLocation();
 		this.specifiedAttributeFormDefault = getResourceAttributeFormDefault();
 		this.specifiedElementFormDefault = getResourceElementFormDefault();
-		this.xmlNsPrefixContainer = new XmlNsPrefixContainer();
+		this.xmlNsPrefixContainer = this.buildXmlNsPrefixContainer();
 	}
 	
 	
@@ -97,7 +97,7 @@ public class GenericJavaXmlSchema
 	// ********** namespace **********
 	
 	public String getNamespace() {
-		return (this.specifiedNamespace == null) ? "" : this.specifiedNamespace;
+		return (this.specifiedNamespace == null) ? "" : this.specifiedNamespace; //$NON-NLS-1$
 	}
 	
 	public String getSpecifiedNamespace() {
@@ -237,6 +237,12 @@ public class GenericJavaXmlSchema
 
 	protected ListIterable<XmlNsAnnotation> getXmlNsAnnotations() {
 		return getXmlSchemaAnnotation().getXmlns();
+	}
+
+	protected ContextListContainer<XmlNs, XmlNsAnnotation> buildXmlNsPrefixContainer() {
+		XmlNsPrefixContainer container = new XmlNsPrefixContainer();
+		container.initialize();
+		return container;
 	}
 	
 	

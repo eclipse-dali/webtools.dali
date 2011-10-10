@@ -49,7 +49,7 @@ public class GenericJavaXmlElementsMapping
 		extends AbstractJavaAttributeMapping<XmlElementsAnnotation> 
 		implements XmlElementsMapping {
 	
-	protected final XmlElementContainer xmlElementContainer;
+	protected final ContextListContainer<XmlElement, XmlElementAnnotation> xmlElementContainer;
 	
 	protected final XmlAdaptable xmlAdaptable;
 	
@@ -60,7 +60,7 @@ public class GenericJavaXmlElementsMapping
 	
 	public GenericJavaXmlElementsMapping(JaxbPersistentAttribute parent) {
 		super(parent);
-		this.xmlElementContainer = new XmlElementContainer();
+		this.xmlElementContainer = this.buildXmlElementContainer();
 		this.xmlAdaptable = buildXmlAdaptable();
 		initializeXmlElementWrapper();
 		initializeXmlIDREF();
@@ -133,10 +133,6 @@ public class GenericJavaXmlElementsMapping
 	
 	protected ListIterable<XmlElementAnnotation> getXmlElementAnnotations() {
 		return getAnnotation().getXmlElements();
-	}
-	
-	protected XmlElementAnnotation getXmlElementAnnotation(XmlElement xmlElement) {
-		return this.xmlElementContainer.getResourceElement(xmlElement);
 	}
 	
 	
@@ -241,6 +237,12 @@ public class GenericJavaXmlElementsMapping
 		if (this.xmlElementWrapper != null) {
 			this.xmlElementWrapper.update();
 		}
+	}
+
+	protected ContextListContainer<XmlElement, XmlElementAnnotation> buildXmlElementContainer() {
+		XmlElementContainer container = new XmlElementContainer();
+		container.initialize();
+		return container;
 	}
 	
 	

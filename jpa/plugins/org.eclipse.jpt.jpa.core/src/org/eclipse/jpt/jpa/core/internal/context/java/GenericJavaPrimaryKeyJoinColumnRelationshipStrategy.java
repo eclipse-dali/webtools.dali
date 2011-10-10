@@ -116,7 +116,9 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	}
 
 	protected ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> buildPrimaryKeyJoinColumnContainer() {
-		return new PrimaryKeyJoinColumnContainer();
+		PrimaryKeyJoinColumnContainer container = new PrimaryKeyJoinColumnContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

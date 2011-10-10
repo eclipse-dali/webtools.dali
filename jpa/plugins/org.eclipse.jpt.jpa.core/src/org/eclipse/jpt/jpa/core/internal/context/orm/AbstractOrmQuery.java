@@ -18,7 +18,6 @@ import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -174,7 +173,9 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	protected ContextListContainer<OrmQueryHint, XmlQueryHint> buildHintContainer() {
-		return new HintContainer();
+		HintContainer container = new HintContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

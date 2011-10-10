@@ -190,7 +190,9 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected ContextListContainer<OrmEclipseLinkConversionValue, XmlConversionValue> buildConversionValueContainer() {
-		return new ConversionValueContainer();
+		ConversionValueContainer container = new ConversionValueContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

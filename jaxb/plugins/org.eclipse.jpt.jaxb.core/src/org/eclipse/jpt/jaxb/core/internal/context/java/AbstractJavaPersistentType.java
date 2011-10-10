@@ -49,7 +49,7 @@ public abstract class AbstractJavaPersistentType
 	
 	protected String factoryMethod;
 	
-	protected final PropOrderContainer propOrderContainer;
+	protected final ListContainer<String, String> propOrderContainer;
 	
 	protected XmlRootElement rootElement;
 	
@@ -59,7 +59,7 @@ public abstract class AbstractJavaPersistentType
 		this.qName = buildQName(); 
 		this.factoryClass = this.getResourceFactoryClass();
 		this.factoryMethod = this.getResourceFactoryMethod();
-		this.propOrderContainer = new PropOrderContainer();
+		this.propOrderContainer = this.buildPropOrderContainer();
 		this.rootElement = this.buildRootElement();
 	}
 	
@@ -191,6 +191,12 @@ public abstract class AbstractJavaPersistentType
 	
 	protected ListIterable<String> getResourcePropOrder() {
 		return this.getXmlTypeAnnotation().getPropOrder();
+	}
+
+	protected ListContainer<String, String> buildPropOrderContainer() {
+		PropOrderContainer container = new PropOrderContainer();
+		container.initialize();
+		return container;
 	}
 	
 	

@@ -39,13 +39,13 @@ public class GenericJavaXmlElementRefs
 	
 	protected final Context context;
 	
-	protected final XmlElementRefContainer xmlElementRefContainer;
+	protected final ContextListContainer<XmlElementRef, XmlElementRefAnnotation> xmlElementRefContainer;
 	
 	
 	public GenericJavaXmlElementRefs(JavaContextNode parent, Context context) {
 		super(parent);
 		this.context = context;
-		this.xmlElementRefContainer = new XmlElementRefContainer();
+		this.xmlElementRefContainer = this.buildXmlElementRefContainer();
 	}
 	
 	
@@ -94,15 +94,17 @@ public class GenericJavaXmlElementRefs
 	}
 	
 	protected XmlElementRef buildXmlElementRef(XmlElementRefAnnotation xmlElementRefAnnotation) {
-		return context.buildXmlElementRef(this, xmlElementRefAnnotation);
+		return this.context.buildXmlElementRef(this, xmlElementRefAnnotation);
 	}
 	
 	protected ListIterable<XmlElementRefAnnotation> getXmlElementRefAnnotations() {
 		return this.context.getXmlElementRefAnnotations();
 	}
-	
-	protected XmlElementRefAnnotation getXmlElementRefAnnotation(XmlElementRef xmlElementRef) {
-		return this.xmlElementRefContainer.getResourceElement(xmlElementRef);
+
+	protected ContextListContainer<XmlElementRef, XmlElementRefAnnotation> buildXmlElementRefContainer() {
+		XmlElementRefContainer container = new XmlElementRefContainer();
+		container.initialize();
+		return container;
 	}
 	
 	

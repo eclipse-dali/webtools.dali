@@ -31,10 +31,10 @@ import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverrideRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -44,7 +44,7 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 	extends AbstractJavaJpaContextNode
 	implements JavaVirtualJoinColumnRelationshipStrategy
 {
-	protected final SpecifiedJoinColumnContainer specifiedJoinColumnContainer;
+	protected final ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;
 	protected final JavaReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected JavaVirtualJoinColumn defaultJoinColumn;
@@ -52,7 +52,7 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 
 	public GenericJavaVirtualOverrideJoinColumnRelationshipStrategy(JavaVirtualOverrideRelationship parent) {
 		super(parent);
-		this.specifiedJoinColumnContainer = new SpecifiedJoinColumnContainer();
+		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 	}
 
@@ -133,6 +133,10 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 
 	protected JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
+	}
+
+	protected ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn> buildSpecifiedJoinColumnContainer(){
+		return new SpecifiedJoinColumnContainer();
 	}
 
 

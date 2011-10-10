@@ -142,7 +142,9 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 	}
 
 	protected ContextListContainer<OrmJoinColumn, XmlJoinColumn> buildSpecifiedJoinColumnContainer() {
-		return new SpecifiedJoinColumnContainer();
+		SpecifiedJoinColumnContainer container =  new SpecifiedJoinColumnContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

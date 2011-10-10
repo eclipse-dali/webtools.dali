@@ -52,7 +52,7 @@ public class GenericJavaTableGenerator
 	protected String specifiedPkColumnValue;
 	protected String defaultPkColumnValue;
 
-	protected final UniqueConstraintContainer uniqueConstraintContainer;
+	protected final ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
 
 
 	// ********** constructor **********
@@ -65,7 +65,7 @@ public class GenericJavaTableGenerator
 		this.specifiedPkColumnName = generatorAnnotation.getPkColumnName();
 		this.specifiedValueColumnName = generatorAnnotation.getValueColumnName();
 		this.specifiedPkColumnValue = generatorAnnotation.getPkColumnValue();
-		this.uniqueConstraintContainer = new UniqueConstraintContainer();
+		this.uniqueConstraintContainer = this.buildUniqueConstraintContainer();
 	}
 
 
@@ -379,6 +379,11 @@ public class GenericJavaTableGenerator
 		return this.getGeneratorAnnotation().getUniqueConstraints();
 	}
 
+	protected ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> buildUniqueConstraintContainer() {
+		UniqueConstraintContainer container = new UniqueConstraintContainer();
+		container.initialize();
+		return container;
+	}
 
 	/**
 	 * unique constraint container

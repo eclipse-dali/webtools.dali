@@ -61,7 +61,7 @@ public class GenericOrmTableGenerator
 		this.specifiedPkColumnName = xmlTableGenerator.getPkColumnName();
 		this.specifiedValueColumnName = xmlTableGenerator.getValueColumnName();
 		this.specifiedPkColumnValue = xmlTableGenerator.getPkColumnValue();
-		this.uniqueConstraintContainer = new UniqueConstraintContainer();
+		this.uniqueConstraintContainer = this.buildUniqueConstraintContainer();
 	}
 
 
@@ -373,6 +373,12 @@ public class GenericOrmTableGenerator
 	protected ListIterable<XmlUniqueConstraint> getXmlUniqueConstraints() {
 		// clone to reduce chance of concurrency problems
 		return new LiveCloneListIterable<XmlUniqueConstraint>(this.xmlGenerator.getUniqueConstraints());
+	}
+
+	protected ContextListContainer<OrmUniqueConstraint, XmlUniqueConstraint> buildUniqueConstraintContainer() {
+		UniqueConstraintContainer container = new UniqueConstraintContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

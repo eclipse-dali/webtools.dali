@@ -178,7 +178,9 @@ public class GenericOrmSecondaryTable
 	}
 
 	protected ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> buildSpecifiedPrimaryKeyJoinColumnContainer() {
-		return new SpecifiedPrimaryKeyJoinColumnContainer();
+		SpecifiedPrimaryKeyJoinColumnContainer container = new SpecifiedPrimaryKeyJoinColumnContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

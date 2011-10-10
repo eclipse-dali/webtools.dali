@@ -49,7 +49,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 	public OrmEclipseLinkPersistenceUnitDefaults(OrmPersistenceUnitMetadata parent) {
 		super(parent);
 		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
-		this.tenantDiscriminatorColumnContainer = new TenantDiscriminatorColumnContainer();
+		this.tenantDiscriminatorColumnContainer = this.buildTenantDiscriminatorColumnContainer();
 	}
 
 	@Override
@@ -174,6 +174,11 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		return new EclipseLinkOrmTenantDiscriminatorColumn2_3(this, this.tenantDiscriminatorColumnOwner, xmlTenantDiscriminatorColumn);
 	}
 
+	protected ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3> buildTenantDiscriminatorColumnContainer() {
+		TenantDiscriminatorColumnContainer container = new TenantDiscriminatorColumnContainer();
+		container.initialize();
+		return container;
+	}
 
 	// ********** OrmReadOnlyTenantDiscriminatorColumn.Owner implementation **********
 

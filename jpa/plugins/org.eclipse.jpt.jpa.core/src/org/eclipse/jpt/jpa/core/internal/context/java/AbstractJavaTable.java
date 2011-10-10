@@ -304,7 +304,9 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	}
 
 	protected ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> buildUniqueConstraintContainer() {
-		return new UniqueConstraintContainer();
+		UniqueConstraintContainer container = new UniqueConstraintContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

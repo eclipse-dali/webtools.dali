@@ -132,7 +132,9 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter> buildCustomConverterContainer() {
-		return new CustomConverterContainer();
+		CustomConverterContainer container = new CustomConverterContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**
@@ -213,7 +215,9 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected ContextListContainer<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter> buildObjectTypeConverterContainer() {
-		return new ObjectTypeConverterContainer();
+		ObjectTypeConverterContainer container = new ObjectTypeConverterContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**
@@ -293,7 +297,9 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter> buildStructConverterContainer() {
-		return new StructConverterContainer();
+		StructConverterContainer container = new StructConverterContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**
@@ -374,7 +380,9 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 
 	protected ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> buildTypeConverterContainer() {
-		return new TypeConverterContainer();
+		TypeConverterContainer container = new TypeConverterContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

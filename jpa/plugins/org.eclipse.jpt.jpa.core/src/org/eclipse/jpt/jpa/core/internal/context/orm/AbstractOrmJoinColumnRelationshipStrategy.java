@@ -139,7 +139,9 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 	}
 
 	protected ContextListContainer<OrmJoinColumn, XmlJoinColumn> buildSpecifiedJoinColumnContainer() {
-		return new SpecifiedJoinColumnContainer();
+		SpecifiedJoinColumnContainer container = new SpecifiedJoinColumnContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

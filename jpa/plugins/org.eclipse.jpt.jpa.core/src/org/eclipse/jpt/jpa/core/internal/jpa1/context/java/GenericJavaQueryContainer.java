@@ -130,7 +130,9 @@ public class GenericJavaQueryContainer
 	}
 
 	protected ContextListContainer<JavaNamedQuery, NamedQueryAnnotation> buildNamedQueryContainer() {
-		return new NamedQueryContainer();
+		NamedQueryContainer container = new NamedQueryContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**
@@ -212,7 +214,9 @@ public class GenericJavaQueryContainer
 	}
 
 	protected ContextListContainer<JavaNamedNativeQuery, NamedNativeQueryAnnotation> buildNamedNativeQueryContainer() {
-		return new NamedNativeQueryContainer();
+		NamedNativeQueryContainer container = new NamedNativeQueryContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

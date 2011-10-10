@@ -180,7 +180,9 @@ public class GenericOrmJoinTable
 	}
 
 	protected ContextListContainer<OrmJoinColumn, XmlJoinColumn> buildSpecifiedInverseJoinColumnContainer() {
-		return new SpecifiedInverseJoinColumnContainer();
+		SpecifiedInverseJoinColumnContainer container = new SpecifiedInverseJoinColumnContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**

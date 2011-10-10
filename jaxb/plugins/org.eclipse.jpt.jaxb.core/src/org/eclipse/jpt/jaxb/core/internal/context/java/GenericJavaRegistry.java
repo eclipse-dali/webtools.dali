@@ -41,12 +41,12 @@ public class GenericJavaRegistry
 		extends AbstractJavaType
 		implements JaxbRegistry {
 
-	protected final ElementFactoryMethodContainer elementFactoryMethodContainer;
+	protected final ContextCollectionContainer<JaxbElementFactoryMethod, JavaResourceMethod> elementFactoryMethodContainer;
 	
 	
 	public GenericJavaRegistry(JaxbContextRoot parent, JavaResourceType resourceType) {
 		super(parent, resourceType);
-		this.elementFactoryMethodContainer = new ElementFactoryMethodContainer();
+		this.elementFactoryMethodContainer = this.buildElementFactoryMethodContainer();
 	}
 	
 	
@@ -113,6 +113,12 @@ public class GenericJavaRegistry
 	
 	protected static boolean methodReturnTypeIsJAXBElement(JavaResourceMethod method) {
 		return method.typeIsSubTypeOf(JAXB.XML_ELEMENT);
+	}
+
+	protected ContextCollectionContainer<JaxbElementFactoryMethod, JavaResourceMethod> buildElementFactoryMethodContainer() {
+		ElementFactoryMethodContainer container = new ElementFactoryMethodContainer();
+		container.initialize();
+		return container;
 	}
 	
 	

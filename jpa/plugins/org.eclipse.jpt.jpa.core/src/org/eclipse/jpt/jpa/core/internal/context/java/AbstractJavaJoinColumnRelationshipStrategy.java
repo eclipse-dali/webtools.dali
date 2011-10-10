@@ -120,7 +120,9 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 	}
 
 	protected ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer() {
-		return new SpecifiedJoinColumnContainer();
+		SpecifiedJoinColumnContainer container = new SpecifiedJoinColumnContainer();
+		container.initialize();
+		return container;
 	}
 
 	/**
