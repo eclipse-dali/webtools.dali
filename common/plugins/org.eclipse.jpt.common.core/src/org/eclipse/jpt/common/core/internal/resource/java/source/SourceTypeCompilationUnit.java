@@ -114,12 +114,19 @@ public final class SourceTypeCompilationUnit
 		if (td == null) {
 			this.syncPrimaryType_(null);
 		} else {
-			if (this.primaryType == null) {
+			if (this.primaryType == null || (!typeMatchesASTNodeType(this.primaryType, td))) {
 				this.syncPrimaryType_(this.buildPrimaryType(astRoot, td));
 			} else {
 				this.primaryType.synchronizeWith(astRoot);
 			}
 		}
+	}
+
+	/**
+	 * Must be non-null JavaResourceAbstractType and AbstractTypeDeclaration
+	 */
+	protected static boolean typeMatchesASTNodeType(JavaResourceAbstractType type, AbstractTypeDeclaration astType) {
+		return type.getKind().getAstNodeType() == astType.getNodeType();
 	}
 
 	private void syncPrimaryType_(JavaResourceAbstractType astType) {

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
 
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -171,41 +172,52 @@ public interface JavaResourceAnnotatedElement
 		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} PACKAGE may safely be cast as a 
 		 * {@link JavaResourcePackage}
 		 */
-		PACKAGE,
+		PACKAGE(ASTNode.PACKAGE_DECLARATION),
 		
 		/**
 		 * Represents a class or interface.
 		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} TYPE may safely be cast as a 
 		 * {@link JavaResourceType}
 		 */
-		TYPE,
+		TYPE(ASTNode.TYPE_DECLARATION),
 		
 		/**
 		 * Represents an enum.
 		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} ENUM may safely be cast as a 
 		 * {@link JavaResourceEnum}
 		 */
-		ENUM,
+		ENUM(ASTNode.ENUM_DECLARATION),
 		
 		/**
 		 * Represents a method.
 		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} METHOD may safely be cast as a 
 		 * {@link JavaResourceMethod}
 		 */
-		METHOD,
+		METHOD(ASTNode.METHOD_DECLARATION),
 		
 		/**
 		 * Represents a type field.
 		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} FIELD may safely be cast as a 
 		 * {@link JavaResourceField}
 		 */
-		FIELD,
+		FIELD(ASTNode.FIELD_DECLARATION),
 		
 		/**
 		 * Represents an enum constant.
 		 * An {@link JavaResourceAnnotatedElement} of {@link Kind} ENUM_CONSTANT may safely be cast as a 
 		 * {@link JavaResourceEnumConstant}
 		 */
-		ENUM_CONSTANT;
+		ENUM_CONSTANT(ASTNode.ENUM_CONSTANT_DECLARATION);
+
+
+		private int astNodeType;
+
+		Kind(int astNodeType) {
+			this.astNodeType = astNodeType;
+		}
+
+		public int getAstNodeType() {
+			return this.astNodeType;
+		}
 	}
 }
