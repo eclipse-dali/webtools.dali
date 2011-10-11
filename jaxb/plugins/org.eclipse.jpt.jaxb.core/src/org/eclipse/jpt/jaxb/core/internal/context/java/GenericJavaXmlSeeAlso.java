@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 
@@ -25,16 +25,12 @@ public class GenericJavaXmlSeeAlso
 	protected final ListContainer<String, String> valueContainer;
 	
 	
-	public GenericJavaXmlSeeAlso(JaxbPersistentClass parent, XmlSeeAlsoAnnotation annotation) {
+	public GenericJavaXmlSeeAlso(JaxbTypeMapping parent, XmlSeeAlsoAnnotation annotation) {
 		super(parent);
 		this.annotation = annotation;
 		this.valueContainer = this.buildValueContainer();
 	}
 	
-	
-	public JaxbPersistentClass getPersistentClass() {
-		return (JaxbPersistentClass) getParent();
-	}
 	
 	@Override
 	public void synchronizeWithResourceModel() {
@@ -65,7 +61,7 @@ public class GenericJavaXmlSeeAlso
 		this.valueContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 	
-	public Iterable<String> getDirectlyReferencedTypeNames() {
+	public Iterable<String> getReferencedXmlTypeNames() {
 		return this.annotation.getFullyQualifiedClasses();
 	}
 	

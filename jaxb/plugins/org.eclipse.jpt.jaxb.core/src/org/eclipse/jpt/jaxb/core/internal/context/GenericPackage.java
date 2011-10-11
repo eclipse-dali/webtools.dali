@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
-import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
+import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -100,8 +100,8 @@ public class GenericPackage
 		return getPackageInfo() == null && getRegistry() == null;
 	}
 	
-	public JaxbRegistry getRegistry() {
-		Iterable<JaxbRegistry> registries = getContextRoot().getRegistries(this);
+	public XmlRegistry getRegistry() {
+		Iterable<XmlRegistry> registries = getContextRoot().getXmlRegistries(this);
 		if (CollectionTools.isEmpty(registries)) {
 			return null;
 		}

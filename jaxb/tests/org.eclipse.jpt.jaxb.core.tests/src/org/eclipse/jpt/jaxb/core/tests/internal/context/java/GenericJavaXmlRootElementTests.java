@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,8 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
@@ -52,9 +53,10 @@ public class GenericJavaXmlRootElementTests
 	
 	public void testModifyNamespace() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		XmlRootElement contextRootElement = classMapping.getXmlRootElement();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
 		assertNull(contextRootElement.getQName().getSpecifiedNamespace());
 		assertEquals("", contextRootElement.getQName().getDefaultNamespace());
@@ -75,9 +77,10 @@ public class GenericJavaXmlRootElementTests
 	
 	public void testUpdateNamespace() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		XmlRootElement contextRootElement = classMapping.getXmlRootElement();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
 		assertNull(contextRootElement.getQName().getSpecifiedNamespace());
 		assertEquals("", contextRootElement.getQName().getDefaultNamespace());
@@ -98,15 +101,15 @@ public class GenericJavaXmlRootElementTests
 				GenericJavaXmlRootElementTests.this.removeAnnotation(declaration, JAXB.XML_ROOT_ELEMENT);
 			}
 		});
-		contextRootElement = persistentClass.getRootElement();
-		assertNull(contextRootElement);
+		assertNull(classMapping.getXmlRootElement());
 	}
 
 	public void testModifyName() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		XmlRootElement contextRootElement = classMapping.getXmlRootElement();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		String defaultName = Introspector.decapitalize(TYPE_NAME);
 		
 		assertNull(contextRootElement.getQName().getSpecifiedName());
@@ -128,9 +131,10 @@ public class GenericJavaXmlRootElementTests
 	
 	public void testUpdateName() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		XmlRootElement contextRootElement = classMapping.getXmlRootElement();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		String defaultName = Introspector.decapitalize(TYPE_NAME);
 		
 		assertNull(contextRootElement.getQName().getSpecifiedName());
@@ -152,8 +156,7 @@ public class GenericJavaXmlRootElementTests
 				GenericJavaXmlRootElementTests.this.removeAnnotation(declaration, JAXB.XML_ROOT_ELEMENT);
 			}
 		});
-		contextRootElement = persistentClass.getRootElement();
-		assertNull(contextRootElement);
+		assertNull(classMapping.getXmlRootElement());
 	}
 
 	protected void addXmlRootElementMemberValuePair(ModifiedDeclaration declaration, String name, String value) {

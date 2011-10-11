@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * @since 3.1
  */
 public interface XmlElementsMapping
-		extends JaxbAttributeMapping, XmlAdaptable {
+		extends JaxbAttributeMapping, XmlAdaptableMapping {
 	
 	// ***** XmlElements *****
 	

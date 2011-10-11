@@ -194,12 +194,12 @@ public class GenericJavaXmlElementRefs
 	
 	// ***** misc *****
 	
-	public Iterable<String> getDirectlyReferencedTypeNames() {
+	public Iterable<String> getReferencedXmlTypeNames() {
 		return new CompositeIterable<String>(
 				new TransformationIterable<XmlElementRef, Iterable<String>>(getXmlElementRefs()) {
 					@Override
 					protected Iterable<String> transform(XmlElementRef xmlElementRef) {
-						return xmlElementRef.getDirectlyReferencedTypeNames();
+						return xmlElementRef.getReferencedXmlTypeNames();
 					}
 				});
 	}

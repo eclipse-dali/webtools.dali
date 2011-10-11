@@ -27,7 +27,7 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
  */
 public interface XmlElementWrapper
 		extends JavaContextNode {
-
+	
 	// ***** qname *****
 	
 	JaxbQName getQName();
@@ -36,23 +36,34 @@ public interface XmlElementWrapper
 	// ***** nillable *****
 	
 	boolean isNillable();
-	boolean isDefaultNillable();
-		boolean DEFAULT_NILLABLE = false;
-	Boolean getSpecifiedNillable();
-	void setSpecifiedNillable(Boolean specifiedNillable);
-		String SPECIFIED_NILLABLE_PROPERTY = "specifiedNillable"; //$NON-NLS-1$
 	
+	String SPECIFIED_NILLABLE_PROPERTY = "specifiedNillable"; //$NON-NLS-1$
+	
+	Boolean getSpecifiedNillable();
+	
+	void setSpecifiedNillable(Boolean specifiedNillable);
+	
+	boolean isDefaultNillable();
+	
+	boolean DEFAULT_NILLABLE = false;
+		
 	
 	// ***** required *****
 	
 	boolean isRequired();
-	boolean isDefaultRequired();
-		boolean DEFAULT_REQUIRED = false;
-	Boolean getSpecifiedRequired();
-	void setSpecifiedRequired(Boolean specifiedRequired);
-		String SPECIFIED_REQUIRED_PROPERTY = "specifiedRequired"; //$NON-NLS-1$
 	
-	// **************** misc **************************************************
+	String SPECIFIED_REQUIRED_PROPERTY = "specifiedRequired"; //$NON-NLS-1$
+	
+	Boolean getSpecifiedRequired();
+	
+	void setSpecifiedRequired(Boolean specifiedRequired);
+	
+	boolean isDefaultRequired();
+	
+	boolean DEFAULT_REQUIRED = false;
+		
+		
+	// ***** misc *****
 	
 	XsdElementDeclaration getXsdElementDeclaration();
 }

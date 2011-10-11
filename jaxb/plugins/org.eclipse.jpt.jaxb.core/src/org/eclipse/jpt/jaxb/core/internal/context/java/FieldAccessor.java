@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.Accessor;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 
 public class FieldAccessor
 		extends AbstractJavaContextNode
@@ -24,7 +24,7 @@ public class FieldAccessor
 	protected final JavaResourceField resourceField;
 	
 	
-	public FieldAccessor(JaxbPersistentClass parent, JavaResourceField resourceField) {
+	public FieldAccessor(JaxbClassMapping parent, JavaResourceField resourceField) {
 		super(parent);
 		this.resourceField = resourceField;
 	}

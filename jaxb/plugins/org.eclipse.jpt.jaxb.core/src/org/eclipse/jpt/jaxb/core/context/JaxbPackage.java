@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,10 +66,10 @@ public interface JaxbPackage
 	boolean isEmpty();
 	
 	/**
-	 * Return the {@link JaxbRegistry} for this package if there is one.
+	 * Return the {@link XmlRegistry} for this package if there is one.
 	 * Return *one* if there are more than one (which is an error case at any rate)
 	 */
-	JaxbRegistry getRegistry();
+	XmlRegistry getRegistry();
 	
 	/**
 	 * Return the {@link XsdSchema} associated with this package, if there is one, null otherwise

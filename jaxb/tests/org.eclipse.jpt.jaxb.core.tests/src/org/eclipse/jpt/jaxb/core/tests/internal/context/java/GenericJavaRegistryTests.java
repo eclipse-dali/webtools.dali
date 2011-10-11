@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,10 +24,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
-import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
+import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
@@ -39,8 +39,8 @@ public class GenericJavaRegistryTests extends JaxbContextModelTestCase
 	public GenericJavaRegistryTests(String name) {
 		super(name);
 	}
-
-	private ICompilationUnit createTypeWithXmlRegistry() throws Exception {
+	
+	protected ICompilationUnit createClassWithXmlRegistryAndCreateMethods() throws Exception {
 		return this.createTestType(PACKAGE_NAME, "ObjectFactory.java", "ObjectFactory", new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -62,20 +62,7 @@ public class GenericJavaRegistryTests extends JaxbContextModelTestCase
 			}
 		});
 	}
-
-	private ICompilationUnit createTypeWithXmlType() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlType").append(CR);
-			}
-		});
-	}
-
+	
 	
 	protected void addElementFactoryMethod(TypeDeclaration typeDeclaration, String methodName) {
 		AST ast = typeDeclaration.getAST();
@@ -126,11 +113,12 @@ public class GenericJavaRegistryTests extends JaxbContextModelTestCase
 	}
 
 	public void testUpdateElementFactoryMethods() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
-
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-		JavaResourceType resourceType = contextRegistry.getJavaResourceType();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
+		
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry contextRegistry = jaxbClass.getXmlRegistry();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		
 		assertEquals(2, contextRegistry.getElementFactoryMethodsSize());
 		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();

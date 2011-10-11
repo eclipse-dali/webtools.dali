@@ -9,22 +9,18 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 
 public interface XmlAdaptable
-	extends JavaContextNode
-{
-	/********** XmlJavaTypeAdapter **********/
+		extends JavaContextNode {
+	
+	// ***** XmlJavaTypeAdapter *****
+	
+	String XML_JAVA_TYPE_ADAPTER_PROPERTY = "xmlJavaTypeAdapter"; //$NON-NLS-1$
+	
 	XmlJavaTypeAdapter getXmlJavaTypeAdapter();
+	
 	XmlJavaTypeAdapter addXmlJavaTypeAdapter();
+	
 	void removeXmlJavaTypeAdapter();
-		String XML_JAVA_TYPE_ADAPTER_PROPERTY = "xmlJavaTypeAdapter"; //$NON-NLS-1$
-
-	interface Owner {
-		JavaResourceAnnotatedElement getResource();
-		XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation adapterAnnotation);
-		void fireXmlAdapterChanged(XmlJavaTypeAdapter oldAdapter, XmlJavaTypeAdapter newAdapter);
-	}
 }

@@ -28,31 +28,38 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public interface JaxbContextRoot
 		extends JaxbContextNode {
 	
+	// ***** packages *****
+	
+	static String PACKAGES_COLLECTION = "packages"; //$NON-NLS-1$
+	
 	/**
 	 * The set of packages.  Includes any package with any interesting JAXB content.
 	 */
 	Iterable<JaxbPackage> getPackages();
-	public final static String PACKAGES_COLLECTION = "packages"; //$NON-NLS-1$
 	
-	int getPackagesSize();
-
 	/**
 	 * Return the package with the given name
 	 */
 	JaxbPackage getPackage(String packageName);
 	
+	int getPackagesSize();
+	
+	
+	// ***** jaxb types *****
+	
+	public final static String TYPES_COLLECTION = "types"; //$NON-NLS-1$
+	
 	/**
 	 * Return the set of all JAXB types within this context root.
 	 */
 	Iterable<JaxbType> getTypes();
-	public final static String TYPES_COLLECTION = "types"; //$NON-NLS-1$
-	
-	int getTypesSize();
 	
 	/**
-	 * Return the type with the given name
+	 * Return the type with the given (fully qualified) type name
 	 */
 	JaxbType getType(String typeName);
+	
+	int getTypesSize();
 	
 	/**
 	 * Return the set of types that are in the given package
@@ -60,67 +67,41 @@ public interface JaxbContextRoot
 	Iterable<JaxbType> getTypes(JaxbPackage jaxbPackage);
 	
 	/**
-	 * The set of persistent classes.  These may be explicitly or implicitly included.
+	 * The set of jaxb classes.  These may be explicitly or implicitly included.
 	 */
-	Iterable<JaxbPersistentClass> getPersistentClasses();
+	Iterable<JaxbClass> getClasses();
 	
 	/**
-	 * Return the set of persistent classes that are in the given package
+	 * Return the set of jaxb classes that are in the given package
 	 */
-	Iterable<JaxbPersistentClass> getPersistentClasses(JaxbPackage jaxbPackage);
-
-	/**
-	 * Return the persistent class with the given fully qualified name
-	 */
-	JaxbPersistentClass getPersistentClass(String fullyQualifiedTypeName);
-
-	/**
-	 * The set of persistent enums.  These may be explicitly or implicitly included.
-	 */
-	Iterable<JaxbPersistentEnum> getPersistentEnums();
-
-	/**
-	 * Return the set of persistent enums that are in the given package
-	 */
-	Iterable<JaxbPersistentEnum> getPersistentEnums(JaxbPackage jaxbPackage);
-
-	/**
-	 * Return the persistent enum with the given fully qualified name
-	 */
-	JaxbPersistentEnum getPersistentEnum(String fullyQualifiedTypeName);
-
-	/**
-	 * The set of registries.
-	 */
-	Iterable<JaxbRegistry> getRegistries();
+	Iterable<JaxbClass> getClasses(JaxbPackage jaxbPackage);
 	
 	/**
-	 * Return the set of registries that are in the given package
-	 * (There should typically be a max of 1, but there are invalid states ...)
+	 * The set of jaxb enums.  These may be explicitly or implicitly included.
 	 */
-	Iterable<JaxbRegistry> getRegistries(JaxbPackage jaxbPackage);
-
+	Iterable<JaxbEnum> getEnums();
+	
 	/**
-	 * The set of transient classes.
+	 * Return the set of jaxb enums that are in the given package
 	 */
-	Iterable<JaxbTransientClass> getTransientClasses();
-
+	Iterable<JaxbEnum> getEnums(JaxbPackage jaxbPackage);
+	
 	/**
-	 * Return the set of transient classes that are in the given package
+	 * Return the set of {@link XmlRegistry}(ie)s that are in the given package
 	 */
-	Iterable<JaxbTransientClass> getTransientClasses(JaxbPackage jaxbPackage);
-
+	Iterable<XmlRegistry> getXmlRegistries(JaxbPackage jaxbPackage);
+	
 	/**
-	 * Return the transient class with the given fully qualified name
+	 * Return the {@link JaxbTypeMapping} for the given (fully qualified) type name
 	 */
-	JaxbTransientClass getTransientClass(String fullyQualifiedTypeName);
-
-
+	JaxbTypeMapping getTypeMapping(String typeName);
+	
 	/**
-	 * Return the persistent class or transient type with the given fully qualified name
+	 * Return the {@link JaxbClassMapping} for the given (fully qualified) type name
 	 */
-	JaxbClass getClass(String fullyQualifiedTypeName);
-
+	JaxbClassMapping getClassMapping(String typeName);
+	
+	
 	// **************** validation ********************************************
 	
 	/**

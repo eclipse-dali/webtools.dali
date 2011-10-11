@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
+import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
@@ -24,7 +24,7 @@ public class GenericJavaEnumConstant
 	
 	protected String specifiedValue;
 
-	public GenericJavaEnumConstant(JaxbPersistentEnum parent, JavaResourceEnumConstant resourceEnumConstant) {
+	public GenericJavaEnumConstant(JaxbEnumMapping parent, JavaResourceEnumConstant resourceEnumConstant) {
 		super(parent);
 		this.resourceEnumConstant = resourceEnumConstant;
 		this.specifiedValue = this.getResourceEnumValue();

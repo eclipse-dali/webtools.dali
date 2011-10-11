@@ -16,8 +16,10 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
+import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
@@ -40,7 +42,7 @@ public class GenericJavaXmlRootElement
 	protected JaxbQName qName;
 	
 	
-	public GenericJavaXmlRootElement(JaxbPersistentType parent, XmlRootElementAnnotation resourceXmlRootElementAnnotation) {
+	public GenericJavaXmlRootElement(JaxbTypeMapping parent, XmlRootElementAnnotation resourceXmlRootElementAnnotation) {
 		super(parent);
 		this.annotation = resourceXmlRootElementAnnotation;
 		this.qName = buildQName();
@@ -51,8 +53,16 @@ public class GenericJavaXmlRootElement
 		return new XmlRootElementQName(this);
 	}
 	
-	public JaxbPersistentType getPersistentType() {
-		return (JaxbPersistentType) super.getParent();
+	public JaxbTypeMapping getTypeMapping() {
+		return (JaxbTypeMapping) getParent();
+	}
+	
+	protected JaxbType getJaxbType() {
+		return getTypeMapping().getJaxbType();
+	}
+	
+	protected JaxbPackage getJaxbPackage() {
+		return getJaxbType().getJaxbPackage();
 	}
 	
 	
@@ -130,17 +140,17 @@ public class GenericJavaXmlRootElement
 		
 		@Override
 		public String getDefaultNamespace() {
-			return GenericJavaXmlRootElement.this.getPersistentType().getJaxbPackage().getNamespace();
+			return GenericJavaXmlRootElement.this.getJaxbPackage().getNamespace();
 		}
 		
 		@Override
 		public String getDefaultName() {
-			return Introspector.decapitalize(GenericJavaXmlRootElement.this.getPersistentType().getSimpleName());
+			return Introspector.decapitalize(GenericJavaXmlRootElement.this.getJaxbType().getSimpleName());
 		}
 		
 		@Override
 		protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlRootElement.this.getPersistentType().getJaxbPackage().getXsdSchema();
+			XsdSchema schema = GenericJavaXmlRootElement.this.getJaxbPackage().getXsdSchema();
 			if (schema == null) {
 				return EmptyIterable.instance();
 			}
@@ -149,7 +159,7 @@ public class GenericJavaXmlRootElement
 		
 		@Override
 		protected Iterable<String> getNameProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlRootElement.this.getPersistentType().getJaxbPackage().getXsdSchema();
+			XsdSchema schema = GenericJavaXmlRootElement.this.getJaxbPackage().getXsdSchema();
 			if (schema == null) {
 				return EmptyIterable.instance();
 			}
@@ -165,7 +175,7 @@ public class GenericJavaXmlRootElement
 		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 			String name = getName();
 			String namespace = getNamespace();
-			XsdSchema schema = GenericJavaXmlRootElement.this.getPersistentType().getJaxbPackage().getXsdSchema();
+			XsdSchema schema = GenericJavaXmlRootElement.this.getJaxbPackage().getXsdSchema();
 			
 			if (schema != null) {
 				// element must resolve
@@ -175,7 +185,7 @@ public class GenericJavaXmlRootElement
 				}
 				else {
 					// element type must agree with parent's schema type
-					XsdTypeDefinition schemaType = GenericJavaXmlRootElement.this.getPersistentType().getXsdTypeDefinition();
+					XsdTypeDefinition schemaType = GenericJavaXmlRootElement.this.getTypeMapping().getXsdTypeDefinition();
 					if (schemaType != null) {
 						if (! schemaType.equals(schemaElement.getType())) {
 							messages.add(

@@ -15,9 +15,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 
 public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	extends AbstractJavaContextNode
@@ -102,19 +102,25 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		return (JaxbPersistentAttribute) super.getParent();
 	}
 	
-	public JaxbPersistentClass getPersistentClass() {
-		return getPersistentAttribute().getPersistentClass();
+	public JaxbClassMapping getJaxbClassMapping() {
+		return getPersistentAttribute().getJaxbClassMapping();
 	}
 	
 	public JaxbPackage getJaxbPackage() {
-		return getPersistentClass().getJaxbPackage();
+		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
 	}
 
 	public JavaResourceAttribute getJavaResourceAttribute() {
 		return this.getPersistentAttribute().getJavaResourceAttribute();
 	}
 	
-	public Iterable<String> getDirectlyReferencedTypeNames() {
-		return new SingleElementIterable(getPersistentAttribute().getJavaResourceAttributeBaseTypeName());
+	
+	
+	public String getValueTypeName() {
+		return getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
+	}
+	
+	public Iterable<String> getReferencedXmlTypeNames() {
+		return new SingleElementIterable(getValueTypeName());
 	}
 }

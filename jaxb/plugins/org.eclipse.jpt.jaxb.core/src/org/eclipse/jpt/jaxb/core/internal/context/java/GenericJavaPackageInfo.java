@@ -389,23 +389,26 @@ public class GenericJavaPackageInfo
 	 * xml java type adapter container
 	 */
 	protected class XmlJavaTypeAdapterContainer
-		extends ContextListContainer<XmlJavaTypeAdapter, XmlJavaTypeAdapterAnnotation>
-	{
+			extends ContextListContainer<XmlJavaTypeAdapter, XmlJavaTypeAdapterAnnotation> {
+		
 		@Override
 		protected String getContextElementsPropertyName() {
 			return XML_JAVA_TYPE_ADAPTERS_LIST;
 		}
+		
 		@Override
 		protected XmlJavaTypeAdapter buildContextElement(XmlJavaTypeAdapterAnnotation resourceElement) {
 			return GenericJavaPackageInfo.this.buildXmlJavaTypeAdapter(resourceElement);
 		}
+		
 		@Override
 		protected ListIterable<XmlJavaTypeAdapterAnnotation> getResourceElements() {
 			return GenericJavaPackageInfo.this.getXmlJavaTypeAdapterAnnotations();
 		}
+		
 		@Override
 		protected XmlJavaTypeAdapterAnnotation getResourceElement(XmlJavaTypeAdapter contextElement) {
-			return contextElement.getResourceXmlJavaTypeAdapter();
+			return contextElement.getAnnotation();
 		}
 	}
 }

@@ -34,16 +34,16 @@ import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
@@ -51,10 +51,10 @@ import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase
 
 
 @SuppressWarnings("nls")
-public class GenericJavaPersistentClassTests
+public class GenericJavaClassMappingTests
 		extends JaxbContextModelTestCase {
 	
-	public GenericJavaPersistentClassTests(String name) {
+	public GenericJavaClassMappingTests(String name) {
 		super(name);
 	}
 	
@@ -261,325 +261,333 @@ public class GenericJavaPersistentClassTests
 	}
 	
     public void testModifyFactoryClass() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-	
-		assertNull(persistentClass.getFactoryClass());
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
-		persistentClass.setFactoryClass("foo");
+		assertNull(classMapping.getFactoryClass());
+		
+		classMapping.setFactoryClass("foo");
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryClass());
-		assertEquals("foo", persistentClass.getFactoryClass());
+		assertEquals("foo", classMapping.getFactoryClass());
 		
-		persistentClass.setFactoryClass(null);
+		classMapping.setFactoryClass(null);
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getFactoryClass());
-		assertNull(persistentClass.getFactoryClass());
+		assertNull(classMapping.getFactoryClass());
 	
 		//add another annotation so that the context model does not get blown away
-		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
+		classMapping.setSpecifiedAccessType(XmlAccessType.FIELD);
 		resourceType.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set factoryClass again, this time starting with no XmlType annotation
-		persistentClass.setFactoryClass("foo");
+		classMapping.setFactoryClass("foo");
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryClass());
-		assertEquals("foo", persistentClass.getFactoryClass());
+		assertEquals("foo", classMapping.getFactoryClass());
 	}
 	
 	public void testUpdateFactoryClass() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-	
-		assertNull(persistentClass.getFactoryClass());
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
+		assertNull(classMapping.getFactoryClass());
 		
 		//add a factoryClass member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addXmlTypeTypeMemberValuePair(declaration, JAXB.XML_TYPE__FACTORY_CLASS, "Foo");
+				GenericJavaClassMappingTests.this.addXmlTypeTypeMemberValuePair(declaration, JAXB.XML_TYPE__FACTORY_CLASS, "Foo");
 			}
 		});
-		assertEquals("Foo", persistentClass.getFactoryClass());
+		assertEquals("Foo", classMapping.getFactoryClass());
 
 		//remove the factoryClass member value pair
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				NormalAnnotation xmlTypeAnnotation = (NormalAnnotation) GenericJavaPersistentClassTests.this.getXmlTypeAnnotation(declaration);
-				GenericJavaPersistentClassTests.this.values(xmlTypeAnnotation).remove(0);
+				NormalAnnotation xmlTypeAnnotation = (NormalAnnotation) GenericJavaClassMappingTests.this.getXmlTypeAnnotation(declaration);
+				GenericJavaClassMappingTests.this.values(xmlTypeAnnotation).remove(0);
 			}
 		});
-		assertNull(persistentClass.getFactoryClass());
+		assertNull(classMapping.getFactoryClass());
 	}
 
 	public void testModifyFactoryMethod() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-	
-		assertNull(persistentClass.getFactoryMethod());
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
-		persistentClass.setFactoryMethod("foo");
+		assertNull(classMapping.getFactoryMethod());
+		
+		classMapping.setFactoryMethod("foo");
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryMethod());
-		assertEquals("foo", persistentClass.getFactoryMethod());
+		assertEquals("foo", classMapping.getFactoryMethod());
 		
-		persistentClass.setFactoryMethod(null);
+		classMapping.setFactoryMethod(null);
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getFactoryMethod());
-		assertNull(persistentClass.getFactoryMethod());
+		assertNull(classMapping.getFactoryMethod());
 	
 		//add another annotation so that the context model does not get blown away
-		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
+		classMapping.setSpecifiedAccessType(XmlAccessType.FIELD);
 		resourceType.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set factoryMethod again, this time starting with no XmlType annotation
-		persistentClass.setFactoryMethod("foo");
+		classMapping.setFactoryMethod("foo");
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryMethod());
-		assertEquals("foo", persistentClass.getFactoryMethod());
+		assertEquals("foo", classMapping.getFactoryMethod());
 	}
 	
 	public void testUpdateFactoryMethod() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-	
-		assertNull(persistentClass.getFactoryMethod());
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
+		assertNull(classMapping.getFactoryMethod());
 		
 		//add a factoryMethod member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addXmlTypeMemberValuePair(declaration, JAXB.XML_TYPE__FACTORY_METHOD, "foo");
+				GenericJavaClassMappingTests.this.addXmlTypeMemberValuePair(declaration, JAXB.XML_TYPE__FACTORY_METHOD, "foo");
 			}
 		});
-		assertEquals("foo", persistentClass.getFactoryMethod());
+		assertEquals("foo", classMapping.getFactoryMethod());
 
 		//remove the factoryMethod member value pair
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				NormalAnnotation xmlTypeAnnotation = (NormalAnnotation) GenericJavaPersistentClassTests.this.getXmlTypeAnnotation(declaration);
-				GenericJavaPersistentClassTests.this.values(xmlTypeAnnotation).remove(0);
+				NormalAnnotation xmlTypeAnnotation = (NormalAnnotation) GenericJavaClassMappingTests.this.getXmlTypeAnnotation(declaration);
+				GenericJavaClassMappingTests.this.values(xmlTypeAnnotation).remove(0);
 			}
 		});
-		assertNull(persistentClass.getFactoryMethod());
+		assertNull(classMapping.getFactoryMethod());
 	}
 
 	public void testModifySchemaTypeName() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		String defaultXmlTypeName = Introspector.decapitalize(TYPE_NAME);
 		
-		assertNull(persistentClass.getQName().getSpecifiedName());
-		assertEquals(defaultXmlTypeName, persistentClass.getQName().getDefaultName());
-		assertEquals(defaultXmlTypeName, persistentClass.getQName().getName());
+		assertNull(classMapping.getQName().getSpecifiedName());
+		assertEquals(defaultXmlTypeName, classMapping.getQName().getDefaultName());
+		assertEquals(defaultXmlTypeName, classMapping.getQName().getName());
 		
-		persistentClass.getQName().setSpecifiedName("foo");
+		classMapping.getQName().setSpecifiedName("foo");
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getName());
-		assertEquals("foo", persistentClass.getQName().getSpecifiedName());
-		assertEquals("foo", persistentClass.getQName().getName());
+		assertEquals("foo", classMapping.getQName().getSpecifiedName());
+		assertEquals("foo", classMapping.getQName().getName());
 		
-		persistentClass.getQName().setSpecifiedName(null);
+		classMapping.getQName().setSpecifiedName(null);
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getName());
-		assertNull(persistentClass.getQName().getSpecifiedName());
-		assertEquals(defaultXmlTypeName, persistentClass.getQName().getName());	
+		assertNull(classMapping.getQName().getSpecifiedName());
+		assertEquals(defaultXmlTypeName, classMapping.getQName().getName());	
 		
 		//add another annotation so that the context model does not get blown away
-		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
+		classMapping.setSpecifiedAccessType(XmlAccessType.FIELD);
 		resourceType.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set name again, this time starting with no XmlType annotation
-		persistentClass.getQName().setSpecifiedName("foo");
+		classMapping.getQName().setSpecifiedName("foo");
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getName());
-		assertEquals("foo", persistentClass.getQName().getSpecifiedName());
-		assertEquals("foo", persistentClass.getQName().getName());
+		assertEquals("foo", classMapping.getQName().getSpecifiedName());
+		assertEquals("foo", classMapping.getQName().getName());
 	}
 	
 	public void testUpdateSchemaTypeName() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		String defaultXmlTypeName = Introspector.decapitalize(TYPE_NAME);
 		
-		assertNull(persistentClass.getQName().getSpecifiedName());
-		assertEquals(defaultXmlTypeName, persistentClass.getQName().getDefaultName());
-		assertEquals(defaultXmlTypeName, persistentClass.getQName().getName());
+		assertNull(classMapping.getQName().getSpecifiedName());
+		assertEquals(defaultXmlTypeName, classMapping.getQName().getDefaultName());
+		assertEquals(defaultXmlTypeName, classMapping.getQName().getName());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addXmlTypeMemberValuePair(declaration, JAXB.XML_TYPE__NAME, "foo");
+				GenericJavaClassMappingTests.this.addXmlTypeMemberValuePair(declaration, JAXB.XML_TYPE__NAME, "foo");
 			}
 		});
-		assertEquals("foo", persistentClass.getQName().getSpecifiedName());
-		assertEquals("foo", persistentClass.getQName().getName());
+		assertEquals("foo", classMapping.getQName().getSpecifiedName());
+		assertEquals("foo", classMapping.getQName().getName());
 		
 		//remove the namespace member value pair
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				NormalAnnotation xmlTypeAnnotation = (NormalAnnotation) GenericJavaPersistentClassTests.this.getXmlTypeAnnotation(declaration);
-				GenericJavaPersistentClassTests.this.values(xmlTypeAnnotation).remove(0);
+				NormalAnnotation xmlTypeAnnotation = (NormalAnnotation) GenericJavaClassMappingTests.this.getXmlTypeAnnotation(declaration);
+				GenericJavaClassMappingTests.this.values(xmlTypeAnnotation).remove(0);
 			}
 		});
-		assertNull(persistentClass.getQName().getSpecifiedName());
-		assertEquals(defaultXmlTypeName, persistentClass.getQName().getName());
+		assertNull(classMapping.getQName().getSpecifiedName());
+		assertEquals(defaultXmlTypeName, classMapping.getQName().getName());
 	}
 
 	public void testModifyNamespace() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
-		assertNull(persistentClass.getQName().getSpecifiedNamespace());
-		assertEquals("", persistentClass.getQName().getDefaultNamespace());
-		assertEquals("", persistentClass.getQName().getNamespace());
+		assertNull(classMapping.getQName().getSpecifiedNamespace());
+		assertEquals("", classMapping.getQName().getDefaultNamespace());
+		assertEquals("", classMapping.getQName().getNamespace());
 		
-		persistentClass.getQName().setSpecifiedNamespace("foo");
+		classMapping.getQName().setSpecifiedNamespace("foo");
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getNamespace());
-		assertEquals("foo", persistentClass.getQName().getSpecifiedNamespace());
-		assertEquals("foo", persistentClass.getQName().getNamespace());
+		assertEquals("foo", classMapping.getQName().getSpecifiedNamespace());
+		assertEquals("foo", classMapping.getQName().getNamespace());
 		
-		persistentClass.getQName().setSpecifiedNamespace(null);
+		classMapping.getQName().setSpecifiedNamespace(null);
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getNamespace());
-		assertNull(persistentClass.getQName().getSpecifiedNamespace());
-		assertEquals("", persistentClass.getQName().getNamespace());
+		assertNull(classMapping.getQName().getSpecifiedNamespace());
+		assertEquals("", classMapping.getQName().getNamespace());
 		
 		//add another annotation so that the context model does not get blown away
-		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
+		classMapping.setSpecifiedAccessType(XmlAccessType.FIELD);
 		resourceType.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set namespace again, this time starting with no XmlType annotation
-		persistentClass.getQName().setSpecifiedNamespace("foo");
+		classMapping.getQName().setSpecifiedNamespace("foo");
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getNamespace());
-		assertEquals("foo", persistentClass.getQName().getSpecifiedNamespace());
-		assertEquals("foo", persistentClass.getQName().getNamespace());
+		assertEquals("foo", classMapping.getQName().getSpecifiedNamespace());
+		assertEquals("foo", classMapping.getQName().getNamespace());
 	}
 	
 	public void testUpdateNamespace() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
-		assertNull(persistentClass.getQName().getSpecifiedNamespace());
-		assertEquals("", persistentClass.getQName().getDefaultNamespace());
-		assertEquals("", persistentClass.getQName().getNamespace());
+		assertNull(classMapping.getQName().getSpecifiedNamespace());
+		assertEquals("", classMapping.getQName().getDefaultNamespace());
+		assertEquals("", classMapping.getQName().getNamespace());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addXmlTypeMemberValuePair(declaration, JAXB.XML_TYPE__NAMESPACE, "foo");
+				GenericJavaClassMappingTests.this.addXmlTypeMemberValuePair(declaration, JAXB.XML_TYPE__NAMESPACE, "foo");
 			}
 		});
-		assertEquals("foo", persistentClass.getQName().getSpecifiedNamespace());
-		assertEquals("foo", persistentClass.getQName().getNamespace());
+		assertEquals("foo", classMapping.getQName().getSpecifiedNamespace());
+		assertEquals("foo", classMapping.getQName().getNamespace());
 		
 		//remove the namespace member value pair
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				NormalAnnotation xmlTypeAnnotation = (NormalAnnotation) GenericJavaPersistentClassTests.this.getXmlTypeAnnotation(declaration);
-				GenericJavaPersistentClassTests.this.values(xmlTypeAnnotation).remove(0);
+				NormalAnnotation xmlTypeAnnotation = (NormalAnnotation) GenericJavaClassMappingTests.this.getXmlTypeAnnotation(declaration);
+				GenericJavaClassMappingTests.this.values(xmlTypeAnnotation).remove(0);
 			}
 		});
-		assertNull(persistentClass.getQName().getSpecifiedNamespace());
-		assertEquals("", persistentClass.getQName().getNamespace());
+		assertNull(classMapping.getQName().getSpecifiedNamespace());
+		assertEquals("", classMapping.getQName().getNamespace());
 	}
 
 	public void testModifyAccessType() throws Exception {
 		createXmlTypeWithAccessorType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-	
-		assertEquals(XmlAccessType.PROPERTY, persistentClass.getSpecifiedAccessType());
-		assertEquals(XmlAccessType.PROPERTY, persistentClass.getAccessType());
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getDefaultAccessType());
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
-		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
+		assertEquals(XmlAccessType.PROPERTY, classMapping.getSpecifiedAccessType());
+		assertEquals(XmlAccessType.PROPERTY, classMapping.getAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, classMapping.getDefaultAccessType());
+		
+		classMapping.setSpecifiedAccessType(XmlAccessType.FIELD);
 		XmlAccessorTypeAnnotation accessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.FIELD, accessorTypeAnnotation.getValue());
-		assertEquals(XmlAccessType.FIELD, persistentClass.getAccessType());
+		assertEquals(XmlAccessType.FIELD, classMapping.getAccessType());
 
-		persistentClass.setSpecifiedAccessType(XmlAccessType.PUBLIC_MEMBER);
+		classMapping.setSpecifiedAccessType(XmlAccessType.PUBLIC_MEMBER);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.PUBLIC_MEMBER, accessorTypeAnnotation.getValue());
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, classMapping.getAccessType());
 
-		persistentClass.setSpecifiedAccessType(XmlAccessType.NONE);
+		classMapping.setSpecifiedAccessType(XmlAccessType.NONE);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.NONE, accessorTypeAnnotation.getValue());
-		assertEquals(XmlAccessType.NONE, persistentClass.getAccessType());
+		assertEquals(XmlAccessType.NONE, classMapping.getAccessType());
 		
-		persistentClass.setSpecifiedAccessType(null);
+		classMapping.setSpecifiedAccessType(null);
 		accessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
 		assertNull(accessorTypeAnnotation.getValue());
-		assertNull(persistentClass.getSpecifiedAccessType());
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getAccessType());
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getDefaultAccessType());
+		assertNull(classMapping.getSpecifiedAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, classMapping.getAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, classMapping.getDefaultAccessType());
 	}
 	
 	public void testUpdateAccessType() throws Exception {
 		createXmlTypeWithAccessorType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-	
-		assertEquals(XmlAccessType.PROPERTY, persistentClass.getSpecifiedAccessType());
-		assertEquals(XmlAccessType.PROPERTY, persistentClass.getAccessType());
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getDefaultAccessType());
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		assertEquals(XmlAccessType.PROPERTY, classMapping.getSpecifiedAccessType());
+		assertEquals(XmlAccessType.PROPERTY, classMapping.getAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, classMapping.getDefaultAccessType());
 		
 		//set the accesser type value to FIELD
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, JAXB.XML_ACCESS_TYPE__FIELD);
+				GenericJavaClassMappingTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, JAXB.XML_ACCESS_TYPE__FIELD);
 			}
 		});
-		assertEquals(XmlAccessType.FIELD, persistentClass.getAccessType());
+		assertEquals(XmlAccessType.FIELD, classMapping.getAccessType());
 
 		//set the accesser type value to PUBLIC_MEMBER
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+				GenericJavaClassMappingTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
 			}
 		});
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, classMapping.getAccessType());
 
 		//set the accesser type value to NONE
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, JAXB.XML_ACCESS_TYPE__NONE);
+				GenericJavaClassMappingTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, JAXB.XML_ACCESS_TYPE__NONE);
 			}
 		});
-		assertEquals(XmlAccessType.NONE, persistentClass.getAccessType());
+		assertEquals(XmlAccessType.NONE, classMapping.getAccessType());
 		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ACCESSOR_TYPE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ACCESSOR_TYPE);
 			}
 		});
-		assertNull(persistentClass.getSpecifiedAccessType());
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getAccessType());
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getDefaultAccessType());
+		assertNull(classMapping.getSpecifiedAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, classMapping.getAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, classMapping.getDefaultAccessType());
 	}
 
 	/**
@@ -588,118 +596,130 @@ public class GenericJavaPersistentClassTests
 	 * Otherwise, the @XmlAccessorType on a package is inherited. 	
 	 */
 	public void testGetDefaultAccessType() throws Exception {
-		this.createAnnotatedPersistentClass();
-		this.createTestSubType();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JaxbPersistentClass childPersistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, childPersistentClass.getDefaultAccessType());
+		createClassWithXmlType();
+		createTestSubType();
+		
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType(FULLY_QUALIFIED_TYPE_NAME);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JaxbClass childJaxbClass = (JaxbClass) getContextRoot().getType("test.AnnotationTestTypeChild");
+		JaxbClassMapping childClassMapping = childJaxbClass.getMapping();
+		
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, childClassMapping.getDefaultAccessType());
 
 		this.createPackageInfoWithAccessorType();
-		assertEquals(XmlAccessType.PROPERTY, childPersistentClass.getDefaultAccessType());
+		assertEquals(XmlAccessType.PROPERTY, childClassMapping.getDefaultAccessType());
 
-		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
-		assertEquals(XmlAccessType.PROPERTY, childPersistentClass.getDefaultAccessType());
+		classMapping.setSpecifiedAccessType(XmlAccessType.FIELD);
+		assertEquals(XmlAccessType.FIELD, childClassMapping.getDefaultAccessType());
 
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
-		persistentClass.setSpecifiedAccessType(null);
-		assertEquals(XmlAccessType.PROPERTY, childPersistentClass.getDefaultAccessType());
+		classMapping.setSpecifiedAccessType(null);
+		assertEquals(XmlAccessType.PROPERTY, childClassMapping.getDefaultAccessType());
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
-		assertEquals(XmlAccessType.FIELD, childPersistentClass.getDefaultAccessType());
+		assertEquals(XmlAccessType.FIELD, childClassMapping.getDefaultAccessType());
 
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.NONE);
-		assertEquals(XmlAccessType.NONE, childPersistentClass.getDefaultAccessType());
+		assertEquals(XmlAccessType.NONE, childClassMapping.getDefaultAccessType());
 
 		contextPackageInfo.setSpecifiedAccessType(null);
-		assertEquals(XmlAccessType.PUBLIC_MEMBER, childPersistentClass.getDefaultAccessType());
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, childClassMapping.getDefaultAccessType());
 	}
 
 	public void testGetSuperPersistentClass() throws Exception {
-		this.createAnnotatedPersistentClass();
-		this.createTestSubType();
-		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
-		JaxbPersistentClass childPersistentClass = getContextRoot().getPersistentClass(PACKAGE_NAME + ".AnnotationTestTypeChild");
-
-		assertEquals(persistentClass, childPersistentClass.getSuperClass());
+		createClassWithXmlType();
+		createTestSubType();
+		
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType(FULLY_QUALIFIED_TYPE_NAME);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JaxbClass childJaxbClass = (JaxbClass) getContextRoot().getType("test.AnnotationTestTypeChild");
+		JaxbClassMapping childClassMapping = childJaxbClass.getMapping();
+		
+		assertEquals(classMapping, childClassMapping.getSuperclass());
 
 		//test that the superClass is not null even when it is unannotated
-		AnnotatedElement annotatedElement = this.annotatedElement(persistentClass.getJavaResourceType());
+		AnnotatedElement annotatedElement = this.annotatedElement(jaxbClass.getJavaResourceType());
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_TYPE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_TYPE);
 			}
 		});
-		assertEquals(persistentClass, childPersistentClass.getSuperClass());
+		assertEquals(classMapping, childClassMapping.getSuperclass());
 	}
 
 	public void testModifyAccessOrder() throws Exception {
 		createXmlTypeWithAccessorOrder();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		assertEquals(XmlAccessOrder.ALPHABETICAL, classMapping.getSpecifiedAccessOrder());
+		assertEquals(XmlAccessOrder.ALPHABETICAL, classMapping.getAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, classMapping.getDefaultAccessOrder());
 
-		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getSpecifiedAccessOrder());
-		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getAccessOrder());
-		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getDefaultAccessOrder());
-
-		persistentClass.setSpecifiedAccessOrder(XmlAccessOrder.UNDEFINED);
+		classMapping.setSpecifiedAccessOrder(XmlAccessOrder.UNDEFINED);
 		XmlAccessorOrderAnnotation accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder.UNDEFINED, accessorOrderAnnotation.getValue());
-		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, classMapping.getAccessOrder());
 
-		persistentClass.setSpecifiedAccessOrder(null);
+		classMapping.setSpecifiedAccessOrder(null);
 		accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
 		assertNull(accessorOrderAnnotation.getValue());
-		assertNull(persistentClass.getSpecifiedAccessOrder());
-		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getAccessOrder());
-		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getDefaultAccessOrder());
+		assertNull(classMapping.getSpecifiedAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, classMapping.getAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, classMapping.getDefaultAccessOrder());
 	}
 
 	public void testUpdateAccessOrder() throws Exception {
 		createXmlTypeWithAccessorOrder();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getSpecifiedAccessOrder());
-		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getAccessOrder());
-		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getDefaultAccessOrder());
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		assertEquals(XmlAccessOrder.ALPHABETICAL, classMapping.getSpecifiedAccessOrder());
+		assertEquals(XmlAccessOrder.ALPHABETICAL, classMapping.getAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, classMapping.getDefaultAccessOrder());
 
 		//set the access order value to UNDEFINED
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_ORDER, JAXB.XML_ACCESS_ORDER__UNDEFINED);
+				GenericJavaClassMappingTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_ORDER, JAXB.XML_ACCESS_ORDER__UNDEFINED);
 			}
 		});
-		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, classMapping.getAccessOrder());
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ACCESSOR_ORDER);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ACCESSOR_ORDER);
 			}
 		});
-		assertNull(persistentClass.getSpecifiedAccessOrder());
-		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getAccessOrder());
-		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getDefaultAccessOrder());
+		assertNull(classMapping.getSpecifiedAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, classMapping.getAccessOrder());
+		assertEquals(XmlAccessOrder.UNDEFINED, classMapping.getDefaultAccessOrder());
 	}
 
 	public void testGetPropOrder() throws Exception {
-		this.createAnnotatedPersistentClass();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		ListIterator<String> props = persistentClass.getPropOrder().iterator();
+		this.createClassWithXmlType();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		ListIterator<String> props = classMapping.getPropOrder().iterator();
 		assertFalse(props.hasNext());
 
 		//add 2 prop orders
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addProp(declaration, 0, "bar");
-				GenericJavaPersistentClassTests.this.addProp(declaration, 1, "foo");
+				GenericJavaClassMappingTests.this.addProp(declaration, 0, "bar");
+				GenericJavaClassMappingTests.this.addProp(declaration, 1, "foo");
 			}
 		});
 
-		props = persistentClass.getPropOrder().iterator();
+		props = classMapping.getPropOrder().iterator();
 		assertEquals("bar", props.next());
 		assertEquals("foo", props.next());
 		assertFalse(props.hasNext());
@@ -710,31 +730,35 @@ public class GenericJavaPersistentClassTests
 	}
 
 	public void testGetPropOrderSize() throws Exception {
-		this.createAnnotatedPersistentClass();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		assertEquals(0, persistentClass.getPropOrderSize());
+		this.createClassWithXmlType();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		assertEquals(0, classMapping.getPropOrderSize());
 
 		//add 2 prop orders
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addProp(declaration, 0, "bar");
-				GenericJavaPersistentClassTests.this.addProp(declaration, 1, "foo");
+				GenericJavaClassMappingTests.this.addProp(declaration, 0, "bar");
+				GenericJavaClassMappingTests.this.addProp(declaration, 1, "foo");
 			}
 		});
-		assertEquals(2, persistentClass.getPropOrderSize());
+		assertEquals(2, classMapping.getPropOrderSize());
 	}
 
 	public void testAddProp() throws Exception {
-		this.createAnnotatedPersistentClass();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		persistentClass.addProp(0, "bar");
-		persistentClass.addProp(0, "foo");
-		persistentClass.addProp(0, "baz");
+		this.createClassWithXmlType();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		classMapping.addProp(0, "bar");
+		classMapping.addProp(0, "foo");
+		classMapping.addProp(0, "baz");
 
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		ListIterator<String> props = xmlTypeAnnotation.getPropOrder().iterator();
@@ -746,13 +770,15 @@ public class GenericJavaPersistentClassTests
 	}
 
 	public void testAddProp2() throws Exception {
-		this.createAnnotatedPersistentClass();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		persistentClass.addProp(0, "bar");
-		persistentClass.addProp(1, "foo");
-		persistentClass.addProp(0, "baz");
+		createClassWithXmlType();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		classMapping.addProp(0, "bar");
+		classMapping.addProp(1, "foo");
+		classMapping.addProp(0, "baz");
 
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		ListIterator<String> props = xmlTypeAnnotation.getPropOrder().iterator();
@@ -764,48 +790,52 @@ public class GenericJavaPersistentClassTests
 	}
 
 	public void testRemoveProp() throws Exception {
-		this.createAnnotatedPersistentClass();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		persistentClass.addProp(0, "bar");
-		persistentClass.addProp(1, "foo");
-		persistentClass.addProp(2, "baz");
+		createClassWithXmlType();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		classMapping.addProp(0, "bar");
+		classMapping.addProp(1, "foo");
+		classMapping.addProp(2, "baz");
 
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 
-		persistentClass.removeProp(1);
+		classMapping.removeProp(1);
 
 		ListIterator<String> resourceProps = xmlTypeAnnotation.getPropOrder().iterator();
 		assertEquals("bar", resourceProps.next());		
 		assertEquals("baz", resourceProps.next());
 		assertFalse(resourceProps.hasNext());
 
-		persistentClass.removeProp(1);
+		classMapping.removeProp(1);
 		resourceProps = xmlTypeAnnotation.getPropOrder().iterator();
 		assertEquals("bar", resourceProps.next());
 		assertFalse(resourceProps.hasNext());
 
-		persistentClass.removeProp(0);
+		classMapping.removeProp(0);
 		resourceProps = xmlTypeAnnotation.getPropOrder().iterator();
 		assertFalse(resourceProps.hasNext());
 	}
 
 	public void testMoveProp() throws Exception {
-		this.createAnnotatedPersistentClass();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		persistentClass.addProp(0, "bar");
-		persistentClass.addProp(1, "foo");
-		persistentClass.addProp(2, "baz");
+		createClassWithXmlType();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		classMapping.addProp(0, "bar");
+		classMapping.addProp(1, "foo");
+		classMapping.addProp(2, "baz");
 
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 
 		assertEquals(3, xmlTypeAnnotation.getPropOrderSize());		
 
-		persistentClass.moveProp(2, 0);
-		ListIterator<String> props = persistentClass.getPropOrder().iterator();
+		classMapping.moveProp(2, 0);
+		ListIterator<String> props = classMapping.getPropOrder().iterator();
 		assertEquals("foo", props.next());
 		assertEquals("baz", props.next());
 		assertEquals("bar", props.next());		
@@ -815,10 +845,9 @@ public class GenericJavaPersistentClassTests
 		assertEquals("foo", resourceProps.next());
 		assertEquals("baz", resourceProps.next());
 		assertEquals("bar", resourceProps.next());
-
-
-		persistentClass.moveProp(0, 1);
-		props = persistentClass.getPropOrder().iterator();
+		
+		classMapping.moveProp(0, 1);
+		props = classMapping.getPropOrder().iterator();
 		assertEquals("baz", props.next());
 		assertEquals("foo", props.next());
 		assertEquals("bar", props.next());		
@@ -830,25 +859,27 @@ public class GenericJavaPersistentClassTests
 		assertEquals("bar", resourceProps.next());
 	}
 
-	public void testSyncXmlNsPrefixes() throws Exception {
-		this.createAnnotatedPersistentClass();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		ListIterator<String> props = persistentClass.getPropOrder().iterator();
+	public void testSyncProps() throws Exception {
+		createClassWithXmlType();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		ListIterator<String> props = classMapping.getPropOrder().iterator();
 		assertFalse(props.hasNext());
 
 		//add 3 prop orders
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addProp(declaration, 0, "bar");
-				GenericJavaPersistentClassTests.this.addProp(declaration, 1, "foo");
-				GenericJavaPersistentClassTests.this.addProp(declaration, 2, "baz");
+				GenericJavaClassMappingTests.this.addProp(declaration, 0, "bar");
+				GenericJavaClassMappingTests.this.addProp(declaration, 1, "foo");
+				GenericJavaClassMappingTests.this.addProp(declaration, 2, "baz");
 			}
 		});
 
-		props = persistentClass.getPropOrder().iterator();
+		props = classMapping.getPropOrder().iterator();
 		assertTrue(props.hasNext());
 		assertEquals("bar", props.next());
 		assertEquals("foo", props.next());
@@ -858,11 +889,11 @@ public class GenericJavaPersistentClassTests
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.moveProp(declaration, 2, 0);
+				GenericJavaClassMappingTests.this.moveProp(declaration, 2, 0);
 			}
 		});
 
-		props = persistentClass.getPropOrder().iterator();
+		props = classMapping.getPropOrder().iterator();
 		assertTrue(props.hasNext());
 		assertEquals("foo", props.next());
 		assertEquals("baz", props.next());
@@ -872,11 +903,11 @@ public class GenericJavaPersistentClassTests
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.moveProp(declaration, 0, 1);
+				GenericJavaClassMappingTests.this.moveProp(declaration, 0, 1);
 			}
 		});
 
-		props = persistentClass.getPropOrder().iterator();
+		props = classMapping.getPropOrder().iterator();
 		assertTrue(props.hasNext());
 		assertEquals("baz", props.next());
 		assertEquals("foo", props.next());
@@ -886,11 +917,11 @@ public class GenericJavaPersistentClassTests
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeProp(declaration, 1);
+				GenericJavaClassMappingTests.this.removeProp(declaration, 1);
 			}
 		});
 
-		props = persistentClass.getPropOrder().iterator();
+		props = classMapping.getPropOrder().iterator();
 		assertTrue(props.hasNext());
 		assertEquals("baz", props.next());
 		assertEquals("bar", props.next());
@@ -899,11 +930,11 @@ public class GenericJavaPersistentClassTests
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeProp(declaration, 1);
+				GenericJavaClassMappingTests.this.removeProp(declaration, 1);
 			}
 		});
 
-		props = persistentClass.getPropOrder().iterator();
+		props = classMapping.getPropOrder().iterator();
 		assertTrue(props.hasNext());
 		assertEquals("baz", props.next());
 		assertFalse(props.hasNext());
@@ -911,11 +942,11 @@ public class GenericJavaPersistentClassTests
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeProp(declaration, 0);
+				GenericJavaClassMappingTests.this.removeProp(declaration, 0);
 			}
 		});
 
-		props = persistentClass.getPropOrder().iterator();
+		props = classMapping.getPropOrder().iterator();
 		assertFalse(props.hasNext());
 	}
 
@@ -943,904 +974,899 @@ public class GenericJavaPersistentClassTests
 	}
 
 	public void testModifyXmlRootElement() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		assertNull(persistentClass.getRootElement());
-		assertFalse(persistentClass.isRootElement());
-
-		persistentClass.setRootElement("foo");
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
+		
+		assertNull(classMapping.getXmlRootElement());
+		
+		classMapping.addXmlRootElement().getQName().setSpecifiedName("foo");
 		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertEquals("foo", xmlRootElementAnnotation.getName());
-		assertEquals("foo", persistentClass.getRootElement().getQName().getName());
-		assertTrue(persistentClass.isRootElement());
-
-		persistentClass.setRootElement(null);
+		assertEquals("foo", classMapping.getXmlRootElement().getQName().getName());
+		
+		classMapping.removeXmlRootElement();
 		xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertNull(xmlRootElementAnnotation);
-		assertNull(persistentClass.getRootElement());
-		assertFalse(persistentClass.isRootElement());
+		assertNull(classMapping.getXmlRootElement());
 	}
 
 	public void testUpdateXmlRootElement() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-	
-		assertNull(persistentClass.getRootElement());
-		assertFalse(persistentClass.isRootElement());
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
+		assertNull(classMapping.getXmlRootElement());
 		
 		//add a XmlRootElement annotation
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				NormalAnnotation annotation = GenericJavaPersistentClassTests.this.addNormalAnnotation(declaration.getDeclaration(), JAXB.XML_ROOT_ELEMENT);
-				GenericJavaPersistentClassTests.this.addMemberValuePair(annotation, JAXB.XML_ROOT_ELEMENT__NAME, "foo");
+				NormalAnnotation annotation = GenericJavaClassMappingTests.this.addNormalAnnotation(declaration.getDeclaration(), JAXB.XML_ROOT_ELEMENT);
+				GenericJavaClassMappingTests.this.addMemberValuePair(annotation, JAXB.XML_ROOT_ELEMENT__NAME, "foo");
 			}
 		});
-		assertEquals("foo", persistentClass.getRootElement().getQName().getName());
-		assertTrue(persistentClass.isRootElement());
-
+		assertEquals("foo", classMapping.getXmlRootElement().getQName().getName());
+		
 		//remove the XmlRootElement annotation
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ROOT_ELEMENT);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ROOT_ELEMENT);
 			}
 		});
-		assertNull(persistentClass.getRootElement());
-		assertFalse(persistentClass.isRootElement());
+		assertNull(classMapping.getXmlRootElement());
 	}
-
-
+	
 	public void testUpdateFieldAttributes() throws Exception {
 		this.createTestXmlTypeWithFieldAndPublicMemberAccess();
-
-		JaxbPersistentClass contextClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		
 		//public int foo;
-		this.publicFieldTest(contextClass);
-
+		publicFieldTest(classMapping);
+		
 		//public transient int foo;
-		this.publicTransientFieldTest(contextClass);
-
+		publicTransientFieldTest(classMapping);
+		
 		//public static int foo;
-		this.publicStaticFieldTest(contextClass);
-
+		publicStaticFieldTest(classMapping);
+		
 		//public final int foo;
-		this.publicFinalFieldTest(contextClass);
-
+		publicFinalFieldTest(classMapping);
+		
 		//public static final int foo;
-		this.publicStaticFinalFieldTest(contextClass);
-
+		publicStaticFinalFieldTest(classMapping);
+		
 		//private int foo;
-		this.privateFieldTest(contextClass);
-
+		privateFieldTest(classMapping);
+		
 		//  private transient int foo;
-		this.privateTransientFieldTest(contextClass);
-
+		privateTransientFieldTest(classMapping);
+		
 		//  @XmlAttribute
 		//  private static int foo; //persistent
-		this.privateStaticFieldTest(contextClass);
-
+		privateStaticFieldTest(classMapping);
+		
 		//  @XmlAttribute
 		//  private static final int foo; //persistent
-		this.privateStaticFinalFieldTest(contextClass);
+		privateStaticFinalFieldTest(classMapping);
 	}
-
-	protected void publicFieldTest(JaxbPersistentClass contextClass) {
+	
+	protected void publicFieldTest(JaxbClassMapping classMapping) {
 		//public int foo; PUBLIC_MEMBER access - persistent
-		assertEquals(1, contextClass.getAttributesSize());
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+		assertEquals(1, classMapping.getAttributesSize());
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
-
+		
 		//public int foo; //PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
-
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//public int foo; //FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
-
+		
 		//public int foo; //NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
-
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//public int foo; PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
-
-
+		
 		//add @XmlTransient annotation and test each access type
-		JavaResourceField resourceField = (JavaResourceField) contextClass.getAttributes().iterator().next().getJavaResourceAttribute();
+		JavaResourceField resourceField = (JavaResourceField) classMapping.getAttributes().iterator().next().getJavaResourceAttribute();
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TRANSIENT);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TRANSIENT);
 			}
 		});
 		//@XmlTransient
 		//public int foo; //PROPERTY access - not "persistent", but comes in to our context model because it is "mapped"
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlTransient
 		//public int foo; //FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlTransient
 		//public int foo; //NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlTransient
 		//public int foo; PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_TRANSIENT);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_TRANSIENT);
 			}
 		});
 	}
 
-	protected void publicTransientFieldTest(JaxbPersistentClass contextClass) {
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+	protected void publicTransientFieldTest(JaxbClassMapping classMapping) {
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public transient int foo; PUBLIC_MEMBER access - not persistent
 		this.addModifiers(resourceField, ModifierKeyword.TRANSIENT_KEYWORD);
-		assertEquals(0, contextClass.getAttributesSize());
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public transient int foo; //PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public transient int foo; //FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public transient int foo; //NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public transient int foo; PUBLIC_MEMBER access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		this.removeModifiers(resourceField, ModifierKeyword.TRANSIENT_KEYWORD);
 	}
 
-	protected void publicStaticFieldTest(JaxbPersistentClass contextClass) {
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+	protected void publicStaticFieldTest(JaxbClassMapping classMapping) {
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public static int foo; PUBLIC_MEMBER access - not persistent
 		this.addModifiers(resourceField, ModifierKeyword.STATIC_KEYWORD);
-		assertEquals(0, contextClass.getAttributesSize());
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static int foo; //PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static int foo; //FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static int foo; //NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static int foo; PUBLIC_MEMBER access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		this.removeModifiers(resourceField, ModifierKeyword.STATIC_KEYWORD);
 	}
 
-	protected void publicFinalFieldTest(JaxbPersistentClass contextClass) {
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+	protected void publicFinalFieldTest(JaxbClassMapping classMapping) {
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public final int foo; PUBLIC_MEMBER access - persistent
 		this.addModifiers(resourceField, ModifierKeyword.FINAL_KEYWORD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//public final int foo; //PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public final int foo; //FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//public final int foo; //NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public final int foo; PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		this.removeModifiers(resourceField, ModifierKeyword.FINAL_KEYWORD);
 	}
 
-	protected void publicStaticFinalFieldTest(JaxbPersistentClass contextClass) {
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+	protected void publicStaticFinalFieldTest(JaxbClassMapping classMapping) {
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 
 		//public static final int foo; PUBLIC_MEMBER access - not persistent
 		this.addModifiers(resourceField, ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD);
-		assertEquals(0, contextClass.getAttributesSize());
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static final int foo; //PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static final int foo; //FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static final int foo; //NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static final int foo; PUBLIC_MEMBER access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		this.removeModifiers(resourceField, ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD);
 	}
 
-	protected void privateFieldTest(JaxbPersistentClass contextClass) {
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+	protected void privateFieldTest(JaxbClassMapping classMapping) {
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD);
 
 		//private int foo; PUBLIC_MEMBER access - not persistent
-		assertEquals(0, contextClass.getAttributesSize());
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private int foo; //PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private int foo; //FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//private int foo; //NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private int foo; PUBLIC_MEMBER access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
 
 
 		//add @XmlAttribute annotation and test each access type
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
 		//private int foo; //PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private int foo; //FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private int foo; //NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private int foo; PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 		removeModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 	}
 
-	protected void privateTransientFieldTest(JaxbPersistentClass contextClass) {
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+	protected void privateTransientFieldTest(JaxbClassMapping classMapping) {
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.TRANSIENT_KEYWORD);
 
 		//private transient int foo; PUBLIC_MEMBER access - not persistent
-		assertEquals(0, contextClass.getAttributesSize());
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private transient int foo; //PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private transient int foo; //FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private transient int foo; //NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private transient int foo; PUBLIC_MEMBER access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
 
 
 		//add @XmlAttribute annotation and test each access type
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
 		//private transient int foo; //PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private transient int foo; //FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private transient int foo; //NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private transient int foo; PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 		removeModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.TRANSIENT_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 	}
 
-	protected void privateStaticFieldTest(JaxbPersistentClass contextClass) {
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+	protected void privateStaticFieldTest(JaxbClassMapping classMapping) {
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.STATIC_KEYWORD);
 
 		//private static int foo; PUBLIC_MEMBER access - not persistent
-		assertEquals(0, contextClass.getAttributesSize());
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private static int foo; //PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private static int foo; //FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private static int foo; //NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private static int foo; PUBLIC_MEMBER access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
 
 
 		//add @XmlAttribute annotation and test each access type
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
 		//private static int foo; //PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private static int foo; //FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private static int foo; //NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private static int foo; PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 		removeModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.STATIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 	}
 
-	protected void privateStaticFinalFieldTest(JaxbPersistentClass contextClass) {
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+	protected void privateStaticFinalFieldTest(JaxbClassMapping classMapping) {
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		JavaResourceField resourceField = (JavaResourceField) attributes.next().getJavaResourceAttribute();
 		removeModifiers(resourceField, ModifierKeyword.PUBLIC_KEYWORD);
 		addModifiers(resourceField, ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD);
 
 		//private static final int foo; PUBLIC_MEMBER access - not persistent
-		assertEquals(0, contextClass.getAttributesSize());
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private static final int foo; //PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private static final int foo; //FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private static final int foo; //NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private static final int foo; PUBLIC_MEMBER access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
 
 
 		//add @XmlAttribute annotation and test each access type
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceField);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
 		//private static final int foo; //PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private static final int foo; //FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private static final int foo; //NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private static final int foo; PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 	}
 
 	public void testUpdatePropertyAttributes() throws Exception {
-		this.createTestXmlTypeWithPropertyAndPublicMemberAccess();
-
-		JaxbPersistentClass contextClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-
+		createTestXmlTypeWithPropertyAndPublicMemberAccess();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		
 		//public int getFoo();, public void setFoo(int);
-		this.publicGetterSetterTest(contextClass);
-
+		publicGetterSetterTest(classMapping);
+		
 		//public static int getFoo();, public static void setFoo(int);
-		this.publicStaticGetterSetterTest(contextClass);
-
+		publicStaticGetterSetterTest(classMapping);
+		
 		//private int getFoo();, private void setFoo(int);
-		this.privateGetterSetterTest(contextClass);
+		privateGetterSetterTest(classMapping);
 	}
-
+	
 	public void testUpdateGetterPropertyAttributes() throws Exception {
-		this.createTestXmlTypeWithPropertyGetterAndPublicMemberAccess();
-
-		JaxbPersistentClass contextClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-
+		createTestXmlTypeWithPropertyGetterAndPublicMemberAccess();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		
 		//public int getFoo(); PUBLIC_MEMBER access - not persistent
-		assertEquals(0, contextClass.getAttributesSize());
-
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//public int getFoo(); PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
-
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//public int getFoo(); FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
-
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//public int getFoo(); NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
-
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//public int getFoo(); PUBLIC_MEMBER access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
-
-
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//add @XmlAttribute annotation and test each access type
-		JavaResourceMethod resourceMethod = contextClass.getJavaResourceType().getMethods().iterator().next();
+		JavaResourceMethod resourceMethod = classMapping.getJaxbType().getJavaResourceType().getMethods().iterator().next();
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMethod);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
 		//public int getFoo(); PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		assertEquals(1, contextClass.getAttributesSize());
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		assertEquals(1, classMapping.getAttributesSize());
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public int getFoo(); FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
-
+		
 		//@XmlAttribute
 		//public int getFoo(); NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
-
+		
 		//@XmlAttribute
 		//public int getFoo(); PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
-	
+		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 	}
-
+	
 	public void testUpdateSetterPropertyAttributes() throws Exception {
-		this.createTestXmlTypeWithPropertySetterAndPublicMemberAccess();
-
-		JaxbPersistentClass contextClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-
+		createTestXmlTypeWithPropertySetterAndPublicMemberAccess();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		
 		//public void setFoo(int foo); PUBLIC_MEMBER access - not persistent
-		assertEquals(0, contextClass.getAttributesSize());
-
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//public void setFoo(int foo); PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
-
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//public void setFoo(int foo); FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
-
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//public void setFoo(int foo); NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
-
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//public void setFoo(int foo); PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
-
-
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
+		
 		//add @XmlAttribute annotation and test each access type
-		JavaResourceMethod resourceMethod = contextClass.getJavaResourceType().getMethods().iterator().next();
+		JavaResourceMethod resourceMethod = classMapping.getJaxbType().getJavaResourceType().getMethods().iterator().next();
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMethod);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
 		//public void setFoo(int foo);; PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		assertEquals(1, contextClass.getAttributesSize());
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		assertEquals(1, classMapping.getAttributesSize());
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
-
+		
 		//@XmlAttribute
 		//public void setFoo(int foo); FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public void setFoo(int foo); NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
-
+		
 		//@XmlAttribute
 		//public void setFoo(int foo); PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
-	
+		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 	}
-
+	
 	public void testUpdateGetterListPropertyAttributes() throws Exception {
 		this.createTestXmlTypeWithPropertyGetterListAndPublicMemberAccess();
-
-		JaxbPersistentClass contextClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		
 		//public List<?> getFoo(); PUBLIC_MEMBER access - persistent
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
-		assertEquals(1, contextClass.getAttributesSize());
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
+		assertEquals(1, classMapping.getAttributesSize());
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//public List<?> getFoo(); PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		attributes = contextClass.getAttributes().iterator();
-		assertEquals(1, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		attributes = classMapping.getAttributes().iterator();
+		assertEquals(1, classMapping.getAttributesSize());
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//public List<?> getFoo(); FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public List<?> getFoo(); NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public List<?> getFoo(); PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		attributes = contextClass.getAttributes().iterator();
-		assertEquals(1, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		attributes = classMapping.getAttributes().iterator();
+		assertEquals(1, classMapping.getAttributesSize());
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
-
 		//add @XmlAttribute annotation and test each access type
-		JavaResourceMethod resourceMethod = contextClass.getJavaResourceType().getMethods().iterator().next();
+		JavaResourceMethod resourceMethod = classMapping.getJaxbType().getJavaResourceType().getMethods().iterator().next();
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMethod);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
 		//public List<?> getFoo(); PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		attributes = contextClass.getAttributes().iterator();
-		assertEquals(1, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		attributes = classMapping.getAttributes().iterator();
+		assertEquals(1, classMapping.getAttributesSize());
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public List<?> getFoo(); FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public List<?> getFoo(); NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public List<?> getFoo(); PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 	}
 
-	protected void publicGetterSetterTest(JaxbPersistentClass contextClass) {
+	protected void publicGetterSetterTest(JaxbClassMapping classMapping) {
 		//public int getFoo();, public void setFoo(int); PUBLIC_MEMBER access - persistent
-		assertEquals(1, contextClass.getAttributesSize());
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+		assertEquals(1, classMapping.getAttributesSize());
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//public int getFoo();, public void setFoo(int); PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//public int getFoo();, public void setFoo(int); FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public int getFoo();, public void setFoo(int); NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public int getFoo();, public void setFoo(int); PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 
 		//add @XmlAttribute annotation and test each access type
-		JavaResourceMethod resourceMethod = (JavaResourceMethod) contextClass.getAttributes().iterator().next().getJavaResourceAttribute();
+		JavaResourceMethod resourceMethod = (JavaResourceMethod) classMapping.getAttributes().iterator().next().getJavaResourceAttribute();
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMethod);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
 		//public int getFoo();, public void setFoo(int); PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public int getFoo();, public void setFoo(int); FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public int getFoo();, public void setFoo(int); NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public int getFoo();, public void setFoo(int); PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 	}
 
-	protected void publicStaticGetterSetterTest(JaxbPersistentClass contextClass) {
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+	protected void publicStaticGetterSetterTest(JaxbClassMapping classMapping) {
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		PropertyAccessor propertyAccessor = (PropertyAccessor) ReflectionTools.getFieldValue(attributes.next(), "accessor");
 		JavaResourceMethod resourceGetter = propertyAccessor.getResourceGetterMethod();
 		JavaResourceMethod resourceSetter = propertyAccessor.getResourceSetterMethod();
@@ -1848,76 +1874,76 @@ public class GenericJavaPersistentClassTests
 		//public static int getFoo();, public static void setFoo(int); PUBLIC_MEMBER access - not persistent
 		this.addModifiers(resourceGetter, ModifierKeyword.STATIC_KEYWORD);
 		this.addModifiers(resourceSetter, ModifierKeyword.STATIC_KEYWORD);
-		assertEquals(0, contextClass.getAttributesSize());
+		assertEquals(0, classMapping.getAttributesSize());
 
 
 		//public static int getFoo();, public static void setFoo(int); PROPERTY access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static int getFoo();, public static void setFoo(int); FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static int getFoo();, public static void setFoo(int); NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//public static int getFoo();, public static void setFoo(int); PUBLIC_MEMBER access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
 
 
 		//add @XmlAttribute annotation and test each access type
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceGetter);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
 		//public static int getFoo();, public static void setFoo(int); PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public static int getFoo();, public static void setFoo(int); FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public static int getFoo();, public static void setFoo(int); NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//public static int getFoo();, public static void setFoo(int); PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 		this.removeModifiers(resourceGetter, ModifierKeyword.STATIC_KEYWORD);
 		this.removeModifiers(resourceSetter, ModifierKeyword.STATIC_KEYWORD);
 	}
 
-	protected void privateGetterSetterTest(JaxbPersistentClass contextClass) {
-		Iterator<JaxbPersistentAttribute> attributes = contextClass.getAttributes().iterator();
+	protected void privateGetterSetterTest(JaxbClassMapping classMapping) {
+		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
 		PropertyAccessor propertyAccessor = (PropertyAccessor) ReflectionTools.getFieldValue(attributes.next(), "accessor");
 		JavaResourceMethod resourceGetter = propertyAccessor.getResourceGetterMethod();
 		JavaResourceMethod resourceSetter = propertyAccessor.getResourceSetterMethod();
@@ -1927,71 +1953,71 @@ public class GenericJavaPersistentClassTests
 		this.removeModifiers(resourceSetter, ModifierKeyword.PUBLIC_KEYWORD);
 		this.addModifiers(resourceGetter, ModifierKeyword.PRIVATE_KEYWORD);
 		this.addModifiers(resourceSetter, ModifierKeyword.PRIVATE_KEYWORD);
-		assertEquals(0, contextClass.getAttributesSize());
+		assertEquals(0, classMapping.getAttributesSize());
 
 
 		//private int getFoo();, private void setFoo(int); PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//private int getFoo();, private void setFoo(int); FIELD access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private int getFoo();, private void setFoo(int); NONE access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(0, classMapping.getAttributesSize());
 
 		//private int getFoo();, private void setFoo(int); PUBLIC_MEMBER access - not persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(0, contextClass.getAttributesSize());
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(0, classMapping.getAttributesSize());
 
 
 		//add @XmlAttribute annotation and test each access type
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceGetter);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ATTRIBUTE);
 			}
 		});
 		//@XmlAttribute
 		//private int getFoo();, private void setFoo(int); PROPERTY access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PROPERTY);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PROPERTY);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private int getFoo();, private void setFoo(int); FIELD access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__FIELD);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__FIELD);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private int getFoo();, private void setFoo(int); NONE access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__NONE);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__NONE);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 
 		//@XmlAttribute
 		//private int getFoo();, private void setFoo(int); PUBLIC_MEMBER access - persistent
-		this.setAccessTypeInJavaSource(contextClass, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
-		assertEquals(1, contextClass.getAttributesSize());
-		attributes = contextClass.getAttributes().iterator();
+		this.setAccessTypeInJavaSource(classMapping, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+		assertEquals(1, classMapping.getAttributesSize());
+		attributes = classMapping.getAttributes().iterator();
 		assertEquals("foo", attributes.next().getName());
 		assertFalse(attributes.hasNext());
 	
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
+				GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_ATTRIBUTE);
 			}
 		});
 		this.removeModifiers(resourceGetter, ModifierKeyword.PRIVATE_KEYWORD);
@@ -1999,110 +2025,60 @@ public class GenericJavaPersistentClassTests
 		this.addModifiers(resourceGetter, ModifierKeyword.PUBLIC_KEYWORD);
 		this.addModifiers(resourceSetter, ModifierKeyword.PUBLIC_KEYWORD);
 	}
-
-	public void testModifyXmlJavaTypeAdapter() throws Exception {
-		createAnnotatedPersistentClass();
-
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-		assertNull(persistentClass.getXmlJavaTypeAdapter());
-		assertNull(xmlJavaTypeAdapterAnnotation);
-
-		persistentClass.addXmlJavaTypeAdapter();
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-		assertNotNull(persistentClass.getXmlJavaTypeAdapter());
-		assertNotNull(xmlJavaTypeAdapterAnnotation);
-
-		persistentClass.removeXmlJavaTypeAdapter();
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-	}
-
-	public void testUpdateXmlJavaTypeAdapter() throws Exception {
-		createAnnotatedPersistentClass();
-
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
-
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-		assertNull(persistentClass.getXmlJavaTypeAdapter());
-		assertNull(xmlJavaTypeAdapterAnnotation);
-
-
-		//add an XmlJavaTypeAdapter annotation
-		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
-		annotatedElement.edit(new Member.Editor() {
-			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_JAVA_TYPE_ADAPTER);
-			}
-		});
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-		assertNotNull(persistentClass.getXmlJavaTypeAdapter());
-		assertNotNull(xmlJavaTypeAdapterAnnotation);
-
-		//remove the XmlJavaTypeAdapter annotation
-		annotatedElement.edit(new Member.Editor() {
-			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_JAVA_TYPE_ADAPTER);
-			}
-		});
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-		assertNull(persistentClass.getXmlJavaTypeAdapter());
-		assertNull(xmlJavaTypeAdapterAnnotation);
-	}
 	
 	public void testModifyXmlSeeAlso() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		
 		XmlSeeAlsoAnnotation annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
-		assertNull(persistentClass.getXmlSeeAlso());
+		assertNull(classMapping.getXmlSeeAlso());
 		assertNull(annotation);
 		
-		persistentClass.addXmlSeeAlso();
+		classMapping.addXmlSeeAlso();
 		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
-		assertNotNull(persistentClass.getXmlSeeAlso());
+		assertNotNull(classMapping.getXmlSeeAlso());
 		assertNotNull(annotation);
 		
-		persistentClass.removeXmlSeeAlso();
+		classMapping.removeXmlSeeAlso();
 		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
-		assertNull(persistentClass.getXmlSeeAlso());
+		assertNull(classMapping.getXmlSeeAlso());
 		assertNull(annotation);
 	}
 	
 	public void testUpdateXmlSeeAlso() throws Exception {
-		createAnnotatedPersistentClass();
+		createClassWithXmlType();
 		
-		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		
 		XmlSeeAlsoAnnotation annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
-		assertNull(persistentClass.getXmlSeeAlso());
+		assertNull(classMapping.getXmlSeeAlso());
 		assertNull(annotation);
 		
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(
 				new Member.Editor() {
 					public void edit(ModifiedDeclaration declaration) {
-						GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_SEE_ALSO);
+						GenericJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_SEE_ALSO);
 					}
 				});
 		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
-		assertNotNull(persistentClass.getXmlSeeAlso());
+		assertNotNull(classMapping.getXmlSeeAlso());
 		assertNotNull(annotation);
 		
 		annotatedElement.edit(
 				new Member.Editor() {
 					public void edit(
 						ModifiedDeclaration declaration) {
-							GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_SEE_ALSO);
+							GenericJavaClassMappingTests.this.removeAnnotation(declaration, JAXB.XML_SEE_ALSO);
 						}
 					});
 		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
-		assertNull(persistentClass.getXmlSeeAlso());
+		assertNull(classMapping.getXmlSeeAlso());
 		assertNull(annotation);
 	}
 	
@@ -2110,7 +2086,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMember);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.addModifiers((BodyDeclaration) declaration.getDeclaration(), modifiers);
+				GenericJavaClassMappingTests.this.addModifiers((BodyDeclaration) declaration.getDeclaration(), modifiers);
 			}
 		});
 	}
@@ -2119,7 +2095,7 @@ public class GenericJavaPersistentClassTests
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMember);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.removeModifiers((BodyDeclaration) declaration.getDeclaration(), modifiers);
+				GenericJavaClassMappingTests.this.removeModifiers((BodyDeclaration) declaration.getDeclaration(), modifiers);
 			}
 		});
 	}
@@ -2149,12 +2125,12 @@ public class GenericJavaPersistentClassTests
 		return bodyDeclaration.modifiers();
 	}
 
-	protected void setAccessTypeInJavaSource(JaxbPersistentClass contextClass, final String accessType) {
-		JavaResourceType resourceClass = contextClass.getJavaResourceType();
+	protected void setAccessTypeInJavaSource(JaxbClassMapping classMapping, final String accessType) {
+		JavaResourceType resourceClass = classMapping.getJaxbType().getJavaResourceType();
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceClass);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaPersistentClassTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, accessType);
+				GenericJavaClassMappingTests.this.setEnumMemberValuePair(declaration, JAXB.XML_ACCESSOR_TYPE, accessType);
 			}
 		});
 	}

@@ -28,8 +28,8 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -44,18 +44,18 @@ public class GenericJavaAttributesContainer
 
 	protected final Vector<JaxbPersistentAttribute> attributes = new Vector<JaxbPersistentAttribute>();
 
-	public GenericJavaAttributesContainer(JaxbPersistentClass parent, JaxbAttributesContainer.Owner owner, JavaResourceType resourceType) {
+	public GenericJavaAttributesContainer(JaxbClassMapping parent, JaxbAttributesContainer.Owner owner, JavaResourceType resourceType) {
 		super(parent);
 		this.javaResourceType = resourceType;
 		this.owner = owner;
 		this.initializeAttributes();
 	}
-
-	@Override
-	public JaxbPersistentClass getParent() {
-		return (JaxbPersistentClass) super.getParent();
+	
+	
+	public JaxbClassMapping getJaxbClassMapping() {
+		return (JaxbClassMapping) getParent();
 	}
-
+	
 	public boolean isFor(JavaResourceType javaResourceType) {
 		return this.javaResourceType == javaResourceType;
 	}
@@ -105,11 +105,11 @@ public class GenericJavaAttributesContainer
 	}
 
 	protected JaxbPersistentAttribute buildField(JavaResourceField resourceField) {
-		return getFactory().buildJavaPersistentField(getParent(), resourceField);
+		return getFactory().buildJavaPersistentField(getJaxbClassMapping(), resourceField);
 	}
 
 	protected JaxbPersistentAttribute buildProperty(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
-		return getFactory().buildJavaPersistentProperty(getParent(), resourceGetter, resourceSetter);
+		return getFactory().buildJavaPersistentProperty(getJaxbClassMapping(), resourceGetter, resourceSetter);
 	}
 
 	protected void initializeAttributes() {
@@ -645,6 +645,6 @@ public class GenericJavaAttributesContainer
 
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getParent().getValidationTextRange(astRoot);
+		return getJaxbClassMapping().getValidationTextRange(astRoot);
 	}
 }

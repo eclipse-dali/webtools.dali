@@ -96,9 +96,10 @@ public interface XmlElement
 	// ***** misc *****
 	
 	/**
-	 * Return all type names that are directly referenced (for purposes of building a JAXB context)
+	 * Return all directly referenced xml types, fully qualified.
+	 * (Used for constructing Jaxb context)
 	 */
-	Iterable<String> getDirectlyReferencedTypeNames();
+	Iterable<String> getReferencedXmlTypeNames();
 	
 	
 	// ***** validation *****

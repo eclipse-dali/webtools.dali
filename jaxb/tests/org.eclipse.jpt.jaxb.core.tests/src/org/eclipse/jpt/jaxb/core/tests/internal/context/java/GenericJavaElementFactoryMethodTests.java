@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,24 +17,24 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
-import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
+import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
 
 @SuppressWarnings("nls")
-public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCase
-{
+public class GenericJavaElementFactoryMethodTests
+		extends JaxbContextModelTestCase {
 	
 	public GenericJavaElementFactoryMethodTests(String name) {
 		super(name);
 	}
 
-	private ICompilationUnit createTypeWithXmlRegistry() throws Exception {
+	protected ICompilationUnit createClassWithXmlRegistryAndCreateMethods() throws Exception {
 		return this.createTestType(PACKAGE_NAME, "ObjectFactory.java", "ObjectFactory", new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -57,26 +57,14 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 		});
 	}
 
-	private ICompilationUnit createTypeWithXmlType() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlType").append(CR);
-			}
-		});
-	}
-	
 	public void testModifyElementName() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
-
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
+		
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertNull(elementFactoryMethod.getQName().getName());
@@ -94,13 +82,14 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 	}
 	
 	public void testUpdateElementName() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		assertEquals(2, contextRegistry.getElementFactoryMethodsSize());
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		assertEquals(2, xmlRegistry.getElementFactoryMethodsSize());
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertNull(elementFactoryMethod.getQName().getName());
@@ -119,16 +108,17 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 				GenericJavaElementFactoryMethodTests.this.removeXmlElementDeclAnnotation(declaration);
 			}
 		});
-		assertEquals(1, contextRegistry.getElementFactoryMethodsSize());
+		assertEquals(1, xmlRegistry.getElementFactoryMethodsSize());
 	}
 	
 	public void testModifyDefaultValue() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertNull(elementFactoryMethod.getDefaultValue());
@@ -146,13 +136,14 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 	}
 	
 	public void testUpdateDefaultValue() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		assertEquals(2, contextRegistry.getElementFactoryMethodsSize());
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		assertEquals(2, xmlRegistry.getElementFactoryMethodsSize());
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertNull(elementFactoryMethod.getDefaultValue());
@@ -171,16 +162,17 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 				GenericJavaElementFactoryMethodTests.this.removeXmlElementDeclAnnotation(declaration);
 			}
 		});
-		assertEquals(1, contextRegistry.getElementFactoryMethodsSize());
+		assertEquals(1, xmlRegistry.getElementFactoryMethodsSize());
 	}
 
 	public void testModifyScope() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertNull(elementFactoryMethod.getScope());
@@ -206,13 +198,14 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 	}
 	
 	public void testUpdateScope() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		assertEquals(2, contextRegistry.getElementFactoryMethodsSize());
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		assertEquals(2, xmlRegistry.getElementFactoryMethodsSize());
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertNull(elementFactoryMethod.getScope());
@@ -233,16 +226,17 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 				GenericJavaElementFactoryMethodTests.this.removeXmlElementDeclAnnotation(declaration);
 			}
 		});
-		assertEquals(1, contextRegistry.getElementFactoryMethodsSize());
+		assertEquals(1, xmlRegistry.getElementFactoryMethodsSize());
 	}
 
 	public void testModifySubstitutionHeadName() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertNull(elementFactoryMethod.getSubstitutionHeadQName().getName());
@@ -260,13 +254,14 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 	}
 	
 	public void testUpdateSubstitutionHeadName() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		assertEquals(2, contextRegistry.getElementFactoryMethodsSize());
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		assertEquals(2, xmlRegistry.getElementFactoryMethodsSize());
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertNull(elementFactoryMethod.getSubstitutionHeadQName().getName());
@@ -285,16 +280,17 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 				GenericJavaElementFactoryMethodTests.this.removeXmlElementDeclAnnotation(declaration);
 			}
 		});
-		assertEquals(1, contextRegistry.getElementFactoryMethodsSize());
+		assertEquals(1, xmlRegistry.getElementFactoryMethodsSize());
 	}
 
 	public void testModifySubstitutionHeadNamespace() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertEquals("", elementFactoryMethod.getSubstitutionHeadQName().getNamespace());
@@ -312,13 +308,14 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 	}
 	
 	public void testUpdateSubstitutionHeadNamespace() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		assertEquals(2, contextRegistry.getElementFactoryMethodsSize());
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		assertEquals(2, xmlRegistry.getElementFactoryMethodsSize());
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertEquals("", elementFactoryMethod.getSubstitutionHeadQName().getNamespace());
@@ -337,16 +334,17 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 				GenericJavaElementFactoryMethodTests.this.removeXmlElementDeclAnnotation(declaration);
 			}
 		});
-		assertEquals(1, contextRegistry.getElementFactoryMethodsSize());
+		assertEquals(1, xmlRegistry.getElementFactoryMethodsSize());
 	}
 
 	public void testModifyNamespace() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertEquals("", elementFactoryMethod.getQName().getNamespace());
@@ -364,13 +362,14 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 	}
 	
 	public void testUpdateNamespace() throws Exception {
-		createTypeWithXmlType();
-		createTypeWithXmlRegistry();
+		createClassWithXmlType();
+		createClassWithXmlRegistryAndCreateMethods();
 
-		JaxbRegistry contextRegistry = CollectionTools.get(getContextRoot().getRegistries(), 0);
-
-		assertEquals(2, contextRegistry.getElementFactoryMethodsSize());
-		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = contextRegistry.getElementFactoryMethods().iterator();
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType("test.ObjectFactory");
+		XmlRegistry xmlRegistry = jaxbClass.getXmlRegistry();
+		
+		assertEquals(2, xmlRegistry.getElementFactoryMethodsSize());
+		Iterator<JaxbElementFactoryMethod> elementFactoryMethods = xmlRegistry.getElementFactoryMethods().iterator();
 		JaxbElementFactoryMethod elementFactoryMethod = elementFactoryMethods.next();
 		JavaResourceMethod resourceMethod = elementFactoryMethod.getResourceMethod();
 		assertEquals("", elementFactoryMethod.getQName().getNamespace());
@@ -389,7 +388,7 @@ public class GenericJavaElementFactoryMethodTests extends JaxbContextModelTestCa
 				GenericJavaElementFactoryMethodTests.this.removeXmlElementDeclAnnotation(declaration);
 			}
 		});
-		assertEquals(1, contextRegistry.getElementFactoryMethodsSize());
+		assertEquals(1, xmlRegistry.getElementFactoryMethodsSize());
 	}
 
 	protected void addXmlElementDeclMemberValuePair(ModifiedDeclaration declaration, String name, String value) {

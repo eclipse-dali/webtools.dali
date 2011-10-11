@@ -42,7 +42,7 @@ public class GenericJavaPackageXmlJavaTypeAdapter
 					IMessage.HIGH_SEVERITY,
 					JaxbValidationMessages.PACKAGE_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_SPECIFIED,
 					this,
-					getResourceXmlJavaTypeAdapter().getTypeTextRange(astRoot)));
+					getAnnotation().getTypeTextRange(astRoot)));
 		}
 
 	}

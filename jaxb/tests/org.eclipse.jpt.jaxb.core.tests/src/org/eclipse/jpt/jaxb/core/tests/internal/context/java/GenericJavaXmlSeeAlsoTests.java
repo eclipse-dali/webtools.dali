@@ -19,7 +19,8 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
@@ -50,9 +51,10 @@ public class GenericJavaXmlSeeAlsoTests
 	
 	public void testModifyClasses() throws Exception {
 		createAnnotatedPersistentClassWithXmlSeeAlso();
-		JaxbPersistentClass contextPersistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
-		XmlSeeAlso contextXmlSeeAlso = contextPersistentClass.getXmlSeeAlso();
-		JavaResourceType resourceType = contextPersistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		XmlSeeAlso contextXmlSeeAlso = classMapping.getXmlSeeAlso();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		
 		assertEquals(0, contextXmlSeeAlso.getClassesSize());
 		
@@ -87,9 +89,10 @@ public class GenericJavaXmlSeeAlsoTests
 	
 	public void testUpdateClasses() throws Exception {
 		createAnnotatedPersistentClassWithXmlSeeAlso();
-		JaxbPersistentClass contextPersistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
-		XmlSeeAlso contextXmlSeeAlso = contextPersistentClass.getXmlSeeAlso();
-		JavaResourceType resourceType = contextPersistentClass.getJavaResourceType();
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		XmlSeeAlso contextXmlSeeAlso = classMapping.getXmlSeeAlso();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		AnnotatedElement annotatedElement = annotatedElement(resourceType);
 		
 		assertEquals(0, contextXmlSeeAlso.getClassesSize());

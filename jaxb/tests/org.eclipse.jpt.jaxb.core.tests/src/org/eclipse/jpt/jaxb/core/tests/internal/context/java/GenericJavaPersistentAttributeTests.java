@@ -12,8 +12,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
@@ -56,55 +57,55 @@ public class GenericJavaPersistentAttributeTests
 	
 	public void testJavaResourceType() throws Exception {
 		createXmlTypeWithVariousAttributes();
-		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(PACKAGE_NAME_ + TEST_CLASS_NAME);
+		JaxbClassMapping classMapping = ((JaxbClass) getContextRoot().getType(PACKAGE_NAME_ + TEST_CLASS_NAME)).getMapping();
 		
 		// String string
-		JaxbPersistentAttribute att = CollectionTools.get(persistentClass.getAttributes(), 0);
+		JaxbPersistentAttribute att = CollectionTools.get(classMapping.getAttributes(), 0);
 		assertEquals("java.lang.String", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(false, att.isJavaResourceAttributeCollectionType());
 		
 		// List<String> stringList
-		att = CollectionTools.get(persistentClass.getAttributes(), 1);
+		att = CollectionTools.get(classMapping.getAttributes(), 1);
 		assertEquals("java.lang.String", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 		
 		// String[] stringArray
-		att = CollectionTools.get(persistentClass.getAttributes(), 2);
+		att = CollectionTools.get(classMapping.getAttributes(), 2);
 		assertEquals("java.lang.String", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 		
 		// String[][] stringDoubleArray
-		att = CollectionTools.get(persistentClass.getAttributes(), 3);
+		att = CollectionTools.get(classMapping.getAttributes(), 3);
 		assertEquals("java.lang.String[][]", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(false, att.isJavaResourceAttributeCollectionType());
 		
 		// T generic
-		att = CollectionTools.get(persistentClass.getAttributes(), 4);
+		att = CollectionTools.get(classMapping.getAttributes(), 4);
 		assertEquals("java.lang.Number", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(false, att.isJavaResourceAttributeCollectionType());
 		
 		// List<T> genericList
-		att = CollectionTools.get(persistentClass.getAttributes(), 5);
+		att = CollectionTools.get(classMapping.getAttributes(), 5);
 		assertEquals("java.lang.Number", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 		
 		// T[] genericArray
-		att = CollectionTools.get(persistentClass.getAttributes(), 6);
+		att = CollectionTools.get(classMapping.getAttributes(), 6);
 		assertEquals("java.lang.Number", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 		
 		// List<?> wildcardList
-		att = CollectionTools.get(persistentClass.getAttributes(), 7);
+		att = CollectionTools.get(classMapping.getAttributes(), 7);
 		assertEquals("java.lang.Object", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 		
 		// byte[] byteArray
-		att = CollectionTools.get(persistentClass.getAttributes(), 8);
+		att = CollectionTools.get(classMapping.getAttributes(), 8);
 		assertEquals("byte[]", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(false, att.isJavaResourceAttributeCollectionType());
 		
 		// List list
-		att = CollectionTools.get(persistentClass.getAttributes(), 9);
+		att = CollectionTools.get(classMapping.getAttributes(), 9);
 		assertEquals("java.lang.Object", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 	}

@@ -20,17 +20,17 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.context.Accessor;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
+import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
+import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
-import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
-import org.eclipse.jpt.jaxb.core.context.JaxbTransientClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
@@ -39,6 +39,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementRefMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
+import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
@@ -104,38 +105,38 @@ public interface JaxbFactory  {
 	
 	JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage);
 	
-	JaxbRegistry buildRegistry(JaxbContextRoot parent, JavaResourceType resourceType);
-
-	JaxbTransientClass buildJavaTransientClass(JaxbContextRoot parent, JavaResourceType resourceType);
-	
-	JaxbPersistentClass buildJavaPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType);
-
-	JaxbPersistentEnum buildJavaPersistentEnum(JaxbContextRoot parent, JavaResourceEnum resourceEnum);
-
 	XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent);
 	
 	XmlNs buildJavaXmlNs(XmlSchema parent, XmlNsAnnotation xmlNsAnnotation);
-
-	XmlRootElement buildJavaXmlRootElement(JaxbPersistentType parent, XmlRootElementAnnotation xmlRootElementAnnotation);
-
-	JaxbEnumConstant buildJavaEnumConstant(JaxbPersistentEnum parent, JavaResourceEnumConstant resourceEnumConstant);
-
-	JaxbElementFactoryMethod buildJavaElementFactoryMethod(JaxbRegistry parent, JavaResourceMethod resourceMethod);
-
-	JaxbPersistentAttribute buildJavaPersistentAttribute(JaxbPersistentClass parent, Accessor accessor);
-
-	JaxbPersistentAttribute buildJavaPersistentField(JaxbPersistentClass parent, JavaResourceField resourceField);
-
-	JaxbPersistentAttribute buildJavaPersistentProperty(JaxbPersistentClass parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
-
+	
+	JaxbClass buildJaxbClass(JaxbContextRoot parent, JavaResourceType resourceType);
+	
+	JaxbEnum buildJaxbEnum(JaxbContextRoot parent, JavaResourceEnum resourceEnum);
+	
+	JaxbClassMapping buildJaxbClassMapping(JaxbClass parent);
+	
+	JaxbEnumMapping buildJaxbEnumMapping(JaxbEnum parent);
+	
+	XmlRegistry buildXmlRegistry(JaxbClass parent);
+	
+	JaxbElementFactoryMethod buildJavaElementFactoryMethod(XmlRegistry parent, JavaResourceMethod resourceMethod);
+	
+	XmlRootElement buildJavaXmlRootElement(JaxbTypeMapping parent, XmlRootElementAnnotation xmlRootElementAnnotation);
+	
+	JaxbPersistentAttribute buildJavaPersistentAttribute(JaxbClassMapping parent, Accessor accessor);
+	
+	JaxbPersistentAttribute buildJavaPersistentField(JaxbClassMapping parent, JavaResourceField resourceField);
+	
+	JaxbPersistentAttribute buildJavaPersistentProperty(JaxbClassMapping parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
+	
 	JaxbAttributeMapping buildJavaNullAttributeMapping(JaxbPersistentAttribute parent);
-
+	
 	XmlAnyAttributeMapping buildJavaXmlAnyAttributeMapping(JaxbPersistentAttribute parent);
-
+	
 	XmlAnyElementMapping buildJavaXmlAnyElementMapping(JaxbPersistentAttribute parent);
-
+	
 	XmlAttributeMapping buildJavaXmlAttributeMapping(JaxbPersistentAttribute parent);
-
+	
 	XmlElementMapping buildJavaXmlElementMapping(JaxbPersistentAttribute parent);
 	
 	XmlElementRefMapping buildJavaXmlElementRefMapping(JaxbPersistentAttribute parent);
@@ -147,4 +148,6 @@ public interface JaxbFactory  {
 	JaxbAttributeMapping buildJavaXmlTransientMapping(JaxbPersistentAttribute parent);
 	
 	XmlValueMapping buildJavaXmlValueMapping(JaxbPersistentAttribute parent);
+	
+	JaxbEnumConstant buildJavaEnumConstant(JaxbEnumMapping parent, JavaResourceEnumConstant resourceEnumConstant);
 }

@@ -27,23 +27,43 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 public interface XmlJavaTypeAdapter
 		extends JavaContextNode {
 	
-	XmlJavaTypeAdapterAnnotation getResourceXmlJavaTypeAdapter();
-
-	/**************** value *****************/
-
+	XmlJavaTypeAdapterAnnotation getAnnotation();
+	
+	
+	// ***** value *****
+	
+	String VALUE_PROPERTY = "value"; //$NON-NLS-1$
+	
 	String getValue();
-
+	
 	void setValue(String value);
-		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
-
-	/**************** type *****************/
-
+	
+	String getFullyQualifiedValue();
+	
+	
+	// ***** xmlAdapter *****
+	
+	String XML_ADAPTER_PROPERTY = "xmlAdapter";  //$NON-NLS-1$
+	
+	/**
+	 * Object based on specified "value"
+	 */
+	XmlAdapter getXmlAdapter();
+	
+	
+	// ***** type *****
+	
 	String getType();
-	String getDefaultType();
-		String DEFAULT_TYPE_PROPERTY = "defaultType"; //$NON-NLS-1$
+	
+	String SPECIFIED_TYPE_PROPERTY = "specifiedType"; //$NON-NLS-1$
+	
 	String getSpecifiedType();
+	
 	void setSpecifiedType(String type);
-		String SPECIFIED_TYPE_PROPERTY = "specifiedType"; //$NON-NLS-1$
-		String DEFAULT_TYPE = "javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT"; //$NON-NLS-1$
-
+	
+	String DEFAULT_TYPE_PROPERTY = "defaultType"; //$NON-NLS-1$
+	
+	String getDefaultType();
+	
+	String DEFAULT_TYPE = "javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT"; //$NON-NLS-1$
 }

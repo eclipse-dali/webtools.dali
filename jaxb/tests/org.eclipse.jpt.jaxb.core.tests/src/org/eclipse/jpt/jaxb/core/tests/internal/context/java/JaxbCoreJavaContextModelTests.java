@@ -22,9 +22,10 @@ public class JaxbCoreJavaContextModelTests
 		suite.addTestSuite(GenericJavaEnumConstantTests.class);
 		suite.addTestSuite(GenericJavaPackageInfoTests.class);
 		suite.addTestSuite(GenericJavaPersistentAttributeTests.class);
-		suite.addTestSuite(GenericJavaPersistentClassTests.class);
-		suite.addTestSuite(GenericJavaPersistentEnumTests.class);
+		suite.addTestSuite(GenericJavaClassMappingTests.class);
+		suite.addTestSuite(GenericJavaEnumMappingTests.class);
 		suite.addTestSuite(GenericJavaRegistryTests.class);
+		suite.addTestSuite(GenericJavaXmlAdapterTests.class);
 		suite.addTestSuite(GenericJavaXmlAnyAttributeMappingTests.class);
 		suite.addTestSuite(GenericJavaXmlAnyElementMappingTests.class);
 		suite.addTestSuite(GenericJavaXmlAttributeMappingTests.class);

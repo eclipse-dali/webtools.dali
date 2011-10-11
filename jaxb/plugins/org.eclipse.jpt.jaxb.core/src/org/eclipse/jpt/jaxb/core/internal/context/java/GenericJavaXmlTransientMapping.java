@@ -32,7 +32,7 @@ public class GenericJavaXmlTransientMapping
 	}
 	
 	@Override
-	public Iterable<String> getDirectlyReferencedTypeNames() {
+	public Iterable<String> getReferencedXmlTypeNames() {
 		return EmptyIterable.instance();
 	}
 }

@@ -24,9 +24,10 @@ import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
-import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -37,33 +38,35 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public class GenericJavaRegistry
-		extends AbstractJavaType
-		implements JaxbRegistry {
+public class GenericJavaXmlRegistry
+		extends AbstractJavaContextNode
+		implements XmlRegistry {
 
-	protected final ContextCollectionContainer<JaxbElementFactoryMethod, JavaResourceMethod> elementFactoryMethodContainer;
+	protected final ElementFactoryMethodContainer elementFactoryMethodContainer;
 	
 	
-	public GenericJavaRegistry(JaxbContextRoot parent, JavaResourceType resourceType) {
-		super(parent, resourceType);
-		this.elementFactoryMethodContainer = this.buildElementFactoryMethodContainer();
+	public GenericJavaXmlRegistry(JaxbClass parent) {
+		super(parent);
+		this.elementFactoryMethodContainer = new ElementFactoryMethodContainer();
+		
+		initElementFactoryMethods();
 	}
 	
 	
-	@Override
+	public JaxbClass getJaxbClass() {
+		return (JaxbClass) getParent();
+	}
+	
 	public JavaResourceType getJavaResourceType() {
-		return (JavaResourceType) super.getJavaResourceType();
+		return getJaxbClass().getJavaResourceType();
 	}
 	
 	protected XmlRegistryAnnotation getAnnotation() {
 		return (XmlRegistryAnnotation) getJavaResourceType().getAnnotation(JAXB.XML_REGISTRY);
 	}
 	
-	
-	// ***** JaxbType impl *****
-	
-	public Kind getKind() {
-		return Kind.REGISTRY;
+	public JaxbPackage getJaxbPackage() {
+		return getJaxbClass().getJaxbPackage();
 	}
 	
 	
@@ -72,14 +75,17 @@ public class GenericJavaRegistry
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.elementFactoryMethodContainer.synchronizeWithResourceModel();
+		syncElementFactoryMethods();
 	}
 	
 	@Override
 	public void update() {
 		super.update();
-		this.elementFactoryMethodContainer.update();
+		updateElementFactoryMethods();
 	}
+	
+	
+	// ***** element factory methods *****
 	
 	public Iterable<JaxbElementFactoryMethod> getElementFactoryMethods() {
 		return this.elementFactoryMethodContainer.getContextElements();
@@ -87,6 +93,18 @@ public class GenericJavaRegistry
 	
 	public int getElementFactoryMethodsSize() {
 		return this.elementFactoryMethodContainer.getContextElementsSize();
+	}
+	
+	protected void initElementFactoryMethods() {
+		this.elementFactoryMethodContainer.initialize();	
+	}
+	
+	protected void syncElementFactoryMethods() {
+		this.elementFactoryMethodContainer.synchronizeWithResourceModel();
+	}
+	
+	protected void updateElementFactoryMethods() {
+		this.elementFactoryMethodContainer.update();	
 	}
 	
 	private JaxbElementFactoryMethod buildElementFactoryMethod(JavaResourceMethod resourceMethod) {
@@ -113,12 +131,6 @@ public class GenericJavaRegistry
 	
 	protected static boolean methodReturnTypeIsJAXBElement(JavaResourceMethod method) {
 		return method.typeIsSubTypeOf(JAXB.XML_ELEMENT);
-	}
-
-	protected ContextCollectionContainer<JaxbElementFactoryMethod, JavaResourceMethod> buildElementFactoryMethodContainer() {
-		ElementFactoryMethodContainer container = new ElementFactoryMethodContainer();
-		container.initialize();
-		return container;
 	}
 	
 	
@@ -147,7 +159,7 @@ public class GenericJavaRegistry
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = getAnnotation().getTextRange(astRoot);
-		return (textRange != null) ? textRange : super.getValidationTextRange(astRoot);
+		return (textRange != null) ? textRange : getJaxbClass().getValidationTextRange(astRoot);
 	}
 	
 	@Override
@@ -205,17 +217,17 @@ public class GenericJavaRegistry
 		
 		@Override
 		protected String getContextElementsPropertyName() {
-			return JaxbRegistry.ELEMENT_FACTORY_METHODS_COLLECTION;
+			return XmlRegistry.ELEMENT_FACTORY_METHODS_COLLECTION;
 		}
 		
 		@Override
 		protected JaxbElementFactoryMethod buildContextElement(JavaResourceMethod resourceElement) {
-			return GenericJavaRegistry.this.buildElementFactoryMethod(resourceElement);
+			return GenericJavaXmlRegistry.this.buildElementFactoryMethod(resourceElement);
 		}
 		
 		@Override
 		protected Iterable<JavaResourceMethod> getResourceElements() {
-			return GenericJavaRegistry.this.getResourceElementFactoryMethods();
+			return GenericJavaXmlRegistry.this.getResourceElementFactoryMethods();
 		}
 		
 		@Override

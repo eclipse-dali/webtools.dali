@@ -24,16 +24,46 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
- * @since 3.0
+ * @version 3.1
+ * @since 3.1
  */
 public interface JaxbType
-		extends JavaContextNode {
+		extends JavaContextNode, XmlAdaptable {
+	
+	// ***** kind *****
+	
+	Kind getKind();
+	
+	
+	// ***** type mapping *****
+	
+	final String MAPPING_PROPERTY = "mapping";  //$NON-NLS-1$
 	
 	/**
-	 * Return the kind of JaxbType this represents
+	 * Return the mapping of this type.  
+	 * May be null.
+	 * Will <b>not</b> be null if this type has an XmlType annotation (or other mapping annotation)
+	 * or if this type is default mapped.
 	 */
-	Kind getKind();
+	JaxbTypeMapping getMapping();
+	
+	
+	// ***** default mapped *****
+	
+	final String DEFAULT_MAPPED_PROPERTY = "defaultMapped";  //$NON-NLS-1$
+	
+	/**
+	 * Return true if this type is mapped by reference.
+	 * (If this type has a default mapping by virtue of it being referenced by another mapped type.)
+	 */
+	boolean isDefaultMapped();
+	
+	/**
+	 * Set this to <code>true</code> if this type is referenced by another mapped type.
+	 * (NB:  should only be called by {@link JaxbContextRoot} object.)
+	 */
+	void setDefaultMapped(boolean newValue);
+	
 	
 	/**
 	 * Return the associated java resource type
@@ -41,10 +71,9 @@ public interface JaxbType
 	JavaResourceAbstractType getJavaResourceType();
 	
 	/**
-	 * Returns the fully qualified name of this type, including qualification for any 
-	 * enclosing types and packages.
+	 * Return the name of the type without any package or type qualifiers
 	 */
-	String getFullyQualifiedName();
+	String getSimpleName();
 	
 	/**
 	 * Returns the type-qualified name of this type, including qualification for any 
@@ -53,9 +82,10 @@ public interface JaxbType
 	String getTypeQualifiedName();
 	
 	/**
-	 * Return the name of the type without any package or type qualifiers
+	 * Returns the fully qualified name of this type, including qualification for any 
+	 * enclosing types and packages.
 	 */
-	String getSimpleName();
+	String getFullyQualifiedName();
 	
 	/**
 	 * Return the name of the type's package.  Empty string if none.
@@ -71,10 +101,10 @@ public interface JaxbType
 	 * Return all directly referenced types, fully qualified.
 	 * (Used for constructing Jaxb context)
 	 */
-	Iterable<String> getDirectlyReferencedTypeNames();
+	Iterable<String> getReferencedXmlTypeNames();
 	
 	
-	// **************** validation ********************************************
+	// ****** validation *****
 	
 	/**
 	 * Add to the list of current validation messages
@@ -82,29 +112,16 @@ public interface JaxbType
 	void validate(List<IMessage> messages, IReporter reporter);
 	
 	
-	/**
-	 * The kind of metadata specified on the java type.
-	 */
-	public static enum Kind {
+	public enum Kind {
 		
 		/**
-		 * A JaxbType of {@link Kind} PERSISTENT_CLASS may safely be cast as a {@link JaxbPersistentClass}
+		 * {@link JaxbType}s of {@link Kind} CLASS may safely be cast as {@link JaxbClass}
 		 */
-		PERSISTENT_CLASS,
+		CLASS,
 		
 		/**
-		 * A JaxbType of {@link Kind} PERSISTENT_ENUM may safely be cast as a {@link JaxbPersistentEnum}
+		 * {@link JaxbType}s of {@link Kind} ENUM may safely be cast as {@link JaxbEnum}
 		 */
-		PERSISTENT_ENUM,
-		
-		/**
-		 * A JaxbType of {@link Kind} REGISTRY may safely be cast as a {@link JaxbRegistry}
-		 */
-		REGISTRY,
-		
-		/**
-		 * A JaxbType of {@link Kind} TRANSIENT may safely be cast as a {@link JaxbTransientClass}
-		 */
-		TRANSIENT
+		ENUM;
 	}
 }

@@ -22,7 +22,7 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.1
  */
 public interface XmlElementRefMapping
-		extends JaxbAttributeMapping, XmlAdaptable {
+		extends JaxbAttributeMapping, XmlAdaptableMapping {
 	
 	// ***** XmlElementRef *****
 	

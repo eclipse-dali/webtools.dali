@@ -17,10 +17,11 @@ public class JptJaxbUiIcons {
 	public static final String JAXB_CONTENT = "full/obj16/jaxb_content";
 	public static final String PACKAGE = "full/obj16/package";
 	
-	public static final String PERSISTENT_CLASS = "full/obj16/persistent_class";
-	public static final String PERSISTENT_ENUM = "full/obj16/persistent_enum";
-	public static final String TRANSIENT_CLASS = "full/obj16/transient_class";
-	public static final String REGISTRY = "full/obj16/registry";
+	public static final String JAXB_CLASS = "full/obj16/jaxb_class";
+	public static final String JAXB_ENUM = "full/obj16/jaxb_enum";
+	public static final String JAXB_TRANSIENT_CLASS = "full/obj16/jaxb_transient_class";
+	public static final String JAXB_TRANSIENT_ENUM = "full/obj16/jaxb_transient_enum";
+	public static final String JAXB_REGISTRY = "full/obj16/jaxb_registry";
 	
 	public static final String XML_ANY_ATTRIBUTE = "full/obj16/xml-any-attribute";
 	public static final String XML_ANY_ELEMENT = "full/obj16/xml-any-element";

@@ -20,14 +20,15 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
-import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
+import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
@@ -92,12 +93,12 @@ public class GenericJavaXmlElementRef
 		return getContext().getAttributeMapping().getPersistentAttribute();
 	}
 	
-	protected JaxbPersistentClass getPersistentClass() {
-		return getPersistentAttribute().getPersistentClass();
+	protected JaxbClassMapping getJaxbClassMapping() {
+		return getPersistentAttribute().getJaxbClassMapping();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {
-		return getPersistentClass().getJaxbPackage();
+		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
 	}
 	
 	public XmlElementRefAnnotation getAnnotation() {
@@ -192,7 +193,7 @@ public class GenericJavaXmlElementRef
 	
 	// ***** misc *****
 	
-	public Iterable<String> getDirectlyReferencedTypeNames() {
+	public Iterable<String> getReferencedXmlTypeNames() {
 		// only return the specified type - the default type should already be included
 		if (this.specifiedType != null) {
 			String fqType = getFullyQualifiedType();
@@ -268,8 +269,8 @@ public class GenericJavaXmlElementRef
 			}
 			
 			// if type is a persistent class, check that it or a subclass has a root element specified
-			JaxbPersistentClass persistentClass = getJaxbProject().getContextRoot().getPersistentClass(fqType);
-			if (persistentClass != null && ! persistentClass.hasRootElementInHierarchy()) {
+			JaxbTypeMapping typeMapping = getJaxbProject().getContextRoot().getTypeMapping(fqType);
+			if (typeMapping != null && ! typeMapping.hasRootElementInHierarchy()) {
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
@@ -299,9 +300,9 @@ public class GenericJavaXmlElementRef
 			return JAXB.JAXB_ELEMENT.equals(GenericJavaXmlElementRef.this.getFullyQualifiedType());
 		}
 		
-		protected JaxbPersistentClass getReferencedPersistentClass() {
+		protected JaxbTypeMapping getReferencedTypeMapping() {
 			String fqTypeName = GenericJavaXmlElementRef.this.getFullyQualifiedType();
-			return getJaxbProject().getContextRoot().getPersistentClass(fqTypeName);
+			return getJaxbProject().getContextRoot().getTypeMapping(fqTypeName);
 		}
 		
 		@Override
@@ -315,9 +316,9 @@ public class GenericJavaXmlElementRef
 				return super.getDefaultName();
 			}
 			
-			JaxbPersistentClass referencedClass = getReferencedPersistentClass();
-			if (referencedClass != null) {
-				XmlRootElement rootElement = referencedClass.getRootElement();
+			JaxbTypeMapping referencedTypeMapping = getReferencedTypeMapping();
+			if (referencedTypeMapping != null) {
+				XmlRootElement rootElement = referencedTypeMapping.getXmlRootElement();
 				if (rootElement != null) {
 					return rootElement.getQName().getName();
 				}
@@ -328,9 +329,9 @@ public class GenericJavaXmlElementRef
 		
 		@Override
 		public String getDefaultNamespace() {
-			JaxbPersistentClass referencedClass = getReferencedPersistentClass();
-			if (referencedClass != null) {
-				XmlRootElement rootElement = referencedClass.getRootElement();
+			JaxbTypeMapping referencedTypeMapping = getReferencedTypeMapping();
+			if (referencedTypeMapping != null) {
+				XmlRootElement rootElement = referencedTypeMapping.getXmlRootElement();
 				if (rootElement != null) {
 					return rootElement.getQName().getNamespace();
 				}
@@ -356,7 +357,7 @@ public class GenericJavaXmlElementRef
 				return;
 			}
 			
-			JaxbRegistry registry = getJaxbPackage().getRegistry();
+			XmlRegistry registry = getJaxbPackage().getRegistry();
 			
 			if (registry == null) {
 				messages.add(

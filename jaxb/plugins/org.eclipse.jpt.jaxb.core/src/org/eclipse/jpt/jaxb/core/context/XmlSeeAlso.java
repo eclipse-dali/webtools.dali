@@ -45,5 +45,9 @@ public interface XmlSeeAlso
 	
 	// **************** misc **************************************************
 	
-	Iterable<String> getDirectlyReferencedTypeNames();
+	/**
+	 * Return all directly referenced types, fully qualified.
+	 * (Used for constructing Jaxb context)
+	 */
+	Iterable<String> getReferencedXmlTypeNames();
 }

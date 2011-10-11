@@ -88,19 +88,19 @@ public class GenericJavaXmlElementMapping
 		return this.xmlElementWrapper;
 	}
 	
+	protected XmlElementWrapper buildXmlElementWrapper(XmlElementWrapperAnnotation xmlElementWrapperAnnotation) {
+		return new GenericJavaXmlElementWrapper(this, xmlElementWrapperAnnotation);
+	}
+	
 	public XmlElementWrapper addXmlElementWrapper() {
 		if (this.xmlElementWrapper != null) {
 			throw new IllegalStateException();
 		}
 		XmlElementWrapperAnnotation annotation = 
-				(XmlElementWrapperAnnotation) this.getJavaResourceAttribute().addAnnotation(JAXB.XML_ELEMENT_WRAPPER);
-		XmlElementWrapper xmlElementWrapper = this.buildXmlElementWrapper(annotation);
+				(XmlElementWrapperAnnotation) getJavaResourceAttribute().addAnnotation(JAXB.XML_ELEMENT_WRAPPER);
+		XmlElementWrapper xmlElementWrapper = buildXmlElementWrapper(annotation);
 		this.setXmlElementWrapper_(xmlElementWrapper);
 		return xmlElementWrapper;
-	}
-	
-	protected XmlElementWrapper buildXmlElementWrapper(XmlElementWrapperAnnotation xmlElementWrapperAnnotation) {
-		return new GenericJavaXmlElementWrapper(this, xmlElementWrapperAnnotation);
 	}
 	
 	public void removeXmlElementWrapper() {
@@ -161,10 +161,10 @@ public class GenericJavaXmlElementMapping
 	// ***** misc *****
 	
 	@Override
-	public Iterable<String> getDirectlyReferencedTypeNames() {
+	public Iterable<String> getReferencedXmlTypeNames() {
 		return new CompositeIterable<String>(
-				super.getDirectlyReferencedTypeNames(),
-				this.xmlElement.getDirectlyReferencedTypeNames());
+				super.getReferencedXmlTypeNames(),
+				this.xmlElement.getReferencedXmlTypeNames());
 	}
 	
 	

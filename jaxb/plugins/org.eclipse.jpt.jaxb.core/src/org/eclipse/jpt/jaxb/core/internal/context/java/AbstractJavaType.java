@@ -17,9 +17,16 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -30,16 +37,23 @@ public abstract class AbstractJavaType
 		implements JaxbType {
 	
 	protected final JavaResourceAbstractType resourceType;
-
 	
-	protected AbstractJavaType(JaxbContextRoot parent, JavaResourceAbstractType resourceType) {
+	protected JaxbTypeMapping mapping;
+	
+	protected boolean defaultMapped = false;
+	
+	protected XmlJavaTypeAdapter xmlJavaTypeAdapter;
+	
+	
+	protected AbstractJavaType(JaxbContextNode parent, JavaResourceAbstractType resourceType) {
 		super(parent);
 		this.resourceType = resourceType;
-		
+		initMapping();
+		initXmlJavaTypeAdapter();
 	}
 	
 	
-	// **************** AbstractJaxbNode impl *********************************
+	// ***** overrides *****
 	
 	@Override
 	public IResource getResource() {
@@ -47,14 +61,175 @@ public abstract class AbstractJavaType
 	}
 	
 	
-	// *********** JaxbType impl ***********
+	// ***** sync/update *****
+	
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		syncMapping();
+		syncXmlJavaTypeAdapter();
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		updateMapping();
+		updateXmlJavaTypeAdapter();
+	}
+	
+	
+	// ***** mapping *****
+	
+	public JaxbTypeMapping getMapping() {
+		return this.mapping;
+	}
+	
+	protected void setMapping_(JaxbTypeMapping newMapping) {
+		JaxbTypeMapping old = this.mapping;
+		this.mapping = newMapping;
+		firePropertyChanged(MAPPING_PROPERTY, old, newMapping);
+	}
+	
+	protected abstract JaxbTypeMapping buildMapping();
+	
+	protected void initMapping() {
+		if (isDefaultMapped() || isSpecifiedMapped()) {
+			this.mapping = buildMapping();
+		}
+	}
+	
+	protected void syncMapping() {
+		if (this.mapping != null) {
+			this.mapping.synchronizeWithResourceModel();
+		}
+	}
+	
+	protected void updateMapping() {
+		boolean isMapped = isDefaultMapped() || isSpecifiedMapped();
+		if (isMapped) {
+			if (this.mapping != null) {
+				this.mapping.update();
+			}
+			else {
+				setMapping_(buildMapping());
+			}
+		}
+		else if (this.mapping != null) {
+			setMapping_(null);
+		}
+	}
+	
+	/*
+	 * Return true if the annotations on this type indicate it should have a mapping
+	 */
+	protected boolean isSpecifiedMapped() {
+		return getXmlTypeAnnotation() != null
+				|| getXmlRootElementAnnotation() != null
+				|| getXmlTransientAnnotation() != null;
+	}
+	
+	protected XmlTypeAnnotation getXmlTypeAnnotation() {
+		return (XmlTypeAnnotation) getJavaResourceType().getAnnotation(JAXB.XML_TYPE);
+	}
+	
+	protected XmlRootElementAnnotation getXmlRootElementAnnotation() {
+		return (XmlRootElementAnnotation) getJavaResourceType().getAnnotation(JAXB.XML_ROOT_ELEMENT);
+	}
+	
+	protected XmlTransientAnnotation getXmlTransientAnnotation() {
+		return (XmlTransientAnnotation) getJavaResourceType().getAnnotation(JAXB.XML_TRANSIENT);
+	}
+	
+	
+	// ***** default mapped *****
+	
+	public boolean isDefaultMapped() {
+		return this.defaultMapped;
+	}
+	
+	public void setDefaultMapped(boolean newValue) {
+		boolean old = this.defaultMapped;
+		this.defaultMapped = newValue;
+		firePropertyChanged(DEFAULT_MAPPED_PROPERTY, old, newValue);
+	}
+	
+	
+	// ***** XmlJavaTypeAdapter *****
+	
+	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
+		return this.xmlJavaTypeAdapter;
+	}
+	
+	protected void setXmlJavaTypeAdapter_(XmlJavaTypeAdapter xmlJavaTypeAdapter) {
+		XmlJavaTypeAdapter oldXmlJavaTypeAdapter = this.xmlJavaTypeAdapter;
+		this.xmlJavaTypeAdapter = xmlJavaTypeAdapter;
+		firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldXmlJavaTypeAdapter, xmlJavaTypeAdapter);
+	}
+	
+	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
+		if (this.xmlJavaTypeAdapter != null) {
+			throw new IllegalStateException();
+		}
+		XmlJavaTypeAdapterAnnotation annotation 
+				= (XmlJavaTypeAdapterAnnotation) getJavaResourceType().addAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapter xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
+		setXmlJavaTypeAdapter_(xmlJavaTypeAdapter);
+		return xmlJavaTypeAdapter;
+	}
+	
+	public void removeXmlJavaTypeAdapter() {
+		if (this.xmlJavaTypeAdapter == null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceType().removeAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		setXmlJavaTypeAdapter_(null);
+	}
+	
+	protected XmlJavaTypeAdapterAnnotation getXmlJavaTypeAdapterAnnotation() {
+		return (XmlJavaTypeAdapterAnnotation) getJavaResourceType().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+	}
+	
+	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
+		return new GenericJavaTypeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
+	}
+	
+	protected void initXmlJavaTypeAdapter() {
+		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
+		if (annotation != null) {
+			this.xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
+		}
+	}
+	
+	protected void syncXmlJavaTypeAdapter() {
+		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
+		if (annotation != null) {
+			if (this.xmlJavaTypeAdapter != null) {
+				this.xmlJavaTypeAdapter.synchronizeWithResourceModel();
+			}
+			else {
+				setXmlJavaTypeAdapter_(buildXmlJavaTypeAdapter(annotation));
+			}
+		}
+		else {
+			setXmlJavaTypeAdapter_(null);
+		}
+	}
+	
+	protected void updateXmlJavaTypeAdapter() {
+		if (this.xmlJavaTypeAdapter != null) {
+			this.xmlJavaTypeAdapter.update();
+		}
+	}
+	
+	
+	// ***** JaxbType misc *****
 	
 	public JavaResourceAbstractType getJavaResourceType() {
 		return this.resourceType;
 	}
 	
-	public String getFullyQualifiedName() {
-		return this.resourceType.getQualifiedName();
+	public String getSimpleName() {
+		return this.resourceType.getName();
 	}
 	
 	public String getTypeQualifiedName() {
@@ -62,8 +237,8 @@ public abstract class AbstractJavaType
 		return (packageName.length() == 0) ? getFullyQualifiedName() : getFullyQualifiedName().substring(packageName.length() + 1);
 	}
 	
-	public String getSimpleName() {
-		return this.resourceType.getName();
+	public String getFullyQualifiedName() {
+		return this.resourceType.getQualifiedName();
 	}
 	
 	public String getPackageName() {
@@ -74,19 +249,22 @@ public abstract class AbstractJavaType
 		return getContextRoot().getPackage(getPackageName());
 	}
 	
-	public Iterable<String> getDirectlyReferencedTypeNames() {
+	public Iterable<String> getReferencedXmlTypeNames() {
+		if (this.mapping != null) {
+			return this.mapping.getReferencedXmlTypeNames();
+		}
 		return EmptyIterable.instance();
 	}
 	
 	
-	// **************** misc **************************************************
+	// ***** misc *****
 	
 	protected CompilationUnit buildASTRoot() {
 		return this.resourceType.getJavaResourceCompilationUnit().buildASTRoot();
 	}
 	
 	
-	// **************** validation ********************************************
+	// ***** validation *****
 	
 	/**
 	 * Override as needed
@@ -111,6 +289,15 @@ public abstract class AbstractJavaType
 				&& (this.resourceType instanceof SourceNode)) {
 			// build the AST root here to pass down
 			this.validate(messages, reporter, this.buildASTRoot());
+		}
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		if (this.xmlJavaTypeAdapter != null) {
+			this.xmlJavaTypeAdapter.validate(messages, reporter, astRoot);
 		}
 	}
 }

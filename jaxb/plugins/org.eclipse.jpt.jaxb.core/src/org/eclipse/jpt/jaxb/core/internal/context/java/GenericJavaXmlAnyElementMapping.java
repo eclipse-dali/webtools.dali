@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -22,7 +21,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterab
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
@@ -50,9 +48,9 @@ public class GenericJavaXmlAnyElementMapping
 	
 	protected String specifiedValue;
 	
-	protected final XmlAdaptable xmlAdaptable;
-	
 	protected final XmlElementRefs xmlElementRefs;
+	
+	protected XmlJavaTypeAdapter xmlJavaTypeAdapter;
 	
 	protected XmlElementWrapper xmlElementWrapper;
 	
@@ -63,8 +61,8 @@ public class GenericJavaXmlAnyElementMapping
 		super(parent);
 		this.specifiedLax = buildSpecifiedLax();
 		this.specifiedValue = getResourceValueString();
-		this.xmlAdaptable = buildXmlAdaptable();
 		this.xmlElementRefs = buildXmlElementRefs();
+		initializeXmlJavaTypeAdapter();
 		initializeXmlElementWrapper();
 		this.initializeXmlMixed();			
 	}
@@ -73,7 +71,7 @@ public class GenericJavaXmlAnyElementMapping
 	public String getKey() {
 		return MappingKeys.XML_ANY_ELEMENT_ATTRIBUTE_MAPPING_KEY;
 	}
-
+	
 	@Override
 	protected String getAnnotationName() {
 		return JAXB.XML_ANY_ELEMENT;
@@ -87,8 +85,8 @@ public class GenericJavaXmlAnyElementMapping
 		super.synchronizeWithResourceModel();
 		setSpecifiedLax_(buildSpecifiedLax());
 		setSpecifiedValue_(getResourceValueString());
-		this.xmlAdaptable.synchronizeWithResourceModel();
 		this.xmlElementRefs.synchronizeWithResourceModel();
+		syncXmlJavaTypeAdapter();
 		syncXmlElementWrapper();
 		syncXmlMixed();
 	}
@@ -96,8 +94,8 @@ public class GenericJavaXmlAnyElementMapping
 	@Override
 	public void update() {
 		super.update();
-		this.xmlAdaptable.update();
 		this.xmlElementRefs.update();
+		updateXmlJavaTypeAdapter();
 		updateXmlElementWrapper();
 		updateXmlMixed();
 	}
@@ -163,42 +161,6 @@ public class GenericJavaXmlAnyElementMapping
 	}
 	
 	
-	// ***** XmlJavaTypeAdapter *****
-	
-	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
-		return this.xmlAdaptable.getXmlJavaTypeAdapter();
-	}
-	
-	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
-		return this.xmlAdaptable.addXmlJavaTypeAdapter();
-	}
-	
-	public void removeXmlJavaTypeAdapter() {
-		this.xmlAdaptable.removeXmlJavaTypeAdapter();
-	}
-	
-	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
-		return new GenericJavaAttributeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
-	}
-	
-	public XmlAdaptable buildXmlAdaptable() {
-		return new GenericJavaXmlAdaptable(this, new XmlAdaptable.Owner() {
-			
-			public JavaResourceAnnotatedElement getResource() {
-				return getJavaResourceAttribute();
-			}
-			
-			public XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation adapterAnnotation) {
-				return GenericJavaXmlAnyElementMapping.this.buildXmlJavaTypeAdapter(adapterAnnotation);
-			}
-			
-			public void fireXmlAdapterChanged(XmlJavaTypeAdapter oldAdapter, XmlJavaTypeAdapter newAdapter) {
-				GenericJavaXmlAnyElementMapping.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
-			}
-		});
-	}
-	
-	
 	// ***** XmlElementRefs *****
 	
 	public XmlElementRefs getXmlElementRefs() {
@@ -207,6 +169,74 @@ public class GenericJavaXmlAnyElementMapping
 	
 	protected XmlElementRefs buildXmlElementRefs() {
 		return new GenericJavaXmlElementRefs(this, new XmlElementRefsContext());
+	}
+	
+	
+	// ***** XmlJavaTypeAdapter *****
+	
+	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
+		return this.xmlJavaTypeAdapter;
+	}
+
+	protected void setXmlJavaTypeAdapter_(XmlJavaTypeAdapter xmlJavaTypeAdapter) {
+		XmlJavaTypeAdapter oldXmlJavaTypeAdapter = this.xmlJavaTypeAdapter;
+		this.xmlJavaTypeAdapter = xmlJavaTypeAdapter;
+		firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldXmlJavaTypeAdapter, xmlJavaTypeAdapter);
+	}
+	
+	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
+		if (this.xmlJavaTypeAdapter != null) {
+			throw new IllegalStateException();
+		}
+		XmlJavaTypeAdapterAnnotation annotation = 
+				(XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().addAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapter xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
+		setXmlJavaTypeAdapter_(xmlJavaTypeAdapter);
+		return xmlJavaTypeAdapter;
+	}
+	
+	public void removeXmlJavaTypeAdapter() {
+		if (this.xmlJavaTypeAdapter == null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceAttribute().removeAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		setXmlJavaTypeAdapter_(null);
+	}
+	
+	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
+		return new GenericJavaAttributeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
+	}
+	
+	protected XmlJavaTypeAdapterAnnotation getXmlJavaTypeAdapterAnnotation() {
+		return (XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+	}
+	
+	protected void initializeXmlJavaTypeAdapter() {
+		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
+		if (annotation != null) {
+			this.xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
+		}
+	}
+	
+	protected void syncXmlJavaTypeAdapter() {
+		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
+		if (annotation != null) {
+			if (this.xmlJavaTypeAdapter != null) {
+				this.xmlJavaTypeAdapter.synchronizeWithResourceModel();
+			}
+			else {
+				setXmlJavaTypeAdapter_(buildXmlJavaTypeAdapter(annotation));
+			}
+		}
+		else {
+			setXmlJavaTypeAdapter_(null);
+		}
+	}
+	
+	protected void updateXmlJavaTypeAdapter() {
+		if (this.xmlJavaTypeAdapter != null) {
+			this.xmlJavaTypeAdapter.update();
+		}
 	}
 	
 	
@@ -349,8 +379,8 @@ public class GenericJavaXmlAnyElementMapping
 	// ***** misc *****
 	
 	@Override
-	public Iterable<String> getDirectlyReferencedTypeNames() {
-		return this.xmlElementRefs.getDirectlyReferencedTypeNames();
+	public Iterable<String> getReferencedXmlTypeNames() {
+		return this.xmlElementRefs.getReferencedXmlTypeNames();
 	}
 	
 	
@@ -401,7 +431,9 @@ public class GenericJavaXmlAnyElementMapping
 			}
 		}
 		
-		this.xmlAdaptable.validate(messages, reporter, astRoot);
+		if (this.xmlJavaTypeAdapter != null) {
+			this.xmlJavaTypeAdapter.validate(messages, reporter, astRoot);
+		}
 		
 		if (this.xmlElementWrapper != null) {
 			this.xmlElementWrapper.validate(messages, reporter, astRoot);

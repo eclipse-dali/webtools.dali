@@ -27,10 +27,13 @@ public interface XmlElementMapping
 	XmlElement getXmlElement();
 	
 	
-	/********** XmlElementWrapper **********/
+	// ***** XmlElementWrapper *****
+	
+	String XML_ELEMENT_WRAPPER_PROPERTY = "xmlElementWrapper"; //$NON-NLS-1$
 	
 	XmlElementWrapper getXmlElementWrapper();
+	
 	XmlElementWrapper addXmlElementWrapper();
+	
 	void removeXmlElementWrapper();
-		String XML_ELEMENT_WRAPPER_PROPERTY = "xmlElementWrapper"; //$NON-NLS-1$
 }

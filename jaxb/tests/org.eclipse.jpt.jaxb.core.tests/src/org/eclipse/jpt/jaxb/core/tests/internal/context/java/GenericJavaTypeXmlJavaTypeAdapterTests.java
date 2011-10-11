@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
@@ -34,25 +34,25 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 		super(name);
 	}
 
-	private ICompilationUnit createTypeWithXmlTypeWithXmlJavaTypeAdapter() throws Exception {
+	private ICompilationUnit createTypeWithXmlJavaTypeAdapter() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_JAVA_TYPE_ADAPTER);
+				return new ArrayIterator<String>(JAXB.XML_JAVA_TYPE_ADAPTER);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlType").append(CR);
 				sb.append("@XmlJavaTypeAdapter");
 			}
 		});
 	}
 
 	public void testModifyValue() throws Exception {
-		this.createTypeWithXmlTypeWithXmlJavaTypeAdapter();
-		JaxbPersistentClass contextPersistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextPersistentClass.getXmlJavaTypeAdapter();
-		JavaResourceType resourceType = contextPersistentClass.getJavaResourceType();
+		createTypeWithXmlJavaTypeAdapter();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = jaxbClass.getXmlJavaTypeAdapter();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 
@@ -69,11 +69,12 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 	}
 
 	public void testUpdateValue() throws Exception {
-		this.createTypeWithXmlTypeWithXmlJavaTypeAdapter();
-		JaxbPersistentClass contextPersistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextPersistentClass.getXmlJavaTypeAdapter();
-		JavaResourceType resourceType = contextPersistentClass.getJavaResourceType();
-
+		createTypeWithXmlJavaTypeAdapter();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = jaxbClass.getXmlJavaTypeAdapter();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
+		
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 
 		//add a value member value pair
@@ -90,14 +91,15 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 				GenericJavaTypeXmlJavaTypeAdapterTests.this.removeXmlJavaTypeAdapterAnnotation(declaration);
 			}
 		});
-		assertNull(contextPersistentClass.getXmlJavaTypeAdapter());
+		assertNull(jaxbClass.getXmlJavaTypeAdapter());
 	}
-
+	
 	public void testModifyType() throws Exception {
-		this.createTypeWithXmlTypeWithXmlJavaTypeAdapter();
-		JaxbPersistentClass contextPersistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextPersistentClass.getXmlJavaTypeAdapter();
-		JavaResourceType resourceType = contextPersistentClass.getJavaResourceType();
+		createTypeWithXmlJavaTypeAdapter();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = jaxbClass.getXmlJavaTypeAdapter();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, contextXmlJavaTypeAdapter.getType());
 		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
@@ -118,10 +120,11 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 	}
 
 	public void testUpdateType() throws Exception {
-		this.createTypeWithXmlTypeWithXmlJavaTypeAdapter();
-		JaxbPersistentClass contextPersistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextPersistentClass.getXmlJavaTypeAdapter();
-		JavaResourceType resourceType = contextPersistentClass.getJavaResourceType();
+		createTypeWithXmlJavaTypeAdapter();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = jaxbClass.getXmlJavaTypeAdapter();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, contextXmlJavaTypeAdapter.getType());
 		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
@@ -143,7 +146,7 @@ public class GenericJavaTypeXmlJavaTypeAdapterTests extends JaxbContextModelTest
 				GenericJavaTypeXmlJavaTypeAdapterTests.this.removeXmlJavaTypeAdapterAnnotation(declaration);
 			}
 		});
-		assertNull(contextPersistentClass.getXmlJavaTypeAdapter());
+		assertNull(jaxbClass.getXmlJavaTypeAdapter());
 	}
 
 	protected void addXmlJavaTypeAdapterTypeMemberValuePair(ModifiedDeclaration declaration, String name, String typeName) {

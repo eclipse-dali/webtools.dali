@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -68,8 +68,8 @@ public class GenericJavaXmlIDREF
 				continue;
 			}
 			
-			JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(typeName);
-			if (persistentClass == null || ! persistentClass.containsXmlId()) {
+			JaxbClassMapping classMapping = getContextRoot().getClassMapping(typeName);
+			if (classMapping == null || ! classMapping.containsXmlId()) {
 				messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

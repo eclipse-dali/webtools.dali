@@ -12,14 +12,12 @@ package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
-import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
-import org.eclipse.jpt.jaxb.core.context.JaxbTransientClass;
 
 
 public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
@@ -51,17 +49,11 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 		else if (item instanceof JaxbPackage) {
 			return new JaxbPackageItemLabelProvider((JaxbPackage) item, contentAndLabelProvider);
 		}
-		else if (item instanceof JaxbRegistry) {
-			return new JaxbRegistryItemLabelProvider((JaxbRegistry) item, contentAndLabelProvider);
+		else if (item instanceof JaxbClass) {
+			return new JaxbClassItemLabelProvider((JaxbClass) item, contentAndLabelProvider);
 		}
-		else if (item instanceof JaxbPersistentClass) {
-			return new JaxbPersistentClassItemLabelProvider((JaxbPersistentClass) item, contentAndLabelProvider);
-		}
-		else if (item instanceof JaxbPersistentEnum) {
-			return new JaxbPersistentEnumItemLabelProvider((JaxbPersistentEnum) item, contentAndLabelProvider);
-		}
-		else if (item instanceof JaxbTransientClass) {
-			return new JaxbTransientClassItemLabelProvider((JaxbTransientClass) item, contentAndLabelProvider);
+		else if (item instanceof JaxbEnum) {
+			return new JaxbEnumItemLabelProvider((JaxbEnum) item, contentAndLabelProvider);
 		}
 		else if (item instanceof JaxbPersistentAttribute) {
 			return new JaxbPersistentAttributeItemLabelProvider((JaxbPersistentAttribute) item, contentAndLabelProvider);

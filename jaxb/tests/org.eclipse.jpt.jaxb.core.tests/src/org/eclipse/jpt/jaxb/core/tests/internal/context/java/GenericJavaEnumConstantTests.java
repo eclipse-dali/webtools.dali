@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,8 +20,9 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
+import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
@@ -51,10 +52,11 @@ public class GenericJavaEnumConstantTests extends JaxbContextModelTestCase
 	public void testUpdateName() throws Exception {
 		createEnumWithXmlEnum();
 		
-		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
-		JaxbEnumConstant contextEnumConstant = CollectionTools.get(contextEnum.getEnumConstants(), 1);
-		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
-	
+		JaxbEnum jaxbEnum = (JaxbEnum) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
+		JaxbEnumConstant contextEnumConstant = CollectionTools.get(enumMapping.getEnumConstants(), 1);
+		JavaResourceEnum resourceEnum = jaxbEnum.getJavaResourceType();
+		
 		assertEquals("MONDAY", contextEnumConstant.getName());
 		
 		
@@ -65,18 +67,18 @@ public class GenericJavaEnumConstantTests extends JaxbContextModelTestCase
 				GenericJavaEnumConstantTests.this.changeEnumConstantName((EnumDeclaration) declaration.getDeclaration(), "MONDAY", "MONDAY2");
 			}
 		});
-		contextEnumConstant = CollectionTools.get(contextEnum.getEnumConstants(), 1);
-		assertEquals(2, contextEnum.getEnumConstantsSize());
+		contextEnumConstant = CollectionTools.get(enumMapping.getEnumConstants(), 1);
+		assertEquals(2, enumMapping.getEnumConstantsSize());
 		assertEquals("MONDAY2", contextEnumConstant.getName());
 	}
 
 	public void testModifyValue() throws Exception {
 		createEnumWithXmlEnum();
 		
-		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
-		JaxbEnumConstant contextEnumConstant = CollectionTools.get(contextEnum.getEnumConstants(), 1);
-		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
-		JavaResourceEnumConstant resourceEnumConstant = CollectionTools.get(resourceEnum.getEnumConstants(), 1);
+		JaxbEnum jaxbEnum = (JaxbEnum) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
+		JaxbEnumConstant contextEnumConstant = CollectionTools.get(enumMapping.getEnumConstants(), 1);
+		JavaResourceEnumConstant resourceEnumConstant = contextEnumConstant.getResourceEnumConstant();
 		
 		assertEquals("MONDAY", contextEnumConstant.getDefaultValue());
 		assertEquals("MONDAY", contextEnumConstant.getValue());
@@ -100,10 +102,10 @@ public class GenericJavaEnumConstantTests extends JaxbContextModelTestCase
 	public void testUpdateValue() throws Exception {
 		createEnumWithXmlEnum();
 		
-		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
-		JaxbEnumConstant contextEnumConstant = CollectionTools.get(contextEnum.getEnumConstants(), 1);
-		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
-		JavaResourceEnumConstant resourceEnumConstant = CollectionTools.get(resourceEnum.getEnumConstants(), 1);
+		JaxbEnum jaxbEnum = (JaxbEnum) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbEnumMapping enumMapping = jaxbEnum.getMapping();
+		JaxbEnumConstant contextEnumConstant = CollectionTools.get(enumMapping.getEnumConstants(), 1);
+		JavaResourceEnumConstant resourceEnumConstant = contextEnumConstant.getResourceEnumConstant();
 		
 		assertEquals("MONDAY", contextEnumConstant.getDefaultValue());
 		assertEquals("MONDAY", contextEnumConstant.getValue());

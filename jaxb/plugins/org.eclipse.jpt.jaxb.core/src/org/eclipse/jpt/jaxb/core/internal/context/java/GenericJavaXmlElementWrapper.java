@@ -16,8 +16,9 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
@@ -72,8 +73,12 @@ public class GenericJavaXmlElementWrapper
 		return getAttributeMapping().getPersistentAttribute();
 	}
 	
-	protected JaxbPersistentClass getPersistentClass() {
-		return getPersistentAttribute().getPersistentClass();
+	protected JaxbClassMapping getJaxbClassMapping() {
+		return getPersistentAttribute().getJaxbClassMapping();
+	}
+	
+	protected JaxbPackage getJaxbPackage() {
+		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
 	}
 	
 	
@@ -164,7 +169,7 @@ public class GenericJavaXmlElementWrapper
 	// **************** misc **************************************************
 	
 	public XsdElementDeclaration getXsdElementDeclaration() {
-		XsdTypeDefinition xsdType = getPersistentAttribute().getPersistentClass().getXsdTypeDefinition();
+		XsdTypeDefinition xsdType = getPersistentAttribute().getJaxbClassMapping().getXsdTypeDefinition();
 		return (xsdType == null) ? null : xsdType.getElement(this.qName.getNamespace(), this.qName.getName());
 	}
 	
@@ -224,19 +229,19 @@ public class GenericJavaXmlElementWrapper
 		
 		@Override
 		public String getDefaultNamespace() {
-			return (GenericJavaXmlElementWrapper.this.getPersistentClass().getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlElementWrapper.this.getPersistentClass().getQName().getNamespace() : "";
+			return (GenericJavaXmlElementWrapper.this.getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
+					GenericJavaXmlElementWrapper.this.getJaxbClassMapping().getQName().getNamespace() : "";
 		}
 		
 		@Override
 		public Iterable<String> getNameProposals(Filter<String> filter) {
-			XsdTypeDefinition xsdType = GenericJavaXmlElementWrapper.this.getPersistentClass().getXsdTypeDefinition();
+			XsdTypeDefinition xsdType = GenericJavaXmlElementWrapper.this.getJaxbClassMapping().getXsdTypeDefinition();
 			return (xsdType == null) ? EmptyIterable.instance() : xsdType.getElementNameProposals(getNamespace(), filter);
 		}
 		
 		@Override
 		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlElementWrapper.this.getPersistentClass().getJaxbPackage().getXsdSchema();
+			XsdSchema schema = GenericJavaXmlElementWrapper.this.getJaxbPackage().getXsdSchema();
 			return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
 		}
 		
@@ -247,7 +252,7 @@ public class GenericJavaXmlElementWrapper
 		
 		@Override
 		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-			XsdTypeDefinition type = getPersistentClass().getXsdTypeDefinition();
+			XsdTypeDefinition type = getJaxbClassMapping().getXsdTypeDefinition();
 			if (type == null) {
 				return;
 			}

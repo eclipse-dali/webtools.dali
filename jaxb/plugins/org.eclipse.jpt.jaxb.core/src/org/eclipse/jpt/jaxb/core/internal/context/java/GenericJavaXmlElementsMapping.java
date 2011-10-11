@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Bag;
@@ -26,7 +25,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
@@ -51,7 +49,7 @@ public class GenericJavaXmlElementsMapping
 	
 	protected final ContextListContainer<XmlElement, XmlElementAnnotation> xmlElementContainer;
 	
-	protected final XmlAdaptable xmlAdaptable;
+	protected XmlJavaTypeAdapter xmlJavaTypeAdapter;
 	
 	protected XmlElementWrapper xmlElementWrapper;
 	
@@ -61,7 +59,7 @@ public class GenericJavaXmlElementsMapping
 	public GenericJavaXmlElementsMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		this.xmlElementContainer = this.buildXmlElementContainer();
-		this.xmlAdaptable = buildXmlAdaptable();
+		initializeXmlJavaTypeAdapter();
 		initializeXmlElementWrapper();
 		initializeXmlIDREF();
 	}
@@ -83,7 +81,7 @@ public class GenericJavaXmlElementsMapping
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.xmlElementContainer.synchronizeWithResourceModel();
-		this.xmlAdaptable.synchronizeWithResourceModel();
+		syncXmlJavaTypeAdapter();
 		syncXmlElementWrapper();
 		syncXmlIDREF();
 	}
@@ -92,7 +90,7 @@ public class GenericJavaXmlElementsMapping
 	public void update() {
 		super.update();
 		this.xmlElementContainer.update();
-		this.xmlAdaptable.update();
+		updateXmlJavaTypeAdapter();
 		updateXmlElementWrapper();
 		updateXmlIDREF();
 	}
@@ -138,37 +136,69 @@ public class GenericJavaXmlElementsMapping
 	
 	// ***** XmlJavaTypeAdapter *****
 	
-	public XmlAdaptable buildXmlAdaptable() {
-		return new GenericJavaXmlAdaptable(this, new XmlAdaptable.Owner() {
-				
-				public JavaResourceAnnotatedElement getResource() {
-					return getJavaResourceAttribute();
-				}
-				
-				public XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation adapterAnnotation) {
-					return GenericJavaXmlElementsMapping.this.buildXmlJavaTypeAdapter(adapterAnnotation);
-				}
-				
-				public void fireXmlAdapterChanged(XmlJavaTypeAdapter oldAdapter, XmlJavaTypeAdapter newAdapter) {
-					GenericJavaXmlElementsMapping.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
-				}
-			});
-	}
-	
 	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
-		return this.xmlAdaptable.getXmlJavaTypeAdapter();
+		return this.xmlJavaTypeAdapter;
+	}
+
+	protected void setXmlJavaTypeAdapter_(XmlJavaTypeAdapter xmlJavaTypeAdapter) {
+		XmlJavaTypeAdapter oldXmlJavaTypeAdapter = this.xmlJavaTypeAdapter;
+		this.xmlJavaTypeAdapter = xmlJavaTypeAdapter;
+		firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldXmlJavaTypeAdapter, xmlJavaTypeAdapter);
 	}
 	
 	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
-		return this.xmlAdaptable.addXmlJavaTypeAdapter();
+		if (this.xmlJavaTypeAdapter != null) {
+			throw new IllegalStateException();
+		}
+		XmlJavaTypeAdapterAnnotation annotation = 
+				(XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().addAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapter xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
+		setXmlJavaTypeAdapter_(xmlJavaTypeAdapter);
+		return xmlJavaTypeAdapter;
 	}
 	
 	public void removeXmlJavaTypeAdapter() {
-		this.xmlAdaptable.removeXmlJavaTypeAdapter();
+		if (this.xmlJavaTypeAdapter == null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceAttribute().removeAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		setXmlJavaTypeAdapter_(null);
 	}
 	
 	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
 		return new GenericJavaAttributeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
+	}
+	
+	protected XmlJavaTypeAdapterAnnotation getXmlJavaTypeAdapterAnnotation() {
+		return (XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+	}
+	
+	protected void initializeXmlJavaTypeAdapter() {
+		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
+		if (annotation != null) {
+			this.xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
+		}
+	}
+	
+	protected void syncXmlJavaTypeAdapter() {
+		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
+		if (annotation != null) {
+			if (this.xmlJavaTypeAdapter != null) {
+				this.xmlJavaTypeAdapter.synchronizeWithResourceModel();
+			}
+			else {
+				setXmlJavaTypeAdapter_(buildXmlJavaTypeAdapter(annotation));
+			}
+		}
+		else {
+			setXmlJavaTypeAdapter_(null);
+		}
+	}
+	
+	protected void updateXmlJavaTypeAdapter() {
+		if (this.xmlJavaTypeAdapter != null) {
+			this.xmlJavaTypeAdapter.update();
+		}
 	}
 	
 	
@@ -315,14 +345,14 @@ public class GenericJavaXmlElementsMapping
 	// ***** misc *****
 	
 	@Override
-	public Iterable<String> getDirectlyReferencedTypeNames() {
+	public Iterable<String> getReferencedXmlTypeNames() {
 		return new CompositeIterable<String>(
-				super.getDirectlyReferencedTypeNames(),
+				super.getReferencedXmlTypeNames(),
 				new CompositeIterable<String>(
 						new TransformationIterable<XmlElement, Iterable<String>>(getXmlElements()) {
 							@Override
 							protected Iterable<String> transform(XmlElement o) {
-								return o.getDirectlyReferencedTypeNames();
+								return o.getReferencedXmlTypeNames();
 							}
 						}));
 	}
@@ -367,7 +397,9 @@ public class GenericJavaXmlElementsMapping
 			xmlElement.validate(messages, reporter, astRoot);
 		}
 		
-		this.xmlAdaptable.validate(messages, reporter, astRoot);
+		if (this.xmlJavaTypeAdapter != null) {
+			this.xmlJavaTypeAdapter.validate(messages, reporter, astRoot);
+		}
 		
 		if (this.xmlElementWrapper != null) {
 			this.xmlElementWrapper.validate(messages, reporter, astRoot);

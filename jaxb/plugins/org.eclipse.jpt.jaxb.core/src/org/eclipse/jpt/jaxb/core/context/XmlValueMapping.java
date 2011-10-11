@@ -23,6 +23,6 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface XmlValueMapping
-		extends JaxbAttributeMapping, XmlAdaptable {
+		extends JaxbAttributeMapping, XmlAdaptableMapping {
 
 }

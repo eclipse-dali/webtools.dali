@@ -29,7 +29,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 public interface JaxbPersistentAttribute
 		extends JavaContextNode {
 	
-	JaxbPersistentClass getPersistentClass();
+	JaxbClassMapping getJaxbClassMapping();
 	
 	/**
 	 * Return true if this JaxbPersistentAttribute is inherited from one of the

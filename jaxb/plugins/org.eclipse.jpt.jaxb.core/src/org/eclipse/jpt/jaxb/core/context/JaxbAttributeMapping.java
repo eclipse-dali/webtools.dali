@@ -34,19 +34,37 @@ public interface JaxbAttributeMapping
 	
 	String getKey();
 	
+	
+	// ***** default *****
+	
+	String DEFAULT_PROPERTY = "default"; //$NON-NLS-1$
+	
 	/**
 	 * Return whether the mapping is its attribute's <em>default</em> mapping
 	 * (as opposed to its <em>specified</em> mapping).
 	 */
 	boolean isDefault();
-		String DEFAULT_PROPERTY = "default"; //$NON-NLS-1$
 	
 	void updateDefault();
+	
+	
+	// ***** misc *****
+	
+//	/**
+//	 * Return the (fully qualified) type of the attribute. 
+//	 * (This is almost always the same as the base type.)
+//	 */
+//	String getBoundTypeName();
+//	
+//	/**
+//	 * Return the (fully qualified) type that is to be associated with a schema type. 
+//	 * (Usually the same as the base type, except when an XmlJavaTypeAdapters is used.)
+//	 */
+//	String getValueTypeName();
 	
 	/**
 	 * Return all directly referenced types, fully qualified.
 	 * (Used for constructing Jaxb context)
-	 * Nulls and empty strings are to be expected.
 	 */
-	Iterable<String> getDirectlyReferencedTypeNames();
+	Iterable<String> getReferencedXmlTypeNames();
 }

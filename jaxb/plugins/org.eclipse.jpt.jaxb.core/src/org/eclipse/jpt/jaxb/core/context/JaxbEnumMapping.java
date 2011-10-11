@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,11 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-
 /**
- * Represents a JAXB registry
- * (A class with an explicit @XmlRegistry annotation)
+ * Represents mapping metadata on an enum (specified or implied).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,21 +18,28 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
- * @since 3.0
+ * @version 3.1
+ * @since 3.1
  */
-public interface JaxbRegistry extends JaxbType {
-
-	/**
-	 * covariant override
-	 */
-	JavaResourceType getJavaResourceType();
-
-
-	/********** element factory methods **********/
-
-	Iterable<JaxbElementFactoryMethod> getElementFactoryMethods();
-	int getElementFactoryMethodsSize();
-		String ELEMENT_FACTORY_METHODS_COLLECTION = "elementFactoryMethods"; //$NON-NLS-1$
-
+public interface JaxbEnumMapping
+		extends JaxbTypeMapping {
+	
+	// ***** XmlEnum.value *****
+	
+	String ENUM_TYPE_PROPERTY = "enumType"; //$NON-NLS-1$
+	
+	String getEnumType();
+	
+	void setEnumType(String enumType);
+	
+	String DEFAULT_ENUM_TYPE = "java.lang.String"; //$NON-NLS-1$
+	
+	
+	// ***** enum constants *****
+	
+	String ENUM_CONSTANTS_COLLECTION = "enumConstants"; //$NON-NLS-1$
+	
+	Iterable<JaxbEnumConstant> getEnumConstants();
+	
+	int getEnumConstantsSize();	
 }

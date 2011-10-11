@@ -11,13 +11,11 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbBasicMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlAttachmentRef;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
@@ -39,7 +37,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		extends AbstractJavaAttributeMapping<A>
 		implements JaxbBasicMapping {
 	
-	protected final XmlAdaptable xmlAdaptable;
+	protected XmlJavaTypeAdapter xmlJavaTypeAdapter;
 	
 	protected XmlSchemaType xmlSchemaType;
 	
@@ -54,71 +52,117 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	
 	public GenericJavaBasicMapping(JaxbPersistentAttribute parent) {
 		super(parent);
-		this.xmlAdaptable = buildXmlAdaptable();
-		this.initializeXmlSchemaType();
-		this.initializeXmlList();
-		this.initializeXmlID();
-		this.initializeXmlIDREF();
-		this.initializeXmlAttachmentRef();
+		initializeXmlJavaTypeAdapter();
+		initializeXmlSchemaType();
+		initializeXmlList();
+		initializeXmlID();
+		initializeXmlIDREF();
+		initializeXmlAttachmentRef();
 	}
 	
 	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.xmlAdaptable.synchronizeWithResourceModel();
-		this.syncXmlSchemaType();
-		this.syncXmlList();
-		this.syncXmlID();
-		this.syncXmlIDREF();
-		this.syncXmlAttachmentRef();
+		syncXmlJavaTypeAdapter();
+		syncXmlSchemaType();
+		syncXmlList();
+		syncXmlID();
+		syncXmlIDREF();
+		syncXmlAttachmentRef();
 	}
 	
 	@Override
 	public void update() {
 		super.update();
-		this.xmlAdaptable.update();
-		this.updateXmlSchemaType();
-		this.updateXmlList();
-		this.updateXmlID();
-		this.updateXmlIDREF();
-		this.updateXmlAttachmentRef();
+		updateXmlJavaTypeAdapter();
+		updateXmlSchemaType();
+		updateXmlList();
+		updateXmlID();
+		updateXmlIDREF();
+		updateXmlAttachmentRef();
 	}
 	
 	
-	//****************** XmlJavaTypeAdapter *********************
-
-	public XmlAdaptable buildXmlAdaptable() {
-		return new GenericJavaXmlAdaptable(this, new XmlAdaptable.Owner() {
-			public JavaResourceAnnotatedElement getResource() {
-				return getJavaResourceAttribute();
-			}
-			public XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation adapterAnnotation) {
-				return GenericJavaBasicMapping.this.buildXmlJavaTypeAdapter(adapterAnnotation);
-			}
-			public void fireXmlAdapterChanged(XmlJavaTypeAdapter oldAdapter, XmlJavaTypeAdapter newAdapter) {
-				GenericJavaBasicMapping.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
-			}
-		});
-	}
-
+	// ***** XmlJavaTypeAdapter *****
+	
 	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
-		return this.xmlAdaptable.getXmlJavaTypeAdapter();
+		return this.xmlJavaTypeAdapter;
 	}
 
+	protected void setXmlJavaTypeAdapter_(XmlJavaTypeAdapter xmlJavaTypeAdapter) {
+		XmlJavaTypeAdapter oldXmlJavaTypeAdapter = this.xmlJavaTypeAdapter;
+		this.xmlJavaTypeAdapter = xmlJavaTypeAdapter;
+		firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldXmlJavaTypeAdapter, xmlJavaTypeAdapter);
+	}
+	
 	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
-		return this.xmlAdaptable.addXmlJavaTypeAdapter();
+		if (this.xmlJavaTypeAdapter != null) {
+			throw new IllegalStateException();
+		}
+		XmlJavaTypeAdapterAnnotation annotation = 
+				(XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().addAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapter xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
+		setXmlJavaTypeAdapter_(xmlJavaTypeAdapter);
+		return xmlJavaTypeAdapter;
 	}
-
+	
+	public void removeXmlJavaTypeAdapter() {
+		if (this.xmlJavaTypeAdapter == null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceAttribute().removeAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		setXmlJavaTypeAdapter_(null);
+	}
+	
 	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
 		return new GenericJavaAttributeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
 	}
-
-	public void removeXmlJavaTypeAdapter() {
-		this.xmlAdaptable.removeXmlJavaTypeAdapter();
+	
+	protected XmlJavaTypeAdapterAnnotation getXmlJavaTypeAdapterAnnotation() {
+		return (XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 	}
-
-	//****************** XmlSchemaType *********************
+	
+	protected void initializeXmlJavaTypeAdapter() {
+		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
+		if (annotation != null) {
+			this.xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
+		}
+	}
+	
+	protected void syncXmlJavaTypeAdapter() {
+		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
+		if (annotation != null) {
+			if (this.xmlJavaTypeAdapter != null) {
+				this.xmlJavaTypeAdapter.synchronizeWithResourceModel();
+			}
+			else {
+				setXmlJavaTypeAdapter_(buildXmlJavaTypeAdapter(annotation));
+			}
+		}
+		else {
+			setXmlJavaTypeAdapter_(null);
+		}
+	}
+	
+	protected void updateXmlJavaTypeAdapter() {
+		if (this.xmlJavaTypeAdapter != null) {
+			this.xmlJavaTypeAdapter.update();
+		}
+	}
+	
+	
+	// ***** XmlAdapter *****
+	
+//	public XmlAdapter getXmlAdapter() {
+//		if (this.xmlJavaTypeAdapter != null) {
+//			return this.xmlJavaTypeAdapter.getXmlAdapter();
+//		}
+//		JaxbPersistentClass referenceClass
+//	}
+	
+	
+	// ***** XmlSchemaType *****
 
 	public XmlSchemaType getXmlSchemaType() {
 		return this.xmlSchemaType;
@@ -460,7 +504,17 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	}
 	
 	
-	// **************** content assist **************
+	// ***** misc *****
+	
+	@Override
+	public String getValueTypeName() {
+		return (this.xmlJavaTypeAdapter == null || this.xmlJavaTypeAdapter.getXmlAdapter() == null) ?
+				super.getValueTypeName()
+				: this.xmlJavaTypeAdapter.getXmlAdapter().getValueType();
+	}
+	
+	
+	// ***** content assist *****
 
 	@Override
 	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -480,13 +534,15 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	}
 	
 
-	// ********** validation **********
+	// ***** validation *****
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		this.xmlAdaptable.validate(messages, reporter, astRoot);
+		if (this.xmlJavaTypeAdapter != null) {
+			this.xmlJavaTypeAdapter.validate(messages, reporter, astRoot);
+		}
 		
 		if (this.xmlSchemaType != null) {
 			this.xmlSchemaType.validate(messages, reporter, astRoot);

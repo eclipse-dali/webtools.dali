@@ -168,14 +168,14 @@ public class GenericJavaXmlAttributeMapping
 		
 		@Override
 		public Iterable<String> getNameProposals(Filter<String> filter) {
-			XsdTypeDefinition xsdType = GenericJavaXmlAttributeMapping.this.getPersistentClass().getXsdTypeDefinition();
+			XsdTypeDefinition xsdType = GenericJavaXmlAttributeMapping.this.getJaxbClassMapping().getXsdTypeDefinition();
 			return (xsdType == null) ? EmptyIterable.instance() : xsdType.getAttributeNameProposals(getNamespace(), filter);
 		}
 		
 		@Override
 		public String getDefaultNamespace() {
 			return (GenericJavaXmlAttributeMapping.this.getJaxbPackage().getAttributeFormDefault() == XmlNsForm.QUALIFIED) ?
-					GenericJavaXmlAttributeMapping.this.getPersistentClass().getQName().getNamespace() : "";
+					GenericJavaXmlAttributeMapping.this.getJaxbClassMapping().getQName().getNamespace() : "";
 		}
 		
 		@Override
@@ -186,7 +186,7 @@ public class GenericJavaXmlAttributeMapping
 		
 		@Override
 		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-			XsdTypeDefinition type = getPersistentClass().getXsdTypeDefinition();
+			XsdTypeDefinition type = getJaxbClassMapping().getXsdTypeDefinition();
 			if (type != null) {
 				if (type.getAttribute(getNamespace(), getName()) == null) {
 					messages.add(getUnresolveSchemaComponentMessage(astRoot));

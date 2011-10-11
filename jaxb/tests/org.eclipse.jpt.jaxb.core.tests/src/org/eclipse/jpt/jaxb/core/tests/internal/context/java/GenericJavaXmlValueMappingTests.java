@@ -18,8 +18,9 @@ import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
@@ -56,8 +57,8 @@ public class GenericJavaXmlValueMappingTests extends JaxbContextModelTestCase
 	public void testChangeMappingType() throws Exception {
 		createTypeWithXmlValue();
 
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		JaxbClassMapping classMapping = ((JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0)).getMapping();
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
 		XmlValueMapping xmlValueMapping = (XmlValueMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlValueMapping.getPersistentAttribute().getJavaResourceAttribute();
 
@@ -93,8 +94,8 @@ public class GenericJavaXmlValueMappingTests extends JaxbContextModelTestCase
 	public void testModifyXmlJavaTypeAdapter() throws Exception {
 		createTypeWithXmlValue();
 
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		JaxbClassMapping classMapping = ((JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0)).getMapping();
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
 		XmlValueMapping xmlValueMapping = (XmlValueMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlValueMapping.getPersistentAttribute().getJavaResourceAttribute();
 
@@ -114,8 +115,8 @@ public class GenericJavaXmlValueMappingTests extends JaxbContextModelTestCase
 	public void testUpdateXmlJavaTypeAdapter() throws Exception {
 		createTypeWithXmlValue();
 
-		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		JaxbClassMapping classMapping = ((JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0)).getMapping();
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
 		XmlValueMapping xmlValueMapping = (XmlValueMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlValueMapping.getPersistentAttribute().getJavaResourceAttribute();
 

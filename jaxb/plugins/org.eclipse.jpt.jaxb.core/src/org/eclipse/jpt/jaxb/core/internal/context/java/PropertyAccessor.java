@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.Accessor;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 
 public class PropertyAccessor
 		extends AbstractJavaContextNode
@@ -26,7 +26,7 @@ public class PropertyAccessor
 
 	protected final JavaResourceMethod resourceSetter;
 
-	public PropertyAccessor(JaxbPersistentClass parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	public PropertyAccessor(JaxbClassMapping parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		super(parent);
 		this.resourceGetter = resourceGetter;
 		this.resourceSetter = resourceSetter;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -13,11 +13,10 @@ import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelPro
 import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
-import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 
 
 public class GenericJaxb_2_1_NavigatorTreeItemContentProviderFactory
@@ -52,14 +51,11 @@ public class GenericJaxb_2_1_NavigatorTreeItemContentProviderFactory
 		else if (item instanceof JaxbPackage) {
 			return new JaxbPackageItemContentProvider((JaxbPackage) item, treeContentAndLabelProvider);	
 		}
-		else if (item instanceof JaxbPersistentClass) {
-			return new JaxbPersistentClassItemContentProvider((JaxbPersistentClass) item, treeContentAndLabelProvider);	
+		else if (item instanceof JaxbClass) {
+			return new JaxbClassItemContentProvider((JaxbClass) item, treeContentAndLabelProvider);	
 		}
-		else if (item instanceof JaxbPersistentEnum) {
-			return new JaxbPersistentEnumItemContentProvider((JaxbPersistentEnum) item, treeContentAndLabelProvider);	
-		}
-		else if (item instanceof JaxbRegistry) {
-			return new JaxbRegistryItemContentProvider((JaxbRegistry) item, treeContentAndLabelProvider);	
+		else if (item instanceof JaxbEnum) {
+			return new JaxbEnumItemContentProvider((JaxbEnum) item, treeContentAndLabelProvider);	
 		}
 		return null;
 	}

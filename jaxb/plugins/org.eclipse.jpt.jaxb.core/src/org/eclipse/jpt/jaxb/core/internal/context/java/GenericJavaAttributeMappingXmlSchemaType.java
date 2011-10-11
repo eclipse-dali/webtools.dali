@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 
 public class GenericJavaAttributeMappingXmlSchemaType
@@ -35,12 +35,12 @@ public class GenericJavaAttributeMappingXmlSchemaType
 		return getAttributeMapping().getPersistentAttribute();
 	}
 
-	protected JaxbPersistentClass getPersistentClass() {
-		return getPersistentAttribute().getPersistentClass();
+	protected JaxbClassMapping getJaxbClassMapping() {
+		return getPersistentAttribute().getJaxbClassMapping();
 	}
 
 	@Override
 	protected JaxbPackage getJaxbPackage() {
-		return this.getPersistentClass().getJaxbPackage();
+		return this.getJaxbClassMapping().getJaxbType().getJaxbPackage();
 	}
 }

@@ -22,8 +22,8 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.Accessor;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
@@ -40,39 +40,42 @@ public class GenericJavaPersistentAttribute
 	protected String defaultMappingKey;
 	
 	protected final Accessor accessor;
-
+	
+	
 	public static JaxbPersistentAttribute buildPersistentProperty(
-		JaxbPersistentClass parent, 
+		JaxbClassMapping parent, 
 		JavaResourceMethod resourceGetter,
 		JavaResourceMethod resourceSetter) {
 		return new GenericJavaPersistentAttribute(parent, new PropertyAccessor(parent, resourceGetter, resourceSetter));
 	}
 
 	public static JaxbPersistentAttribute buildPersistentField(
-		JaxbPersistentClass parent, 
+		JaxbClassMapping parent, 
 		JavaResourceField resourceField) {
 		return new GenericJavaPersistentAttribute(parent, new FieldAccessor(parent, resourceField));
 	}
-
-	public GenericJavaPersistentAttribute(JaxbPersistentClass parent, Accessor accessor) {
+	
+	
+	public GenericJavaPersistentAttribute(JaxbClassMapping parent, Accessor accessor) {
 		super(parent);
 		this.accessor = accessor;
 		// keep non-null at all times
 		this.mapping = this.buildMapping();
 	}
 
-	public JaxbPersistentClass getPersistentClass() {
-		return (JaxbPersistentClass) super.getParent();
+	public JaxbClassMapping getJaxbClassMapping() {
+		return (JaxbClassMapping) super.getParent();
 	}
 
 	public boolean isInherited() {
-		return getPersistentClass().isInherited(this);
+		return getJaxbClassMapping().isInherited(this);
 	}
 
 	public String getInheritedJavaResourceAttributeOwningTypeName() {
-		return getPersistentClass().getJavaResourceAttributeOwningTypeName(this);
+		return getJaxbClassMapping().getJavaResourceAttributeOwningTypeName(this);
 	}
-
+	
+	
 	// ********** synchronize/update **********
 
 	@Override

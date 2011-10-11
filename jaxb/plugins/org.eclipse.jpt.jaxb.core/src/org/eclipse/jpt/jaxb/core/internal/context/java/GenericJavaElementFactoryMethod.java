@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,9 +20,9 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
-import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
@@ -50,7 +50,7 @@ public class GenericJavaElementFactoryMethod
 	protected String defaultValue;
 	
 	
-	public GenericJavaElementFactoryMethod(JaxbRegistry parent, JavaResourceMethod resourceMethod) {
+	public GenericJavaElementFactoryMethod(XmlRegistry parent, JavaResourceMethod resourceMethod) {
 		super(parent);
 		this.resourceMethod = resourceMethod;
 		this.scope = getResourceScope();
@@ -68,8 +68,8 @@ public class GenericJavaElementFactoryMethod
 		return new XmlElementDeclSubstitutionHeadQName(this);
 	}
 	
-	protected JaxbRegistry getRegistry() {
-		return (JaxbRegistry) getParent();
+	protected XmlRegistry getRegistry() {
+		return (XmlRegistry) getParent();
 	}
 	
 	public JavaResourceMethod getResourceMethod() {
@@ -252,10 +252,10 @@ public class GenericJavaElementFactoryMethod
 		public Iterable<String> getNameProposals(Filter<String> filter) {
 			if (! GenericJavaElementFactoryMethod.this.isGlobalScope()) {
 				String fqScope = GenericJavaElementFactoryMethod.this.getFullyQualifiedScope();
-				JaxbPersistentClass scopeClass = 
-						GenericJavaElementFactoryMethod.this.getJaxbProject().getContextRoot().getPersistentClass(fqScope);
-				if (scopeClass != null) {
-					XsdTypeDefinition xsdType = scopeClass.getXsdTypeDefinition();
+				JaxbTypeMapping scopeTypeMapping = 
+						GenericJavaElementFactoryMethod.this.getJaxbProject().getContextRoot().getTypeMapping(fqScope);
+				if (scopeTypeMapping != null) {
+					XsdTypeDefinition xsdType = scopeTypeMapping.getXsdTypeDefinition();
 					if (xsdType != null) {
 						return xsdType.getElementNameProposals(getNamespace(), filter, true);
 					}
@@ -285,10 +285,10 @@ public class GenericJavaElementFactoryMethod
 		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 			if (! GenericJavaElementFactoryMethod.this.isGlobalScope()) {
 				String fqScope = GenericJavaElementFactoryMethod.this.getFullyQualifiedScope();
-				JaxbPersistentClass scopeClass = 
-						GenericJavaElementFactoryMethod.this.getJaxbProject().getContextRoot().getPersistentClass(fqScope);
-				if (scopeClass != null) {
-					XsdTypeDefinition xsdType = scopeClass.getXsdTypeDefinition();
+				JaxbTypeMapping scopeTypeMapping = 
+						GenericJavaElementFactoryMethod.this.getJaxbProject().getContextRoot().getTypeMapping(fqScope);
+				if (scopeTypeMapping != null) {
+					XsdTypeDefinition xsdType = scopeTypeMapping.getXsdTypeDefinition();
 					if (xsdType == null) {
 						return;
 					}
@@ -341,10 +341,10 @@ public class GenericJavaElementFactoryMethod
 		@Override
 		public Iterable<String> getNameProposals(Filter<String> filter) {
 			String fqScope = GenericJavaElementFactoryMethod.this.getFullyQualifiedScope();
-			JaxbPersistentClass scopeClass = 
-					GenericJavaElementFactoryMethod.this.getJaxbProject().getContextRoot().getPersistentClass(fqScope);
-			if (scopeClass != null) {
-				XsdTypeDefinition xsdType = scopeClass.getXsdTypeDefinition();
+			JaxbTypeMapping scopeTypeMapping = 
+					GenericJavaElementFactoryMethod.this.getJaxbProject().getContextRoot().getTypeMapping(fqScope);
+			if (scopeTypeMapping != null) {
+				XsdTypeDefinition xsdType = scopeTypeMapping.getXsdTypeDefinition();
 				if (xsdType != null) {
 					return xsdType.getElementNameProposals(getNamespace(), filter);
 				}

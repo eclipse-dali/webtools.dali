@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.context;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,13 +31,13 @@ import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
-import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
-import org.eclipse.jpt.jaxb.core.context.JaxbTransientClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -93,16 +94,8 @@ public class AbstractJaxbContextRoot
 			this.packages.put(pkg, buildPackage(pkg));
 		}
 		
-		// process registry classes before other classes (they are completely determined by annotation)
-		for (JavaResourceType registryResourceType : calculateRegistries()) {
-			String className = registryResourceType.getQualifiedName();
-			totalTypes.add(className);
-			typesToScan.add(className);
-			addType_(buildRegistry(registryResourceType));
-		}
-		
-		// calculate initial set of persistent types (annotated with @XmlType or listed in jaxb.index files)
-		final Set<JavaResourceAbstractType> resourceTypesToProcess = calculateInitialPersistentTypes();
+		// calculate initial types (annotated or listed in jaxb.index files)
+		final Set<JavaResourceAbstractType> resourceTypesToProcess = calculateInitialTypes();
 		
 		// while there are resource types to process or types to scan, continue to do so
 		while (! resourceTypesToProcess.isEmpty() || ! typesToScan.isEmpty()) {
@@ -110,15 +103,14 @@ public class AbstractJaxbContextRoot
 				String className = resourceType.getQualifiedName();
 				totalTypes.add(className);
 				typesToScan.add(className);
-				JaxbType.Kind jaxbTypeKind = calculateJaxbTypeKind(resourceType);
-				addType_(buildType(jaxbTypeKind, resourceType));
+				addType_(buildType(resourceType));
 				resourceTypesToProcess.remove(resourceType);
 			}
 			
 			for (String typeToScan : new SnapshotCloneIterable<String>(typesToScan)) {
 				JaxbType jaxbType = getType(typeToScan);
 				if (jaxbType != null) {
-					for (String referencedTypeName : jaxbType.getDirectlyReferencedTypeNames()) {
+					for (String referencedTypeName : jaxbType.getReferencedXmlTypeNames()) {
 						if (! totalTypes.contains(referencedTypeName)) {
 							JavaResourceAbstractType referencedType = getJaxbProject().getJavaResourceType(referencedTypeName);
 							if (referencedType != null) {
@@ -179,28 +171,11 @@ public class AbstractJaxbContextRoot
 			}
 		}
 		
-		// process registry classes before other classes (they are completely determined by annotation)
-		for (JavaResourceType registryResourceType : calculateRegistries()) {
-			String className = registryResourceType.getQualifiedName();
-			typesToRemove.remove(className);
-			totalTypes.add(className);
-			typesToScan.add(className);
-			if (this.types.containsKey(className)) {
-				if (this.types.get(className).getKind() == JaxbType.Kind.REGISTRY) {
-					typesToUpdate.add(className);
-				}
-				else {
-					this.removeType(className); // this will remove a type of another kind
-					this.addType(buildRegistry(registryResourceType));
-				}
-			}
-			else {
-				this.addType(buildRegistry(registryResourceType));
-			}
-		}
+		// calculate initial types (annotated or listed in jaxb.index files)
+		final Set<JavaResourceAbstractType> resourceTypesToProcess = calculateInitialTypes();
 		
-		// calculate initial set of persistent types (annotated with @XmlType or listed in jaxb.index files)
-		final Set<JavaResourceAbstractType> resourceTypesToProcess = calculateInitialPersistentTypes();
+		// store set of types that are referenced (and should therefore be default mapped)
+		final Set<JavaResourceAbstractType> referencedTypes = new HashSet<JavaResourceAbstractType>();
 		
 		// while there are resource types to process or types to scan, continue to do so
 		while (! resourceTypesToProcess.isEmpty() || ! typesToScan.isEmpty()) {
@@ -209,18 +184,19 @@ public class AbstractJaxbContextRoot
 				typesToRemove.remove(className);
 				totalTypes.add(className);
 				typesToScan.add(className);
-				processType(resourceType, typesToUpdate);
+				processType(resourceType, typesToUpdate, referencedTypes.contains(resourceType));
 				resourceTypesToProcess.remove(resourceType);
 			}
 			
 			for (String typeToScan : new SnapshotCloneIterable<String>(typesToScan)) {
 				JaxbType jaxbType = getType(typeToScan);
 				if (jaxbType != null) {
-					for (String referencedTypeName : jaxbType.getDirectlyReferencedTypeNames()) {
+					for (String referencedTypeName : jaxbType.getReferencedXmlTypeNames()) {
 						if (! StringTools.stringIsEmpty(referencedTypeName) && ! totalTypes.contains(referencedTypeName)) {
 							JavaResourceAbstractType referencedType = getJaxbProject().getJavaResourceType(referencedTypeName);
 							if (referencedType != null) {
 								resourceTypesToProcess.add(referencedType);
+								referencedTypes.add(referencedType);
 							}
 						}
 					}
@@ -286,34 +262,32 @@ public class AbstractJaxbContextRoot
 	}
 	
 	/*
-	 * Calculate set of registries
-	 * (this should be all resource types with the @XmlRegistry annotation)
+	 * Calculate set of initial types
+	 * This should be:
+	 * - all resource types with @XmlType, @XmlRootElement, or @XmlJavaTypeAdapter
+	 * - all resource classes with @XmlRegistry
+	 * - all resource enums with @XmlEnum
+	 * - all types listed in jaxb.index files.
 	 */
-	protected Set<JavaResourceType> calculateRegistries() {
-		return CollectionTools.set(
-				new SubIterableWrapper<JavaResourceAbstractType, JavaResourceType>(
-					new FilteringIterable<JavaResourceAbstractType>(
-							getJaxbProject().getJavaSourceResourceTypes()) {
-						@Override
-						protected boolean accept(JavaResourceAbstractType o) {
-							return o.getKind() == JavaResourceAbstractType.Kind.TYPE 
-									&& o.getAnnotation(JAXB.XML_REGISTRY) != null;
-						}
-					}));
-	}
-	
-	/*
-	 * Calculate set of resource types annotated with @XmlType (and not @XmlRegistry)
-	 * plus those referred to in jaxb.index files
-	 */
-	protected Set<JavaResourceAbstractType> calculateInitialPersistentTypes() {
+	protected Set<JavaResourceAbstractType> calculateInitialTypes() {
 		Set<JavaResourceAbstractType> set = CollectionTools.set(
-				new FilteringIterable<JavaResourceAbstractType>(getJaxbProject().getJavaSourceResourceTypes()) {
+				new FilteringIterable<JavaResourceAbstractType>(
+						getJaxbProject().getJavaSourceResourceTypes()) {
 					@Override
 					protected boolean accept(JavaResourceAbstractType o) {
-						return (o.getAnnotation(JAXB.XML_TYPE) != null 
-										|| o.getAnnotation(JAXB.XML_ROOT_ELEMENT) != null) 
-									&& o.getAnnotation(JAXB.XML_REGISTRY) == null;
+						if (o.getKind() == JavaResourceAbstractType.Kind.TYPE) {
+							if (o.getAnnotation(JAXB.XML_REGISTRY) != null) {
+								return true;
+							}
+						}
+						if (o.getKind() == JavaResourceAbstractType.Kind.ENUM) {
+							if (o.getAnnotation(JAXB.XML_ENUM) != null) {
+								return true;
+							}
+						}
+						return o.getAnnotation(JAXB.XML_TYPE) != null
+								|| o.getAnnotation(JAXB.XML_ROOT_ELEMENT) != null
+								|| o.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER) != null;
 					}
 				});
 		CollectionTools.addAll(
@@ -336,13 +310,15 @@ public class AbstractJaxbContextRoot
 		return set;
 	}
 	
-	protected void processType(JavaResourceAbstractType resourceType, Set<String> typesToUpdate) {
+	protected void processType(JavaResourceAbstractType resourceType, Set<String> typesToUpdate, boolean defaultMapped) {
 		JaxbType.Kind jaxbTypeKind = calculateJaxbTypeKind(resourceType);
 		String className = resourceType.getQualifiedName();
 		
 		if (this.types.containsKey(className)) {
-			if (this.types.get(className).getKind() == jaxbTypeKind) {
+			JaxbType type = this.types.get(className);
+			if (type.getKind() == jaxbTypeKind) {
 				typesToUpdate.add(className);
+				type.setDefaultMapped(defaultMapped);
 				return;
 			}
 			else {
@@ -350,42 +326,33 @@ public class AbstractJaxbContextRoot
 			}
 		}
 		
-		this.addType(buildType(jaxbTypeKind, resourceType));
+		JaxbType type = buildType(resourceType);
+		type.setDefaultMapped(defaultMapped);
+		this.addType(type);
 	}
 	
 	protected JaxbType.Kind calculateJaxbTypeKind(JavaResourceAbstractType resourceType) {
 		if (resourceType.getKind() == JavaResourceAbstractType.Kind.ENUM) {
-			return JaxbType.Kind.PERSISTENT_ENUM;
+			return JaxbType.Kind.ENUM;
 		}
 		// else is of kind TYPE
-		else if (resourceType.getAnnotation(JAXB.XML_REGISTRY) != null) {
-			return JaxbType.Kind.REGISTRY;
-		}
-		else if (resourceType.getAnnotation(JAXB.XML_TRANSIENT) != null) {
-			return JaxbType.Kind.TRANSIENT;
-		}
 		else {
-			return JaxbType.Kind.PERSISTENT_CLASS;
+			return JaxbType.Kind.CLASS;
 		}
 	}
 	
-	protected JaxbType buildType(JaxbType.Kind jaxbTypeKind, JavaResourceAbstractType resourceType) {
-		if (jaxbTypeKind == JaxbType.Kind.PERSISTENT_ENUM) {
-			return buildPersistentEnum((JavaResourceEnum) resourceType);
-		}
-		else if (jaxbTypeKind == JaxbType.Kind.REGISTRY) {
-			return buildRegistry((JavaResourceType) resourceType);
-		}
-		else if (jaxbTypeKind == JaxbType.Kind.TRANSIENT) {
-			return buildTransientClass((JavaResourceType) resourceType);
+	protected JaxbType buildType(JavaResourceAbstractType resourceType) {
+		JaxbType.Kind kind = calculateJaxbTypeKind(resourceType);
+		if (kind == JaxbType.Kind.ENUM) {
+			return buildJaxbEnum((JavaResourceEnum) resourceType);
 		}
 		else {
-			return buildPersistentClass((JavaResourceType) resourceType);
+			return buildJaxbClass((JavaResourceType) resourceType);
 		}
 	}
 	
 	
-	// ********** AbstractJaxbNode overrides **********
+	// ***** AbstractJaxbNode overrides ***** 
 	
 	@Override
 	public JaxbProject getJaxbProject() {
@@ -402,7 +369,7 @@ public class AbstractJaxbContextRoot
 	}
 	
 	
-	// ************* packages ***************
+	// ***** packages *****
 	
 	public Iterable<JaxbPackage> getPackages() {
 		return new LiveCloneIterable<JaxbPackage>(this.packages.values());
@@ -451,7 +418,7 @@ public class AbstractJaxbContextRoot
 	}
 	
 	
-	// ********** types ***********
+	// ***** types *****
 	
 	public Iterable<JaxbType> getTypes() {
 		return new LiveCloneIterable<JaxbType>(this.types.values());
@@ -498,140 +465,78 @@ public class AbstractJaxbContextRoot
 		};
 	}
 	
-	
-	// ********** registries **********
-	
-	public Iterable<JaxbRegistry> getRegistries() {
-		return new SubIterableWrapper<JaxbType, JaxbRegistry>(
+	public Iterable<JaxbClass> getClasses() {
+		return new SubIterableWrapper<JaxbType, JaxbClass>(
 				new FilteringIterable<JaxbType>(getTypes()) {
 					@Override
 					protected boolean accept(JaxbType o) {
-						return o.getKind() == JaxbType.Kind.REGISTRY;
+						return o.getKind() == JaxbType.Kind.CLASS;
 					}
 				});
 	}
 	
-	protected JaxbRegistry buildRegistry(JavaResourceType resourceType) {
-		return this.getFactory().buildRegistry(this, resourceType);
-	}
-	
-	public Iterable<JaxbRegistry> getRegistries(final JaxbPackage jaxbPackage) {
-		return new FilteringIterable<JaxbRegistry>(getRegistries()) {
-			@Override
-			protected boolean accept(JaxbRegistry o) {
-				return o.getPackageName().equals(jaxbPackage.getName());
-			}
-		};
-	}
-
-
-	// ********** transient types **********
-	
-	public Iterable<JaxbTransientClass> getTransientClasses() {
-		return new SubIterableWrapper<JaxbType, JaxbTransientClass>(
-				new FilteringIterable<JaxbType>(getTypes()) {
+	public Iterable<JaxbClass> getClasses(JaxbPackage jaxbPackage) {
+		return new SubIterableWrapper<JaxbType, JaxbClass>(
+				new FilteringIterable<JaxbType>(getTypes(jaxbPackage)) {
 					@Override
 					protected boolean accept(JaxbType o) {
-						return o.getKind() == JaxbType.Kind.TRANSIENT;
+						return o.getKind() == JaxbType.Kind.CLASS;
 					}
 				});
 	}
 	
-	protected JaxbTransientClass buildTransientClass(JavaResourceType resourceType) {
-		return this.getFactory().buildJavaTransientClass(this, resourceType);
-	}
-	
-	public Iterable<JaxbTransientClass> getTransientClasses(final JaxbPackage jaxbPackage) {
-		return new FilteringIterable<JaxbTransientClass>(getTransientClasses()) {
-			@Override
-			protected boolean accept(JaxbTransientClass o) {
-				return o.getPackageName().equals(jaxbPackage.getName());
-			}
-		};
-	}
-
-	public JaxbTransientClass getTransientClass(String className) {
-		for (JaxbTransientClass jaxbClass : this.getTransientClasses()) {
-			if (StringTools.stringsAreEqual(jaxbClass.getFullyQualifiedName(), className)) {
-				return jaxbClass;
-			}
-		}
-		return null;
-	}
-
-	// ********** persistent classes **********
-	
-	public Iterable<JaxbPersistentClass> getPersistentClasses() {
-		return new SubIterableWrapper<JaxbType, JaxbPersistentClass>(
+	public Iterable<JaxbEnum> getEnums() {
+		return new SubIterableWrapper<JaxbType, JaxbEnum>(
 				new FilteringIterable<JaxbType>(getTypes()) {
 					@Override
 					protected boolean accept(JaxbType o) {
-						return o.getKind() == JaxbType.Kind.PERSISTENT_CLASS;
+						return o.getKind() == JaxbType.Kind.ENUM;
 					}
 				});
 	}
 	
-	protected JaxbPersistentClass buildPersistentClass(JavaResourceType resourceType) {
-		return this.getFactory().buildJavaPersistentClass(this, resourceType);
-	}
-	
-	public Iterable<JaxbPersistentClass> getPersistentClasses(final JaxbPackage jaxbPackage) {
-		return new FilteringIterable<JaxbPersistentClass>(getPersistentClasses()) {
-			@Override
-			protected boolean accept(JaxbPersistentClass o) {
-				return o.getPackageName().equals(jaxbPackage.getName());
-			}
-		};
-	}
-
-	public JaxbPersistentClass getPersistentClass(String className) {
-		for (JaxbPersistentClass jaxbClass : this.getPersistentClasses()) {
-			if (StringTools.stringsAreEqual(jaxbClass.getFullyQualifiedName(), className)) {
-				return jaxbClass;
-			}
-		}
-		return null;
-	}
-
-	public JaxbClass getClass(String fullyQualifiedTypeName) {
-		JaxbPersistentClass jaxbClass= this.getPersistentClass(fullyQualifiedTypeName);
-		return jaxbClass != null ? jaxbClass : this.getTransientClass(fullyQualifiedTypeName);
-	}
-
-	// ********** persistent enums **********
-	
-	public Iterable<JaxbPersistentEnum> getPersistentEnums() {
-		return new SubIterableWrapper<JaxbType, JaxbPersistentEnum>(
-				new FilteringIterable<JaxbType>(getTypes()) {
+	public Iterable<JaxbEnum> getEnums(JaxbPackage jaxbPackage) {
+		return new SubIterableWrapper<JaxbType, JaxbEnum>(
+				new FilteringIterable<JaxbType>(getTypes(jaxbPackage)) {
 					@Override
 					protected boolean accept(JaxbType o) {
-						return o.getKind() == JaxbType.Kind.PERSISTENT_ENUM;
+						return o.getKind() == JaxbType.Kind.ENUM;
 					}
 				});
 	}
 	
-	protected JaxbPersistentEnum buildPersistentEnum(JavaResourceEnum resourceEnum) {
-		return this.getFactory().buildJavaPersistentEnum(this, resourceEnum);
+	
+	protected JaxbClass buildJaxbClass(JavaResourceType resourceType) {
+		return this.getFactory().buildJaxbClass(this, resourceType);
 	}
 	
-	public Iterable<JaxbPersistentEnum> getPersistentEnums(final JaxbPackage jaxbPackage) {
-		return new FilteringIterable<JaxbPersistentEnum>(getPersistentEnums()) {
-			@Override
-			protected boolean accept(JaxbPersistentEnum o) {
-				return o.getPackageName().equals(jaxbPackage.getName());
-			}
-		};
+	protected JaxbEnum buildJaxbEnum(JavaResourceEnum resourceEnum) {
+		return this.getFactory().buildJaxbEnum(this, resourceEnum);
 	}
-
-	public JaxbPersistentEnum getPersistentEnum(String enumName) {
-		for (JaxbPersistentEnum jaxbEnum : this.getPersistentEnums()) {
-			if (StringTools.stringsAreEqual(jaxbEnum.getFullyQualifiedName(), enumName)) {
-				return jaxbEnum;
-			}
-		}
-		return null;
+	
+	public Iterable<XmlRegistry> getXmlRegistries(JaxbPackage jaxbPackage) {
+		return new FilteringIterable<XmlRegistry>(
+				new TransformationIterable<JaxbClass, XmlRegistry>(getClasses(jaxbPackage)) {
+					@Override
+					protected XmlRegistry transform(JaxbClass o) {
+						return o.getXmlRegistry();
+					}
+				},
+				NotNullFilter.INSTANCE);
 	}
-
+	
+	public JaxbTypeMapping getTypeMapping(String typeName) {
+		JaxbType type = getType(typeName);
+		return (type == null) ? null : type.getMapping();
+	}
+	
+	public JaxbClassMapping getClassMapping(String typeName) {
+		JaxbType type = getType(typeName);
+		return (type == null || (type.getKind() != JaxbType.Kind.CLASS)) ? 
+				null : ((JaxbClass) type).getMapping();
+	}
+	
+	
 	@Override
     public void stateChanged() {
 		super.stateChanged();

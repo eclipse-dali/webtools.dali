@@ -56,7 +56,7 @@ public class GenericJavaAttributeXmlJavaTypeAdapter
 					IMessage.HIGH_SEVERITY,
 					JaxbValidationMessages.ATTRIBUTE_MAPPING_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_DEFINED,
 					this,
-					getResourceXmlJavaTypeAdapter().getTypeTextRange(astRoot)));
+					getAnnotation().getTypeTextRange(astRoot)));
 		}
 	}
 }

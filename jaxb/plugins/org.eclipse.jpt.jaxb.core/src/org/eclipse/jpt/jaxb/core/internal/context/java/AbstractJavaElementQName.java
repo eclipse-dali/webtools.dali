@@ -13,9 +13,9 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
@@ -42,12 +42,12 @@ public abstract class AbstractJavaElementQName
 	
 	protected abstract JaxbPersistentAttribute getPersistentAttribute();
 	
-	protected JaxbPersistentClass getPersistentClass() {
-		return getPersistentAttribute().getPersistentClass();
+	protected JaxbClassMapping getJaxbClassMapping() {
+		return getPersistentAttribute().getJaxbClassMapping();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {
-		return getPersistentClass().getJaxbPackage();
+		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
 	}
 	
 	protected abstract XmlElementWrapper getElementWrapper();
@@ -59,7 +59,7 @@ public abstract class AbstractJavaElementQName
 	
 	@Override
 	public Iterable<String> getNameProposals(Filter<String> filter) {
-		XsdTypeDefinition xsdType = getPersistentClass().getXsdTypeDefinition();
+		XsdTypeDefinition xsdType = getJaxbClassMapping().getXsdTypeDefinition();
 		if (xsdType == null) {
 			return EmptyIterable.instance();
 		}
@@ -82,7 +82,7 @@ public abstract class AbstractJavaElementQName
 	@Override
 	public String getDefaultNamespace() {
 		return (getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
-				getPersistentClass().getQName().getNamespace() : "";
+				getJaxbClassMapping().getQName().getNamespace() : "";
 	}
 	
 	@Override
@@ -93,7 +93,7 @@ public abstract class AbstractJavaElementQName
 
 	@Override
 	protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		XsdTypeDefinition xsdType = getPersistentClass().getXsdTypeDefinition();
+		XsdTypeDefinition xsdType = getJaxbClassMapping().getXsdTypeDefinition();
 		if (xsdType == null) {
 			return;
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,7 +49,7 @@ public abstract class JaxbContextModelTestCase
 		return createTestPackageInfo(packageName);
 	}
 	
-	protected ICompilationUnit createAnnotatedPersistentClass() throws Exception {
+	protected ICompilationUnit createClassWithXmlType() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -62,11 +62,24 @@ public abstract class JaxbContextModelTestCase
 		});
 	}
 	
+	protected ICompilationUnit createClassWithXmlRegistry() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JAXB.XML_REGISTRY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlRegistry");
+			}
+		});
+	}
+	
 	protected ICompilationUnit createUnannotatedClassNamed(String typeName) throws Exception {
 		return this.createTestType(PACKAGE_NAME, typeName + ".java", typeName, new DefaultAnnotationWriter());
 	}
 	
-	protected ICompilationUnit createAnnotatedPersistentEnum() throws Exception {
+	protected ICompilationUnit createEnumWithXmlType() throws Exception {
 		return this.createTestEnum(new DefaultEnumAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -81,18 +94,5 @@ public abstract class JaxbContextModelTestCase
 	
 	protected ICompilationUnit createUnannotatedEnumNamed(String enumName) throws Exception {
 		return this.createTestEnum(PACKAGE_NAME, enumName + ".java", enumName, new DefaultEnumAnnotationWriter());
-	}
-	
-	protected ICompilationUnit createAnnotatedRegistry() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_REGISTRY);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlRegistry");
-			}
-		});
 	}
 }

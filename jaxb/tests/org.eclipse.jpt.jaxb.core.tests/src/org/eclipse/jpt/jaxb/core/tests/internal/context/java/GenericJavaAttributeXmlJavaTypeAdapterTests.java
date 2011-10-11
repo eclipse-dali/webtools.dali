@@ -19,6 +19,8 @@ import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -34,7 +36,7 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 		super(name);
 	}
 
-	private ICompilationUnit createTypeWithXmlTypeWithXmlJavaTypeAdapter() throws Exception {
+	private ICompilationUnit createClassWithXmlTypeAndAttributeXmlJavaTypeAdapter() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -53,11 +55,14 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 	}
 
 	public void testModifyValue() throws Exception {
-		this.createTypeWithXmlTypeWithXmlJavaTypeAdapter();
-		XmlAttributeMapping contextAttributeMapping =  (XmlAttributeMapping) CollectionTools.get(CollectionTools.get(getContextRoot().getPersistentClasses(), 0).getAttributes(), 0).getMapping();
-		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextAttributeMapping.getXmlJavaTypeAdapter();
-		JavaResourceAttribute resourceAttribute = contextAttributeMapping.getJavaResourceAttribute();
-
+		createClassWithXmlTypeAndAttributeXmlJavaTypeAdapter();
+		
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType(FULLY_QUALIFIED_TYPE_NAME);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) CollectionTools.get(classMapping.getAttributes(), 0).getMapping();
+		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
+		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
+		
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 
 		contextXmlJavaTypeAdapter.setValue("foo");
@@ -73,11 +78,14 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 	}
 
 	public void testUpdateValue() throws Exception {
-		this.createTypeWithXmlTypeWithXmlJavaTypeAdapter();
-		XmlAttributeMapping contextAttributeMapping =  (XmlAttributeMapping) CollectionTools.get(CollectionTools.get(getContextRoot().getPersistentClasses(), 0).getAttributes(), 0).getMapping();
-		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextAttributeMapping.getXmlJavaTypeAdapter();
-		JavaResourceAttribute resourceAttribute = contextAttributeMapping.getJavaResourceAttribute();
-
+		createClassWithXmlTypeAndAttributeXmlJavaTypeAdapter();
+		
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType(FULLY_QUALIFIED_TYPE_NAME);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) CollectionTools.get(classMapping.getAttributes(), 0).getMapping();
+		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
+		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
+		
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 
 		//add a value member value pair
@@ -94,15 +102,18 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 				GenericJavaAttributeXmlJavaTypeAdapterTests.this.removeXmlJavaTypeAdapterAnnotation(declaration);
 			}
 		});
-		assertNull(contextAttributeMapping.getXmlJavaTypeAdapter());
+		assertNull(attributeMapping.getXmlJavaTypeAdapter());
 	}
-
+	
 	public void testModifyType() throws Exception {
-		this.createTypeWithXmlTypeWithXmlJavaTypeAdapter();
-		XmlAttributeMapping contextAttributeMapping =  (XmlAttributeMapping) CollectionTools.get(CollectionTools.get(getContextRoot().getPersistentClasses(), 0).getAttributes(), 0).getMapping();
-		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextAttributeMapping.getXmlJavaTypeAdapter();
-		JavaResourceAttribute resourceAttribute = contextAttributeMapping.getJavaResourceAttribute();
-
+		createClassWithXmlTypeAndAttributeXmlJavaTypeAdapter();
+		
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType(FULLY_QUALIFIED_TYPE_NAME);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) CollectionTools.get(classMapping.getAttributes(), 0).getMapping();
+		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
+		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
+		
 		assertEquals("int", contextXmlJavaTypeAdapter.getType());
 		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
 		assertEquals("int", contextXmlJavaTypeAdapter.getDefaultType());
@@ -122,11 +133,14 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 	}
 
 	public void testUpdateType() throws Exception {
-		this.createTypeWithXmlTypeWithXmlJavaTypeAdapter();
-		XmlAttributeMapping contextAttributeMapping =  (XmlAttributeMapping) CollectionTools.get(CollectionTools.get(getContextRoot().getPersistentClasses(), 0).getAttributes(), 0).getMapping();
-		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextAttributeMapping.getXmlJavaTypeAdapter();
-		JavaResourceAttribute resourceAttribute = contextAttributeMapping.getJavaResourceAttribute();
-
+		createClassWithXmlTypeAndAttributeXmlJavaTypeAdapter();
+		
+		JaxbClass jaxbClass = (JaxbClass) getContextRoot().getType(FULLY_QUALIFIED_TYPE_NAME);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		XmlAttributeMapping attributeMapping = (XmlAttributeMapping) CollectionTools.get(classMapping.getAttributes(), 0).getMapping();
+		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = attributeMapping.getXmlJavaTypeAdapter();
+		JavaResourceAttribute resourceAttribute = attributeMapping.getJavaResourceAttribute();
+		
 		assertEquals("int", contextXmlJavaTypeAdapter.getType());
 		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
 		assertEquals("int", contextXmlJavaTypeAdapter.getDefaultType());
@@ -147,7 +161,7 @@ public class GenericJavaAttributeXmlJavaTypeAdapterTests extends JaxbContextMode
 				GenericJavaAttributeXmlJavaTypeAdapterTests.this.removeXmlJavaTypeAdapterAnnotation(declaration);
 			}
 		});
-		assertNull(contextAttributeMapping.getXmlJavaTypeAdapter());
+		assertNull(attributeMapping.getXmlJavaTypeAdapter());
 	}
 
 	protected void addXmlJavaTypeAdapterTypeMemberValuePair(ModifiedDeclaration declaration, String name, String typeName) {

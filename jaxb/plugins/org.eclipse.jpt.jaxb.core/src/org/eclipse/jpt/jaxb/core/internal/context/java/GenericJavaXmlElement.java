@@ -19,9 +19,9 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
@@ -99,12 +99,12 @@ public class GenericJavaXmlElement
 		return getContext().getAttributeMapping().getPersistentAttribute();
 	}
 	
-	protected JaxbPersistentClass getPersistentClass() {
-		return getPersistentAttribute().getPersistentClass();
+	protected JaxbClassMapping getJaxbClassMapping() {
+		return getPersistentAttribute().getJaxbClassMapping();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {
-		return getPersistentClass().getJaxbPackage();
+		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
 	}
 	
 	public XmlElementAnnotation getAnnotation(boolean createIfNull) {
@@ -266,9 +266,11 @@ public class GenericJavaXmlElement
 	
 	// ***** misc *****
 	
-	public Iterable<String> getDirectlyReferencedTypeNames() {
+	public Iterable<String> getReferencedXmlTypeNames() {
 		// only return the specified type - the default type should already be included
-		return (this.specifiedType == null) ? EmptyIterable.<String>instance() : new SingleElementIterable(getFullyQualifiedType());
+		return (this.specifiedType == null) ? 
+				EmptyIterable.<String>instance() 
+				: new SingleElementIterable(getFullyQualifiedType());
 	}
 	
 	
