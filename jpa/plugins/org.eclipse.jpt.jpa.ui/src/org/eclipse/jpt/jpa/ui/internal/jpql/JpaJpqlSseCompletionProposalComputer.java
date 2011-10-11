@@ -50,7 +50,7 @@ import org.eclipse.wst.sse.ui.contentassist.ICompletionProposalComputer;
  * This computer adds content assist support when it is invoked inside the &lt;query&gt; element
  * defined in a mapping file (ORM Configuration).
  *
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
@@ -86,7 +86,7 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 			offset,
 			position,
 			cursorOffset,
-			true
+			false
 		);
 	}
 
