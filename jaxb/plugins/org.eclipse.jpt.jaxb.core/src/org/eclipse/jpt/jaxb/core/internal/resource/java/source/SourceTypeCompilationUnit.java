@@ -110,12 +110,20 @@ public final class SourceTypeCompilationUnit
 		if (td == null) {
 			this.syncType_(null);
 		} else {
-			if (this.type == null) {
+			if (this.type == null || (!typeMatchesASTNodeType(this.type, td))) {
 				this.syncType_(this.buildType(astRoot, td));
 			} else {
 				this.type.synchronizeWith(astRoot);
 			}
 		}
+	}
+
+
+	/**
+	 * Must be non-null JavaResourceAbstractType and AbstractTypeDeclaration
+	 */
+	protected static boolean typeMatchesASTNodeType(JavaResourceAbstractType type, AbstractTypeDeclaration astType) {
+		return type.getKind().getAstNodeType() == astType.getNodeType();
 	}
 
 	private void syncType_(JavaResourceAbstractType astType) {

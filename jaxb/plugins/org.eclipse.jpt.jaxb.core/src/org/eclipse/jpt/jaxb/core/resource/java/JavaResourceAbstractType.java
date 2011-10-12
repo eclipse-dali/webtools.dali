@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 
 /**
@@ -108,13 +109,23 @@ public interface JavaResourceAbstractType
 		 * An {@link JavaResourceAbstractType} of {@link Kind} TYPE may safely be cast as a 
 		 * {@link JavaResourceType}
 		 */
-		TYPE,
+		TYPE(ASTNode.TYPE_DECLARATION),
 		
 		/**
 		 * Represents an enum.
 		 * An {@link JavaResourceAbstractType} of {@link Kind} ENUM may safely be cast as a 
 		 * {@link JavaResourceEnum}
 		 */
-		ENUM
+		ENUM(ASTNode.ENUM_DECLARATION);
+
+		private int astNodeType;
+
+		Kind(int astNodeType) {
+			this.astNodeType = astNodeType;
+		}
+
+		public int getAstNodeType() {
+			return this.astNodeType;
+		}
 	}
 }
