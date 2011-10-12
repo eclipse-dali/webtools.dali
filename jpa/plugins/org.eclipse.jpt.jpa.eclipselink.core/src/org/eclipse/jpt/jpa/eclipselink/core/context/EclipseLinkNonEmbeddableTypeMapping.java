@@ -27,4 +27,9 @@ public interface EclipseLinkNonEmbeddableTypeMapping
 	EclipseLinkReadOnly getReadOnly();
 
 	EclipseLinkMultitenancy2_3 getMultitenancy();
+
+	/**
+	 * Used for validating whether tenant discriminator columns may be specified
+	 */
+	boolean isMultitenantMetadataAllowed();
 }

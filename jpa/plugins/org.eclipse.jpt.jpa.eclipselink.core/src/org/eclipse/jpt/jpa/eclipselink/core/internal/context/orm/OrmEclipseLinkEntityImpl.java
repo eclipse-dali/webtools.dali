@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
@@ -187,6 +188,14 @@ public class OrmEclipseLinkEntityImpl
 
 	protected boolean isEclipseLink2_3Compatible() {
 		return JptJpaEclipseLinkCorePlugin.nodeIsEclipseLink2_3Compatible(this);
+	}
+
+	public boolean isMultitenantMetadataAllowed() {
+		return this.isRootEntity() || this.isInheritanceStrategyTablePerClass();
+	}
+
+	protected boolean isInheritanceStrategyTablePerClass() {
+		return this.getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS;
 	}
 
 

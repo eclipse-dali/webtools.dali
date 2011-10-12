@@ -183,6 +183,9 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		return JptJpaEclipseLinkCorePlugin.nodeIsEclipseLink2_3Compatible(this);
 	}
 
+	public boolean isMultitenantMetadataAllowed() {
+		return true;
+	}
 
 	// ********** misc **********
 

@@ -610,15 +610,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected boolean isMultitenantMetadataAllowed() {
-		return this.isRootEntity() || this.isInheritanceStrategyTablePerClass();
-	}
-
-	protected boolean isRootEntity() {
-		return this.getParent().isRootEntity();
-	}
-
-	protected boolean isInheritanceStrategyTablePerClass() {
-		return this.getParent().getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS;
+		return this.getParent().isMultitenantMetadataAllowed();
 	}
 
 	protected boolean isMultitenantInheritanceHierarchy() {
@@ -626,6 +618,10 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 			return false;
 		}
 		return this.isRootEntityMultitenant();
+	}
+
+	protected boolean isInheritanceStrategyTablePerClass() {
+		return this.getParent().getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS;
 	}
 
 	protected boolean isRootEntityMultitenant() {
