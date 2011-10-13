@@ -296,6 +296,10 @@ public abstract class AbstractJavaType
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
+		if (this.mapping != null) {
+			this.mapping.validate(messages, reporter, astRoot);
+		}
+		
 		if (this.xmlJavaTypeAdapter != null) {
 			this.xmlJavaTypeAdapter.validate(messages, reporter, astRoot);
 		}

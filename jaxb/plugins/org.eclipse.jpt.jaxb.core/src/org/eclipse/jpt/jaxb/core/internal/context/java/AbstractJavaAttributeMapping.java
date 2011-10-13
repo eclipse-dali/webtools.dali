@@ -20,10 +20,9 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 
 public abstract class AbstractJavaAttributeMapping<A extends Annotation>
-	extends AbstractJavaContextNode
-	implements JaxbAttributeMapping
-{
-
+		extends AbstractJavaContextNode
+		implements JaxbAttributeMapping {
+	
 	protected boolean default_;
 
 	protected AbstractJavaAttributeMapping(JaxbPersistentAttribute parent) {
@@ -36,7 +35,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.updateDefault();
+		this.syncDefault();
 	}
 
 
@@ -79,7 +78,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		this.firePropertyChanged(DEFAULT_PROPERTY, old, default_);
 	}
 
-	public void updateDefault() {
+	public void syncDefault() {
 		this.setDefault(this.buildDefault());
 	}
 
@@ -114,10 +113,12 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		return this.getPersistentAttribute().getJavaResourceAttribute();
 	}
 	
-	
+	public String getBoundTypeName() {
+		return getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
+	}
 	
 	public String getValueTypeName() {
-		return getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
+		return getBoundTypeName();
 	}
 	
 	public Iterable<String> getReferencedXmlTypeNames() {

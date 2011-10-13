@@ -192,6 +192,10 @@ public abstract class AbstractJavaXmlJavaTypeAdapter
 		return this.annotation.getType();
 	}
 	
+	public String getFullyQualifiedType() {
+		return this.annotation.getFullyQualifiedType();
+	}
+	
 	
 	// ***** validation *****
 	

@@ -29,7 +29,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
-import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableType;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -38,18 +37,15 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericJavaXmlElementsMapping
-		extends AbstractJavaAttributeMapping<XmlElementsAnnotation> 
+		extends AbstractJavaAdaptableAttributeMapping<XmlElementsAnnotation> 
 		implements XmlElementsMapping {
 	
 	protected final ContextListContainer<XmlElement, XmlElementAnnotation> xmlElementContainer;
-	
-	protected XmlJavaTypeAdapter xmlJavaTypeAdapter;
 	
 	protected XmlElementWrapper xmlElementWrapper;
 	
@@ -59,7 +55,6 @@ public class GenericJavaXmlElementsMapping
 	public GenericJavaXmlElementsMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		this.xmlElementContainer = this.buildXmlElementContainer();
-		initializeXmlJavaTypeAdapter();
 		initializeXmlElementWrapper();
 		initializeXmlIDREF();
 	}
@@ -81,7 +76,6 @@ public class GenericJavaXmlElementsMapping
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.xmlElementContainer.synchronizeWithResourceModel();
-		syncXmlJavaTypeAdapter();
 		syncXmlElementWrapper();
 		syncXmlIDREF();
 	}
@@ -90,7 +84,6 @@ public class GenericJavaXmlElementsMapping
 	public void update() {
 		super.update();
 		this.xmlElementContainer.update();
-		updateXmlJavaTypeAdapter();
 		updateXmlElementWrapper();
 		updateXmlIDREF();
 	}
@@ -131,74 +124,6 @@ public class GenericJavaXmlElementsMapping
 	
 	protected ListIterable<XmlElementAnnotation> getXmlElementAnnotations() {
 		return getAnnotation().getXmlElements();
-	}
-	
-	
-	// ***** XmlJavaTypeAdapter *****
-	
-	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
-		return this.xmlJavaTypeAdapter;
-	}
-
-	protected void setXmlJavaTypeAdapter_(XmlJavaTypeAdapter xmlJavaTypeAdapter) {
-		XmlJavaTypeAdapter oldXmlJavaTypeAdapter = this.xmlJavaTypeAdapter;
-		this.xmlJavaTypeAdapter = xmlJavaTypeAdapter;
-		firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldXmlJavaTypeAdapter, xmlJavaTypeAdapter);
-	}
-	
-	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
-		if (this.xmlJavaTypeAdapter != null) {
-			throw new IllegalStateException();
-		}
-		XmlJavaTypeAdapterAnnotation annotation = 
-				(XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().addAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-		XmlJavaTypeAdapter xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
-		setXmlJavaTypeAdapter_(xmlJavaTypeAdapter);
-		return xmlJavaTypeAdapter;
-	}
-	
-	public void removeXmlJavaTypeAdapter() {
-		if (this.xmlJavaTypeAdapter == null) {
-			throw new IllegalStateException();
-		}
-		getJavaResourceAttribute().removeAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-		setXmlJavaTypeAdapter_(null);
-	}
-	
-	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
-		return new GenericJavaAttributeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
-	}
-	
-	protected XmlJavaTypeAdapterAnnotation getXmlJavaTypeAdapterAnnotation() {
-		return (XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-	}
-	
-	protected void initializeXmlJavaTypeAdapter() {
-		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
-		if (annotation != null) {
-			this.xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
-		}
-	}
-	
-	protected void syncXmlJavaTypeAdapter() {
-		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
-		if (annotation != null) {
-			if (this.xmlJavaTypeAdapter != null) {
-				this.xmlJavaTypeAdapter.synchronizeWithResourceModel();
-			}
-			else {
-				setXmlJavaTypeAdapter_(buildXmlJavaTypeAdapter(annotation));
-			}
-		}
-		else {
-			setXmlJavaTypeAdapter_(null);
-		}
-	}
-	
-	protected void updateXmlJavaTypeAdapter() {
-		if (this.xmlJavaTypeAdapter != null) {
-			this.xmlJavaTypeAdapter.update();
-		}
 	}
 	
 	
@@ -395,10 +320,6 @@ public class GenericJavaXmlElementsMapping
 		
 		for (XmlElement xmlElement : getXmlElements()) {
 			xmlElement.validate(messages, reporter, astRoot);
-		}
-		
-		if (this.xmlJavaTypeAdapter != null) {
-			this.xmlJavaTypeAdapter.validate(messages, reporter, astRoot);
 		}
 		
 		if (this.xmlElementWrapper != null) {

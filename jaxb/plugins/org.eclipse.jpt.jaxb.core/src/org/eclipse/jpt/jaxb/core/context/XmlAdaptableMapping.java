@@ -11,12 +11,22 @@ package org.eclipse.jpt.jaxb.core.context;
 
 /**
  * Represents an attribute mapping that may also have an XmlJavaTypeAdapter
+ * <p>
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.1
+ * @since 3.1
  */
-public interface XmlAdaptableMapping extends XmlAdaptable {
+public interface XmlAdaptableMapping
+		extends XmlAdaptable {
 	
-//	/**
-//	 * Return either the {@link XmlAdapter} defined here or any XmlAdapter defined at a higher level
-//	 * that also applies here.
-//	 */
-//	XmlAdapter getXmlAdapter();
+	/**
+	 * Return either the {@link XmlAdapter} defined here or any XmlAdapter defined at a higher level
+	 * that also applies here.
+	 */
+	XmlAdapter getXmlAdapter();
 }

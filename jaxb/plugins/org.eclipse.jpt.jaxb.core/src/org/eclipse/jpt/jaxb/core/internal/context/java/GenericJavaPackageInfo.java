@@ -287,6 +287,15 @@ public class GenericJavaPackageInfo
 		container.initialize();
 		return container;
 	}
+	
+	public XmlJavaTypeAdapter getXmlJavaTypeAdapter(String boundTypeName) {
+		for (XmlJavaTypeAdapter adapter : getXmlJavaTypeAdapters()) {
+			if (boundTypeName.equals(adapter.getFullyQualifiedType())) {
+				return adapter;
+			}
+		}
+		return null;
+	}
 
 
 	// **************** misc **************************************************

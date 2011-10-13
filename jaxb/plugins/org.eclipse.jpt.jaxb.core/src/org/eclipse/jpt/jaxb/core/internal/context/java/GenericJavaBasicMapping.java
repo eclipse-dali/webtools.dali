@@ -19,7 +19,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAttachmentRef;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
-import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlList;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -27,17 +26,14 @@ import org.eclipse.jpt.jaxb.core.resource.java.JaxbBasicSchemaComponentAnnotatio
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponentAnnotation>
-		extends AbstractJavaAttributeMapping<A>
+		extends AbstractJavaAdaptableAttributeMapping<A>
 		implements JaxbBasicMapping {
-	
-	protected XmlJavaTypeAdapter xmlJavaTypeAdapter;
 	
 	protected XmlSchemaType xmlSchemaType;
 	
@@ -52,7 +48,6 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	
 	public GenericJavaBasicMapping(JaxbPersistentAttribute parent) {
 		super(parent);
-		initializeXmlJavaTypeAdapter();
 		initializeXmlSchemaType();
 		initializeXmlList();
 		initializeXmlID();
@@ -61,10 +56,11 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	}
 	
 	
+	// ***** sync/update *****
+	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		syncXmlJavaTypeAdapter();
 		syncXmlSchemaType();
 		syncXmlList();
 		syncXmlID();
@@ -75,91 +71,12 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	@Override
 	public void update() {
 		super.update();
-		updateXmlJavaTypeAdapter();
 		updateXmlSchemaType();
 		updateXmlList();
 		updateXmlID();
 		updateXmlIDREF();
 		updateXmlAttachmentRef();
 	}
-	
-	
-	// ***** XmlJavaTypeAdapter *****
-	
-	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
-		return this.xmlJavaTypeAdapter;
-	}
-
-	protected void setXmlJavaTypeAdapter_(XmlJavaTypeAdapter xmlJavaTypeAdapter) {
-		XmlJavaTypeAdapter oldXmlJavaTypeAdapter = this.xmlJavaTypeAdapter;
-		this.xmlJavaTypeAdapter = xmlJavaTypeAdapter;
-		firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldXmlJavaTypeAdapter, xmlJavaTypeAdapter);
-	}
-	
-	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
-		if (this.xmlJavaTypeAdapter != null) {
-			throw new IllegalStateException();
-		}
-		XmlJavaTypeAdapterAnnotation annotation = 
-				(XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().addAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-		XmlJavaTypeAdapter xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
-		setXmlJavaTypeAdapter_(xmlJavaTypeAdapter);
-		return xmlJavaTypeAdapter;
-	}
-	
-	public void removeXmlJavaTypeAdapter() {
-		if (this.xmlJavaTypeAdapter == null) {
-			throw new IllegalStateException();
-		}
-		getJavaResourceAttribute().removeAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-		setXmlJavaTypeAdapter_(null);
-	}
-	
-	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
-		return new GenericJavaAttributeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
-	}
-	
-	protected XmlJavaTypeAdapterAnnotation getXmlJavaTypeAdapterAnnotation() {
-		return (XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
-	}
-	
-	protected void initializeXmlJavaTypeAdapter() {
-		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
-		if (annotation != null) {
-			this.xmlJavaTypeAdapter = buildXmlJavaTypeAdapter(annotation);
-		}
-	}
-	
-	protected void syncXmlJavaTypeAdapter() {
-		XmlJavaTypeAdapterAnnotation annotation = getXmlJavaTypeAdapterAnnotation();
-		if (annotation != null) {
-			if (this.xmlJavaTypeAdapter != null) {
-				this.xmlJavaTypeAdapter.synchronizeWithResourceModel();
-			}
-			else {
-				setXmlJavaTypeAdapter_(buildXmlJavaTypeAdapter(annotation));
-			}
-		}
-		else {
-			setXmlJavaTypeAdapter_(null);
-		}
-	}
-	
-	protected void updateXmlJavaTypeAdapter() {
-		if (this.xmlJavaTypeAdapter != null) {
-			this.xmlJavaTypeAdapter.update();
-		}
-	}
-	
-	
-	// ***** XmlAdapter *****
-	
-//	public XmlAdapter getXmlAdapter() {
-//		if (this.xmlJavaTypeAdapter != null) {
-//			return this.xmlJavaTypeAdapter.getXmlAdapter();
-//		}
-//		JaxbPersistentClass referenceClass
-//	}
 	
 	
 	// ***** XmlSchemaType *****
@@ -504,16 +421,6 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	}
 	
 	
-	// ***** misc *****
-	
-	@Override
-	public String getValueTypeName() {
-		return (this.xmlJavaTypeAdapter == null || this.xmlJavaTypeAdapter.getXmlAdapter() == null) ?
-				super.getValueTypeName()
-				: this.xmlJavaTypeAdapter.getXmlAdapter().getValueType();
-	}
-	
-	
 	// ***** content assist *****
 
 	@Override
@@ -539,10 +446,6 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		
-		if (this.xmlJavaTypeAdapter != null) {
-			this.xmlJavaTypeAdapter.validate(messages, reporter, astRoot);
-		}
 		
 		if (this.xmlSchemaType != null) {
 			this.xmlSchemaType.validate(messages, reporter, astRoot);

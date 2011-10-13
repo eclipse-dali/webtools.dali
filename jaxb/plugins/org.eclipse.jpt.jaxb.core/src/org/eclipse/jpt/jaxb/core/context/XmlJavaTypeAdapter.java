@@ -21,7 +21,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  */
 public interface XmlJavaTypeAdapter
@@ -64,6 +64,8 @@ public interface XmlJavaTypeAdapter
 	String DEFAULT_TYPE_PROPERTY = "defaultType"; //$NON-NLS-1$
 	
 	String getDefaultType();
+	
+	String getFullyQualifiedType();
 	
 	String DEFAULT_TYPE = "javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT"; //$NON-NLS-1$
 }

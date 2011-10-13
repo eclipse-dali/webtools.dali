@@ -25,7 +25,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  */
 public interface JaxbPackageInfo
@@ -36,7 +36,7 @@ public interface JaxbPackageInfo
 	JaxbPackage getJaxbPackage();
 	
 	
-	// ********** xml schema **********
+	// ***** XmlSchema *****
 	
 	/**
 	 * Return the XML schema for this package info, this will not be null.
@@ -44,33 +44,49 @@ public interface JaxbPackageInfo
 	XmlSchema getXmlSchema();
 	
 	
-	// ********** xml schema types **********
+	// ***** XmlSchemaTypes *****
+	
+	String XML_SCHEMA_TYPES_LIST = "xmlSchemaTypes"; //$NON-NLS-1$
 	
 	ListIterable<XmlSchemaType> getXmlSchemaTypes();
-	int getXmlSchemaTypesSize();
-	XmlSchemaType addXmlSchemaType(int index);
-	void removeXmlSchemaType(int index);
-	void removeXmlSchemaType(XmlSchemaType xmlSchemaType);
-	void moveXmlSchemaType(int targetIndex, int sourceIndex);
-		String XML_SCHEMA_TYPES_LIST = "xmlSchemaTypes"; //$NON-NLS-1$
-
 	
-	// ********** xml java type adapters **********
-
+	int getXmlSchemaTypesSize();
+	
+	XmlSchemaType addXmlSchemaType(int index);
+	
+	void removeXmlSchemaType(int index);
+	
+	void removeXmlSchemaType(XmlSchemaType xmlSchemaType);
+	
+	void moveXmlSchemaType(int targetIndex, int sourceIndex);
+		
+	
+	// ***** XmlJavaTypeAdapters ******
+	
+	String XML_JAVA_TYPE_ADAPTERS_LIST = "xmlJavaTypeAdapters"; //$NON-NLS-1$
+	
 	ListIterable<XmlJavaTypeAdapter> getXmlJavaTypeAdapters();
+	
 	int getXmlJavaTypeAdaptersSize();
+	
 	XmlJavaTypeAdapter addXmlJavaTypeAdapter(int index);
+	
 	void removeXmlJavaTypeAdapter(int index);
+	
 	void removeXmlJavaTypeAdapter(XmlJavaTypeAdapter xmlJavaTypeAdapter);
+	
 	void moveXmlJavaTypeAdapter(int targetIndex, int sourceIndex);
-		String XML_JAVA_TYPE_ADAPTERS_LIST = "xmlJavaTypeAdapters"; //$NON-NLS-1$
-
-
-	// **************** validation ********************************************
+	
+	/**
+	 * return an {@link XmlJavaTypeAdapter} for the given bound type name, if one exists
+	 */
+	XmlJavaTypeAdapter getXmlJavaTypeAdapter(String boundTypeName);
+	
+	
+	// ***** validation *****
 	
 	/**
 	 * Add validation messages to the specified list.
 	 */
 	void validate(List<IMessage> messages, IReporter reporter);
-
 }

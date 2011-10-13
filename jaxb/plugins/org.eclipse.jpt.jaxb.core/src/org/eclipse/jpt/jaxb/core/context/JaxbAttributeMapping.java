@@ -22,7 +22,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  */
 public interface JaxbAttributeMapping
@@ -45,22 +45,20 @@ public interface JaxbAttributeMapping
 	 */
 	boolean isDefault();
 	
-	void updateDefault();
-	
 	
 	// ***** misc *****
 	
-//	/**
-//	 * Return the (fully qualified) type of the attribute. 
-//	 * (This is almost always the same as the base type.)
-//	 */
-//	String getBoundTypeName();
-//	
-//	/**
-//	 * Return the (fully qualified) type that is to be associated with a schema type. 
-//	 * (Usually the same as the base type, except when an XmlJavaTypeAdapters is used.)
-//	 */
-//	String getValueTypeName();
+	/**
+	 * Return the (fully qualified) type of the attribute. 
+	 * (This is almost always the same as the base type.)
+	 */
+	String getBoundTypeName();
+	
+	/**
+	 * Return the (fully qualified) type that is to be associated with a schema type. 
+	 * (Usually the same as the base type, except when an XmlJavaTypeAdapter is used.)
+	 */
+	String getValueTypeName();
 	
 	/**
 	 * Return all directly referenced types, fully qualified.
