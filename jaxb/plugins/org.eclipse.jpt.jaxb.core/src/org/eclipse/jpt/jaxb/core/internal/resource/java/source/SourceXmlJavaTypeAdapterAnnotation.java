@@ -46,16 +46,22 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private String value;
 	private String fullyQualifiedValue;
 	
+	/*
+	 * We want this event fired when the fq class changes by itself, not as a result
+	 * of the non-fq class changing.
+	 */
+	private boolean suppressFQValueEventNotification = false;
+	
 	private final DeclarationAnnotationElementAdapter<String> typeDeclarationAdapter;
 	private final AnnotationElementAdapter<String> typeAdapter;
 	private String type;
 	private String fullyQualifiedType;
 	
 	/*
-	 * We want these events fired when the fq classes change by themselves, not as a result
-	 * of the non-fq classes changing.
+	 * We want this event fired when the fq class changes by itself, not as a result
+	 * of the non-fq class changing.
 	 */
-	private boolean suppressFQClassesEventNotification = false;
+	private boolean suppressFQTypeEventNotification = false;
 	
 	
 	// ********** constructors **********
@@ -114,7 +120,8 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 		syncFullyQualifiedValue(buildFullyQualifiedValue(astRoot));
 		syncFullyQualifiedType(buildFullyQualifiedType(astRoot));
 		
-		this.suppressFQClassesEventNotification = false;
+		this.suppressFQValueEventNotification = false;
+		this.suppressFQTypeEventNotification = false;
 	}
 	
 	@Override
@@ -133,7 +140,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	public void setValue(String value) {
 		if (this.attributeValueHasChanged(this.value, value)) {
 			this.value = value;
-			this.suppressFQClassesEventNotification = true;
+			this.suppressFQValueEventNotification = true;
 			this.valueAdapter.setValue(value);
 		}
 	}
@@ -141,7 +148,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private void syncValue(String astValue) {
 		String old = this.value;
 		this.value = astValue;
-		this.suppressFQClassesEventNotification |= StringTools.stringsAreEqual(old, astValue);
+		this.suppressFQValueEventNotification |= StringTools.stringsAreEqual(old, astValue);
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 	
@@ -160,7 +167,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private void syncFullyQualifiedValue(String name) {
 		String old = this.fullyQualifiedValue;
 		this.fullyQualifiedValue = name;
-		if (! this.suppressFQClassesEventNotification) {
+		if (! this.suppressFQValueEventNotification) {
 			this.firePropertyChanged(FULLY_QUALIFIED_VALUE_PROPERTY, old, name);
 		}
 	}
@@ -177,7 +184,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	public void setType(String type) {
 		if (this.attributeValueHasChanged(this.type, type)) {
 			this.type = type;
-			this.suppressFQClassesEventNotification = true;
+			this.suppressFQTypeEventNotification = true;
 			this.typeAdapter.setValue(type);
 		}
 	}
@@ -185,7 +192,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private void syncType(String astType) {
 		String old = this.type;
 		this.type = astType;
-		this.suppressFQClassesEventNotification |= StringTools.stringsAreEqual(old, astType);
+		this.suppressFQTypeEventNotification |= StringTools.stringsAreEqual(old, astType);
 		this.firePropertyChanged(TYPE_PROPERTY, old, astType);
 	}
 	
@@ -204,7 +211,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private void syncFullyQualifiedType(String name) {
 		String old = this.fullyQualifiedType;
 		this.fullyQualifiedType = name;
-		if (! this.suppressFQClassesEventNotification) {
+		if (! this.suppressFQTypeEventNotification) {
 			this.firePropertyChanged(FULLY_QUALIFIED_TYPE_PROPERTY, old, name);
 		}
 	}
