@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceRuleFactory;
@@ -22,12 +23,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
@@ -36,6 +35,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -54,16 +54,8 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -72,8 +64,6 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	implements INewWizard  {	
 	
 	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.PLUGIN_ID + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
-
-	private static final String DONT_SHOW_OVERWRITE_WARNING_DIALOG = "DONT_SHOW_OVERWRITE_WARNING_DIALOG"; //$NON-NLS-1$
 
 	private JpaProject jpaProject;
 
@@ -251,9 +241,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	}
 
     public static boolean showOverwriteWarning(){
-    	IEclipsePreferences pref = new InstanceScope().getNode(JptJpaUiPlugin.PLUGIN_ID); 
-    	boolean ret = ! pref.getBoolean( DONT_SHOW_OVERWRITE_WARNING_DIALOG, false) ;
-    	return ret;
+    	return OptionalMessageDialog.isDialogEnabled(OverwriteConfirmerDialog.ID);
     }
     
     // ********** overwrite confirmer **********
@@ -312,55 +300,27 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 
 	// ********** overwrite dialog **********
 
-	static class OverwriteConfirmerDialog extends Dialog {
-		private final String className;
+	static class OverwriteConfirmerDialog extends OptionalMessageDialog {
 		private boolean yes = false;
 		private boolean yesToAll = false;
 		private boolean no = false;
 		private boolean noToAll = false;
 
+		private static final String ID= "dontShowOverwriteEntitesFromSchemas.warning"; //$NON-NLS-1$
+
 		OverwriteConfirmerDialog(Shell parent, String className) {
-			super(parent);
-			this.className = className;
+			super(ID, parent,
+					JptUiMessages.OverwriteConfirmerDialog_title,
+					NLS.bind(JptUiMessages.OverwriteConfirmerDialog_text, className),
+					MessageDialog.WARNING,
+					new String[] {IDialogConstants.YES_LABEL, 
+									IDialogConstants.YES_TO_ALL_LABEL, 
+									IDialogConstants.NO_LABEL, 
+									IDialogConstants.NO_TO_ALL_LABEL, 
+									IDialogConstants.CANCEL_LABEL},
+					2);
 		}
-
-		@Override
-		protected void configureShell(Shell shell) {
-			super.configureShell(shell);
-			shell.setText(JptUiMessages.OverwriteConfirmerDialog_title);
-		}
-
-		@Override
-		protected Control createDialogArea(Composite parent) {
-			Composite composite = (Composite) super.createDialogArea(parent);
-			GridLayout gridLayout = (GridLayout) composite.getLayout();
-			gridLayout.numColumns = 1;
-
-			Label text = new Label(composite, SWT.LEFT);
-			text.setText(NLS.bind(JptUiMessages.OverwriteConfirmerDialog_text, this.className));
-			text.setLayoutData(new GridData());
-			
-			createDontShowControl(composite);
-			
-			return composite;
-		}
-	    
-	    protected Control createDontShowControl(Composite composite) {
-	    	final Button checkbox = new Button( composite, SWT.CHECK );
-	    	checkbox.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_doNotShowWarning );
-	    	checkbox.setSelection(false);
-	    	final IEclipsePreferences pref = new InstanceScope().getNode( JptJpaUiPlugin.PLUGIN_ID); 
-	    	checkbox.setLayoutData( new GridData(GridData.FILL_BOTH) );
-	    	checkbox.addSelectionListener(new SelectionListener (){
-	    		public void widgetDefaultSelected(SelectionEvent e) {}
-				public void widgetSelected(SelectionEvent e) {
-					boolean b = checkbox.getSelection();
-	                pref.putBoolean( DONT_SHOW_OVERWRITE_WARNING_DIALOG, b);
-				}
-	    	});
-	    	return checkbox;
-	    }
-	    
+		
 		@Override
 		protected void createButtonsForButtonBar(Composite parent) {
 			this.createButton(parent, IDialogConstants.YES_ID, IDialogConstants.YES_LABEL, false);

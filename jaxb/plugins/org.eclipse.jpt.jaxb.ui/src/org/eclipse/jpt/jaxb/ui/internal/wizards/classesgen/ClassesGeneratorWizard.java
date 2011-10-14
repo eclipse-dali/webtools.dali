@@ -21,10 +21,12 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.common.ui.internal.wizards.JavaProjectWizardPage;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
@@ -37,6 +39,8 @@ import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.wst.xsd.contentmodel.internal.XSDImpl;
@@ -156,7 +160,7 @@ public class ClassesGeneratorWizard
 		}
 
 		if (this.performsGeneration) {
-			if (displayOverridingClassesWarning(this.generatorOptions)) {
+			if (displayOverwritingClassesWarning(this.generatorOptions)) {
 				generateJaxbClasses();
 				addSchemaToLibrary();
 			}
@@ -268,15 +272,15 @@ public class ClassesGeneratorWizard
     	return (IJavaProject)((IJavaElement)((IAdaptable)project).getAdapter(IJavaElement.class));
     }
     
-	private boolean displayOverridingClassesWarning(ClassesGeneratorOptions generatorOptions) {
+	private boolean displayOverwritingClassesWarning(ClassesGeneratorOptions generatorOptions) {
 		
-		if( ! this.isOverridingClasses(generatorOptions)) {
+		if( ! this.isOverridingClasses(generatorOptions) 
+				|| !OptionalMessageDialog.isDialogEnabled(OverwriteConfirmerDialog.ID)) {
 			return true;
+		} else {
+			OverwriteConfirmerDialog dialog = new OverwriteConfirmerDialog(this.getShell());
+			return dialog.open() == IDialogConstants.YES_ID;			
 		}
-		return MessageDialog.openQuestion(
-			this.getShell(), 
-			JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningTitle,
-			JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningMessage);
 	}
 
 	private boolean isOverridingClasses(ClassesGeneratorOptions generatorOptions) {
@@ -402,4 +406,26 @@ public class ClassesGeneratorWizard
 				message
 			);
 	}
+	
+	static class OverwriteConfirmerDialog extends OptionalMessageDialog {
+
+		private static final String ID= "dontShowOverwriteJaxbClassesFromSchemas.warning"; //$NON-NLS-1$
+
+		OverwriteConfirmerDialog(Shell parent) {
+			super(ID, parent,
+					JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningTitle,
+					JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningMessage,
+					MessageDialog.WARNING,
+					new String[] {IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL},
+					1);
+		}
+		
+		@Override
+		protected void createButtonsForButtonBar(Composite parent) {
+			this.createButton(parent, IDialogConstants.YES_ID, IDialogConstants.YES_LABEL, false);
+			this.createButton(parent, IDialogConstants.NO_ID, IDialogConstants.NO_LABEL, true);
+		}
+
+	}
+
 }

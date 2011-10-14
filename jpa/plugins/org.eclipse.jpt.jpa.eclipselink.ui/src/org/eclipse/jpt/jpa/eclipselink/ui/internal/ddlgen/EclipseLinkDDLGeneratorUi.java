@@ -16,9 +16,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -31,6 +33,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenera
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards.GenerateDDLWizard;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -91,14 +95,12 @@ public class EclipseLinkDDLGeneratorUi
 	}
 
 	private boolean displayGeneratingDDLWarning() {
-		String message = org.eclipse.osgi.util.NLS.bind(
-			EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_generatingDDLWarningMessage,
-			CR,  CR + CR);
-			
-		return MessageDialog.openQuestion(
-			this.getCurrentShell(), 
-			EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_generatingDDLWarningTitle, 
-			message);
+		if (!OptionalMessageDialog.isDialogEnabled(OverwriteConfirmerDialog.ID)) {
+			return true;
+		} else {
+			OverwriteConfirmerDialog dialog = new OverwriteConfirmerDialog(this.getCurrentShell());
+			return dialog.open() == IDialogConstants.YES_ID;
+		}
 	}
 
 	// ********** Persistence Unit **********
@@ -179,4 +181,26 @@ public class EclipseLinkDDLGeneratorUi
 		}
 	}
 
+	// ********** overwrite dialog **********
+
+	static class OverwriteConfirmerDialog extends OptionalMessageDialog {
+
+		private static final String ID= "dontShowOverwriteExistingTablesFromClasses.warning"; //$NON-NLS-1$
+
+		OverwriteConfirmerDialog(Shell parent) {
+			super(ID, parent,
+					EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_generatingDDLWarningTitle,
+					NLS.bind(EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_generatingDDLWarningMessage, CR,  CR + CR),
+					MessageDialog.WARNING,
+					new String[] {IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL},
+					1);
+		}
+		
+		@Override
+		protected void createButtonsForButtonBar(Composite parent) {
+			this.createButton(parent, IDialogConstants.YES_ID, IDialogConstants.YES_LABEL, false);
+			this.createButton(parent, IDialogConstants.NO_ID, IDialogConstants.NO_LABEL, true);
+		}
+
+	}
 }

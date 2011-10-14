@@ -29,7 +29,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 /**
- * This is the root of the Java Persistence preferences hierarchy in the IDE preferences dialog.
+ * This is the root of the JPA preferences hierarchy in the IDE
+ * preferences dialog.
  * <p>
  * Structure:
  * <p>

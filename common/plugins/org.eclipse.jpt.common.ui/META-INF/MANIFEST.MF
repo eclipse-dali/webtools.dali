@@ -29,6 +29,10 @@ Export-Package: org.eclipse.jpt.common.ui,
   x-friends:="org.eclipse.jpt.jaxb.ui,
    org.eclipse.jpt.jpa.db.ui,
    org.eclipse.jpt.jpa.ui",
+ org.eclipse.jpt.common.ui.internal.dialogs;
+  x-friends:="org.eclipse.jpt.jaxb.ui,
+    org.eclipse.jpt.jpa.db.ui,
+     org.eclipse.jpt.jpa.ui",
  org.eclipse.jpt.common.ui.internal.jface;
   x-friends:="org.eclipse.jpt.jaxb.ui,
    org.eclipse.jpt.jpa.db.ui,

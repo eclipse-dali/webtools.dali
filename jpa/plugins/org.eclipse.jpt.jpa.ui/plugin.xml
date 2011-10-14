@@ -965,7 +965,7 @@
 		<page
 			id="org.eclipse.jpt.jpa.ui.preferences"
 			name="%javaPersistenceNode"
-			class="org.eclipse.ui.internal.dialogs.EmptyPreferencePage"/>
+			class="org.eclipse.jpt.jpa.ui.internal.preferences.JptPreferencesPage"/>
 		
 		<page
 			id="org.eclipse.jpt.jpa.ui.jpaPreferences"

@@ -136,6 +136,9 @@ public class JptUiMessages {
 	public static String OverwriteConfirmerDialog_title;
 	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
 	public static String EntitiesGenerator_jobName;
+	public static String JptPreferencesPage_DoNotShowDialogs;
+	public static String JptPreferencesPage_DoNotShowText;
+	public static String JptPreferencesPage_ClearButtonText;
 	public static String JpaPreferencesPage_description;
 	public static String JpaPreferencesPage_jpqlEditor;
 	public static String JpaPreferencesPage_jpqlEditor_description;
