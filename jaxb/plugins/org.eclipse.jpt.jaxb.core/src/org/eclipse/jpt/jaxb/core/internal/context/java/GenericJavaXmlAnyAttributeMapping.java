@@ -52,7 +52,7 @@ public class GenericJavaXmlAnyAttributeMapping
 			messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JaxbValidationMessages.XML_ANY_ATTRIBUTE_MAPPING_DEFINED_ON_NON_MAP,
+					JaxbValidationMessages.XML_ANY_ATTRIBUTE__NON_MAP_TYPE,
 					this,
 					getValidationTextRange(astRoot)));
 		}

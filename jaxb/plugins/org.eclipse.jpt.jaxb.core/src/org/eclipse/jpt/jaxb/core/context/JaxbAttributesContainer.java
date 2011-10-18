@@ -36,23 +36,6 @@ public interface JaxbAttributesContainer
 	/********** attributes **********/
 
 	Iterable<JaxbPersistentAttribute> getAttributes();
-	int getAttributesSize();
 	
-	interface Owner {
-		
-		/**
-		 * Return the access type of the owner, to be used in determining which attributes to build
-		 */
-		XmlAccessType getAccessType();
-
-		/**
-		 * fire property change event for the added attribute
-		 */
-		void fireAttributeAdded(JaxbPersistentAttribute attribute);
-		
-		/**
-		 * fire property change event for the removed attribute
-		 */
-		void fireAttributeRemoved(JaxbPersistentAttribute attribute);
-	}
+	int getAttributesSize();
 }

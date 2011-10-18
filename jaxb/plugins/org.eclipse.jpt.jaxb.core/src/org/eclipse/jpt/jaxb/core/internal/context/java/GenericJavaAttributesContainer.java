@@ -40,11 +40,11 @@ public class GenericJavaAttributesContainer
 
 	protected JavaResourceType javaResourceType;
 
-	protected JaxbAttributesContainer.Owner owner;
+	protected Owner owner;
 
 	protected final Vector<JaxbPersistentAttribute> attributes = new Vector<JaxbPersistentAttribute>();
 
-	public GenericJavaAttributesContainer(JaxbClassMapping parent, JaxbAttributesContainer.Owner owner, JavaResourceType resourceType) {
+	public GenericJavaAttributesContainer(JaxbClassMapping parent, Owner owner, JavaResourceType resourceType) {
 		super(parent);
 		this.javaResourceType = resourceType;
 		this.owner = owner;
@@ -113,6 +113,9 @@ public class GenericJavaAttributesContainer
 	}
 
 	protected void initializeAttributes() {
+		if (getJaxbClassMapping().isXmlTransient()) {
+			return;
+		}
 		if (getAccessType() == XmlAccessType.PUBLIC_MEMBER) {
 			this.initializePublicMemberAccessAttributes();
 		}
@@ -318,6 +321,12 @@ public class GenericJavaAttributesContainer
 	 * which can be controlled in a number of different places....
 	 */
 	protected void updateAttributes() {
+		if (getJaxbClassMapping().isXmlTransient()) {
+			for (JaxbPersistentAttribute contextAttribute : getAttributes()) {
+				this.removeAttribute(contextAttribute);
+			}
+			return;
+		}
 		if (getAccessType() == XmlAccessType.PUBLIC_MEMBER) {
 			this.syncPublicMemberAccessAttributes();
 		}
@@ -646,5 +655,24 @@ public class GenericJavaAttributesContainer
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return getJaxbClassMapping().getValidationTextRange(astRoot);
+	}
+	
+	
+	interface Owner {
+		
+		/**
+		 * Return the access type of the owner, to be used in determining which attributes to build
+		 */
+		XmlAccessType getAccessType();
+
+		/**
+		 * fire property change event for the added attribute
+		 */
+		void fireAttributeAdded(JaxbPersistentAttribute attribute);
+		
+		/**
+		 * fire property change event for the removed attribute
+		 */
+		void fireAttributeRemoved(JaxbPersistentAttribute attribute);
 	}
 }

@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -72,11 +73,11 @@ public class GenericJavaClassMapping
 	
 	protected final JaxbAttributesContainer attributesContainer;
 	
-	protected final Map<JaxbClassMapping, JaxbAttributesContainer> inheritedAttributesContainers;
+	protected final Map<JaxbClassMapping, JaxbAttributesContainer> includedAttributesContainers;
 	
 	public GenericJavaClassMapping(JaxbClass parent) {
 		super(parent);
-		this.inheritedAttributesContainers = new HashMap<JaxbClassMapping, JaxbAttributesContainer>();
+		this.includedAttributesContainers = new HashMap<JaxbClassMapping, JaxbAttributesContainer>();
 		this.propOrderContainer = new PropOrderContainer();
 		
 		initFactoryClass();
@@ -87,7 +88,7 @@ public class GenericJavaClassMapping
 		initSpecifiedAccessOrder();
 		initDefaultAccessOrder();
 		this.attributesContainer = new GenericJavaAttributesContainer(this, buildAttributesContainerOwner(), getJavaResourceType());
-		initInheritedAttributes();
+		initIncludedAttributes();
 	}
 	
 	
@@ -119,7 +120,7 @@ public class GenericJavaClassMapping
 		syncSpecifiedAccessType();
 		syncSpecifiedAccessOrder();
 		this.attributesContainer.synchronizeWithResourceModel();
-		syncInheritedAttributes();
+		syncIncludedAttributes();
 	}
 	
 	@Override
@@ -130,7 +131,7 @@ public class GenericJavaClassMapping
 		updateDefaultAccessOrder();
 		this.hasRootElementInHierarchy_loaded = false; // triggers that the value must be recalculated on next request
 		this.attributesContainer.update();
-		updateInheritedAttributes();
+		updateIncludedAttributes();
 	}
 	
 	
@@ -469,8 +470,8 @@ public class GenericJavaClassMapping
 		return this.attributesContainer.getAttributesSize();
 	}
 	
-	protected JaxbAttributesContainer.Owner buildAttributesContainerOwner() {
-		return new JaxbAttributesContainer.Owner() {
+	protected GenericJavaAttributesContainer.Owner buildAttributesContainerOwner() {
+		return new GenericJavaAttributesContainer.Owner() {
 			public XmlAccessType getAccessType() {
 				return GenericJavaClassMapping.this.getAccessType();
 			}
@@ -486,15 +487,15 @@ public class GenericJavaClassMapping
 	}
 	
 	
-	// ***** inherited attributes *****
+	// ***** included attributes *****
 	
-	public Iterable<JaxbPersistentAttribute> getInheritedAttributes() {
-		return new CompositeIterable<JaxbPersistentAttribute>(getInheritedAttributeSets());
+	public Iterable<JaxbPersistentAttribute> getIncludedAttributes() {
+		return new CompositeIterable<JaxbPersistentAttribute>(getIncludedAttributeSets());
 	}
 	
-	protected Iterable<Iterable<JaxbPersistentAttribute>> getInheritedAttributeSets() {
+	protected Iterable<Iterable<JaxbPersistentAttribute>> getIncludedAttributeSets() {
 		return new TransformationIterable<JaxbAttributesContainer, Iterable<JaxbPersistentAttribute>>(
-				getInheritedAttributesContainers()) {
+				getIncludedAttributesContainers()) {
 			@Override
 			protected Iterable<JaxbPersistentAttribute> transform(JaxbAttributesContainer attributesContainer) {
 				return attributesContainer.getAttributes();
@@ -502,97 +503,125 @@ public class GenericJavaClassMapping
 		};
 	}
 	
-	protected Iterable<JaxbAttributesContainer> getInheritedAttributesContainers() {
-		return new LiveCloneIterable<JaxbAttributesContainer>(this.inheritedAttributesContainers.values());  // read-only
+	protected Iterable<JaxbAttributesContainer> getIncludedAttributesContainers() {
+		return new LiveCloneIterable<JaxbAttributesContainer>(this.includedAttributesContainers.values());  // read-only
 	}
 	
-	public int getInheritedAttributesSize() {
+	public int getIncludedAttributesSize() {
 		int size = 0;
-		for (JaxbAttributesContainer attributesContainer : getInheritedAttributesContainers()) {
+		for (JaxbAttributesContainer attributesContainer : getIncludedAttributesContainers()) {
 			size += attributesContainer.getAttributesSize();
 		}
 		return size;
 	}
 	
-	protected void initInheritedAttributes() {
+	protected void initIncludedAttributes() {
+		// xml transient classes have no included attributes
+		if (isXmlTransient()) {
+			return;
+		}
 		JaxbClassMapping superclass = this.superclass;
 		// only add inherited attributes for superclasses up until a mapped class is encountered
 		while (superclass != null && superclass.isXmlTransient()) {
-			this.inheritedAttributesContainers.put(superclass, buildInheritedAttributesContainer(superclass));
+			this.includedAttributesContainers.put(superclass, buildIncludedAttributesContainer(superclass));
 			superclass = superclass.getSuperclass();
 		}
 	}
 	
-	protected void syncInheritedAttributes() {
-		for (JaxbAttributesContainer attributesContainer : this.inheritedAttributesContainers.values()) {
+	protected void syncIncludedAttributes() {
+		for (JaxbAttributesContainer attributesContainer : this.includedAttributesContainers.values()) {
 			attributesContainer.synchronizeWithResourceModel();
 		}
 	}
 	
-	protected void updateInheritedAttributes() {
+	protected void updateIncludedAttributes() {
 		HashSet<JaxbClassMapping> oldSuperclasses 
-				= CollectionTools.set(this.inheritedAttributesContainers.keySet());
-		Set<JaxbPersistentAttribute> oldAttributes = CollectionTools.set(getInheritedAttributes());
-		JaxbClassMapping superclass = this.superclass;
-		// only add inherited attributes for superclasses up until a mapped class is encountered
-		while (superclass != null && superclass.isXmlTransient()) {
-			if (this.inheritedAttributesContainers.containsKey(superclass)) {
-				this.inheritedAttributesContainers.get(superclass).update();
-				oldSuperclasses.remove(superclass);
+				= CollectionTools.set(this.includedAttributesContainers.keySet());
+		Set<JaxbPersistentAttribute> oldAttributes = CollectionTools.set(getIncludedAttributes());
+		
+		if (! isXmlTransient()) {
+			JaxbClassMapping superclass = this.superclass;
+			// only add inherited attributes for superclasses up until a mapped class is encountered
+			while (superclass != null && superclass.isXmlTransient()) {
+				if (this.includedAttributesContainers.containsKey(superclass)) {
+					this.includedAttributesContainers.get(superclass).update();
+					oldSuperclasses.remove(superclass);
+				}
+				else {
+					this.includedAttributesContainers.put(superclass, buildIncludedAttributesContainer(superclass));
+				}
+				superclass = superclass.getSuperclass();
 			}
-			else {
-				this.inheritedAttributesContainers.put(superclass, buildInheritedAttributesContainer(superclass));
-			}
-			superclass = superclass.getSuperclass();
 		}
 		
 		for (JaxbClassMapping oldSuperclass : oldSuperclasses) {
-			this.inheritedAttributesContainers.remove(oldSuperclass);
+			this.includedAttributesContainers.remove(oldSuperclass);
 		}
 		
-		Set<JaxbPersistentAttribute> newAttributes = CollectionTools.set(getInheritedAttributes());
+		Set<JaxbPersistentAttribute> newAttributes = CollectionTools.set(getIncludedAttributes());
 		if (CollectionTools.elementsAreDifferent(oldAttributes, newAttributes)) {
-			fireCollectionChanged(INHERITED_ATTRIBUTES_COLLECTION, newAttributes);
+			fireCollectionChanged(INCLUDED_ATTRIBUTES_COLLECTION, newAttributes);
 		}
 	}
 	
-	protected JaxbAttributesContainer buildInheritedAttributesContainer(JaxbClassMapping jaxbClassMapping) {
-		return new GenericJavaAttributesContainer(this, buildInheritedAttributesContainerOwner(), jaxbClassMapping.getJaxbType().getJavaResourceType());
+	protected JaxbAttributesContainer buildIncludedAttributesContainer(JaxbClassMapping jaxbClassMapping) {
+		return new GenericJavaAttributesContainer(this, buildIncludedAttributesContainerOwner(), jaxbClassMapping.getJaxbType().getJavaResourceType());
 	}
 	
-	protected JaxbAttributesContainer.Owner buildInheritedAttributesContainerOwner() {
-		return new JaxbAttributesContainer.Owner() {
+	protected GenericJavaAttributesContainer.Owner buildIncludedAttributesContainerOwner() {
+		return new GenericJavaAttributesContainer.Owner() {
 			public XmlAccessType getAccessType() {
 				return GenericJavaClassMapping.this.getAccessType();
 			}
 			
 			public void fireAttributeAdded(JaxbPersistentAttribute attribute) {
-				GenericJavaClassMapping.this.fireItemAdded(INHERITED_ATTRIBUTES_COLLECTION, attribute);
+				GenericJavaClassMapping.this.fireItemAdded(INCLUDED_ATTRIBUTES_COLLECTION, attribute);
 			}
 			
 			public void fireAttributeRemoved(JaxbPersistentAttribute attribute) {
-				GenericJavaClassMapping.this.fireItemRemoved(INHERITED_ATTRIBUTES_COLLECTION, attribute);
+				GenericJavaClassMapping.this.fireItemRemoved(INCLUDED_ATTRIBUTES_COLLECTION, attribute);
 			}
 		};
-	}
-	
-	public boolean isInherited(JaxbPersistentAttribute attribute) {
-		if (attribute.getParent() != this) {
-			throw new IllegalArgumentException("The attribute is not owned by this JaxbClassMapping"); //$NON-NLS-1$
-		}
-		return ! CollectionTools.contains(this.getAttributes(), attribute);
 	}
 	
 	public String getJavaResourceAttributeOwningTypeName(JaxbPersistentAttribute attribute) {
 		if (attribute.getParent() != this) {
 			throw new IllegalArgumentException("The attribute is not owned by this JaxbClassMapping"); //$NON-NLS-1$
 		}
-		for (JaxbClassMapping superclass : this.inheritedAttributesContainers.keySet()) {
-			if (CollectionTools.contains(this.inheritedAttributesContainers.get(superclass).getAttributes(), attribute)) {
+		for (JaxbClassMapping superclass : this.includedAttributesContainers.keySet()) {
+			if (CollectionTools.contains(this.includedAttributesContainers.get(superclass).getAttributes(), attribute)) {
 				return superclass.getJaxbType().getSimpleName();
 			}
 		}
 		throw new IllegalArgumentException("The attribute is not an inherited attribute"); //$NON-NLS-1$
+	}
+	
+	
+	// ***** inherited attributes *****
+	
+	public Iterable<JaxbPersistentAttribute> getInheritedAttributes() {
+		return new CompositeIterable<JaxbPersistentAttribute>(
+				getIncludedAttributes(),
+				getOtherInheritedAttributes());
+	}
+	
+	/**
+	 * return those inherited attributes that are not included
+	 */
+	protected Iterable<JaxbPersistentAttribute> getOtherInheritedAttributes() {
+		return new CompositeIterable<JaxbPersistentAttribute>(
+				new TransformationIterable<JaxbClassMapping, Iterable<JaxbPersistentAttribute>>(
+						new ChainIterable<JaxbClassMapping>(getSuperclass()) {
+							@Override
+							protected JaxbClassMapping nextLink(JaxbClassMapping currentLink) {
+								return currentLink.getSuperclass();
+							}
+						}) {
+					@Override
+					protected Iterable<JaxbPersistentAttribute> transform(JaxbClassMapping o) {
+						return o.getAttributes();
+					}
+				});
 	}
 	
 	
@@ -628,6 +657,13 @@ public class GenericJavaClassMapping
 	
 	
 	// ***** misc *****
+	
+	@Override
+	protected Iterable<String> getTransientReferencedXmlTypeNames() {
+		return new CompositeIterable<String>(
+				super.getTransientReferencedXmlTypeNames(),
+				new SingleElementIterable(getJavaResourceType().getSuperclassQualifiedName()));
+	}
 	
 	@Override
 	protected Iterable<String> getNonTransientReferencedXmlTypeNames() {
@@ -722,96 +758,151 @@ public class GenericJavaClassMapping
 		}
 	}
 	
-	protected void validateXmlValueMapping(List<IMessage> messages, CompilationUnit astRoot) {
-		String xmlValueMapping = null;
-		for (JaxbPersistentAttribute attribute : getAttributes()) {
-			if (attribute.getMappingKey() == MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY) {
-				if (xmlValueMapping != null) {
-					messages.add(
-						DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.MULTIPLE_XML_VALUE_MAPPINGS_DEFINED,
-							new String[] {attribute.getName(), xmlValueMapping},
-							attribute.getMapping(),
-							attribute.getMapping().getValidationTextRange(astRoot)));
-				}
-				else {
-					xmlValueMapping = attribute.getName();
-				}
-			}
-		}
-		if (xmlValueMapping != null) {
-			for (JaxbPersistentAttribute attribute : getAttributes()) {
-				if (attribute.getName() != xmlValueMapping) {
-					if (attribute.getMappingKey() != MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY 
-						&& attribute.getMappingKey() != MappingKeys.XML_TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-						messages.add(
-							DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_VALUE_MAPPING_WITH_NON_XML_ATTRIBUTE_MAPPING_DEFINED,
-								new String[] {attribute.getName(), xmlValueMapping},
-								attribute.getMapping(),
-								attribute.getMapping().getValidationTextRange(astRoot)));					
-					}
-				}
-			}
-		}
-	}
-	
 	protected void validateXmlAnyAttributeMapping(List<IMessage> messages, CompilationUnit astRoot) {
-		String xmlAnyAttributeMapping = null;
+		Set<JaxbPersistentAttribute> localAttributes = new HashSet<JaxbPersistentAttribute>();
+		Set<JaxbPersistentAttribute> allAttributes = new HashSet<JaxbPersistentAttribute>();
+			
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
 			if (attribute.getMappingKey() == MappingKeys.XML_ANY_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY) {
-				if (xmlAnyAttributeMapping != null) {
-					messages.add(
-						DefaultValidationMessages.buildMessage(
+				localAttributes.add(attribute);
+				allAttributes.add(attribute);
+			}
+		}
+		
+		for (JaxbPersistentAttribute attribute : getInheritedAttributes()) {
+			if (attribute.getMappingKey() == MappingKeys.XML_ANY_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY) {
+				allAttributes.add(attribute);
+			}
+		}
+		
+		if (allAttributes.size() > 1) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.MULTIPLE_XML_ANY_ATTRIBUTE_MAPPINGS_DEFINED,
-							new String[] {attribute.getName(), xmlAnyAttributeMapping},
-							attribute.getMapping(),
-							attribute.getMapping().getValidationTextRange(astRoot)));
-				}
-				else {
-					xmlAnyAttributeMapping = attribute.getName();
-				}
+							JaxbValidationMessages.XML_ANY_ATTRIBUTE__MULTIPLE_MAPPINGS_DEFINED,
+							this,
+							getValidationTextRange(astRoot)));
+				
+			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
+				messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JaxbValidationMessages.XML_ANY_ATTRIBUTE__MULTIPLE_MAPPINGS_DEFINED,
+						anyAttribute.getMapping(),
+						anyAttribute.getMapping().getValidationTextRange(astRoot)));
 			}
 		}
 	}
 	
 	protected void validateXmlAnyElementMapping(List<IMessage> messages, CompilationUnit astRoot) {
-		String xmlAnyElementMapping = null;
+		Set<JaxbPersistentAttribute> localAttributes = new HashSet<JaxbPersistentAttribute>();
+		Set<JaxbPersistentAttribute> allAttributes = new HashSet<JaxbPersistentAttribute>();
+			
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
 			if (attribute.getMappingKey() == MappingKeys.XML_ANY_ELEMENT_ATTRIBUTE_MAPPING_KEY) {
-				if (xmlAnyElementMapping != null) {
-					messages.add(
-						DefaultValidationMessages.buildMessage(
+				localAttributes.add(attribute);
+				allAttributes.add(attribute);
+			}
+		}
+		
+		for (JaxbPersistentAttribute attribute : getInheritedAttributes()) {
+			if (attribute.getMappingKey() == MappingKeys.XML_ANY_ELEMENT_ATTRIBUTE_MAPPING_KEY) {
+				allAttributes.add(attribute);
+			}
+		}
+		
+		if (allAttributes.size() > 1) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.MULTIPLE_XML_ANY_ELEMENT_MAPPINGS_DEFINED,
-							new String[] {attribute.getName(), xmlAnyElementMapping},
-							attribute.getMapping(),
-							attribute.getMapping().getValidationTextRange(astRoot)));
-				}
-				else {
-					xmlAnyElementMapping = attribute.getName();
-				}
+							JaxbValidationMessages.XML_ANY_ELEMENT__MULTIPLE_MAPPINGS_DEFINED,
+							this,
+							getValidationTextRange(astRoot)));
+				
+			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
+				messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JaxbValidationMessages.XML_ANY_ELEMENT__MULTIPLE_MAPPINGS_DEFINED,
+						anyAttribute.getMapping(),
+						anyAttribute.getMapping().getValidationTextRange(astRoot)));
+			}
+		}
+	}
+	
+	protected void validateXmlValueMapping(List<IMessage> messages, CompilationUnit astRoot) {
+		Set<JaxbPersistentAttribute> localAttributes = new HashSet<JaxbPersistentAttribute>();
+		Set<JaxbPersistentAttribute> allAttributes = new HashSet<JaxbPersistentAttribute>();
+			
+		for (JaxbPersistentAttribute attribute : getAttributes()) {
+			if (attribute.getMappingKey() == MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY) {
+				localAttributes.add(attribute);
+				allAttributes.add(attribute);
+			}
+		}
+		
+		for (JaxbPersistentAttribute attribute : getInheritedAttributes()) {
+			if (attribute.getMappingKey() == MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY) {
+				allAttributes.add(attribute);
+			}
+		}
+		
+		if (allAttributes.size() > 1) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_VALUE__MULTIPLE_MAPPINGS_DEFINED,
+							this,
+							getValidationTextRange(astRoot)));
+				
+			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
+				messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JaxbValidationMessages.XML_VALUE__MULTIPLE_MAPPINGS_DEFINED,
+						anyAttribute.getMapping(),
+						anyAttribute.getMapping().getValidationTextRange(astRoot)));
 			}
 		}
 	}
 	
 	protected void validateXmlIDs(List<IMessage> messages, CompilationUnit astRoot) {
-		String xmlIdMapping = null;
-		for (JaxbBasicMapping containmentMapping : getBasicMappingsWithXmlID()) {
-			if (xmlIdMapping != null) {
+		
+		Set<JaxbPersistentAttribute> localAttributes = new HashSet<JaxbPersistentAttribute>();
+		Set<JaxbPersistentAttribute> allAttributes = new HashSet<JaxbPersistentAttribute>();
+			
+		for (JaxbPersistentAttribute attribute : getAttributes()) {
+			if ((attribute.getMappingKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY
+					|| attribute.getMappingKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY)
+					&& ((JaxbBasicMapping) attribute.getMapping()).getXmlID() != null) {
+				localAttributes.add(attribute);
+				allAttributes.add(attribute);
+			}
+		}
+		
+		for (JaxbPersistentAttribute attribute : getInheritedAttributes()) {
+			if ((attribute.getMappingKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY
+					|| attribute.getMappingKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY)
+					&& ((JaxbBasicMapping) attribute.getMapping()).getXmlID() != null) {
+				allAttributes.add(attribute);
+			}
+		}
+		
+		if (allAttributes.size() > 1) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ID__MULTIPLE_MAPPINGS_DEFINED,
+							this,
+							getValidationTextRange(astRoot)));
+				
+			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
 				messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.MULTIPLE_XML_IDS_DEFINED,
-						new String[] { containmentMapping.getPersistentAttribute().getName(), xmlIdMapping },
-						containmentMapping,
-						containmentMapping.getValidationTextRange(astRoot)));
-			}
-			else {
-				xmlIdMapping = containmentMapping.getPersistentAttribute().getName();
+						JaxbValidationMessages.XML_ID__MULTIPLE_MAPPINGS_DEFINED,
+						anyAttribute.getMapping(),
+						anyAttribute.getMapping().getValidationTextRange(astRoot)));
 			}
 		}
 	}

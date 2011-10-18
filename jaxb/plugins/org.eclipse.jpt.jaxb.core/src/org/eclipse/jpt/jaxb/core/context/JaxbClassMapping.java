@@ -80,32 +80,30 @@ public interface JaxbClassMapping
 	int getAttributesSize();
 	
 	
-	// ***** inherited attributes *****
+	// ***** included attributes *****
 	
-	String INHERITED_ATTRIBUTES_COLLECTION = "inheritedAttributes"; //$NON-NLS-1$
+	String INCLUDED_ATTRIBUTES_COLLECTION = "includedAttributes"; //$NON-NLS-1$
 	
 	/**
-	 * Inherited attributes come from any direct superclasses that are mapped as @XmlTransient.
-	 * (If there is an intervening class that is not transient, then that class will hold any
-	 * inherited attributes from anything further up the hierarchy.)
+	 * <i>Included</i> attributes come from any direct superclasses that are mapped as @XmlTransient.
+	 * (As opposed to <i>inherited</i> attributes, which a class has by way of <i>any</i> mapped superclasses.)
+	 * If there is an intervening class that is not transient, then that class will hold any
+	 * included attributes from any direct superclass that are mapped as @XmlTransient.
 	 * @see JaxbClassMapping#getSuperclass()
 	 */
+	Iterable<JaxbPersistentAttribute> getIncludedAttributes();
+	
+	int getIncludedAttributesSize();
+	
+	
+	// *****  inherited attributes *****
+	
+	/**
+	 * <i>Inherited</i> attributes are any attributes this class mapping has whose source
+	 * is a superclass.
+	 * Inherited attributes include <i>included</i> attributes.
+	 */
 	Iterable<JaxbPersistentAttribute> getInheritedAttributes();
-	
-	int getInheritedAttributesSize();
-		
-	/**
-	 * Return true if the given attribute is one of the inherited attributes.
-	 */
-	boolean isInherited(JaxbPersistentAttribute attribute);
-	
-	/**
-	 * Only ask this of inherited persistent attributes. Returns the simple
-	 * type name of the attribute's resource type.
-	 * 
-	 * @see JaxbPersistentAttribute#isInherited()
-	 */
-	String getJavaResourceAttributeOwningTypeName(JaxbPersistentAttribute attribute);
 	
 	
 	// ***** misc *****

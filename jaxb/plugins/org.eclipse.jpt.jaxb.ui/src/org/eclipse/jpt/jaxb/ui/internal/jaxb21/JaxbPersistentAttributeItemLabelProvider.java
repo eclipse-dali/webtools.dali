@@ -50,7 +50,7 @@ public class JaxbPersistentAttributeItemLabelProvider
 	protected PropertyValueModel<String> buildTextModel() {
 		StringBuffer sb = new StringBuffer();
 		if (getModel().isInherited()) {
-			sb.append(getModel().getInheritedJavaResourceAttributeOwningTypeName());
+			sb.append(getModel().getDeclaringJavaResourceType().getName());
 			sb.append('.');
 		}
 		sb.append(getModel().getName());

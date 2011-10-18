@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.core.context;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
@@ -31,22 +32,22 @@ public interface JaxbPersistentAttribute
 	
 	JaxbClassMapping getJaxbClassMapping();
 	
+	
+	// ***** declaring class/ inheritance *****
+	
 	/**
-	 * Return true if this JaxbPersistentAttribute is inherited from one of the
-	 * superclasses of the parent JaxbPersistentClass.
+	 * Return the resource type where the source of the attribute is declared.
+	 * This may not be where the attribute is fully defined, as it may be inherited
+	 */
+	JavaResourceType getDeclaringJavaResourceType();
+	
+	/**
+	 * Return true if the source of the attribute is defined in a superclass
 	 */
 	boolean isInherited();
 	
-	/**
-	 * Only ask this of inherited persistent attributes. Returns the simple
-	 * type name of the attribute's resource type.
-	 * 
-	 * @see JaxbPersistentAttribute#isInherited()
-	 */
-	String getInheritedJavaResourceAttributeOwningTypeName();
 	
-	
-	// ********** name **********
+	// ***** name *****
 	
 	/**
 	 * Return the name of the attribute. This will not change, a
@@ -54,9 +55,8 @@ public interface JaxbPersistentAttribute
 	 */
 	String getName();
 	
-	boolean isFor(JavaResourceField resourceField);
 	
-	boolean isFor(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
+	// ***** resource attribute *****
 	
 	JavaResourceAttribute getJavaResourceAttribute();
 	
@@ -77,6 +77,10 @@ public interface JaxbPersistentAttribute
 	 * This might not return the same thing as getJavaResourceAttribute().typeIsSubTypeOf(String).
 	 */
 	boolean isJavaResourceAttributeTypeSubTypeOf(String typeName);
+	
+	boolean isFor(JavaResourceField resourceField);
+	
+	boolean isFor(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
 	
 	
 	// ********** mapping **********

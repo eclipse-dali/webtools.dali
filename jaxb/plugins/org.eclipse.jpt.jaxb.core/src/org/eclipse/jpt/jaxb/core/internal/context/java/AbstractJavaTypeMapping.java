@@ -286,9 +286,12 @@ public abstract class AbstractJavaTypeMapping
 	// ***** misc *****
 	
 	public final Iterable<String> getReferencedXmlTypeNames() {
-		if (! this.xmlTransient) {
-			return getNonTransientReferencedXmlTypeNames(); 
-		}
+		return (this.xmlTransient) ?
+				getTransientReferencedXmlTypeNames()
+				: getNonTransientReferencedXmlTypeNames(); 
+	}
+	
+	protected Iterable<String> getTransientReferencedXmlTypeNames() {
 		return EmptyIterable.instance();
 	}
 	

@@ -46,7 +46,7 @@ public class JaxbClassItemContentProvider
 		PropertyValueModel<JaxbClassMapping> mappingModel = buildMappingModel();
 		return new CompositeCollectionValueModel<CollectionValueModel<JaxbPersistentAttribute>, JaxbPersistentAttribute>(
 				buildAttributesModel(mappingModel),
-				buildInheritedAttributesModel(mappingModel));
+				buildIncludedAttributesModel(mappingModel));
 	}
 	
 	protected PropertyValueModel<JaxbClassMapping> buildMappingModel() {
@@ -69,13 +69,13 @@ public class JaxbClassItemContentProvider
 		};
 	}
 
-	protected CollectionValueModel<JaxbPersistentAttribute> buildInheritedAttributesModel(
+	protected CollectionValueModel<JaxbPersistentAttribute> buildIncludedAttributesModel(
 			PropertyValueModel<JaxbClassMapping> mappingModel) {
 		return new CollectionAspectAdapter<JaxbClassMapping, JaxbPersistentAttribute>(
-				mappingModel, JaxbClassMapping.INHERITED_ATTRIBUTES_COLLECTION) {
+				mappingModel, JaxbClassMapping.INCLUDED_ATTRIBUTES_COLLECTION) {
 			@Override
 			protected Iterable<JaxbPersistentAttribute> getIterable() {
-				return this.subject.getInheritedAttributes();
+				return this.subject.getIncludedAttributes();
 			}
 		};
 	}

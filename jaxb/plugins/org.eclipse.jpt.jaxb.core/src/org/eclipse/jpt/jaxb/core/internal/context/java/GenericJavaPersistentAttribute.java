@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -35,24 +36,27 @@ public class GenericJavaPersistentAttribute
 		extends AbstractJavaContextNode
 		implements JaxbPersistentAttribute {
 	
+	protected final Accessor accessor;
+	
 	protected JaxbAttributeMapping mapping;  // never null
 	
 	protected String defaultMappingKey;
 	
-	protected final Accessor accessor;
 	
 	
 	public static JaxbPersistentAttribute buildPersistentProperty(
-		JaxbClassMapping parent, 
+		JaxbClassMapping parent,
 		JavaResourceMethod resourceGetter,
 		JavaResourceMethod resourceSetter) {
-		return new GenericJavaPersistentAttribute(parent, new PropertyAccessor(parent, resourceGetter, resourceSetter));
+		return new GenericJavaPersistentAttribute(
+				parent, new PropertyAccessor(parent, resourceGetter, resourceSetter));
 	}
 
 	public static JaxbPersistentAttribute buildPersistentField(
-		JaxbClassMapping parent, 
+		JaxbClassMapping parent,
 		JavaResourceField resourceField) {
-		return new GenericJavaPersistentAttribute(parent, new FieldAccessor(parent, resourceField));
+		return new GenericJavaPersistentAttribute(
+				parent, new FieldAccessor(parent, resourceField));
 	}
 	
 	
@@ -66,38 +70,43 @@ public class GenericJavaPersistentAttribute
 	public JaxbClassMapping getJaxbClassMapping() {
 		return (JaxbClassMapping) super.getParent();
 	}
-
-	public boolean isInherited() {
-		return getJaxbClassMapping().isInherited(this);
-	}
-
-	public String getInheritedJavaResourceAttributeOwningTypeName() {
-		return getJaxbClassMapping().getJavaResourceAttributeOwningTypeName(this);
-	}
 	
 	
-	// ********** synchronize/update **********
-
+	// ***** synchronize/update *****
+	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.syncMapping();
 	}
-
+	
 	@Override
 	public void update() {
 		super.update();
 		this.updateMapping();
 	}
-
-	// ********** name **********
-
+	
+	
+	// ***** declaring class/ inheritance *****
+	
+	public JavaResourceType getDeclaringJavaResourceType() {
+		return this.accessor.getJavaResourceAttribute().getResourceType();
+	}
+	
+	public boolean isInherited() {
+		return getDeclaringJavaResourceType() != getJaxbClassMapping().getJaxbType().getJavaResourceType();
+	}
+	
+	
+	// ***** name *****
+	
 	public String getName() {
 		return this.getJavaResourceAttribute().getName();
 	}
-
-	// ********** accessor ********
-
+	
+	
+	// ***** accessor *****
+	
 	public boolean isFor(JavaResourceField resourceField) {
 		return this.accessor.isFor(resourceField);
 	}
