@@ -29,7 +29,6 @@ public class EclipseLinkOrmXml2_1UiFactory
 		return new OrmEclipseLinkElementCollectionMapping2_1Composite(subjectHolder, parent, widgetFactory);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public JpaComposite createOrmEclipseLinkMappedSuperclass2_1Composite(
 			PropertyValueModel<OrmEclipseLinkMappedSuperclass> subjectHolder,
 			Composite parent,
