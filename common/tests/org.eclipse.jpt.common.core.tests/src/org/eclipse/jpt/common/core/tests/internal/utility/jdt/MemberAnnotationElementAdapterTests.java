@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.CharacterStringExpressio
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumArrayDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.IndexedConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NumberIntegerExpressionConverter;
@@ -31,7 +32,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedExpressionConverter;
 
 @SuppressWarnings("nls")
 public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
@@ -991,7 +992,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.createAnnotationAndMembers("Foo", "String[] bar();");
 		ICompilationUnit cu = this.createTestType("@annot.Foo()");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String[]> daea = new ConversionDeclarationAnnotationElementAdapter<String[]>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
+		DeclarationAnnotationElementAdapter<String[]> daea = new IndexedConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
 		AnnotationElementAdapter<String[]> aea = new AnnotatedElementAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		assertTrue(Arrays.equals(new String[0], aea.getValue()));
 	}
@@ -1002,7 +1003,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		ICompilationUnit cu = this.createTestType();
 		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String[]> daea = new ConversionDeclarationAnnotationElementAdapter<String[]>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
+		DeclarationAnnotationElementAdapter<String[]> daea = new IndexedConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
 		AnnotationElementAdapter<String[]> aea = new AnnotatedElementAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[] {"string0", "string1"});
 		this.assertSourceContains(expected, cu);
@@ -1014,7 +1015,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		ICompilationUnit cu = this.createTestType();
 		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String[]> daea = new ConversionDeclarationAnnotationElementAdapter<String[]>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
+		DeclarationAnnotationElementAdapter<String[]> daea = new IndexedConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
 		AnnotationElementAdapter<String[]> aea = new AnnotatedElementAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[0]);
 		this.assertSourceDoesNotContain(expected, cu);
@@ -1026,8 +1027,8 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		ICompilationUnit cu = this.createTestType();
 		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		ExpressionConverter<String[]> expressionConverter = new AnnotationStringArrayExpressionConverter(StringExpressionConverter.instance(), false);
-		DeclarationAnnotationElementAdapter<String[]> daea = new ConversionDeclarationAnnotationElementAdapter<String[]>(daa, "bar", expressionConverter);
+		IndexedExpressionConverter<String> expressionConverter = new AnnotationStringArrayExpressionConverter(StringExpressionConverter.instance(), false);
+		DeclarationAnnotationElementAdapter<String[]> daea = new IndexedConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", expressionConverter);
 		AnnotationElementAdapter<String[]> aea = new AnnotatedElementAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[0]);
 		this.assertSourceContains(expected, cu);
@@ -1039,7 +1040,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		ICompilationUnit cu = this.createTestType();
 		this.assertSourceDoesNotContain(annotation, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String[]> daea = new ConversionDeclarationAnnotationElementAdapter<String[]>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
+		DeclarationAnnotationElementAdapter<String[]> daea = new IndexedConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
 		AnnotationElementAdapter<String[]> aea = new AnnotatedElementAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[] {"string0"});
 		this.assertSourceContains(annotation, cu);
