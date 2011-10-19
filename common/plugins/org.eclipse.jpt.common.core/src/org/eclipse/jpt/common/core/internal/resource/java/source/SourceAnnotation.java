@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationElementAdapter;
 
 /**
  * some common state and behavior for Java source annotations;
@@ -175,6 +176,24 @@ public abstract class SourceAnnotation
 	 */
 	protected Expression getAnnotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
 		return adapter.getExpression(this.annotatedElement.getModifiedDeclaration(astRoot));
+	}
+	
+	/**
+	 * Return the text range corresponding to the element's indexed subvalue
+	 * @throws ArrayIndexOutOfBoundsException if the index is out of range
+	 */
+	protected TextRange getAnnotationElementSubvalueTextRange(IndexedDeclarationAnnotationElementAdapter<?> adapter, int index, CompilationUnit astRoot) {
+		// the AST is null for virtual Java attributes
+		// TODO remove the AST null check once we start storing text ranges
+		// in the resource model
+		return (astRoot == null) ? null : this.getTextRange(this.getAnnotationElementSubvalueExpression(adapter, index, astRoot));
+	}
+	
+	/**
+	 * Return the expression corresponding to the element's indexed subvalue.
+	 */
+	protected Expression getAnnotationElementSubvalueExpression(IndexedDeclarationAnnotationElementAdapter<?> adapter, int index, CompilationUnit astRoot) {
+		return adapter.getSubvalueExpression(index, this.annotatedElement.getModifiedDeclaration(astRoot));
 	}
 
 	/**

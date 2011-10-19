@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedExpressionConverter;
 
 /**
  * Convert an array initializer or single expression to/from an array of
@@ -22,8 +23,9 @@ import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
  * as elements in the array initializer.
  */
 public class AnnotationStringArrayExpressionConverter
-	extends AbstractExpressionConverter<String[]>
-{
+		extends AbstractExpressionConverter<String[]>
+		implements IndexedExpressionConverter<String> {
+	
 	private final ExpressionConverter<String> elementConverter;
 	private final StringArrayExpressionConverter arrayConverter;
 
@@ -68,6 +70,16 @@ public class AnnotationStringArrayExpressionConverter
 				this.arrayConverter.convertArrayInitializer((ArrayInitializer) expression)
 			:
 				new String[] {this.elementConverter.convert(expression)};
+	}
+	
+	public Expression getSubexpression(int index, Expression expression) {
+		if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
+			return this.arrayConverter.getSubexpression(index, expression);
+		}
+		if (index > 0) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+		return expression;
 	}
 
 

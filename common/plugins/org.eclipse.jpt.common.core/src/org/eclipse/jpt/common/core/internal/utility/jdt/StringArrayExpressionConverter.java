@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedExpressionConverter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
@@ -30,8 +31,9 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
  * the appropriate index.
  */
 public class StringArrayExpressionConverter
-	extends AbstractExpressionConverter<String[]>
-{
+		extends AbstractExpressionConverter<String[]>
+		implements IndexedExpressionConverter<String> {
+	
 	private final ExpressionConverter<String> elementConverter;
 	private final boolean removeArrayInitializerWhenEmpty;
 
@@ -100,5 +102,11 @@ public class StringArrayExpressionConverter
 		}
 		return strings;
 	}
-
+	
+	public Expression getSubexpression(int index, Expression expression) {
+		if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
+			return expressions((ArrayInitializer) expression).get(index);
+		}
+		throw new ArrayIndexOutOfBoundsException();
+	}
 }
