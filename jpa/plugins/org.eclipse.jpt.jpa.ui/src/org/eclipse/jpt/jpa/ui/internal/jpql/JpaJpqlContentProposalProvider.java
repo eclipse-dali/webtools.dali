@@ -103,7 +103,7 @@ import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
  * <p>
  * TODO. Add syntax highlight for the JPQL identifiers.
  *
- * @version 3.0
+ * @version 3.0.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -304,12 +304,14 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 				else if (ActionFactory.UNDO.getCommandId().equals(commandId)) {
 					if (sourceViewer.getUndoManager().undoable()) {
 						sourceViewer.getUndoManager().undo();
+						validate();
 					}
 				}
 				// Redo
 				else if (ActionFactory.REDO.getCommandId().equals(commandId)) {
 					if (sourceViewer.getUndoManager().redoable()) {
 						sourceViewer.getUndoManager().redo();
+						validate();
 					}
 				}
 
