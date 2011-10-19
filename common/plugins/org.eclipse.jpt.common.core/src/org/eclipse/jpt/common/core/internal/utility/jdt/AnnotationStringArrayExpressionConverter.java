@@ -66,10 +66,11 @@ public class AnnotationStringArrayExpressionConverter
 	 */
 	@Override
 	protected String[] convertExpression(Expression expression) {
-		return (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) ?
-				this.arrayConverter.convertArrayInitializer((ArrayInitializer) expression)
-			:
-				new String[] {this.elementConverter.convert(expression)};
+		if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
+			return this.arrayConverter.convertArrayInitializer((ArrayInitializer) expression);
+		}
+		String result = this.elementConverter.convert(expression);
+		return (result == null) ? new String[0] : new String[] { result };
 	}
 	
 	public Expression getSubexpression(int index, Expression expression) {

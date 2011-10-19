@@ -330,7 +330,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationElementAdapter<String[]> daea = new ConversionDeclarationAnnotationElementAdapter<String[]>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
 		AnnotationElementAdapter<String[]> aea = new AnnotatedElementAnnotationElementAdapter<String[]>(this.idField(cu), daea);
-		assertTrue(Arrays.equals(new String[] {null}, aea.getValue()));
+		assertTrue(Arrays.equals(new String[0], aea.getValue()));
 	}
 
 	public void testASTNode1() throws Exception {
