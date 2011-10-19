@@ -16,6 +16,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -261,6 +263,35 @@ public abstract class AbstractJavaType
 	
 	protected CompilationUnit buildASTRoot() {
 		return this.resourceType.getJavaResourceCompilationUnit().buildASTRoot();
+	}
+	
+	
+	// ***** content assist *****
+	
+	@Override
+	public Iterable<String> getJavaCompletionProposals(
+			int pos, Filter<String> filter, CompilationUnit astRoot) {
+		
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		if (this.mapping != null) {
+			result = this.mapping.getJavaCompletionProposals(pos, filter, astRoot);
+			if (! CollectionTools.isEmpty(result)) {
+				return result;
+			}
+		}
+		
+		if (this.xmlJavaTypeAdapter != null) {
+			result = this.xmlJavaTypeAdapter.getJavaCompletionProposals(pos, filter, astRoot);
+			if (! CollectionTools.isEmpty(result)) {
+				return result;
+			}
+		}
+		
+		return EmptyIterable.instance();
 	}
 	
 	

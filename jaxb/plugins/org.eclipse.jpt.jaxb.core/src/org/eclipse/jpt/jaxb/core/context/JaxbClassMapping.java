@@ -53,6 +53,8 @@ public interface JaxbClassMapping
 	 */
 	ListIterable<String> getPropOrder();
 	
+	String getProp(int index);
+	
 	int getPropOrderSize();
 	
 	void addProp(int index, String prop);
@@ -96,7 +98,13 @@ public interface JaxbClassMapping
 	int getIncludedAttributesSize();
 	
 	
-	// *****  inherited attributes *****
+	// *****  misc attributes *****
+	
+	/**
+	 * Return all attributes that are defined by this class.  
+	 * This is the combined set of #getAttributes() and #getIncludedAttributes()
+	 */
+	Iterable<JaxbPersistentAttribute> getAllLocallyDefinedAttributes();
 	
 	/**
 	 * <i>Inherited</i> attributes are any attributes this class mapping has whose source

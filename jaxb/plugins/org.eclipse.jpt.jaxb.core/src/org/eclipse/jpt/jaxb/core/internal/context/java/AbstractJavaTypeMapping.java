@@ -438,7 +438,7 @@ public abstract class AbstractJavaTypeMapping
 				messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.XML_TYPE_UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE,
+						JaxbValidationMessages.XML_TYPE__UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE,
 						this,
 						getXmlTypeAnnotation().getNamespaceTextRange(astRoot)));
 			}

@@ -83,12 +83,21 @@ public interface XmlTypeAnnotation
 	 */
 	TextRange getFactoryMethodTextRange(CompilationUnit astRoot);
 	
+	
+	// ***** prop order *****
+	
+	String PROP_ORDER_LIST = "propOrder"; //$NON-NLS-1$
+	
+	/**
+	 * A single element empty string array should be interpreted as unspecified
+	 */
+	String[] DEFAULT_PROP_ORDER = new String[] { "" };
+	
 	/**
 	 * Corresponds to the 'propOrder' element of the XmlType annotation.
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
 	ListIterable<String> getPropOrder();
-		String PROP_ORDER_LIST = "propOrder"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the 'propOrder' element of the XmlType annotation.
@@ -109,14 +118,37 @@ public interface XmlTypeAnnotation
 	 * Corresponds to the 'propOrder' element of the XmlType annotation.
 	 */
 	void moveProp(int targetIndex, int sourceIndex);
-
+	
 	/**
 	 * Corresponds to the 'propOrder' element of the XmlType annotation.
 	 */
 	void removeProp(String prop);
-
+	
 	/**
 	 * Corresponds to the 'propOrder' element of the XmlType annotation.
 	 */
 	void removeProp(int index);
+	
+	/**
+	 * Return the text range of the 'propOrder' element of the XmlType annotation.
+	 */
+	TextRange getPropOrderTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return whether the specified position touches the 'propOrder' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean propOrderTouches(int pos, CompilationUnit astRoot);
+	
+	/**
+	 * Return the text range of the prop at the specified index
+	 * @throws ArrayIndexOutOfBoundsException if the index is out of range
+	 */
+	TextRange getPropTextRange(int index, CompilationUnit astRoot);
+	
+	/**
+	 * Return whether the specified position touches the prop at the specified index.
+	 * @throws ArrayIndexOutOfBoundsException if the index is out of range
+	 */
+	boolean propTouches(int index, int pos, CompilationUnit astRoot);
 }

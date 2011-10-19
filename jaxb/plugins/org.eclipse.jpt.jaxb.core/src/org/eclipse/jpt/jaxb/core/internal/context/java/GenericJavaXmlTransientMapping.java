@@ -35,4 +35,9 @@ public class GenericJavaXmlTransientMapping
 	public Iterable<String> getReferencedXmlTypeNames() {
 		return EmptyIterable.instance();
 	}
+	
+	@Override
+	public boolean isTransient() {
+		return true;
+	}
 }

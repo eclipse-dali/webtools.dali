@@ -65,4 +65,16 @@ public interface JaxbAttributeMapping
 	 * (Used for constructing Jaxb context)
 	 */
 	Iterable<String> getReferencedXmlTypeNames();
+	
+	/**
+	 * Return whether the attribute is mapped to a particle
+	 * (e.g. XmlElement, XmlElements, XmlElementRef, XmlElementRefs)
+	 */
+	boolean isParticleMapping();
+	
+	/**
+	 * Return whether the attribute is specifically excluded from being mapped
+	 * (e.g. XmlTransient)
+	 */
+	boolean isTransient();
 }

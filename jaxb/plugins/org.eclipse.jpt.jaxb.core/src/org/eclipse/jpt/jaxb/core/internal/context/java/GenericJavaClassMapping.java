@@ -17,11 +17,15 @@ import java.util.Set;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.Bag;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
@@ -201,6 +205,10 @@ public class GenericJavaClassMapping
 		return this.propOrderContainer.getContextElements();
 	}
 	
+	public String getProp(int index) {
+		return this.propOrderContainer.getContextElement(index);
+	}
+	
 	public int getPropOrderSize() {
 		return this.propOrderContainer.getContextElementsSize();
 	}
@@ -233,7 +241,11 @@ public class GenericJavaClassMapping
 	}
 	
 	protected ListIterable<String> getResourcePropOrder() {
-		return this.getXmlTypeAnnotation().getPropOrder();
+		ListIterable<String> result = getXmlTypeAnnotation().getPropOrder();
+		if (CollectionTools.size(result) == 1 && StringTools.EMPTY_STRING.equals(CollectionTools.get(result, 0))) {
+			return EmptyListIterable.instance();
+		}
+		return result;
 	}
 	
 	
@@ -584,20 +596,14 @@ public class GenericJavaClassMapping
 		};
 	}
 	
-	public String getJavaResourceAttributeOwningTypeName(JaxbPersistentAttribute attribute) {
-		if (attribute.getParent() != this) {
-			throw new IllegalArgumentException("The attribute is not owned by this JaxbClassMapping"); //$NON-NLS-1$
-		}
-		for (JaxbClassMapping superclass : this.includedAttributesContainers.keySet()) {
-			if (CollectionTools.contains(this.includedAttributesContainers.get(superclass).getAttributes(), attribute)) {
-				return superclass.getJaxbType().getSimpleName();
-			}
-		}
-		throw new IllegalArgumentException("The attribute is not an inherited attribute"); //$NON-NLS-1$
+	
+	// ***** misc attributes *****
+	
+	public Iterable<JaxbPersistentAttribute> getAllLocallyDefinedAttributes() {
+		return new CompositeIterable<JaxbPersistentAttribute>(
+				getAttributes(),
+				getIncludedAttributes());
 	}
-	
-	
-	// ***** inherited attributes *****
 	
 	public Iterable<JaxbPersistentAttribute> getInheritedAttributes() {
 		return new CompositeIterable<JaxbPersistentAttribute>(
@@ -727,6 +733,10 @@ public class GenericJavaClassMapping
 			return result;
 		}
 		
+		if (propTouches(pos, astRoot)) {
+			return getPropProposals(filter);
+		}
+		
 		// TODO - factory methods?
 		
 		for (JaxbPersistentAttribute attribute : this.getAttributes()) {
@@ -739,6 +749,18 @@ public class GenericJavaClassMapping
 		return EmptyIterable.instance();
 	}
 	
+	protected Iterable<String> getPropProposals(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(
+				new FilteringIterable<String>(
+					new TransformationIterable<JaxbPersistentAttribute, String>(getAllLocallyDefinedAttributes()) {
+						@Override
+						protected String transform(JaxbPersistentAttribute o) {
+							return o.getName();
+						}
+					},
+					filter));
+	}
+	
 	
 	// ***** validation *****
 	
@@ -748,6 +770,8 @@ public class GenericJavaClassMapping
 		
 		// TODO - factory method?
 		
+		validatePropOrder(messages, reporter, astRoot);
+		
 		validateXmlAnyAttributeMapping(messages, astRoot);
 		validateXmlAnyElementMapping(messages, astRoot);
 		validateXmlValueMapping(messages, astRoot);
@@ -755,6 +779,99 @@ public class GenericJavaClassMapping
 		
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
 			attribute.validate(messages, reporter, astRoot);
+		}
+	}
+	
+	public void validatePropOrder(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (CollectionTools.isEmpty(getPropOrder())) {
+			return;
+		}
+		
+		// no duplicates
+		// all attributes/included attributes with XmlElement/s/Ref/s must be listed
+		// no nonexistent attributes (attributes mapped otherwise allowed) ...
+		// *except* no transient attributes allowed
+		
+		Bag<String> props = CollectionTools.bag(getPropOrder());
+		Set<String> allAttributes = new HashSet<String>();
+		Set<String> requiredAttributes = new HashSet<String>();
+		Set<String> transientAttributes = new HashSet<String>();
+		
+		for (JaxbPersistentAttribute attribute : getAllLocallyDefinedAttributes()) {
+			allAttributes.add(attribute.getName());
+			
+			if (attribute.getMapping().isParticleMapping()) {
+				requiredAttributes.add(attribute.getName());
+			}
+			
+			if (attribute.getMapping().isTransient()) {
+				transientAttributes.add(attribute.getName());
+			}
+		}
+		
+		Set<Integer> duplicateProps = new HashSet<Integer>();
+		Set<String> missingProps = new HashSet<String>(requiredAttributes);
+		Set<Integer> nonexistentProps = new HashSet<Integer>();
+		Set<Integer> transientProps = new HashSet<Integer>();
+		
+		for (int i = 0; i < getPropOrderSize(); i ++ ) {
+			String prop = getProp(i);
+			
+			if (props.count(prop) > 1) {
+				duplicateProps.add(i);
+			}
+			
+			if (missingProps.contains(prop)) {
+				missingProps.remove(prop);
+			}
+			
+			if (! allAttributes.contains(prop)) {
+				nonexistentProps.add(i);
+			}
+			
+			if (transientAttributes.contains(prop)) {
+				transientProps.add(i);
+			}
+		}
+		
+		for (int i : duplicateProps) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_TYPE__DUPLICATE_PROP,
+							new String[] { getProp(i) },
+							this,
+							getPropTextRange(i, astRoot)));
+		}
+		
+		for (String missingProp : missingProps) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_TYPE__MISSING_PROP,
+							new String[] { missingProp },
+							this,
+							getPropOrderTextRange(astRoot)));
+		}
+		
+		for (int i : nonexistentProps) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_TYPE__NONEXISTENT_PROP,
+							new String[] { getProp(i) },
+							this,
+							getPropTextRange(i, astRoot)));
+		}
+		
+		for (int i : transientProps) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_TYPE__TRANSIENT_PROP,
+							new String [] { getProp(i) },
+							this,
+							getPropTextRange(i, astRoot)));
 		}
 	}
 	
@@ -905,6 +1022,26 @@ public class GenericJavaClassMapping
 						anyAttribute.getMapping().getValidationTextRange(astRoot)));
 			}
 		}
+	}
+	
+	protected TextRange getPropOrderTextRange(CompilationUnit astRoot) {
+		TextRange result = getXmlTypeAnnotation().getPropOrderTextRange(astRoot);
+		return (result != null) ? result : getValidationTextRange(astRoot);
+	}
+	
+	protected TextRange getPropTextRange(int index, CompilationUnit astRoot) {
+		return getXmlTypeAnnotation().getPropTextRange(index, astRoot);
+	}
+	
+	protected boolean propTouches(int pos, CompilationUnit astRoot) {
+		if (getXmlTypeAnnotation().propOrderTouches(pos, astRoot)) {
+			for (int i = 0; i < getXmlTypeAnnotation().getPropOrderSize(); i ++ ) {
+				if (getXmlTypeAnnotation().propTouches(i, pos, astRoot)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	

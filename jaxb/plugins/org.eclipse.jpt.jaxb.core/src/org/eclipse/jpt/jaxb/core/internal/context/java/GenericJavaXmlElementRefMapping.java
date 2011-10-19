@@ -228,6 +228,11 @@ public class GenericJavaXmlElementRefMapping
 		return this.xmlElementRef.getReferencedXmlTypeNames();
 	}
 	
+	@Override
+	public boolean isParticleMapping() {
+		return true;
+	}
+	
 	
 	// ***** content assist *****
 	

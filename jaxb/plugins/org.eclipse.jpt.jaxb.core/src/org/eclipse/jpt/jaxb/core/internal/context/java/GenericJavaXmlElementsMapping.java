@@ -282,6 +282,11 @@ public class GenericJavaXmlElementsMapping
 						}));
 	}
 	
+	@Override
+	public boolean isParticleMapping() {
+		return true;
+	}
+	
 	
 	// ***** content assist *****
 	

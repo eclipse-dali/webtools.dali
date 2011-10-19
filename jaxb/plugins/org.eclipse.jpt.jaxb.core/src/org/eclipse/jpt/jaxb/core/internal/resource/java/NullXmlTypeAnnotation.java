@@ -142,5 +142,20 @@ public final class NullXmlTypeAnnotation
 	public void removeProp(String prop) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	public TextRange getPropOrderTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+	
+	public boolean propOrderTouches(int pos, CompilationUnit astRoot) {
+		return false;
+	}
+	
+	public TextRange getPropTextRange(int index, CompilationUnit astRoot) {
+		return null;
+	}
+	
+	public boolean propTouches(int index, int pos, CompilationUnit astRoot) {
+		return false;
+	}
 }

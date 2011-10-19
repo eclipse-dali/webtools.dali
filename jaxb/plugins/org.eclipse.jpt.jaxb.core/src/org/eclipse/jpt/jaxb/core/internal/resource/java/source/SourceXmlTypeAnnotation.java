@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.IndexedConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -26,6 +27,8 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedExpressionConverter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
@@ -59,7 +62,7 @@ public final class SourceXmlTypeAnnotation
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
 
-	private final DeclarationAnnotationElementAdapter<String[]> propOrderDeclarationAdapter;
+	private final IndexedDeclarationAnnotationElementAdapter<String> propOrderDeclarationAdapter;
 	private final AnnotationElementAdapter<String[]> propOrderAdapter;
 	private final Vector<String> propOrder = new Vector<String>();
 
@@ -77,12 +80,12 @@ public final class SourceXmlTypeAnnotation
 		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
-	private static DeclarationAnnotationElementAdapter<String[]> buildArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+	private static IndexedDeclarationAnnotationElementAdapter<String> buildArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return buildArrayAnnotationElementAdapter(annotationAdapter, elementName, AnnotationStringArrayExpressionConverter.forStrings());
 	}
 
-	private static DeclarationAnnotationElementAdapter<String[]> buildArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String[]> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String[]>(annotationAdapter, elementName, converter);
+	private static IndexedDeclarationAnnotationElementAdapter<String> buildArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, IndexedExpressionConverter<String> converter) {
+		return new IndexedConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
 	}
 
 	private AnnotationElementAdapter<String[]> buildArrayAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String[]> daea) {
@@ -248,19 +251,20 @@ public final class SourceXmlTypeAnnotation
 	}
 	
 	
-	// ***** prop order
+	// ***** prop order *****
+	
 	public ListIterable<String> getPropOrder() {
 		return new LiveCloneListIterable<String>(this.propOrder);
 	}
-
+	
 	public int getPropOrderSize() {
 		return this.propOrder.size();
 	}
-
+	
 	public void addProp(String prop) {
 		this.addProp(this.propOrder.size(), prop);
 	}
-
+	
 	public void addProp(int index, String prop) {
 		this.propOrder.add(index, prop);
 		this.writePropOrder();
@@ -296,8 +300,24 @@ public final class SourceXmlTypeAnnotation
 		String[] astPropOrder = this.propOrderAdapter.getValue(astRoot);
 		this.synchronizeList(Arrays.asList(astPropOrder), this.propOrder, PROP_ORDER_LIST);
 	}
-
-
+	
+	public TextRange getPropOrderTextRange(CompilationUnit astRoot) {
+		return getElementTextRange(this.propOrderDeclarationAdapter, astRoot);
+	}
+	
+	public boolean propOrderTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(this.propOrderDeclarationAdapter, pos, astRoot);
+	}
+	
+	public TextRange getPropTextRange(int index, CompilationUnit astRoot) {
+		return getElementTextRange(getAnnotationElementSubvalueTextRange(this.propOrderDeclarationAdapter, index, astRoot), astRoot);
+	}
+	
+	public boolean propTouches(int index, int pos, CompilationUnit astRoot) {
+		return textRangeTouches(getAnnotationElementSubvalueTextRange(this.propOrderDeclarationAdapter, index, astRoot), pos);
+	}
+	
+	
 	//*********** static methods ****************
 
 	private static DeclarationAnnotationElementAdapter<String> buildFactoryClassAdapter() {
@@ -319,5 +339,4 @@ public final class SourceXmlTypeAnnotation
 	private static DeclarationAnnotationElementAdapter<String> buildNamespaceAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_TYPE__NAMESPACE);
 	}
-
 }

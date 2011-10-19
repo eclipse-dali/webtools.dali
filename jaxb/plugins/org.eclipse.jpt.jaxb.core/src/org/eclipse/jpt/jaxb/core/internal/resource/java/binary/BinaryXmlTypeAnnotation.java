@@ -209,5 +209,20 @@ public final class BinaryXmlTypeAnnotation
 	public void removeProp(int index) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	public TextRange getPropOrderTextRange(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public boolean propOrderTouches(int pos, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public TextRange getPropTextRange(int index, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public boolean propTouches(int index, int pos, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
 }

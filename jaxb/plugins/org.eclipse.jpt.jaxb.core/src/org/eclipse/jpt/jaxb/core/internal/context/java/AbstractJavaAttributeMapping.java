@@ -124,4 +124,14 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	public Iterable<String> getReferencedXmlTypeNames() {
 		return new SingleElementIterable(getValueTypeName());
 	}
+	
+	/* default impl */
+	public boolean isParticleMapping() {
+		return false;
+	}
+	
+	/* default impl */
+	public boolean isTransient() {
+		return false;
+	}
 }
