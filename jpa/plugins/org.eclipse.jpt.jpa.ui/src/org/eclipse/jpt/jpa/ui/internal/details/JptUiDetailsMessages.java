@@ -167,6 +167,7 @@ public class JptUiDetailsMessages {
 	public static String JoinTableComposite_catalog;
 	public static String JoinTableComposite_overrideDefaultInverseJoinColumns;
 	public static String JoinTableComposite_overrideDefaultJoinColumns;
+	public static String MappedSuperclassComposite_queries;
 	
 	public static String DefaultBasicMappingUiProvider_label;
 	public static String DefaultEmbeddedMappingUiProvider_label;

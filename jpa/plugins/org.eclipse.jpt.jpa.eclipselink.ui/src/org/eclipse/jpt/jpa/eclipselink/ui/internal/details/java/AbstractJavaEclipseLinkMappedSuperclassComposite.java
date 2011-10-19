@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSu
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMappedSuperclassAdvancedComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappedSuperclassComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractJavaMappedSuperclassComposite;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.1
  */
 public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
-	extends AbstractMappedSuperclassComposite<JavaMappedSuperclass>
+	extends AbstractJavaMappedSuperclassComposite
     implements JpaComposite
 {
 	/**
@@ -56,6 +56,7 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
 	protected void initializeLayout(Composite container) {
 		this.initializeMappedSuperclassCollapsibleSection(container);		
 		this.initializeCachingCollapsibleSection(container);
+		this.initializeQueriesCollapsibleSection(container);
 		this.initializeConvertersCollapsibleSection(container);
 		this.initializeAdvancedCollapsibleSection(container);
 	}

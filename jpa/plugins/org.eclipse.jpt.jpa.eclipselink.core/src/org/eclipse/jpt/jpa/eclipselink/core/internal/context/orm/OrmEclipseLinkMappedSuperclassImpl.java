@@ -17,7 +17,9 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmMappedSuperclass;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
@@ -59,6 +61,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected final OrmEclipseLinkMultitenancy2_3 multitenancy;
 
+	protected final OrmQueryContainer queryContainer;
 
 	public OrmEclipseLinkMappedSuperclassImpl(OrmPersistentType parent, XmlMappedSuperclass xmlMappedSuperclass) {
 		super(parent, xmlMappedSuperclass);
@@ -68,6 +71,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.changeTracking = this.buildChangeTracking();
 		this.customizer = this.buildCustomizer();
 		this.multitenancy = this.buildMultitenancy();
+		this.queryContainer = this.buildQueryContainer();
 	}
 
 
@@ -82,6 +86,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.changeTracking.synchronizeWithResourceModel();
 		this.customizer.synchronizeWithResourceModel();
 		this.multitenancy.synchronizeWithResourceModel();
+		this.queryContainer.synchronizeWithResourceModel();
 	}
 
 	@Override
@@ -93,6 +98,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.changeTracking.update();
 		this.customizer.update();
 		this.multitenancy.update();
+		this.queryContainer.update();
 	}
 
 
@@ -182,6 +188,21 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected boolean isEclipseLink2_3Compatible() {
 		return JptJpaEclipseLinkCorePlugin.nodeIsEclipseLink2_3Compatible(this);
+	}
+
+	// ********** query container **********
+
+	public OrmQueryContainer getQueryContainer() {
+		return this.queryContainer;
+	}
+
+	protected OrmQueryContainer buildQueryContainer() {
+		return this.getContextNodeFactory().buildOrmQueryContainer(this, this.xmlTypeMapping);
+	}
+
+	@Override
+	public Iterable<Query> getQueries() {
+		return this.queryContainer.getQueries();
 	}
 
 	public boolean isMultitenantMetadataAllowed() {

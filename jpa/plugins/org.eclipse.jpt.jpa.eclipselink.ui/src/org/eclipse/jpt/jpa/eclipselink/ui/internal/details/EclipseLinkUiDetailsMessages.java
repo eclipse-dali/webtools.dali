@@ -160,6 +160,8 @@ public class EclipseLinkUiDetailsMessages extends NLS {
 	public static String EclipseLinkConverterStateObject_nameMustBeSpecified;
 	public static String EclipseLinkConverterStateObject_typeMustBeSpecified;
 	
+	public static String EclipseLinkMappedSuperclassComposite_queries;
+
 	static {
 		NLS.initializeMessages("eclipselink_ui_details", EclipseLinkUiDetailsMessages.class);
 	}

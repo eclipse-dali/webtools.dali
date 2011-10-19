@@ -16,30 +16,46 @@ import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappedSuperclassComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractJavaMappedSuperclassComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | AccessTypeComposite                                                   | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * 
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | IdClassComposite                                                      | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * |                                                                           |
- * | IdClassComposite                                                          |
- * |                                                                           |
+ * | - v Queries ------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | QueriesComposite                                                      | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see MappedSuperclass
- * @see BaseJavaUiFactory - The factory creating this pane
+ * @see Generic2_0JavaUiFactory - The factory creating this pane
+ * @see AccessTypeComposite
  * @see IdClassComposite
  *
  * @version 2.3
  * @since 2.0
  */
+
 public class JavaMappedSuperclass2_0Composite
-	extends AbstractMappedSuperclassComposite<JavaMappedSuperclass>
+	extends AbstractJavaMappedSuperclassComposite
     implements JpaComposite
 {
 	/**

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
@@ -35,4 +36,6 @@ public interface OrmEclipseLinkMappedSuperclass
 	JavaEclipseLinkMappedSuperclass getJavaTypeMapping();
 
 	JavaEclipseLinkMappedSuperclass getJavaTypeMappingForDefaults();
+
+	OrmQueryContainer getQueryContainer();
 }
