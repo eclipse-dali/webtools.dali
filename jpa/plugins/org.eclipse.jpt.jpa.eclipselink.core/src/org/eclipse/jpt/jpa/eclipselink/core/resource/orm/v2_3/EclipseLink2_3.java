@@ -44,8 +44,8 @@ public interface EclipseLink2_3
 	String STRUCTURE = "structure";
 
 	String TENANT_DISCRIMINATOR_COLUMN = "tenant-discriminator-column";
-		String TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY = "contextProperty";
-		String TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY= "primaryKey";
+		String TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY = "context-property";
+		String TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY= "primary-key";
 		String TENANT_DISCRIMINATOR_COLUMN__TABLE = "table";
 
 

@@ -385,7 +385,7 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 	}
 
 	protected static Translator buildTypeTranslator() {
-		return new Translator(EclipseLink2_3.MULTITENANT__TYPE, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlMultitenant_2_3_Type());
+		return new Translator(EclipseLink2_3.MULTITENANT__TYPE, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlMultitenant_2_3_Type(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildTenantDiscriminatorColumnsTranslator() {
