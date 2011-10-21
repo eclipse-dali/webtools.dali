@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.resource.xml.EmfTools;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPersistenceUnitMetadata;
 
@@ -29,8 +30,8 @@ public class OrmEclipseLinkPersistenceUnitMetadata
 	}
 	
 	@Override
-	public OrmEclipseLinkPersistenceUnitDefaults getPersistenceUnitDefaults() {
-		return (OrmEclipseLinkPersistenceUnitDefaults) super.getPersistenceUnitDefaults();
+	public EclipseLinkPersistenceUnitDefaults getPersistenceUnitDefaults() {
+		return (EclipseLinkPersistenceUnitDefaults) super.getPersistenceUnitDefaults();
 	}
 
 	@Override

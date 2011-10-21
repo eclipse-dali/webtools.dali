@@ -16,14 +16,16 @@ import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMultitenancyComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.QueriesComposite;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmEclipseLinkMappedSuperclass2_1Composite
+public class OrmEclipseLinkMappedSuperclass2_3Composite
 	extends AbstractOrmEclipseLinkMappedSuperclassComposite {
 
-	public OrmEclipseLinkMappedSuperclass2_1Composite(
+	public OrmEclipseLinkMappedSuperclass2_3Composite(
 			PropertyValueModel<? extends OrmMappedSuperclass> subjectHolder, 
 			Composite parent, WidgetFactory widgetFactory) {
 
@@ -35,6 +37,7 @@ public class OrmEclipseLinkMappedSuperclass2_1Composite
 		this.initializeMappedSuperclassCollapsibleSection(container);
 		this.initializeCachingCollapsibleSection(container);
 		this.initializeQueriesCollapsibleSection(container);
+		this.initializeMultitenancyCollapsibleSection(container);
 		this.initializeConvertersCollapsibleSection(container);
 		this.initializeAdvancedCollapsibleSection(container);
 	}
@@ -62,6 +65,26 @@ public class OrmEclipseLinkMappedSuperclass2_1Composite
 			@Override
 			protected QueryContainer buildValue_() {
 				return ((OrmEclipseLinkMappedSuperclass) this.subject).getQueryContainer();
+			}
+		};
+	}
+
+	protected void initializeMultitenancyCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+				container,
+				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_multitenancy);
+		this.initializeMultitenancySection(container, buildMultitenancyHolder());
+	}
+
+	protected void initializeMultitenancySection(Composite container, PropertyValueModel<OrmEclipseLinkMultitenancy2_3> multitenancyHolder) {
+		new EclipseLinkMultitenancyComposite(this, multitenancyHolder, container);
+	}
+
+	private PropertyAspectAdapter<OrmMappedSuperclass, OrmEclipseLinkMultitenancy2_3> buildMultitenancyHolder() {
+		return new PropertyAspectAdapter<OrmMappedSuperclass, OrmEclipseLinkMultitenancy2_3>(getSubjectHolder()) {
+			@Override
+			protected OrmEclipseLinkMultitenancy2_3 buildValue_() {
+				return ((OrmEclipseLinkMappedSuperclass) this.subject).getMultitenancy();
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -54,4 +54,12 @@ public interface EclipseLinkHelpContextIds {
 	public static final String PERSISTENCE_OPTIONS_TARGET_DATABASE = PREFIX + "options_targetDatabase";
 	public static final String PERSISTENCE_OPTIONS_TARGET_SERVER = PREFIX + "options_targetServer";
 
+	public static final String MULTITENANCY_STRATEGY = PREFIX + "multitenancy_strategy";
+	public static final String MULTITENANCY_TENANT_DISCRIMINATOR_COLUMNS = PREFIX + "multitenancy_tenantDiscriminatorColumns";
+	public static final String TENANT_DISCRIMINATOR_COLUMN_NAME = PREFIX + "tenantDiscriminatorColumn_name";
+	public static final String TENANT_DISCRIMINATOR_COLUMN_TABLE = PREFIX + "tenantDiscriminatorColumn_table";
+	public static final String TENANT_DISCRIMINATOR_COLUMN_CONTEXT_PROPERTY = PREFIX + "tenantDiscriminatorColumn_contextProperty";
+	public static final String TENANT_DISCRIMINATOR_COLUMN_DISCRIMINATOR_TYPE = PREFIX + "tenantDiscriminatorColumn_discriminatorType";
+	public static final String TENANT_DISCRIMINATOR_COLUMN_PRIMARY_KEY = PREFIX + "tenantDiscriminatorColumn_primaryKey";
+	public static final String TENANT_DISCRIMINATOR_COLUMN_LENGTH = PREFIX + "tenantDiscriminatorColumn_length";
 }

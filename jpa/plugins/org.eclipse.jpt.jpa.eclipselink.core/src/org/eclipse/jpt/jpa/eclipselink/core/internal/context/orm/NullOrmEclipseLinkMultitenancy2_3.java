@@ -143,4 +143,7 @@ public class NullOrmEclipseLinkMultitenancy2_3
 		return 0;
 	}
 
+	public boolean specifiedTenantDiscriminatorColumnsAllowed() {
+		return false;
+	}
 }

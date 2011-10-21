@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 
 public interface EclipseLinkEntityMappings 
 	extends EntityMappings
@@ -63,18 +62,18 @@ public interface EclipseLinkEntityMappings
 	 * Add a specified tenant discriminator column and return the object
 	 * representing it.
 	 */
-	TenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn();
+	OrmTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn();
 
 	/**
 	 * Add a specified tenant discriminator column and return the object
 	 * representing it.
 	 */
-	TenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index);
+	OrmTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index);
 
 	/**
 	 * Remove the specified tenant discriminator column.
 	 */
-	void removeSpecifiedTenantDiscriminatorColumn(TenantDiscriminatorColumn2_3 tenantDiscriminatorColumn);
+	void removeSpecifiedTenantDiscriminatorColumn(OrmTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn);
 
 	/**
 	 * Remove the specified tenant discriminator column at the index.

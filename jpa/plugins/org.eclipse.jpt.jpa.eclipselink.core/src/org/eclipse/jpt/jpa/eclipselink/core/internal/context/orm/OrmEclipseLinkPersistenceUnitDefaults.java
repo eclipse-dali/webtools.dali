@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -38,11 +38,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscrimin
  */
 public class OrmEclipseLinkPersistenceUnitDefaults
 	extends AbstractOrmPersistenceUnitDefaults
+	implements EclipseLinkPersistenceUnitDefaults
 {
 
 	protected final ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3> tenantDiscriminatorColumnContainer;
 	protected final OrmReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
-		public static final String TENANT_DISCRIMINATOR_COLUMNS_LIST = "tenantDiscriminatorColumns"; //$NON-NLS-1$
 
 	// ********** constructor/initialization **********
 
@@ -115,8 +115,8 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		return EclipseLinkOrmFactory.eINSTANCE.createXmlTenantDiscriminatorColumn();
 	}
 
-	public void removeTenantDiscriminatorColumn(TenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
-		this.removeTenantDiscriminatorColumn(this.tenantDiscriminatorColumnContainer.indexOfContextElement((OrmTenantDiscriminatorColumn2_3) tenantDiscriminatorColumn));
+	public void removeTenantDiscriminatorColumn(OrmTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
+		this.removeTenantDiscriminatorColumn(this.tenantDiscriminatorColumnContainer.indexOfContextElement(tenantDiscriminatorColumn));
 	}
 
 	public void removeTenantDiscriminatorColumn(int index) {

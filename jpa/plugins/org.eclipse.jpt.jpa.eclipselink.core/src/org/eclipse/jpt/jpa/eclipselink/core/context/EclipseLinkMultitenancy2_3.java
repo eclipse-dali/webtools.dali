@@ -144,4 +144,12 @@ public interface EclipseLinkMultitenancy2_3
 	 */
 	int getDefaultTenantDiscriminatorColumnsSize();
 
+	/**
+	 * Return whether a TenantDiscriminatorColumn is allowed for this type mapping.
+	 * It is allowed if it is a mapped-superclass, the root entity in the inheritance hierarchy,
+	 * or the inheritance strategy is table-per-class
+	 */
+	boolean specifiedTenantDiscriminatorColumnsAllowed();
+ 		String SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_ALLOWED_PROPERTY = "specifiedTenantDiscriminatorColumnsAllowed"; //$NON-NLS-1$
+
 }

@@ -51,11 +51,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
@@ -103,7 +103,7 @@ public class EclipseLinkPersistenceUnit
 
 		OrmEclipseLinkPersistenceUnitMetadata metadata = this.getEclipseLinkMetadata();
 
-		OrmEclipseLinkPersistenceUnitDefaults defaults = (metadata == null) ? null : metadata.getPersistenceUnitDefaults();
+		EclipseLinkPersistenceUnitDefaults defaults = (metadata == null) ? null : metadata.getPersistenceUnitDefaults();
 		this.setDefaultTenantDiscriminatorColumns(this.buildDefaultTenantDiscriminatorColumns(defaults));
 	}
 
@@ -343,7 +343,7 @@ public class EclipseLinkPersistenceUnit
 		this.synchronizeList(tenantDiscriminatorColumns, this.defaultTenantDiscriminatorColumns, DEFAULT_TENANT_DISCRIMINATOR_COLUMNS_LIST);
 	}
 
-	protected ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> buildDefaultTenantDiscriminatorColumns(OrmEclipseLinkPersistenceUnitDefaults defaults) {
+	protected ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> buildDefaultTenantDiscriminatorColumns(EclipseLinkPersistenceUnitDefaults defaults) {
 		return (defaults == null) ? EmptyListIterable.<ReadOnlyTenantDiscriminatorColumn2_3> instance() : new SuperListIterableWrapper<ReadOnlyTenantDiscriminatorColumn2_3>(defaults.getTenantDiscriminatorColumns());
 	}
 

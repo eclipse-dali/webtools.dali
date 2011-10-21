@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,6 +65,8 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMetadata>
 {
+	PropertyValueModel<OrmPersistenceUnitDefaults> persistenceUnitDefaultsHolder;
+
 	/**
 	 * Creates a new <code>PersistenceUnitMetadataComposite</code>.
 	 *
@@ -79,9 +81,19 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		super(parentPane, subjectHolder, parent, false);
 	}
 
-	private EnumFormComboViewer<OrmPersistenceUnitDefaults, AccessType> addAccessTypeCombo(Composite container) {
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.persistenceUnitDefaultsHolder = this.buildPersistenceUnitDefaultsHolder();
+	}
 
-		return new EnumFormComboViewer<OrmPersistenceUnitDefaults, AccessType>(this, buildPersistenceUnitDefaultsHolder(), container) {
+	protected PropertyValueModel<OrmPersistenceUnitDefaults> getPersistenceUnitDefaultsHolder() {
+		return this.persistenceUnitDefaultsHolder;
+	}
+
+	protected EnumFormComboViewer<OrmPersistenceUnitDefaults, AccessType> addAccessTypeCombo(Composite container) {
+
+		return new EnumFormComboViewer<OrmPersistenceUnitDefaults, AccessType>(this, getPersistenceUnitDefaultsHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -103,7 +115,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 			protected String displayString(AccessType value) {
 				return buildDisplayString(
 					JptUiDetailsOrmMessages.class,
-					PersistenceUnitMetadataComposite.this,
+					PersistenceUnitMetadataComposite.class,
 					value
 				);
 			}
@@ -120,8 +132,8 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildCascadePersistHolder() {
-		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(buildPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
+	protected WritablePropertyValueModel<Boolean> buildCascadePersistHolder() {
+		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isCascadePersist());
@@ -134,9 +146,9 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		};
 	}
 
-	private CatalogCombo<OrmPersistenceUnitDefaults> addCatalogCombo(Composite container) {
+	protected CatalogCombo<OrmPersistenceUnitDefaults> addCatalogCombo(Composite container) {
 
-		return new CatalogCombo<OrmPersistenceUnitDefaults>(this, buildPersistenceUnitDefaultsHolder(), container) {
+		return new CatalogCombo<OrmPersistenceUnitDefaults>(this, getPersistenceUnitDefaultsHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -171,9 +183,9 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		};
 	}
 
-	private SchemaCombo<OrmPersistenceUnitDefaults> addSchemaCombo(Composite container) {
+	protected SchemaCombo<OrmPersistenceUnitDefaults> addSchemaCombo(Composite container) {
 
-		return new SchemaCombo<OrmPersistenceUnitDefaults>(this, buildPersistenceUnitDefaultsHolder(), container) {
+		return new SchemaCombo<OrmPersistenceUnitDefaults>(this, getPersistenceUnitDefaultsHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -205,7 +217,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildXmlMappingMetadataCompleteHolder() {
+	protected WritablePropertyValueModel<Boolean> buildXmlMappingMetadataCompleteHolder() {
 		return new PropertyAspectAdapter<OrmPersistenceUnitMetadata, Boolean>(getSubjectHolder(), OrmPersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -219,8 +231,8 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildDelimitedIdentifiersHolder() {
-		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(buildPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults2_0.DELIMITED_IDENTIFIERS_PROPERTY) {
+	protected WritablePropertyValueModel<Boolean> buildDelimitedIdentifiersHolder() {
+		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults2_0.DELIMITED_IDENTIFIERS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.buildBooleanValue_());

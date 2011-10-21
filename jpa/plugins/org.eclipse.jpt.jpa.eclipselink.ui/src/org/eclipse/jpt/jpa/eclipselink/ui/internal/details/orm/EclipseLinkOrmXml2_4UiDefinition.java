@@ -12,10 +12,11 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
 
 
 public class EclipseLinkOrmXml2_4UiDefinition
-		extends EclipseLinkOrmXml2_2UiDefinition {
+		extends EclipseLinkOrmXml2_1UiDefinition {
 
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml2_4UiDefinition();
@@ -36,6 +37,10 @@ public class EclipseLinkOrmXml2_4UiDefinition
 		super();
 	}
 
+	@Override
+	protected OrmXmlUiFactory buildOrmXmlUiFactory() {
+		return new EclipseLinkOrmXml2_3UiFactory();
+	}
 
 	@Override
 	public boolean providesUi(JptResourceType resourceType) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,42 +24,41 @@ import org.eclipse.swt.widgets.Composite;
  * configuration or from the Mappings Descriptor).
  *
  * @version 3.1
- * @since 2.2
+ * @since 3.1
  */
-public class EclipseLinkEntityMappings2_0DetailsProvider
+public class EclipseLinkEntityMappings2_3DetailsProvider
 	extends AbstractEntityMappingsDetailsProvider
 {
 	// singleton
-	private static final JpaDetailsProvider INSTANCE = new EclipseLinkEntityMappings2_0DetailsProvider();
-	
-	
+	private static final JpaDetailsProvider INSTANCE = new EclipseLinkEntityMappings2_3DetailsProvider();
+
+
 	/**
 	 * Return the singleton
 	 */
 	public static JpaDetailsProvider instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkEntityMappings2_0DetailsProvider() {
+	private EclipseLinkEntityMappings2_3DetailsProvider() {
 		super();
 	}
-	
-	
+
+
 	@Override
 	protected boolean providesDetails(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_0_RESOURCE_TYPE) ||
-			resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_1_RESOURCE_TYPE) ||
-			resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_2_RESOURCE_TYPE);
+		return resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_3_RESOURCE_TYPE) ||
+			resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_4_RESOURCE_TYPE);
 	}
-	
+
 	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
 		Composite parent,
 		WidgetFactory widgetFactory) {
 
-		return new EclipseLinkEntityMappings2_0DetailsPage(parent, widgetFactory);
+		return new EclipseLinkEntityMappings2_3DetailsPage(parent, widgetFactory);
 	}
 }

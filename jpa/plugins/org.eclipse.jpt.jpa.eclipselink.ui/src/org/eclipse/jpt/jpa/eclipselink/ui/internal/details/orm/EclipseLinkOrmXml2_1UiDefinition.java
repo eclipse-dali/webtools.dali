@@ -28,6 +28,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEntityUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmIdMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToManyMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappedSuperclassUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmTransientMappingUiDefinition;
@@ -52,7 +53,7 @@ public class EclipseLinkOrmXml2_1UiDefinition extends AbstractOrmXmlResourceUiDe
 	/**
 	 * Enforce singleton usage
 	 */
-	private EclipseLinkOrmXml2_1UiDefinition() {
+	protected EclipseLinkOrmXml2_1UiDefinition() {
 		super();
 	}
 	
@@ -94,7 +95,7 @@ public class EclipseLinkOrmXml2_1UiDefinition extends AbstractOrmXmlResourceUiDe
 	@Override
 	protected void addOrmTypeMappingUiDefinitionsTo(List<OrmTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
 		definitions.add(OrmEntityUiDefinition.instance());
-		definitions.add(OrmEclipseLinkMappedSuperclass2_1UiDefinition.instance());
+		definitions.add(OrmMappedSuperclassUiDefinition.instance());
 		definitions.add(OrmEmbeddableUiDefinition.instance());
 	}
 }

@@ -75,6 +75,8 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 
 	protected final OrmReadOnlyTenantDiscriminatorColumn2_3 defaultTenantDiscriminatorColumn;
 
+	protected boolean specifiedTenantDiscriminatorColumnsAllowed;
+
 	public OrmEclipseLinkMultitenancyImpl2_3(OrmEclipseLinkNonEmbeddableTypeMapping parent) {
 		super(parent);
 
@@ -112,6 +114,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		this.setDefaultMultitenant(useJavaValue ? javaMultitenantPolicy.isMultitenant() : this.buildDefaultMultitenant());
 		this.setDefaultType(useJavaValue ? javaMultitenantPolicy.getType() : this.buildDefaultType());
 //		this.setDefaultIncludeCriteria(useJavaValue ? javaMultitenantPolicy.isIncludeCriteria() : DEFAULT_INCLUDE_CRITERIA);
+		this.setSpecifiedTenantDiscriminatorColumnsAllowed(this.buildSpecifiedTenantDiscriminatorColumnsAllowed());
 		this.updateDefaultTenantDiscriminatorColumns();
 	}
 
@@ -458,6 +461,20 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		return new DefaultTenantDiscriminatorColumnContainer();
 	}
 
+	public boolean specifiedTenantDiscriminatorColumnsAllowed() {
+		return this.specifiedTenantDiscriminatorColumnsAllowed;
+	}
+
+	public void setSpecifiedTenantDiscriminatorColumnsAllowed(boolean allowed) {
+		boolean old = this.specifiedTenantDiscriminatorColumnsAllowed;
+		this.specifiedTenantDiscriminatorColumnsAllowed = allowed;
+		this.firePropertyChanged(SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_ALLOWED_PROPERTY, old, allowed);
+	}
+
+	protected boolean buildSpecifiedTenantDiscriminatorColumnsAllowed() {
+		return this.getParent().isMultitenantMetadataAllowed();
+	}
+
 
 	/**
 	 * default tenant discriminator column container
@@ -609,10 +626,6 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		return (javaTypeMapping == null) ? null : javaTypeMapping.getMultitenancy();
 	}
 
-	protected boolean isSpecifiedMultitenantMetadataAllowed() {
-		return this.getParent().isMultitenantMetadataAllowed();
-	}
-
 	protected boolean isMultitenantInheritanceHierarchy() {
 		if (this.isInheritanceStrategyTablePerClass()) {
 			return false;
@@ -663,7 +676,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		if (getSpecifiedTenantDiscriminatorColumnsSize() > 0) {
-			if (!this.isSpecifiedMultitenantMetadataAllowed()) {
+			if (!this.specifiedTenantDiscriminatorColumnsAllowed()) {
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
@@ -680,7 +693,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 				}
 			}
 		}
-		if (this.isSpecifiedMultitenantMetadataAllowed()) {
+		if (this.specifiedTenantDiscriminatorColumnsAllowed()) {
 			//bug 360731 no need to validate, they will be validated where they are specified 
 			for (OrmVirtualTenantDiscriminatorColumn2_3 column : this.getDefaultTenantDiscriminatorColumns()) {
 				column.validate(messages, reporter);

@@ -34,7 +34,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmReadOnlyTenantDiscriminatorColumn2_3;
@@ -174,8 +173,8 @@ public class EclipseLinkEntityMappingsImpl
 		return EclipseLinkOrmFactory.eINSTANCE.createXmlTenantDiscriminatorColumn();
 	}
 
-	public void removeSpecifiedTenantDiscriminatorColumn(TenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
-		this.removeSpecifiedTenantDiscriminatorColumn(this.specifiedTenantDiscriminatorColumnContainer.indexOfContextElement((OrmTenantDiscriminatorColumn2_3) tenantDiscriminatorColumn));
+	public void removeSpecifiedTenantDiscriminatorColumn(OrmTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
+		this.removeSpecifiedTenantDiscriminatorColumn(this.specifiedTenantDiscriminatorColumnContainer.indexOfContextElement(tenantDiscriminatorColumn));
 	}
 
 	public void removeSpecifiedTenantDiscriminatorColumn(int index) {

@@ -72,6 +72,8 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 
 	protected final JavaReadOnlyTenantDiscriminatorColumn2_3 defaultTenantDiscriminatorColumn;
 
+	protected boolean specifiedTenantDiscriminatorColumnsAllowed;
+
 	public JavaEclipseLinkMultitenancyImpl2_3(JavaEclipseLinkNonEmbeddableTypeMapping parent) {
 		super(parent);
 
@@ -105,6 +107,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		this.setSpecifiedMultitenant_(this.isMultitenantAnnotationSpecified());
 		this.setDefaultMultitenant(this.buildDefaultMultitenant());
 		this.setDefaultType(this.buildDefaultType());
+		this.setSpecifiedTenantDiscriminatorColumnsAllowed(this.buildSpecifiedTenantDiscriminatorColumnsAllowed());
 		this.updateDefaultTenantDiscriminatorColumns();
 	}
 
@@ -397,6 +400,20 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		return (entityMappings != null) ? entityMappings.getTenantDiscriminatorColumns() : this.getPersistenceUnit().getDefaultTenantDiscriminatorColumns();
 	}
 
+	public boolean specifiedTenantDiscriminatorColumnsAllowed() {
+		return this.specifiedTenantDiscriminatorColumnsAllowed;
+	}
+
+	public void setSpecifiedTenantDiscriminatorColumnsAllowed(boolean allowed) {
+		boolean old = this.specifiedTenantDiscriminatorColumnsAllowed;
+		this.specifiedTenantDiscriminatorColumnsAllowed = allowed;
+		this.firePropertyChanged(SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_ALLOWED_PROPERTY, old, allowed);
+	}
+
+	protected boolean buildSpecifiedTenantDiscriminatorColumnsAllowed() {
+		return this.getParent().isMultitenantMetadataAllowed();
+	}
+
 
 	/**
 	 * default tenant discriminator column container
@@ -562,10 +579,6 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 
-	protected boolean isSpecifiedMultitenantMetadataAllowed() {
-		return this.getParent().isMultitenantMetadataAllowed();
-	}
-
 	protected boolean isMultitenantInheritanceHierarchy() {
 		if (this.isInheritanceStrategyTablePerClass()) {
 			return false;
@@ -636,7 +649,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		//TODO validate 2.3 eclipselink does not use TABLE_PER_CLASS (and the new PROTECTED?? this wouldn't be in the 2.3 source)
 		super.validate(messages, reporter, astRoot);
 		if (this.getSpecifiedTenantDiscriminatorColumnsSize() > 0) {
-			if (!this.isSpecifiedMultitenantMetadataAllowed()) {
+			if (!this.specifiedTenantDiscriminatorColumnsAllowed()) {
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
@@ -664,7 +677,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 				);
 			}
 		}
-		if (this.isSpecifiedMultitenantMetadataAllowed()) {
+		if (this.specifiedTenantDiscriminatorColumnsAllowed()) {
 			//bug 360731 no need to validate, they will be validated where they are specified 
 			for (JavaVirtualTenantDiscriminatorColumn2_3 column : this.getDefaultTenantDiscriminatorColumns()) {
 				column.validate(messages, reporter, astRoot);

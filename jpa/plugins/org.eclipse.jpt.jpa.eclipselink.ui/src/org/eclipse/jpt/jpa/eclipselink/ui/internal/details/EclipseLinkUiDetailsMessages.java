@@ -43,6 +43,7 @@ public class EclipseLinkUiDetailsMessages extends NLS {
 	public static String EclipseLinkTypeMappingComposite_advanced;
 	public static String EclipseLinkTypeMappingComposite_caching;
 	public static String EclipseLinkTypeMappingComposite_converters;
+	public static String EclipseLinkTypeMappingComposite_multitenancy;
 	
 	public static String EclipseLinkCacheSizeComposite_size;
 	public static String EclipseLinkCacheCoordinationTypeComposite_label;
@@ -159,8 +160,27 @@ public class EclipseLinkUiDetailsMessages extends NLS {
 	public static String EclipseLinkConverterStateObject_nameIsReserved;
 	public static String EclipseLinkConverterStateObject_nameMustBeSpecified;
 	public static String EclipseLinkConverterStateObject_typeMustBeSpecified;
-	
+
 	public static String EclipseLinkMappedSuperclassComposite_queries;
+
+	public static String TenantDiscriminatorColumns_groupLabel;
+	public static String TenantDiscriminatorColumnComposite_nameLabel;
+	public static String TenantDiscriminatorColumnComposite_defaultTenantDiscriminatorColumnNameLabel;
+	public static String TenantDiscriminatorColumnComposite_tableLabel;
+	public static String TenantDiscriminatorColumnComposite_contextPropertyLabel;
+	public static String TenantDiscriminatorColumnComposite_discriminatorTypeLabel;
+	public static String TenantDiscriminatorColumnComposite_lengthLabel;
+	public static String TenantDiscriminatorColumnComposite_columnDefinitionLabel;
+	public static String TenantDiscriminatorColumnComposite_primaryKeyWithDefault;
+	public static String TenantDiscriminatorColumnComposite_primaryKey;
+	
+	public static String EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite_collapsibleSection;
+	public static String EclipseLinkMultitenancy_overrideDefaultTenantDiscriminatorColumns;
+
+	public static String EclipseLinkMultitenancyComposite_strategy;
+	public static String EclipseLinkMultitenancyComposite_single_table;
+	public static String EclipseLinkMultitenancyComposite_table_per_tenant;
+	public static String EclipseLinkMultitenancyComposite_vpd;
 
 	static {
 		NLS.initializeMessages("eclipselink_ui_details", EclipseLinkUiDetailsMessages.class);

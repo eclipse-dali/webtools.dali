@@ -135,4 +135,8 @@ public class NullJavaEclipseLinkMultitenancy2_3
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException("Multitenancy is only supported in EclipseLink version 2.3 and higher"); //$NON-NLS-1$
 	}
+
+	public boolean specifiedTenantDiscriminatorColumnsAllowed() {
+		return false;
+	}
 }
