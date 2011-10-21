@@ -28,4 +28,6 @@ public interface JavaUniqueConstraint
 	extends UniqueConstraint, JavaReadOnlyUniqueConstraint
 {
 	UniqueConstraintAnnotation getUniqueConstraintAnnotation();
+
+	boolean isIdentical(JavaUniqueConstraint javaUniqueConstraint);
 }

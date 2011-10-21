@@ -28,4 +28,6 @@ public interface JavaQueryHint
 	extends QueryHint, JavaJpaContextNode
 {
 	QueryHintAnnotation getQueryHintAnnotation();
+
+	boolean isIdentical(QueryHint queryHint);
 }

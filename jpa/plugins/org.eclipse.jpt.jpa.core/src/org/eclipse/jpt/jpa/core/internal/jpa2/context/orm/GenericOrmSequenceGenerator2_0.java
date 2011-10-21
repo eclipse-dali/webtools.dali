@@ -9,6 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSequenceGenerator2_0;
@@ -124,5 +126,14 @@ public class GenericOrmSequenceGenerator2_0
 
 	protected String buildDefaultSchema() {
 		return this.getContextDefaultSchema();
+	}
+
+	// ********** validation **********
+
+	@Override
+	public boolean isIdentical(Generator generator) {
+		return super.isIdentical(generator) &&
+				StringTools.stringsAreEqual(this.getSpecifiedSchema(), (((GenericOrmSequenceGenerator2_0)generator).getSpecifiedSchema())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedCatalog(), (((GenericOrmSequenceGenerator2_0)generator).getSpecifiedCatalog()));
 	}
 }

@@ -34,10 +34,12 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -442,7 +444,7 @@ public class EclipseLinkPersistenceUnit
 	/**
 	 * Include "overridden" Java converters.
 	 */
-	protected Iterable<EclipseLinkConverter> getAllJavaConverters() {
+	public Iterable<EclipseLinkConverter> getAllJavaConverters() {
 		return new CompositeIterable<EclipseLinkConverter>(this.getAllJavaTypeMappingConverterLists());
 	}
 
@@ -879,21 +881,55 @@ public class EclipseLinkPersistenceUnit
 			if (StringTools.stringIsNotEmpty(converterName)) {  // ignore empty names
 				ArrayList<EclipseLinkConverter> dups = entry.getValue();
 				if (dups.size() > 1) {
-					String[] parms = new String[] {converterName};
-					for (EclipseLinkConverter dup : dups) {
-						messages.add(
-							DefaultEclipseLinkJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
-								parms,
-								dup,
-								this.extractNameTextRange(dup)
-							)
-						);
+					// if duplicate name exists, check the types of the converters with the duplicate name
+					HashMap<Class<? extends JpaNamedContextNode>, ArrayList<EclipseLinkConverter>> convertersByType = this.mapByType(dups);
+					// if more than one types of converters have the same name, 
+					// report duplicate error on every converter in the list;
+					if (convertersByType.size() > 1) {
+						String[] parms = new String[] {converterName};
+						for (EclipseLinkConverter dup : dups) {
+							messages.add(
+									DefaultEclipseLinkJpaValidationMessages.buildMessage(
+											IMessage.HIGH_SEVERITY,
+											EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
+											parms,
+											dup,
+											this.extractNameTextRange(dup)
+											)
+									);
+						}
+					} else {
+						// otherwise if all the converters are with the same type, check every converter
+						// to see if its definition is not identical with any one of the converters in the list;
+						// if yes, report duplicate error on it; if not, doing nothing
+						for (EclipseLinkConverter dup : dups) {
+							String[] parms = new String[] {dup.getName()};
+							if (hasDuplicateConverter(dup, dups)) {
+								messages.add(
+										DefaultEclipseLinkJpaValidationMessages.buildMessage(
+												IMessage.HIGH_SEVERITY,
+												EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
+												parms,
+												dup,
+												this.extractNameTextRange(dup)
+												)
+										);
+							}
+						}
 					}
 				}
 			}
 		}
+	}
+
+	private boolean hasDuplicateConverter(EclipseLinkConverter converter, ArrayList<EclipseLinkConverter> converters) {
+		boolean isDuplicate = false;
+		for (int i=0; i<converters.size(); i++) {
+			if (converter != converters.get(i) && !converter.isIdentical(converters.get(i))) {
+				isDuplicate = true;
+			}
+		}
+		return isDuplicate;
 	}
 
 	// TODO bjv isn't it obvious?
@@ -912,7 +948,160 @@ public class EclipseLinkPersistenceUnit
 		}
 	}
 
+	@Override
+	protected void checkForDuplicateGenerators(List<IMessage> messages) {		
+		HashMap<String, ArrayList<Generator>> generatorsByName = this.mapByName(this.getGenerators());
+		for (Map.Entry<String, ArrayList<Generator>> entry : generatorsByName.entrySet()) {
+			String generatorName = entry.getKey();
+			if (StringTools.stringIsNotEmpty(generatorName)) {  // ignore empty names
+				ArrayList<Generator> dups = entry.getValue();
+				if (dups.size() > 1) {
+					// if duplicate name exists, check the types of the generators with the duplicate name
+					HashMap<Class<? extends JpaNamedContextNode>, ArrayList<Generator>> generatorsByType = this.mapByType(dups);
+					// if more than one types of generators have the same name, 
+					// report duplicate error on every generator in the list;
+					if (generatorsByType.size() > 1) {
+						String[] parms = new String[] {generatorName};
+						for (Generator dup : dups) {
+							messages.add(
+									DefaultEclipseLinkJpaValidationMessages.buildMessage(
+											IMessage.HIGH_SEVERITY,
+											EclipseLinkJpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+											parms,
+											dup,
+											this.extractNameTextRange(dup)
+											)
+									);
+						}
+					} else {
+						// otherwise if all the generators are with the same type, check every generator
+						// to see if its definition is not identical with any one of the generators in the list;
+						// if yes, report duplicate error on it;
+						for (Generator dup : dups) {
+							String[] parms = new String[] {dup.getName()};
+							if (hasDuplicateGenerator(dup, dups)) {
+								messages.add(
+										DefaultEclipseLinkJpaValidationMessages.buildMessage(
+												IMessage.HIGH_SEVERITY,
+												EclipseLinkJpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+												parms,
+												dup,
+												this.extractNameTextRange(dup)
+												)
+										);
+							} else {
+								// if not, report identical warning on it
+								messages.add(
+										DefaultEclipseLinkJpaValidationMessages.buildMessage(
+												IMessage.LOW_SEVERITY,
+												EclipseLinkJpaValidationMessages.GENERATOR_IDENTICAL,
+												parms,
+												dup,
+												this.extractNameTextRange(dup)
+												)
+										);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
+	private boolean hasDuplicateGenerator(Generator generator, ArrayList<Generator> generators) {
+		boolean isDuplicate = false;
+		for (int i=0; i<generators.size(); i++) {
+			if (generator != generators.get(i) && !generator.isIdentical(generators.get(i))) {
+				isDuplicate = true;
+			}
+		}
+		return isDuplicate;
+	}
+
+	@Override
+	protected void checkForDuplicateQueries(List<IMessage> messages) {
+		HashMap<String, ArrayList<Query>> queriesByName = this.mapByName(this.getQueries());
+		for (Map.Entry<String, ArrayList<Query>> entry : queriesByName.entrySet()) {
+			String queryName = entry.getKey();
+			if (StringTools.stringIsNotEmpty(queryName)) {  // ignore empty names
+				ArrayList<Query> dups = entry.getValue();
+				if (dups.size() > 1) {
+					// if duplicate name exists, check the types of the queries with the duplicate name
+					HashMap<Class<? extends JpaNamedContextNode>, ArrayList<Query>> querisByType = this.mapByType(dups);
+					// if more than one types of queries have the same name, 
+					// report duplicate error on every query in the list;
+					if (querisByType.size() > 1) {
+						String[] parms = new String[] {queryName};
+						for (Query dup : dups) {
+							messages.add(
+									DefaultEclipseLinkJpaValidationMessages.buildMessage(
+											IMessage.HIGH_SEVERITY,
+											EclipseLinkJpaValidationMessages.QUERY_DUPLICATE_NAME,
+											parms,
+											dup,
+											this.extractNameTextRange(dup)
+											)
+									);
+						}
+					} else {
+						// otherwise if all the queries are with the same type, check every query
+						// to see if its definition is not identical with any one of the queries in the list;
+						// if yes, report duplicate error on it;
+						for (Query dup : dups) {
+							String[] parms = new String[] {dup.getName()};
+							if (hasDuplicateQuery(dup, dups)) {
+								messages.add(
+										DefaultEclipseLinkJpaValidationMessages.buildMessage(
+												IMessage.HIGH_SEVERITY,
+												EclipseLinkJpaValidationMessages.QUERY_DUPLICATE_NAME,
+												parms,
+												dup,
+												this.extractNameTextRange(dup)
+												)
+										);
+							} else {
+								// if not, report identical warning on it
+								messages.add(
+										DefaultEclipseLinkJpaValidationMessages.buildMessage(
+												IMessage.LOW_SEVERITY,
+												EclipseLinkJpaValidationMessages.QUERY_IDENTICAL,
+												parms,
+												dup,
+												this.extractNameTextRange(dup)
+												)
+										);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private boolean hasDuplicateQuery(Query query, ArrayList<Query> queries) {
+		boolean isDuplicate = false;
+		for (int i=0; i<queries.size(); i++) {
+			if (query != queries.get(i) && !query.isIdentical(queries.get(i))) {
+				isDuplicate = true;
+			}
+		}
+		return isDuplicate;
+	}
+	
+	private <N extends JpaNamedContextNode> HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>> mapByType(Iterable<N> nodes) {
+		HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>> map = 	
+				new HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>>();
+		for (N node : nodes) {
+			Class<? extends JpaNamedContextNode> type = node.getType();
+			ArrayList<N> list = map.get(type);
+			if (list == null) {
+				list = new ArrayList<N>();
+				map.put(type, list);
+			}
+			list.add(node);
+		}
+		return map;
+	}
 	// ********** refactoring **********
 
 	@Override

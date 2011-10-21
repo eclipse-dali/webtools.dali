@@ -29,4 +29,6 @@ public interface OrmQueryHint
 	extends QueryHint, XmlContextNode
 {
 	XmlQueryHint getXmlQueryHint();
+	
+	boolean isIdentical(QueryHint queryHint);
 }

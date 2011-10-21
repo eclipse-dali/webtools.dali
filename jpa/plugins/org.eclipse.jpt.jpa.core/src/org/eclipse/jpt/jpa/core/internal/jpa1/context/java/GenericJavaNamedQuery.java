@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
@@ -37,5 +38,11 @@ public class GenericJavaNamedQuery
 	protected void validateQuery_(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		JpaJpqlQueryHelper helper = new JpaJpqlQueryHelper();
 		helper.validate(this, this.query, this.getQueryAnnotation().getQueryTextRange(astRoot), 1, messages);
+	}
+
+	// ********** misc **********
+	
+	public Class<NamedQuery> getType() {
+		return NamedQuery.class;
 	}
 }

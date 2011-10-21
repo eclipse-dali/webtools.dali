@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
@@ -32,6 +33,17 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 public interface Query
 	extends JpaNamedContextNode
 {
+
+	/**
+	 * Return the generator's type.
+	 */
+	Class<? extends Query> getType();
+		@SuppressWarnings("unchecked")
+		Iterable<Class<? extends Query>> TYPES = new ArrayIterable<Class<? extends Query>>(
+			NamedQuery.class,
+			NamedNativeQuery.class
+		);
+
 	// ********** query **********
 
 	String QUERY_PROPERTY = "query"; //$NON-NLS-1$
@@ -79,4 +91,6 @@ public interface Query
 	 * Move the hint from the source index to the target index.
 	 */
 	void moveHint(int targetIndex, int sourceIndex);
+	
+	boolean isIdentical(Query query);
 }

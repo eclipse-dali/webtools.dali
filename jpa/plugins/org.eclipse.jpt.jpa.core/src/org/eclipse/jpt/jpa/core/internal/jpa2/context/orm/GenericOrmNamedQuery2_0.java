@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.NamedQuery;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
 import org.eclipse.jpt.jpa.core.internal.jpql.JpaJpqlQueryHelper;
@@ -100,5 +102,17 @@ public class GenericOrmNamedQuery2_0
 
 		JpaJpqlQueryHelper helper = new JpaJpqlQueryHelper();
 		helper.validate(this, jpqlQuery, this.getQueryTextRange(), 0, messages);
+	}
+
+	@Override
+	public boolean isIdentical(Query query) {
+		return super.isIdentical(query) &&
+				this.getSpecifiedLockMode() == ((GenericOrmNamedQuery2_0)query).getSpecifiedLockMode();
+	}
+
+	// ********** misc **********
+	
+	public Class<NamedQuery> getType() {
+		return NamedQuery.class;
 	}
 }

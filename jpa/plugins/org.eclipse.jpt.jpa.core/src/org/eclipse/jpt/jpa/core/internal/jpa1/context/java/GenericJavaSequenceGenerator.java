@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
@@ -42,4 +44,12 @@ public class GenericJavaSequenceGenerator
 		return this.getContextDefaultSchema();
 	}
 
+	// ********** validation **********
+
+	@Override
+	public boolean isIdentical(Generator generator) {
+		return super.isIdentical(generator) &&
+				StringTools.stringsAreEqual(this.getSchema(), (((GenericJavaSequenceGenerator)generator).getSchema())) &&
+				StringTools.stringsAreEqual(this.getCatalog(), (((GenericJavaSequenceGenerator)generator).getCatalog()));
+	}
 }

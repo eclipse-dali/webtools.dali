@@ -145,6 +145,9 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 		return this.getValidationTextRange(this.getConverterAnnotation().getNameTextRange(astRoot), astRoot);
 	}
 	
+	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
+		return StringTools.stringsAreEqual(this.getName(), eclipseLinkConverter.getName());
+	}
 
 	// ********** adapter **********
 

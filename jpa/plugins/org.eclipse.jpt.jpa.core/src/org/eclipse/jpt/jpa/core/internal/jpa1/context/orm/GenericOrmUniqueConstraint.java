@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
@@ -85,6 +87,23 @@ public class GenericOrmUniqueConstraint
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
+	public boolean isIdentical(OrmUniqueConstraint ormUniqueConstraint) {
+		return  columnNamesAreIdentical(ormUniqueConstraint.getColumnNames());
+	}
+
+	private boolean columnNamesAreIdentical(Iterable<String> columnNames) {
+		boolean isIdentical = true;
+		if (this.getColumnNamesSize() != CollectionTools.size(columnNames)) {
+			return false;
+		} else {
+			for (int i=0; i<this.getColumnNamesSize(); i++) {
+					if (!StringTools.stringsAreEqual(CollectionTools.get(this.getColumnNames(), i), CollectionTools.get(columnNames, i))) {
+						isIdentical = false;
+					}
+			}
+		}
+		return isIdentical;
+	}
 
 	// ********** misc **********
 

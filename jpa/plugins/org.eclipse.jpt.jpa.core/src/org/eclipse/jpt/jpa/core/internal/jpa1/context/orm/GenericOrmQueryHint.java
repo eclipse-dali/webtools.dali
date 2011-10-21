@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
@@ -89,6 +91,10 @@ public class GenericOrmQueryHint
 		return (textRange != null) ? textRange : this.getQuery().getValidationTextRange();
 	}
 
+	public boolean isIdentical(QueryHint hint) {
+		return StringTools.stringsAreEqual(this.getName(), hint.getName()) &&
+				StringTools.stringsAreEqual(this.getValue(), hint.getValue()) ;
+	}
 
 	// ********** misc **********
 

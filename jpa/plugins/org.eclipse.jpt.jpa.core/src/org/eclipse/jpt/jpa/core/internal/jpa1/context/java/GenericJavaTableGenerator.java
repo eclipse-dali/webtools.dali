@@ -11,10 +11,13 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
@@ -542,4 +545,37 @@ public class GenericJavaTableGenerator
 		return this.generatorAnnotation.valueColumnNameTouches(pos, astRoot);
 	}
 
+	// ********** misc **********
+
+	public Class<TableGenerator> getType() {
+		return TableGenerator.class;
+	}
+
+	// ********** validation **********
+
+	@Override
+	public boolean isIdentical(Generator generator) {
+		return super.isIdentical(generator) &&
+				StringTools.stringsAreEqual(this.getSpecifiedTable(), (((GenericJavaTableGenerator)generator).getSpecifiedTable())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedSchema(), (((GenericJavaTableGenerator)generator).getSpecifiedSchema())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedCatalog(), (((GenericJavaTableGenerator)generator).getSpecifiedCatalog())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedPkColumnName(), (((GenericJavaTableGenerator)generator).getSpecifiedPkColumnName())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedPkColumnValue(), (((GenericJavaTableGenerator)generator).getSpecifiedPkColumnValue())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedValueColumnName(), (((GenericJavaTableGenerator)generator).getSpecifiedValueColumnName())) &&
+				uniqueConstrainsAreIdentical(((GenericJavaTableGenerator)generator).getUniqueConstraints());
+	}
+
+	private boolean uniqueConstrainsAreIdentical(ListIterable<JavaUniqueConstraint> uniqueConstrains) {
+		boolean isIdentical = true;
+		if (this.getUniqueConstraintsSize() != CollectionTools.size(uniqueConstrains)) {
+			return false;
+		} else {
+			for (int i=0; i<this.getUniqueConstraintsSize(); i++) {
+					if (!(CollectionTools.get(this.getUniqueConstraints(), i)).isIdentical(CollectionTools.get(uniqueConstrains, i))) {
+						isIdentical = false;
+					}
+			}
+		}
+		return isIdentical;
+	}
 }

@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
@@ -119,6 +120,23 @@ public class GenericJavaUniqueConstraint
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
+	public boolean isIdentical(JavaUniqueConstraint javaUniqueConstraint) {
+		return  columnNamesAreIdentical(javaUniqueConstraint.getColumnNames());
+	}
+
+	private boolean columnNamesAreIdentical(Iterable<String> columnNames) {
+		boolean isIdentical = true;
+		if (this.getColumnNamesSize() != CollectionTools.size(columnNames)) {
+			return false;
+		} else {
+			for (int i=0; i<this.getColumnNamesSize(); i++) {
+					if (!StringTools.stringsAreEqual(CollectionTools.get(this.getColumnNames(), i), CollectionTools.get(columnNames, i))) {
+						isIdentical = false;
+					}
+			}
+		}
+		return isIdentical;
+	}
 
 	// ********** misc **********
 

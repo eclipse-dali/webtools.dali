@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -34,6 +35,17 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 public interface Generator
 	extends JpaNamedContextNode
 {
+
+	/**
+	 * Return the generator's type.
+	 */
+	Class<? extends Generator> getType();
+		@SuppressWarnings("unchecked")
+		Iterable<Class<? extends Generator>> TYPES = new ArrayIterable<Class<? extends Generator>>(
+			SequenceGenerator.class,
+			TableGenerator.class
+		);
+
 	// ********** initial value **********
 
 	/**
@@ -82,4 +94,5 @@ public interface Generator
 	 */
 	Schema getDbSchema();
 
+	boolean isIdentical(Generator generator);
 }

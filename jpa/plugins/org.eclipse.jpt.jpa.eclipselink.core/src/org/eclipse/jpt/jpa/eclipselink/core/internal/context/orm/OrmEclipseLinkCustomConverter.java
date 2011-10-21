@@ -11,7 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -79,6 +81,11 @@ public class OrmEclipseLinkCustomConverter
 		return this.xmlConverter.getConverterClassTextRange();
 	}
 
+	@Override
+	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
+		return super.isIdentical(eclipseLinkConverter) && 
+				StringTools.stringsAreEqual(this.getConverterClass(), ((EclipseLinkCustomConverter)eclipseLinkConverter).getConverterClass());
+	}
 
 	// ********** adapter **********
 

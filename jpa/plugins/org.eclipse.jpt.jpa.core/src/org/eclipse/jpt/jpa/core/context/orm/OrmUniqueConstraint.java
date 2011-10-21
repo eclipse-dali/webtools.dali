@@ -28,4 +28,6 @@ public interface OrmUniqueConstraint
 	extends UniqueConstraint, OrmReadOnlyUniqueConstraint
 {
 	XmlUniqueConstraint getXmlUniqueConstraint();
+
+	boolean isIdentical(OrmUniqueConstraint ormUniqueConstraint);
 }

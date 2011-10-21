@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
@@ -122,6 +124,14 @@ public class JavaEclipseLinkTypeConverter
 		return EclipseLinkTypeConverter.class;
 	}
 
+	// ********** validation *********
+
+	@Override
+	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
+		return super.isIdentical(eclipseLinkConverter) && 
+				StringTools.stringsAreEqual(this.getFullyQualifiedDataType(), ((JavaEclipseLinkTypeConverter)eclipseLinkConverter).getFullyQualifiedDataType()) &&
+				StringTools.stringsAreEqual(this.getFullyQualifiedObjectType(), ((JavaEclipseLinkTypeConverter)eclipseLinkConverter).getFullyQualifiedObjectType());
+	}
 
 	// ********** adapter **********
 

@@ -12,7 +12,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
@@ -100,6 +102,11 @@ public class JavaEclipseLinkCustomConverter
 		// no need to add message since there will already be a compiler error
 	}
 
+	@Override
+	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
+		return super.isIdentical(eclipseLinkConverter) && 
+				StringTools.stringsAreEqual(this.getFullyQualifiedConverterClass(), ((JavaEclipseLinkCustomConverter)eclipseLinkConverter).getFullyQualifiedConverterClass());
+	}
 
 	// ********** adapter **********
 

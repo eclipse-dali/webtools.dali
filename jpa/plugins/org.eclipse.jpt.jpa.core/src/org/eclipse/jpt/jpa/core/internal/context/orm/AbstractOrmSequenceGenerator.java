@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
@@ -88,4 +91,17 @@ public abstract class AbstractOrmSequenceGenerator
 		return null; // TODO the default sequence name is determined by the runtime provider...
 	}
 	
+	// ********** misc **********
+	
+	public Class<SequenceGenerator> getType() {
+		return SequenceGenerator.class;
+	}
+	
+	// ********** validation **********
+	
+	@Override
+	public boolean isIdentical(Generator generator) {
+		return super.isIdentical(generator) &&
+				StringTools.stringsAreEqual(this.getSpecifiedSequenceName(), ((SequenceGenerator)generator).getSpecifiedSequenceName());
+	}
 }

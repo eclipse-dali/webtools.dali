@@ -12,10 +12,12 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder;
@@ -205,6 +207,14 @@ public class OrmEclipseLinkTypeConverter
 		return (type != null) && type.isIn(packageFragment);
 	}
 
+	// ********** validation *********
+
+	@Override
+	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
+		return super.isIdentical(eclipseLinkConverter) && 
+				StringTools.stringsAreEqual(this.getDataType(), (((EclipseLinkTypeConverter)eclipseLinkConverter).getDataType())) &&
+				StringTools.stringsAreEqual(this.getObjectType(), ((EclipseLinkTypeConverter)eclipseLinkConverter).getObjectType());
+	}
 
 	// ********** adapter **********
 

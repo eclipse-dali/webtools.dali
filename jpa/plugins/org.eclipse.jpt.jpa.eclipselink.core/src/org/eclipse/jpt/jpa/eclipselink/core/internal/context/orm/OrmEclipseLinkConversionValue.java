@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConversionValue;
@@ -116,5 +117,10 @@ public class OrmEclipseLinkConversionValue
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlConversionValue.getValidationTextRange();
 		return (textRange != null) ? textRange : this.getObjectTypeConverter().getValidationTextRange();
+	}
+
+	public boolean isIdentical(EclipseLinkConversionValue eclipseLinkConversionValue) {
+		return StringTools.stringsAreEqual(this.getDataValue(), eclipseLinkConversionValue.getDataValue()) &&
+				StringTools.stringsAreEqual(this.getObjectValue(), eclipseLinkConversionValue.getObjectValue());
 	}
 }

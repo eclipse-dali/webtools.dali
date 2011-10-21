@@ -11,6 +11,9 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
@@ -92,5 +95,18 @@ public class GenericJavaNamedNativeQuery
 	@Override
 	protected void validateQuery_(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		// nothing yet
+	}
+
+	@Override
+	public boolean isIdentical(Query query) {
+		return super.isIdentical(query) &&
+				StringTools.stringsAreEqual(this.getResultClass(), ((GenericJavaNamedNativeQuery)query).getResultClass()) &&
+				StringTools.stringsAreEqual(this.getResultSetMapping(), ((GenericJavaNamedNativeQuery)query).getResultSetMapping());
+	}
+	
+	// ********** misc **********
+	
+	public Class<NamedNativeQuery> getType() {
+		return NamedNativeQuery.class;
 	}
 }

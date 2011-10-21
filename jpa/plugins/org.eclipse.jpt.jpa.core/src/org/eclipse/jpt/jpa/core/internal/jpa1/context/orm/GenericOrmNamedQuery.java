@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
@@ -39,5 +40,11 @@ public class GenericOrmNamedQuery
 
 		JpaJpqlQueryHelper helper = new JpaJpqlQueryHelper();
 		helper.validate(this, jpqlQuery, this.getQueryTextRange(), 0, messages);
+	}
+
+	// ********** misc **********
+	
+	public Class<NamedQuery> getType() {
+		return NamedQuery.class;
 	}
 }

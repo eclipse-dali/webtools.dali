@@ -22,7 +22,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -151,6 +150,9 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 		return this.getValidationTextRange(this.xmlConverter.getNameTextRange());
 	}
 
+	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
+		return StringTools.stringsAreEqual(this.getName(), eclipseLinkConverter.getName());
+	}
 
 	// ********** adapter **********
 

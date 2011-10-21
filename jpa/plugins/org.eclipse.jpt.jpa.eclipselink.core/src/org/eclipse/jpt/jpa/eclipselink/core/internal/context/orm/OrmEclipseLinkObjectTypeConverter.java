@@ -15,6 +15,8 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -23,6 +25,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
@@ -397,6 +400,28 @@ public class OrmEclipseLinkObjectTypeConverter
 		return map;
 	}
 
+	@Override
+	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
+		return super.isIdentical(eclipseLinkConverter) && 
+				StringTools.stringsAreEqual(this.getObjectType(), ((EclipseLinkObjectTypeConverter)eclipseLinkConverter).getObjectType()) &&
+				StringTools.stringsAreEqual(this.getDataType(), (((EclipseLinkObjectTypeConverter)eclipseLinkConverter).getDataType())) &&
+				StringTools.stringsAreEqual(this.getDefaultObjectValue(), (((EclipseLinkObjectTypeConverter)eclipseLinkConverter).getDefaultObjectValue()))  &&
+				conversionValuesAreIdentical(((EclipseLinkObjectTypeConverter)eclipseLinkConverter).getConversionValues());
+	}
+
+	private boolean conversionValuesAreIdentical(ListIterable<? extends EclipseLinkConversionValue> conversionValues) {
+		boolean isIdentical = true;
+		if (this.getConversionValuesSize() != CollectionTools.size(conversionValues)) {
+			return false;
+		} else {
+			for (int i=0; i<this.getConversionValuesSize(); i++) {
+					if (!(CollectionTools.get(this.getConversionValues(), i)).isIdentical(CollectionTools.get(conversionValues, i))) {
+						isIdentical = false;
+					}
+			}
+		}
+		return isIdentical;
+	}
 
 	// ********** adapter **********
 

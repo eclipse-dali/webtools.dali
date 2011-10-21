@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -184,6 +186,11 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 		return this.getValidationTextRange(this.xmlGenerator.getNameTextRange());
 	}
 
+	public boolean isIdentical(Generator generator) {
+		return StringTools.stringsAreEqual(this.getName(), generator.getName()) &&
+				Tools.valuesAreEqual(this.getSpecifiedAllocationSize(), generator.getSpecifiedAllocationSize()) &&
+				Tools.valuesAreEqual(this.getSpecifiedInitialValue(), generator.getSpecifiedInitialValue());
+	}
 
 	// ********** database stuff **********
 

@@ -31,6 +31,7 @@ public interface JpaNamedContextNode
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	void setName(String name);
 
+	Class<? extends JpaNamedContextNode> getType();
 
 	final class NameTransformer<N extends JpaNamedContextNode>
 		implements Transformer<N, String>, Serializable

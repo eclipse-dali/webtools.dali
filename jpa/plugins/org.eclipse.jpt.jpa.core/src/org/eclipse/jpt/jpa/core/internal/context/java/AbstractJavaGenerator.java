@@ -13,6 +13,8 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -185,6 +187,11 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 		return this.getValidationTextRange(this.generatorAnnotation.getNameTextRange(astRoot), astRoot);
 	}
 
+	public boolean isIdentical(Generator generator) {
+		return StringTools.stringsAreEqual(this.getName(), generator.getName()) &&
+				Tools.valuesAreEqual(this.getSpecifiedAllocationSize(), generator.getSpecifiedAllocationSize()) &&
+				Tools.valuesAreEqual(this.getSpecifiedInitialValue(), generator.getSpecifiedInitialValue());
+	}
 
 	// ********** database stuff **********
 

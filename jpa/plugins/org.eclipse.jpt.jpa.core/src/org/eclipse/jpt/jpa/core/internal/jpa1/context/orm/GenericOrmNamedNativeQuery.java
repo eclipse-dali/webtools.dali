@@ -10,6 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
@@ -91,5 +94,18 @@ public class GenericOrmNamedNativeQuery
 	@Override
 	protected void validateQuery_(List<IMessage> messages, IReporter reporter) {
 		// nothing yet
+	}
+
+	@Override
+	public boolean isIdentical(Query query) {
+		return super.isIdentical(query) &&
+				StringTools.stringsAreEqual(this.getResultClass(), ((GenericOrmNamedNativeQuery)query).getResultClass()) &&
+				StringTools.stringsAreEqual(this.getResultSetMapping(), ((GenericOrmNamedNativeQuery)query).getResultSetMapping());
+	}
+	
+	// ********** misc **********
+	
+	public Class<NamedNativeQuery> getType() {
+		return NamedNativeQuery.class;
 	}
 }

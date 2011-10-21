@@ -13,10 +13,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
@@ -300,6 +303,28 @@ public class JavaEclipseLinkObjectTypeConverter
 		return map;
 	}
 
+	@Override
+	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
+		return super.isIdentical(eclipseLinkConverter) && 
+				StringTools.stringsAreEqual(this.getFullyQualifiedObjectType(), ((JavaEclipseLinkObjectTypeConverter)eclipseLinkConverter).getFullyQualifiedObjectType()) &&
+				StringTools.stringsAreEqual(this.getFullyQualifiedDataType(), ((JavaEclipseLinkObjectTypeConverter)eclipseLinkConverter).getFullyQualifiedDataType()) &&
+				StringTools.stringsAreEqual(this.getDefaultObjectValue(), (((EclipseLinkObjectTypeConverter)eclipseLinkConverter).getDefaultObjectValue())) &&
+				conversionValuesAreIdentical(((EclipseLinkObjectTypeConverter)eclipseLinkConverter).getConversionValues());
+	}
+
+	private boolean conversionValuesAreIdentical(ListIterable<? extends EclipseLinkConversionValue> conversionValues) {
+		boolean isIdentical = true;
+		if (this.getConversionValuesSize() != CollectionTools.size(conversionValues)) {
+			return false;
+		} else {
+			for (int i=0; i<this.getConversionValuesSize(); i++) {
+					if (!(CollectionTools.get(this.getConversionValues(), i)).isIdentical(CollectionTools.get(conversionValues, i))) {
+						isIdentical = false;
+					}
+			}
+		}
+		return isIdentical;
+	}
 
 	// ********** adapter **********
 

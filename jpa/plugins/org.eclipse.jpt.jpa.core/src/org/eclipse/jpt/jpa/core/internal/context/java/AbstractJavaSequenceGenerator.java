@@ -14,6 +14,8 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
@@ -130,4 +132,17 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 		return (dbSchema != null) ? dbSchema.getSortedSequenceIdentifiers() : EmptyIterable.<String> instance();
 	}
 
+	// ********** misc **********
+	
+	public Class<SequenceGenerator> getType() {
+		return SequenceGenerator.class;
+	}
+	
+	// ********** validation **********
+	
+	@Override
+	public boolean isIdentical(Generator generator) {
+		return super.isIdentical(generator) &&
+				StringTools.stringsAreEqual(this.getSpecifiedSequenceName(), ((SequenceGenerator)generator).getSpecifiedSequenceName());
+	}
 }

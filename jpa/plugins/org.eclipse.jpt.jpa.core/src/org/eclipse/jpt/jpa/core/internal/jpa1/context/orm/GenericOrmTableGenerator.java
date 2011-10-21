@@ -9,9 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
@@ -413,4 +417,37 @@ public class GenericOrmTableGenerator
 		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String>instance();
 	}
 
+	// ********** misc **********
+
+	public Class<TableGenerator> getType() {
+		return TableGenerator.class;
+	}
+
+	// ********** validation **********
+
+	@Override
+	public boolean isIdentical(Generator generator) {
+		return super.isIdentical(generator) &&
+				StringTools.stringsAreEqual(this.getSpecifiedTable(), (((GenericOrmTableGenerator)generator).getSpecifiedTable())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedSchema(), (((GenericOrmTableGenerator)generator).getSpecifiedSchema())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedCatalog(), (((GenericOrmTableGenerator)generator).getSpecifiedCatalog())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedPkColumnName(), (((GenericOrmTableGenerator)generator).getSpecifiedPkColumnName())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedPkColumnValue(), (((GenericOrmTableGenerator)generator).getSpecifiedPkColumnValue())) &&
+				StringTools.stringsAreEqual(this.getSpecifiedValueColumnName(), (((GenericOrmTableGenerator)generator).getSpecifiedValueColumnName())) &&
+				conversionValuesAreIdentical(((GenericOrmTableGenerator)generator).getUniqueConstraints());
+	}
+
+	private boolean conversionValuesAreIdentical(ListIterable<OrmUniqueConstraint> conversionValues) {
+		boolean isIdentical = true;
+		if (this.getUniqueConstraintsSize() != CollectionTools.size(conversionValues)) {
+			return false;
+		} else {
+			for (int i=0; i<this.getUniqueConstraintsSize(); i++) {
+					if (!(CollectionTools.get(this.getUniqueConstraints(), i)).isIdentical(CollectionTools.get(conversionValues, i))) {
+						isIdentical = false;
+					}
+			}
+		}
+		return isIdentical;
+	}
 }

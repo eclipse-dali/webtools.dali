@@ -11,7 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
@@ -64,6 +66,12 @@ public class JavaEclipseLinkStructConverter
 	@Override
 	protected TextRange getAnnotationConverterClassTextRange(CompilationUnit astRoot) {
 		return this.converterAnnotation.getConverterTextRange(astRoot);
+	}
+
+	@Override
+	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
+		return super.isIdentical(eclipseLinkConverter) && 
+				StringTools.stringsAreEqual(this.getFullyQualifiedConverterClass(), (((EclipseLinkStructConverter)eclipseLinkConverter).getConverterClass()));
 	}
 
 	/**

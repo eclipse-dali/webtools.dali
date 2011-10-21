@@ -11,6 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -90,6 +92,10 @@ public class GenericJavaQueryHint
 		return (textRange != null) ? textRange : this.getQuery().getValidationTextRange(astRoot);
 	}
 
+	public boolean isIdentical(QueryHint hint) {
+		return StringTools.stringsAreEqual(this.getName(), hint.getName()) &&
+				StringTools.stringsAreEqual(this.getValue(), hint.getValue()) ;
+	}
 
 	// ********** misc **********
 

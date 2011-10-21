@@ -11,9 +11,11 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
@@ -249,6 +251,25 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		return this.getValidationTextRange(this.xmlQuery.getQueryTextRange());
 	}
 
+	public boolean isIdentical(Query query) {
+		return StringTools.stringsAreEqual(this.getName(), query.getName()) &&
+				StringTools.stringsAreEqual(this.getQuery(), query.getQuery()) &&
+				hintsAreIdentical(query.getHints());
+	}
+	
+	private boolean hintsAreIdentical(ListIterable<? extends QueryHint> hints) {
+		boolean isIdentical = true;
+		if (this.getHintsSize() != CollectionTools.size(hints)) {
+			return false;
+		} else {
+			for (int i=0; i<this.getHintsSize(); i++) {
+					if (!(CollectionTools.get(this.getHints(), i)).isIdentical(CollectionTools.get(hints, i))) {
+						isIdentical = false;
+					}
+			}
+		}
+		return isIdentical;
+	}
 
 	// ********** misc **********
 

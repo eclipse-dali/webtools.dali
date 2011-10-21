@@ -50,4 +50,9 @@ public interface EclipseLinkConverter
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getEnclosingTypeSeparator();
+
+	/**
+	 * Return true if this converter is identical with the given converter
+	 */
+	boolean isIdentical(EclipseLinkConverter eclipseLinkConverter);
 }
