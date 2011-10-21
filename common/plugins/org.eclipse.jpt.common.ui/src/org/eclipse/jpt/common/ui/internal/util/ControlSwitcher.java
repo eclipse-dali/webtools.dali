@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,7 @@ public final class ControlSwitcher
 	 * The <code>Transformer</code> used to transform the value into a
 	 * <code>Control</code>.
 	 */
-	private Transformer<?, Control> paneTransformer;
+	private Transformer<?, Control> controlTransformer;
 
 	private Label emptyLabel;
 
@@ -47,25 +47,42 @@ public final class ControlSwitcher
 	 *
 	 * @param switchHolder The holder of the value that will be used to retrieve
 	 * the right <code>Control</code> when passed to the given transformer
-	 * @param paneTransformer The <code>Transformer</code> used to transform the value into a
+	 * @param controlTransformer The <code>Transformer</code> used to transform the value into a
 	 * <code>Control</code>
-	 * @param pageBook The <code>Transformer</code> used to transform the value
-	 * into a <code>Control</code>
+	 * @param pageBook The <code>PageBook</code> used for switching the <code>Control</code>
 	 */
 	public <T> ControlSwitcher(PropertyValueModel<? extends T> switchHolder,
-	                           Transformer<T, Control> paneTransformer,
+	                           Transformer<T, Control> controlTransformer,
 	                           PageBook pageBook)
 	{
 		super();
-		initialize(switchHolder, paneTransformer, pageBook);
+		initialize(switchHolder, controlTransformer, pageBook);
+	}
+
+	public <T> ControlSwitcher(PropertyValueModel<? extends T> switchHolder,
+								Control control,
+								PageBook pageBook)
+	{
+		this(switchHolder, buildNullControlTransformer(control), pageBook);
+	}
+
+	private static <T> Transformer<T, Control> buildNullControlTransformer(final Control control) {
+		return new Transformer<T, Control>() {
+			public Control transform(T model) {
+				if (model == null) {
+					return null;
+				}
+				return control;
+			}
+		};
 	}
 
 	private void initialize(PropertyValueModel<?> switchHolder,
-	                        Transformer<?, Control> paneTransformer,
+	                        Transformer<?, Control> controlTransformer,
 	                        PageBook pageBook)
 	{
 		this.pageBook        = pageBook;
-		this.paneTransformer = paneTransformer;
+		this.controlTransformer = controlTransformer;
 
 		this.emptyLabel = this.buildEmptyLabel();
 
@@ -77,7 +94,7 @@ public final class ControlSwitcher
 		switchPages(switchHolder.getValue());
 	}
 
-	//Build an empty label to display in the page book when the paneTransformer returns null.
+	//Build an empty label to display in the page book when the controlTransformer returns null.
 	//SWT.SHADOW_NONE makes the line separator not visible
 	//This is the best we can come up with for an empty page
 	private Label buildEmptyLabel() {
@@ -100,10 +117,10 @@ public final class ControlSwitcher
 
 	/**
 	 * Switches the active page by transforming the given value into its
-	 * corresponding pane.
+	 * corresponding control.
 	 *
 	 * @param value The state passed to the transformer in order to retrieve the
-	 * new pane
+	 * new control
 	 */
 	private void switchPages(Object value) {
 		if (this.pageBook.isDisposed()) {
@@ -125,6 +142,6 @@ public final class ControlSwitcher
 
 	@SuppressWarnings("unchecked")
 	private Control transform(Object value) {
-		return ((Transformer<Object, Control>) this.paneTransformer).transform(value);
+		return ((Transformer<Object, Control>) this.controlTransformer).transform(value);
 	}
 }
