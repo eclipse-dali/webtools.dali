@@ -23,7 +23,6 @@ public class JptUiEntityGenMessages {
 	
 	public static String GenerateEntitiesWizard_tableSelectPage_Restore_Defaults;
 	public static String GenerateEntitiesWizard_generateEntities;
-	public static String GenerateEntitiesWizard_doNotShowWarning;
 	public static String GenerateEntitiesWizard_selectJPAProject;
 	public static String GenerateEntitiesWizard_selectJPAProject_msg;
 	public static String GenerateEntitiesWizard_tableSelectPage_selectTable;
