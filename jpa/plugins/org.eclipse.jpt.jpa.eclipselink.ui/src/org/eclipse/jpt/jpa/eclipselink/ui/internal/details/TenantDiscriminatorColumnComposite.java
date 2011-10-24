@@ -85,14 +85,14 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_columnDefinitionLabel,
 			buildColumnDefinitionHolder(getSubjectHolder())
 		);
-
-		// Primary key tri-state check box
-		addTriStateCheckBoxWithDefault(
-			addSubPane(container, 4),
-			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_primaryKey,
-			buildPrimaryKeyHolder(),
-			buildPrimaryKeyStringHolder(),
-			EclipseLinkHelpContextIds.TENANT_DISCRIMINATOR_COLUMN_PRIMARY_KEY);
+//remove this for EclipseLink 2.3 platform - see bug 361866
+//		// Primary key tri-state check box
+//		addTriStateCheckBoxWithDefault(
+//			addSubPane(container, 4),
+//			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_primaryKey,
+//			buildPrimaryKeyHolder(),
+//			buildPrimaryKeyStringHolder(),
+//			EclipseLinkHelpContextIds.TENANT_DISCRIMINATOR_COLUMN_PRIMARY_KEY);
 	}
 
 	private ColumnCombo<ReadOnlyTenantDiscriminatorColumn2_3> addNameCombo(Composite container) {
