@@ -139,6 +139,10 @@ public class EclipseLink2_3OrmMultitenancyTests
 		assertEquals(EclipseLinkMultitenantType2_3.TABLE_PER_TENANT, ormMultitenancy.getSpecifiedType());
 		assertEquals(MultitenantType.TABLE_PER_TENANT, multitenantResource.getType());
 
+		multitenantResource.setType(MultitenantType.VPD);
+		assertEquals(EclipseLinkMultitenantType2_3.VPD, ormMultitenancy.getSpecifiedType());
+		assertEquals(MultitenantType.VPD, multitenantResource.getType());
+
 		multitenantHolder.setMultitenant(null);
 		assertNull(ormMultitenancy.getSpecifiedType());
 		assertNull(ormMultitenancy.getType());
@@ -159,6 +163,14 @@ public class EclipseLink2_3OrmMultitenancyTests
 		ormMultitenancy.setSpecifiedType(EclipseLinkMultitenantType2_3.SINGLE_TABLE);
 		assertEquals(EclipseLinkMultitenantType2_3.SINGLE_TABLE, ormMultitenancy.getSpecifiedType());
 		assertEquals(MultitenantType.SINGLE_TABLE, multitenantResource.getType());
+
+		ormMultitenancy.setSpecifiedType(EclipseLinkMultitenantType2_3.VPD);
+		assertEquals(EclipseLinkMultitenantType2_3.VPD, ormMultitenancy.getSpecifiedType());
+		assertEquals(MultitenantType.VPD, multitenantResource.getType());
+
+		ormMultitenancy.setSpecifiedType(EclipseLinkMultitenantType2_3.TABLE_PER_TENANT);
+		assertEquals(EclipseLinkMultitenantType2_3.TABLE_PER_TENANT, ormMultitenancy.getSpecifiedType());
+		assertEquals(MultitenantType.TABLE_PER_TENANT, multitenantResource.getType());
 
 		//set type to null in the context model
 		ormMultitenancy.setSpecifiedType(null);

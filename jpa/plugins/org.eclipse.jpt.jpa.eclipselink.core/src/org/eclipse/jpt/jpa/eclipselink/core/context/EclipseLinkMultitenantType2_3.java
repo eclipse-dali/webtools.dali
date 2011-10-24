@@ -54,6 +54,8 @@ public enum EclipseLinkMultitenantType2_3 {
 				return org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3.SINGLE_TABLE;
 			case TABLE_PER_TENANT:
 				return org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3.TABLE_PER_TENANT;
+			case VPD:
+				return org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3.VPD;
 			default:
 				throw new IllegalArgumentException("unknown multitenant type: " + multitenantType); //$NON-NLS-1$
 		}

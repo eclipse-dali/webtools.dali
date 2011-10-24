@@ -193,6 +193,11 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 
 		assertEquals(EclipseLinkMultitenantType2_3.TABLE_PER_TENANT, getJavaMultitenancy().getSpecifiedType());
 
+		multitenant.setValue(MultitenantType2_3.VPD);
+		getJpaProject().synchronizeContextModel();
+
+		assertEquals(EclipseLinkMultitenantType2_3.VPD, getJavaMultitenancy().getSpecifiedType());
+
 		multitenant.setValue(null);
 		getJpaProject().synchronizeContextModel();
 
@@ -217,6 +222,11 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 
 		assertEquals(EclipseLinkMultitenantType2_3.TABLE_PER_TENANT, getJavaMultitenancy().getSpecifiedType());		
 		assertEquals(MultitenantType2_3.TABLE_PER_TENANT, multitenant.getValue());
+
+		getJavaMultitenancy().setSpecifiedType(EclipseLinkMultitenantType2_3.VPD);
+
+		assertEquals(EclipseLinkMultitenantType2_3.VPD, getJavaMultitenancy().getSpecifiedType());		
+		assertEquals(MultitenantType2_3.VPD, multitenant.getValue());
 	}
 //
 //	public void testIsIncludeCriteria() throws Exception {

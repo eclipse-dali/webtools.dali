@@ -51,16 +51,16 @@ public enum MultitenantType2_3 {
 	}
 
 	private static MultitenantType2_3 fromJavaAnnotationValue_(Object javaAnnotationValue) {
-		for (MultitenantType2_3 fetchType : MultitenantType2_3.values()) {
-			if (fetchType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
-				return fetchType;
+		for (MultitenantType2_3 multitenantType : MultitenantType2_3.values()) {
+			if (multitenantType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
+				return multitenantType;
 			}
 		}
 		return null;
 	}
 
-	public static String toJavaAnnotationValue(MultitenantType2_3 fetchType) {
-		return (fetchType == null) ? null : fetchType.getJavaAnnotationValue();
+	public static String toJavaAnnotationValue(MultitenantType2_3 multitenantType) {
+		return (multitenantType == null) ? null : multitenantType.getJavaAnnotationValue();
 	}
 
 }
