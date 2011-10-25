@@ -335,6 +335,7 @@ public class EclipseLinkUiMessages {
 	public static String TargetDatabaseComposite_hsql;
 	public static String TargetDatabaseComposite_informix;
 	public static String TargetDatabaseComposite_javadb;
+	public static String TargetDatabaseComposite_maxdb;
 	public static String TargetDatabaseComposite_mysql;
 	public static String TargetDatabaseComposite_oracle;
 	public static String TargetDatabaseComposite_oracle11;
@@ -346,6 +347,7 @@ public class EclipseLinkUiMessages {
 	public static String TargetDatabaseComposite_sqlanywhere;
 	public static String TargetDatabaseComposite_sqlserver;
 	public static String TargetDatabaseComposite_sybase;
+	public static String TargetDatabaseComposite_symfoware;
 	public static String TargetDatabaseComposite_timesten;
 
 	public static String PersistenceXmlOptionsTab_targetServerLabel;
@@ -356,10 +358,12 @@ public class EclipseLinkUiMessages {
 	public static String TargetServerComposite_sunas9;
 	public static String TargetServerComposite_websphere;
 	public static String TargetServerComposite_websphere_6_1;
+	public static String TargetServerComposite_websphere_7;
 	public static String TargetServerComposite_weblogic;
 	public static String TargetServerComposite_weblogic_9;
 	public static String TargetServerComposite_weblogic_10;
 	public static String TargetServerComposite_jboss;
+	public static String TargetServerComposite_netweaver_7_1;
 
 	// DDL Generation
 	public static String EclipseLinkDDLGeneratorUi_generatingDDLWarningTitle;

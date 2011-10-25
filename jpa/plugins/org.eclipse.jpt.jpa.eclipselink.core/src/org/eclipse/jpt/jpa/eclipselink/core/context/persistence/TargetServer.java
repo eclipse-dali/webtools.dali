@@ -18,10 +18,12 @@ public enum TargetServer {
 			sunas9,
 			websphere,
 			websphere_6_1,
+			websphere_7,
 			weblogic,
 			weblogic_9,
 			weblogic_10,
-			jboss;
+			jboss,
+			netweaver_7_1;
 
 	// EclipseLink value string
 	static final String NONE = "None";
@@ -29,10 +31,12 @@ public enum TargetServer {
 	static final String SUNAS9 = "SunAS9";
 	static final String WEBSPHERE = "WebSphere";
 	static final String WEBSPHERE_6_1 = "WebSphere_6_1";
+	static final String WEBSPHERE_7 = "WebSphere_7";
 	static final String WEBLOGIC = "WebLogic";
 	static final String WEBLOGIC_9 = "WebLogic_9";
 	static final String WEBLOGIC_10 = "WebLogic_10";
 	static final String JBOSS = "JBoss";
+    static final String SAPNETWEAVER_7_1 = "NetWeaver_7_1";
 
 	/**
 	 * Return the TargetServer value corresponding to the given literal.

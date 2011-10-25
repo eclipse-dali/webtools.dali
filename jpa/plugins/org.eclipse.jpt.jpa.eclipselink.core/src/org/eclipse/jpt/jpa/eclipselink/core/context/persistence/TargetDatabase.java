@@ -24,6 +24,7 @@ public enum TargetDatabase {
 			hsql,
 			informix,
 			javadb,
+			maxdb,
 			mysql,
 			oracle,
 			oracle11,
@@ -35,6 +36,7 @@ public enum TargetDatabase {
 			sqlanywhere,
 			sqlserver,
 			sybase,
+			symfoware,
 			timesten;
 
 	// EclipseLink value string
@@ -49,6 +51,7 @@ public enum TargetDatabase {
     static final String HSQL = "HSQL";
     static final String INFORMIX = "Informix";
     static final String JAVADB = "JavaDB";
+    static final String MAXDB = "MaxDB";
     static final String MYSQL = "MySQL";
     static final String ORACLE = "Oracle";
     static final String ORACLE11 = "Oracle11";
@@ -60,6 +63,7 @@ public enum TargetDatabase {
     static final String SQLANYWHERE = "SQLAnywhere";
     static final String SQLSERVER = "SQLServer";
     static final String SYBASE = "Sybase";
+    static final String SYMFOWARE = "Symfoware";
     static final String TIMESTEN = "TimesTen";
 
 	/**
@@ -73,5 +77,9 @@ public enum TargetDatabase {
 			}
 		}
 		return null;
+	}
+
+	public static boolean isOracleDatabase(String literal) {
+		return literal.contains("Oracle");
 	}
 }
