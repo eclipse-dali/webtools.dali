@@ -94,19 +94,27 @@
 		
 	</extension>
 
-	 <extension
-	       id="JpaJpqlSseCompletionProposal"
-	       point="org.eclipse.wst.sse.ui.completionProposal">
-	    <proposalComputer
-	          activate="true"
-	          categoryId="org.eclipse.wst.xml.ui.proposalCategory.xmlTags"
-	          class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer"
-	          id="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer">
-	       <contentType
-	             id="org.eclipse.jpt.jpa.core.content.mappingFile">
-	       </contentType>
-	    </proposalComputer>
-	 </extension>	
+	<extension
+       id="org.eclipse.jpt.jpa.ui.xml.jpqlCompletionProposal"
+       point="org.eclipse.wst.sse.ui.completionProposal">
+
+		<proposalCategory
+	           icon="$nl$/icons/full/eview16/jpa_perspective.gif"
+	           id="org.eclipse.jpt.jpa.ui.xml.jpqlProposalCategory"
+	           name="%JpaProposalCategory">
+		</proposalCategory>
+
+		<proposalComputer
+	       activate="true"
+	       categoryId="org.eclipse.jpt.jpa.ui.xml.jpqlProposalCategory"
+	       class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer"
+	       id="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer">
+			<contentType
+				id="org.eclipse.core.runtime.xml">
+			</contentType>
+		</proposalComputer>
+
+	</extension>	
 
 
 	<extension
