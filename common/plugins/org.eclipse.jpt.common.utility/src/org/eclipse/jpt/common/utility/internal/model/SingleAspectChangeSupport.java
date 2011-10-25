@@ -84,7 +84,7 @@ public class SingleAspectChangeSupport
 		}
 	}
 
-	protected void check(Class<? extends EventListener> listenerClass, String aspectName) {
+	private void check(Class<? extends EventListener> listenerClass, String aspectName) {
 		this.check(listenerClass);
 		if ( ! aspectName.equals(this.validAspectName)) {
 			throw new IllegalArgumentException(
