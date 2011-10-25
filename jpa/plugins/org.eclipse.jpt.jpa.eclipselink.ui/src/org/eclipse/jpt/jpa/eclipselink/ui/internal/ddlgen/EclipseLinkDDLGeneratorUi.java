@@ -79,7 +79,7 @@ public class EclipseLinkDDLGeneratorUi
 		}
 		OutputMode outputMode = wizard.getOutputMode();
 
-		if( ! this.displayGeneratingDDLWarning()) {
+		if((outputMode != OutputMode.sql_script) && ( ! this.displayGeneratingDDLWarning())) {
 			return;
 		}
 		WorkspaceJob job = this.buildGenerateDDLJob(puName, this.project, outputMode);
