@@ -53,4 +53,8 @@ public final class NullXmlEnumValueAnnotation
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
+	
+	public boolean valueTouches(int pos, CompilationUnit astRoot) {
+		return false;
+	}
 }

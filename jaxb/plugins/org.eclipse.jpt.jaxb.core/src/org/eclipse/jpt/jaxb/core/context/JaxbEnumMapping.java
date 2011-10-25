@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.xsd.XsdSimpleTypeDefinition;
+
 /**
  * Represents mapping metadata on an enum (specified or implied).
  * <p>
@@ -54,5 +56,10 @@ public interface JaxbEnumMapping
 	
 	Iterable<JaxbEnumConstant> getEnumConstants();
 	
-	int getEnumConstantsSize();	
+	int getEnumConstantsSize();
+	
+	
+	// ***** misc *****
+	
+	XsdSimpleTypeDefinition getValueXsdTypeDefinition();
 }

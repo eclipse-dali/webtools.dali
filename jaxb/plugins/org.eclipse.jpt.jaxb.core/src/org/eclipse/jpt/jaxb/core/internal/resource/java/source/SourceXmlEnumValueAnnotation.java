@@ -89,8 +89,12 @@ public final class SourceXmlEnumValueAnnotation
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
 	}
-
-
+	
+	public boolean valueTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(VALUE_ADAPTER, pos, astRoot);
+	}
+	
+	
 	//*********** static methods ****************
 
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {

@@ -29,23 +29,28 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 public interface XmlEnumValueAnnotation
 		extends Annotation {
 	
+	String VALUE_PROPERTY = "value"; //$NON-NLS-1$
+	
 	/**
 	 * Corresponds to the 'value' element of the XmlEnumValue annotation.
 	 * Return null if the element does not exist in Java.
 	 */
 	String getValue();
-		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
-
+		
 	/**
 	 * Corresponds to the 'value' element of the XmlEnumValue annotation.
 	 * Set to null to remove the element.
 	 */
 	void setValue(String value);
-
+	
 	/**
 	 * Return the {@link TextRange} for the 'value' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlEnumValue annotation.
 	 */
 	TextRange getValueTextRange(CompilationUnit astRoot);
 	
+	/**
+	 * Return whether the given position touches the 'value' element value.
+	 */
+	boolean valueTouches(int pos, CompilationUnit astRoot);
 }

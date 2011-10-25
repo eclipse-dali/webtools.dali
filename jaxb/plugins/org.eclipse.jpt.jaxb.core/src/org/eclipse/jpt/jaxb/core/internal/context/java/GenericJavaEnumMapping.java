@@ -14,8 +14,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
@@ -28,6 +30,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSimpleTypeDefinition;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -161,6 +164,57 @@ public class GenericJavaEnumMapping
 		return super.getNonTransientReferencedXmlTypeNames();
 	}
 	
+	public XsdSimpleTypeDefinition getValueXsdTypeDefinition() {
+		XsdTypeDefinition xsdType = getValueXsdTypeDefinition_();
+		if (xsdType == null || xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE) {
+			return null;
+		}
+		return (XsdSimpleTypeDefinition) xsdType;
+	}
+	
+	protected XsdTypeDefinition getValueXsdTypeDefinition_() {
+		String fqXmlEnumValue = getFullyQualifiedXmlEnumValue();
+		
+		JaxbType jaxbType = getContextRoot().getType(fqXmlEnumValue);
+		if (jaxbType != null) {
+			JaxbTypeMapping typeMapping = jaxbType.getMapping();
+			if (typeMapping != null) {
+				return typeMapping.getXsdTypeDefinition();
+			}
+		}
+		else {
+			String typeMapping = getJaxbProject().getPlatform().getDefinition().getSchemaTypeMapping(fqXmlEnumValue);
+			if (typeMapping != null) {
+				XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
+				if (xsdSchema != null) {
+					return xsdSchema.getTypeDefinition(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, typeMapping);
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	
+	// ***** content assist *****
+	
+	@Override
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		for (JaxbEnumConstant constant : getEnumConstants()) {
+			result = constant.getJavaCompletionProposals(pos, filter, astRoot);
+			if (! CollectionTools.isEmpty(result)) {
+				return result;
+			}
+		}
+		
+		return EmptyIterable.instance();
+	}
+	
 	
 	// ***** validation *****
 	
@@ -170,6 +224,10 @@ public class GenericJavaEnumMapping
 		
 		validateXmlType(messages, reporter, astRoot);
 		validateXmlEnum(messages, reporter, astRoot);
+		
+		for (JaxbEnumConstant constant : getEnumConstants()) {
+			constant.validate(messages, reporter, astRoot);
+		}
 	}
 	
 	protected void validateXmlType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -204,44 +262,16 @@ public class GenericJavaEnumMapping
 	}
 	
 	protected void validateXmlEnum(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		String fqXmlEnumValue = getFullyQualifiedXmlEnumValue();
-		boolean nonSimpleSchemaType = false;
+		XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
+		XsdTypeDefinition xsdType = getValueXsdTypeDefinition_();
 		
-		JaxbType jaxbType = getContextRoot().getType(fqXmlEnumValue);
-		if (jaxbType != null) {
-			JaxbTypeMapping typeMapping = jaxbType.getMapping();
-			if (typeMapping != null) {
-				XsdTypeDefinition xsdType = typeMapping.getXsdTypeDefinition();
-				if (xsdType != null) {
-					nonSimpleSchemaType = xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE;
-				}
-			}
-		}
-		else {
-			String typeMapping = getJaxbProject().getPlatform().getDefinition().getSchemaTypeMapping(fqXmlEnumValue);
-			if (typeMapping == null) {
-				nonSimpleSchemaType = true;
-			}
-			else {
-				XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
-				if (xsdSchema != null) {
-					XsdTypeDefinition xsdType = xsdSchema.getTypeDefinition(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, typeMapping);
-					if (xsdType == null) {
-						nonSimpleSchemaType = true;
-					}
-					else {
-						nonSimpleSchemaType = xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE;
-					}
-				}
-			}
-		}
-		
-		if (nonSimpleSchemaType) {
+		if ((xsdSchema != null && xsdType == null)
+				|| (xsdType != null && xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE)) {
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_ENUM__NON_SIMPLE_SCHEMA_TYPE,
-							new String[] { fqXmlEnumValue },
+							new String[] { getFullyQualifiedXmlEnumValue() },
 							this,
 							getXmlEnumValueTextRange(astRoot)));
 		}

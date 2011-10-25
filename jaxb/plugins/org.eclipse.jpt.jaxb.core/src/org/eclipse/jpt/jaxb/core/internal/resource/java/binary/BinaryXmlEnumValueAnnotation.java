@@ -66,5 +66,8 @@ public final class BinaryXmlEnumValueAnnotation
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	public boolean valueTouches(int pos, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
 }
