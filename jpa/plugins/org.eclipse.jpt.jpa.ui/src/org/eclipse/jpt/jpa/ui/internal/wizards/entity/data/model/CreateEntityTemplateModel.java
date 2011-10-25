@@ -371,6 +371,13 @@ public class CreateEntityTemplateModel {
 	public String getIdClassName() {
 		return getClassName() + PK_SUFFIX;
 	}
+
+	/**
+	 * @return constructed name of the mapping file id class (package name + entity name + PK as suffix)
+	 */
+	public String getOrmIdClassName() {
+		return getQualifiedJavaClassName() + PK_SUFFIX;
+	}
 	
 	/**
 	 * @return IProject presentation of JPA project
