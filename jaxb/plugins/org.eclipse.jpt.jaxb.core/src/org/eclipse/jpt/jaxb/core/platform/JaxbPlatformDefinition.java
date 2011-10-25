@@ -33,6 +33,14 @@ public interface JaxbPlatformDefinition {
 	
 	JaxbPlatformDescription getDescription();
 	
+	// ***** platform-y questions *****
+	
+	/**
+	 * Return the built in schema type name mapped by the given (fully qualified) java type name
+	 */
+	String getSchemaTypeMapping(String javaTypeName);
+	
+	
 	JaxbFactory getFactory();
 	
 	AnnotationDefinition[] getAnnotationDefinitions();

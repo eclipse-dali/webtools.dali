@@ -102,6 +102,11 @@ public interface JaxbContextRoot
 	JaxbClassMapping getClassMapping(String typeName);
 	
 	
+	// ***** misc *****
+	
+	
+	
+	
 	// ***** validation *****
 	
 	/**

@@ -25,6 +25,8 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 		return getXSDComponent().getName();
 	}
 	
+	public abstract Kind getKind();
+	
 	public abstract XsdAttributeUse getAttribute(String namespace, String name);
 	
 	public abstract Iterable<String> getAttributeNameProposals(String namespace, Filter<String> filter);
@@ -40,4 +42,18 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	}
 	
 	public abstract Iterable getElementNameProposals(String namespace, Filter<String> filter, boolean recurseChildren);
+	
+	
+	public enum Kind {
+		
+		/**
+		 * An {@link XsdTypeDefinition} of SIMPLE {@link Kind} may safely be cast to an {@link XsdSimpleTypeDefinition}
+		 */
+		SIMPLE,
+		
+		/**
+		 * An {@link XsdTypeDefinition} of COMPLEX {@link Kind} may safely be cast to an {@link XsdComplexTypeDefinition}
+		 */
+		COMPLEX;
+	}
 }

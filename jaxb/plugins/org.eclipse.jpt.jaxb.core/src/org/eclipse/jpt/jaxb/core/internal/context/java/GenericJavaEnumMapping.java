@@ -9,20 +9,36 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.eclipse.xsd.util.XSDUtil;
 
 
 public class GenericJavaEnumMapping
 		extends AbstractJavaTypeMapping
 		implements JaxbEnumMapping {
 	
-	protected String enumType;
+	protected String specifiedXmlEnumValue;
 
 	protected final EnumConstantContainer enumConstantContainer;
 
@@ -31,7 +47,7 @@ public class GenericJavaEnumMapping
 		super(parent);
 		this.enumConstantContainer = new EnumConstantContainer();
 		
-		initEnumType();
+		initXmlEnumValue();
 		initEnumConstants();
 	}
 	
@@ -47,7 +63,7 @@ public class GenericJavaEnumMapping
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		syncEnumType();
+		syncXmlEnumValue();
 		syncEnumConstants();
 	}
 	
@@ -60,35 +76,45 @@ public class GenericJavaEnumMapping
 
 	// ***** XmlEnum.value *****
 	
-	public String getEnumType() {
-		return this.enumType;
+	public String getXmlEnumValue() {
+		return (this.specifiedXmlEnumValue != null) ? this.specifiedXmlEnumValue : DEFAULT_XML_ENUM_VALUE;
 	}
 	
-	public void setEnumType(String enumType) {
-		getXmlEnumAnnotation().setValue(enumType);
-		setEnumType_(enumType);	
+	public String getSpecifiedXmlEnumValue() {
+		return this.specifiedXmlEnumValue;
 	}
 	
-	protected void setEnumType_(String enumType) {
-		String old = this.enumType;
-		this.enumType = enumType;
-		firePropertyChanged(ENUM_TYPE_PROPERTY, old, enumType);
+	public void setSpecifiedXmlEnumValue(String xmlEnumValue) {
+		getXmlEnumAnnotation().setValue(xmlEnumValue);
+		setSpecifiedXmlEnumValue_(xmlEnumValue);	
+	}
+	
+	protected void setSpecifiedXmlEnumValue_(String xmlEnumValue) {
+		String old = this.specifiedXmlEnumValue;
+		this.specifiedXmlEnumValue = xmlEnumValue;
+		firePropertyChanged(SPECIFIED_XML_ENUM_VALUE_PROPERTY, old, xmlEnumValue);
+	}
+	
+	public String getFullyQualifiedXmlEnumValue() {
+		return (this.specifiedXmlEnumValue != null) ? 
+				getXmlEnumAnnotation().getFullyQualifiedValueClassName()
+				: DEFAULT_XML_ENUM_VALUE;
 	}
 	
 	protected XmlEnumAnnotation getXmlEnumAnnotation() {
 		return (XmlEnumAnnotation) getJavaResourceType().getNonNullAnnotation(JAXB.XML_ENUM);
 	}
 	
-	protected String getResourceEnumType() {
+	protected String getResourceXmlEnumValue() {
 		return getXmlEnumAnnotation().getValue();
 	}
 	
-	protected void initEnumType() {
-		this.enumType = getResourceEnumType();
+	protected void initXmlEnumValue() {
+		this.specifiedXmlEnumValue = getResourceXmlEnumValue();
 	}
 	
-	protected void syncEnumType() {
-		setEnumType_(getResourceEnumType());
+	protected void syncXmlEnumValue() {
+		setSpecifiedXmlEnumValue_(getResourceXmlEnumValue());
 	}
 	
 	
@@ -120,6 +146,109 @@ public class GenericJavaEnumMapping
 	
 	private JaxbEnumConstant buildEnumConstant(JavaResourceEnumConstant resourceEnumConstant) {
 		return getFactory().buildJavaEnumConstant(this, resourceEnumConstant);
+	}
+	
+	
+	// ***** misc *****
+	
+	@Override
+	protected Iterable<String> getNonTransientReferencedXmlTypeNames() {
+		if (this.specifiedXmlEnumValue != null) {
+			return new CompositeIterable<String>(
+					super.getNonTransientReferencedXmlTypeNames(),
+					new SingleElementIterable(getFullyQualifiedXmlEnumValue()));
+		}
+		return super.getNonTransientReferencedXmlTypeNames();
+	}
+	
+	
+	// ***** validation *****
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		validateXmlType(messages, reporter, astRoot);
+		validateXmlEnum(messages, reporter, astRoot);
+	}
+	
+	protected void validateXmlType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		XmlTypeAnnotation annotation = getXmlTypeAnnotation();
+		
+		if (annotation.getFactoryClass() != null) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.NORMAL_SEVERITY,
+							JaxbValidationMessages.XML_TYPE__FACTORY_CLASS_IGNORED_FOR_ENUM,
+							this,
+							annotation.getFactoryClassTextRange(astRoot)));
+		}
+		
+		if (annotation.getFactoryMethod() != null) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.NORMAL_SEVERITY,
+							JaxbValidationMessages.XML_TYPE__FACTORY_METHOD_IGNORED_FOR_ENUM,
+							this,
+							annotation.getFactoryMethodTextRange(astRoot)));
+		}
+		
+		if (! CollectionTools.isEmpty(annotation.getPropOrder())) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.NORMAL_SEVERITY,
+							JaxbValidationMessages.XML_TYPE__PROP_ORDER_IGNORED_FOR_ENUM,
+							this,
+							annotation.getPropOrderTextRange(astRoot)));
+		}
+	}
+	
+	protected void validateXmlEnum(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		String fqXmlEnumValue = getFullyQualifiedXmlEnumValue();
+		boolean nonSimpleSchemaType = false;
+		
+		JaxbType jaxbType = getContextRoot().getType(fqXmlEnumValue);
+		if (jaxbType != null) {
+			JaxbTypeMapping typeMapping = jaxbType.getMapping();
+			if (typeMapping != null) {
+				XsdTypeDefinition xsdType = typeMapping.getXsdTypeDefinition();
+				if (xsdType != null) {
+					nonSimpleSchemaType = xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE;
+				}
+			}
+		}
+		else {
+			String typeMapping = getJaxbProject().getPlatform().getDefinition().getSchemaTypeMapping(fqXmlEnumValue);
+			if (typeMapping == null) {
+				nonSimpleSchemaType = true;
+			}
+			else {
+				XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
+				if (xsdSchema != null) {
+					XsdTypeDefinition xsdType = xsdSchema.getTypeDefinition(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, typeMapping);
+					if (xsdType == null) {
+						nonSimpleSchemaType = true;
+					}
+					else {
+						nonSimpleSchemaType = xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE;
+					}
+				}
+			}
+		}
+		
+		if (nonSimpleSchemaType) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ENUM__NON_SIMPLE_SCHEMA_TYPE,
+							new String[] { fqXmlEnumValue },
+							this,
+							getXmlEnumValueTextRange(astRoot)));
+		}
+	}
+	
+	protected TextRange getXmlEnumValueTextRange(CompilationUnit astRoot) {
+		return getXmlEnumAnnotation().getValueTextRange(astRoot);
 	}
 	
 	

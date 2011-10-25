@@ -29,6 +29,11 @@ public class XsdComplexTypeDefinition
 	
 	
 	@Override
+	public org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition.Kind getKind() {
+		return Kind.COMPLEX;
+	}
+	
+	@Override
 	public XsdAttributeUse getAttribute(String namespace, String name) {
 		for (XsdAttributeUse attrUse : getAttributeUses(namespace)) {
 			if (attrUse.getXSDComponent().getAttributeDeclaration().getName().equals(name)) {

@@ -33,6 +33,9 @@ public interface JaxbPlatform {
 	
 	JaxbPlatformDescription getDescription();
 	
+	JaxbPlatformDefinition getDefinition();
+	
+	
 	// ********** factory **********
 
 	/**

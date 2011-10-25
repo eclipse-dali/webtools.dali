@@ -10,6 +10,9 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
@@ -25,6 +28,8 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
  */
 public abstract class AbstractJaxbPlatformDefinition
 		implements JaxbPlatformDefinition {
+	
+	private Map<String, String> javaToSchemaTypes;
 	
 	private AnnotationDefinition[] annotationDefinitions;
 
@@ -44,6 +49,21 @@ public abstract class AbstractJaxbPlatformDefinition
 	 */
 	protected AbstractJaxbPlatformDefinition() {
 		super();
+	}
+	
+	
+	// ***** platform-y things *****
+	
+	public String getSchemaTypeMapping(String javaTypeName) {
+		if (this.javaToSchemaTypes == null) {
+			 this.javaToSchemaTypes = new HashMap<String, String>();
+			 this.javaToSchemaTypes.putAll(buildJavaToSchemaTypes());
+		}
+		return this.javaToSchemaTypes.get(javaTypeName);
+	}
+	
+	protected Map<String, String> buildJavaToSchemaTypes() {
+		return Collections.EMPTY_MAP;
 	}
 	
 	

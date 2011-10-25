@@ -23,6 +23,11 @@ public class XsdSimpleTypeDefinition
 	
 	
 	@Override
+	public org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition.Kind getKind() {
+		return Kind.SIMPLE;
+	}
+	
+	@Override
 	public XsdAttributeUse getAttribute(String namespace, String name) {
 		// simple types have no attributes
 		return null;

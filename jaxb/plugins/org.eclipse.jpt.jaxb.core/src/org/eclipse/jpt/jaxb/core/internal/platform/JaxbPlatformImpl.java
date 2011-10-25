@@ -49,6 +49,10 @@ public final class JaxbPlatformImpl
 		return this.platformDefinition.getDescription();
 	}
 	
+	public JaxbPlatformDefinition getDefinition() {
+		return this.platformDefinition;
+	}
+	
 	// ********** factory **********
 
 	public JaxbFactory getFactory() {

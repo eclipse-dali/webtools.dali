@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jaxb.core.internal.jaxb21;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
@@ -92,6 +94,26 @@ public class GenericJaxb_2_1_PlatformDefinition
 	
 	public JaxbFactory getFactory() {
 		return GenericJaxb_2_1_Factory.instance();
+	}
+	
+	@Override
+	protected Map<String, String> buildJavaToSchemaTypes() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("java.lang.String", "string");
+		map.put("java.math.BigInteger", "integer");
+		map.put("java.math.BigDecimal", "decimal");
+		map.put("java.util.Calendar", "dateTime");
+		map.put("java.util.Date", "dateTime");
+		map.put("java.xml.namespace.QName", "QName");
+		map.put("java.net.URI", "string");
+		map.put("java.xml.datatype.XMLGregorianCalendar", "anySimpleType");
+		map.put("java.xml.datatype.Duration", "duration");
+		map.put("java.lang.Object", "anyType");
+		map.put("java.awt.Image", "base64Binary");
+		map.put("javax.activation.DataHandler", "base64Binary");
+		map.put("javax.xml.transform.Source", "base64Binary");
+		map.put("java.util.UUID", "string");
+		return map;
 	}
 	
 	@Override
