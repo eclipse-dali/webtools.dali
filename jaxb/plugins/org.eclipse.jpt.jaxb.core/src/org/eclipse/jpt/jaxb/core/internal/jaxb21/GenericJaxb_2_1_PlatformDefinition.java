@@ -99,15 +99,29 @@ public class GenericJaxb_2_1_PlatformDefinition
 	@Override
 	protected Map<String, String> buildJavaToSchemaTypes() {
 		Map<String, String> map = new HashMap<String, String>();
+		map.put("boolean", "boolean");
+		map.put("java.lang.Boolean", "boolean");
+		map.put("byte", "byte");
+		map.put("java.lang.Byte", "byte");
+		map.put("short", "short");
+		map.put("java.lang.Short", "short");
+		map.put("int", "int");
+		map.put("java.lang.Integer", "int");
+		map.put("long", "long");
+		map.put("java.lang.Long", "long");
+		map.put("float", "float");
+		map.put("java.lang.Float", "float");
+		map.put("double", "double");
+		map.put("java.lang.Double", "double");
 		map.put("java.lang.String", "string");
 		map.put("java.math.BigInteger", "integer");
 		map.put("java.math.BigDecimal", "decimal");
 		map.put("java.util.Calendar", "dateTime");
 		map.put("java.util.Date", "dateTime");
-		map.put("java.xml.namespace.QName", "QName");
+		map.put("javax.xml.namespace.QName", "QName");
 		map.put("java.net.URI", "string");
-		map.put("java.xml.datatype.XMLGregorianCalendar", "anySimpleType");
-		map.put("java.xml.datatype.Duration", "duration");
+		map.put("javax.xml.datatype.XMLGregorianCalendar", "anySimpleType");
+		map.put("javax.xml.datatype.Duration", "duration");
 		map.put("java.lang.Object", "anyType");
 		map.put("java.awt.Image", "base64Binary");
 		map.put("javax.activation.DataHandler", "base64Binary");
