@@ -578,11 +578,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		assertEquals(0, multitenancy.getDefaultTenantDiscriminatorColumnsSize());
 		assertEquals("ENTITY_TENANT_ID", multitenancy.getTenantDiscriminatorColumns().iterator().next().getName());
 
-		//if java entity is not SINGLE_TABLE multitenant than there are no default tenant discriminator columns
-		multitenancy.setSpecifiedType(EclipseLinkMultitenantType2_3.TABLE_PER_TENANT);
-		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
-
-		//if java entity is not SINGLE_TABLE multitenant than there are no default tenant discriminator columns
+		//if java entity is not multitenant than there are no tenant discriminator columns
 		getJavaMultitenancy().setSpecifiedMultitenant(false);
 		assertEquals(0, multitenancy.getTenantDiscriminatorColumnsSize());
 	}

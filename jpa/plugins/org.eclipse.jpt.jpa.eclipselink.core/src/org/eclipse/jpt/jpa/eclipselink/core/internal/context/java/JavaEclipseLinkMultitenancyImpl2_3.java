@@ -45,6 +45,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaTenantDiscriminator
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaVirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.TenantDiscriminatorColumnValidator2_3;
@@ -148,6 +149,10 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 				throw new IllegalStateException("Multitenant annotation does not exist"); //$NON-NLS-1$
 			}
 			this.removeMultitenantAnnotation();
+			this.setSpecifiedType(null);
+			for (int i = this.getSpecifiedTenantDiscriminatorColumnsSize(); i-- > 0; ) {
+				this.removeSpecifiedTenantDiscriminatorColumn(i);
+			}
 		}
 		this.setSpecifiedMultitenant_(isMultitenant);
 	}
@@ -172,9 +177,6 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	public void setSpecifiedType(EclipseLinkMultitenantType2_3 type) {
 		this.getMultitenantAnnotation().setValue(EclipseLinkMultitenantType2_3.toJavaResourceModel(type));
 		this.setSpecifiedType_(type);
-		if (getType() != EclipseLinkMultitenantType2_3.SINGLE_TABLE) {
-			this.specifiedTenantDiscriminatorColumnContainer.clearContextList();
-		}
 	}
 
 	protected void setSpecifiedType_(EclipseLinkMultitenantType2_3 type) {
@@ -373,7 +375,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumnsForDefaults() {
-		if (this.getType() != EclipseLinkMultitenantType2_3.SINGLE_TABLE) {
+		if (this.getType() == null || this.getType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT) {
 			return EmptyListIterable.instance();
 		}
 		if (this.isMultitenantInheritanceHierarchy()) {
@@ -646,14 +648,49 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		//TODO validate 2.3 eclipselink does not use TABLE_PER_CLASS (and the new PROTECTED?? this wouldn't be in the 2.3 source)
 		super.validate(messages, reporter, astRoot);
+		if (getSpecifiedType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					EclipseLinkJpaValidationMessages.MULTITENANT_TABLE_PER_TENANT_NOT_SUPPORTED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getMultitenantAnnotationTextRange(astRoot)
+				)
+			);			
+		}
+		if (getSpecifiedType() == EclipseLinkMultitenantType2_3.VPD) {
+			String targetDatabase = getPersistenceUnit().getOptions().getTargetDatabase();
+			if (targetDatabase == null) {
+				messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.LOW_SEVERITY,
+						EclipseLinkJpaValidationMessages.MULTITENANT_VPD_MIGHT_NOT_BE_NOT_SUPPORTED,
+						EMPTY_STRING_ARRAY,
+						this,
+						this.getMultitenantAnnotationTextRange(astRoot)
+					)
+				);
+			}
+			else if (!TargetDatabase.isOracleDatabase(targetDatabase)) {
+				messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						EclipseLinkJpaValidationMessages.MULTITENANT_VPD_NOT_SUPPORTED_ON_NON_ORACLE_DATABASE_PLATFORM,
+						new String[] {targetDatabase},
+						this,
+						this.getMultitenantAnnotationTextRange(astRoot)
+					)
+				);
+			}
+		}
 		if (this.getSpecifiedTenantDiscriminatorColumnsSize() > 0) {
 			if (!this.specifiedTenantDiscriminatorColumnsAllowed()) {
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						EclipseLinkJpaValidationMessages.MULTIENANT_METADATA_CANNOT_BE_SPECIFIED_ON_NON_ROOT_ENTITY,
+						EclipseLinkJpaValidationMessages.MULTITENANT_METADATA_CANNOT_BE_SPECIFIED_ON_NON_ROOT_ENTITY,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getJavaResourceType().getTextRange(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME, astRoot)
@@ -669,7 +706,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						EclipseLinkJpaValidationMessages.MULTIENANT_NOT_SPECIFIED_WITH_TENANT_DISCRIMINATOR_COLUMNS,
+						EclipseLinkJpaValidationMessages.MULTITENANT_NOT_SPECIFIED_WITH_TENANT_DISCRIMINATOR_COLUMNS,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getJavaResourceType().getTextRange(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME, astRoot)

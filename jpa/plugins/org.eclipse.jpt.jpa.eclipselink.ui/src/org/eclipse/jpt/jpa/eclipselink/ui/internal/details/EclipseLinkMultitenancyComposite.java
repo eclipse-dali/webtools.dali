@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrappe
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
@@ -76,13 +77,17 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		);
 
 		// Strategy widgets
-		addLabeledComposite(
-			subPane,
-			EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_strategy,
-			addMultitenantStrategyCombo(subPane),
-			EclipseLinkHelpContextIds.MULTITENANCY_STRATEGY
-		);
-
+		addLabeledComposite( 
+			subPane, 
+            addCheckBox( 
+                 container, 
+                 EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_strategy, 
+                 builMultitenantHolder(), 
+                 null 
+            ), 
+            addMultitenantStrategyCombo(subPane).getControl(), 
+            EclipseLinkHelpContextIds.MULTITENANCY_STRATEGY
+            );
 
 		// Tenant discriminator columns group pane
 		Group tenantDiscriminatorColumnGroupPane = addTitledGroup(
@@ -102,7 +107,20 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 
 		this.tenantDiscriminatorColumnsComposite.installListPaneEnabler(new TenantDiscriminatorColumnPaneEnablerHolder());
 	}
+	
+	private WritablePropertyValueModel<Boolean> builMultitenantHolder() {
+		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_MULTITENANT_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.isSpecifiedMultitenant());
+			}
 
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setSpecifiedMultitenant(value.booleanValue());
+			}
+		};
+	}
 	private EnumFormComboViewer<EclipseLinkMultitenancy2_3, EclipseLinkMultitenantType2_3> addMultitenantStrategyCombo(Composite container) {
 
 		return new EnumFormComboViewer<EclipseLinkMultitenancy2_3, EclipseLinkMultitenantType2_3>(this, container) {

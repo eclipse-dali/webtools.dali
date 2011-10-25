@@ -43,6 +43,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmReadOnlyTenantDiscrim
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmVirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.TenantDiscriminatorColumnValidator2_3;
@@ -144,17 +145,21 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	}
 
 	public void setSpecifiedMultitenant(boolean isMultitenant) {
-		if (isMultitenant() && isMultitenant) {
-			return;
-		}
-		if (!isMultitenant() && !isMultitenant) {
-			return;
-		}
 		if (isMultitenant) {
+			if (getXmlMultitenant() != null) {
+				throw new IllegalStateException("Multitenant element already specified"); //$NON-NLS-1$				
+			}
 			this.addXmlMultitenant();
 		}
 		else {
+			if (getXmlMultitenant() == null) {
+				throw new IllegalStateException("Multitenant element does not exist"); //$NON-NLS-1$				
+			}
 			this.removeXmlMultitenant();
+			this.setSpecifiedType(null);
+			for (int i = this.getSpecifiedTenantDiscriminatorColumnsSize(); i-- > 0; ) {
+				this.removeSpecifiedTenantDiscriminatorColumn(i);
+			}
 		}
 		this.setSpecifiedMultitenant_(isMultitenant);
 	}
@@ -181,9 +186,6 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 			XmlMultitenant xmlMultitenant = this.getXmlMultitenantForUpdate();
 			this.setSpecifiedType_(type);
 			xmlMultitenant.setType(EclipseLinkMultitenantType2_3.toOrmResourceModel(type));
-			if (getType() != EclipseLinkMultitenantType2_3.SINGLE_TABLE) {
-				this.specifiedTenantDiscriminatorColumnContainer.clearContextList();
-			}
 		}
 	}
 
@@ -407,7 +409,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	}
 
 	protected ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumnsForDefaults() {
-		if (this.getType() != EclipseLinkMultitenantType2_3.SINGLE_TABLE) {
+		if (this.getType() == null || this.getType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT) {
 			return EmptyListIterable.instance();
 		}
 		JavaEclipseLinkMultitenancy2_3 javaMultitenancy = this.getJavaMultitenancyPolicyForDefaults();
@@ -675,12 +677,48 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		if (getType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					EclipseLinkJpaValidationMessages.MULTITENANT_TABLE_PER_TENANT_NOT_SUPPORTED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getValidationTextRange()
+				)
+			);			
+		}
+		if (getType() == EclipseLinkMultitenantType2_3.VPD) {
+			String targetDatabase = getPersistenceUnit().getOptions().getTargetDatabase();
+			if (targetDatabase == null) {
+				messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.LOW_SEVERITY,
+						EclipseLinkJpaValidationMessages.MULTITENANT_VPD_MIGHT_NOT_BE_NOT_SUPPORTED,
+						EMPTY_STRING_ARRAY,
+						this,
+						this.getValidationTextRange()
+					)
+				);
+			}
+			else if (!TargetDatabase.isOracleDatabase(targetDatabase)) {
+				messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						EclipseLinkJpaValidationMessages.MULTITENANT_VPD_NOT_SUPPORTED_ON_NON_ORACLE_DATABASE_PLATFORM,
+						new String[] {targetDatabase},
+						this,
+						this.getValidationTextRange()
+					)
+				);
+			}
+		}
 		if (getSpecifiedTenantDiscriminatorColumnsSize() > 0) {
 			if (!this.specifiedTenantDiscriminatorColumnsAllowed()) {
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
-						EclipseLinkJpaValidationMessages.MULTIENANT_METADATA_CANNOT_BE_SPECIFIED_ON_NON_ROOT_ENTITY,
+						EclipseLinkJpaValidationMessages.MULTITENANT_METADATA_CANNOT_BE_SPECIFIED_ON_NON_ROOT_ENTITY,
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getXmlMultitenant().getValidationTextRange()
@@ -702,11 +740,11 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	}
 
 	public TextRange getValidationTextRange() {
-		TextRange textRange = this.getXmlValidationTextRange();
+		TextRange textRange = this.getXmlMultitenantValidationTextRange();
 		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange();
 	}
 
-	protected TextRange getXmlValidationTextRange() {
+	protected TextRange getXmlMultitenantValidationTextRange() {
 		XmlMultitenant_2_4 xmlMultitenant = this.getXmlMultitenant();
 		return (xmlMultitenant == null) ? null : xmlMultitenant.getValidationTextRange();
 	}
