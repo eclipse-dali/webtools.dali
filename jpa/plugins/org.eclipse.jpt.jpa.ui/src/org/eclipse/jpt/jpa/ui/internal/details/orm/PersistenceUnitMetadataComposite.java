@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0ProjectFlagModel;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0XmlFlagModel;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -309,7 +309,6 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 			JpaHelpContextIds.ENTITY_ORM_DELIMITED_IDENTIFIERS
 		);
 		
-		SWTTools.controlVisibleState(new Jpa2_0ProjectFlagModel<OrmPersistenceUnitMetadata>(this.getSubjectHolder()), diCheckBox);
-
+		SWTTools.controlVisibleState(new Jpa2_0XmlFlagModel<OrmPersistenceUnitMetadata>(this.getSubjectHolder()), diCheckBox);
 	}
 }
