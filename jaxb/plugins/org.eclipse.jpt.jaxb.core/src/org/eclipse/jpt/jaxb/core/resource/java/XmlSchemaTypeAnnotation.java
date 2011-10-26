@@ -29,6 +29,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 public interface XmlSchemaTypeAnnotation
 		extends QNameAnnotation, NestableAnnotation {
 	
+	String TYPE_PROPERTY = "type"; //$NON-NLS-1$
+	
 	/**
 	 * Corresponds to the 'type' element of the XmlSchemaType annotation.
 	 * Return null if the element does not exist in Java.
@@ -39,19 +41,21 @@ public interface XmlSchemaTypeAnnotation
 	 * will return "XMLGregorianCalendar"
 	 */
 	String getType();
-		String TYPE_PROPERTY = "type"; //$NON-NLS-1$
-
+		
 	/**
 	 * Corresponds to the 'type' element of the XmlSchemaType annotation.
 	 * Set to null to remove the element.
 	 */
 	void setType(String type);
+	
 	/**
 	 * Return the {@link TextRange} for the 'type' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlSchemaType annotation.
 	 */
 	TextRange getTypeTextRange(CompilationUnit astRoot);
-
+	
+	String FULLY_QUALIFIED_TYPE_PROPERTY = "fullyQualifiedType"; //$NON-NLS-1$
+	
 	/**
 	 * Return the fully-qualified type name as resolved by the AST's bindings.
 	 * <pre>
@@ -62,5 +66,9 @@ public interface XmlSchemaTypeAnnotation
 	 * @return
 	 */
 	String getFullyQualifiedType();
-		String FULLY_QUALIFIED_TYPE_PROPERTY = "fullyQualifiedType"; //$NON-NLS-1$
+	
+	/**
+	 * The default type when none is specified
+	 */
+	String DEFAULT_TYPE = "javax.xml.bind.annotation.XmlSchemaType.DEFAULT";
 }

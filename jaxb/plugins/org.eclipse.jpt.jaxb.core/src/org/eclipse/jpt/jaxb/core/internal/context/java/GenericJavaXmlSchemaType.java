@@ -22,6 +22,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -100,6 +102,26 @@ public abstract class GenericJavaXmlSchemaType
 		return this.annotation.getType();
 	}
 	
+	public String getFullyQualifiedType() {
+		return getXmlSchemaTypeAnnotation().getFullyQualifiedType();
+	}
+	
+	
+	// ***** misc *****
+	
+	protected XsdTypeDefinition getXsdTypeDefinition_() {
+		XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
+		if (xsdSchema == null) {
+			return null;
+		}
+		
+		if (! StringTools.stringIsEmpty(this.qName.getName())) {
+			return xsdSchema.getTypeDefinition(this.qName.getNamespace(), this.qName.getName());
+		}
+		
+		return null;
+	}
+	
 	
 	// ***** content assist *****
 	
@@ -131,6 +153,21 @@ public abstract class GenericJavaXmlSchemaType
 		super.validate(messages, reporter, astRoot);
 		
 		this.qName.validate(messages, reporter, astRoot);
+		
+		XsdTypeDefinition xsdType = getXsdTypeDefinition_();
+		if (xsdType != null && xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_SCHEMA_TYPE__NON_SIMPLE_TYPE,
+							new String[] { qName.getName() },
+							this,
+							getValidationTextRange(astRoot)));
+		}
+	}
+	
+	protected TextRange getTypeTextRange(CompilationUnit astRoot) {
+		return getXmlSchemaTypeAnnotation().getTypeTextRange(astRoot);
 	}
 	
 	
