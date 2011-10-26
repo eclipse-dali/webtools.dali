@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 
@@ -21,11 +22,15 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	}
 	
 	
+	public abstract Kind getKind();
+	
 	public String getName() {
 		return getXSDComponent().getName();
 	}
 	
-	public abstract Kind getKind();
+	public boolean matches(String namespace, String name) {
+		return XsdUtil.namespaceEquals(getXSDComponent(), namespace) && StringTools.stringsAreEqual(getName(), name); 
+	}
 	
 	public abstract XsdAttributeUse getAttribute(String namespace, String name);
 	

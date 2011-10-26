@@ -27,4 +27,6 @@ public abstract class XsdFeature<A extends XSDFeature>
 	public String getName() {
 		return getXSDFeature().getName();
 	}
+	
+	public abstract XsdTypeDefinition getType();
 }

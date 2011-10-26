@@ -18,8 +18,12 @@ import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
+import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.eclipse.xsd.util.XSDUtil;
 
 public class GenericJavaXmlID
 	extends AbstractJavaContextNode
@@ -32,14 +36,14 @@ public class GenericJavaXmlID
 		super(parent);
 		this.resourceXmlID = resource;
 	}
-
-	@Override
-	public JaxbBasicMapping getParent() {
-		return (JaxbBasicMapping) super.getParent();
+	
+	
+	public JaxbBasicMapping getMapping() {
+		return (JaxbBasicMapping) getParent();
 	}
-
+	
 	protected JaxbPersistentAttribute getPersistentAttribute() {
-		return getParent().getPersistentAttribute();
+		return getMapping().getPersistentAttribute();
 	}
 
 
@@ -48,13 +52,28 @@ public class GenericJavaXmlID
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (!getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(String.class.getName())) {
+		
+		if (! getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(String.class.getName())) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JaxbValidationMessages.XML_ID_DEFINED_ON_NON_STRING,
+					JaxbValidationMessages.XML_ID__ATTRIBUTE_TYPE_NOT_STRING,
 					this,
 					getValidationTextRange(astRoot)));
+		}
+		
+		XsdFeature xsdFeature = getMapping().getXsdFeature();
+		if (xsdFeature != null) {
+			XsdTypeDefinition xsdType = xsdFeature.getType();
+			if (xsdType != null && 
+					! xsdType.matches(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, "ID")) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ID__SCHEMA_TYPE_NOT_ID,
+							this,
+							getValidationTextRange(astRoot)));
+			}
 		}
 	}
 

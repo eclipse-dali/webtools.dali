@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
+import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDAttributeUse;
 
 
@@ -18,5 +19,11 @@ public class XsdAttributeUse
 	
 	XsdAttributeUse(XSDAttributeUse xsdAttributeUse) {
 		super(xsdAttributeUse);
+	}
+	
+	
+	public XsdAttributeDeclaration getAttributeDeclaration() {
+		XSDAttributeDeclaration xsdAttribute = getXSDComponent().getAttributeDeclaration();
+		return (xsdAttribute == null) ? null : (XsdAttributeDeclaration) XsdUtil.getAdapter(xsdAttribute);
 	}
 }

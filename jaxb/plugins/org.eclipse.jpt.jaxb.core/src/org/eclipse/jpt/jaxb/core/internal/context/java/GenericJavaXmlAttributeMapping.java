@@ -27,6 +27,8 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.Valid
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdAttributeUse;
+import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -117,6 +119,18 @@ public class GenericJavaXmlAttributeMapping
 	@Override
 	protected GenericJavaXmlIDREF.Context buildXmlIDREFContext() {
 		return new XmlIDREFContext();
+	}
+	
+	
+	// ***** misc *****
+	
+	public XsdFeature getXsdFeature() {
+		XsdTypeDefinition type = getJaxbClassMapping().getXsdTypeDefinition();
+		if (type != null) {
+			XsdAttributeUse attributeUse = type.getAttribute(this.qName.getNamespace(), this.qName.getName());
+			return (attributeUse == null) ? null : attributeUse.getAttributeDeclaration();
+		}
+		return null;		
 	}
 	
 	

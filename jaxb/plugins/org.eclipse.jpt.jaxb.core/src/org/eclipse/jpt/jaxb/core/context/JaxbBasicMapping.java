@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
+
 /**
  * Represents a JAXB mapping of an attribute to a single xml attribute or element
  * <p>
@@ -77,4 +79,9 @@ public interface JaxbBasicMapping
 	XmlAttachmentRef addXmlAttachmentRef();
 	
 	void removeXmlAttachmentRef();
+	
+	
+	// ***** misc *****
+	
+	XsdFeature getXsdFeature();
 }

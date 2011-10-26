@@ -26,6 +26,7 @@ public class XsdElementDeclaration
 		return getXSDFeature();
 	}
 	
+	@Override
 	public XsdTypeDefinition getType() {
 		XSDTypeDefinition xsdType = getXSDElementDeclaration().getTypeDefinition();
 		return (xsdType == null) ? null : (XsdTypeDefinition) XsdUtil.getAdapter(xsdType);

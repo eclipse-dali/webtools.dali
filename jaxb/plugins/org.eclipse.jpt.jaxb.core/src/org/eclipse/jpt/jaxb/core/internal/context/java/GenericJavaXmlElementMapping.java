@@ -27,6 +27,9 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.Valid
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
+import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -170,6 +173,24 @@ public class GenericJavaXmlElementMapping
 	@Override
 	public boolean isParticleMapping() {
 		return true;
+	}
+	
+	public XsdFeature getXsdFeature() {
+		XsdTypeDefinition xsdType = getJaxbClassMapping().getXsdTypeDefinition();
+		if (xsdType != null) {
+			XmlElementWrapper elementWrapper = this.xmlElementWrapper;
+			
+			if (elementWrapper == null) {
+				return xsdType.getElement(this.xmlElement.getQName().getNamespace(), this.xmlElement.getQName().getName());
+			}
+			else {
+				XsdElementDeclaration xsdWrapperElement = elementWrapper.getXsdElementDeclaration();
+				if (xsdWrapperElement != null) {
+					return xsdWrapperElement.getElement(this.xmlElement.getQName().getNamespace(), this.xmlElement.getQName().getName());
+				}
+			}
+		}		
+		return null;	
 	}
 	
 	
