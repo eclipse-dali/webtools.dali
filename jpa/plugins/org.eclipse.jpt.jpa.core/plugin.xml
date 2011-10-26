@@ -67,6 +67,20 @@
 			</describer>
 		</content-type>
 		
+		<!-- org.eclipse.wst.common.project.facet.core.xml content type -->
+		<content-type
+			id="org.eclipse.wst.common.project.facet.core"
+			name="%FACET_CONFIG_XML_CONTENT"
+			file-names="org.eclipse.wst.common.project.facet.core.xml"
+			base-type="org.eclipse.core.runtime.xml">
+			<describer
+				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
+				<parameter 
+					name="element" 
+					value="faceted-project"/>
+			</describer>
+		</content-type>
+		
 	</extension>
 	
 	
@@ -506,6 +520,7 @@
 					<contentType id="org.eclipse.jdt.core.javaSource" exactMatch="false"/>
 					<contentType id="org.eclipse.jpt.common.core.content.jar"/>
 					<contentType id="org.eclipse.jpt.jpa.core.content.baseJpaContent" exactMatch="false"/>
+					<contentType id="org.eclipse.wst.common.project.facet.core" exactMatch="true"/>
 				</rules>
 			</include>
 		</validator>
