@@ -52,6 +52,7 @@ public class XsdUtil {
 	
 	static final XsdAdapterFactoryImpl adapterFactory = new XsdAdapterFactoryImpl();
 	
+	
 	public static boolean namespaceEquals(XSDNamedComponent comp, String namespace) {
 		String xsdNamespace = comp.getTargetNamespace();
 		return (xsdNamespace == null) ? StringTools.stringIsEmpty(namespace) : xsdNamespace.equals(namespace);
@@ -102,6 +103,14 @@ public class XsdUtil {
 		return (resolvedUri != null) ? resolvedUri : location;
 	}
 	
+	
+	public static XsdSchema getSchema(XSDSchema xsdSchema) {
+		return (xsdSchema == null) ? null : (XsdSchema) XsdUtil.getAdapter(xsdSchema);
+	}
+	
+	public static XsdSchema getSchemaForSchema() {
+		return getSchema(XSDSchemaImpl.getSchemaForSchema(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001));
+	}
 	
 	/**
 	 * Given uri for an XML Schema document, parse the document and build

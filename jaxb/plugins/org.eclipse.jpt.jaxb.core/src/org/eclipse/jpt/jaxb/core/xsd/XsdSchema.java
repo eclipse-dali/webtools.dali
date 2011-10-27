@@ -87,6 +87,13 @@ public class XsdSchema
 		};
 	}
 	
+	/**
+	 * by default, return a type with the given name and the schema's target namespace
+	 */
+	public XsdTypeDefinition getTypeDefinition(String name) {
+		return getTypeDefinition(getXSDComponent().getTargetNamespace(), name);
+	}
+	
 	public XsdTypeDefinition getTypeDefinition(String namespace, String name) {
 		for (XSDTypeDefinition typeDefinition : getXSDTypeDefinitions(namespace)) {
 			if (XsdUtil.namespaceEquals(typeDefinition, namespace) && typeDefinition.getName().equals(name)) {

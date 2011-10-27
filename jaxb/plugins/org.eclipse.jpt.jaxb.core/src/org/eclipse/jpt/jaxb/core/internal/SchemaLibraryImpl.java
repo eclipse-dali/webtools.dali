@@ -23,6 +23,7 @@ import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.xsd.XSDSchema;
@@ -48,7 +49,7 @@ public class SchemaLibraryImpl
 	}
 	
 	
-	public XSDSchema getSchema(String namespace) {
+	public XsdSchema getSchema(String namespace) {
 		String resolvedUri = getResolvedUri(namespace);
 		if (resolvedUri == null) {
 			return null;
@@ -58,14 +59,15 @@ public class SchemaLibraryImpl
 		XSDSchema schema = (schemaResource == null) ? null : schemaResource.getSchema();
 		if (schemaResource != null) {
 			if (schema != null && schemaResource.getURI().toString().equals(resolvedUri) && schemaResource.isLoaded()) {
-				return schema;
+				return XsdUtil.getSchema(schema);
 			}
 			else {
 				removeSchemaResource(namespace, schemaResource);
 			}
 		}
 		
-		return addSchema(namespace, resolvedUri);
+		schema = addSchema(namespace, resolvedUri);
+		return XsdUtil.getSchema(schema);
 	}
 	
 	protected String getResolvedUri(String namespace) {

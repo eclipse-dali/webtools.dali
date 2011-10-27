@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.xsd.XSDSchema;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 
 
 
@@ -30,7 +30,7 @@ public class SchemaLibraryTests
 		String namespace = "http://www.eclipse.org/eclipselink/xsds/persistence/orm";
 		
 		// test initial load
-		XSDSchema schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
+		XsdSchema schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
 		assertNotNull(schema);
 		
 		// test cached load
@@ -38,7 +38,7 @@ public class SchemaLibraryTests
 		assertNotNull(schema);
 		
 		// test unload/reload
-		schema.eResource().unload();
+		schema.getXSDComponent().eResource().unload();
 		schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
 		assertNotNull(schema);
 	}
@@ -53,7 +53,7 @@ public class SchemaLibraryTests
 		getJaxbProject().getSchemaLibrary().setSchemaLocations(schemaLocations);
 		
 		// test initial load
-		XSDSchema schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
+		XsdSchema schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
 		assertNotNull(schema);
 		
 		// test cached load
@@ -61,7 +61,7 @@ public class SchemaLibraryTests
 		assertNotNull(schema);
 		
 		// test unload/reload
-		schema.eResource().unload();
+		schema.getXSDComponent().eResource().unload();
 		schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
 		assertNotNull(schema);
 	}
@@ -76,7 +76,7 @@ public class SchemaLibraryTests
 		getJaxbProject().getSchemaLibrary().setSchemaLocations(schemaLocations);
 		
 		// test initial load
-		XSDSchema schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
+		XsdSchema schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
 		assertNotNull(schema);
 		
 		// test cached load
@@ -84,7 +84,7 @@ public class SchemaLibraryTests
 		assertNotNull(schema);
 		
 		// test unload/reload
-		schema.eResource().unload();
+		schema.getXSDComponent().eResource().unload();
 		schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
 		assertNotNull(schema);
 	}
@@ -107,7 +107,7 @@ public class SchemaLibraryTests
 		getJaxbProject().getSchemaLibrary().setSchemaLocations(schemaLocations);
 		
 		// test initial load
-		XSDSchema schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
+		XsdSchema schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
 		assertNotNull(schema);
 		
 		// test cached load
@@ -115,7 +115,7 @@ public class SchemaLibraryTests
 		assertNotNull(schema);
 		
 		// test unload/reload
-		schema.eResource().unload();
+		schema.getXSDComponent().eResource().unload();
 		schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
 		assertNotNull(schema);
 	}

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core;
 
 import java.util.Map;
-import org.eclipse.xsd.XSDSchema;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 
 /**
  * Entry point for accessing project schema resources
@@ -40,10 +40,10 @@ public interface SchemaLibrary {
 	public void setSchemaLocations(Map<String, String> schemaLocations);
 	
 	/**
-	 * Return the XSDSchema identified by the given namespace, if it exists and is resolvable.
+	 * Return the XsdSchema identified by the given namespace, if it exists and is resolvable.
 	 * Return null otherwise.
 	 */
-	public XSDSchema getSchema(String namespace);
+	public XsdSchema getSchema(String namespace);
 	
 	/**
 	 * Refresh the schema with the given namespace, if it exists and is resolvable.
