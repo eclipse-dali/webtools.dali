@@ -29,7 +29,13 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		super(parent);
 		this.default_ = this.buildDefault();
 	}
-
+	
+	
+	public JaxbClassMapping getClassMapping() {
+		return getPersistentAttribute().getClassMapping();
+	}
+	
+	
 	// ********** synchronize/update **********
 
 	@Override
@@ -102,7 +108,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	}
 	
 	public JaxbClassMapping getJaxbClassMapping() {
-		return getPersistentAttribute().getJaxbClassMapping();
+		return getPersistentAttribute().getClassMapping();
 	}
 	
 	public JaxbPackage getJaxbPackage() {
@@ -119,6 +125,10 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	
 	public String getValueTypeName() {
 		return getBoundTypeName();
+	}
+	
+	public String getDataTypeName() {
+		return getValueTypeName();
 	}
 	
 	public Iterable<String> getReferencedXmlTypeNames() {

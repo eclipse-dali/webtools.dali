@@ -30,7 +30,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 public interface JaxbPersistentAttribute
 		extends JavaContextNode {
 	
-	JaxbClassMapping getJaxbClassMapping();
+	JaxbClassMapping getClassMapping();
 	
 	
 	// ***** declaring class/ inheritance *****

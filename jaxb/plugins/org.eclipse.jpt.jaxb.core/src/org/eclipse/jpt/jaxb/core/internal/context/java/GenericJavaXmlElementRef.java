@@ -94,7 +94,7 @@ public class GenericJavaXmlElementRef
 	}
 	
 	protected JaxbClassMapping getJaxbClassMapping() {
-		return getPersistentAttribute().getJaxbClassMapping();
+		return getPersistentAttribute().getClassMapping();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {

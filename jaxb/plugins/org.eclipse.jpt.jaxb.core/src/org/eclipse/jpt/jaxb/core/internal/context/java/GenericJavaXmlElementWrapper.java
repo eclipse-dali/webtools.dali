@@ -74,7 +74,7 @@ public class GenericJavaXmlElementWrapper
 	}
 	
 	protected JaxbClassMapping getJaxbClassMapping() {
-		return getPersistentAttribute().getJaxbClassMapping();
+		return getPersistentAttribute().getClassMapping();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {
@@ -169,7 +169,7 @@ public class GenericJavaXmlElementWrapper
 	// **************** misc **************************************************
 	
 	public XsdElementDeclaration getXsdElementDeclaration() {
-		XsdTypeDefinition xsdType = getPersistentAttribute().getJaxbClassMapping().getXsdTypeDefinition();
+		XsdTypeDefinition xsdType = getPersistentAttribute().getClassMapping().getXsdTypeDefinition();
 		return (xsdType == null) ? null : xsdType.getElement(this.qName.getNamespace(), this.qName.getName());
 	}
 	

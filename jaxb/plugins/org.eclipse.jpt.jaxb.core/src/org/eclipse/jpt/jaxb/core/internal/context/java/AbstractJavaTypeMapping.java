@@ -71,7 +71,7 @@ public abstract class AbstractJavaTypeMapping
 		return getJaxbType().getJavaResourceType();
 	}
 	
-	protected JaxbPackage getJaxbPackage() {
+	public JaxbPackage getJaxbPackage() {
 		return getJaxbType().getJaxbPackage();
 	}
 	

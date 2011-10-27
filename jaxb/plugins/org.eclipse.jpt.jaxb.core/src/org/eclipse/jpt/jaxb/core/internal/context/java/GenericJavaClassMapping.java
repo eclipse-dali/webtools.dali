@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -685,8 +686,9 @@ public class GenericJavaClassMapping
 						}));
 	}
 	
-	public boolean containsXmlId() {
-		return ! CollectionTools.isEmpty(getBasicMappingsWithXmlID());
+	public JaxbAttributeMapping getXmlIdMapping() {
+		Iterator<JaxbBasicMapping> idMappings = getBasicMappingsWithXmlID().iterator();
+		return (idMappings.hasNext()) ? idMappings.next() : null;
 	}
 	
 	protected Iterable<JaxbBasicMapping> getBasicMappingsWithXmlID(){

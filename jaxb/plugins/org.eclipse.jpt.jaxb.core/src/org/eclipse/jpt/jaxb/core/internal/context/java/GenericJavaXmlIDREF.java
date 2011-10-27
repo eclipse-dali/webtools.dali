@@ -69,7 +69,7 @@ public class GenericJavaXmlIDREF
 			}
 			
 			JaxbClassMapping classMapping = getContextRoot().getClassMapping(typeName);
-			if (classMapping == null || ! classMapping.containsXmlId()) {
+			if (classMapping == null || classMapping.getXmlIdMapping() == null) {
 				messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

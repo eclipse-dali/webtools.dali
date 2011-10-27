@@ -43,7 +43,7 @@ public abstract class AbstractJavaElementQName
 	protected abstract JaxbPersistentAttribute getPersistentAttribute();
 	
 	protected JaxbClassMapping getJaxbClassMapping() {
-		return getPersistentAttribute().getJaxbClassMapping();
+		return getPersistentAttribute().getClassMapping();
 	}
 	
 	protected JaxbPackage getJaxbPackage() {

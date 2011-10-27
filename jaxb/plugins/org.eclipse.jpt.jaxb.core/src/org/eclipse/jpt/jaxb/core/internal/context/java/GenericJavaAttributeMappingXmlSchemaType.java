@@ -42,7 +42,7 @@ public class GenericJavaAttributeMappingXmlSchemaType
 	}
 
 	protected JaxbClassMapping getJaxbClassMapping() {
-		return getPersistentAttribute().getJaxbClassMapping();
+		return getPersistentAttribute().getClassMapping();
 	}
 
 	@Override

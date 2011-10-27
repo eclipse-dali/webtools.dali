@@ -17,7 +17,7 @@ public interface JaxbClassMapping
 	
 	// ***** overrides *****
 	
-	public JaxbClass getJaxbType();
+	JaxbClass getJaxbType();
 	
 	
 	// ***** XmlType.factoryClass *****
@@ -117,7 +117,8 @@ public interface JaxbClassMapping
 	// ***** misc *****
 	
 	/**
-	 * Return true if 1 or more attributes include the @XmlId annotation
+	 * Return the id attribute mapping for this class mapping, if it has one.
+	 * (Will return the first one it finds, if this class has more than one.)
 	 */
-	boolean containsXmlId();
+	JaxbAttributeMapping getXmlIdMapping();
 }

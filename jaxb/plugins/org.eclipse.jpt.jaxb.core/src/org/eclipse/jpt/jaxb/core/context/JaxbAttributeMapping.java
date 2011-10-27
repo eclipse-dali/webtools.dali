@@ -28,11 +28,13 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 public interface JaxbAttributeMapping
 		extends JavaContextNode {
 	
-	JaxbPersistentAttribute getPersistentAttribute();
+	String getKey();
 	
 	JavaResourceAttribute getJavaResourceAttribute();
 	
-	String getKey();
+	JaxbPersistentAttribute getPersistentAttribute();
+	
+	JaxbClassMapping getClassMapping();
 	
 	
 	// ***** default *****
@@ -49,16 +51,22 @@ public interface JaxbAttributeMapping
 	// ***** misc *****
 	
 	/**
-	 * Return the (fully qualified) type of the attribute. 
-	 * (This is almost always the same as the base type.)
+	 * Return the (fully qualified) type of the attribute
+	 * (or the item type if in a collection/array)
 	 */
 	String getBoundTypeName();
 	
 	/**
-	 * Return the (fully qualified) type that is to be associated with a schema type. 
-	 * (Usually the same as the base type, except when an XmlJavaTypeAdapter is used.)
+	 * Return the (fully qualified) type used to map the bound type. 
+	 * (Usually the same as the value type, except when an XmlJavaTypeAdapter is used.)
 	 */
 	String getValueTypeName();
+	
+	/**
+	 * Return the (fully qualified) type of the data actually written to xml.
+	 * (Usually the same as the value type, except when an XmlIDREF is used.)
+	 */
+	String getDataTypeName();
 	
 	/**
 	 * Return all directly referenced types, fully qualified.

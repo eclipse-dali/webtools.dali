@@ -31,6 +31,8 @@ public interface JaxbTypeMapping
 	
 	JaxbType getJaxbType();
 	
+	JaxbPackage getJaxbPackage();
+	
 	
 	// ***** XmlTransient *****
 	

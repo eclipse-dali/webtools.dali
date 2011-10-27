@@ -32,9 +32,9 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSimpleTypeDefinition;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
+import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.eclipse.xsd.util.XSDUtil;
 
 
 public class GenericJavaEnumMapping
@@ -185,10 +185,8 @@ public class GenericJavaEnumMapping
 		else {
 			String typeMapping = getJaxbProject().getPlatform().getDefinition().getSchemaTypeMapping(fqXmlEnumValue);
 			if (typeMapping != null) {
-				XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
-				if (xsdSchema != null) {
-					return xsdSchema.getTypeDefinition(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, typeMapping);
-				}
+				XsdSchema xsdSchema = XsdUtil.getSchemaForSchema();
+				return xsdSchema.getTypeDefinition(typeMapping);
 			}
 		}
 		

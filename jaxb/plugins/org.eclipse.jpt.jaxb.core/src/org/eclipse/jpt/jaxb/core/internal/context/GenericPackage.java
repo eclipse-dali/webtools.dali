@@ -20,11 +20,9 @@ import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
-import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.eclipse.xsd.XSDSchema;
 
 public class GenericPackage
 		extends AbstractJaxbContextNode
@@ -124,8 +122,7 @@ public class GenericPackage
 	}
 	
 	public XsdSchema getXsdSchema() {
-		XSDSchema emfSchema = getJaxbProject().getSchemaLibrary().getSchema(getNamespace());
-		return (emfSchema == null) ? null : (XsdSchema) XsdUtil.getAdapter(emfSchema);
+		return getJaxbProject().getSchemaLibrary().getSchema(getNamespace());
 	}
 	
 	

@@ -67,7 +67,7 @@ public class GenericJavaPersistentAttribute
 		this.mapping = this.buildMapping();
 	}
 
-	public JaxbClassMapping getJaxbClassMapping() {
+	public JaxbClassMapping getClassMapping() {
 		return (JaxbClassMapping) super.getParent();
 	}
 	
@@ -94,7 +94,7 @@ public class GenericJavaPersistentAttribute
 	}
 	
 	public boolean isInherited() {
-		return getDeclaringJavaResourceType() != getJaxbClassMapping().getJaxbType().getJavaResourceType();
+		return getDeclaringJavaResourceType() != getClassMapping().getJaxbType().getJavaResourceType();
 	}
 	
 	

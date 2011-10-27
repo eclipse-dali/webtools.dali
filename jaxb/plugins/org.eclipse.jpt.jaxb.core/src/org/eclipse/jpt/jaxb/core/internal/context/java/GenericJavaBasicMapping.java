@@ -14,7 +14,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbBasicMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAttachmentRef;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
@@ -418,6 +420,23 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		XmlAttachmentRef oldXmlAttachmentRef = this.xmlAttachmentRef;
 		this.xmlAttachmentRef = xmlAttachmentRef;
 		firePropertyChanged(XML_ATTACHMENT_REF_PROPERTY, oldXmlAttachmentRef, xmlAttachmentRef);
+	}
+	
+	
+	// ***** misc *****
+	
+	@Override
+	public String getDataTypeName() {
+		if (this.xmlIDREF != null) {
+			JaxbClassMapping referenceMapping = getContextRoot().getClassMapping(getValueTypeName());
+			if (referenceMapping != null) {
+				JaxbAttributeMapping idMapping = referenceMapping.getXmlIdMapping();
+				if (idMapping != null) {
+					return idMapping.getValueTypeName();
+				}
+			}
+		}
+		return getValueTypeName();
 	}
 	
 	
