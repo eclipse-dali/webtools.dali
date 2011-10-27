@@ -51,7 +51,7 @@ public abstract class AbstractJptGenerator
 	protected final IJavaProject javaProject;
 	protected final String projectLocation;
 
-	private final boolean isDebug = true;
+	private final boolean isDebug = false;
 
 	// ********** constructors **********
 
