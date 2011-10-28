@@ -21,6 +21,8 @@ import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -81,6 +83,11 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		
 		createLabel(assocTablesGroup, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_table1);
 		table1TextField = createText(assocTablesGroup, 1);
+		table1TextField.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updatePageComplete();
+			}
+		});
 		
 		Button browser1 = createButton(assocTablesGroup, 1, "", SWT.NONE);
 		browser1.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager)); 
@@ -95,11 +102,17 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 					getWizard().getContainer().updateButtons();
 					((NewAssociationWizard)getWizard()).updateTableNames();
 				}
+				updatePageComplete();
 			}
 		});
 
 		createLabel(assocTablesGroup, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_table2);
 		table2TextField = createText(assocTablesGroup, 1);
+		table2TextField.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updatePageComplete();
+			}
+		});
 		
 		Button browser2 = createButton(assocTablesGroup, 1, "", SWT.NONE);
 		browser2.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager)); 
@@ -107,7 +120,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		browser2.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
-				SelectTableDialog dlg = new SelectTableDialog( Display.getDefault().getActiveShell(), resourceManager, customizer.getSchema() );
+				SelectTableDialog dlg = new SelectTableDialog( Display.getDefault().getActiveShell(), resourceManager, customizer.getTableNames());
 				if( dlg.open() == Dialog.OK){
 					table2TextField.setText( dlg.getSelectedTable() );
 					getWizardDataModel().put( NewAssociationWizard.ASSOCIATION_REFERENCED_TABLE, table2TextField.getText());
@@ -178,7 +191,8 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 	}
 	
 	public void updatePageComplete() {
-		if( this.table1TextField.getText().length() <= 0){
+		if( this.table1TextField.getText().length() <= 0 ||
+			this.table2TextField.getText().length() <= 0) {
 			setPageComplete(false);
 			return;
 		}
