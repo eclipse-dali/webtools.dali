@@ -30,6 +30,8 @@ import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -271,6 +273,11 @@ public class GenericJavaXmlElement
 		return (this.specifiedType == null) ? 
 				EmptyIterable.<String>instance() 
 				: new SingleElementIterable(getFullyQualifiedType());
+	}
+	
+	public XsdElementDeclaration getXsdElement() {
+		XsdTypeDefinition xsdType = getJaxbClassMapping().getXsdTypeDefinition();
+		return (xsdType == null) ? null : xsdType.getElement(this.qName.getNamespace(), this.qName.getName());
 	}
 	
 	

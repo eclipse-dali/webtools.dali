@@ -23,7 +23,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
-import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableType;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
@@ -259,19 +259,30 @@ public class GenericJavaXmlElementMapping
 	protected class XmlIDREFContext
 			extends GenericJavaBasicMapping.XmlIDREFContext {
 		
-		public Iterable<ValidatableType> getReferencedTypes() {
-			return new SingleElementIterable<ValidatableType>(
-					new ValidatableType() {
-						public String getFullyQualifiedName() {
+		public Iterable<ValidatableReference> getReferences() {
+			
+			return new SingleElementIterable<ValidatableReference>(
+					
+					new ValidatableReference() {
+						
+						public String getFullyQualifiedType() {
 							return GenericJavaXmlElementMapping.this.xmlElement.getType();
 						}
 						
-						public TextRange getValidationTextRange(CompilationUnit astRoot) {
+						public TextRange getTypeTextRange(CompilationUnit astRoot) {
 							// 1) if we're getting here, XmlIDREF will not be null
 							// 2) if there is an @XmlElement annotation, use that, otherwise use the @XmlIDREF
 							return (GenericJavaXmlElementMapping.this.getAnnotation() == null) ?
 									GenericJavaXmlElementMapping.this.getXmlIDREF().getValidationTextRange(astRoot)
 									: GenericJavaXmlElementMapping.this.xmlElement.getTypeTextRange(astRoot);
+						}
+						
+						public XsdFeature getXsdFeature() {
+							return GenericJavaXmlElementMapping.this.getXsdFeature();
+						}
+						
+						public TextRange getXsdFeatureTextRange(CompilationUnit astRoot) {
+							return GenericJavaXmlElementMapping.this.xmlElement.getQName().getNameTextRange(astRoot);
 						}
 					});
 		}

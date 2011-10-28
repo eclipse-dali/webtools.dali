@@ -23,7 +23,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
-import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableType;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
@@ -228,17 +228,28 @@ public class GenericJavaXmlAttributeMapping
 	protected class XmlIDREFContext
 			extends GenericJavaBasicMapping.XmlIDREFContext {
 		
-		public Iterable<ValidatableType> getReferencedTypes() {
-			return new SingleElementIterable<ValidatableType>(
-					new ValidatableType() {
-						public String getFullyQualifiedName() {
+		public Iterable<ValidatableReference> getReferences() {
+			
+			return new SingleElementIterable<ValidatableReference>(
+					
+					new ValidatableReference() {
+						
+						public String getFullyQualifiedType() {
 							return GenericJavaXmlAttributeMapping.this.getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
 						}
 						
-						public TextRange getValidationTextRange(CompilationUnit astRoot) {
+						public TextRange getTypeTextRange(CompilationUnit astRoot) {
 							// 1) if we're getting here, XmlIDREF will not be null
 							// 2) use the @XmlIDREF text range, since there is no specific place where the type is specified
 							return GenericJavaXmlAttributeMapping.this.getXmlIDREF().getValidationTextRange(astRoot);
+						}
+						
+						public XsdFeature getXsdFeature() {
+							return GenericJavaXmlAttributeMapping.this.getXsdFeature();
+						}
+						
+						public TextRange getXsdFeatureTextRange(CompilationUnit astRoot) {
+							return GenericJavaXmlAttributeMapping.this.getQName().getNameTextRange(astRoot);
 						}
 					});
 		}

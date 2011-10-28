@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 
 /**
  * Represents an @XmlElement, whether at top level or nested in @XmlElements
@@ -100,6 +101,11 @@ public interface XmlElement
 	 * (Used for constructing Jaxb context)
 	 */
 	Iterable<String> getReferencedXmlTypeNames();
+	
+	/**
+	 * Return the schema element declaration referenced, if it can be resolved.
+	 */
+	XsdElementDeclaration getXsdElement();
 	
 	
 	// ***** validation *****

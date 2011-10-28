@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
@@ -21,8 +20,11 @@ import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.eclipse.xsd.util.XSDUtil;
 
 public class GenericJavaXmlIDREF
 		extends AbstractJavaContextNode
@@ -58,25 +60,35 @@ public class GenericJavaXmlIDREF
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		for (ValidatableType type : this.context.getReferencedTypes()) {
-			String typeName = type.getFullyQualifiedName();
+		for (ValidatableReference ref : this.context.getReferences()) {
+			String typeName = ref.getFullyQualifiedType();
 			
 			// Object may be used in some cases of a *single* type, but can't be validated
-			if ((Object.class.getName().equals(typeName) && CollectionTools.size(this.context.getReferencedTypes()) == 1)
-					// Make sure class exists.  Nonexistent classes will already have an error.
-					|| JDTTools.findType(getJaxbProject().getJavaProject(), typeName) == null) {
-				continue;
+			if (! (Object.class.getName().equals(typeName) && CollectionTools.size(this.context.getReferences()) == 1)) {
+					
+				JaxbClassMapping classMapping = getContextRoot().getClassMapping(typeName);
+				if (classMapping == null || classMapping.getXmlIdMapping() == null) {
+					messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JaxbValidationMessages.XML_IDREF__TYPE_DOES_NOT_CONTAIN_XML_ID,
+						new String[] { typeName },
+						this,
+						ref.getTypeTextRange(astRoot)));				
+				}
 			}
 			
-			JaxbClassMapping classMapping = getContextRoot().getClassMapping(typeName);
-			if (classMapping == null || classMapping.getXmlIdMapping() == null) {
+			XsdFeature xsdFeature = ref.getXsdFeature();
+			XsdTypeDefinition xsdType = (xsdFeature == null) ? null : xsdFeature.getType();
+			if (xsdType != null && 
+					! xsdType.matches(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, "IDREF")) {
 				messages.add(
-				DefaultValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JaxbValidationMessages.XML_IDREF__TYPE_DOES_NOT_CONTAIN_XML_ID,
-					new String[] { typeName },
-					this,
-					type.getValidationTextRange(astRoot)));				
+						DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ID_REF__SCHEMA_TYPE_NOT_IDREF,
+							new String [] { xsdFeature.getName() },
+							this,
+							ref.getXsdFeatureTextRange(astRoot)));
 			}
 		}
 	}
@@ -86,14 +98,18 @@ public class GenericJavaXmlIDREF
 		
 		XmlIDREFAnnotation getAnnotation();
 		
-		Iterable<ValidatableType> getReferencedTypes();
+		Iterable<ValidatableReference> getReferences();
 	}
 	
 	
-	public interface ValidatableType {
+	public interface ValidatableReference {
 		
-		String getFullyQualifiedName();
+		String getFullyQualifiedType();
 		
-		TextRange getValidationTextRange(CompilationUnit astRoot);
+		TextRange getTypeTextRange(CompilationUnit astRoot);
+		
+		XsdFeature getXsdFeature();
+		
+		TextRange getXsdFeatureTextRange(CompilationUnit astRoot);
 	}
 }

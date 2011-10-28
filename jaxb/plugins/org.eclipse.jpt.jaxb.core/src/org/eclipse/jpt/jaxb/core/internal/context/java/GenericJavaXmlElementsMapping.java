@@ -29,7 +29,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
-import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableType;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -37,6 +37,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -439,21 +440,29 @@ public class GenericJavaXmlElementsMapping
 			return GenericJavaXmlElementsMapping.this.getXmlIDREFAnnotation();
 		}
 		
-		public Iterable<ValidatableType> getReferencedTypes() {
-			return new TransformationIterable<XmlElement, ValidatableType>(
+		public Iterable<ValidatableReference> getReferences() {
+			return new TransformationIterable<XmlElement, ValidatableReference>(
 					GenericJavaXmlElementsMapping.this.getXmlElements()) {
 				
 				@Override
-				protected ValidatableType transform(final XmlElement o) {
+				protected ValidatableReference transform(final XmlElement o) {
 					
-					return new ValidatableType() {
+					return new ValidatableReference() {
 						
-						public String getFullyQualifiedName() {
+						public String getFullyQualifiedType() {
 							return o.getFullyQualifiedType();
 						}
 						
-						public TextRange getValidationTextRange(CompilationUnit astRoot) {
+						public TextRange getTypeTextRange(CompilationUnit astRoot) {
 							return o.getTypeTextRange(astRoot);
+						}
+						
+						public XsdFeature getXsdFeature() {
+							return o.getXsdElement();
+						}
+						
+						public TextRange getXsdFeatureTextRange(CompilationUnit astRoot) {
+							return o.getQName().getNameTextRange(astRoot);
 						}
 					};
 				}
