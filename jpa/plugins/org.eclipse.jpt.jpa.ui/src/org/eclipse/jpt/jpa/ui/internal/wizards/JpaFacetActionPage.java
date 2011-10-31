@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
+ *  Copyright (c) 2009, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -38,6 +38,8 @@ public abstract class JpaFacetActionPage
 	extends DataModelFacetInstallPage
 	implements JpaFacetDataModelProperties
 {
+	private IFacetedProjectListener listener;
+
 	protected JpaFacetActionPage(String pageName) {
 		super(pageName);
 		setTitle(JptUiMessages.JpaFacetWizardPage_title);
@@ -65,19 +67,22 @@ public abstract class JpaFacetActionPage
 	protected abstract void  addSubComposites(Composite composite);
 	
 	private void setUpRuntimeListener() {
-	    final IFacetedProjectWorkingCopy wc = ( (ModifyFacetedProjectWizard) getWizard() ).getFacetedProjectWorkingCopy();
+	    final IFacetedProjectWorkingCopy wc = this.getFacetedProjectWorkingCopy();
 		// must do it manually the first time
 		model.setProperty(RUNTIME, wc.getPrimaryRuntime());
-		wc.addListener(
-			new IFacetedProjectListener() {
-				public void handleEvent( final IFacetedProjectEvent event ) {
-					model.setProperty(RUNTIME, wc.getPrimaryRuntime());
-				}
-			},
-			IFacetedProjectEvent.Type.PRIMARY_RUNTIME_CHANGED
-		);
+		this.listener = new IFacetedProjectListener() {
+			public void handleEvent( final IFacetedProjectEvent event ) {
+				model.setProperty(RUNTIME, wc.getPrimaryRuntime());
+			}
+		};
+		
+		wc.addListener(this.listener, IFacetedProjectEvent.Type.PRIMARY_RUNTIME_CHANGED);
 	}
-	
+
+	protected IFacetedProjectWorkingCopy getFacetedProjectWorkingCopy() {
+		return ((ModifyFacetedProjectWizard) getWizard()).getFacetedProjectWorkingCopy();
+	}
+
 	protected Button createButton(Composite container, int span, String text, int style) {
 		Button button = new Button(container, SWT.NONE | style);
 		button.setText(text);
@@ -141,6 +146,12 @@ public abstract class JpaFacetActionPage
 	
 	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
+	}
+
+	@Override
+	public void dispose() {
+	    this.getFacetedProjectWorkingCopy().removeListener(this.listener);
+		super.dispose();
 	}
 	
 	
