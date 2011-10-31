@@ -53,7 +53,7 @@ public class GenericJavaJoinTable
 	extends GenericJavaReferenceTable<JoinTableAnnotation>
 	implements JavaJoinTable
 {
-	protected final SpecifiedInverseJoinColumnContainer specifiedInverseJoinColumnContainer;
+	protected final ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> specifiedInverseJoinColumnContainer;
 	protected final JavaReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
 
 	protected JavaJoinColumn defaultInverseJoinColumn;
@@ -62,7 +62,7 @@ public class GenericJavaJoinTable
 	public GenericJavaJoinTable(JavaJoinTableRelationshipStrategy parent, Owner owner) {
 		super(parent, owner);
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
-		this.specifiedInverseJoinColumnContainer = new SpecifiedInverseJoinColumnContainer();
+		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
 	}
 
 	@Override
@@ -77,9 +77,6 @@ public class GenericJavaJoinTable
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.syncSpecifiedInverseJoinColumns();
-		if (this.defaultInverseJoinColumn != null) {
-			this.defaultInverseJoinColumn.synchronizeWithResourceModel();
-		}
 	}
 
 	@Override
