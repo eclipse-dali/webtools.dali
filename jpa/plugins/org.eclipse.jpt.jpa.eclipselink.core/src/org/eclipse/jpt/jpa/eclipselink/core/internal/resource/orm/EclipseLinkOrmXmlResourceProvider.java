@@ -76,7 +76,7 @@ public class EclipseLinkOrmXmlResourceProvider
 		if (defaultAccess != null) {
 			XmlPersistenceUnitMetadata puMetadata = EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
 			entityMappings.setPersistenceUnitMetadata(puMetadata);
-			XmlPersistenceUnitDefaults puDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
+			XmlPersistenceUnitDefaults puDefaults = EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 			puMetadata.setPersistenceUnitDefaults(puDefaults);
 			puDefaults.setAccess(defaultAccess);
 		}
