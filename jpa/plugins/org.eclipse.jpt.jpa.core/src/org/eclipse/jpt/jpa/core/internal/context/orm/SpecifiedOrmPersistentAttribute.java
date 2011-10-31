@@ -239,7 +239,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 		}
 		if (getAccess() == AccessType.PROPERTY) {
 			JavaResourceMethod javaResourceGetter = this.getJavaResourceGetter(javaResourceType);
-			JavaResourceMethod javaResourceSetter = AbstractJavaPersistentType.getValidSiblingSetMethod(javaResourceGetter, javaResourceType.getMethods());
+			JavaResourceMethod javaResourceSetter = javaResourceGetter == null ? null : AbstractJavaPersistentType.getValidSiblingSetMethod(javaResourceGetter, javaResourceType.getMethods());
 			if (javaResourceGetter == null && javaResourceSetter == null) {
 				// nothing in the resource inheritance hierarchy matches our name *and* access type
 				this.cachedJavaPersistentAttribute = null;
