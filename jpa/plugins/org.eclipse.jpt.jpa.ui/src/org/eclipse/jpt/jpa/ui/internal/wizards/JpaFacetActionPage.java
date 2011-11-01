@@ -28,10 +28,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
-import org.eclipse.wst.common.project.facet.ui.ModifyFacetedProjectWizard;
 import org.eclipse.wst.web.ui.internal.wizards.DataModelFacetInstallPage;
 
 public abstract class JpaFacetActionPage
@@ -80,7 +80,7 @@ public abstract class JpaFacetActionPage
 	}
 
 	protected IFacetedProjectWorkingCopy getFacetedProjectWorkingCopy() {
-		return ((ModifyFacetedProjectWizard) getWizard()).getFacetedProjectWorkingCopy();
+		return (IFacetedProjectWorkingCopy) getDataModel().getProperty(IFacetDataModelProperties.FACETED_PROJECT_WORKING_COPY);
 	}
 	
 	protected Button createButton(Composite container, int span, String text, int style) {
