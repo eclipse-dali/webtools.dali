@@ -11,6 +11,7 @@
 package org.eclipse.jpt.jpa.core.internal.context;
 
 import java.util.List;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -20,4 +21,24 @@ public interface JptValidator
 	 * Return a boolean used to determine whether to continue validating
 	 */
 	boolean validate(List<IMessage> messages, IReporter reporter);
+
+	final class Null
+		implements JptValidator
+	{
+		private static final JptValidator INSTANCE = new Null();
+		public static JptValidator instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Null() {
+			super();
+		}
+		public boolean validate(List<IMessage> messages, IReporter reporter) {
+			return true;  // continue validating
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildSingletonToString(this);
+		}
+	}
 }

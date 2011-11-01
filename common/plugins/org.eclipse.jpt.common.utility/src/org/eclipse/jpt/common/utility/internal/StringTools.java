@@ -3633,6 +3633,15 @@ public final class StringTools {
 	}
 
 	/**
+	 * Return a string suitable for a <em>singleton</em>; which is the simple
+	 * name of the object's class, since there should only be one.
+	 */
+	public static String buildSingletonToString(Object o) {
+		return buildToStringClassName(o.getClass());
+	}
+
+
+	/**
 	 * Append the string representations of the objects in the specified array
 	 * to the specified string builder:<pre>
 	 *     ["foo", "bar", "baz"]

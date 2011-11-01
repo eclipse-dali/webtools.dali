@@ -1444,24 +1444,24 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 
+		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideValidator(this.getPersistentAttribute(), (AssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		}
+
 		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) columnOwner, (JoinColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
 
 		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
-		}
-
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideValidator(this.getPersistentAttribute(), (AssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+			return JptValidator.Null.instance();
 		}
 
 		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+			return JptValidator.Null.instance();
 		}
 
 		public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+			return JptValidator.Null.instance();
 		}
 	}
 
