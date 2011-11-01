@@ -81,6 +81,9 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 
 					@Override
 					protected void setValue_(String value) {
+						if (value.length() == 0) {
+							value = null;
+						}				
 						this.subject.setResultClass(value);
 					}
 				};
