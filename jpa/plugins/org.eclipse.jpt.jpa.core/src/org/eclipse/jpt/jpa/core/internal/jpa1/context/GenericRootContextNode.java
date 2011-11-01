@@ -27,6 +27,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
@@ -276,6 +277,9 @@ public class GenericRootContextNode
 		HashBag<String> orphans = annotatedClassNames.clone();
 		for (String annotatedClassName : annotatedClassNames) {
 			if (persistenceUnit.specifiesPersistentType(annotatedClassName)) {
+				orphans.remove(annotatedClassName);
+			}
+			else if (MetamodelSynchronizer.MetamodelTools.isMetamodel(getJpaProject().getJavaResourceType(annotatedClassName))) {
 				orphans.remove(annotatedClassName);
 			}
 		}
