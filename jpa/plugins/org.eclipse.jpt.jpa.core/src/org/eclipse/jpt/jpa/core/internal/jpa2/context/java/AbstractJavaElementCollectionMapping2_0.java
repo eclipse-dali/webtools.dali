@@ -1803,19 +1803,15 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		}
 
 		public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw this.buildJoinTableUnsupportedException();
+			return JptValidator.Null.instance();
 		}
 
 		public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw this.buildJoinTableUnsupportedException();
+			return JptValidator.Null.instance();
 		}
 
 		public JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
-			throw this.buildJoinTableUnsupportedException();
-		}
-
-		protected UnsupportedOperationException buildJoinTableUnsupportedException() {
-			return new UnsupportedOperationException("An element collection containing a nested relationship mapping using a join table is not supported"); //$NON-NLS-1$
+			return JptValidator.Null.instance();
 		}
 	}
 
