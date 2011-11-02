@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Vector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -82,11 +82,6 @@ public class JptJaxbCorePlugin
 	 * Specific schema nodes are followed by integers ("schema-1", "schema-2", etc.)
 	 */
 	public static final String SCHEMA_PREF_NODE_PREFIX = "schema-";  //$NON-NLS-1$
-	
-	/**
-	 * The key for storing a schema namespace in the project's preferences
-	 */
-	public static final String SCHEMA_NAMESPACE_PREF_KEY = "namespace";  //$NON-NLS-1$
 	
 	/**
 	 * The key for storing a schema location (such as a uri or catalog key) in the project's preferences
@@ -374,8 +369,8 @@ public class JptJaxbCorePlugin
 		}
 	}
 	
-	public static Map<String, String> getSchemaLocationMap(IProject project) {
-		Map<String, String> schemaLocationMap = new HashMap<String, String>();
+	public static List<String> getSchemaLocations(IProject project) {
+		List<String> schemaLocations = new Vector<String>();
 		Preferences prefs = getProjectPreferences(project);
 		Preferences schemasPrefs = prefs.node(SCHEMAS_PREF_NODE);
 		try {
@@ -384,10 +379,9 @@ public class JptJaxbCorePlugin
 				String nodeName = SCHEMA_PREF_NODE_PREFIX + String.valueOf(i);
 				if (schemasPrefs.nodeExists(nodeName)) {
 					Preferences schemaPrefs = schemasPrefs.node(nodeName);
-					String namespace = schemaPrefs.get(SCHEMA_NAMESPACE_PREF_KEY, null);
 					String location = schemaPrefs.get(SCHEMA_LOCATION_PREF_KEY, null);
-					if (namespace != null) {
-						schemaLocationMap.put(namespace, location);
+					if (location != null) {
+						schemaLocations.add(location);
 					}
 				}
 				else {
@@ -399,19 +393,18 @@ public class JptJaxbCorePlugin
 			// this means that the prefs are corrupted, in which case reading anything is unlikely
 			JptJaxbCorePlugin.log(bse);
 		}
-		return schemaLocationMap;
+		return schemaLocations;
 	}
 	
-	public static void setSchemaLocationMap(IProject project, Map<String, String> schemaLocationMap) {
+	public static void setSchemaLocations(IProject project, List<String> schemaLocations) {
 		Preferences prefs = getProjectPreferences(project);
 		Preferences schemasPrefs = prefs.node(SCHEMAS_PREF_NODE);
 		try {
 			int i = 1;
-			for (String namespace : schemaLocationMap.keySet()) {
+			for (String location : schemaLocations) {
 				String nodeName = SCHEMA_PREF_NODE_PREFIX + String.valueOf(i);
 				Preferences schemaPref = schemasPrefs.node(nodeName);
-				schemaPref.put(SCHEMA_NAMESPACE_PREF_KEY, namespace);
-				schemaPref.put(SCHEMA_LOCATION_PREF_KEY, schemaLocationMap.get(namespace));
+				schemaPref.put(SCHEMA_LOCATION_PREF_KEY, location);
 				i ++;
 			}
 			boolean checkAnotherNode = true;

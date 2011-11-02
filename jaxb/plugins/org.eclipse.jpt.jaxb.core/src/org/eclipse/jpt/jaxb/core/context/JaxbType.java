@@ -94,8 +94,14 @@ public interface JaxbType
 	
 	/**
 	 * Return the {@link JaxbPackage} associated with this type
+	 * (NB:  may be null in some partially built cases)
 	 */
 	JaxbPackage getJaxbPackage();
+	
+	/**
+	 * Return the {@link JaxbPackageInfo} associated with this type, if it exists
+	 */
+	JaxbPackageInfo getJaxbPackageInfo();
 	
 	/**
 	 * Return all directly referenced types, fully qualified.

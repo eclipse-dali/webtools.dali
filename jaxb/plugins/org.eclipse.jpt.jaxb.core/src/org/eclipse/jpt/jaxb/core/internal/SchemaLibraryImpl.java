@@ -10,153 +10,135 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
+import java.util.Vector;
+import org.eclipse.jpt.common.utility.internal.Bag;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.xsd.XSDSchema;
-import org.eclipse.xsd.util.XSDResourceImpl;
 
 public class SchemaLibraryImpl
 		implements SchemaLibrary {
 	
 	private JaxbProject project;
 	
-	private final Map<String, String> schemaLocations;
+	private final List<SchemaEntryImpl> schemaEntries;
 	
-	private final Map<String, XSDResourceImpl> schemaResources;
-	
-	private Adapter schemaResourceAdapter = new SchemaResourceAdapter();
+	private final Map<String, SchemaEntryImpl> impliedEntries;
 	
 	
 	SchemaLibraryImpl(JaxbProject project) {
 		this.project = project;
-		this.schemaLocations = new HashMap<String, String>();
-		this.schemaResources = new HashMap<String, XSDResourceImpl>();
+		this.schemaEntries = new Vector<SchemaEntryImpl>();
+		this.impliedEntries = new Hashtable<String, SchemaEntryImpl>();
 		readProjectPreferences();
 	}
 	
 	
+	public List<SchemaEntry> getSchemaEntries() {
+		return Collections.<SchemaEntry>unmodifiableList(this.schemaEntries);
+	}
+	
+	public List<String> getSchemaLocations() {
+		return Collections.unmodifiableList(
+				CollectionTools.list(
+						new TransformationIterable<SchemaEntry, String>(this.schemaEntries) {
+							@Override
+							protected String transform(SchemaEntry o) {
+								return o.getLocation();
+							}
+						}));
+	}
+	
+	public void setSchemaLocations(List<String> schemaLocations) {
+		for (SchemaEntryImpl entry : this.schemaEntries) {
+			entry.dispose();
+		}
+		this.schemaEntries.clear();
+		JptJaxbCorePlugin.setSchemaLocations(this.project.getProject(), schemaLocations);
+		readProjectPreferences();
+	}
+	
 	public XsdSchema getSchema(String namespace) {
-		String resolvedUri = getResolvedUri(namespace);
-		if (resolvedUri == null) {
-			return null;
+		for (SchemaEntry entry : this.schemaEntries) {
+			if (StringTools.stringsAreEqual(namespace, entry.getNamespace())) {
+				return entry.getXsdSchema(namespace);
+			}
 		}
 		
-		XSDResourceImpl schemaResource = this.schemaResources.get(namespace);
-		XSDSchema schema = (schemaResource == null) ? null : schemaResource.getSchema();
-		if (schemaResource != null) {
-			if (schema != null && schemaResource.getURI().toString().equals(resolvedUri) && schemaResource.isLoaded()) {
-				return XsdUtil.getSchema(schema);
+		if (! this.impliedEntries.containsKey(namespace)) {
+			if (! StringTools.stringsAreEqual(XsdUtil.getResolvedUri(namespace), namespace)) {
+				// the namespace itself resolves to a location.  add it as an implied entry
+				this.impliedEntries.put(namespace, new SchemaEntryImpl(namespace));
 			}
 			else {
-				removeSchemaResource(namespace, schemaResource);
+				return null;
 			}
 		}
 		
-		schema = addSchema(namespace, resolvedUri);
-		return XsdUtil.getSchema(schema);
-	}
-	
-	protected String getResolvedUri(String namespace) {
-		String location = this.schemaLocations.get(namespace);
-		return XsdUtil.getResolvedUri(namespace, location);
-	}
-	
-	protected XSDSchema addSchema(String namespace, String resolvedUri) {
-		XSDSchema schema = XsdUtil.buildXSDModel(resolvedUri);
-		XSDResourceImpl schemaResource = (schema == null) ? null : (XSDResourceImpl) schema.eResource();
-		if (schemaResource != null) {
-			schemaResource.eAdapters().add(this.schemaResourceAdapter);
-			this.schemaResources.put(namespace, schemaResource);
-			return schema;
-		}
-		return null;
-	}
-	
-	protected void removeSchemaResource(XSDResourceImpl schemaResource) {
-		for (String namespace : new SnapshotCloneIterable<String>(this.schemaResources.keySet())) {
-			if (schemaResource.equals(this.schemaResources.get(namespace))) {
-				removeSchemaResource(namespace, schemaResource);
-			}
-		}
-	}
-	
-	protected void removeSchemaResource(String namespace, XSDResourceImpl schemaResource) {
-		schemaResource.eAdapters().remove(this.schemaResourceAdapter);
-		this.schemaResources.remove(namespace);
+		return this.impliedEntries.get(namespace).getXsdSchema(namespace);
 	}
 	
 	protected void readProjectPreferences() {
-		Map<String, String> schemaMap = JptJaxbCorePlugin.getSchemaLocationMap(this.project.getProject());
-		this.schemaLocations.putAll(schemaMap);
-	}
-	
-	public Map<String, String> getSchemaLocations() {
-		return Collections.unmodifiableMap(this.schemaLocations);
-	}
-	
-	public void setSchemaLocations(Map<String, String> schemaLocations) {
-		this.schemaLocations.clear();
-		JptJaxbCorePlugin.setSchemaLocationMap(this.project.getProject(), schemaLocations);
-		readProjectPreferences();
+		List<String> schemas = JptJaxbCorePlugin.getSchemaLocations(this.project.getProject());
+		for (String schemaLocation : schemas) {
+			SchemaEntryImpl entry = new SchemaEntryImpl(schemaLocation);
+			this.schemaEntries.add(entry);
+		}
 	}
 	
 	public void refreshSchema(String namespace) {
-		String resolvedUri = getResolvedUri(namespace);
-		if (resolvedUri == null) {
-			return;
+		for (SchemaEntryImpl entry : this.schemaEntries) {
+			if (StringTools.stringsAreEqual(namespace, entry.getNamespace())) {
+				entry.refresh();
+			}
 		}
-		
-		XSDResourceImpl schemaResource = this.schemaResources.get(namespace);
-		
-		if (schemaResource != null) {
-			removeSchemaResource(schemaResource);
-		}
-		
-		addSchema(namespace, resolvedUri);
 	}
 	
 	public void refreshAllSchemas() {
-		for (String namespace : new SnapshotCloneIterable<String>(this.schemaResources.keySet())) {
-			refreshSchema(namespace);
+		for (SchemaEntryImpl entry : this.schemaEntries) {
+			entry.refresh();
 		}
 	}
 	
 	public void validate(List<IMessage> messages) {
-		for (String namespace : this.schemaLocations.keySet()) {
-			if (getSchema(namespace) == null) {
+		Bag<String> namespaces = new HashBag<String>();
+		
+		for (SchemaEntry entry : this.schemaEntries) {
+			namespaces.add(entry.getNamespace());
+			
+			if (! entry.isLoaded()) {
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.PROJECT_UNRESOLVED_SCHEMA,
-								new String[] {this.schemaLocations.get(namespace)},
+								JaxbValidationMessages.PROJECT__UNRESOLVED_SCHEMA,
+								new String[] { entry.getLocation() },
 								this.project));
 			}
 		}
-	}
-	
-	
-	private class SchemaResourceAdapter
-			extends AdapterImpl {
 		
-		@Override
-		public void notifyChanged(Notification msg) {
-			if (msg.getFeatureID(Resource.class) == Resource.RESOURCE__IS_LOADED
-					&& msg.getNewBooleanValue() == false) {
-				removeSchemaResource((XSDResourceImpl) msg.getNotifier());
+		for (Iterator<String> stream = namespaces.uniqueIterator(); stream.hasNext(); ) {
+			String namespace = stream.next();
+			if (namespaces.count(namespace) > 1) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.PROJECT__DUPLICATE_NAMESPACE,
+								new String[] { namespace },
+								this.project));
 			}
 		}
 	}

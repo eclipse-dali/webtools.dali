@@ -107,7 +107,7 @@ public class GenericJavaClassMapping
 		return (JaxbClass) super.getJaxbType();
 	}
 	
-	protected JaxbPackageInfo getPackageInfo() {
+	public JaxbPackageInfo getPackageInfo() {
 		JaxbPackage jaxbPackage = getJaxbPackage();
 		// jaxb package may be null during initialization/update
 		return (jaxbPackage == null) ? null : jaxbPackage.getPackageInfo();

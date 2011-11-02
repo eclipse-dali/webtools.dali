@@ -64,13 +64,9 @@ public class GenericJavaPackageInfo
 		this.xmlJavaTypeAdapterContainer = this.buildXmlJavaTypeAdapterContainer();
 	}
 	
-	@Override
-	public JaxbPackage getParent() {
-		return (JaxbPackage) super.getParent();
-	}
 	
 	public JaxbPackage getJaxbPackage() {
-		return getParent();
+		return (JaxbPackage) getParent();
 	}
 	
 

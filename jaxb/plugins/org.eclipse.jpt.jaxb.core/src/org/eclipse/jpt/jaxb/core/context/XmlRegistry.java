@@ -39,5 +39,5 @@ public interface XmlRegistry
 	
 	// ***** misc *****
 	
-	JaxbPackage getJaxbPackage();
+	JaxbClass getJaxbClass();
 }

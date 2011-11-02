@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jaxb.core.tests.internal;
 
 import java.io.ByteArrayInputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -48,8 +48,8 @@ public class SchemaLibraryTests
 		String namespace = "http://java.sun.com/xml/ns/persistence/orm";
 		
 		// set namespace in project properties\
-		Map<String, String> schemaLocations = new HashMap<String, String>();
-		schemaLocations.put(namespace, "http://java.sun.com/xml/ns/persistence/orm_2_0.xsd");
+		List<String> schemaLocations = new Vector<String>();
+		schemaLocations.add("http://java.sun.com/xml/ns/persistence/orm_2_0.xsd");
 		getJaxbProject().getSchemaLibrary().setSchemaLocations(schemaLocations);
 		
 		// test initial load
@@ -71,8 +71,8 @@ public class SchemaLibraryTests
 		String namespace = "http://www.eclipse.org/eclipselink/xsds/persistence/orm";
 		
 		// set namespace in project properties\
-		Map<String, String> schemaLocations = new HashMap<String, String>();
-		schemaLocations.put(namespace, "http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_0.xsd");
+		List<String> schemaLocations = new Vector<String>();
+		schemaLocations.add("http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_0.xsd");
 		getJaxbProject().getSchemaLibrary().setSchemaLocations(schemaLocations);
 		
 		// test initial load
@@ -102,8 +102,8 @@ public class SchemaLibraryTests
 		String namespace = "http://www.example.org/customer-example";
 		
 		// set namespace in project properties\
-		Map<String, String> schemaLocations = new HashMap<String, String>();
-		schemaLocations.put(namespace, "platform:/resource/" + BASE_PROJECT_NAME + "/customer.xsd");
+		List<String> schemaLocations = new Vector<String>();
+		schemaLocations.add("platform:/resource/" + BASE_PROJECT_NAME + "/customer.xsd");
 		getJaxbProject().getSchemaLibrary().setSchemaLocations(schemaLocations);
 		
 		// test initial load

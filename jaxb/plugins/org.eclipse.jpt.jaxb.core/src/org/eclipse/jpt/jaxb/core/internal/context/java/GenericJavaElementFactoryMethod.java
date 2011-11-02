@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
@@ -238,6 +239,11 @@ public class GenericJavaElementFactoryMethod
 		}
 		
 		
+		protected XsdSchema getXsdSchema() {
+			JaxbPackage jaxbPackage = GenericJavaElementFactoryMethod.this.getRegistry().getJaxbClass().getJaxbPackage();
+			return (jaxbPackage == null) ? null : jaxbPackage.getXsdSchema();
+		}
+		
 		@Override
 		public String getDefaultName() {
 			return null;
@@ -245,7 +251,8 @@ public class GenericJavaElementFactoryMethod
 		
 		@Override
 		public String getDefaultNamespace() {
-			return GenericJavaElementFactoryMethod.this.getRegistry().getJaxbPackage().getNamespace();
+			JaxbPackage jaxbPackage = GenericJavaElementFactoryMethod.this.getRegistry().getJaxbClass().getJaxbPackage();
+			return (jaxbPackage == null) ? null : jaxbPackage.getNamespace();
 		}
 		
 		@Override
@@ -262,7 +269,7 @@ public class GenericJavaElementFactoryMethod
 				}
 			}
 			
-			XsdSchema xsdSchema = GenericJavaElementFactoryMethod.this.getRegistry().getJaxbPackage().getXsdSchema();
+			XsdSchema xsdSchema = getXsdSchema();
 			if (xsdSchema != null) {
 				return xsdSchema.getElementNameProposals(getNamespace(), filter);
 			}
@@ -272,7 +279,7 @@ public class GenericJavaElementFactoryMethod
 		
 		@Override
 		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema xsdSchema = GenericJavaElementFactoryMethod.this.getRegistry().getJaxbPackage().getXsdSchema();
+			XsdSchema xsdSchema = getXsdSchema();
 			return (xsdSchema == null) ? EmptyIterable.<String>instance() : xsdSchema.getNamespaceProposals(filter);
 		}
 		
@@ -299,7 +306,7 @@ public class GenericJavaElementFactoryMethod
 				}
 			}
 			else {
-				XsdSchema xsdSchema = GenericJavaElementFactoryMethod.this.getRegistry().getJaxbPackage().getXsdSchema();
+				XsdSchema xsdSchema = getXsdSchema();
 				if (xsdSchema != null) {
 					if (xsdSchema.getElementDeclaration(getNamespace(), getName()) == null) {
 						messages.add(getUnresolveSchemaComponentMessage(astRoot));
@@ -328,6 +335,11 @@ public class GenericJavaElementFactoryMethod
 		}
 		
 		
+		protected XsdSchema getXsdSchema() {
+			JaxbPackage jaxbPackage = GenericJavaElementFactoryMethod.this.getRegistry().getJaxbClass().getJaxbPackage();
+			return (jaxbPackage == null) ? null : jaxbPackage.getXsdSchema();
+		}
+		
 		@Override
 		public String getDefaultName() {
 			return null;
@@ -335,7 +347,8 @@ public class GenericJavaElementFactoryMethod
 		
 		@Override
 		public String getDefaultNamespace() {
-			return GenericJavaElementFactoryMethod.this.getRegistry().getJaxbPackage().getNamespace();
+			JaxbPackage jaxbPackage = GenericJavaElementFactoryMethod.this.getRegistry().getJaxbClass().getJaxbPackage();
+			return (jaxbPackage == null) ? null : jaxbPackage.getNamespace();
 		}
 		
 		@Override
@@ -350,7 +363,7 @@ public class GenericJavaElementFactoryMethod
 				}
 			}
 			
-			XsdSchema xsdSchema = GenericJavaElementFactoryMethod.this.getRegistry().getJaxbPackage().getXsdSchema();
+			XsdSchema xsdSchema = getXsdSchema();
 			if (xsdSchema != null) {
 				return xsdSchema.getElementNameProposals(getNamespace(), filter);
 			}
@@ -360,7 +373,7 @@ public class GenericJavaElementFactoryMethod
 		
 		@Override
 		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema xsdSchema = GenericJavaElementFactoryMethod.this.getRegistry().getJaxbPackage().getXsdSchema();
+			XsdSchema xsdSchema = getXsdSchema();
 			return (xsdSchema == null) ? EmptyIterable.<String>instance() : xsdSchema.getNamespaceProposals(filter);
 		}
 		
@@ -395,7 +408,7 @@ public class GenericJavaElementFactoryMethod
 	
 		@Override
 		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-			XsdSchema xsdSchema = GenericJavaElementFactoryMethod.this.getRegistry().getJaxbPackage().getXsdSchema();
+			XsdSchema xsdSchema = getXsdSchema();
 			if (xsdSchema != null) {
 				if (xsdSchema.getElementDeclaration(getNamespace(), getName()) == null) {
 					messages.add(getUnresolveSchemaComponentMessage(astRoot));

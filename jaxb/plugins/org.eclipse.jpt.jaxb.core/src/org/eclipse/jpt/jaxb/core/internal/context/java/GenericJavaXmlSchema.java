@@ -19,6 +19,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
@@ -270,7 +272,14 @@ public class GenericJavaXmlSchema
 	protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
 		return StringTools.convertToJavaStringLiterals(
 				new FilteringIterable<String>(
-						getJaxbProject().getSchemaLibrary().getSchemaLocations().keySet(), filter));
+						new TransformationIterable<SchemaEntry, String>(
+								getJaxbProject().getSchemaLibrary().getSchemaEntries()) {
+							@Override
+							protected String transform(SchemaEntry o) {
+								return o.getNamespace();
+							}
+						}, 
+						filter));
 	}
 	
 	

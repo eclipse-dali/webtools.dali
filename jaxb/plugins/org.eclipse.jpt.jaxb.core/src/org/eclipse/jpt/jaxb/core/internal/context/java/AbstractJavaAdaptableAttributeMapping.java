@@ -142,7 +142,8 @@ public abstract class AbstractJavaAdaptableAttributeMapping<A extends Annotation
 		}
 		
 		// see if there is an xml adapter on the package
-		JaxbPackageInfo pkgInfo = getJaxbClassMapping().getJaxbType().getJaxbPackage().getPackageInfo();
+		JaxbPackage pkg = getJaxbClassMapping().getJaxbType().getJaxbPackage();
+		JaxbPackageInfo pkgInfo = (pkg == null) ? null : pkg.getPackageInfo();
 		if (pkgInfo != null) {
 			XmlJavaTypeAdapter xmlJavaTypeAdapter = pkgInfo.getXmlJavaTypeAdapter(boundTypeName);
 			if (xmlJavaTypeAdapter != null) {
@@ -153,14 +154,12 @@ public abstract class AbstractJavaAdaptableAttributeMapping<A extends Annotation
 		// see if there is an xml adapter on the *type's* package
 		JavaResourceAbstractType resourceType = getJaxbProject().getJavaResourceType(boundTypeName);
 		if (resourceType != null) {
-			JaxbPackage pkg = getContextRoot().getPackage(resourceType.getPackageName());
-			if (pkg != null) {
-				pkgInfo = pkg.getPackageInfo();
-				if (pkgInfo != null) {
-					XmlJavaTypeAdapter xmlJavaTypeAdapter = pkgInfo.getXmlJavaTypeAdapter(boundTypeName);
-					if (xmlJavaTypeAdapter != null) {
-						return xmlJavaTypeAdapter.getXmlAdapter();
-					}
+			pkg = getContextRoot().getPackage(resourceType.getPackageName());
+			pkgInfo = (pkg == null) ? null : pkg.getPackageInfo();
+			if (pkgInfo != null) {
+				XmlJavaTypeAdapter xmlJavaTypeAdapter = pkgInfo.getXmlJavaTypeAdapter(boundTypeName);
+				if (xmlJavaTypeAdapter != null) {
+					return xmlJavaTypeAdapter.getXmlAdapter();
 				}
 			}
 		}

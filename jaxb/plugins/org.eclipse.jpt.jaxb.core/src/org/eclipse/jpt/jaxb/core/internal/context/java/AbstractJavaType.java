@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
@@ -249,6 +250,11 @@ public abstract class AbstractJavaType
 	
 	public JaxbPackage getJaxbPackage() {
 		return getContextRoot().getPackage(getPackageName());
+	}
+	
+	public JaxbPackageInfo getJaxbPackageInfo() {
+		JaxbPackage pkg = getJaxbPackage();
+		return (pkg == null) ? null : pkg.getPackageInfo();
 	}
 	
 	public Iterable<String> getReferencedXmlTypeNames() {

@@ -129,7 +129,7 @@ public class GenericPackage
 	// **************** validation ********************************************
 	
 	public void validate(List<IMessage> messages, IReporter reporter) {
-		if (! getJaxbProject().getSchemaLibrary().getSchemaLocations().containsKey(getNamespace())) {
+		if (getJaxbProject().getSchemaLibrary().getSchema(getNamespace()) == null) {
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,

@@ -13,9 +13,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventListener;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
+import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -66,6 +66,7 @@ import org.eclipse.jpt.common.utility.model.value.WritableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.SelectFileOrXMLCatalogIdPanel;
@@ -444,8 +445,8 @@ public class JaxbSchemasPropertiesPage
 		
 		protected Collection<Schema> buildSchemas_() {
 			ArrayList<Schema> schemas = new ArrayList<Schema>();
-			for (Map.Entry<String, String> entry : this.subject.getSchemaLibrary().getSchemaLocations().entrySet()) {
-				schemas.add(new Schema(entry.getKey(), entry.getValue()));
+			for (SchemaEntry entry : this.subject.getSchemaLibrary().getSchemaEntries()) {
+				schemas.add(new Schema(entry.getNamespace(), entry.getLocation()));
 			}
 			return schemas;
 		}
@@ -465,9 +466,9 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		public void accept() {
-			Map<String, String> schemaLocations = new HashMap<String, String>();
+			List<String> schemaLocations = new Vector<String>();
 			for (Schema schema : this.schemas) {
-				schemaLocations.put(schema.getNamespace(), schema.getLocation());
+				schemaLocations.add(schema.getLocation());
 			}
 			this.subject.getSchemaLibrary().setSchemaLocations(schemaLocations);
 		}
@@ -841,7 +842,7 @@ public class JaxbSchemasPropertiesPage
 			String location = dialog.getLocation();
 			this.location.setValue(location);
 			
-			String resolvedUri = XsdUtil.getResolvedUri(null, location);
+			String resolvedUri = XsdUtil.getResolvedUri(location);
 			
 			XSDSchema schema = XSDImpl.buildXSDModel(resolvedUri);
 			String newNamespace = 

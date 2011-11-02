@@ -71,7 +71,7 @@ public abstract class AbstractJavaTypeMapping
 		return getJaxbType().getJavaResourceType();
 	}
 	
-	public JaxbPackage getJaxbPackage() {
+	protected JaxbPackage getJaxbPackage() {
 		return getJaxbType().getJaxbPackage();
 	}
 	
@@ -343,8 +343,6 @@ public abstract class AbstractJavaTypeMapping
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		
-		// TODO - validation for xml transient and anything else
 		
 		if (! this.xmlTransient) {
 			this.qName.validate(messages, reporter, astRoot);

@@ -9,8 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.emf.common.util.URI;
@@ -134,18 +134,15 @@ public class ClassesGeneratorUi {
 			return;
 		}
 		
-		String resolvedUri = XsdUtil.getResolvedUri(null, schemaLocation);
+		String resolvedUri = XsdUtil.getResolvedUri(schemaLocation);
 		XSDSchema schema = XSDImpl.buildXSDModel(resolvedUri);
 		if (schema != null) {
-			String schemaNamespace = 
-				((schema.getTargetNamespace()) == null ? 
-						""
-						: schema.getTargetNamespace());
-			
 			SchemaLibrary schemaLib = jaxbProject.getSchemaLibrary();
-			Map<String, String> schemas = new HashMap<String, String>(schemaLib.getSchemaLocations());
-			schemas.put(schemaNamespace, schemaLocation);
-			schemaLib.setSchemaLocations(schemas);
+			List<String> schemas = new Vector<String>(schemaLib.getSchemaLocations());
+			if (! schemas.contains(schemaLocation)) {
+				schemas.add(schemaLocation);
+				schemaLib.setSchemaLocations(schemas);
+			}
 		}
 	}
 	

@@ -9,14 +9,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core;
 
-import java.util.Map;
+import java.util.List;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 
 /**
  * Entry point for accessing project schema resources
  * 
  * @noimplement
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  *  
  * Provisional API: This interface is part of an interim API that is still
@@ -28,25 +28,30 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 public interface SchemaLibrary {
 	
 	/**
-	 * Return the project settings that indicate how schema keys are mapped to actual
-	 * resolvable schemas
+	 * Return the schema entries that have been added to the project settings for validation purposes
 	 */
-	public Map<String, String> getSchemaLocations();
+	public List<SchemaEntry> getSchemaEntries();
 	
 	/**
-	 * Set the project settings that indicate how schema keys are mapped to actual
-	 * resolvable schemas.
+	 * Return the locations associated with the schema entries
 	 */
-	public void setSchemaLocations(Map<String, String> schemaLocations);
+	public List<String> getSchemaLocations();
+	
+	/**
+	 * Set the schema locations
+	 */
+	public void setSchemaLocations(List<String> schemaLocations);
 	
 	/**
 	 * Return the XsdSchema identified by the given namespace, if it exists and is resolvable.
+	 * If there are multiple schemas with the given namespace, return the first one found.
 	 * Return null otherwise.
 	 */
 	public XsdSchema getSchema(String namespace);
 	
 	/**
 	 * Refresh the schema with the given namespace, if it exists and is resolvable.
+	 * Refresh the first one found if there are multiple schemas for the namespace.
 	 * Do nothing otherwise.
 	 */
 	public void refreshSchema(String namespace);
@@ -55,5 +60,4 @@ public interface SchemaLibrary {
 	 * Refresh all schemas within the library.
 	 */
 	public void refreshAllSchemas();
-	
 }

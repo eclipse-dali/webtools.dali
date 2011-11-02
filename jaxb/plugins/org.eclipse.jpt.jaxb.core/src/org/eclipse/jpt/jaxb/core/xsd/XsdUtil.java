@@ -58,7 +58,7 @@ public class XsdUtil {
 		return (xsdNamespace == null) ? StringTools.stringIsEmpty(namespace) : xsdNamespace.equals(namespace);
 	}
 	
-	public static String getResolvedUri(String namespace, String location) {
+	public static String getResolvedUri(String location) {
 		String resolvedUri = null;
 		
 		ICatalog catalog = XMLCorePlugin.getDefault().getDefaultXMLCatalog();
@@ -69,6 +69,9 @@ public class XsdUtil {
 				if (resolvedUri == null) {
 					resolvedUri = catalog.resolveURI(location);
 				}
+				if (resolvedUri == null) {
+					resolvedUri = catalog.resolvePublic(location, null);
+				}
 			}
 			catch (MalformedURLException me) {
 				JptJaxbCorePlugin.log(me);
@@ -77,25 +80,6 @@ public class XsdUtil {
 			catch (IOException ie) {
 				JptJaxbCorePlugin.log(ie);
 				resolvedUri = null;
-			}
-		}
-		
-		if (resolvedUri == null && namespace != null) {
-			if ( ! (location != null && location.endsWith(".xsd"))) { //$NON-NLS-1$ 
-				try {
-					resolvedUri = catalog.resolvePublic(namespace, location);
-					if (resolvedUri == null) {
-						resolvedUri = catalog.resolveURI(namespace);
-					}
-				}
-				catch (MalformedURLException me) {
-					JptJaxbCorePlugin.log(me);
-					resolvedUri = null;
-				}
-				catch (IOException ie) {
-            		JptJaxbCorePlugin.log(ie);
-					resolvedUri = null;
-				}
 			}
 		}
 		
