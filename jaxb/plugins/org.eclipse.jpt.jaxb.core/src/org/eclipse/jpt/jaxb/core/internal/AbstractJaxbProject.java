@@ -1198,6 +1198,7 @@ public abstract class AbstractJaxbProject
 		this.contextModelSynchronizer.stop();
 		this.updateSynchronizer.stop();
 		this.updateSynchronizer.removeListener(this.updateSynchronizerListener);
+		this.schemaLibrary.dispose();
 		// the XML resources are held indefinitely by the WTP translator framework,
 		// so we better remove our listener or the JAXB project will not be GCed
 		for (JaxbFile jaxbFile : this.getJaxbFiles()) {

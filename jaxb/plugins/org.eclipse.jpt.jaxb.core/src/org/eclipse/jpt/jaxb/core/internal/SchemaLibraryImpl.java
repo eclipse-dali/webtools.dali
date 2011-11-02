@@ -114,6 +114,18 @@ public class SchemaLibraryImpl
 		}
 	}
 	
+	void dispose() {
+		for (SchemaEntryImpl entry : this.schemaEntries) {
+			entry.dispose();
+		}
+		for (SchemaEntryImpl entry : this.impliedEntries.values()) {
+			entry.dispose();
+		}
+		
+		this.schemaEntries.clear();
+		this.impliedEntries.clear();
+	}
+	
 	public void validate(List<IMessage> messages) {
 		Bag<String> namespaces = new HashBag<String>();
 		
