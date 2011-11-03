@@ -309,7 +309,10 @@ public abstract class AbstractJavaTypeMapping
 	public Iterable<String> getJavaCompletionProposals(
 			int pos, Filter<String> filter, CompilationUnit astRoot) {
 		
-		getJaxbProject().getSchemaLibrary().refreshSchema(getJaxbPackage().getNamespace());
+		JaxbPackage jaxbPackage = getJaxbPackage();
+		if (jaxbPackage != null) {
+			getJaxbProject().getSchemaLibrary().refreshSchema(jaxbPackage.getNamespace());
+		}
 		
 		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
@@ -357,7 +360,8 @@ public abstract class AbstractJavaTypeMapping
 	// ***** misc *****
 	
 	public XsdTypeDefinition getXsdTypeDefinition() {
-		XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
+		JaxbPackage jaxbPackage = getJaxbPackage();
+		XsdSchema xsdSchema = (jaxbPackage == null) ? null : jaxbPackage.getXsdSchema();
 		if (xsdSchema == null) {
 			return null;
 		}
@@ -393,8 +397,14 @@ public abstract class AbstractJavaTypeMapping
 		
 		
 		@Override
+		protected JaxbPackage getJaxbPackage() {
+			return AbstractJavaTypeMapping.this.getJaxbType().getJaxbPackage();
+		}
+		
+		@Override
 		public String getDefaultNamespace() {
-			return AbstractJavaTypeMapping.this.getJaxbType().getJaxbPackage().getNamespace();
+			JaxbPackage jaxbPackage = AbstractJavaTypeMapping.this.getJaxbType().getJaxbPackage();
+			return (jaxbPackage == null) ? null : jaxbPackage.getNamespace();
 		}
 		
 		@Override
@@ -404,7 +414,7 @@ public abstract class AbstractJavaTypeMapping
 		
 		@Override
 		protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema schema = AbstractJavaTypeMapping.this.getJaxbType().getJaxbPackage().getXsdSchema();
+			XsdSchema schema = this.getXsdSchema();
 			if (schema == null) {
 				return EmptyIterable.instance();
 			}
@@ -413,7 +423,7 @@ public abstract class AbstractJavaTypeMapping
 		
 		@Override
 		protected Iterable<String> getNameProposals(Filter<String> filter) {
-			XsdSchema schema = AbstractJavaTypeMapping.this.getJaxbType().getJaxbPackage().getXsdSchema();
+			XsdSchema schema = this.getXsdSchema();
 			if (schema == null) {
 				return EmptyIterable.instance();
 			}
@@ -431,8 +441,8 @@ public abstract class AbstractJavaTypeMapping
 			// if name is absent (""), namespace cannot be different from package namespace
 			if ("".equals(getName()) 
 					&& ! StringTools.stringsAreEqual(
-							getNamespace(), 
-							AbstractJavaTypeMapping.this.getJaxbType().getJaxbPackage().getNamespace())) {
+							getNamespace(),
+							getDefaultNamespace())) {
 				messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -449,8 +459,7 @@ public abstract class AbstractJavaTypeMapping
 			String namespace = getNamespace();
 			
 			if (! StringTools.stringIsEmpty(name)) {
-				XsdSchema schema = AbstractJavaTypeMapping.this.getJaxbType().getJaxbPackage().getXsdSchema();
-				
+				XsdSchema schema = this.getXsdSchema();
 				if (schema != null) {
 					XsdTypeDefinition schemaType = schema.getTypeDefinition(namespace, name);
 					if (schemaType == null) {
@@ -470,7 +479,4 @@ public abstract class AbstractJavaTypeMapping
 			return AbstractJavaTypeMapping.this.getXmlTypeAnnotation();
 		}
 	}
-	
-	
-	
 }

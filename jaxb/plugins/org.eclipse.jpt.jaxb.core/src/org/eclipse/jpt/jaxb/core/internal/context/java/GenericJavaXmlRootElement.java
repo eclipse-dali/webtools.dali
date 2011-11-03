@@ -139,8 +139,14 @@ public class GenericJavaXmlRootElement
 		
 		
 		@Override
+		protected JaxbPackage getJaxbPackage() {
+			return GenericJavaXmlRootElement.this.getJaxbPackage();
+		}
+		
+		@Override
 		public String getDefaultNamespace() {
-			return GenericJavaXmlRootElement.this.getJaxbPackage().getNamespace();
+			JaxbPackage jaxbPackage = this.getJaxbPackage();
+			return (jaxbPackage == null) ? null : jaxbPackage.getNamespace();
 		}
 		
 		@Override
@@ -150,7 +156,7 @@ public class GenericJavaXmlRootElement
 		
 		@Override
 		protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlRootElement.this.getJaxbPackage().getXsdSchema();
+			XsdSchema schema = this.getXsdSchema();
 			if (schema == null) {
 				return EmptyIterable.instance();
 			}
@@ -159,7 +165,7 @@ public class GenericJavaXmlRootElement
 		
 		@Override
 		protected Iterable<String> getNameProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlRootElement.this.getJaxbPackage().getXsdSchema();
+			XsdSchema schema = this.getXsdSchema();
 			if (schema == null) {
 				return EmptyIterable.instance();
 			}
@@ -175,7 +181,7 @@ public class GenericJavaXmlRootElement
 		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 			String name = getName();
 			String namespace = getNamespace();
-			XsdSchema schema = GenericJavaXmlRootElement.this.getJaxbPackage().getXsdSchema();
+			XsdSchema schema = this.getXsdSchema();
 			
 			if (schema != null) {
 				// element must resolve

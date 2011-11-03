@@ -46,6 +46,7 @@ public abstract class AbstractJavaElementQName
 		return getPersistentAttribute().getClassMapping();
 	}
 	
+	@Override
 	protected JaxbPackage getJaxbPackage() {
 		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
 	}
@@ -81,13 +82,14 @@ public abstract class AbstractJavaElementQName
 	
 	@Override
 	public String getDefaultNamespace() {
-		return (getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
+		JaxbPackage jaxbPackage = this.getJaxbPackage();
+		return (jaxbPackage != null && jaxbPackage.getElementFormDefault() == XmlNsForm.QUALIFIED) ?
 				getJaxbClassMapping().getQName().getNamespace() : "";
 	}
 	
 	@Override
 	public Iterable<String> getNamespaceProposals(Filter<String> filter) {
-		XsdSchema schema = getJaxbPackage().getXsdSchema();
+		XsdSchema schema = this.getXsdSchema();
 		return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
 	}
 

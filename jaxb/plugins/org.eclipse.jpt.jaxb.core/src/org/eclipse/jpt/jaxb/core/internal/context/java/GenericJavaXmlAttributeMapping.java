@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
@@ -171,6 +172,11 @@ public class GenericJavaXmlAttributeMapping
 		
 		
 		@Override
+		protected JaxbPackage getJaxbPackage() {
+			return GenericJavaXmlAttributeMapping.this.getJaxbPackage();
+		}
+		
+		@Override
 		public String getReferencedComponentTypeDescription() {
 			return JptJaxbCoreMessages.XML_ATTRIBUTE_DESC;
 		}
@@ -188,13 +194,14 @@ public class GenericJavaXmlAttributeMapping
 		
 		@Override
 		public String getDefaultNamespace() {
-			return (GenericJavaXmlAttributeMapping.this.getJaxbPackage().getAttributeFormDefault() == XmlNsForm.QUALIFIED) ?
+			JaxbPackage jaxbPackage = this.getJaxbPackage();
+			return (jaxbPackage != null && jaxbPackage.getAttributeFormDefault() == XmlNsForm.QUALIFIED) ?
 					GenericJavaXmlAttributeMapping.this.getJaxbClassMapping().getQName().getNamespace() : "";
 		}
 		
 		@Override
 		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlAttributeMapping.this.getJaxbPackage().getXsdSchema();
+			XsdSchema schema = this.getXsdSchema();
 			return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
 		}
 		

@@ -223,13 +223,19 @@ public class GenericJavaXmlElementWrapper
 		
 		
 		@Override
+		protected JaxbPackage getJaxbPackage() {
+			return GenericJavaXmlElementWrapper.this.getJaxbPackage();
+		}
+		
+		@Override
 		public String getDefaultName() {
 			return "";
 		}
 		
 		@Override
 		public String getDefaultNamespace() {
-			return (GenericJavaXmlElementWrapper.this.getJaxbPackage().getElementFormDefault() == XmlNsForm.QUALIFIED) ?
+			JaxbPackage jaxbPackage = this.getJaxbPackage();
+			return (jaxbPackage != null && jaxbPackage.getElementFormDefault() == XmlNsForm.QUALIFIED) ?
 					GenericJavaXmlElementWrapper.this.getJaxbClassMapping().getQName().getNamespace() : "";
 		}
 		
@@ -241,7 +247,7 @@ public class GenericJavaXmlElementWrapper
 		
 		@Override
 		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlElementWrapper.this.getJaxbPackage().getXsdSchema();
+			XsdSchema schema = this.getXsdSchema();
 			return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
 		}
 		

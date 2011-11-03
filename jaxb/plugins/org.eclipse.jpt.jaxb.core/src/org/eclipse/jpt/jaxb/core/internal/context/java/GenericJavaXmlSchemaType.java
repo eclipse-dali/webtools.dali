@@ -180,6 +180,11 @@ public abstract class GenericJavaXmlSchemaType
 		
 		
 		@Override
+		protected JaxbPackage getJaxbPackage() {
+			return GenericJavaXmlSchemaType.this.getJaxbPackage();
+		}
+		
+		@Override
 		protected String getReferencedComponentTypeDescription() {
 			return JptJaxbCoreMessages.XML_TYPE_DESC;
 		}
@@ -196,7 +201,7 @@ public abstract class GenericJavaXmlSchemaType
 		
 		@Override
 		protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlSchemaType.this.getJaxbPackage().getXsdSchema();
+			XsdSchema schema = this.getXsdSchema();
 			if (schema == null) {
 				return EmptyIterable.instance();
 			}
@@ -205,7 +210,7 @@ public abstract class GenericJavaXmlSchemaType
 		
 		@Override
 		protected Iterable<String> getNameProposals(Filter<String> filter) {
-			XsdSchema schema = GenericJavaXmlSchemaType.this.getJaxbPackage().getXsdSchema();
+			XsdSchema schema = this.getXsdSchema();
 			if (schema == null) {
 				return EmptyIterable.instance();
 			}
@@ -218,7 +223,7 @@ public abstract class GenericJavaXmlSchemaType
 			String namespace = getNamespace();
 			
 			if (! StringTools.stringIsEmpty(name)) {
-				XsdSchema schema = GenericJavaXmlSchemaType.this.getJaxbPackage().getXsdSchema();
+				XsdSchema schema = this.getXsdSchema();
 				
 				if (schema != null) {
 					XsdTypeDefinition schemaType = schema.getTypeDefinition(namespace, name);
