@@ -87,6 +87,7 @@ public class GenericJavaXmlList
 			}
 			
 			if (noTypeAssociated 
+					|| itemXsdType == null
 					|| itemXsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE
 					|| ((XsdSimpleTypeDefinition) itemXsdType).getXSDComponent().getVariety() == XSDVariety.LIST_LITERAL) {
 				

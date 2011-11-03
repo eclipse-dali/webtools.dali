@@ -71,7 +71,7 @@ public class GenericJavaXmlIDREF
 					messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JaxbValidationMessages.XML_IDREF__TYPE_DOES_NOT_CONTAIN_XML_ID,
+						JaxbValidationMessages.XML_ID_REF__TYPE_DOES_NOT_CONTAIN_XML_ID,
 						new String[] { typeName },
 						this,
 						ref.getTypeTextRange(astRoot)));				
