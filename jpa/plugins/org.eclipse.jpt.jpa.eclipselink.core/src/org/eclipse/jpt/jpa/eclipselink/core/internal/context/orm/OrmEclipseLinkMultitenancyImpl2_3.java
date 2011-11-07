@@ -680,7 +680,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		if (getType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+					IMessage.NORMAL_SEVERITY,
 					EclipseLinkJpaValidationMessages.MULTITENANT_TABLE_PER_TENANT_NOT_SUPPORTED,
 					EMPTY_STRING_ARRAY,
 					this,
