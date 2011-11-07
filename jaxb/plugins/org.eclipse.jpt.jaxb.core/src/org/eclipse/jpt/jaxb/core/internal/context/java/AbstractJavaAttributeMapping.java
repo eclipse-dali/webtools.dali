@@ -132,7 +132,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	}
 	
 	public Iterable<String> getReferencedXmlTypeNames() {
-		return new SingleElementIterable(getValueTypeName());
+		return new SingleElementIterable<String>(getValueTypeName());
 	}
 	
 	/* default impl */
