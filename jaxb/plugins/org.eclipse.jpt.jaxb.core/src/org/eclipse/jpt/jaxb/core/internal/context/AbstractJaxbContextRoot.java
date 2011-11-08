@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context;
 
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,8 +66,8 @@ public abstract class AbstractJaxbContextRoot
 			throw new NullPointerException();
 		}
 		this.jaxbProject = jaxbProject;
-		this.packages = new HashMap<String, JaxbPackage>();
-		this.types = new HashMap<String, JaxbType>();
+		this.packages = new Hashtable<String, JaxbPackage>();
+		this.types = new Hashtable<String, JaxbType>();
 		initialize();
 	}
 	
@@ -451,7 +451,7 @@ public abstract class AbstractJaxbContextRoot
 	}
 	
 	public JaxbType getType(String typeName) {
-		return this.types.get(typeName);
+		return typeName == null ? null : this.types.get(typeName);
 	}
 	
 	protected void addType_(JaxbType type) {

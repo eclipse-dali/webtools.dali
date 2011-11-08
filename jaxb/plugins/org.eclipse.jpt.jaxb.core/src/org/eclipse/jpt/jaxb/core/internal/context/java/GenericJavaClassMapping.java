@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +82,7 @@ public class GenericJavaClassMapping
 	
 	public GenericJavaClassMapping(JaxbClass parent) {
 		super(parent);
-		this.includedAttributesContainers = new HashMap<JaxbClassMapping, JaxbAttributesContainer>();
+		this.includedAttributesContainers = new Hashtable<JaxbClassMapping, JaxbAttributesContainer>();
 		this.propOrderContainer = new PropOrderContainer();
 		
 		initFactoryClass();
