@@ -1318,8 +1318,7 @@ public class GenericOrmPersistentType
 	}
 
 	public TextRange getValidationTextRange() {
-		TextRange textRange = this.mapping.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getEntityMappings().getValidationTextRange();
+		return this.mapping.getValidationTextRange();
 	}
 
 
