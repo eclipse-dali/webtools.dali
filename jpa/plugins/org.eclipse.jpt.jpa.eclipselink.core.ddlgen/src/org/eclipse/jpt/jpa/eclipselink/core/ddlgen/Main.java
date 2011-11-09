@@ -20,8 +20,6 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
-
 /** 
  * This class creates a EclipseLink <code>EntityManagerFactory</code>, 
  * and executes the DDL generator with the command set in the properties: 
@@ -52,9 +50,6 @@ public class Main
 {
 	protected EntityManagerFactory emf;
 	private Map<String, String> eclipseLinkProperties;
-	private String createDDLFileName;
-	private String dropDDLFileName;
-	private String appLocation;
 	private String eclipseLinkPropertiesPath;
 	private boolean isDebugMode;
 	
@@ -94,19 +89,6 @@ public class Main
 
 		this.eclipseLinkPropertiesPath = this.getEclipseLinkPropertiesPath(args);
 		this.eclipseLinkProperties = this.getProperties(this.eclipseLinkPropertiesPath);
-		
-		this.createDDLFileName = this.getConfigPropertyAsString( 
-						SchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME, 
-						this.eclipseLinkProperties,  
-						SchemaGeneration.DEFAULT_SCHEMA_GENERATION_CREATE_FILE_NAME);
-
-		this.dropDDLFileName = this.getConfigPropertyAsString(
-						SchemaGeneration.ECLIPSELINK_DROP_FILE_NAME, 
-						this.eclipseLinkProperties,  
-						SchemaGeneration.DEFAULT_SCHEMA_GENERATION_DROP_FILE_NAME); 
-		
-		this.appLocation = this.eclipseLinkProperties.get(
-						SchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION);
 
 		this.isDebugMode = this.getDebugMode(args);
 	}
@@ -114,8 +96,6 @@ public class Main
 	private void dispose() {
 
 		if( ! this.isDebugMode) {
-			new File(this.appLocation + "/" + this.createDDLFileName).delete(); //$NON-NLS-1$
-			new File(this.appLocation + "/" + this.dropDDLFileName).delete(); //$NON-NLS-1$
 			new File(this.eclipseLinkPropertiesPath).delete();
 		}
 	}
@@ -186,33 +166,4 @@ public class Main
 		}
 		return false;
 	}
-
-	// ****** utility methods *******
-	
-    /**
-     * Check the provided map for an object with the given key.  If that object is not available, check the
-     * System properties.  If it is not available from either location, return the default value.
-     * @param propertyKey 
-     * @param map 
-     * @param defaultValue 
-     * @return 
-     */
-    protected String getConfigPropertyAsString(String propertyKey, Map<String, String> overrides, String defaultValue){
-    	String value = this.getConfigPropertyAsString(propertyKey, overrides);
-        if(value == null) {
-            value = defaultValue;
-        }
-        return value;
-    }
-    
-    protected String getConfigPropertyAsString(String propertyKey, Map<String, String> overrides){
-        String value = null;
-        if(overrides != null) {
-            value = overrides.get(propertyKey);
-        }
-        if(value == null) {
-            value = System.getProperty(propertyKey);
-        }
-        return value;
-    }
 }
