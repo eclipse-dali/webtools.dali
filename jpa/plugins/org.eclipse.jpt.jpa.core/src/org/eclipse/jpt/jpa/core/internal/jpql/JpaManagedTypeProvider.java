@@ -46,7 +46,10 @@ import org.eclipse.persistence.jpa.jpql.spi.IType;
  * @since 3.0
  * @author Pascal Filion
  */
-public final class JpaManagedTypeProvider implements IManagedTypeProvider {
+
+//TODO This class has been altered to provide compatibility to Dali 3.0.  These changes should be removed in Dali 3.2 stream.
+//class should be final and persistenceTypes() method should be removed.
+public class JpaManagedTypeProvider implements IManagedTypeProvider {
 
 	/**
 	 * The filtered collection of managed types that are the abstract schema types.
@@ -249,7 +252,9 @@ public final class JpaManagedTypeProvider implements IManagedTypeProvider {
 	 *
 	 * @return The managed types that are defined only in the provider
 	 */
-//	abstract Iterable<? extends PersistentType> persistenceTypes();
+	Iterable<? extends PersistentType> persistenceTypes(){
+		return this.persistentTypeContainer.getPersistentTypes();
+	}
 
 	private static class EntityCollector implements IManagedTypeVisitor {
 
