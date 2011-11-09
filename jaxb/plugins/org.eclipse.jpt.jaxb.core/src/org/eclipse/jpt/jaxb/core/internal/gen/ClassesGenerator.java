@@ -12,10 +12,8 @@ package org.eclipse.jpt.jaxb.core.internal.gen;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -182,17 +180,6 @@ public class ClassesGenerator extends AbstractJptGenerator
 	@Override
 	protected void preGenerate(IProgressMonitor monitor) {
 		// nothing to do yet...
-	}
-
-	@Override
-	protected void postGenerate() {
-		super.postGenerate();
-		try {
-			this.javaProject.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		}
-		catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	// ********** private methods **********

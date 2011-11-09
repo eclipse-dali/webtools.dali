@@ -15,10 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -138,6 +140,7 @@ public abstract class AbstractJptGenerator
 			if( ! this.isDebug) {
 				this.removeLaunchConfiguration();
 			}
+			this.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		}
 		catch(CoreException e) {
 			throw new RuntimeException(e);
@@ -151,8 +154,13 @@ public abstract class AbstractJptGenerator
 				for(int i = 0; i < launches.length; i++) {
 					ILaunch launch = launches[i];
 					if (launch.equals(AbstractJptGenerator.this.getLaunch())) {
-
-						AbstractJptGenerator.this.postGenerate();
+						try {
+							AbstractJptGenerator.this.postGenerate();
+							AbstractJptGenerator.this.launch = null;
+						}
+						finally {
+							AbstractJptGenerator.this.getLaunchManager().removeLaunchListener(this);
+						}
 						return;
 					}
 				}
@@ -334,7 +342,7 @@ public abstract class AbstractJptGenerator
 	
 	private void removeLaunchConfiguration() throws CoreException {
 
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchManager manager = this.getLaunchManager();
 		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
 	
 		ILaunchConfiguration[] configurations = manager.getLaunchConfigurations(type);

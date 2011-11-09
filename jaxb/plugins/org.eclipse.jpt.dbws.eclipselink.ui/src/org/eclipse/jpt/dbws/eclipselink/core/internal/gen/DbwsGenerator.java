@@ -12,11 +12,9 @@ package org.eclipse.jpt.dbws.eclipselink.core.internal.gen;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
@@ -90,17 +88,6 @@ public class DbwsGenerator extends AbstractJptGenerator
 	protected void preGenerate(IProgressMonitor monitor) {
 		// do nothing
 		
-	}
-
-	@Override
-	protected void postGenerate() {
-		super.postGenerate();
-		try {
-			this.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		}
-		catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	// ********** Launch Configuration Setup **********
