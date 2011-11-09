@@ -151,8 +151,13 @@ public abstract class AbstractJptGenerator
 				for(int i = 0; i < launches.length; i++) {
 					ILaunch launch = launches[i];
 					if (launch.equals(AbstractJptGenerator.this.getLaunch())) {
-
-						AbstractJptGenerator.this.postGenerate();
+						try {
+							AbstractJptGenerator.this.postGenerate();
+							AbstractJptGenerator.this.launch = null;
+						}
+						finally {
+							AbstractJptGenerator.this.getLaunchManager().removeLaunchListener(this);
+						}
 						return;
 					}
 				}
