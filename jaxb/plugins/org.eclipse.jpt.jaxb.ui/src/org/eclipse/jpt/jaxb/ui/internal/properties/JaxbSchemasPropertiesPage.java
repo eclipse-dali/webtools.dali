@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -283,7 +283,7 @@ public class JaxbSchemasPropertiesPage
 		return new CollectionPropertyValueModelAdapter<Boolean>(this.schemasSelectionModel) {
 			@Override
 			protected Boolean buildValue() {
-				return this.collectionModel.size() == 1;
+				return Boolean.valueOf(this.collectionModel.size() == 1);
 			}
 		};
 	}
@@ -311,7 +311,7 @@ public class JaxbSchemasPropertiesPage
 		return new CollectionPropertyValueModelAdapter<Boolean>(this.schemasSelectionModel) {
 			@Override
 			protected Boolean buildValue() {
-				return this.collectionModel.size() >= 1;
+				return Boolean.valueOf(this.collectionModel.size() >= 1);
 			}
 		};
 	}
@@ -560,7 +560,7 @@ public class JaxbSchemasPropertiesPage
 		
 		static String locationDisplayString(String location) {
 			if (location == null) {
-				return "";
+				return StringTools.EMPTY_STRING;
 			}
 			
 			URI uri = URI.createURI(location);
@@ -572,11 +572,8 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		static String namespaceDisplayString(String namespace) {
-			if ("".equals(namespace)) {
+			if (null == namespace || StringTools.EMPTY_STRING.equals(namespace)) {
 				return JptJaxbUiMessages.SchemasPage_noNamespaceText;
-			}
-			else if (null == namespace) {
-				return "";
 			}
 			
 			return namespace;
@@ -590,10 +587,10 @@ public class JaxbSchemasPropertiesPage
 		
 		
 		private String namespace;
-		final static String NAMESPACE_PROPERTY = "namespace";
+		final static String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
 		
 		private String location;
-		final static String LOCATION_PROPERTY = "location";
+		final static String LOCATION_PROPERTY = "location"; //$NON-NLS-1$
 		
 		
 		String getNamespace() {
@@ -625,7 +622,7 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		public int compareTo(Schema o) {
-			return this.namespace.compareTo(o.namespace);
+			return this.namespaceDisplayString().compareTo(o.namespaceDisplayString());
 		}
 	}
 	
@@ -849,7 +846,7 @@ public class JaxbSchemasPropertiesPage
 					(schema == null) ? 
 							null 
 							: ((schema.getTargetNamespace()) == null ? 
-									""
+									StringTools.EMPTY_STRING
 									: schema.getTargetNamespace());
 			this.namespace.setValue(newNamespace);
 			this.resolvedSchema = schema;
@@ -931,7 +928,7 @@ public class JaxbSchemasPropertiesPage
 			Composite composite = (Composite) super.createDialogArea(parent);
 			
 			this.locationPanel = new SelectFileOrXMLCatalogIdPanel(composite, StructuredSelection.EMPTY);
-			this.locationPanel.setFilterExtensions(new String[] {".xsd"});
+			this.locationPanel.setFilterExtensions(new String[] {".xsd"}); //$NON-NLS-1$
 			this.locationPanel.update();
 			this.locationPanel.setVisibleHelper(true);
 			
