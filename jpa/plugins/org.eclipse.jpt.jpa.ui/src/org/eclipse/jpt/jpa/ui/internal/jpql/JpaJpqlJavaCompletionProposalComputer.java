@@ -45,7 +45,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
@@ -180,13 +180,11 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 		if (structureNode instanceof JavaPersistentType) {
 			JavaPersistentType persistentType = (JavaPersistentType) structureNode;
 			JavaTypeMapping typeMapping = persistentType.getMapping();
-
-			if (typeMapping instanceof JavaEntity) {
-				JavaEntity entity = (JavaEntity) typeMapping;
-
-				for (JavaNamedQuery namedQuery : entity.getQueryContainer().getNamedQueries()) {
+			
+			for (Query query : typeMapping.getQueries()){
+				if (query.getType().equals(NamedQuery.class)){
+					JavaNamedQuery namedQuery = (JavaNamedQuery)query;
 					TextRange textRange = namedQuery.getQueryAnnotation().getQueryTextRange(astRoot);
-
 					if ((textRange != null) && textRange.includes(tokenStart)) {
 						return namedQuery;
 					}
