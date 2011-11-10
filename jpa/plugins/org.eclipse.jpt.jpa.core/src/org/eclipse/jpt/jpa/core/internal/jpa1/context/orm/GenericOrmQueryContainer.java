@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
+import java.util.ListIterator;
+
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -79,6 +81,11 @@ public class GenericOrmQueryContainer
 
 	public ListIterable<OrmNamedQuery> getNamedQueries() {
 		return this.namedQueryContainer.getContextElements();
+	}
+	
+	//TODO remove this compatibility method for Juno release
+	public ListIterator<OrmNamedQuery> namedQueries() {
+		return getNamedQueries().iterator();
 	}
 
 	public int getNamedQueriesSize() {

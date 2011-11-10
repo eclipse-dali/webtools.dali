@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
+import java.util.ListIterator;
+
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
@@ -31,6 +33,10 @@ public interface OrmQueryContainer
 	// ********** named queries **********
 
 	ListIterable<OrmNamedQuery> getNamedQueries();
+	
+	//TODO remove this compatibility API in the Juno release
+	@SuppressWarnings("unchecked")
+	ListIterator<OrmNamedQuery> namedQueries();
 
 	OrmNamedQuery addNamedQuery();
 

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
+import java.util.ListIterator;
+
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
@@ -31,6 +33,10 @@ public interface JavaQueryContainer
 	// ********** named queries **********
 
 	ListIterable<JavaNamedQuery> getNamedQueries();
+	
+	//TODO remove this compatibility API in the Juno release
+	@SuppressWarnings("unchecked")
+	ListIterator<JavaNamedQuery> namedQueries();
 
 	JavaNamedQuery addNamedQuery();
 

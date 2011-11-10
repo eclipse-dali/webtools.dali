@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
  * Context Java persistent <em>attribute</em> (field or property).
@@ -53,6 +54,9 @@ public interface JavaPersistentAttribute
 	 * @see Accessor#getResourceAttribute()
 	 */
 	JavaResourceAttribute getResourceAttribute();
+	
+	//TODO remove this compatibility method in Juno release
+	JavaResourcePersistentAttribute getResourcePersistentAttribute();
 
 	/**
 	 * @see Accessor#isFor(JavaResourceField)

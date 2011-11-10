@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import java.util.ListIterator;
+
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
@@ -40,6 +42,9 @@ public interface QueryContainer
 	 * Return the container's named queries.
 	 */
 	ListIterable<? extends NamedQuery> getNamedQueries();
+	
+	//TODO remove this compatibility API in the Juno release
+	<T extends NamedQuery> ListIterator<T> namedQueries();
 
 	String NAMED_QUERIES_LIST = "namedQueries"; //$NON-NLS-1$
 
