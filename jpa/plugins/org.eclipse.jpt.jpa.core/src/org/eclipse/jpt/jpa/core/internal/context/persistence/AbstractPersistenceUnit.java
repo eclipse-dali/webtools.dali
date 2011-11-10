@@ -736,7 +736,12 @@ public abstract class AbstractPersistenceUnit
 	public int getClassRefsSize() {
 		return this.getSpecifiedClassRefsSize() + this.getImpliedClassRefsSize();
 	}
-
+	
+	// ********** legacy compatibility methods *********
+	//TODO remove this compatibility method in Juno release
+	public Iterator<ClassRef> classRefs() {
+		return this.getClassRefs().iterator();
+	}
 
 	// ********** specified class refs **********
 

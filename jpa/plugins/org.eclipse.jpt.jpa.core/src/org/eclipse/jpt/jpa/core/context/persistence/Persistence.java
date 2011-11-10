@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
+import java.util.ListIterator;
+
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
@@ -53,6 +55,9 @@ public interface Persistence
 	 * Return the persistence element's persistence units.
 	 */
 	ListIterable<PersistenceUnit> getPersistenceUnits();
+	
+	//TODO Remove legacy compatibility method in Juno release
+	ListIterator<PersistenceUnit> persistenceUnits();
 	
 	/**
 	 * Return the number of persistence units.

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
+import java.util.Iterator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
@@ -300,6 +302,9 @@ public interface PersistenceUnit
 	 * both specified and implied.
 	 */
 	Iterable<ClassRef> getClassRefs();
+	
+	//TODO Remove legacy compatibility method in Juno release
+	Iterator<ClassRef> classRefs();
 
 	/**
 	 * Return the size of the persistence unit's list of class refs,

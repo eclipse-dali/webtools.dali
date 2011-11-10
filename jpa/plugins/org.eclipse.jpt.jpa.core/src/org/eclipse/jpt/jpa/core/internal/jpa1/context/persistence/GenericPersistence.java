@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence;
 
 import java.util.List;
+import java.util.ListIterator;
+
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -164,6 +166,12 @@ public class GenericPersistence
 		return this.getContextNodeFactory().buildPersistenceUnit(this, xmlPersistenceUnit);
 	}
 
+	// ********** legacy compatibility methods **********
+	
+	//TODO Remove this compatibility method on Juno release
+	public ListIterator<PersistenceUnit> persistenceUnits() {
+		return this.getPersistenceUnits().iterator();
+	}
 
 	// ********** metamodel **********
 

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
+import java.util.ListIterator;
+
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -35,6 +37,9 @@ public interface JavaPersistentType
 	
 	ListIterable<JavaPersistentAttribute> getAttributes();
 		String ATTRIBUTES_LIST = "attributes"; //$NON-NLS-1$
+		
+	//TODO remove this compatibility method in Juno release	
+	ListIterator<JavaPersistentAttribute> attributes();	
 	
 	JavaPersistentAttribute getAttributeNamed(String attributeName);
 	
