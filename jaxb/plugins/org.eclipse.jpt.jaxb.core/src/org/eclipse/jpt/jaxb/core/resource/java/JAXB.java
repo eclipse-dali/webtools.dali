@@ -151,7 +151,8 @@ public interface JAXB {
 		String XML_TYPE__NAME = "name";
 		String XML_TYPE__NAMESPACE = "namespace";
 		String XML_TYPE__PROP_ORDER = "propOrder";
-	
+		String XML_TYPE__DEFAULT_FACTORY_CLASS = XML_TYPE + ".DEFAULT";
+		
 	String XML_TRANSIENT = JAXB_ANNOTATION_PACKAGE_ + "XmlTransient";
 	
 	String XML_VALUE = JAXB_ANNOTATION_PACKAGE_ + "XmlValue";

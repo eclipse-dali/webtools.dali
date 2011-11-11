@@ -267,24 +267,26 @@ public class GenericJavaClassMappingTests
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
-		assertNull(classMapping.getFactoryClass());
+		assertNull(classMapping.getSpecifiedFactoryClass());
+		assertEquals(JAXB.XML_TYPE__DEFAULT_FACTORY_CLASS, classMapping.getFactoryClass());
 		
-		classMapping.setFactoryClass("foo");
+		classMapping.setSpecifiedFactoryClass("foo");
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryClass());
 		assertEquals("foo", classMapping.getFactoryClass());
 		
-		classMapping.setFactoryClass(null);
+		classMapping.setSpecifiedFactoryClass(null);
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getFactoryClass());
-		assertNull(classMapping.getFactoryClass());
-	
+		assertNull(classMapping.getSpecifiedFactoryClass());
+		assertEquals(JAXB.XML_TYPE__DEFAULT_FACTORY_CLASS, classMapping.getFactoryClass());
+		
 		//add another annotation so that the context model does not get blown away
 		classMapping.setSpecifiedAccessType(XmlAccessType.FIELD);
 		resourceType.removeAnnotation(JAXB.XML_TYPE);
 		
 		//set factoryClass again, this time starting with no XmlType annotation
-		classMapping.setFactoryClass("foo");
+		classMapping.setSpecifiedFactoryClass("foo");
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertEquals("foo", xmlTypeAnnotation.getFactoryClass());
 		assertEquals("foo", classMapping.getFactoryClass());
@@ -297,7 +299,8 @@ public class GenericJavaClassMappingTests
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
-		assertNull(classMapping.getFactoryClass());
+		assertNull(classMapping.getSpecifiedFactoryClass());
+		assertEquals(JAXB.XML_TYPE__DEFAULT_FACTORY_CLASS, classMapping.getFactoryClass());
 		
 		//add a factoryClass member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
@@ -315,7 +318,8 @@ public class GenericJavaClassMappingTests
 				GenericJavaClassMappingTests.this.values(xmlTypeAnnotation).remove(0);
 			}
 		});
-		assertNull(classMapping.getFactoryClass());
+		assertNull(classMapping.getSpecifiedFactoryClass());
+		assertEquals(JAXB.XML_TYPE__DEFAULT_FACTORY_CLASS, classMapping.getFactoryClass());
 	}
 
 	public void testModifyFactoryMethod() throws Exception {

@@ -22,14 +22,16 @@ public interface JaxbClassMapping
 	
 	// ***** XmlType.factoryClass *****
 	
-	String FACTORY_CLASS_PROPERTY = "factoryClass"; //$NON-NLS-1$
+	String getFactoryClass();
+	
+	String SPECIFIED_FACTORY_CLASS_PROPERTY = "specifiedFactoryClass"; //$NON-NLS-1$
 	
 	/**
 	 * factory class corresponds to the XmlType annotation factoryClass element
 	 */
-	String getFactoryClass();
+	String getSpecifiedFactoryClass();
 	
-	void setFactoryClass(String factoryClass);
+	void setSpecifiedFactoryClass(String factoryClass);
 	
 	
 	// ***** XmlType.factoryMethod *****

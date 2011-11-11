@@ -59,7 +59,7 @@ public class GenericJavaClassMapping
 		extends AbstractJavaTypeMapping
 		implements JaxbClassMapping {
 	
-	protected String factoryClass;
+	protected String specifiedFactoryClass;
 	
 	protected String factoryMethod;
 	
@@ -143,18 +143,22 @@ public class GenericJavaClassMapping
 	// ***** factory class *****
 	
 	public String getFactoryClass() {
-		return this.factoryClass;
+		return (this.specifiedFactoryClass != null) ? this.specifiedFactoryClass : JAXB.XML_TYPE__DEFAULT_FACTORY_CLASS;
 	}
 	
-	public void setFactoryClass(String factoryClass) {
+	public String getSpecifiedFactoryClass() {
+		return this.specifiedFactoryClass;
+	}
+	
+	public void setSpecifiedFactoryClass(String factoryClass) {
 		getXmlTypeAnnotation().setFactoryClass(factoryClass);
-		setFactoryClass_(factoryClass);	
+		setSpecifiedFactoryClass_(factoryClass);	
 	}
 	
-	protected void setFactoryClass_(String factoryClass) {
-		String old = this.factoryClass;
-		this.factoryClass = factoryClass;
-		firePropertyChanged(FACTORY_CLASS_PROPERTY, old, factoryClass);
+	protected void setSpecifiedFactoryClass_(String factoryClass) {
+		String old = this.specifiedFactoryClass;
+		this.specifiedFactoryClass = factoryClass;
+		firePropertyChanged(SPECIFIED_FACTORY_CLASS_PROPERTY, old, factoryClass);
 	}
 	
 	protected String getResourceFactoryClass() {
@@ -162,11 +166,11 @@ public class GenericJavaClassMapping
 	}
 	
 	protected void initFactoryClass() {
-		this.factoryClass = getResourceFactoryClass();
+		this.specifiedFactoryClass = getResourceFactoryClass();
 	}
 	
 	protected void syncFactoryClass() {
-		setFactoryClass_(getResourceFactoryClass());
+		setSpecifiedFactoryClass_(getResourceFactoryClass());
 	}
 	
 	
@@ -770,10 +774,8 @@ public class GenericJavaClassMapping
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		// TODO - factory method?
-		
+		validateConstructor(messages, reporter, astRoot);
 		validatePropOrder(messages, reporter, astRoot);
-		
 		validateXmlAnyAttributeMapping(messages, astRoot);
 		validateXmlAnyElementMapping(messages, astRoot);
 		validateXmlValueMapping(messages, astRoot);
@@ -784,7 +786,35 @@ public class GenericJavaClassMapping
 		}
 	}
 	
-	public void validatePropOrder(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateConstructor(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		// TODO - factory class/method
+		
+		if (! JAXB.XML_TYPE__DEFAULT_FACTORY_CLASS.equals(getFactoryClass())) {
+			if (StringTools.stringIsEmpty(getFactoryMethod())) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.XML_TYPE__UNSPECIFIED_FACTORY_METHOD,
+								this,
+								getFactoryClassTextRange(astRoot)));
+			}
+		}
+		else {
+			if (getFactoryMethod() == null
+					&& getJaxbType().getXmlJavaTypeAdapter() == null
+					&& ! getJavaResourceType().hasPublicOrProtectedNoArgConstructor()) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.XML_TYPE__NO_PUBLIC_OR_PROTECTED_CONSTRUCTOR,
+								this,
+								getValidationTextRange(astRoot)));
+			}
+		}
+		
+	}
+	
+	protected void validatePropOrder(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if (CollectionTools.isEmpty(getPropOrder())) {
 			return;
 		}
@@ -1024,6 +1054,16 @@ public class GenericJavaClassMapping
 						anyAttribute.getMapping().getValidationTextRange(astRoot)));
 			}
 		}
+	}
+	
+	protected TextRange getFactoryClassTextRange(CompilationUnit astRoot) {
+		TextRange result = getXmlTypeAnnotation().getFactoryClassTextRange(astRoot);
+		return (result != null) ? result : getValidationTextRange(astRoot);
+	}
+	
+	protected TextRange getFactoryMethodTextRange(CompilationUnit astRoot) {
+		TextRange result = getXmlTypeAnnotation().getFactoryMethodTextRange(astRoot);
+		return (result != null) ? result : getValidationTextRange(astRoot);
 	}
 	
 	protected TextRange getPropOrderTextRange(CompilationUnit astRoot) {

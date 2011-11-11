@@ -29,6 +29,12 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 public interface XmlTypeAnnotation
 		extends QNameAnnotation {
 	
+	// ***** factory class *****
+	
+	String FACTORY_CLASS_PROPERTY = "factoryClass"; //$NON-NLS-1$
+	
+	String DEFAULT_FACTORY_CLASS = JAXB.XML_TYPE__DEFAULT_FACTORY_CLASS;
+	
 	/**
 	 * Corresponds to the 'factoryClass' element of the XmlType annotation.
 	 * Return null if the element does not exist in Java.
@@ -39,20 +45,21 @@ public interface XmlTypeAnnotation
 	 * will return "USAddressFactory"
 	 */
 	String getFactoryClass();
-		String FACTORY_CLASS_PROPERTY = "factoryClass"; //$NON-NLS-1$
-
+	
 	/**
 	 * Corresponds to the 'factoryClass' element of the XmlType annotation.
 	 * Set to null to remove the element.
 	 */
 	void setFactoryClass(String factoryClass);
-
+	
 	/**
 	 * Return the {@link TextRange} for the 'factoryClass' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlType annotation.
 	 */
 	TextRange getFactoryClassTextRange(CompilationUnit astRoot);
-
+	
+	String FULLY_QUALIFIED_FACTORY_CLASS_NAME_PROPERTY = "fullyQualifiedFactoryClassName"; //$NON-NLS-1$
+	
 	/**
 	 * Return the fully-qualified factory class name as resolved by the AST's bindings.
 	 * <pre>
@@ -62,21 +69,24 @@ public interface XmlTypeAnnotation
 	 * @return
 	 */
 	String getFullyQualifiedFactoryClassName();
-		String FULLY_QUALIFIED_FACTORY_CLASS_NAME_PROPERTY = "fullyQualifiedFactoryClassName"; //$NON-NLS-1$
-
+	
+	
+	// ***** factory method *****
+	
+	String FACTORY_METHOD_PROPERTY = "factoryMethod"; //$NON-NLS-1$
+	
 	/**
 	 * Corresponds to the 'factoryMethod' element of the XmlType annotation.
 	 * Return null if the element does not exist in Java.
 	 */
 	String getFactoryMethod();
-		String FACTORY_METHOD_PROPERTY = "factoryMethod"; //$NON-NLS-1$
-
+	
 	/**
 	 * Corresponds to the 'factoryMethod' element of the XmlType annotation.
 	 * Set to null to remove the element.
 	 */
 	void setFactoryMethod(String factoryMethod);
-
+	
 	/**
 	 * Return the {@link TextRange} for the 'factoryMethod' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlType annotation.
