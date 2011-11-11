@@ -113,7 +113,7 @@ public class GenericJavaEnumConstant
 		}
 		
 		if (valueTouches(pos, astRoot)) {
-			XsdTypeDefinition xsdType = getEnumMapping().getXsdTypeDefinition();
+			XsdTypeDefinition<?> xsdType = getEnumMapping().getXsdTypeDefinition();
 			if (xsdType != null && xsdType.getKind() == XsdTypeDefinition.Kind.SIMPLE) {
 				XsdSimpleTypeDefinition xsdSimpleType = (XsdSimpleTypeDefinition) xsdType;
 				return xsdSimpleType.getEnumValueProposals(filter);
@@ -135,7 +135,7 @@ public class GenericJavaEnumConstant
 		super.validate(messages, reporter, astRoot);
 		
 		String value = getValue();
-		XsdTypeDefinition xsdType = getEnumMapping().getXsdTypeDefinition();
+		XsdTypeDefinition<?> xsdType = getEnumMapping().getXsdTypeDefinition();
 		
 		if (xsdType == null || xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE) {
 			return;
@@ -158,6 +158,7 @@ public class GenericJavaEnumConstant
 	}
 	
 	protected TextRange getValueTextRange(CompilationUnit astRoot) {
-		return getXmlEnumValueAnnotation().getValueTextRange(astRoot);
+		TextRange enumValueTextRange = getXmlEnumValueAnnotation().getValueTextRange(astRoot);
+		return enumValueTextRange != null ? enumValueTextRange : getValidationTextRange(astRoot);
 	}
 }
