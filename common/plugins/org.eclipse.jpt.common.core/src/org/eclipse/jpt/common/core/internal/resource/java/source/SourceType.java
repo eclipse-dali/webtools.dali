@@ -32,6 +32,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.utility.MethodSignature;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TreeIterable;
 
@@ -259,6 +261,33 @@ final class SourceType
 		IMethodBinding method = findNoArgConstructor(binding);
 		return (method != null) && Modifier.isPrivate(method.getModifiers());
 	}
+	
+	
+	// ***** public/protected no-arg constructor *****
+	
+	public boolean hasPublicOrProtectedNoArgConstructor() {
+		Iterable<JavaResourceMethod> constructors = getConstructors();
+		if (CollectionTools.size(constructors) == 0) {
+			return true;
+		}
+		for (JavaResourceMethod constructor : constructors) {
+			if (constructor.getParametersSize() == 0) {
+				return Modifier.isPublic(constructor.getModifiers())
+						|| Modifier.isProtected(constructor.getModifiers());
+			}
+		}
+		return false;
+	}
+	
+	protected Iterable<JavaResourceMethod> getConstructors() {
+		return new FilteringIterable<JavaResourceMethod>(getMethods()) {
+			@Override
+			protected boolean accept(JavaResourceMethod o) {
+				return o.isConstructor();
+			}
+		};
+	}
+	
 
 	// ********** types **********
 

@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
@@ -23,6 +24,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.MethodSignature;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 
 /**
@@ -183,6 +186,32 @@ final class BinaryType
 			JptCommonCorePlugin.log(ex);
 			return false;
 		}
+	}
+	
+	
+	// ***** public/protected no-arg constructor *****
+	
+	public boolean hasPublicOrProtectedNoArgConstructor() {
+		Iterable<JavaResourceMethod> constructors = getConstructors();
+		if (CollectionTools.size(constructors) == 0) {
+			return true;
+		}
+		for (JavaResourceMethod constructor : constructors) {
+			if (constructor.getParametersSize() == 0) {
+				return Modifier.isPublic(constructor.getModifiers())
+						|| Modifier.isProtected(constructor.getModifiers());
+			}
+		}
+		return false;
+	}
+	
+	protected Iterable<JavaResourceMethod> getConstructors() {
+		return new FilteringIterable<JavaResourceMethod>(getMethods()) {
+			@Override
+			protected boolean accept(JavaResourceMethod o) {
+				return o.isConstructor();
+			}
+		};
 	}
 
 

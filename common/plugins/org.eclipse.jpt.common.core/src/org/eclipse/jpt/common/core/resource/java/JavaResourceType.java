@@ -49,7 +49,12 @@ public interface JavaResourceType
 	 */
 	boolean hasPrivateNoArgConstructor();
 		String PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY = "privateNoArgConstructor"; //$NON-NLS-1$
-
+	
+	/**
+	 * Return whether the type has a public or protected no-arg constructor *or* only the default constructor
+	 */
+	boolean hasPublicOrProtectedNoArgConstructor();
+		
 	/**
 	 * Return whether the type has any field that have relevant annotations
 	 * on them (which can be used to infer the type's access type).
