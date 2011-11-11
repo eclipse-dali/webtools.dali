@@ -22,6 +22,13 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	}
 	
 	
+	// for some reason, the compiler is not recognizing the XSD component of this type as extending
+	// XSDTypeDefinition without implementing this method.
+	@Override
+	public A getXSDComponent() {
+		return super.getXSDComponent();
+	}
+	
 	public abstract Kind getKind();
 	
 	public String getName() {
@@ -30,6 +37,11 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	
 	public boolean matches(String namespace, String name) {
 		return XsdUtil.namespaceEquals(getXSDComponent(), namespace) && StringTools.stringsAreEqual(getName(), name); 
+	}
+	
+	public XsdTypeDefinition getBaseType() {
+		XSDTypeDefinition xsdBaseType = getXSDComponent().getBaseType();
+		return (xsdBaseType == null) ? null : (XsdTypeDefinition) XsdUtil.getAdapter(xsdBaseType);
 	}
 	
 	public abstract XsdAttributeUse getAttribute(String namespace, String name);

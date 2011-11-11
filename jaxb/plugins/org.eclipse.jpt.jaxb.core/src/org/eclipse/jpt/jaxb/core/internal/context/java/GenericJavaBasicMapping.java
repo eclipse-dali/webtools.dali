@@ -435,6 +435,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 					return idMapping.getValueTypeName();
 				}
 			}
+			return String.class.getName();
 		}
 		return getValueTypeName();
 	}
@@ -493,6 +494,10 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		
 		public XmlIDREFAnnotation getAnnotation() {
 			return GenericJavaBasicMapping.this.getXmlIDREFAnnotation();
+		}
+		
+		public boolean isList() {
+			return GenericJavaBasicMapping.this.getXmlList() != null;
 		}
 	}
 }

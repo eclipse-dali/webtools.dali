@@ -31,6 +31,11 @@ public class XsdSimpleTypeDefinition
 		return Kind.SIMPLE;
 	}
 	
+	public XsdSimpleTypeDefinition getItemType() {
+		XSDSimpleTypeDefinition xsdItemType = getXSDComponent().getItemTypeDefinition();
+		return (xsdItemType == null) ? null : (XsdSimpleTypeDefinition) XsdUtil.getAdapter(xsdItemType);
+	}
+	
 	@Override
 	public XsdAttributeUse getAttribute(String namespace, String name) {
 		// simple types have no attributes

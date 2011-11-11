@@ -260,5 +260,11 @@ public class GenericJavaXmlAttributeMapping
 						}
 					});
 		}
+		
+		@Override
+		public boolean isList() {
+			return super.isList() 
+				|| GenericJavaXmlAttributeMapping.this.getPersistentAttribute().isJavaResourceAttributeCollectionType();
+		}
 	}
 }

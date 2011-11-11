@@ -468,5 +468,9 @@ public class GenericJavaXmlElementsMapping
 				}
 			};
 		}
+		
+		public boolean isList() {
+			return false;
+		}
 	}
 }

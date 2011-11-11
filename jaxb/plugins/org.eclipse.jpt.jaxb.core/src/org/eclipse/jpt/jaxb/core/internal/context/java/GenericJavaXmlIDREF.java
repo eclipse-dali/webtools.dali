@@ -21,10 +21,9 @@ import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
-import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
+import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.eclipse.xsd.util.XSDUtil;
 
 public class GenericJavaXmlIDREF
 		extends AbstractJavaContextNode
@@ -79,9 +78,11 @@ public class GenericJavaXmlIDREF
 			}
 			
 			XsdFeature xsdFeature = ref.getXsdFeature();
-			XsdTypeDefinition xsdType = (xsdFeature == null) ? null : xsdFeature.getType();
-			if (xsdType != null && 
-					! xsdType.matches(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, "IDREF")) {
+			if (xsdFeature == null) {
+				return;
+			}
+			if (xsdFeature != null 
+					&& ! xsdFeature.typeIsValid(XsdUtil.getSchemaForSchema().getTypeDefinition("IDREF"), this.context.isList())) {
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -99,6 +100,8 @@ public class GenericJavaXmlIDREF
 		XmlIDREFAnnotation getAnnotation();
 		
 		Iterable<ValidatableReference> getReferences();
+		
+		boolean isList();
 	}
 	
 	

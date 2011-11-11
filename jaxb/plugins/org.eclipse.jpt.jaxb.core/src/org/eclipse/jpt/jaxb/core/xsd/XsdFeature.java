@@ -29,4 +29,11 @@ public abstract class XsdFeature<A extends XSDFeature>
 	}
 	
 	public abstract XsdTypeDefinition getType();
+	
+	/**
+	 * Return whether the given schema type is valid within the feature
+	 * @param isItemType determines whether the xsdType should instead be treated as an item type
+	 *   within a list
+	 */
+	public abstract boolean typeIsValid(XsdTypeDefinition xsdType, boolean isItemType);
 }

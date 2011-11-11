@@ -17,4 +17,17 @@ public class XsdAttributeDeclaration
 		XSDTypeDefinition xsdType = getXSDComponent().getType();
 		return (xsdType == null) ? null : (XsdTypeDefinition) XsdUtil.getAdapter(xsdType);
 	}
+	
+	@Override
+	public boolean typeIsValid(XsdTypeDefinition xsdType, boolean isItemType) {
+		XsdTypeDefinition type = getType();
+		if (isItemType) {
+			type = (type.getKind() == XsdTypeDefinition.Kind.SIMPLE) ? 
+					((XsdSimpleTypeDefinition) type).getItemType() : null;
+		}
+		if (type == null) {
+			return false;
+		}
+		return type.getXSDComponent().getBadTypeDerivation(xsdType.getXSDComponent(), true, true) == null;
+	}
 }
