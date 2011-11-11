@@ -423,6 +423,11 @@ public abstract class AbstractJavaPersistentType
 				}
 			);
 	}
+	
+	//TODO remove this compatibility method in the Juno release
+	public Iterator<ReadOnlyPersistentAttribute> allAttributes() {
+		return getAllAttributes().iterator();
+	}
 
 	public Iterable<String> getAllAttributeNames() {
 		return this.convertToNames(this.getAllAttributes());

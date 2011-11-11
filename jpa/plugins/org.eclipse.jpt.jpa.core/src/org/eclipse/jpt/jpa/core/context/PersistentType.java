@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -88,6 +89,9 @@ public interface PersistentType
 	 * inheritance hierarchy.
 	 */
 	Iterable<ReadOnlyPersistentAttribute> getAllAttributes();
+	
+	//TODO remove this compatibility API in the Juno release
+	Iterator<ReadOnlyPersistentAttribute> allAttributes();
 
 	/**
 	 * Return the names of all the persistent attributes in the
