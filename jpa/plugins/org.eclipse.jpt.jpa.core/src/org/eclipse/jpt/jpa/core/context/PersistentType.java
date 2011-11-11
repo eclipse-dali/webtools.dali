@@ -11,6 +11,8 @@ package org.eclipse.jpt.jpa.core.context;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -74,6 +76,9 @@ public interface PersistentType
 	 */
 	ListIterable<? extends ReadOnlyPersistentAttribute> getAttributes();
 
+	//TODO remove this compatibility API in the Juno release
+	<T extends ReadOnlyPersistentAttribute> ListIterator<T> attributes();
+	
 	/**
 	 * Return the number of the persistent type's persistent attributes.
 	 */
