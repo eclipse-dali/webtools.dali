@@ -831,13 +831,20 @@ public class GenericJavaClassMapping
 		
 		for (JaxbPersistentAttribute attribute : getAllLocallyDefinedAttributes()) {
 			allAttributes.add(attribute.getName());
-			
+			transientAttributes.add(attribute.getName());
+		}
+		
+		for (JaxbPersistentAttribute attribute : getAllLocallyDefinedAttributes()) {
 			if (attribute.getMapping().isParticleMapping()) {
 				requiredAttributes.add(attribute.getName());
 			}
 			
-			if (attribute.getMapping().isTransient()) {
-				transientAttributes.add(attribute.getName());
+			if (! attribute.getMapping().isTransient()) {
+				// remove transients (rather than previous algorithm of adding them)
+				// there may be two attributes of the same name (one field, one property) in 
+				// a class, which is a correct configuration.  we want to know if *every* attribute 
+				// of a given name is transient (or if there's a single non-transient attribute)
+				transientAttributes.remove(attribute.getName());
 			}
 		}
 		
