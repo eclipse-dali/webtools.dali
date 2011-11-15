@@ -1287,10 +1287,17 @@ public abstract class AbstractJpaProject
 	 */
 	protected boolean jpaFileIsAlive(JpaFile jpaFile) {
 		IFile file = jpaFile.getFile();
-		return this.getJavaProject().isOnClasspath(file) &&
-				file.exists();
+		if (! file.exists()) {
+			return false;
+		}
+		if (fileIsJavaRelated(file)) {
+			return getJavaProject().isOnClasspath(file);
+		}
+		else {
+			return fileResourceLocationIsValid(file);
+		}
 	}
-
+	
 	/**
 	 * pre-condition:
 	 * delta.getElement().getElementType() == IJavaElement.JAVA_PROJECT
