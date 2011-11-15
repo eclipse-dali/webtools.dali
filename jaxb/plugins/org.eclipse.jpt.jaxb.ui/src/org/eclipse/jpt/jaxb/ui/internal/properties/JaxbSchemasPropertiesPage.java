@@ -624,7 +624,7 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		public int compareTo(Schema o) {
-			return this.namespace.compareTo(o.namespace);
+			return this.namespaceDisplayString().compareTo(o.namespaceDisplayString());
 		}
 	}
 	
