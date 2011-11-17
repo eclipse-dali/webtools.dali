@@ -22,7 +22,7 @@
 
    <requires>
       <import feature="org.eclipse.graphiti.feature" version="0.8.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.jpt.jpa.feature" version="3.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.jpt.jpa.feature" version="3.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

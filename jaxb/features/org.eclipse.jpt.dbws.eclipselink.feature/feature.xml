@@ -21,7 +21,7 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.jpt.common.eclipselink.feature" version="1.0.0"/>
+      <import feature="org.eclipse.jpt.common.eclipselink.feature" version="1.1.0"/>
    </requires>
 
    <plugin
@@ -38,18 +38,24 @@
          version="0.0.0"
          unpack="false"/>
 
-	<plugin
+   <plugin
          id="javax.wsdl"
+         download-size="0"
+         install-size="0"
          version="1.6.2.qualifier"
          unpack="false"/>
 
-	<plugin
+   <plugin
          id="org.eclipse.persistence.dbws"
+         download-size="0"
+         install-size="0"
          version="2.3.1.qualifier"
          unpack="false"/>
 
-	<plugin
+   <plugin
          id="org.eclipse.persistence.dbws.builder"
+         download-size="0"
+         install-size="0"
          version="2.3.1.qualifier"
          unpack="false"/>
 
