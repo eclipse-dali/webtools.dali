@@ -43,8 +43,8 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 
 	protected AbstractOrmJoinColumnRelationshipStrategy(OrmJoinColumnRelationship parent) {
 		super(parent);
-		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
 
