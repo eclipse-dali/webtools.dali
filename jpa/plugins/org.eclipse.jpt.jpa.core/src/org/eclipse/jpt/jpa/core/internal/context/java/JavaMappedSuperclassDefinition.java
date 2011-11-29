@@ -19,6 +19,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 
 public class JavaMappedSuperclassDefinition
 	implements JavaTypeMappingDefinition
@@ -55,6 +57,10 @@ public class JavaMappedSuperclassDefinition
 
 	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 			IdClassAnnotation.ANNOTATION_NAME,
+			NamedQueryAnnotation.ANNOTATION_NAME,
+			JPA.NAMED_QUERIES,
+			NamedNativeQueryAnnotation.ANNOTATION_NAME,
+			JPA.NAMED_NATIVE_QUERIES,
 			JPA.EXCLUDE_DEFAULT_LISTENERS,
 			JPA.EXCLUDE_SUPERCLASS_LISTENERS,
 			JPA.ENTITY_LISTENERS,
