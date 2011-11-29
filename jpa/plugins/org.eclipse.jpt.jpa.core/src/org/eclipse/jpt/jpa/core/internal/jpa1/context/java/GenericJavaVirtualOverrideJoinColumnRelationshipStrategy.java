@@ -52,8 +52,8 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 
 	public GenericJavaVirtualOverrideJoinColumnRelationshipStrategy(JavaVirtualOverrideRelationship parent) {
 		super(parent);
-		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
 

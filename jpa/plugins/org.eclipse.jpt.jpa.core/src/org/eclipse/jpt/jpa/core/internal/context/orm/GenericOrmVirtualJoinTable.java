@@ -53,8 +53,8 @@ public class GenericOrmVirtualJoinTable
 
 	public GenericOrmVirtualJoinTable(OrmVirtualJoinTableRelationshipStrategy parent, Owner owner, ReadOnlyJoinTable overriddenTable) {
 		super(parent, owner, overriddenTable);
-		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
+		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
 	}
 
 

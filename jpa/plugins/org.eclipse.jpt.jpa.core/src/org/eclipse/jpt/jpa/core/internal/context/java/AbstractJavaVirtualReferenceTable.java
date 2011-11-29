@@ -37,8 +37,8 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 
 	protected AbstractJavaVirtualReferenceTable(JavaJpaContextNode parent, Owner owner, T overridenTable) {
 		super(parent, owner, overridenTable);
-		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
 	}
 
 
