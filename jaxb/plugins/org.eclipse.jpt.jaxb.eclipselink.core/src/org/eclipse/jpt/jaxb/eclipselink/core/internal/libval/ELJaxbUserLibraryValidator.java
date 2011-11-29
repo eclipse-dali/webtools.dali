@@ -53,6 +53,9 @@ public class ELJaxbUserLibraryValidator
 		else if (ELJaxbPlatform.VERSION_2_3.equals(platform)) {
 			versionRanges.add(new VersionRange("[2.3, 3.0)")); //$NON-NLS-1$
 		}
+		else if (ELJaxbPlatform.VERSION_2_4.equals(platform)) {
+			versionRanges.add(new VersionRange("[2.4, 3.0)")); //$NON-NLS-1$
+		}
 		
 		IStatus status = EclipseLinkLibValUtil.validate(jaxbConfig.resolve(), versionRanges);
 		

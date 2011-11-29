@@ -28,6 +28,9 @@ public class ELJaxbPlatform {
 	public static final JaxbPlatformDescription VERSION_2_3
 			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_3"); //$NON-NLS-1$
 	
+	public static final JaxbPlatformDescription VERSION_2_4
+			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_4"); //$NON-NLS-1$
+
 	
 	/**
 	 * Not for instantiation

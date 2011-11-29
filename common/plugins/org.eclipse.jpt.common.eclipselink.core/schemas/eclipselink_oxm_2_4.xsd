@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+******************************************************************************
+ Copyright (c) 1998, 2010 Oracle. All rights reserved.
+ This program and the accompanying materials are made available under the 
+ terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0 
+ which accompanies this distribution. 
+ The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ and the Eclipse Distribution License is available at 
+ http://www.eclipse.org/org/documents/edl-v10.php.
+
+ Contributors:
+     dmccann - December 22/2010 - 2.3 - Initial implementation
+*****************************************************************************/
+-->
+<xs:schema xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/oxm" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.eclipse.org/eclipselink/xsds/persistence/oxm" version="2.4">
+
+    <xs:element name="xml-bindings">
+        <xs:complexType>
+            <xs:all>
+                <xs:element minOccurs="0" ref="xml-schema"/>
+                <xs:element minOccurs="0" ref="xml-schema-type"/>
+                <xs:element minOccurs="0" ref="xml-schema-types"/>
+                <xs:element minOccurs="0" ref="xml-java-type-adapters"/>
+                <xs:element minOccurs="0" name="xml-registries">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" ref="xml-registry"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="xml-enums">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" ref="xml-enum"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="java-types">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" ref="java-type"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:all>
+            <xs:attribute default="PUBLIC_MEMBER" name="xml-accessor-type" type="xml-access-type"/>
+            <xs:attribute default="UNDEFINED" name="xml-accessor-order" type="xml-access-order"/>
+            <xs:attribute default="false" name="xml-mapping-metadata-complete" type="xs:boolean"/>
+            <xs:attribute default="##default" name="package-name" type="xs:string"/>
+            <xs:attribute name="xml-name-transformer" type="xs:string"/>
+            <xs:attribute name="version" type="supported-versions"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-registry">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="xml-element-decl">
+                    <xs:complexType>
+                        <xs:attribute name="java-method" type="xs:string"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                        <xs:attribute default="\u0000" name="defaultValue" type="xs:string"/>
+                        <xs:attribute default="##default" name="namespace" type="xs:string"/>
+                        <xs:attribute default="javax.xml.bind.annotation.XmlElementDecl.GLOBAL" name="scope" type="xs:string"/>
+                        <xs:attribute default="" name="substitutionHeadName" type="xs:string"/>
+                        <xs:attribute default="##default" name="substitutionHeadNamespace" type="xs:string"/>
+                        <xs:attribute default="##default" name="type" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="java-type">
+        <xs:complexType>
+            <xs:all>
+                <xs:element minOccurs="0" ref="xml-type"/>
+                <xs:element minOccurs="0" ref="xml-root-element"/>
+                <xs:element minOccurs="0" ref="xml-virtual-access-methods"/>
+                <xs:element minOccurs="0" ref="xml-see-also"/>
+                <xs:element minOccurs="0" ref="xml-java-type-adapter"/>
+                <xs:element minOccurs="0" ref="xml-class-extractor"/>
+                <xs:element minOccurs="0" ref="xml-properties"/>
+                <xs:element minOccurs="0" name="java-attributes">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" ref="java-attribute"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:all>
+            <xs:attribute name="name" type="xs:string"/>
+            <xs:attribute default="##default" name="super-type" type="xs:string"/>
+            <xs:attribute default="UNDEFINED" name="xml-accessor-order" type="xml-access-order"/>
+            <xs:attribute default="PUBLIC_MEMBER" name="xml-accessor-type" type="xml-access-type"/>
+            <xs:attribute name="xml-customizer" type="xs:string"/>
+            <xs:attribute name="xml-discriminator-node" type="xs:string"/>
+            <xs:attribute name="xml-discriminator-value" type="xs:string"/>
+            <xs:attribute default="false" name="xml-inline-binary-data" type="xs:boolean"/>
+            <xs:attribute default="false" name="xml-transient" type="xs:boolean"/>
+            <xs:attribute name="xml-name-transformer" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="java-attribute" type="java-attribute"/>
+    <xs:complexType abstract="true" name="java-attribute">
+        <xs:attribute name="java-attribute" type="xs:string"/>
+    </xs:complexType>
+    <xs:element name="xml-access-methods" type="xml-access-methods"/>
+    <xs:complexType name="xml-access-methods">
+        <xs:attribute name="get-method" type="xs:string"/>
+        <xs:attribute name="set-method" type="xs:string"/>
+    </xs:complexType>
+    <xs:element name="xml-class-extractor" type="xml-class-extractor"/>
+    <xs:complexType name="xml-class-extractor">
+        <xs:attribute name="class" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:element name="xml-properties" type="xml-properties"/>
+    <xs:complexType name="xml-properties">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="xml-property">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+                    <xs:attribute name="value" type="xs:string" use="required"/>
+                    <xs:attribute default="java.lang.String" name="value-type" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Enums -->
+    <xs:simpleType name="xml-access-order">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ALPHABETICAL"/>
+            <xs:enumeration value="UNDEFINED"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="xml-access-type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FIELD"/>
+            <xs:enumeration value="NONE"/>
+            <xs:enumeration value="PROPERTY"/>
+            <xs:enumeration value="PUBLIC_MEMBER"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="xml-ns-form">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="UNQUALIFIED"/>
+            <xs:enumeration value="QUALIFIED"/>
+            <xs:enumeration value="UNSET"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="xml-marshal-null-representation">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="XSI_NIL"/>
+            <xs:enumeration value="ABSENT_NODE"/>
+            <xs:enumeration value="EMPTY_NODE"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="supported-versions">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="2.0"/>
+            <xs:enumeration value="2.1"/>
+            <xs:enumeration value="2.2"/>
+            <xs:enumeration value="2.3"/>
+            <xs:enumeration value="2.4"/>
+        </xs:restriction>
+    </xs:simpleType> 
+
+    <!-- @Target(value=PACKAGE) -->
+    <xs:element name="xml-schema">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="xml-ns">
+                    <xs:complexType>
+                        <xs:attribute name="namespace-uri" type="xs:string"/>
+                        <xs:attribute name="prefix" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute default="UNSET" name="attribute-form-default" type="xml-ns-form"/>
+            <xs:attribute default="UNSET" name="element-form-default" type="xml-ns-form"/>
+            <xs:attribute name="location" type="xs:string"/>
+            <xs:attribute name="namespace" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-schema-types">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="xml-schema-type"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-java-type-adapters">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="xml-java-type-adapter"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- @Target(value={FIELD,METHOD,PACKAGE}) -->
+    <xs:element name="xml-schema-type">
+        <xs:complexType>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute default="http://www.w3.org/2001/XMLSchema" name="namespace" type="xs:string"/>
+            <xs:attribute default="javax.xml.bind.annotation.XmlSchemaType.DEFAULT" name="type" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- @Target(value={PACKAGE,FIELD,METHOD,TYPE,PARAMETER}) -->
+    <xs:element name="xml-java-type-adapter" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:attribute name="value" type="xs:string" use="required"/>
+                    <xs:attribute default="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT" name="type" type="xs:string"/>
+                    <xs:attribute default="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT" name="value-type" type="xs:string"/>                    
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- @Target(value={FIELD,METHOD,TYPE}) -->
+    <xs:element name="xml-transient" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:attribute default="false" name="xml-location" type="xs:boolean"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- @Target(value=TYPE) -->
+    <xs:element name="xml-enum">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="xml-enum-value"/>
+            </xs:sequence>
+            <xs:attribute name="java-enum" type="xs:string" use="required"/>
+            <xs:attribute default="java.lang.String" name="value" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-type">
+        <xs:complexType>
+            <xs:attribute default="##default" name="name" type="xs:string"/>
+            <xs:attribute default="##default" name="namespace" type="xs:string"/>
+            <xs:attribute default="javax.xml.bind.annotation.XmlType.DEFAULT" name="factory-class" type="xs:string"/>
+            <xs:attribute name="factory-method" type="xs:string"/>
+            <xs:attribute name="prop-order">
+                <xs:simpleType>
+                    <xs:list itemType="xs:string"/>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-root-element">
+        <xs:complexType>
+            <xs:attribute default="##default" name="name" type="xs:string"/>
+            <xs:attribute default="##default" name="namespace" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-see-also">
+        <xs:simpleType>
+            <xs:list itemType="xs:string"/>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="xml-virtual-access-methods">
+        <xs:complexType>
+            <xs:attribute default="get" name="get-method" type="xs:string"/>
+            <xs:attribute default="set" name="set-method" type="xs:string"/>
+            <xs:attribute default="NODES" name="schema" type="xml-virtual-access-methods-schema"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="xml-virtual-access-methods-schema">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NODES"/>
+            <xs:enumeration value="ANY"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- @Target(value={FIELD})  -->
+    <xs:element name="xml-enum-value">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="java-enum-value" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <!-- @Target(value={FIELD,METHOD}) -->
+    <xs:element name="xml-any-attribute" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:all>
+                        <xs:element minOccurs="0" ref="xml-access-methods"/>
+                        <xs:element minOccurs="0" ref="xml-properties"/>
+                    </xs:all>
+                    <xs:attribute default="false" name="read-only" type="xs:boolean"/>
+                    <xs:attribute default="false" name="write-only" type="xs:boolean"/>
+                    <xs:attribute name="xml-path" type="xs:string"/>
+                    <xs:attribute default="##default" name="container-type" type="xs:string"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-attribute" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:all>
+                        <xs:element minOccurs="0" ref="xml-abstract-null-policy"/>                        
+                        <xs:element minOccurs="0" ref="xml-access-methods"/>
+                        <xs:element minOccurs="0" ref="xml-java-type-adapter"/>
+                        <xs:element minOccurs="0" ref="xml-properties"/>
+                        <xs:element minOccurs="0" ref="xml-schema-type"/>
+                    </xs:all>
+                    <xs:attribute default="##default" name="name" type="xs:string"/>
+                    <xs:attribute default="##default" name="namespace" type="xs:string"/>
+                    <xs:attribute default="false" name="required" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-id" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-idref" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-key" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-list" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-inline-binary-data" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-attachment-ref" type="xs:boolean"/>
+                    <xs:attribute name="xml-mime-type" type="xs:string"/>
+                    <xs:attribute default="false" name="read-only" type="xs:boolean"/>
+                    <xs:attribute default="false" name="write-only" type="xs:boolean"/>
+                    <xs:attribute default="##default" name="container-type" type="xs:string"/>
+                    <xs:attribute default="##default" name="type" type="xs:string"/>
+                    <xs:attribute name="xml-path" type="xs:string"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-any-element" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:all>
+                        <xs:element minOccurs="0" ref="xml-access-methods"/>
+                        <xs:element minOccurs="0" ref="xml-java-type-adapter"/>
+                        <xs:element minOccurs="0" ref="xml-properties"/>
+                        <xs:element minOccurs="0" ref="xml-element-refs"/>
+                    </xs:all>
+                    <xs:attribute default="false" name="xml-mixed" type="xs:boolean"/>
+                    <xs:attribute default="false" name="lax" type="xs:boolean"/>
+                    <xs:attribute default="javax.xml.bind.annotation.W3CDomHandler" name="dom-handler" type="xs:string"/>
+                    <xs:attribute default="false" name="read-only" type="xs:boolean"/>
+                    <xs:attribute default="false" name="write-only" type="xs:boolean"/>
+                    <xs:attribute name="xml-path" type="xs:string"/>
+                    <xs:attribute default="##default" name="container-type" type="xs:string"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-element" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                   <xs:all>
+                        <xs:element minOccurs="0" ref="xml-abstract-null-policy"/>                        
+                        <xs:element minOccurs="0" ref="xml-access-methods"/>
+                        <xs:element minOccurs="0" ref="xml-element-wrapper"/>
+                        <xs:element minOccurs="0" ref="xml-java-type-adapter"/>
+                        <xs:element minOccurs="0" ref="xml-map"/>
+                        <xs:element minOccurs="0" ref="xml-properties"/>
+                        <xs:element minOccurs="0" ref="xml-schema-type"/>
+                    </xs:all>
+                    <xs:attribute default="##default" name="name" type="xs:string"/>
+                    <xs:attribute default="##default" name="namespace" type="xs:string"/>
+                    <xs:attribute name="default-value" type="xs:string"/>
+                    <xs:attribute default="false" name="nillable" type="xs:boolean"/>
+                    <xs:attribute default="false" name="required" type="xs:boolean"/>
+                    <xs:attribute default="##default" name="container-type" type="xs:string"/>
+                    <xs:attribute default="javax.xml.bind.annotation.XmlElement.DEFAULT" name="type" type="xs:string"/>
+                    <xs:attribute default="false" name="xml-id" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-idref" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-key" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-list" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-inline-binary-data" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-attachment-ref" type="xs:boolean"/>
+                    <xs:attribute name="xml-mime-type" type="xs:string"/>
+                    <xs:attribute default="false" name="read-only" type="xs:boolean"/>
+                    <xs:attribute default="false" name="write-only" type="xs:boolean"/>
+                    <xs:attribute default="false" name="cdata" type="xs:boolean"/>
+                    <xs:attribute name="xml-path" type="xs:string"/>
+                    <xs:attribute default="false" name="xml-location" type="xs:boolean"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-elements" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:sequence>
+                        <xs:element minOccurs="0" ref="xml-access-methods"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="xml-element"/>
+                        <xs:element minOccurs="0" ref="xml-element-wrapper"/>
+                        <xs:element minOccurs="0" ref="xml-properties"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="xml-join-nodes"/>
+                    </xs:sequence>
+                    <xs:attribute default="false" name="xml-idref" type="xs:boolean"/>
+                    <xs:attribute default="false" name="xml-list" type="xs:boolean"/>
+                    <xs:attribute default="false" name="read-only" type="xs:boolean"/>
+                    <xs:attribute default="false" name="write-only" type="xs:boolean"/>
+                    <xs:attribute default="##default" name="container-type" type="xs:string"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-element-ref" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:all>
+                        <xs:element minOccurs="0" name="xml-access-methods" type="xml-access-methods"/>
+                        <xs:element minOccurs="0" ref="xml-element-wrapper"/>
+                        <xs:element minOccurs="0" ref="xml-properties"/>
+                        <xs:element minOccurs="0" ref="xml-java-type-adapter"/>
+                    </xs:all>
+                    <xs:attribute default="##default" name="name" type="xs:string"/>
+                    <xs:attribute name="namespace" type="xs:string"/>
+                    <xs:attribute default="##default" name="container-type" type="xs:string"/>
+                    <xs:attribute default="javax.xml.bind.annotation.XmlElementRef.DEFAULT" name="type" type="xs:string"/>
+                    <xs:attribute default="false" name="xml-mixed" type="xs:boolean"/>
+                    <xs:attribute default="false" name="read-only" type="xs:boolean"/>
+                    <xs:attribute default="false" name="write-only" type="xs:boolean"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-element-refs" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="xml-access-methods" type="xml-access-methods"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="xml-element-ref"/>
+                        <xs:element minOccurs="0" ref="xml-element-wrapper"/>
+                        <xs:element minOccurs="0" ref="xml-properties"/>
+                        <xs:element minOccurs="0" ref="xml-java-type-adapter"/>
+                    </xs:sequence>
+                    <xs:attribute default="false" name="xml-mixed" type="xs:boolean"/>
+                    <xs:attribute default="false" name="read-only" type="xs:boolean"/>
+                    <xs:attribute default="false" name="write-only" type="xs:boolean"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-inverse-reference" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:all>
+                        <xs:element minOccurs="0" ref="xml-access-methods"/>
+                        <xs:element minOccurs="0" ref="xml-properties"/>
+                    </xs:all>
+                    <xs:attribute name="mapped-by" type="xs:string" use="required"/>
+                    <xs:attribute default="##default" name="container-type" type="xs:string"/>
+                    <xs:attribute default="##default" name="type" type="xs:string"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-element-wrapper">
+        <xs:complexType>
+            <xs:attribute default="##default" name="name" type="xs:string"/>
+            <xs:attribute default="##default" name="namespace" type="xs:string"/>
+            <xs:attribute default="false" name="nillable" type="xs:boolean"/>
+            <xs:attribute default="false" name="required" type="xs:boolean"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-value" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:all>
+                        <xs:element minOccurs="0" ref="xml-abstract-null-policy"/>
+                        <xs:element minOccurs="0" ref="xml-access-methods"/>
+                        <xs:element minOccurs="0" ref="xml-properties"/>
+                        <xs:element minOccurs="0" ref="xml-java-type-adapter"/>
+                    </xs:all>
+                    <xs:attribute default="false" name="cdata" type="xs:boolean"/>
+                    <xs:attribute default="false" name="read-only" type="xs:boolean"/>
+                    <xs:attribute default="##default" name="type" type="xs:string"/>
+                    <xs:attribute default="false" name="write-only" type="xs:boolean"/>
+                    <xs:attribute default="##default" name="container-type" type="xs:string"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-map">
+        <xs:complexType>
+            <xs:all>
+                <xs:element minOccurs="0" name="key">
+                    <xs:complexType>
+                        <xs:attribute name="type" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="value">
+                    <xs:complexType>
+                        <xs:attribute name="type" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:all>
+        </xs:complexType> 
+    </xs:element>
+    <xs:element name="xml-abstract-null-policy" type="xml-abstract-null-policy"/>
+    <xs:complexType abstract="true" name="xml-abstract-null-policy">
+        <xs:attribute default="false" name="xsi-nil-represents-null" type="xs:boolean"/>
+        <xs:attribute default="false" name="empty-node-represents-null" type="xs:boolean"/>
+        <xs:attribute default="ABSENT_NODE" name="null-representation-for-xml" type="xml-marshal-null-representation"/>
+    </xs:complexType>
+    <xs:element name="xml-null-policy" substitutionGroup="xml-abstract-null-policy">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="xml-abstract-null-policy">
+                    <xs:attribute default="true" name="is-set-performed-for-absent-node" type="xs:boolean"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-is-set-null-policy" substitutionGroup="xml-abstract-null-policy">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="xml-abstract-null-policy">
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="is-set-parameter">
+                            <xs:complexType>
+                                <xs:attribute name="value" type="xs:string" use="required"/>
+                                <xs:attribute name="type" type="xs:string" use="required"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="is-set-method-name" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-transformation" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="xml-access-methods" type="xml-access-methods"/>
+                        <xs:element minOccurs="0" ref="xml-properties"/>
+                        <xs:element name="xml-read-transformer">
+                            <xs:complexType>
+                                <xs:attribute name="method" type="xs:string"/>
+                                <xs:attribute name="transformer-class" type="xs:string"/>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="xml-write-transformer">
+                            <xs:complexType>
+                                <xs:attribute name="method" type="xs:string"/>
+                                <xs:attribute name="xml-path" type="xs:string" use="required"/>
+                                <xs:attribute name="transformer-class" type="xs:string"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute default="true" name="optional" type="xs:boolean"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xml-join-nodes" substitutionGroup="java-attribute">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="java-attribute">
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="1" name="xml-join-node">
+                            <xs:complexType>
+                                <xs:attribute name="xml-path" type="xs:string" use="required"/>
+                                <xs:attribute name="referenced-xml-path" type="xs:string" use="required"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute default="##default" name="container-type" type="xs:string"/>
+                    <xs:attribute default="##default" name="type" type="xs:string"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

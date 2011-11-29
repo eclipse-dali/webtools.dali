@@ -43,6 +43,14 @@
 			jaxbFacetVersion="2.2"
 			default="false"/>
 		
+		<jaxbPlatform
+			id="eclipselink_2_4"
+			label="%ECLIPSELINK_2_4_PLATFORM_LABEL"
+			factoryClass="org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_4.ELJaxb_2_4_PlatformDefinitionFactory"
+			group="eclipselink"
+			jaxbFacetVersion="2.2"
+			default="false"/>
+		
 	</extension>
 	
 	

@@ -7,7 +7,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3;
+package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_4;
 
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
@@ -15,11 +15,11 @@ import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2.ELJaxb_2_2_PlatformDefinition;
 
 
-public class ELJaxb_2_3_PlatformDefinition
+public class ELJaxb_2_4_PlatformDefinition
 		extends  ELJaxb_2_2_PlatformDefinition {
 	
 	// singleton
-	private static final JaxbPlatformDefinition INSTANCE = new ELJaxb_2_3_PlatformDefinition();
+	private static final JaxbPlatformDefinition INSTANCE = new ELJaxb_2_4_PlatformDefinition();
 	
 	/**
 	 * Return the singleton.
@@ -29,13 +29,13 @@ public class ELJaxb_2_3_PlatformDefinition
 	}
 	
 	
-	protected ELJaxb_2_3_PlatformDefinition() {
+	protected ELJaxb_2_4_PlatformDefinition() {
 		super();
 	}
 	
 	
 	@Override
 	public JaxbPlatformDescription getDescription() {
-		return ELJaxbPlatform.VERSION_2_3;
+		return ELJaxbPlatform.VERSION_2_4;
 	}
 }
