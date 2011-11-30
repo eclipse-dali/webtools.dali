@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -417,8 +418,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(resourceType.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, NamedQueryAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, NamedNativeQueryAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(0, NamedQueryAnnotation.ANNOTATION_NAME));
+		assertNotNull(resourceType.getAnnotation(0, NamedNativeQueryAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToEmbeddable() throws Exception {
