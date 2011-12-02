@@ -21,10 +21,13 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
+import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
+import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -32,6 +35,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
+import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -280,6 +284,38 @@ public class GenericJavaXmlElement
 		return (xsdType == null) ? null : xsdType.getElement(this.qName.getNamespace(), this.qName.getName());
 	}
 	
+	/**
+	 * Return the expected schema type associated with the data type
+	 */
+	public XsdTypeDefinition getTypeXsdTypeDefinition() {
+		String type = getFullyQualifiedType();
+		if (StringTools.stringIsEmpty(type) || XmlElement.DEFAULT_TYPE_PROPERTY.equals(type)) {
+			return null;
+		}
+		
+		JaxbPackage pkg = getJaxbPackage();
+		JaxbPackageInfo pkgInfo = (pkg == null) ? null : pkg.getPackageInfo();
+		if (pkgInfo != null) {
+			for (XmlSchemaType schemaType : pkgInfo.getXmlSchemaTypes()) {
+				if (type.equals(schemaType.getFullyQualifiedType())) {
+					return schemaType.getXsdTypeDefinition();
+				}
+			}
+		}
+		
+		JaxbTypeMapping jaxbTypeMapping = getContextRoot().getTypeMapping(type);
+		if (jaxbTypeMapping != null) {
+			return jaxbTypeMapping.getXsdTypeDefinition();
+		}
+		
+		String builtInType = getJaxbProject().getPlatform().getDefinition().getSchemaTypeMapping(type);
+		if (builtInType != null) {
+			return XsdUtil.getSchemaForSchema().getTypeDefinition(builtInType);
+		}
+		
+		return null;
+	}
+	
 	
 	// ***** content assist *****
 	
@@ -317,6 +353,7 @@ public class GenericJavaXmlElement
 		super.validate(messages, reporter, astRoot);
 		this.qName.validate(messages, reporter, astRoot);
 		validateType(messages, reporter, astRoot);
+		validateSchemaType(messages, reporter, astRoot);
 	}
 	
 	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -343,6 +380,46 @@ public class GenericJavaXmlElement
 								getTypeTextRange(astRoot)));
 								
 			}
+		}
+	}
+	
+	protected void validateSchemaType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		XsdElementDeclaration xsdElement = getXsdElement();
+		if (xsdElement == null) {
+			return;
+		}
+		
+		XsdTypeDefinition expectedSchemaType = null;
+		String typeName = this.context.getAttributeMapping().getDataTypeName();
+		if (! XmlElement.DEFAULT_TYPE_PROPERTY.equals(getFullyQualifiedType())) {
+			typeName = getFullyQualifiedType();
+		}
+		
+		if (this.context.hasXmlID()) {
+			expectedSchemaType = XsdUtil.getSchemaForSchema().getTypeDefinition("ID");
+		}
+		else if (this.context.hasXmlIDREF()) {
+			expectedSchemaType = XsdUtil.getSchemaForSchema().getTypeDefinition("IDREF");
+		}
+		else if (! XmlElement.DEFAULT_TYPE_PROPERTY.equals(getFullyQualifiedType())) {
+			expectedSchemaType = getTypeXsdTypeDefinition();
+		}
+		else {
+			expectedSchemaType = this.context.getAttributeMapping().getDataTypeXsdTypeDefinition();
+		}
+		
+		if (expectedSchemaType == null) {
+			return;
+		}
+		
+		if (! xsdElement.typeIsValid(expectedSchemaType, this.context.hasXmlList())) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ELEMENT__INVALID_SCHEMA_TYPE,
+							new String[] { typeName, xsdElement.getName() },
+							this,
+							this.qName.getNameTextRange(astRoot)));
 		}
 	}
 	
@@ -386,5 +463,11 @@ public class GenericJavaXmlElement
 		String getDefaultType();
 		
 		XmlElementWrapper getElementWrapper();
+		
+		boolean hasXmlID();
+		
+		boolean hasXmlIDREF();
+		
+		boolean hasXmlList();
 	}
 }

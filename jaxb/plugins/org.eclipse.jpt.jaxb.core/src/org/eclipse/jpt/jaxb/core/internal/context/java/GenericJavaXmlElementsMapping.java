@@ -430,6 +430,18 @@ public class GenericJavaXmlElementsMapping
 		public XmlElementWrapper getElementWrapper() {
 			return GenericJavaXmlElementsMapping.this.getXmlElementWrapper();
 		}
+		
+		public boolean hasXmlID() {
+			return false;
+		}
+		
+		public boolean hasXmlIDREF() {
+			return GenericJavaXmlElementsMapping.this.getXmlIDREF() != null;
+		}
+		
+		public boolean hasXmlList() {
+			return false;
+		}
 	}
 	
 	

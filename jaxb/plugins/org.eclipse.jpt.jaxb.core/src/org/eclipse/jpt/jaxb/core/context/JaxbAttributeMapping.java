@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 
 
 /**
@@ -22,7 +23,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  */
 public interface JaxbAttributeMapping
@@ -67,6 +68,11 @@ public interface JaxbAttributeMapping
 	 * (Usually the same as the value type, except when an XmlIDREF is used.)
 	 */
 	String getDataTypeName();
+	
+	/**
+	 * Return the schema type associated with the value type.  May be null.
+	 */
+	XsdTypeDefinition getDataTypeXsdTypeDefinition();
 	
 	/**
 	 * Return all directly referenced types, fully qualified.

@@ -13,7 +13,18 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.xsd.XSDTypeDefinition;
 
-
+/**
+ * Adds API to {@link XSDTypeDefinition}.
+ * <p>
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.2
+ * @since 3.1
+ */
 public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 		extends XsdComponent<A> {
 	
@@ -37,6 +48,22 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	
 	public boolean matches(String namespace, String name) {
 		return XsdUtil.namespaceEquals(getXSDComponent(), namespace) && StringTools.stringsAreEqual(getName(), name); 
+	}
+	
+	public boolean typeIsValid(XsdTypeDefinition xsdType, boolean isItemType) {
+		return typeIsValid(xsdType, isItemType, true, true);
+	}
+	
+	public boolean typeIsValid(XsdTypeDefinition xsdType, boolean isItemType, boolean allowExtension, boolean allowRestriction) {
+		XsdTypeDefinition type = this;
+		if (isItemType) {
+			type = (type.getKind() == XsdTypeDefinition.Kind.SIMPLE) ? 
+					((XsdSimpleTypeDefinition) type).getItemType() : null;
+		}
+		if (type == null) {
+			return false;
+		}
+		return type.getXSDComponent().getBadTypeDerivation(xsdType.getXSDComponent(), allowExtension, allowRestriction) == null;
 	}
 	
 	public XsdTypeDefinition getBaseType() {

@@ -25,18 +25,22 @@ import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdAttributeUse;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSimpleTypeDefinition;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
+import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlAttributeMapping
-		extends GenericJavaBasicMapping<XmlAttributeAnnotation>
+		extends AbstractJavaBasicMapping<XmlAttributeAnnotation>
 		implements XmlAttributeMapping {
 	
 	protected final JaxbQName qName;
@@ -115,6 +119,14 @@ public class GenericJavaXmlAttributeMapping
 	}
 	
 	
+	// ***** XmlList *****
+	
+	@Override
+	protected boolean calculateDefaultXmlList() {
+		return getPersistentAttribute().isJavaResourceAttributeCollectionType();
+	}
+	
+	
 	// ***** XmlIDREF *****
 	
 	@Override
@@ -132,6 +144,18 @@ public class GenericJavaXmlAttributeMapping
 			return (attributeUse == null) ? null : attributeUse.getAttributeDeclaration();
 		}
 		return null;		
+	}
+	
+	@Override
+	public XsdTypeDefinition getDataTypeXsdTypeDefinition() {
+		XsdTypeDefinition xsdType = super.getDataTypeXsdTypeDefinition();
+		if (xsdType != null 
+				&& isXmlList() 
+				&& xsdType.getKind() == XsdTypeDefinition.Kind.SIMPLE 
+				&& ((XsdSimpleTypeDefinition) xsdType).getItemType() != null) {
+			xsdType = ((XsdSimpleTypeDefinition) xsdType).getItemType();
+		}
+		return xsdType;
 	}
 	
 	
@@ -160,6 +184,41 @@ public class GenericJavaXmlAttributeMapping
 		super.validate(messages, reporter, astRoot);
 		
 		this.qName.validate(messages, reporter, astRoot);
+		
+		validateSchemaType(messages, reporter, astRoot);
+	}
+	
+	protected void validateSchemaType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		XsdFeature xsdFeature = getXsdFeature();
+		if (xsdFeature == null) {
+			return;
+		}
+		
+		XsdTypeDefinition expectedSchemaType = null;
+		if (this.xmlID != null) {
+			expectedSchemaType = XsdUtil.getSchemaForSchema().getTypeDefinition("ID");
+		}
+		else if (this.xmlIDREF != null) {
+			expectedSchemaType = XsdUtil.getSchemaForSchema().getTypeDefinition("IDREF");
+		}
+		else {
+			expectedSchemaType = getDataTypeXsdTypeDefinition();
+		}
+		
+		if (expectedSchemaType == null) {
+			return;
+		}
+		
+		boolean isItemType = isXmlList() && this.xmlSchemaType == null;
+		if (! xsdFeature.typeIsValid(expectedSchemaType, isItemType)) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ATTRIBUTE__INVALID_SCHEMA_TYPE,
+							new String[] { getValueTypeName(), xsdFeature.getName() },
+							this,
+							this.qName.getNameTextRange(astRoot)));
+		}
 	}
 	
 	
@@ -233,7 +292,7 @@ public class GenericJavaXmlAttributeMapping
 	
 	
 	protected class XmlIDREFContext
-			extends GenericJavaBasicMapping.XmlIDREFContext {
+			extends AbstractJavaBasicMapping.XmlIDREFContext {
 		
 		public Iterable<ValidatableReference> getReferences() {
 			

@@ -198,6 +198,9 @@ public class GenericJavaXmlElementWrapper
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		
+		this.qName.validate(messages, reporter, astRoot);
+		
 		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
@@ -207,7 +210,7 @@ public class GenericJavaXmlElementWrapper
 					getValidationTextRange(astRoot)));
 		}
 	}
-
+	
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.annotation.getTextRange(astRoot);

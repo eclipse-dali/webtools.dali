@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -21,8 +22,9 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAttachmentRef;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
-import org.eclipse.jpt.jaxb.core.context.XmlList;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JaxbBasicSchemaComponentAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
@@ -30,16 +32,21 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSimpleTypeDefinition;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.eclipse.xsd.XSDVariety;
 
-public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponentAnnotation>
+public abstract class AbstractJavaBasicMapping<A extends JaxbBasicSchemaComponentAnnotation>
 		extends AbstractJavaAdaptableAttributeMapping<A>
 		implements JaxbBasicMapping {
 	
 	protected XmlSchemaType xmlSchemaType;
 	
-	protected XmlList xmlList;
+	protected boolean specifiedXmlList;
+	
+	protected boolean defaultXmlList;
 	
 	protected XmlID xmlID;
 	
@@ -48,7 +55,7 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	protected XmlAttachmentRef xmlAttachmentRef;
 	
 	
-	public GenericJavaBasicMapping(JaxbPersistentAttribute parent) {
+	public AbstractJavaBasicMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		initializeXmlSchemaType();
 		initializeXmlList();
@@ -74,7 +81,6 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 	public void update() {
 		super.update();
 		updateXmlSchemaType();
-		updateXmlList();
 		updateXmlID();
 		updateXmlIDREF();
 		updateXmlAttachmentRef();
@@ -152,75 +158,65 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		}
 	}
 
-	//************  XmlList ***************
-
-	public XmlList getXmlList() {
-		return this.xmlList;
+	// ***** XmlList *****
+	
+	public boolean isXmlList() {
+		return isSpecifiedXmlList() || isDefaultXmlList();
 	}
-
-	public XmlList addXmlList() {
-		if (this.xmlList != null) {
+	
+	public boolean isSpecifiedXmlList() {
+		return this.specifiedXmlList;
+	}
+	
+	public void setSpecifiedXmlList(boolean newValue) {
+		if (this.specifiedXmlList == newValue) {
 			throw new IllegalStateException();
 		}
-		XmlListAnnotation annotation = (XmlListAnnotation) this.getJavaResourceAttribute().addAnnotation(JAXB.XML_LIST);
-
-		XmlList xmlList = this.buildXmlList(annotation);
-		this.setXmlList_(xmlList);
-		return xmlList;
-	}
-
-	protected XmlList buildXmlList(XmlListAnnotation xmlListAnnotation) {
-		return new GenericJavaXmlList(this, xmlListAnnotation);
-	}
-
-	public void removeXmlList() {
-		if (this.xmlList == null) {
-			throw new IllegalStateException();
-		}
-		this.getJavaResourceAttribute().removeAnnotation(JAXB.XML_LIST);
-		this.setXmlList_(null);
-	}
-
-	protected void initializeXmlList() {
-		XmlListAnnotation annotation = this.getXmlListAnnotation();
-		if (annotation != null) {
-			this.xmlList = this.buildXmlList(annotation);
-		}
-	}
-
-	protected XmlListAnnotation getXmlListAnnotation() {
-		return (XmlListAnnotation) this.getJavaResourceAttribute().getAnnotation(JAXB.XML_LIST);
-	}
-
-	protected void syncXmlList() {
-		XmlListAnnotation annotation = this.getXmlListAnnotation();
-		if (annotation != null) {
-			if (this.getXmlList() != null) {
-				this.getXmlList().synchronizeWithResourceModel();
-			}
-			else {
-				this.setXmlList_(this.buildXmlList(annotation));
-			}
+		
+		if (newValue) {
+			getJavaResourceAttribute().addAnnotation(JAXB.XML_LIST);
 		}
 		else {
-			this.setXmlList_(null);
+			getJavaResourceAttribute().removeAnnotation(JAXB.XML_LIST);
 		}
+		
+		setSpecifiedXmlList_(newValue);
 	}
-
-	protected void updateXmlList() {
-		if (this.getXmlList() != null) {
-			this.getXmlList().update();
-		}
+	
+	protected void setSpecifiedXmlList_(boolean newValue) {
+		boolean oldValue = this.specifiedXmlList;
+		this.specifiedXmlList = newValue;
+		firePropertyChanged(SPECIFIED_XML_LIST_PROPERTY, oldValue, newValue);
 	}
-
-	protected void setXmlList_(XmlList xmlList) {
-		XmlList oldXmlList = this.xmlList;
-		this.xmlList = xmlList;
-		firePropertyChanged(XML_LIST_PROPERTY, oldXmlList, xmlList);
+	
+	public boolean isDefaultXmlList() {
+		return this.defaultXmlList;
 	}
-
-
-	//************  XmlID ***************
+	
+	protected void setDefaultXmlList_(boolean newValue) {
+		boolean oldValue = this.defaultXmlList;
+		this.defaultXmlList = newValue;
+		firePropertyChanged(DEFAULT_XML_LIST_PROPERTY, oldValue, newValue);
+	}
+	
+	protected void initializeXmlList() {
+		this.specifiedXmlList = getXmlListAnnotation() != null;
+		this.defaultXmlList = calculateDefaultXmlList();
+	}
+	
+	protected void syncXmlList() {
+		setSpecifiedXmlList_(getXmlListAnnotation() != null);
+		setDefaultXmlList_(calculateDefaultXmlList());
+	}
+	
+	protected XmlListAnnotation getXmlListAnnotation() {
+		return (XmlListAnnotation) getJavaResourceAttribute().getAnnotation(JAXB.XML_LIST);
+	}
+	
+	protected abstract boolean calculateDefaultXmlList();
+	
+	
+	// ***** XmlID *****
 
 	public XmlID getXmlID() {
 		return this.xmlID;
@@ -440,6 +436,14 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		return getValueTypeName();
 	}
 	
+	@Override
+	public XsdTypeDefinition getDataTypeXsdTypeDefinition() {
+		if (this.xmlSchemaType != null) {
+			return this.xmlSchemaType.getXsdTypeDefinition();
+		}
+		return super.getDataTypeXsdTypeDefinition();
+	}
+	
 	
 	// ***** content assist *****
 
@@ -471,8 +475,8 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 			this.xmlSchemaType.validate(messages, reporter, astRoot);
 		}
 		
-		if (this.xmlList != null) {
-			this.xmlList.validate(messages, reporter, astRoot);
+		if (isXmlList()) {
+			validateXmlList(messages, reporter, astRoot);
 		}
 		
 		if (this.xmlID != null) {
@@ -488,16 +492,47 @@ public abstract class GenericJavaBasicMapping<A extends JaxbBasicSchemaComponent
 		}
 	}
 	
+	protected void validateXmlList(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
+			messages.add(
+				DefaultValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JaxbValidationMessages.XML_LIST__ATTRIBUTE_NOT_COLLECTION_TYPE,
+					this,
+					getXmlListValidationTextRange(astRoot)));
+		}
+		else {
+			XsdTypeDefinition xsdType = getDataTypeXsdTypeDefinition();
+			if (xsdType != null
+					&& (xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE
+							|| ((XsdSimpleTypeDefinition) xsdType).getXSDComponent().getVariety() == XSDVariety.LIST_LITERAL)) {
+				
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.XML_LIST__ITEM_TYPE_NOT_MAPPED_TO_VALID_SCHEMA_TYPE,
+								new String[] { getValueTypeName() },
+								this,
+								getValidationTextRange(astRoot)));
+			}
+		}
+	}
+	
+	protected TextRange getXmlListValidationTextRange(CompilationUnit astRoot) {
+		XmlListAnnotation annotation = getXmlListAnnotation();
+		return (annotation == null) ? getValidationTextRange(astRoot) : annotation.getTextRange(astRoot);
+	}
+	
 	
 	protected abstract class XmlIDREFContext
 			implements GenericJavaXmlIDREF.Context {
 		
 		public XmlIDREFAnnotation getAnnotation() {
-			return GenericJavaBasicMapping.this.getXmlIDREFAnnotation();
+			return AbstractJavaBasicMapping.this.getXmlIDREFAnnotation();
 		}
 		
 		public boolean isList() {
-			return GenericJavaBasicMapping.this.getXmlList() != null;
+			return AbstractJavaBasicMapping.this.isXmlList();
 		}
 	}
 }

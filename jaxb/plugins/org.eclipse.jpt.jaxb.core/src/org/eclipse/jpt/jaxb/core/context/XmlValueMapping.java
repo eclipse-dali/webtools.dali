@@ -19,10 +19,10 @@ package org.eclipse.jpt.jaxb.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.2
  * @since 3.0
  */
 public interface XmlValueMapping
-		extends JaxbAttributeMapping, XmlAdaptableMapping {
+		extends JaxbAttributeMapping, XmlAdaptableMapping, XmlListMapping {
 
 }

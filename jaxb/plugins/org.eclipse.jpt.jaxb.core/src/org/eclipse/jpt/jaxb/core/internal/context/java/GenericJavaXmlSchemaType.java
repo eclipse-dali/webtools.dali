@@ -109,8 +109,9 @@ public abstract class GenericJavaXmlSchemaType
 	
 	// ***** misc *****
 	
-	protected XsdTypeDefinition getXsdTypeDefinition_() {
-		XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
+	public XsdTypeDefinition getXsdTypeDefinition() {
+		JaxbPackage pkg = getJaxbPackage();
+		XsdSchema xsdSchema = (pkg == null) ? null : pkg.getXsdSchema();
 		if (xsdSchema == null) {
 			return null;
 		}
@@ -154,7 +155,7 @@ public abstract class GenericJavaXmlSchemaType
 		
 		this.qName.validate(messages, reporter, astRoot);
 		
-		XsdTypeDefinition xsdType = getXsdTypeDefinition_();
+		XsdTypeDefinition xsdType = getXsdTypeDefinition();
 		if (xsdType != null && xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE) {
 			messages.add(
 					DefaultValidationMessages.buildMessage(

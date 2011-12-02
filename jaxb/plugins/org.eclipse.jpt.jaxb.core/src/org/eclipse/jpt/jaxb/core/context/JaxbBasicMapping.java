@@ -20,11 +20,11 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  */
 public interface JaxbBasicMapping
-		extends JaxbAttributeMapping, XmlAdaptableMapping {
+		extends JaxbAttributeMapping, XmlAdaptableMapping, XmlListMapping {
 	
 	// ***** xml schema type *****
 	
@@ -35,17 +35,6 @@ public interface JaxbBasicMapping
 	XmlSchemaType addXmlSchemaType();
 	
 	void removeXmlSchemaType();
-	
-	
-	// ***** XmlList *****
-	
-	String XML_LIST_PROPERTY = "xmlList"; //$NON-NLS-1$
-	
-	XmlList getXmlList();
-	
-	XmlList addXmlList();
-	
-	void removeXmlList();
 	
 	
 	// ***** XmlID *****

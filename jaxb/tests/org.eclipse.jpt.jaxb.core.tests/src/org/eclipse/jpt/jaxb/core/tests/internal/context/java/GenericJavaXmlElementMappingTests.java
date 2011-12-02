@@ -36,7 +36,6 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
@@ -64,6 +63,24 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				sb.append("@XmlElement");
 			}
 		});
+	}
+	
+	private ICompilationUnit createTypeWithCollectionXmlElement() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("import java.util.List;").append(CR);
+				sb.append("import javax.xml.bind.annotation.XmlElement;").append(CR);
+				sb.append("import javax.xml.bind.annotation.XmlType;").append(CR);
+				sb.append(CR);
+				sb.append("@XmlType").append(CR);
+				sb.append("public class ").append(TYPE_NAME).append(" {").append(CR);
+				sb.append("    @XmlElement").append(CR);
+				sb.append("    public List<String> list;").append(CR);
+				sb.append("}").append(CR);
+			}
+		};
+		return this.javaProject.createCompilationUnit(PACKAGE_NAME, TYPE_NAME + ".java", sourceWriter);
 	}
 	
 	private void createXmlTypeWithVariousAttributes() throws CoreException {
@@ -721,7 +738,7 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		assertNull(xmlElementWrapperAnnotation);
 	}
 
-	public void testModifyXmlList() throws Exception {
+	public void testModifyXmlList1() throws Exception {
 		createTypeWithXmlElement();
 		
 		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
@@ -729,21 +746,57 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
-
-		XmlListAnnotation xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(JAXB.XML_LIST);
-		assertNull(xmlElementMapping.getXmlList());
-		assertNull(xmlListAnnotation);
-
-		xmlElementMapping.addXmlList();
-		xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(JAXB.XML_LIST);
-		assertNotNull(xmlElementMapping.getXmlList());
-		assertNotNull(xmlListAnnotation);
-
-		xmlElementMapping.removeXmlList();
-		xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(JAXB.XML_LIST);
+		
+		assertFalse(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertFalse(xmlElementMapping.isSpecifiedXmlList());
+		assertNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
+		
+		xmlElementMapping.setSpecifiedXmlList(true);
+		
+		assertTrue(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertTrue(xmlElementMapping.isSpecifiedXmlList());
+		assertNotNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
+		
+		xmlElementMapping.setSpecifiedXmlList(false);
+		
+		assertFalse(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertFalse(xmlElementMapping.isSpecifiedXmlList());
+		assertNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
 	}
-
-	public void testUpdateXmlList() throws Exception {
+	
+	public void testModifyXmlList2() throws Exception {
+		createTypeWithCollectionXmlElement();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		assertFalse(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertFalse(xmlElementMapping.isSpecifiedXmlList());
+		assertNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
+		
+		xmlElementMapping.setSpecifiedXmlList(true);
+		
+		assertTrue(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertTrue(xmlElementMapping.isSpecifiedXmlList());
+		assertNotNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
+		
+		xmlElementMapping.setSpecifiedXmlList(false);
+		
+		assertFalse(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertFalse(xmlElementMapping.isSpecifiedXmlList());
+		assertNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
+	}
+	
+	public void testUpdateXmlList1() throws Exception {
 		createTypeWithXmlElement();
 		
 		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
@@ -751,12 +804,12 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
 		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
-
-		XmlListAnnotation xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(JAXB.XML_LIST);
-		assertNull(xmlElementMapping.getXmlList());
-		assertNull(xmlListAnnotation);
-
-
+		
+		assertFalse(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertFalse(xmlElementMapping.isSpecifiedXmlList());
+		assertNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
+		
 		//add an XmlList annotation
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
 		annotatedElement.edit(new Member.Editor() {
@@ -764,19 +817,63 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 				GenericJavaXmlElementMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_LIST);
 			}
 		});
-		xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(JAXB.XML_LIST);
-		assertNotNull(xmlElementMapping.getXmlList());
-		assertNotNull(xmlListAnnotation);
-
+		
+		assertTrue(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertTrue(xmlElementMapping.isSpecifiedXmlList());
+		assertNotNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
+		
 		//remove the XmlList annotation
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				GenericJavaXmlElementMappingTests.this.removeAnnotation(declaration, JAXB.XML_LIST);
 			}
 		});
-		xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(JAXB.XML_LIST);
-		assertNull(xmlElementMapping.getXmlList());
-		assertNull(xmlListAnnotation);
+		
+		assertFalse(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertFalse(xmlElementMapping.isSpecifiedXmlList());
+		assertNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
+	}
+	
+	public void testUpdateXmlList2() throws Exception {
+		createTypeWithCollectionXmlElement();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		assertFalse(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertFalse(xmlElementMapping.isSpecifiedXmlList());
+		assertNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
+		
+		//add an XmlList annotation
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlElementMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_LIST);
+			}
+		});
+		
+		assertTrue(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertTrue(xmlElementMapping.isSpecifiedXmlList());
+		assertNotNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
+		
+		//remove the XmlList annotation
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlElementMappingTests.this.removeAnnotation(declaration, JAXB.XML_LIST);
+			}
+		});
+		
+		assertFalse(xmlElementMapping.isXmlList());
+		assertFalse(xmlElementMapping.isDefaultXmlList());
+		assertFalse(xmlElementMapping.isSpecifiedXmlList());
+		assertNull(resourceAttribute.getAnnotation(JAXB.XML_LIST));
 	}
 
 	public void testModifyXmlID() throws Exception {

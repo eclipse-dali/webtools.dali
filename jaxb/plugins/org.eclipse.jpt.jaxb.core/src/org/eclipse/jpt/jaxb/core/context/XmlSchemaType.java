@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.xsd.util.XSDUtil;
 
 /**
@@ -22,7 +23,7 @@ import org.eclipse.xsd.util.XSDUtil;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.2
  * @since 3.0
  */
 public interface XmlSchemaType
@@ -37,11 +38,21 @@ public interface XmlSchemaType
 	
 	// ***** type *****
 	
+	String TYPE_PROPERTY = "type"; //$NON-NLS-1$
+	
 	/**
 	 * Corresponds to the XmlSchemaType annotation 'type' element
 	 */
 	String getType();
+	
 	void setType(String type);
-		String TYPE_PROPERTY = "type"; //$NON-NLS-1$
-		String DEFAULT_TYPE = "javax.xml.bind.annotation.XmlSchemaType.DEFAULT"; //$NON-NLS-1$
+	
+	String DEFAULT_TYPE = "javax.xml.bind.annotation.XmlSchemaType.DEFAULT"; //$NON-NLS-1$
+	
+	public String getFullyQualifiedType();
+	
+	
+	// ***** misc *****
+	
+	public XsdTypeDefinition getXsdTypeDefinition();
 }

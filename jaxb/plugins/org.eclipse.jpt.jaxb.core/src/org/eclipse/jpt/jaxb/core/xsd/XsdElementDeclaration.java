@@ -15,7 +15,18 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSubstitutionGroupExclusions;
 import org.eclipse.xsd.XSDTypeDefinition;
 
-
+/**
+ * Adds API to {@link XSDElementDeclaration}.
+ * <p>
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.2
+ * @since 3.1
+ */
 public class XsdElementDeclaration
 		extends XsdFeature<XSDElementDeclaration> {
 	
@@ -36,14 +47,6 @@ public class XsdElementDeclaration
 	
 	@Override
 	public boolean typeIsValid(XsdTypeDefinition xsdType, boolean isItemType) {
-		XsdTypeDefinition type = getType();
-		if (isItemType) {
-			type = (type.getKind() == XsdTypeDefinition.Kind.SIMPLE) ? 
-					((XsdSimpleTypeDefinition) type).getItemType() : null;
-		}
-		if (type == null) {
-			return false;
-		}
 		XSDElementDeclaration xsdElement = getXSDComponent();
 		boolean allowExtension = true;
 		boolean allowRestriction = true;
@@ -54,7 +57,7 @@ public class XsdElementDeclaration
 			allowExtension = ! xsdSubstitutionGroupExclusions.contains(XSDSubstitutionGroupExclusions.EXTENSION_LITERAL);
 			allowRestriction = ! xsdSubstitutionGroupExclusions.contains(XSDSubstitutionGroupExclusions.RESTRICTION_LITERAL);
 		}
-		return type.getXSDComponent().getBadTypeDerivation(xsdType.getXSDComponent(), allowExtension, allowRestriction) == null;
+		return getType().typeIsValid(xsdType, isItemType, allowExtension, allowRestriction);
 	}
 	
 	public XsdElementDeclaration getElement(String namespace, String name) {

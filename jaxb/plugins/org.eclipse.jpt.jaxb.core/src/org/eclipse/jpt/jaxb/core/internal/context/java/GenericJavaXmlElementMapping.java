@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlElementMapping
-		extends GenericJavaBasicMapping<XmlElementAnnotation>
+		extends AbstractJavaBasicMapping<XmlElementAnnotation>
 		implements XmlElementMapping {
 	
 	protected final XmlElement xmlElement;
@@ -153,6 +153,14 @@ public class GenericJavaXmlElementMapping
 	}
 	
 	
+	// ***** XmlList *****
+	
+	@Override
+	protected boolean calculateDefaultXmlList() {
+		return false;
+	}
+	
+	
 	// ***** XmlIDREF *****
 	
 	@Override
@@ -253,11 +261,23 @@ public class GenericJavaXmlElementMapping
 		public XmlElementWrapper getElementWrapper() {
 			return GenericJavaXmlElementMapping.this.getXmlElementWrapper();
 		}
+		
+		public boolean hasXmlID() {
+			return GenericJavaXmlElementMapping.this.getXmlID() != null;
+		}
+		
+		public boolean hasXmlIDREF() {
+			return GenericJavaXmlElementMapping.this.getXmlIDREF() != null;
+		}
+		
+		public boolean hasXmlList() {
+			return GenericJavaXmlElementMapping.this.isXmlList();
+		}
 	}
 	
 	
 	protected class XmlIDREFContext
-			extends GenericJavaBasicMapping.XmlIDREFContext {
+			extends AbstractJavaBasicMapping.XmlIDREFContext {
 		
 		public Iterable<ValidatableReference> getReferences() {
 			

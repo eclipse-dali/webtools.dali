@@ -20,9 +20,9 @@ import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
+import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.eclipse.xsd.util.XSDUtil;
 
 public class GenericJavaXmlID
 	extends AbstractJavaContextNode
@@ -62,17 +62,19 @@ public class GenericJavaXmlID
 		}
 		
 		XsdFeature xsdFeature = getMapping().getXsdFeature();
-		if (xsdFeature != null) {
-			XsdTypeDefinition xsdType = xsdFeature.getType();
-			if (xsdType != null && 
-					! xsdType.matches(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001, "ID")) {
-				messages.add(
-						DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.XML_ID__SCHEMA_TYPE_NOT_ID,
-							this,
-							getValidationTextRange(astRoot)));
-			}
+		if (xsdFeature == null) {
+			return;
+		}
+		
+		XsdTypeDefinition idrefType = XsdUtil.getSchemaForSchema().getTypeDefinition("ID");
+		if (! xsdFeature.typeIsValid(idrefType, false)) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JaxbValidationMessages.XML_ID__SCHEMA_TYPE_NOT_ID,
+						new String [] { xsdFeature.getName() },
+						this,
+						getValidationTextRange(astRoot)));
 		}
 	}
 
