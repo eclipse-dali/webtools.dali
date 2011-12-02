@@ -157,7 +157,8 @@ public abstract class AbstractJavaBasicMapping<A extends JaxbBasicSchemaComponen
 			this.setXmlSchemaType_(null);
 		}
 	}
-
+	
+	
 	// ***** XmlList *****
 	
 	public boolean isXmlList() {

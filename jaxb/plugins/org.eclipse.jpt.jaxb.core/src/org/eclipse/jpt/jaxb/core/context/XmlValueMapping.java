@@ -24,5 +24,14 @@ package org.eclipse.jpt.jaxb.core.context;
  */
 public interface XmlValueMapping
 		extends JaxbAttributeMapping, XmlAdaptableMapping, XmlListMapping {
-
+	
+	// ***** XmlSchemaType *****
+	
+	String XML_SCHEMA_TYPE_PROPERTY = "xmlSchemaType"; //$NON-NLS-1$
+	
+	XmlSchemaType getXmlSchemaType();
+	
+	XmlSchemaType addXmlSchemaType();
+	
+	void removeXmlSchemaType();
 }
