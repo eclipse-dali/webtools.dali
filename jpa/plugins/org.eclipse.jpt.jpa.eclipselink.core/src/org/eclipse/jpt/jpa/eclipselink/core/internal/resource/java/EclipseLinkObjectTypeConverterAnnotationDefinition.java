@@ -10,27 +10,27 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
-import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source.SourceEclipseLinkObjectTypeConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 
 /**
  * org.eclipse.persistence.annotations.ObjectTypeConverter
  */
 public class EclipseLinkObjectTypeConverterAnnotationDefinition
-	implements AnnotationDefinition
+	implements NestableAnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new EclipseLinkObjectTypeConverterAnnotationDefinition();
+	private static final NestableAnnotationDefinition INSTANCE = new EclipseLinkObjectTypeConverterAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AnnotationDefinition instance() {
+	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
@@ -41,19 +41,23 @@ public class EclipseLinkObjectTypeConverterAnnotationDefinition
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceEclipseLinkObjectTypeConverterAnnotation(parent, annotatedElement);
+	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+		return SourceEclipseLinkObjectTypeConverterAnnotation.buildSourceObjectTypeConverterAnnotation(parent, annotatedElement, index);
 	}
 
-	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation, int index) {
 		return new BinaryEclipseLinkObjectTypeConverterAnnotation(parent, jdtAnnotation);
 	}
 
-	public String getAnnotationName() {
-		return EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME;
+	public String getNestableAnnotationName() {
+		return EclipseLink.OBJECT_TYPE_CONVERTER;
+	}
+
+	public String getContainerAnnotationName() {
+		return EclipseLink.OBJECT_TYPE_CONVERTERS;
+	}
+
+	public String getElementName() {
+		return EclipseLink.OBJECT_TYPE_CONVERTERS__VALUE;
 	}
 }

@@ -7,10 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
+package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -22,7 +21,6 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -33,22 +31,13 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
-import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
-import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCustomConverterComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkObjectTypeConverterComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkStructConverterComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTypeConverterComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.NamedNativeQueryPropertyComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.NamedQueryPropertyComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm.EclipseLinkConverterDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -74,29 +63,21 @@ import org.eclipse.ui.part.PageBook;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see Entity
- * @see Query
- * @see NamedNativeQuery
- * @see NamedQuery
- * @see AbstractEntityComposite - The parent container
- * @see NamedNativeQueryPropertyComposite
- * @see NamedQueryPropertyComposite
- *
- * @version 2.1
+ * @version 3.2
  * @since 2.1
  */
-public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConverterContainer>
+public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterContainer>
 {
-	private AddRemoveListPane<OrmEclipseLinkConverterContainer> listPane;
+	private AddRemoveListPane<EclipseLinkConverterContainer> listPane;
 	private EclipseLinkCustomConverterComposite converterComposite;
 	private EclipseLinkObjectTypeConverterComposite objectTypeConverterComposite;
 	private EclipseLinkStructConverterComposite structConverterComposite;
 	private EclipseLinkTypeConverterComposite typeConverterComposite;
 	private WritablePropertyValueModel<EclipseLinkConverter> selectedConverterHolder;
 
-	public OrmEclipseLinkConvertersComposite(
+	public EclipseLinkConvertersComposite(
 		Pane<?> parentPane, 
-		PropertyValueModel<? extends OrmEclipseLinkConverterContainer> subjectHolder,
+		PropertyValueModel<? extends EclipseLinkConverterContainer> subjectHolder,
 		Composite parent) {
 
 			super(parentPane, subjectHolder, parent, false);
@@ -153,9 +134,9 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 		installPaneSwitcher(pageBook);
 	}
 
-	private AddRemoveListPane<OrmEclipseLinkConverterContainer> addListPane(Composite container) {
+	private AddRemoveListPane<EclipseLinkConverterContainer> addListPane(Composite container) {
 
-		return new AddRemoveListPane<OrmEclipseLinkConverterContainer>(
+		return new AddRemoveListPane<EclipseLinkConverterContainer>(
 			this,
 			container,
 			buildConvertersAdapter(),
@@ -163,17 +144,7 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 			this.selectedConverterHolder,
 			buildConvertersListLabelProvider(),
 			null//JpaHelpContextIds.MAPPING_NAMED_QUERIES
-		) {
-			//TODO yeah, this is weird, but i don't want this to be disabled just
-			//because the subject is null. i have no need for that and that is
-			//currently how AddRemovePane works.  See OrmQueriesComposite where
-			//the work around there is yet another pane enabler.  I want to change
-			//how this works in 2.2
-			@Override
-			public void enableWidgets(boolean enabled) {
-				super.enableWidgets(true);
-			}
-		};
+		);
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
@@ -208,11 +179,11 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 	}
 
 	private void addConverter() {
-		addEclipseLinkConverterFromDialog(buildEclipseLinkConverterDialog());
+		this.addEclipseLinkConverterFromDialog(this.buildEclipseLinkConverterDialog());
 	}
-	
+
 	protected EclipseLinkConverterDialog buildEclipseLinkConverterDialog() {
-		return new EclipseLinkConverterDialog(getShell(), (EclipseLinkPersistenceUnit)this.getSubject().getPersistenceUnit());
+		return new EclipseLinkConverterDialog(this.getShell(), this.getSubject());
 	}
 
 	protected void addEclipseLinkConverterFromDialog(EclipseLinkConverterDialog dialog) {
@@ -248,16 +219,16 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 				}
 
 				if (converter.getType() == EclipseLinkCustomConverter.class) {
-					return OrmEclipseLinkConvertersComposite.this.converterComposite.getControl();
+					return EclipseLinkConvertersComposite.this.converterComposite.getControl();
 				}
 				if (converter.getType() == EclipseLinkObjectTypeConverter.class) {
-					return OrmEclipseLinkConvertersComposite.this.objectTypeConverterComposite.getControl();
+					return EclipseLinkConvertersComposite.this.objectTypeConverterComposite.getControl();
 				}
 				if (converter.getType() == EclipseLinkStructConverter.class) {
-					return OrmEclipseLinkConvertersComposite.this.structConverterComposite.getControl();
+					return EclipseLinkConvertersComposite.this.structConverterComposite.getControl();
 				}
 				if (converter.getType() == EclipseLinkTypeConverter.class) {
-					return OrmEclipseLinkConvertersComposite.this.typeConverterComposite.getControl();
+					return EclipseLinkConvertersComposite.this.typeConverterComposite.getControl();
 				}
 
 				return null;
@@ -282,9 +253,9 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 	}
 
 	private ListValueModel<EclipseLinkCustomConverter> buildCustomConvertersListHolder() {
-		return new ListAspectAdapter<OrmEclipseLinkConverterContainer, EclipseLinkCustomConverter>(
+		return new ListAspectAdapter<EclipseLinkConverterContainer, EclipseLinkCustomConverter>(
 			getSubjectHolder(),
-			OrmEclipseLinkConverterContainer.CUSTOM_CONVERTERS_LIST)
+			EclipseLinkConverterContainer.CUSTOM_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterable<EclipseLinkCustomConverter> getListIterable() {
@@ -299,9 +270,9 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 	}
 
 	private ListValueModel<EclipseLinkObjectTypeConverter> buildObjectTypeConvertersListHolder() {
-		return new ListAspectAdapter<OrmEclipseLinkConverterContainer, EclipseLinkObjectTypeConverter>(
+		return new ListAspectAdapter<EclipseLinkConverterContainer, EclipseLinkObjectTypeConverter>(
 			getSubjectHolder(),
-			OrmEclipseLinkConverterContainer.OBJECT_TYPE_CONVERTERS_LIST)
+			EclipseLinkConverterContainer.OBJECT_TYPE_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterable<EclipseLinkObjectTypeConverter> getListIterable() {
@@ -316,9 +287,9 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 	}
 
 	private ListValueModel<EclipseLinkStructConverter> buildStructConvertersListHolder() {
-		return new ListAspectAdapter<OrmEclipseLinkConverterContainer, EclipseLinkStructConverter>(
+		return new ListAspectAdapter<EclipseLinkConverterContainer, EclipseLinkStructConverter>(
 			getSubjectHolder(),
-			OrmEclipseLinkConverterContainer.STRUCT_CONVERTERS_LIST)
+			EclipseLinkConverterContainer.STRUCT_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterable<EclipseLinkStructConverter> getListIterable() {
@@ -333,9 +304,9 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 	}
 
 	private ListValueModel<EclipseLinkTypeConverter> buildTypeConvertersListHolder() {
-		return new ListAspectAdapter<OrmEclipseLinkConverterContainer, EclipseLinkTypeConverter>(
+		return new ListAspectAdapter<EclipseLinkConverterContainer, EclipseLinkTypeConverter>(
 			getSubjectHolder(),
-			OrmEclipseLinkConverterContainer.TYPE_CONVERTERS_LIST)
+			EclipseLinkConverterContainer.TYPE_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterable<EclipseLinkTypeConverter> getListIterable() {
@@ -398,17 +369,5 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 	public void enableWidgets(boolean enabled) {
 		super.enableWidgets(enabled);
 		this.listPane.enableWidgets(enabled);
-	}
-
-	//TODO need to check the converter repository for this, should check all converters, except for the override case, hmm
-	//we at least need to check typeconverters, converters, structconverters, and objectypeconverters, on this particular
-	//object.  or we need to give a warning about the case where you are overriding or an error if it's not an override?
-	private Iterator<String> converterNames() {
-		return new TransformationIterator<EclipseLinkCustomConverter, String>(getSubject().getCustomConverters()) {
-			@Override
-			protected String transform(EclipseLinkCustomConverter next) {
-				return next.getName();
-			}
-		};
 	}
 }

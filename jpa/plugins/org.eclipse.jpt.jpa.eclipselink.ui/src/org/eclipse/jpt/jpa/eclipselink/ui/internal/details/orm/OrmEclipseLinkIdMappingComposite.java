@@ -10,18 +10,14 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMutableComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.swt.widgets.Composite;
 
-//Remove the Converters section from 1.0 orm id mappings.
-//This is supported in EclipseLink in version 1.1, but not 1.0
 public class OrmEclipseLinkIdMappingComposite
 	extends EclipseLinkIdMappingComposite<IdMapping>
 {
@@ -32,18 +28,11 @@ public class OrmEclipseLinkIdMappingComposite
 		
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
-	
+
 	@Override
 	protected void initializeIdSection(Composite container) {		
 		new ColumnComposite(this, buildColumnHolder(), container);
 		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
-	}	
-	
-	@Override
-	//everything but the 'Define Converter' section.  This is not supported in eclipselink 1.0, but is in 1.1
-	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {
-		return new OrmEclipseLinkConvert1_0Composite(convertHolder, container, getWidgetFactory());
 	}
 }

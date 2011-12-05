@@ -14,7 +14,9 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkManyToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractManyToManyMappingComposite;
@@ -100,4 +102,26 @@ public class EclipseLinkManyToManyMappingComposite<T extends ManyToManyMapping>
 			}
 		};
 	}
+
+	protected void initializeConvertersCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
+		);
+		initializeConvertersSection(container, this.buildConverterHolderValueModel());
+	}
+
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<EclipseLinkConverterContainer> converterHolder) {
+		new EclipseLinkConvertersComposite(this, converterHolder, container);
+	}
+
+	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<ManyToManyMapping, EclipseLinkConverterContainer>(getSubjectHolder()) {
+			@Override
+			protected EclipseLinkConverterContainer buildValue_() {
+				return ((EclipseLinkManyToManyMapping) this.subject).getConverterContainer();
+			}
+		};
+	}
+
 }

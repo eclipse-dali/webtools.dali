@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2010 Oracle. 
+ *  Copyright (c) 2008, 2011 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkEntityAdvancedComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmEntityComposite;
@@ -73,7 +74,7 @@ public abstract class AbstractOrmEclipseLinkEntityComposite extends AbstractOrmE
 	}
 	
 	protected void initializeConvertersSection(Composite container, PropertyValueModel<OrmEclipseLinkConverterContainer> converterHolder) {
-		new OrmEclipseLinkConvertersComposite(this, converterHolder, container);
+		new EclipseLinkConvertersComposite(this, converterHolder, container);
 	}
 	
 	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterContainerModel() {

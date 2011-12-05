@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,7 @@ import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.TemporalConverter;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractVersionMappingComposite;
@@ -55,10 +56,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see ColumnComposite
  * @see TemporalTypeComposite
  *
- * @version 2.3
+ * @version 3.2
  * @since 2.1
  */
-public class EclipseLinkVersionMappingComposite<T extends VersionMapping>
+public abstract class EclipseLinkVersionMappingComposite<T extends VersionMapping>
 	extends AbstractVersionMappingComposite<T>
 {
 	/**
@@ -68,13 +69,12 @@ public class EclipseLinkVersionMappingComposite<T extends VersionMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkVersionMappingComposite(PropertyValueModel<? extends T> subjectHolder,
+	protected EclipseLinkVersionMappingComposite(PropertyValueModel<? extends T> subjectHolder,
 	                               Composite parent,
 	                               WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-
 	
 	@Override
 	protected void initializeVersionSection(Composite container) {
@@ -155,6 +155,27 @@ public class EclipseLinkVersionMappingComposite<T extends VersionMapping>
 			@Override
 			protected EclipseLinkMutable buildValue_() {
 				return ((EclipseLinkVersionMapping) this.subject).getMutable();
+			}
+		};
+	}
+
+	protected void initializeConvertersCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
+		);
+		initializeConvertersSection(container, this.buildConverterHolderValueModel());
+	}
+
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<EclipseLinkConverterContainer> converterHolder) {
+		new EclipseLinkConvertersComposite(this, converterHolder, container);
+	}
+
+	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<VersionMapping, EclipseLinkConverterContainer>(getSubjectHolder()) {
+			@Override
+			protected EclipseLinkConverterContainer buildValue_() {
+				return ((EclipseLinkVersionMapping) this.subject).getConverterContainer();
 			}
 		};
 	}

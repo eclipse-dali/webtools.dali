@@ -14,7 +14,11 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaManyToOneMappingDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 
 public class EclipseLinkJavaManyToOneMappingDefinition
 	extends JavaAttributeMappingDefinitionWrapper
@@ -50,7 +54,11 @@ public class EclipseLinkJavaManyToOneMappingDefinition
 	}
 
 	private static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
-		EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME
+		EclipseLinkConverterAnnotation.ANNOTATION_NAME,
+		EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME,
+		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
+		EclipseLinkStructConverterAnnotation.ANNOTATION_NAME,
+		EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME,
 	};
 	public static final Iterable<String> ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 

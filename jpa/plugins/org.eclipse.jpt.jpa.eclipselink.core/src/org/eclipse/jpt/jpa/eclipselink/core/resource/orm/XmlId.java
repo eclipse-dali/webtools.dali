@@ -58,7 +58,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implements XmlId_2_1, XmlId_2_2, XmlId_2_4, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
+public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implements XmlId_2_1, XmlId_2_2, XmlId_2_4, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping, XmlConverterContainer
 {
 	/**
 	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
@@ -141,46 +141,6 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	protected Boolean mutable = MUTABLE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getConverter() <em>Converter</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConverter()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlConverter converter;
-
-	/**
-	 * The cached value of the '{@link #getTypeConverter() <em>Type Converter</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTypeConverter()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlTypeConverter typeConverter;
-
-	/**
-	 * The cached value of the '{@link #getObjectTypeConverter() <em>Object Type Converter</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getObjectTypeConverter()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlObjectTypeConverter objectTypeConverter;
-
-	/**
-	 * The cached value of the '{@link #getStructConverter() <em>Struct Converter</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStructConverter()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlStructConverter structConverter;
-
-	/**
 	 * The default value of the '{@link #getConvert() <em>Convert</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -199,6 +159,46 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	 * @ordered
 	 */
 	protected String convert = CONVERT_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getConverters() <em>Converters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConverters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlConverter> converters;
+
+	/**
+	 * The cached value of the '{@link #getTypeConverters() <em>Type Converters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTypeConverters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlTypeConverter> typeConverters;
+
+	/**
+	 * The cached value of the '{@link #getObjectTypeConverters() <em>Object Type Converters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getObjectTypeConverters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlObjectTypeConverter> objectTypeConverters;
+
+	/**
+	 * The cached value of the '{@link #getStructConverters() <em>Struct Converters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStructConverters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlStructConverter> structConverters;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -447,6 +447,98 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Converters</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Converters</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterContainer_Converters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlConverter> getConverters()
+	{
+		if (converters == null)
+		{
+			converters = new EObjectContainmentEList<XmlConverter>(XmlConverter.class, this, EclipseLinkOrmPackage.XML_ID__CONVERTERS);
+		}
+		return converters;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Type Converters</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Type Converters</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Type Converters</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterContainer_TypeConverters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlTypeConverter> getTypeConverters()
+	{
+		if (typeConverters == null)
+		{
+			typeConverters = new EObjectContainmentEList<XmlTypeConverter>(XmlTypeConverter.class, this, EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTERS);
+		}
+		return typeConverters;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Object Type Converters</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlObjectTypeConverter}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Object Type Converters</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Object Type Converters</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterContainer_ObjectTypeConverters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlObjectTypeConverter> getObjectTypeConverters()
+	{
+		if (objectTypeConverters == null)
+		{
+			objectTypeConverters = new EObjectContainmentEList<XmlObjectTypeConverter>(XmlObjectTypeConverter.class, this, EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTERS);
+		}
+		return objectTypeConverters;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Struct Converters</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Struct Converters</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Struct Converters</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterContainer_StructConverters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlStructConverter> getStructConverters()
+	{
+		if (structConverters == null)
+		{
+			structConverters = new EObjectContainmentEList<XmlStructConverter>(XmlStructConverter.class, this, EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTERS);
+		}
+		return structConverters;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -530,246 +622,6 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>CustomConverter</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Converter</em>' containment reference.
-	 * @see #setConverter(XmlConverter)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder_Converter()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public XmlConverter getConverter()
-	{
-		return converter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetConverter(XmlConverter newConverter, NotificationChain msgs)
-	{
-		XmlConverter oldConverter = converter;
-		converter = newConverter;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__CONVERTER, oldConverter, newConverter);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlId#getConverter <em>Converter</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Converter</em>' containment reference.
-	 * @see #getConverter()
-	 * @generated
-	 */
-	public void setConverter(XmlConverter newConverter)
-	{
-		if (newConverter != converter)
-		{
-			NotificationChain msgs = null;
-			if (converter != null)
-				msgs = ((InternalEObject)converter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__CONVERTER, null, msgs);
-			if (newConverter != null)
-				msgs = ((InternalEObject)newConverter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__CONVERTER, null, msgs);
-			msgs = basicSetConverter(newConverter, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__CONVERTER, newConverter, newConverter));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Type CustomConverter</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Type Converter</em>' containment reference.
-	 * @see #setTypeConverter(XmlTypeConverter)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder_TypeConverter()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public XmlTypeConverter getTypeConverter()
-	{
-		return typeConverter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetTypeConverter(XmlTypeConverter newTypeConverter, NotificationChain msgs)
-	{
-		XmlTypeConverter oldTypeConverter = typeConverter;
-		typeConverter = newTypeConverter;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER, oldTypeConverter, newTypeConverter);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlId#getTypeConverter <em>Type Converter</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Type Converter</em>' containment reference.
-	 * @see #getTypeConverter()
-	 * @generated
-	 */
-	public void setTypeConverter(XmlTypeConverter newTypeConverter)
-	{
-		if (newTypeConverter != typeConverter)
-		{
-			NotificationChain msgs = null;
-			if (typeConverter != null)
-				msgs = ((InternalEObject)typeConverter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER, null, msgs);
-			if (newTypeConverter != null)
-				msgs = ((InternalEObject)newTypeConverter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER, null, msgs);
-			msgs = basicSetTypeConverter(newTypeConverter, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER, newTypeConverter, newTypeConverter));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Object Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Object Type CustomConverter</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Object Type Converter</em>' containment reference.
-	 * @see #setObjectTypeConverter(XmlObjectTypeConverter)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder_ObjectTypeConverter()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public XmlObjectTypeConverter getObjectTypeConverter()
-	{
-		return objectTypeConverter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetObjectTypeConverter(XmlObjectTypeConverter newObjectTypeConverter, NotificationChain msgs)
-	{
-		XmlObjectTypeConverter oldObjectTypeConverter = objectTypeConverter;
-		objectTypeConverter = newObjectTypeConverter;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER, oldObjectTypeConverter, newObjectTypeConverter);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlId#getObjectTypeConverter <em>Object Type Converter</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Object Type Converter</em>' containment reference.
-	 * @see #getObjectTypeConverter()
-	 * @generated
-	 */
-	public void setObjectTypeConverter(XmlObjectTypeConverter newObjectTypeConverter)
-	{
-		if (newObjectTypeConverter != objectTypeConverter)
-		{
-			NotificationChain msgs = null;
-			if (objectTypeConverter != null)
-				msgs = ((InternalEObject)objectTypeConverter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER, null, msgs);
-			if (newObjectTypeConverter != null)
-				msgs = ((InternalEObject)newObjectTypeConverter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER, null, msgs);
-			msgs = basicSetObjectTypeConverter(newObjectTypeConverter, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER, newObjectTypeConverter, newObjectTypeConverter));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Struct Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Struct CustomConverter</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Struct Converter</em>' containment reference.
-	 * @see #setStructConverter(XmlStructConverter)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder_StructConverter()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public XmlStructConverter getStructConverter()
-	{
-		return structConverter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetStructConverter(XmlStructConverter newStructConverter, NotificationChain msgs)
-	{
-		XmlStructConverter oldStructConverter = structConverter;
-		structConverter = newStructConverter;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER, oldStructConverter, newStructConverter);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlId#getStructConverter <em>Struct Converter</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Struct Converter</em>' containment reference.
-	 * @see #getStructConverter()
-	 * @generated
-	 */
-	public void setStructConverter(XmlStructConverter newStructConverter)
-	{
-		if (newStructConverter != structConverter)
-		{
-			NotificationChain msgs = null;
-			if (structConverter != null)
-				msgs = ((InternalEObject)structConverter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER, null, msgs);
-			if (newStructConverter != null)
-				msgs = ((InternalEObject)newStructConverter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER, null, msgs);
-			msgs = basicSetStructConverter(newStructConverter, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER, newStructConverter, newStructConverter));
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -787,14 +639,14 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
-			case EclipseLinkOrmPackage.XML_ID__CONVERTER:
-				return basicSetConverter(null, msgs);
-			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER:
-				return basicSetTypeConverter(null, msgs);
-			case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER:
-				return basicSetObjectTypeConverter(null, msgs);
-			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER:
-				return basicSetStructConverter(null, msgs);
+			case EclipseLinkOrmPackage.XML_ID__CONVERTERS:
+				return ((InternalEList<?>)getConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTERS:
+				return ((InternalEList<?>)getTypeConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTERS:
+				return ((InternalEList<?>)getObjectTypeConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTERS:
+				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -821,16 +673,16 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				return getProperties();
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				return getMutable();
-			case EclipseLinkOrmPackage.XML_ID__CONVERTER:
-				return getConverter();
-			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER:
-				return getTypeConverter();
-			case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER:
-				return getObjectTypeConverter();
-			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER:
-				return getStructConverter();
 			case EclipseLinkOrmPackage.XML_ID__CONVERT:
 				return getConvert();
+			case EclipseLinkOrmPackage.XML_ID__CONVERTERS:
+				return getConverters();
+			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTERS:
+				return getTypeConverters();
+			case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTERS:
+				return getObjectTypeConverters();
+			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTERS:
+				return getStructConverters();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -865,20 +717,24 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				setMutable((Boolean)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ID__CONVERTER:
-				setConverter((XmlConverter)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER:
-				setTypeConverter((XmlTypeConverter)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER:
-				setObjectTypeConverter((XmlObjectTypeConverter)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER:
-				setStructConverter((XmlStructConverter)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_ID__CONVERT:
 				setConvert((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ID__CONVERTERS:
+				getConverters().clear();
+				getConverters().addAll((Collection<? extends XmlConverter>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTERS:
+				getTypeConverters().clear();
+				getTypeConverters().addAll((Collection<? extends XmlTypeConverter>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTERS:
+				getObjectTypeConverters().clear();
+				getObjectTypeConverters().addAll((Collection<? extends XmlObjectTypeConverter>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTERS:
+				getStructConverters().clear();
+				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -912,20 +768,20 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				setMutable(MUTABLE_EDEFAULT);
 				return;
-			case EclipseLinkOrmPackage.XML_ID__CONVERTER:
-				setConverter((XmlConverter)null);
-				return;
-			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER:
-				setTypeConverter((XmlTypeConverter)null);
-				return;
-			case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER:
-				setObjectTypeConverter((XmlObjectTypeConverter)null);
-				return;
-			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER:
-				setStructConverter((XmlStructConverter)null);
-				return;
 			case EclipseLinkOrmPackage.XML_ID__CONVERT:
 				setConvert(CONVERT_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_ID__CONVERTERS:
+				getConverters().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTERS:
+				getTypeConverters().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTERS:
+				getObjectTypeConverters().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTERS:
+				getStructConverters().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -953,16 +809,16 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				return MUTABLE_EDEFAULT == null ? mutable != null : !MUTABLE_EDEFAULT.equals(mutable);
-			case EclipseLinkOrmPackage.XML_ID__CONVERTER:
-				return converter != null;
-			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER:
-				return typeConverter != null;
-			case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER:
-				return objectTypeConverter != null;
-			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER:
-				return structConverter != null;
 			case EclipseLinkOrmPackage.XML_ID__CONVERT:
 				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
+			case EclipseLinkOrmPackage.XML_ID__CONVERTERS:
+				return converters != null && !converters.isEmpty();
+			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTERS:
+				return typeConverters != null && !typeConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTERS:
+				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTERS:
+				return structConverters != null && !structConverters.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1030,22 +886,22 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlConverterHolder.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ID__CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__CONVERTER;
-				case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__TYPE_CONVERTER;
-				case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__OBJECT_TYPE_CONVERTER;
-				case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER: return EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__STRUCT_CONVERTER;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConvertibleMapping.class)
 		{
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ID__CONVERT: return EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConverterContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ID__CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__CONVERTERS;
+				case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__TYPE_CONVERTERS;
+				case EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS;
+				case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS;
 				default: return -1;
 			}
 		}
@@ -1115,22 +971,22 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlConverterHolder.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__CONVERTER: return EclipseLinkOrmPackage.XML_ID__CONVERTER;
-				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER;
-				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__OBJECT_TYPE_CONVERTER: return EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTER;
-				case EclipseLinkOrmPackage.XML_CONVERTER_HOLDER__STRUCT_CONVERTER: return EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConvertibleMapping.class)
 		{
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_CONVERTIBLE_MAPPING__CONVERT: return EclipseLinkOrmPackage.XML_ID__CONVERT;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlConverterContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__CONVERTERS: return EclipseLinkOrmPackage.XML_ID__CONVERTERS;
+				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTERS;
+				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ID__OBJECT_TYPE_CONVERTERS;
+				case EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTERS;
 				default: return -1;
 			}
 		}
@@ -1218,19 +1074,19 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	}
 	
 	protected static Translator buildConverterTranslator() {
-		return XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_Converter());
+		return XmlConverter.buildTranslator(EclipseLink.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_Converters());
 	}
 	
 	protected static Translator buildTypeConverterTranslator() {
-		return XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter());
+		return XmlTypeConverter.buildTranslator(EclipseLink.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_TypeConverters());
 	}
 	
 	protected static Translator buildObjectTypeConverterTranslator() {
-		return XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter());
+		return XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_ObjectTypeConverters());
 	}
 	
 	protected static Translator buildStructConverterTranslator() {
-		return XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter());
+		return XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_StructConverters());
 	}
 	
 	protected static Translator buildPropertyTranslator() {

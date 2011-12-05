@@ -11,27 +11,33 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkOneToOneMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkPrivateOwned;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkOneToOneMapping
 	extends AbstractJavaOneToOneMapping
-	implements EclipseLinkOneToOneMapping2_0
+	implements EclipseLinkOneToOneMapping2_0, EclipseLinkJavaConvertibleMapping
 {
 	protected final JavaEclipseLinkJoinFetch joinFetch;
 
 	protected final JavaEclipseLinkPrivateOwned privateOwned;
+	
+	protected final JavaEclipseLinkConverterContainer converterContainer;
 
 
 	public JavaEclipseLinkOneToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.joinFetch = new JavaEclipseLinkJoinFetch(this);
 		this.privateOwned = new JavaEclipseLinkPrivateOwned(this);
+		this.converterContainer = this.buildConverterContainer();
 	}
 
 	// ********** synchronize/update **********
@@ -41,6 +47,7 @@ public class JavaEclipseLinkOneToOneMapping
 		super.synchronizeWithResourceModel();
 		this.privateOwned.synchronizeWithResourceModel();
 		this.joinFetch.synchronizeWithResourceModel();
+		this.converterContainer.synchronizeWithResourceModel();
 	}
 
 	@Override
@@ -48,6 +55,7 @@ public class JavaEclipseLinkOneToOneMapping
 		super.update();
 		this.privateOwned.update();
 		this.joinFetch.update();
+		this.converterContainer.update();
 	}
 
 
@@ -62,6 +70,21 @@ public class JavaEclipseLinkOneToOneMapping
 
 	public EclipseLinkJoinFetch getJoinFetch() {
 		return this.joinFetch;
+	}
+
+
+	// ********** converters **********
+
+	public JavaEclipseLinkConverterContainer getConverterContainer() {
+		return this.converterContainer;
+	}
+
+	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+		return new JavaEclipseLinkConverterContainerImpl(this, this);
+	}
+
+	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
+		return this.getResourceAttribute();
 	}
 
 

@@ -20,11 +20,11 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.2
  * @since 2.3
  */
 public interface EclipseLinkElementCollectionMapping2_0
-	extends ElementCollectionMapping2_0, EclipseLinkJoinFetchMapping
+	extends ElementCollectionMapping2_0, EclipseLinkJoinFetchMapping, EclipseLinkConvertibleMapping
 {
 	// combine various interfaces
 }

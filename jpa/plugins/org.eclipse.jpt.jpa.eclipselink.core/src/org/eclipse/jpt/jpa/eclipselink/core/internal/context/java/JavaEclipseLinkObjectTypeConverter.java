@@ -24,7 +24,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConvert
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -316,41 +315,13 @@ public class JavaEclipseLinkObjectTypeConverter
 		boolean isIdentical = true;
 		if (this.getConversionValuesSize() != CollectionTools.size(conversionValues)) {
 			return false;
-		} else {
-			for (int i=0; i<this.getConversionValuesSize(); i++) {
-					if (!(CollectionTools.get(this.getConversionValues(), i)).isIdentical(CollectionTools.get(conversionValues, i))) {
-						isIdentical = false;
-					}
+		}
+		for (int i=0; i<this.getConversionValuesSize(); i++) {
+			if (!(CollectionTools.get(this.getConversionValues(), i)).isIdentical(CollectionTools.get(conversionValues, i))) {
+				isIdentical = false;
 			}
 		}
 		return isIdentical;
 	}
 
-	// ********** adapter **********
-
-	public static class Adapter
-		extends AbstractAdapter
-	{
-		private static final Adapter INSTANCE = new Adapter();
-		public static Adapter instance() {
-			return INSTANCE;
-		}
-
-		private Adapter() {
-			super();
-		}
-
-		public Class<EclipseLinkObjectTypeConverter> getConverterType() {
-			return EclipseLinkObjectTypeConverter.class;
-		}
-
-		@Override
-		protected String getAnnotationName() {
-			return EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME;
-		}
-
-		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(EclipseLinkNamedConverterAnnotation converterAnnotation, JavaJpaContextNode parent) {
-			return new JavaEclipseLinkObjectTypeConverter(parent, (EclipseLinkObjectTypeConverterAnnotation) converterAnnotation);
-		}
-	}
 }

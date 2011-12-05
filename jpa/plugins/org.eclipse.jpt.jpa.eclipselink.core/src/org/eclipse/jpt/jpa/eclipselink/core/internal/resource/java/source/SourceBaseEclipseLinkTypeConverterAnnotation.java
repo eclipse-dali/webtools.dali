@@ -18,8 +18,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseEclipseLinkTypeConverterAnnotation;
 
 /**
@@ -59,8 +60,12 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	boolean fqObjectTypeStale = true;
 
 
-	SourceBaseEclipseLinkTypeConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
-		super(parent, element, daa);
+	SourceBaseEclipseLinkTypeConverterAnnotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement element,
+			IndexedDeclarationAnnotationAdapter daa,
+			IndexedAnnotationAdapter annotationAdapter) {
+		super(parent, element, daa, annotationAdapter);
 		this.dataTypeDeclarationAdapter = this.buildTypeAdapter(this.getDataTypeElementName());
 		this.dataTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, this.dataTypeDeclarationAdapter);
 

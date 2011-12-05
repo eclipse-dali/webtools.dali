@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.1
+ * @version 3.2
  * @since 2.1
  */
 public interface EclipseLinkConvert
@@ -66,21 +66,4 @@ public interface EclipseLinkConvert
 	String[] RESERVED_CONVERTER_NAMES = {NO_CONVERTER, CLASS_INSTANCE_CONVERTER, SERIALIZED_CONVERTER};
 	
 	String DEFAULT_CONVERTER_NAME = NO_CONVERTER;
-
-	/**
-	 * Return the mapping's converter.
-	 */
-	EclipseLinkConverter getConverter();
-		String CONVERTER_PROPERTY = "converter"; //$NON-NLS-1$
-	
-	/**
-	 * Possible values for the converter type are:<ul>
-	 * <li>{@link EclipseLinkCustomConverter}
-	 * <li>{@link EclipseLinkTypeConverter}
-	 * <li>{@link EclipseLinkObjectTypeConverter}
-	 * <li>{@link EclipseLinkStructConverter}
-	 * <li><code>null</code>
-	 * </ul>
-	 */
-	void setConverter(Class<? extends EclipseLinkConverter> converterType);
 }

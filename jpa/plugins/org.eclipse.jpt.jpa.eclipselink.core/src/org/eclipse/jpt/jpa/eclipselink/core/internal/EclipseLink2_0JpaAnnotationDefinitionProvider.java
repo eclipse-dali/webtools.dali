@@ -71,26 +71,30 @@ public class EclipseLink2_0JpaAnnotationDefinitionProvider
 		EclipseLinkCacheAnnotationDefinition.instance(),
 		EclipseLinkChangeTrackingAnnotationDefinition.instance(),
 		EclipseLinkConvertAnnotationDefinition.instance(),
-		EclipseLinkConverterAnnotationDefinition.instance(),
 		EclipseLinkCustomizerAnnotationDefinition.instance(),
 		EclipseLinkExistenceCheckingAnnotationDefinition.instance(),
 		EclipseLinkJoinFetchAnnotationDefinition.instance(),
 		EclipseLinkMapKeyConvert2_0AnnotationDefinition.instance(),
 		EclipseLinkMutableAnnotationDefinition.instance(),
-		EclipseLinkObjectTypeConverterAnnotationDefinition.instance(),
 		EclipseLinkPrimaryKeyAnnotationDefinition.instance(),
 		EclipseLinkPrivateOwnedAnnotationDefinition.instance(),
 		EclipseLinkReadOnlyAnnotationDefinition.instance(),
 		EclipseLinkReadTransformerAnnotationDefinition.instance(),
-		EclipseLinkStructConverterAnnotationDefinition.instance(),
 		EclipseLinkTransformationAnnotationDefinition.instance(),
-		EclipseLinkTypeConverterAnnotationDefinition.instance(),
 		EclipseLinkVariableOneToOneAnnotationDefinition.instance(),
 		EclipseLinkWriteTransformerAnnotationDefinition.instance()
 	};
 
 	@Override
 	protected void addNestableAnnotationDefinitionsTo(ArrayList<NestableAnnotationDefinition> definitions) {
-		// nothing new for EclipseLink 2.0
+		CollectionTools.addAll(definitions, NESTABLE_ANNOTATION_DEFINITIONS);
 	}
+
+	protected static final NestableAnnotationDefinition[] NESTABLE_ANNOTATION_DEFINITIONS = new NestableAnnotationDefinition[] {
+		EclipseLinkConverterAnnotationDefinition.instance(),
+		EclipseLinkObjectTypeConverterAnnotationDefinition.instance(),
+		EclipseLinkStructConverterAnnotationDefinition.instance(),
+		EclipseLinkTypeConverterAnnotationDefinition.instance(),
+	};
+
 }

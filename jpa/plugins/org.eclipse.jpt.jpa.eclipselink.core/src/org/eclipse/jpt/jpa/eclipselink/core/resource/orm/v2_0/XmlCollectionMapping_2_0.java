@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
+ *  Copyright (c) 2009, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,6 +10,8 @@
  *******************************************************************************/
 
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0;
+
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,7 +35,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlCollectionMapping_2_0 extends XmlMapKeyAssociationOverrideContainer_2_0
+public interface XmlCollectionMapping_2_0 extends XmlMapKeyAssociationOverrideContainer_2_0, XmlConverterContainer
 {
 	/**
 	 * Returns the value of the '<em><b>Map Key Convert</b></em>' attribute.

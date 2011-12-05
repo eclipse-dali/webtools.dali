@@ -16,9 +16,6 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -85,42 +82,5 @@ public class OrmEclipseLinkStructConverter
 	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
 		return super.isIdentical(eclipseLinkConverter) && 
 				StringTools.stringsAreEqual(this.getConverterClass(), (((EclipseLinkStructConverter)eclipseLinkConverter).getConverterClass()));
-	}
-
-	// ********** adapter **********
-
-	public static class Adapter
-		extends AbstractAdapter
-	{
-		private static final Adapter INSTANCE = new Adapter();
-		public static Adapter instance() {
-			return INSTANCE;
-		}
-
-		private Adapter() {
-			super();
-		}
-
-		public Class<EclipseLinkStructConverter> getConverterType() {
-			return EclipseLinkStructConverter.class;
-		}
-
-		public XmlStructConverter getXmlConverter(XmlConverterHolder xmlConverterContainer) {
-			return xmlConverterContainer.getStructConverter();
-		}
-
-		public OrmEclipseLinkStructConverter buildConverter(XmlNamedConverter xmlConverter, XmlContextNode parent) {
-			return new OrmEclipseLinkStructConverter(parent, (XmlStructConverter) xmlConverter);
-		}
-
-		@Override
-		protected XmlStructConverter buildXmlConverter() {
-			return EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverter();
-		}
-
-		@Override
-		public void setXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter) {
-			xmlConverterContainer.setStructConverter((XmlStructConverter) xmlConverter);
-		}
 	}
 }

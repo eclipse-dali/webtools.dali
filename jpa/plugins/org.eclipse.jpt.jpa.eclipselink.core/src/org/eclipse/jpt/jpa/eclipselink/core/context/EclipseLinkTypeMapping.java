@@ -10,9 +10,8 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
 import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 
 /**
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
  * @since 2.3
  */
 public interface EclipseLinkTypeMapping
-	extends TypeMapping
+	extends TypeMapping, EclipseLinkConvertibleMapping
 {
 	EclipseLinkCustomizer getCustomizer();
 	
@@ -44,16 +43,13 @@ public interface EclipseLinkTypeMapping
 
 	Iterable<EclipseLinkConverter> getConverters();
 
-	Transformer<AttributeMapping, EclipseLinkConverter> ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER =
-		new Transformer<AttributeMapping, EclipseLinkConverter>() {
-			public EclipseLinkConverter transform(AttributeMapping attributeMapping) {
-				if (attributeMapping instanceof ConvertibleMapping) {
-					Converter converter = ((ConvertibleMapping) attributeMapping).getConverter();
-					if ((converter != null) && (converter.getType() == EclipseLinkConvert.class)) {
-						return ((EclipseLinkConvert) converter).getConverter();
-					}
+	Transformer<AttributeMapping, Iterable<EclipseLinkConverter>> ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER =
+		new Transformer<AttributeMapping, Iterable<EclipseLinkConverter>>() {
+			public Iterable<EclipseLinkConverter> transform(AttributeMapping attributeMapping) {
+				if (attributeMapping instanceof EclipseLinkConvertibleMapping) {
+					return ((EclipseLinkConvertibleMapping) attributeMapping).getConverterContainer().getConverters();
 				}
-				return null;
+				return EmptyIterable.instance();
 			}
 		};
 }

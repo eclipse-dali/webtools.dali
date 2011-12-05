@@ -25,7 +25,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
@@ -37,13 +36,8 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
@@ -97,63 +91,6 @@ public class EclipseLinkConvertComposite
 			null
 		);
 		SWTUtil.attachDefaultValueHandler(combo);
-		
-		Composite subSection = addCollapsibleSubSection(
-			container, 
-			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_defineConverterSection, 
-			new SimplePropertyValueModel<Boolean>(Boolean.FALSE));
-		
-		// No Converter
-		addRadioButton(
-			subSection, 
-			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_default, 
-			buildNoConverterHolder(), 
-			null);
-		PropertyValueModel<EclipseLinkConverter> converterHolder = buildConverterHolder();
-		
-		// CustomConverter
-		addRadioButton(
-			subSection, 
-			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_custom, 
-			buildConverterHolder(EclipseLinkCustomConverter.class), 
-			null);
-		EclipseLinkCustomConverterComposite converterComposite = new EclipseLinkCustomConverterComposite(buildCustomConverterHolder(converterHolder), subSection, getWidgetFactory());
-		GridData gridData = (GridData) converterComposite.getControl().getLayoutData();
-		gridData.horizontalIndent = 20;
-		registerSubPane(converterComposite);
-		
-		// Type Converter
-		addRadioButton(
-			subSection, 
-			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_type, 
-			buildConverterHolder(EclipseLinkTypeConverter.class), 
-			null);
-		EclipseLinkTypeConverterComposite typeConverterComposite = new EclipseLinkTypeConverterComposite(buildTypeConverterHolder(converterHolder), subSection, getWidgetFactory());
-		gridData = (GridData) typeConverterComposite.getControl().getLayoutData();
-		gridData.horizontalIndent = 20;
-		registerSubPane(typeConverterComposite);
-
-		// Object Type Converter
-		addRadioButton(
-			subSection, 
-			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_objectType, 
-			buildConverterHolder(EclipseLinkObjectTypeConverter.class), 
-			null);
-		EclipseLinkObjectTypeConverterComposite objectTypeConverterComposite = new EclipseLinkObjectTypeConverterComposite(buildObjectTypeConverterHolder(converterHolder), subSection, getWidgetFactory());
-		gridData = (GridData) objectTypeConverterComposite.getControl().getLayoutData();
-		gridData.horizontalIndent = 20;
-		registerSubPane(objectTypeConverterComposite);
-
-		// Struct Converter
-		addRadioButton(
-			subSection, 
-			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_struct, 
-			buildConverterHolder(EclipseLinkStructConverter.class), 
-			null);
-		EclipseLinkStructConverterComposite structConverterComposite = new EclipseLinkStructConverterComposite(buildStructConverterHolder(converterHolder), subSection, getWidgetFactory());
-		gridData = (GridData) structConverterComposite.getControl().getLayoutData();
-		gridData.horizontalIndent = 20;
-		registerSubPane(structConverterComposite);
 		
 		new PaneEnabler(buildBooleanHolder(), this);
 	}
@@ -295,86 +232,7 @@ public class EclipseLinkConvertComposite
 		return new PropertyAspectAdapter<EclipseLinkConvert, EclipseLinkPersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPersistenceUnit buildValue_() {
-				return (EclipseLinkPersistenceUnit) this.subject.getPersistenceUnit();
-			}
-		};
-	}
-	
-	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<EclipseLinkConvert, Boolean>(getSubjectHolder(), EclipseLinkConvert.CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getConverter() == null);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setConverter(null);
-				}
-			}
-		};
-	}
-	
-	private WritablePropertyValueModel<Boolean> buildConverterHolder(final Class<? extends EclipseLinkConverter> converterType) {
-		return new PropertyAspectAdapter<EclipseLinkConvert, Boolean>(getSubjectHolder(), EclipseLinkConvert.CONVERTER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				EclipseLinkConverter converter = this.subject.getConverter();
-				boolean result = ((converter != null) && (converter.getType() == converterType));
-				return Boolean.valueOf(result);
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value.booleanValue()) {
-					this.subject.setConverter(converterType);
-				}
-			}
-		};
-	}
-	
-	private PropertyValueModel<EclipseLinkConverter> buildConverterHolder() {
-		return new PropertyAspectAdapter<EclipseLinkConvert, EclipseLinkConverter>(getSubjectHolder(), EclipseLinkConvert.CONVERTER_PROPERTY) {
-			@Override
-			protected EclipseLinkConverter buildValue_() {
-				return this.subject.getConverter();
-			}
-		};
-	}
-	
-	private PropertyValueModel<EclipseLinkCustomConverter> buildCustomConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkCustomConverter>(converterHolder) {
-			@Override
-			protected EclipseLinkCustomConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkCustomConverter.class) ? (EclipseLinkCustomConverter) converter : null;
-			}
-		};
-	}
-	
-	private PropertyValueModel<EclipseLinkTypeConverter> buildTypeConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkTypeConverter>(converterHolder) {
-			@Override
-			protected EclipseLinkTypeConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkTypeConverter.class) ? (EclipseLinkTypeConverter) converter : null;
-			}
-		};
-	}
-	
-	private PropertyValueModel<EclipseLinkObjectTypeConverter> buildObjectTypeConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkObjectTypeConverter>(converterHolder) {
-			@Override
-			protected EclipseLinkObjectTypeConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkObjectTypeConverter.class) ? (EclipseLinkObjectTypeConverter) converter : null;
-			}
-		};
-	}
-	
-	private PropertyValueModel<EclipseLinkStructConverter> buildStructConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkStructConverter>(converterHolder) {
-			@Override
-			protected EclipseLinkStructConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkStructConverter.class) ? (EclipseLinkStructConverter) converter : null;
+				return this.subject.getPersistenceUnit();
 			}
 		};
 	}

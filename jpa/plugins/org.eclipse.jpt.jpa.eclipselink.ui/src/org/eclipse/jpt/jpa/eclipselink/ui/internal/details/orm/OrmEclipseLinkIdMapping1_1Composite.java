@@ -32,6 +32,14 @@ public class OrmEclipseLinkIdMapping1_1Composite
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeIdCollapsibleSection(container);
+		initializeTypeCollapsibleSection(container);
+		initializeConvertersCollapsibleSection(container);
+		initializeGenerationCollapsibleSection(container);
+	}
 	
 	@Override
 	protected void initializeIdSection(Composite container) {		

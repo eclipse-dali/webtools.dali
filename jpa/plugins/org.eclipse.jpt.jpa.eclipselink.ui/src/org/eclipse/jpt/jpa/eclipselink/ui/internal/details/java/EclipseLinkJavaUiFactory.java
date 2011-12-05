@@ -27,15 +27,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTransformationMap
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicCollectionMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMappingComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkManyToOneMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkOneToManyMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkOneToOneMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkTransformationMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVersionMappingComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.swt.widgets.Composite;
@@ -77,7 +74,7 @@ public class EclipseLinkJavaUiFactory extends BaseJavaUiFactory
 			PropertyValueModel<JavaIdMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EclipseLinkIdMappingComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkIdMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
@@ -85,7 +82,7 @@ public class EclipseLinkJavaUiFactory extends BaseJavaUiFactory
 			PropertyValueModel<JavaBasicMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EclipseLinkBasicMappingComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
@@ -93,7 +90,7 @@ public class EclipseLinkJavaUiFactory extends BaseJavaUiFactory
 			PropertyValueModel<JavaVersionMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EclipseLinkVersionMappingComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkVersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

@@ -27,8 +27,6 @@ import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedIdMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMappingDefinition2_0;
@@ -36,6 +34,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaElementCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddedIdMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddedMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaEntityDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaIdMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMappingDefinition2_0;
@@ -128,7 +128,7 @@ public abstract class AbstractEclipseLink2_0JpaPlatformProvider
 	// order matches that used by EclipseLink
 	// NB: no change from EclipseLink 1.2 to 2.0
 	protected static final DefaultJavaAttributeMappingDefinition[] DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new DefaultJavaAttributeMappingDefinition[] {
-		JavaEmbeddedMappingDefinition2_0.instance(),
+		EclipseLinkJavaEmbeddedMappingDefinition2_0.instance(),
 		EclipseLinkJavaOneToManyMappingDefinition2_0.instance(),
 		EclipseLinkJavaOneToOneMappingDefinition2_0.instance(),
 		EclipseLinkJavaVariableOneToOneMappingDefinition2_0.instance(),
@@ -149,8 +149,8 @@ public abstract class AbstractEclipseLink2_0JpaPlatformProvider
 		EclipseLinkJavaIdMappingDefinition2_0.instance(),
 		EclipseLinkJavaVersionMappingDefinition2_0.instance(),
 		EclipseLinkJavaBasicMappingDefinition2_0.instance(),
-		JavaEmbeddedMappingDefinition2_0.instance(),
-		JavaEmbeddedIdMappingDefinition2_0.instance(),
+		EclipseLinkJavaEmbeddedMappingDefinition2_0.instance(),
+		EclipseLinkJavaEmbeddedIdMappingDefinition2_0.instance(),
 		EclipseLinkJavaTransformationMappingDefinition2_0.instance(),
 		EclipseLinkJavaManyToManyMappingDefinition2_0.instance(),
 		EclipseLinkJavaManyToOneMappingDefinition2_0.instance(),

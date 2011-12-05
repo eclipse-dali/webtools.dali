@@ -30,6 +30,14 @@ public class JavaEclipseLinkIdMapping2_0Composite
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeIdCollapsibleSection(container);
+		initializeTypeCollapsibleSection(container);
+		initializeConvertersCollapsibleSection(container);
+		initializeGenerationCollapsibleSection(container);
+	}
 	
 	@Override
 	protected void initializeIdSection(Composite container) {

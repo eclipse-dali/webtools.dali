@@ -21,11 +21,11 @@ import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameChooser;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CollectionTable2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.TargetClassComposite;
 import org.eclipse.swt.layout.GridData;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkElementCollectionMapping2_0Composite
-	extends AbstractElementCollectionMapping2_0Composite<ElementCollectionMapping2_0>
+	extends EclipseLinkElementCollectionMapping2_0Composite<ElementCollectionMapping2_0>
 {
 	/**
 	 * Creates a new <code>EclipseLink1_1OrmBasicMappingComposite</code>.

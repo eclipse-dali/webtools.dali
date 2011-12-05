@@ -35,7 +35,14 @@ public class JavaEclipseLinkOneToManyMapping2_0Composite
 		
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeOneToManyCollapsibleSection(container);
+		initializeJoiningStrategyCollapsibleSection(container);
+		initializeConvertersCollapsibleSection(container);
+		initializeOrderingCollapsibleSection(container);
+	}
 	
 	@Override
 	protected void initializeOneToManySection(Composite container) {

@@ -39,6 +39,13 @@ public class OrmEclipseLinkVersionMapping1_1Composite
 	}
 
 	@Override
+	protected void initializeLayout(Composite container) {
+		initializeVersionCollapsibleSection(container);
+		initializeTypeCollapsibleSection(container);
+		initializeConvertersCollapsibleSection(container);
+	}
+
+	@Override
 	protected void initializeVersionSection(Composite container) {		
 		new ColumnComposite(this, buildColumnHolder(), container);
 		new OrmMappingNameChooser(this, getSubjectHolder(), container);

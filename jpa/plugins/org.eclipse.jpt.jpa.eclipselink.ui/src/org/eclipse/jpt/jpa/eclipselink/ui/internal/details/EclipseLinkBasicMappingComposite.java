@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jpt.jpa.core.context.LobConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
@@ -83,10 +84,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see OptionalComposite
  * @see TemporalTypeComposite
  *
- * @version 2.3
+ * @version 3.2
  * @since 2.1
  */
-public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends AbstractBasicMappingComposite<T>
+public abstract class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends AbstractBasicMappingComposite<T>
 {
 	/**
 	 * Creates a new <code>BasicMappingComposite</code>.
@@ -95,7 +96,7 @@ public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends Ab
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkBasicMappingComposite(PropertyValueModel<? extends T> subjectHolder,
+	protected EclipseLinkBasicMappingComposite(PropertyValueModel<? extends T> subjectHolder,
 	                             Composite parent,
 	                             WidgetFactory widgetFactory) {
 
@@ -168,7 +169,7 @@ public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends Ab
 	}
 	
 	protected PropertyValueModel<EclipseLinkMutable> buildMutableHolder() {
-		return new PropertyAspectAdapter<BasicMapping, EclipseLinkMutable>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<T, EclipseLinkMutable>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkMutable buildValue_() {
 				return ((EclipseLinkBasicMapping) this.subject).getMutable();
@@ -185,4 +186,24 @@ public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends Ab
 		};
 	}
 
+	protected void initializeConvertersCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
+		);
+		initializeConvertersSection(container, this.buildConverterHolderValueModel());
+	}
+
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<EclipseLinkConverterContainer> converterHolder) {
+		new EclipseLinkConvertersComposite(this, converterHolder, container);
+	}
+
+	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<T, EclipseLinkConverterContainer>(getSubjectHolder()) {
+			@Override
+			protected EclipseLinkConverterContainer buildValue_() {
+				return ((EclipseLinkBasicMapping) this.subject).getConverterContainer();
+			}
+		};
+	}
 }

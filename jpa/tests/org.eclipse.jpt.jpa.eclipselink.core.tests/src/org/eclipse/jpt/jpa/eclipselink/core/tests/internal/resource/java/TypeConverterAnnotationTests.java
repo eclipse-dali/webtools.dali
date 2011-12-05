@@ -82,13 +82,13 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		assertNotNull(resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER));
+		assertNotNull(resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER));
 		
-		resourceField.removeAnnotation(EclipseLink.TYPE_CONVERTER);
-		assertNull(resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER));
+		resourceField.removeAnnotation(0, EclipseLink.TYPE_CONVERTER);
+		assertNull(resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER));
 		
-		resourceField.addAnnotation(EclipseLink.TYPE_CONVERTER);
-		assertNotNull(resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER));
+		resourceField.addAnnotation(0, EclipseLink.TYPE_CONVERTER);
+		assertNotNull(resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER));
 	}
 
 	public void testGetTypeDataType() throws Exception {
@@ -96,7 +96,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER);
+		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER);
 		assertEquals("Foo", converter.getDataType());
 	}
 
@@ -105,7 +105,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER);
+		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER);
 		assertEquals("Foo", converter.getDataType());
 		
 		converter.setDataType("Bar");
@@ -123,7 +123,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER);
+		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER);
 		assertEquals("Foo", converter.getDataType());
 		
 		converter.setDataType(null);
@@ -138,7 +138,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER);
+		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER);
 		assertEquals("Foo", converter.getObjectType());
 	}
 
@@ -147,7 +147,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER);
+		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER);
 		assertEquals("Foo", converter.getObjectType());
 		
 		converter.setObjectType("Bar");
@@ -165,7 +165,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER);
+		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER);
 		assertEquals("Foo", converter.getObjectType());
 		
 		converter.setObjectType(null);
@@ -180,7 +180,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER);
+		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER);
 		assertEquals("bar", converter.getName());
 	}
 
@@ -189,7 +189,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER);
+		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER);
 		assertEquals("bar", converter.getName());
 		
 		converter.setName("foo");
@@ -203,7 +203,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.TYPE_CONVERTER);
+		EclipseLinkTypeConverterAnnotation converter = (EclipseLinkTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.TYPE_CONVERTER);
 		assertEquals("bar", converter.getName());
 		
 		converter.setName(null);

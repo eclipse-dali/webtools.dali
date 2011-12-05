@@ -11,6 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
@@ -18,22 +20,31 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OrmEclipseLinkVersionMapping
 	extends AbstractOrmVersionMapping<XmlVersion>
-	implements EclipseLinkVersionMapping
+	implements
+		EclipseLinkVersionMapping,
+		EclipseLinkOrmConvertibleMapping, 
+		OrmEclipseLinkConverterContainer.Owner
 {	
 	protected final OrmEclipseLinkMutable mutable;
+	
+	protected final OrmEclipseLinkConverterContainer converterContainer;
 	
 	
 	public OrmEclipseLinkVersionMapping(OrmPersistentAttribute parent, XmlVersion xmlMapping) {
 		super(parent, xmlMapping);
 		this.mutable = new OrmEclipseLinkMutable(this);
+		this.converterContainer = this.buildConverterContainer();
 	}
 
 
@@ -43,12 +54,14 @@ public class OrmEclipseLinkVersionMapping
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.mutable.synchronizeWithResourceModel();
+		this.converterContainer.synchronizeWithResourceModel();
 	}
 
 	@Override
 	public void update() {
 		super.update();
 		this.mutable.update();
+		this.converterContainer.update();
 	}
 
 
@@ -56,6 +69,20 @@ public class OrmEclipseLinkVersionMapping
 
 	public EclipseLinkMutable getMutable() {
 		return this.mutable;
+	}
+
+	// ********** converters **********
+
+	public OrmEclipseLinkConverterContainer getConverterContainer() {
+		return this.converterContainer;
+	}
+
+	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
+		return new OrmEclipseLinkConverterContainerImpl(this, this, this.xmlAttributeMapping);
+	}
+
+	public int getNumberSupportedConverters() {
+		return 1;
 	}
 
 
@@ -67,6 +94,24 @@ public class OrmEclipseLinkVersionMapping
 	@Override
 	protected Iterable<OrmConverter.Adapter> getConverterAdapters() {
 		return new CompositeIterable<OrmConverter.Adapter>(OrmEclipseLinkConvert.Adapter.instance(), super.getConverterAdapters());
+	}
+
+
+	//************ refactoring ************
+
+	@Override
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return this.converterContainer.createMoveTypeEdits(originalType, newPackage);
+	}
+
+	@Override
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.converterContainer.createRenamePackageEdits(originalPackage, newName);
+	}
+
+	@Override
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		return this.converterContainer.createRenameTypeEdits(originalType, newName);
 	}
 
 

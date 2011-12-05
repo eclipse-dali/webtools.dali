@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.internal.node.Node;
 import org.eclipse.jpt.common.utility.internal.node.Problem;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 
@@ -28,7 +29,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsM
  *
  * @see EclipseLinkConverterDialog
  *
- * @version 2.1
+ * @version 3.2
  * @since 2.1
  */
 final class EclipseLinkConverterStateObject extends AbstractNode
@@ -49,9 +50,9 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	private Validator validator;
 	
 	/**
-	 * The associated persistence unit
+	 * The associated converter container
 	 */
-	private EclipseLinkPersistenceUnit pUnit;
+	private EclipseLinkConverterContainer converterContainer;
 
 	/**
 	 * Notifies a change in the data value property.
@@ -64,9 +65,21 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	static final String CONVERTER_TYPE_PROPERTY = "converterType"; //$NON-NLS-1$
 
 
-	EclipseLinkConverterStateObject(EclipseLinkPersistenceUnit pUnit) {
+	EclipseLinkConverterStateObject(EclipseLinkConverterContainer converterContainer) {
 		super(null);
-		this.pUnit = pUnit;
+		this.converterContainer = converterContainer;
+	}
+
+	private boolean addNumberOfConvertersProblemsTo(List<Problem> currentProblems) {
+		if (this.converterContainer.getNumberSupportedConverters() <= this.converterContainer.getConvertersSize()) {
+			currentProblems.add(
+				buildProblem(
+					EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_maxConvertersErrorMessage, 
+					IMessageProvider.ERROR,
+					Integer.valueOf(this.converterContainer.getNumberSupportedConverters())));
+			return false;
+		}
+		return true;
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
@@ -89,16 +102,23 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	@Override
 	protected void addProblemsTo(List<Problem> currentProblems) {
 		super.addProblemsTo(currentProblems);
-		addNameProblemsTo(currentProblems);
-		addConverterTypeProblemsTo(currentProblems);
+		boolean continueValidating = this.addNumberOfConvertersProblemsTo(currentProblems);
+		if (continueValidating) {
+			this.addNameProblemsTo(currentProblems);
+			this.addConverterTypeProblemsTo(currentProblems);
+		}
 	}
 	
 	private List<String> names() {
 		List<String> names = new ArrayList<String>();
-		for (EclipseLinkConverter converter : this.pUnit.getAllConverters()){
+		for (EclipseLinkConverter converter : this.getPersistenceUnit().getAllConverters()){
 			names.add(converter.getName());
 		}
 		return names ;
+	}
+
+	private EclipseLinkPersistenceUnit getPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) this.converterContainer.getPersistenceUnit();
 	}
 
 	@Override

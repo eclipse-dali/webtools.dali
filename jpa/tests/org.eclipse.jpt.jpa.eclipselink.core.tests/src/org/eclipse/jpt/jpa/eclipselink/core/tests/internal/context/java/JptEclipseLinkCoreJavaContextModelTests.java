@@ -33,7 +33,6 @@ public class JptEclipseLinkCoreJavaContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLinkJavaStructConverterTests.class);
 		suite.addTestSuite(EclipseLinkJavaTypeConverterTests.class);
 		suite.addTestSuite(EclipseLinkJavaVersionMappingTests.class);
-		suite.addTestSuite(EclipseLink2_3JavaMultitenancyTests.class);
 		suite.addTestSuite(EclipseLink2_0JavaCollectionTableTests.class);
 		suite.addTestSuite(EclipseLink2_0JavaElementCollectionMappingTests.class);
 		suite.addTestSuite(EclipseLink2_0JavaEntityTests.class);
@@ -42,6 +41,9 @@ public class JptEclipseLinkCoreJavaContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLink2_0JavaMappedSuperclassTests.class);
 		suite.addTestSuite(EclipseLink2_0JavaOneToManyMappingTests.class);
 		suite.addTestSuite(EclipseLink2_0JavaOneToOneMappingTests.class);
+		suite.addTestSuite(EclipseLink2_3JavaMultitenancyTests.class);
+		suite.addTestSuite(EclipseLink2_2JavaEntityTests.class);
+		suite.addTestSuite(EclipseLink2_2JavaMappedSuperclassTests.class);
 		return suite;
 	}
 

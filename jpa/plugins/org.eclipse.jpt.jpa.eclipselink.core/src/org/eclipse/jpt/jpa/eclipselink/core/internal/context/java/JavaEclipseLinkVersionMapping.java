@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
@@ -18,6 +19,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -25,14 +28,17 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkVersionMapping
 	extends AbstractJavaVersionMapping
-	implements EclipseLinkVersionMapping
+	implements EclipseLinkVersionMapping, EclipseLinkJavaConvertibleMapping
 {
 	protected final JavaEclipseLinkMutable mutable;
+
+	protected final JavaEclipseLinkConverterContainer converterContainer;
 
 
 	public JavaEclipseLinkVersionMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.mutable = new JavaEclipseLinkMutable(this);
+		this.converterContainer = this.buildConverterContainer();
 	}
 
 
@@ -42,12 +48,14 @@ public class JavaEclipseLinkVersionMapping
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.mutable.synchronizeWithResourceModel();
+		this.converterContainer.synchronizeWithResourceModel();
 	}
 
 	@Override
 	public void update() {
 		super.update();
 		this.mutable.update();
+		this.converterContainer.update();
 	}
 
 
@@ -55,6 +63,21 @@ public class JavaEclipseLinkVersionMapping
 
 	public EclipseLinkMutable getMutable() {
 		return this.mutable;
+	}
+
+
+	// ********** converters **********
+
+	public JavaEclipseLinkConverterContainer getConverterContainer() {
+		return this.converterContainer;
+	}
+
+	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+		return new JavaEclipseLinkConverterContainerImpl(this, this);
+	}
+
+	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
+		return this.getResourceAttribute();
 	}
 
 

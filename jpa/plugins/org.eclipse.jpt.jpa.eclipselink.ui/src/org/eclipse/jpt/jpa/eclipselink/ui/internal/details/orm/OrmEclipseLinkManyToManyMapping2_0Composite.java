@@ -33,6 +33,13 @@ public class OrmEclipseLinkManyToManyMapping2_0Composite
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
+	@Override
+	protected void initializeLayout(Composite container) {
+		initializeManyToManyCollapsibleSection(container);
+		initializeJoiningStrategyCollapsibleSection(container);
+		initializeConvertersCollapsibleSection(container);
+		initializeOrderingCollapsibleSection(container);
+	}
 	
 	@Override
 	protected void initializeManyToManySection(Composite container) {

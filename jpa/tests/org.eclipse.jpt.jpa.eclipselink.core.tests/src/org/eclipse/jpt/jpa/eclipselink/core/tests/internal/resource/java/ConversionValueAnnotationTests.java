@@ -57,7 +57,7 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.OBJECT_TYPE_CONVERTER);
+		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("F", converter.conversionValueAt(0).getDataValue());
 	}
 
@@ -66,7 +66,7 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.OBJECT_TYPE_CONVERTER);
+		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("F", converter.conversionValueAt(0).getDataValue());
 		
 		converter.conversionValueAt(0).setDataValue("FOO");
@@ -80,7 +80,7 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.OBJECT_TYPE_CONVERTER);
+		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals(0, converter.getConversionValuesSize());
 		
 		converter.addConversionValue(0).setDataValue("FOO");
@@ -96,7 +96,7 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.OBJECT_TYPE_CONVERTER);
+		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("Female", converter.conversionValueAt(0).getObjectValue());
 	}
 
@@ -105,7 +105,7 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.OBJECT_TYPE_CONVERTER);
+		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("Female", converter.conversionValueAt(0).getObjectValue());
 		
 		converter.conversionValueAt(0).setObjectValue("FOO");
@@ -119,7 +119,7 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
 		
-		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(EclipseLink.OBJECT_TYPE_CONVERTER);
+		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals(0, converter.getConversionValuesSize());
 		
 		converter.addConversionValue(0).setObjectValue("FOO");

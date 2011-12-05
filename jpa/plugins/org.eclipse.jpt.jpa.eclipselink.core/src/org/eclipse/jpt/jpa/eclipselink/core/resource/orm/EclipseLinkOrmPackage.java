@@ -576,45 +576,45 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_BASIC__MUTABLE = OrmPackage.XML_BASIC_FEATURE_COUNT + 10;
 	/**
-	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC__CONVERTER = OrmPackage.XML_BASIC_FEATURE_COUNT + 11;
-	/**
-	 * The feature id for the '<em><b>Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC__TYPE_CONVERTER = OrmPackage.XML_BASIC_FEATURE_COUNT + 12;
-	/**
-	 * The feature id for the '<em><b>Object Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC__OBJECT_TYPE_CONVERTER = OrmPackage.XML_BASIC_FEATURE_COUNT + 13;
-	/**
-	 * The feature id for the '<em><b>Struct Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC__STRUCT_CONVERTER = OrmPackage.XML_BASIC_FEATURE_COUNT + 14;
-	/**
 	 * The feature id for the '<em><b>Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC__CONVERT = OrmPackage.XML_BASIC_FEATURE_COUNT + 15;
+	public static final int XML_BASIC__CONVERT = OrmPackage.XML_BASIC_FEATURE_COUNT + 11;
+	/**
+	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC__CONVERTERS = OrmPackage.XML_BASIC_FEATURE_COUNT + 12;
+	/**
+	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC__TYPE_CONVERTERS = OrmPackage.XML_BASIC_FEATURE_COUNT + 13;
+	/**
+	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC__OBJECT_TYPE_CONVERTERS = OrmPackage.XML_BASIC_FEATURE_COUNT + 14;
+	/**
+	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC__STRUCT_CONVERTERS = OrmPackage.XML_BASIC_FEATURE_COUNT + 15;
 	/**
 	 * The number of structural features of the '<em>Xml Basic</em>' class.
 	 * <!-- begin-user-doc -->
@@ -1147,7 +1147,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedConverter()
 	 * @generated
 	 */
-	public static final int XML_NAMED_CONVERTER = 46;
+	public static final int XML_NAMED_CONVERTER = 45;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1198,63 +1198,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_CONVERTER_FEATURE_COUNT = XML_NAMED_CONVERTER_FEATURE_COUNT + 1;
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder <em>Xml Converter Holder</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer <em>Xml Converter Container</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterContainer()
 	 * @generated
 	 */
-	public static final int XML_CONVERTER_HOLDER = 20;
-	/**
-	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTER_HOLDER__CONVERTER = 0;
-	/**
-	 * The feature id for the '<em><b>Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTER_HOLDER__TYPE_CONVERTER = 1;
-	/**
-	 * The feature id for the '<em><b>Object Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTER_HOLDER__OBJECT_TYPE_CONVERTER = 2;
-	/**
-	 * The feature id for the '<em><b>Struct Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTER_HOLDER__STRUCT_CONVERTER = 3;
-	/**
-	 * The number of structural features of the '<em>Xml Converter Holder</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTER_HOLDER_FEATURE_COUNT = 4;
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder <em>Xml Converters Holder</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertersHolder()
-	 * @generated
-	 */
-	public static final int XML_CONVERTERS_HOLDER = 21;
+	public static final int XML_CONVERTER_CONTAINER = 20;
 	/**
 	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1262,7 +1213,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTERS_HOLDER__CONVERTERS = 0;
+	public static final int XML_CONVERTER_CONTAINER__CONVERTERS = 0;
 	/**
 	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1270,7 +1221,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTERS_HOLDER__TYPE_CONVERTERS = 1;
+	public static final int XML_CONVERTER_CONTAINER__TYPE_CONVERTERS = 1;
 	/**
 	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1278,7 +1229,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTERS_HOLDER__OBJECT_TYPE_CONVERTERS = 2;
+	public static final int XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS = 2;
 	/**
 	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1286,15 +1237,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTERS_HOLDER__STRUCT_CONVERTERS = 3;
+	public static final int XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS = 3;
 	/**
-	 * The number of structural features of the '<em>Xml Converters Holder</em>' class.
+	 * The number of structural features of the '<em>Xml Converter Container</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTERS_HOLDER_FEATURE_COUNT = 4;
+	public static final int XML_CONVERTER_CONTAINER_FEATURE_COUNT = 4;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertibleMapping <em>Xml Convertible Mapping</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -1303,7 +1254,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping()
 	 * @generated
 	 */
-	public static final int XML_CONVERTIBLE_MAPPING = 22;
+	public static final int XML_CONVERTIBLE_MAPPING = 21;
 	/**
 	 * The feature id for the '<em><b>Lob</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1329,45 +1280,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_CONVERTIBLE_MAPPING__ENUMERATED = OrmPackage.XML_CONVERTIBLE_MAPPING__ENUMERATED;
 	/**
-	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTIBLE_MAPPING__CONVERTER = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 0;
-	/**
-	 * The feature id for the '<em><b>Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTIBLE_MAPPING__TYPE_CONVERTER = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 1;
-	/**
-	 * The feature id for the '<em><b>Object Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTIBLE_MAPPING__OBJECT_TYPE_CONVERTER = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 2;
-	/**
-	 * The feature id for the '<em><b>Struct Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_CONVERTIBLE_MAPPING__STRUCT_CONVERTER = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 3;
-	/**
 	 * The feature id for the '<em><b>Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTIBLE_MAPPING__CONVERT = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 4;
+	public static final int XML_CONVERTIBLE_MAPPING__CONVERT = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 0;
 	/**
 	 * The number of structural features of the '<em>Xml Convertible Mapping</em>' class.
 	 * <!-- begin-user-doc -->
@@ -1375,7 +1294,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_CONVERTIBLE_MAPPING_FEATURE_COUNT = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 5;
+	public static final int XML_CONVERTIBLE_MAPPING_FEATURE_COUNT = OrmPackage.XML_CONVERTIBLE_MAPPING_FEATURE_COUNT + 1;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlCopyPolicy <em>Xml Copy Policy</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -1384,7 +1303,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCopyPolicy()
 	 * @generated
 	 */
-	public static final int XML_COPY_POLICY = 23;
+	public static final int XML_COPY_POLICY = 22;
 	/**
 	 * The feature id for the '<em><b>Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1409,7 +1328,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCustomizer()
 	 * @generated
 	 */
-	public static final int XML_CUSTOMIZER = 24;
+	public static final int XML_CUSTOMIZER = 23;
 	/**
 	 * The feature id for the '<em><b>Customizer Class Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1434,7 +1353,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCustomizerHolder()
 	 * @generated
 	 */
-	public static final int XML_CUSTOMIZER_HOLDER = 25;
+	public static final int XML_CUSTOMIZER_HOLDER = 24;
 	/**
 	 * The feature id for the '<em><b>Customizer</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1459,7 +1378,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlElementCollection()
 	 * @generated
 	 */
-	public static final int XML_ELEMENT_COLLECTION = 26;
+	public static final int XML_ELEMENT_COLLECTION = 25;
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1637,77 +1556,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ELEMENT_COLLECTION__PROPERTIES = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 1;
 	/**
-	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__CONVERTER = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 2;
-	/**
-	 * The feature id for the '<em><b>Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__TYPE_CONVERTER = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 3;
-	/**
-	 * The feature id for the '<em><b>Object Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__OBJECT_TYPE_CONVERTER = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 4;
-	/**
-	 * The feature id for the '<em><b>Struct Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__STRUCT_CONVERTER = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 5;
-	/**
 	 * The feature id for the '<em><b>Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__CONVERT = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 6;
-	/**
-	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 7;
-	/**
-	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__TYPE_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 8;
-	/**
-	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__OBJECT_TYPE_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 9;
-	/**
-	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__STRUCT_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 10;
+	public static final int XML_ELEMENT_COLLECTION__CONVERT = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 2;
 	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1715,7 +1570,39 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 11;
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 3;
+	/**
+	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 4;
+	/**
+	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__TYPE_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 5;
+	/**
+	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__OBJECT_TYPE_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 6;
+	/**
+	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__STRUCT_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 7;
 	/**
 	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1723,7 +1610,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 12;
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 8;
 	/**
 	 * The feature id for the '<em><b>Join Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1731,7 +1618,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__JOIN_FETCH = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 13;
+	public static final int XML_ELEMENT_COLLECTION__JOIN_FETCH = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 9;
 	/**
 	 * The feature id for the '<em><b>Batch Fetch</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1739,7 +1626,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__BATCH_FETCH = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 14;
+	public static final int XML_ELEMENT_COLLECTION__BATCH_FETCH = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 10;
 	/**
 	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1747,7 +1634,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 15;
+	public static final int XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 11;
 	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1755,7 +1642,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 16;
+	public static final int XML_ELEMENT_COLLECTION__PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 12;
 	/**
 	 * The feature id for the '<em><b>Replication Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1763,7 +1650,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__REPLICATION_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 17;
+	public static final int XML_ELEMENT_COLLECTION__REPLICATION_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 13;
 	/**
 	 * The feature id for the '<em><b>Round Robin Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1771,7 +1658,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__ROUND_ROBIN_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 18;
+	public static final int XML_ELEMENT_COLLECTION__ROUND_ROBIN_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 14;
 	/**
 	 * The feature id for the '<em><b>Pinned Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1779,7 +1666,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__PINNED_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 19;
+	public static final int XML_ELEMENT_COLLECTION__PINNED_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 15;
 	/**
 	 * The feature id for the '<em><b>Range Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1787,7 +1674,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__RANGE_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 20;
+	public static final int XML_ELEMENT_COLLECTION__RANGE_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 16;
 	/**
 	 * The feature id for the '<em><b>Value Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1795,7 +1682,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__VALUE_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 21;
+	public static final int XML_ELEMENT_COLLECTION__VALUE_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 17;
 	/**
 	 * The feature id for the '<em><b>Hash Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1803,7 +1690,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__HASH_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 22;
+	public static final int XML_ELEMENT_COLLECTION__HASH_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 18;
 	/**
 	 * The feature id for the '<em><b>Union Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1811,7 +1698,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__UNION_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 23;
+	public static final int XML_ELEMENT_COLLECTION__UNION_PARTITIONING = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 19;
 	/**
 	 * The feature id for the '<em><b>Partitioned</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1819,7 +1706,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__PARTITIONED = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 24;
+	public static final int XML_ELEMENT_COLLECTION__PARTITIONED = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 20;
 	/**
 	 * The feature id for the '<em><b>Cascade On Delete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1827,7 +1714,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__CASCADE_ON_DELETE = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 25;
+	public static final int XML_ELEMENT_COLLECTION__CASCADE_ON_DELETE = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 21;
 	/**
 	 * The feature id for the '<em><b>Noncacheable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1835,7 +1722,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__NONCACHEABLE = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 26;
+	public static final int XML_ELEMENT_COLLECTION__NONCACHEABLE = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 22;
 	/**
 	 * The feature id for the '<em><b>Composite Member</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1843,7 +1730,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 27;
+	public static final int XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 23;
 	/**
 	 * The feature id for the '<em><b>Delete All</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1851,7 +1738,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__DELETE_ALL = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 28;
+	public static final int XML_ELEMENT_COLLECTION__DELETE_ALL = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 24;
 	/**
 	 * The number of structural features of the '<em>Xml Element Collection</em>' class.
 	 * <!-- begin-user-doc -->
@@ -1859,7 +1746,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_FEATURE_COUNT = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 29;
+	public static final int XML_ELEMENT_COLLECTION_FEATURE_COUNT = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 25;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -1868,7 +1755,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDABLE = 27;
+	public static final int XML_EMBEDDABLE = 26;
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2069,7 +1956,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbedded()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED = 28;
+	public static final int XML_EMBEDDED = 27;
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2142,7 +2029,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddedId()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED_ID = 29;
+	public static final int XML_EMBEDDED_ID = 28;
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2207,7 +2094,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity()
 	 * @generated
 	 */
-	public static final int XML_ENTITY = 30;
+	public static final int XML_ENTITY = 29;
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2816,7 +2703,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings()
 	 * @generated
 	 */
-	public static final int XML_ENTITY_MAPPINGS = 31;
+	public static final int XML_ENTITY_MAPPINGS = 30;
 	/**
 	 * The feature id for the '<em><b>Version</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3121,7 +3008,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlFetchAttribute()
 	 * @generated
 	 */
-	public static final int XML_FETCH_ATTRIBUTE = 32;
+	public static final int XML_FETCH_ATTRIBUTE = 31;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3146,7 +3033,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlFetchGroup()
 	 * @generated
 	 */
-	public static final int XML_FETCH_GROUP = 33;
+	public static final int XML_FETCH_GROUP = 32;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3187,7 +3074,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId()
 	 * @generated
 	 */
-	public static final int XML_ID = 35;
+	public static final int XML_ID = 34;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlIndex <em>Xml Index</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3196,7 +3083,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlIndex()
 	 * @generated
 	 */
-	public static final int XML_INDEX = 36;
+	public static final int XML_INDEX = 35;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlInstantiationCopyPolicy <em>Xml Instantiation Copy Policy</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3205,7 +3092,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlInstantiationCopyPolicy()
 	 * @generated
 	 */
-	public static final int XML_INSTANTIATION_COPY_POLICY = 37;
+	public static final int XML_INSTANTIATION_COPY_POLICY = 36;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinFetch <em>Xml Join Fetch</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3214,7 +3101,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetch()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH = 38;
+	public static final int XML_JOIN_FETCH = 37;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinTable <em>Xml Join Table</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3223,7 +3110,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinTable()
 	 * @generated
 	 */
-	public static final int XML_JOIN_TABLE = 39;
+	public static final int XML_JOIN_TABLE = 38;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToMany <em>Xml Many To Many</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3232,7 +3119,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToMany()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY = 40;
+	public static final int XML_MANY_TO_MANY = 39;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToOne <em>Xml Many To One</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3241,7 +3128,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToOne()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE = 41;
+	public static final int XML_MANY_TO_ONE = 40;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3250,7 +3137,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS = 42;
+	public static final int XML_MAPPED_SUPERCLASS = 41;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMutable <em>Xml Mutable</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3259,7 +3146,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMutable()
 	 * @generated
 	 */
-	public static final int XML_MUTABLE = 45;
+	public static final int XML_MUTABLE = 44;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery <em>Xml Named Stored Procedure Query</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3268,7 +3155,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedStoredProcedureQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_STORED_PROCEDURE_QUERY = 50;
+	public static final int XML_NAMED_STORED_PROCEDURE_QUERY = 49;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlObjectTypeConverter <em>Xml Object Type Converter</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3277,7 +3164,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverter()
 	 * @generated
 	 */
-	public static final int XML_OBJECT_TYPE_CONVERTER = 51;
+	public static final int XML_OBJECT_TYPE_CONVERTER = 50;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3286,7 +3173,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToMany()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY = 52;
+	public static final int XML_ONE_TO_MANY = 51;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToOne <em>Xml One To One</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3295,7 +3182,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToOne()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE = 53;
+	public static final int XML_ONE_TO_ONE = 52;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOptimisticLocking <em>Xml Optimistic Locking</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3304,7 +3191,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOptimisticLocking()
 	 * @generated
 	 */
-	public static final int XML_OPTIMISTIC_LOCKING = 54;
+	public static final int XML_OPTIMISTIC_LOCKING = 53;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOrderColumn <em>Xml Order Column</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3313,7 +3200,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOrderColumn()
 	 * @generated
 	 */
-	public static final int XML_ORDER_COLUMN = 55;
+	public static final int XML_ORDER_COLUMN = 54;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPersistenceUnitDefaults <em>Xml Persistence Unit Defaults</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3322,7 +3209,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPersistenceUnitDefaults()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS = 57;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS = 56;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPersistenceUnitMetadata <em>Xml Persistence Unit Metadata</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3331,7 +3218,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPersistenceUnitMetadata()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_METADATA = 58;
+	public static final int XML_PERSISTENCE_UNIT_METADATA = 57;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPrimaryKey <em>Xml Primary Key</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3340,7 +3227,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPrimaryKey()
 	 * @generated
 	 */
-	public static final int XML_PRIMARY_KEY = 62;
+	public static final int XML_PRIMARY_KEY = 61;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPrivateOwned <em>Xml Private Owned</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3349,7 +3236,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPrivateOwned()
 	 * @generated
 	 */
-	public static final int XML_PRIVATE_OWNED = 63;
+	public static final int XML_PRIVATE_OWNED = 62;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlProperty <em>Xml Property</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3358,7 +3245,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlProperty()
 	 * @generated
 	 */
-	public static final int XML_PROPERTY = 64;
+	public static final int XML_PROPERTY = 63;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPropertyContainer <em>Xml Property Container</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3367,7 +3254,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPropertyContainer()
 	 * @generated
 	 */
-	public static final int XML_PROPERTY_CONTAINER = 65;
+	public static final int XML_PROPERTY_CONTAINER = 64;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryContainer <em>Xml Query Container</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3376,7 +3263,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryContainer()
 	 * @generated
 	 */
-	public static final int XML_QUERY_CONTAINER = 66;
+	public static final int XML_QUERY_CONTAINER = 65;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryRedirectors <em>Xml Query Redirectors</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3385,7 +3272,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors()
 	 * @generated
 	 */
-	public static final int XML_QUERY_REDIRECTORS = 67;
+	public static final int XML_QUERY_REDIRECTORS = 66;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlReadOnly <em>Xml Read Only</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3394,7 +3281,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlReadOnly()
 	 * @generated
 	 */
-	public static final int XML_READ_ONLY = 69;
+	public static final int XML_READ_ONLY = 68;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlReturnInsert <em>Xml Return Insert</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3403,7 +3290,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlReturnInsert()
 	 * @generated
 	 */
-	public static final int XML_RETURN_INSERT = 71;
+	public static final int XML_RETURN_INSERT = 70;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlSecondaryTable <em>Xml Secondary Table</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3412,7 +3299,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlSecondaryTable()
 	 * @generated
 	 */
-	public static final int XML_SECONDARY_TABLE = 73;
+	public static final int XML_SECONDARY_TABLE = 72;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStoredProcedureParameter <em>Xml Stored Procedure Parameter</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3421,7 +3308,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStoredProcedureParameter()
 	 * @generated
 	 */
-	public static final int XML_STORED_PROCEDURE_PARAMETER = 74;
+	public static final int XML_STORED_PROCEDURE_PARAMETER = 73;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter <em>Xml Struct Converter</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3430,7 +3317,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructConverter()
 	 * @generated
 	 */
-	public static final int XML_STRUCT_CONVERTER = 76;
+	public static final int XML_STRUCT_CONVERTER = 75;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTable <em>Xml Table</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3439,7 +3326,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTable()
 	 * @generated
 	 */
-	public static final int XML_TABLE = 78;
+	public static final int XML_TABLE = 77;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTableGenerator <em>Xml Table Generator</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3448,7 +3335,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTableGenerator()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR = 79;
+	public static final int XML_TABLE_GENERATOR = 78;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTimeOfDay <em>Xml Time Of Day</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3457,7 +3344,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTimeOfDay()
 	 * @generated
 	 */
-	public static final int XML_TIME_OF_DAY = 81;
+	public static final int XML_TIME_OF_DAY = 80;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTransformation <em>Xml Transformation</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3466,7 +3353,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformation()
 	 * @generated
 	 */
-	public static final int XML_TRANSFORMATION = 82;
+	public static final int XML_TRANSFORMATION = 81;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTransient <em>Xml Transient</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3475,7 +3362,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransient()
 	 * @generated
 	 */
-	public static final int XML_TRANSIENT = 83;
+	public static final int XML_TRANSIENT = 82;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter <em>Xml Type Converter</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3484,7 +3371,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeConverter()
 	 * @generated
 	 */
-	public static final int XML_TYPE_CONVERTER = 84;
+	public static final int XML_TYPE_CONVERTER = 83;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne <em>Xml Variable One To One</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3493,7 +3380,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVariableOneToOne()
 	 * @generated
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE = 87;
+	public static final int XML_VARIABLE_ONE_TO_ONE = 86;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion <em>Xml Version</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3502,7 +3389,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int XML_VERSION = 88;
+	public static final int XML_VERSION = 87;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlHashPartitioning <em>Xml Hash Partitioning</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3511,7 +3398,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlHashPartitioning()
 	 * @generated
 	 */
-	public static final int XML_HASH_PARTITIONING = 34;
+	public static final int XML_HASH_PARTITIONING = 33;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3649,45 +3536,45 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ID__MUTABLE = OrmPackage.XML_ID_FEATURE_COUNT + 5;
 	/**
-	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ID__CONVERTER = OrmPackage.XML_ID_FEATURE_COUNT + 6;
-	/**
-	 * The feature id for the '<em><b>Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ID__TYPE_CONVERTER = OrmPackage.XML_ID_FEATURE_COUNT + 7;
-	/**
-	 * The feature id for the '<em><b>Object Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ID__OBJECT_TYPE_CONVERTER = OrmPackage.XML_ID_FEATURE_COUNT + 8;
-	/**
-	 * The feature id for the '<em><b>Struct Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ID__STRUCT_CONVERTER = OrmPackage.XML_ID_FEATURE_COUNT + 9;
-	/**
 	 * The feature id for the '<em><b>Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID__CONVERT = OrmPackage.XML_ID_FEATURE_COUNT + 10;
+	public static final int XML_ID__CONVERT = OrmPackage.XML_ID_FEATURE_COUNT + 6;
+	/**
+	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ID__CONVERTERS = OrmPackage.XML_ID_FEATURE_COUNT + 7;
+	/**
+	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ID__TYPE_CONVERTERS = OrmPackage.XML_ID_FEATURE_COUNT + 8;
+	/**
+	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ID__OBJECT_TYPE_CONVERTERS = OrmPackage.XML_ID_FEATURE_COUNT + 9;
+	/**
+	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ID__STRUCT_CONVERTERS = OrmPackage.XML_ID_FEATURE_COUNT + 10;
 	/**
 	 * The number of structural features of the '<em>Xml Id</em>' class.
 	 * <!-- begin-user-doc -->
@@ -3969,45 +3856,45 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MANY_TO_MANY__MAP_KEY = OrmPackage.XML_MANY_TO_MANY__MAP_KEY;
 	/**
-	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__CONVERTER = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 0;
-	/**
-	 * The feature id for the '<em><b>Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__TYPE_CONVERTER = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 1;
-	/**
-	 * The feature id for the '<em><b>Object Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTER = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 2;
-	/**
-	 * The feature id for the '<em><b>Struct Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__STRUCT_CONVERTER = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 3;
-	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 4;
+	public static final int XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 0;
+	/**
+	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__CONVERTERS = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 1;
+	/**
+	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__TYPE_CONVERTERS = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 2;
+	/**
+	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__OBJECT_TYPE_CONVERTERS = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 3;
+	/**
+	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__STRUCT_CONVERTERS = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 4;
 	/**
 	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4816,7 +4703,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMultitenant()
 	 * @generated
 	 */
-	public static final int XML_MULTITENANT = 43;
+	public static final int XML_MULTITENANT = 42;
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4857,7 +4744,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMultitenantHolder()
 	 * @generated
 	 */
-	public static final int XML_MULTITENANT_HOLDER = 44;
+	public static final int XML_MULTITENANT_HOLDER = 43;
 	/**
 	 * The feature id for the '<em><b>Multitenant</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -4898,7 +4785,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedPlsqlStoredFunctionQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY = 47;
+	public static final int XML_NAMED_PLSQL_STORED_FUNCTION_QUERY = 46;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4923,7 +4810,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedPlsqlStoredProcedureQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY = 48;
+	public static final int XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY = 47;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4948,7 +4835,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedStoredFunctionQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_STORED_FUNCTION_QUERY = 49;
+	public static final int XML_NAMED_STORED_FUNCTION_QUERY = 48;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5222,45 +5109,45 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ONE_TO_MANY__ORPHAN_REMOVAL = OrmPackage.XML_ONE_TO_MANY__ORPHAN_REMOVAL;
 	/**
-	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__CONVERTER = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 0;
-	/**
-	 * The feature id for the '<em><b>Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__TYPE_CONVERTER = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 1;
-	/**
-	 * The feature id for the '<em><b>Object Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__OBJECT_TYPE_CONVERTER = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 2;
-	/**
-	 * The feature id for the '<em><b>Struct Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__STRUCT_CONVERTER = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 3;
-	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 4;
+	public static final int XML_ONE_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 0;
+	/**
+	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__CONVERTERS = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 1;
+	/**
+	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__TYPE_CONVERTERS = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 2;
+	/**
+	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__OBJECT_TYPE_CONVERTERS = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 3;
+	/**
+	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__STRUCT_CONVERTERS = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 4;
 	/**
 	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5757,7 +5644,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPartitioning()
 	 * @generated
 	 */
-	public static final int XML_PARTITIONING = 56;
+	public static final int XML_PARTITIONING = 55;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5902,7 +5789,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPinnedPartitioning()
 	 * @generated
 	 */
-	public static final int XML_PINNED_PARTITIONING = 59;
+	public static final int XML_PINNED_PARTITIONING = 58;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5927,7 +5814,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPlsqlRecord()
 	 * @generated
 	 */
-	public static final int XML_PLSQL_RECORD = 60;
+	public static final int XML_PLSQL_RECORD = 59;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5952,7 +5839,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPlsqlTable()
 	 * @generated
 	 */
-	public static final int XML_PLSQL_TABLE = 61;
+	public static final int XML_PLSQL_TABLE = 60;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6153,7 +6040,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlRangePartitioning()
 	 * @generated
 	 */
-	public static final int XML_RANGE_PARTITIONING = 68;
+	public static final int XML_RANGE_PARTITIONING = 67;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6194,7 +6081,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlReplicationPartitioning()
 	 * @generated
 	 */
-	public static final int XML_REPLICATION_PARTITIONING = 70;
+	public static final int XML_REPLICATION_PARTITIONING = 69;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6235,7 +6122,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlRoundRobinPartitioning()
 	 * @generated
 	 */
-	public static final int XML_ROUND_ROBIN_PARTITIONING = 72;
+	public static final int XML_ROUND_ROBIN_PARTITIONING = 71;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6372,7 +6259,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStruct()
 	 * @generated
 	 */
-	public static final int XML_STRUCT = 75;
+	public static final int XML_STRUCT = 74;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6421,7 +6308,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructure()
 	 * @generated
 	 */
-	public static final int XML_STRUCTURE = 77;
+	public static final int XML_STRUCTURE = 76;
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6622,7 +6509,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTenantDiscriminatorColumn()
 	 * @generated
 	 */
-	public static final int XML_TENANT_DISCRIMINATOR_COLUMN = 80;
+	public static final int XML_TENANT_DISCRIMINATOR_COLUMN = 79;
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6855,7 +6742,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlUnionPartitioning()
 	 * @generated
 	 */
-	public static final int XML_UNION_PARTITIONING = 85;
+	public static final int XML_UNION_PARTITIONING = 84;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6880,7 +6767,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlValuePartitioning()
 	 * @generated
 	 */
-	public static final int XML_VALUE_PARTITIONING = 86;
+	public static final int XML_VALUE_PARTITIONING = 85;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -7106,45 +6993,45 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_VERSION__MUTABLE = OrmPackage.XML_VERSION_FEATURE_COUNT + 4;
 	/**
-	 * The feature id for the '<em><b>Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_VERSION__CONVERTER = OrmPackage.XML_VERSION_FEATURE_COUNT + 5;
-	/**
-	 * The feature id for the '<em><b>Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_VERSION__TYPE_CONVERTER = OrmPackage.XML_VERSION_FEATURE_COUNT + 6;
-	/**
-	 * The feature id for the '<em><b>Object Type Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_VERSION__OBJECT_TYPE_CONVERTER = OrmPackage.XML_VERSION_FEATURE_COUNT + 7;
-	/**
-	 * The feature id for the '<em><b>Struct Converter</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_VERSION__STRUCT_CONVERTER = OrmPackage.XML_VERSION_FEATURE_COUNT + 8;
-	/**
 	 * The feature id for the '<em><b>Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VERSION__CONVERT = OrmPackage.XML_VERSION_FEATURE_COUNT + 9;
+	public static final int XML_VERSION__CONVERT = OrmPackage.XML_VERSION_FEATURE_COUNT + 5;
+	/**
+	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_VERSION__CONVERTERS = OrmPackage.XML_VERSION_FEATURE_COUNT + 6;
+	/**
+	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_VERSION__TYPE_CONVERTERS = OrmPackage.XML_VERSION_FEATURE_COUNT + 7;
+	/**
+	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_VERSION__OBJECT_TYPE_CONVERTERS = OrmPackage.XML_VERSION_FEATURE_COUNT + 8;
+	/**
+	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_VERSION__STRUCT_CONVERTERS = OrmPackage.XML_VERSION_FEATURE_COUNT + 9;
 	/**
 	 * The number of structural features of the '<em>Xml Version</em>' class.
 	 * <!-- begin-user-doc -->
@@ -7161,7 +7048,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheCoordinationType()
 	 * @generated
 	 */
-	public static final int CACHE_COORDINATION_TYPE = 89;
+	public static final int CACHE_COORDINATION_TYPE = 88;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.CacheType <em>Cache Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7170,7 +7057,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheType()
 	 * @generated
 	 */
-	public static final int CACHE_TYPE = 90;
+	public static final int CACHE_TYPE = 89;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlChangeTrackingType <em>Xml Change Tracking Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7179,7 +7066,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingType()
 	 * @generated
 	 */
-	public static final int XML_CHANGE_TRACKING_TYPE = 91;
+	public static final int XML_CHANGE_TRACKING_TYPE = 90;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlDirection <em>Xml Direction</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7188,7 +7075,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlDirection()
 	 * @generated
 	 */
-	public static final int XML_DIRECTION = 92;
+	public static final int XML_DIRECTION = 91;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.ExistenceType <em>Existence Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7197,7 +7084,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getExistenceType()
 	 * @generated
 	 */
-	public static final int EXISTENCE_TYPE = 93;
+	public static final int EXISTENCE_TYPE = 92;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinFetchType <em>Xml Join Fetch Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7206,7 +7093,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH_TYPE = 94;
+	public static final int XML_JOIN_FETCH_TYPE = 93;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOptimisticLockingType <em>Xml Optimistic Locking Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7215,7 +7102,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOptimisticLockingType()
 	 * @generated
 	 */
-	public static final int XML_OPTIMISTIC_LOCKING_TYPE = 95;
+	public static final int XML_OPTIMISTIC_LOCKING_TYPE = 94;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7341,13 +7228,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlConverterHolderEClass = null;
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass xmlConvertersHolderEClass = null;
+	private EClass xmlConverterContainerEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8506,141 +8387,72 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder <em>Xml Converter Holder</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer <em>Xml Converter Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Converter Holder</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder
+	 * @return the meta object for class '<em>Xml Converter Container</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer
 	 * @generated
 	 */
-	public EClass getXmlConverterHolder()
+	public EClass getXmlConverterContainer()
 	{
-		return xmlConverterHolderEClass;
+		return xmlConverterContainerEClass;
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder#getConverter <em>Converter</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Converter</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder#getConverter()
-	 * @see #getXmlConverterHolder()
-	 * @generated
-	 */
-	public EReference getXmlConverterHolder_Converter()
-	{
-		return (EReference)xmlConverterHolderEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder#getTypeConverter <em>Type Converter</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Type Converter</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder#getTypeConverter()
-	 * @see #getXmlConverterHolder()
-	 * @generated
-	 */
-	public EReference getXmlConverterHolder_TypeConverter()
-	{
-		return (EReference)xmlConverterHolderEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder#getObjectTypeConverter <em>Object Type Converter</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Object Type Converter</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder#getObjectTypeConverter()
-	 * @see #getXmlConverterHolder()
-	 * @generated
-	 */
-	public EReference getXmlConverterHolder_ObjectTypeConverter()
-	{
-		return (EReference)xmlConverterHolderEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder#getStructConverter <em>Struct Converter</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Struct Converter</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder#getStructConverter()
-	 * @see #getXmlConverterHolder()
-	 * @generated
-	 */
-	public EReference getXmlConverterHolder_StructConverter()
-	{
-		return (EReference)xmlConverterHolderEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder <em>Xml Converters Holder</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Converters Holder</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder
-	 * @generated
-	 */
-	public EClass getXmlConvertersHolder()
-	{
-		return xmlConvertersHolderEClass;
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder#getConverters <em>Converters</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer#getConverters <em>Converters</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Converters</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder#getConverters()
-	 * @see #getXmlConvertersHolder()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer#getConverters()
+	 * @see #getXmlConverterContainer()
 	 * @generated
 	 */
-	public EReference getXmlConvertersHolder_Converters()
+	public EReference getXmlConverterContainer_Converters()
 	{
-		return (EReference)xmlConvertersHolderEClass.getEStructuralFeatures().get(0);
+		return (EReference)xmlConverterContainerEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder#getTypeConverters <em>Type Converters</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer#getTypeConverters <em>Type Converters</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Type Converters</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder#getTypeConverters()
-	 * @see #getXmlConvertersHolder()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer#getTypeConverters()
+	 * @see #getXmlConverterContainer()
 	 * @generated
 	 */
-	public EReference getXmlConvertersHolder_TypeConverters()
+	public EReference getXmlConverterContainer_TypeConverters()
 	{
-		return (EReference)xmlConvertersHolderEClass.getEStructuralFeatures().get(1);
+		return (EReference)xmlConverterContainerEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder#getObjectTypeConverters <em>Object Type Converters</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer#getObjectTypeConverters <em>Object Type Converters</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Object Type Converters</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder#getObjectTypeConverters()
-	 * @see #getXmlConvertersHolder()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer#getObjectTypeConverters()
+	 * @see #getXmlConverterContainer()
 	 * @generated
 	 */
-	public EReference getXmlConvertersHolder_ObjectTypeConverters()
+	public EReference getXmlConverterContainer_ObjectTypeConverters()
 	{
-		return (EReference)xmlConvertersHolderEClass.getEStructuralFeatures().get(2);
+		return (EReference)xmlConverterContainerEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder#getStructConverters <em>Struct Converters</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer#getStructConverters <em>Struct Converters</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Struct Converters</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder#getStructConverters()
-	 * @see #getXmlConvertersHolder()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer#getStructConverters()
+	 * @see #getXmlConverterContainer()
 	 * @generated
 	 */
-	public EReference getXmlConvertersHolder_StructConverters()
+	public EReference getXmlConverterContainer_StructConverters()
 	{
-		return (EReference)xmlConvertersHolderEClass.getEStructuralFeatures().get(3);
+		return (EReference)xmlConverterContainerEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -10501,17 +10313,11 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlConverterEClass = createEClass(XML_CONVERTER);
 		createEAttribute(xmlConverterEClass, XML_CONVERTER__CLASS_NAME);
 
-		xmlConverterHolderEClass = createEClass(XML_CONVERTER_HOLDER);
-		createEReference(xmlConverterHolderEClass, XML_CONVERTER_HOLDER__CONVERTER);
-		createEReference(xmlConverterHolderEClass, XML_CONVERTER_HOLDER__TYPE_CONVERTER);
-		createEReference(xmlConverterHolderEClass, XML_CONVERTER_HOLDER__OBJECT_TYPE_CONVERTER);
-		createEReference(xmlConverterHolderEClass, XML_CONVERTER_HOLDER__STRUCT_CONVERTER);
-
-		xmlConvertersHolderEClass = createEClass(XML_CONVERTERS_HOLDER);
-		createEReference(xmlConvertersHolderEClass, XML_CONVERTERS_HOLDER__CONVERTERS);
-		createEReference(xmlConvertersHolderEClass, XML_CONVERTERS_HOLDER__TYPE_CONVERTERS);
-		createEReference(xmlConvertersHolderEClass, XML_CONVERTERS_HOLDER__OBJECT_TYPE_CONVERTERS);
-		createEReference(xmlConvertersHolderEClass, XML_CONVERTERS_HOLDER__STRUCT_CONVERTERS);
+		xmlConverterContainerEClass = createEClass(XML_CONVERTER_CONTAINER);
+		createEReference(xmlConverterContainerEClass, XML_CONVERTER_CONTAINER__CONVERTERS);
+		createEReference(xmlConverterContainerEClass, XML_CONVERTER_CONTAINER__TYPE_CONVERTERS);
+		createEReference(xmlConverterContainerEClass, XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS);
+		createEReference(xmlConverterContainerEClass, XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS);
 
 		xmlConvertibleMappingEClass = createEClass(XML_CONVERTIBLE_MAPPING);
 		createEAttribute(xmlConvertibleMappingEClass, XML_CONVERTIBLE_MAPPING__CONVERT);
@@ -10778,6 +10584,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlBasicEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlBasicEClass.getESuperTypes().add(this.getXmlMutable());
 		xmlBasicEClass.getESuperTypes().add(this.getXmlConvertibleMapping());
+		xmlBasicEClass.getESuperTypes().add(this.getXmlConverterContainer());
 		xmlBasicCollectionEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
 		xmlBasicCollectionEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlBasicCollectionEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlBasicCollection_2_2());
@@ -10792,7 +10599,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlCollectionTableEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlCollectionTable_2_2());
 		xmlConverterEClass.getESuperTypes().add(this.getXmlNamedConverter());
 		xmlConvertibleMappingEClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
-		xmlConvertibleMappingEClass.getESuperTypes().add(this.getXmlConverterHolder());
 		xmlElementCollectionEClass.getESuperTypes().add(theOrmPackage.getXmlElementCollection());
 		xmlElementCollectionEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlElementCollection_2_0());
 		xmlElementCollectionEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlElementCollection_2_1());
@@ -10805,7 +10611,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlEmbeddableEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlEmbeddable_2_3());
 		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlCustomizerHolder());
 		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlChangeTrackingHolder());
-		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlConvertersHolder());
+		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlConverterContainer());
 		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlPropertyContainer());
 		xmlEmbeddedEClass.getESuperTypes().add(theOrmPackage.getXmlEmbedded());
 		xmlEmbeddedEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlEmbedded_2_1());
@@ -10824,14 +10630,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlEntityEClass.getESuperTypes().add(this.getXmlCustomizerHolder());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlChangeTrackingHolder());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlCacheHolder());
-		xmlEntityEClass.getESuperTypes().add(this.getXmlConvertersHolder());
+		xmlEntityEClass.getESuperTypes().add(this.getXmlConverterContainer());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlQueryContainer());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlPropertyContainer());
 		xmlEntityMappingsEClass.getESuperTypes().add(theOrmPackage.getXmlEntityMappings());
 		xmlEntityMappingsEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlEntityMappings_2_1());
 		xmlEntityMappingsEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlEntityMappings_2_2());
 		xmlEntityMappingsEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlEntityMappings_2_3());
-		xmlEntityMappingsEClass.getESuperTypes().add(this.getXmlConvertersHolder());
+		xmlEntityMappingsEClass.getESuperTypes().add(this.getXmlConverterContainer());
 		xmlEntityMappingsEClass.getESuperTypes().add(this.getXmlQueryContainer());
 		xmlFetchAttributeEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlFetchAttribute_2_1());
 		xmlFetchGroupEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlFetchGroup_2_1());
@@ -10843,6 +10649,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlIdEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlIdEClass.getESuperTypes().add(this.getXmlMutable());
 		xmlIdEClass.getESuperTypes().add(this.getXmlConvertibleMapping());
+		xmlIdEClass.getESuperTypes().add(this.getXmlConverterContainer());
 		xmlIndexEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlIndex_2_2());
 		xmlJoinTableEClass.getESuperTypes().add(theOrmPackage.getXmlJoinTable());
 		xmlJoinTableEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlJoinTable_2_2());
@@ -10868,7 +10675,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlCustomizerHolder());
 		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlChangeTrackingHolder());
 		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlCacheHolder());
-		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlConvertersHolder());
+		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlConverterContainer());
 		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlPropertyContainer());
 		xmlMultitenantEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlMultitenant_2_3());
 		xmlMultitenantEClass.getESuperTypes().add(theEclipseLinkOrmV2_4Package.getXmlMultitenant_2_4());
@@ -10937,6 +10744,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlVersionEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlVersionEClass.getESuperTypes().add(this.getXmlMutable());
 		xmlVersionEClass.getESuperTypes().add(this.getXmlConvertibleMapping());
+		xmlVersionEClass.getESuperTypes().add(this.getXmlConverterContainer());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlAccessMethodsEClass, XmlAccessMethods.class, "XmlAccessMethods", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -11005,17 +10813,11 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEClass(xmlConverterEClass, XmlConverter.class, "XmlConverter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlConverter_ClassName(), theXMLTypePackage.getString(), "className", null, 0, 1, XmlConverter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(xmlConverterHolderEClass, XmlConverterHolder.class, "XmlConverterHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlConverterHolder_Converter(), this.getXmlConverter(), null, "converter", null, 0, 1, XmlConverterHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlConverterHolder_TypeConverter(), this.getXmlTypeConverter(), null, "typeConverter", null, 0, 1, XmlConverterHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlConverterHolder_ObjectTypeConverter(), this.getXmlObjectTypeConverter(), null, "objectTypeConverter", null, 0, 1, XmlConverterHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlConverterHolder_StructConverter(), this.getXmlStructConverter(), null, "structConverter", null, 0, 1, XmlConverterHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(xmlConvertersHolderEClass, XmlConvertersHolder.class, "XmlConvertersHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlConvertersHolder_Converters(), this.getXmlConverter(), null, "converters", null, 0, -1, XmlConvertersHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlConvertersHolder_TypeConverters(), this.getXmlTypeConverter(), null, "typeConverters", null, 0, -1, XmlConvertersHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlConvertersHolder_ObjectTypeConverters(), this.getXmlObjectTypeConverter(), null, "objectTypeConverters", null, 0, -1, XmlConvertersHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlConvertersHolder_StructConverters(), this.getXmlStructConverter(), null, "structConverters", null, 0, -1, XmlConvertersHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlConverterContainerEClass, XmlConverterContainer.class, "XmlConverterContainer", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlConverterContainer_Converters(), this.getXmlConverter(), null, "converters", null, 0, -1, XmlConverterContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlConverterContainer_TypeConverters(), this.getXmlTypeConverter(), null, "typeConverters", null, 0, -1, XmlConverterContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlConverterContainer_ObjectTypeConverters(), this.getXmlObjectTypeConverter(), null, "objectTypeConverters", null, 0, -1, XmlConverterContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlConverterContainer_StructConverters(), this.getXmlStructConverter(), null, "structConverters", null, 0, -1, XmlConverterContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlConvertibleMappingEClass, XmlConvertibleMapping.class, "XmlConvertibleMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlConvertibleMapping_Convert(), theXMLTypePackage.getString(), "convert", null, 0, 1, XmlConvertibleMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -11679,56 +11481,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EAttribute XML_CONVERTER__CLASS_NAME = eINSTANCE.getXmlConverter_ClassName();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder <em>Xml Converter Holder</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer <em>Xml Converter Container</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder()
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterContainer()
 		 * @generated
 		 */
-		public static final EClass XML_CONVERTER_HOLDER = eINSTANCE.getXmlConverterHolder();
-
-		/**
-		 * The meta object literal for the '<em><b>Converter</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_CONVERTER_HOLDER__CONVERTER = eINSTANCE.getXmlConverterHolder_Converter();
-
-		/**
-		 * The meta object literal for the '<em><b>Type Converter</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_CONVERTER_HOLDER__TYPE_CONVERTER = eINSTANCE.getXmlConverterHolder_TypeConverter();
-
-		/**
-		 * The meta object literal for the '<em><b>Object Type Converter</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_CONVERTER_HOLDER__OBJECT_TYPE_CONVERTER = eINSTANCE.getXmlConverterHolder_ObjectTypeConverter();
-
-		/**
-		 * The meta object literal for the '<em><b>Struct Converter</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_CONVERTER_HOLDER__STRUCT_CONVERTER = eINSTANCE.getXmlConverterHolder_StructConverter();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder <em>Xml Converters Holder</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertersHolder()
-		 * @generated
-		 */
-		public static final EClass XML_CONVERTERS_HOLDER = eINSTANCE.getXmlConvertersHolder();
+		public static final EClass XML_CONVERTER_CONTAINER = eINSTANCE.getXmlConverterContainer();
 
 		/**
 		 * The meta object literal for the '<em><b>Converters</b></em>' containment reference list feature.
@@ -11736,7 +11496,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference XML_CONVERTERS_HOLDER__CONVERTERS = eINSTANCE.getXmlConvertersHolder_Converters();
+		public static final EReference XML_CONVERTER_CONTAINER__CONVERTERS = eINSTANCE.getXmlConverterContainer_Converters();
 
 		/**
 		 * The meta object literal for the '<em><b>Type Converters</b></em>' containment reference list feature.
@@ -11744,7 +11504,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference XML_CONVERTERS_HOLDER__TYPE_CONVERTERS = eINSTANCE.getXmlConvertersHolder_TypeConverters();
+		public static final EReference XML_CONVERTER_CONTAINER__TYPE_CONVERTERS = eINSTANCE.getXmlConverterContainer_TypeConverters();
 
 		/**
 		 * The meta object literal for the '<em><b>Object Type Converters</b></em>' containment reference list feature.
@@ -11752,7 +11512,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference XML_CONVERTERS_HOLDER__OBJECT_TYPE_CONVERTERS = eINSTANCE.getXmlConvertersHolder_ObjectTypeConverters();
+		public static final EReference XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS = eINSTANCE.getXmlConverterContainer_ObjectTypeConverters();
 
 		/**
 		 * The meta object literal for the '<em><b>Struct Converters</b></em>' containment reference list feature.
@@ -11760,7 +11520,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference XML_CONVERTERS_HOLDER__STRUCT_CONVERTERS = eINSTANCE.getXmlConvertersHolder_StructConverters();
+		public static final EReference XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS = eINSTANCE.getXmlConverterContainer_StructConverters();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertibleMapping <em>Xml Convertible Mapping</em>}' class.

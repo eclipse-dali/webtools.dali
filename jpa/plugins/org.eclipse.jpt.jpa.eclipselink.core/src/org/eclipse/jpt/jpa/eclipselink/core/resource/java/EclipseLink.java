@@ -18,7 +18,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.2
  * @since 2.1
  */
 @SuppressWarnings("nls")
@@ -146,6 +146,14 @@ public interface EclipseLink {
 
 	// EclispeLink 2.2 annotations
 	String CACHE__ISOLATION = "isolation";
+	String CONVERTERS = PACKAGE_ + "Converters";
+		String CONVERTERS__VALUE = "value";
+	String OBJECT_TYPE_CONVERTERS = PACKAGE_ + "ObjectTypeConverters";
+		String OBJECT_TYPE_CONVERTERS__VALUE = "value";
+	String STRUCT_CONVERTERS = PACKAGE_ + "StructConverters";
+		String STRUCT_CONVERTERS__VALUE = "value";
+	String TYPE_CONVERTERS = PACKAGE_ + "TypeConverters";
+		String TYPE_CONVERTERS__VALUE = "value";
 
 	// EclipseLink 2.2 enums
 	String CACHE_ISOLATION_TYPE = "org.eclipse.persistence.config.CacheIsolationType";

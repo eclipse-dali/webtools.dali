@@ -69,13 +69,7 @@ public class EclipseLinkUiDetailsMessages extends NLS {
 	public static String EclipseLinkChangeTrackingComposite_auto;
 	
 	public static String EclipseLinkConvertComposite_converterNameLabel;
-	public static String EclipseLinkConvertComposite_defineConverterSection;
-	public static String EclipseLinkConvertComposite_default;
-	public static String EclipseLinkConvertComposite_custom;
-	public static String EclipseLinkConvertComposite_type;
-	public static String EclipseLinkConvertComposite_objectType;
-	public static String EclipseLinkConvertComposite_struct;
-	
+
 	public static String EclipseLinkConverterComposite_nameTextLabel;
 	public static String EclipseLinkConverterComposite_classLabel;
 
@@ -83,6 +77,8 @@ public class EclipseLinkUiDetailsMessages extends NLS {
 	public static String EclipseLinkConvertersComposite_objectTypeConverter;
 	public static String EclipseLinkConvertersComposite_structConverter;
 	public static String EclipseLinkConvertersComposite_typeConverter;
+
+	public static String EclipseLinkConvertersComposite_maxConvertersErrorMessage;
 	
 	public static String EclipseLinkCustomizerComposite_classLabel;
 		

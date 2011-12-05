@@ -38,7 +38,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class OrmEclipseLinkEmbeddableImpl
 	extends AbstractOrmEmbeddable<XmlEmbeddable>
-	implements OrmEclipseLinkEmbeddable
+	implements 
+		OrmEclipseLinkEmbeddable,
+		OrmEclipseLinkConverterContainer.Owner
 {
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
@@ -81,7 +83,11 @@ public class OrmEclipseLinkEmbeddableImpl
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this.getXmlTypeMapping());
+		return new OrmEclipseLinkConverterContainerImpl(this, this, this.getXmlTypeMapping());
+	}
+
+	public int getNumberSupportedConverters() {
+		return Integer.MAX_VALUE;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -97,7 +103,14 @@ public class OrmEclipseLinkEmbeddableImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {
-		return new TransformationIterable<AttributeMapping, EclipseLinkConverter>(this.getAttributeMappings(), ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER);
+		return new CompositeIterable<EclipseLinkConverter>(this.getAttributeMappingConverterLists());
+	}
+
+	protected Iterable<Iterable<? extends EclipseLinkConverter>> getAttributeMappingConverterLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<? extends EclipseLinkConverter>>(
+				this.getAttributeMappings(),
+				ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER
+			);
 	}
 
 

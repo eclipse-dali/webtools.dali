@@ -40,6 +40,13 @@ public class OrmEclipseLinkBasicMapping1_1Composite extends EclipseLinkBasicMapp
 	}
 
 	@Override
+	protected void initializeLayout(Composite container) {
+		initializeBasicCollapsibleSection(container);
+		initializeTypeCollapsibleSection(container);
+		initializeConvertersCollapsibleSection(container);
+	}
+
+	@Override
 	protected void initializeBasicSection(Composite container) {
 		new ColumnComposite(this, buildColumnHolder(), container);
 		new OrmMappingNameChooser(this, getSubjectHolder(), container);

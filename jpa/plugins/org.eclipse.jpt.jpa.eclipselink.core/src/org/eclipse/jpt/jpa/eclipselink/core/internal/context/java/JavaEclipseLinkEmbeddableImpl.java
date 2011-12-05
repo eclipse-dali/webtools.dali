@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -35,7 +36,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class JavaEclipseLinkEmbeddableImpl
 	extends AbstractJavaEmbeddable
-	implements JavaEclipseLinkEmbeddable
+	implements JavaEclipseLinkEmbeddable, JavaEclipseLinkConverterContainer.Owner
 {
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 
@@ -78,7 +79,7 @@ public class JavaEclipseLinkEmbeddableImpl
 	}
 
 	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
-		return new JavaEclipseLinkConverterContainerImpl(this);
+		return new JavaEclipseLinkConverterContainerImpl(this, this);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -94,7 +95,14 @@ public class JavaEclipseLinkEmbeddableImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {
-		return new TransformationIterable<AttributeMapping, EclipseLinkConverter>(this.getAttributeMappings(), ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER);
+		return new CompositeIterable<EclipseLinkConverter>(this.getAttributeMappingConverterLists());
+	}
+
+	protected Iterable<Iterable<? extends EclipseLinkConverter>> getAttributeMappingConverterLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<? extends EclipseLinkConverter>>(
+				this.getAttributeMappings(),
+				ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER
+			);
 	}
 
 
@@ -124,6 +132,10 @@ public class JavaEclipseLinkEmbeddableImpl
 
 	public boolean usesPrimaryKeyColumns() {
 		return false;
+	}
+
+	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
+		return this.getJavaResourceType();
 	}
 
 

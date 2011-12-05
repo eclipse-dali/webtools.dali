@@ -18,6 +18,7 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.TemporalConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
@@ -29,17 +30,16 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkIdMappingComposite<T extends IdMapping>
+public abstract class EclipseLinkIdMappingComposite<T extends IdMapping>
 	extends AbstractIdMappingComposite<T>
 {
-	public EclipseLinkIdMappingComposite(
+	protected EclipseLinkIdMappingComposite(
 			PropertyValueModel<? extends T> subjectHolder,
 	        Composite parent,
 	        WidgetFactory widgetFactory) {
 		
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
 	
 	@Override
 	protected void initializeIdSection(Composite container) {
@@ -101,6 +101,27 @@ public class EclipseLinkIdMappingComposite<T extends IdMapping>
 			@Override
 			protected EclipseLinkMutable buildValue_() {
 				return ((EclipseLinkIdMapping) this.subject).getMutable();
+			}
+		};
+	}
+
+	protected void initializeConvertersCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+			container,
+			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
+		);
+		initializeConvertersSection(container, this.buildConverterHolderValueModel());
+	}
+
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<EclipseLinkConverterContainer> converterHolder) {
+		new EclipseLinkConvertersComposite(this, converterHolder, container);
+	}
+
+	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<IdMapping, EclipseLinkConverterContainer>(getSubjectHolder()) {
+			@Override
+			protected EclipseLinkConverterContainer buildValue_() {
+				return ((EclipseLinkIdMapping) this.subject).getConverterContainer();
 			}
 		};
 	}

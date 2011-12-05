@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
@@ -26,11 +26,11 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.2
  * @since 2.1
  */
 public interface EclipseLinkNamedConverterAnnotation
-	extends Annotation
+	extends NestableAnnotation
 {
 	/**
 	 * Corresponds to the 'name' element of the *Converter annotation.

@@ -111,17 +111,11 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConverter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConverter/className"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlConverterHolder">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/converter"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/typeConverter"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/objectTypeConverter"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/structConverter"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlConvertersHolder">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/converters"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/typeConverters"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/objectTypeConverters"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/structConverters"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlConverterContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterContainer/converters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterContainer/typeConverters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterContainer/objectTypeConverters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterContainer/structConverters"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConvertibleMapping">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConvertibleMapping/convert"/>

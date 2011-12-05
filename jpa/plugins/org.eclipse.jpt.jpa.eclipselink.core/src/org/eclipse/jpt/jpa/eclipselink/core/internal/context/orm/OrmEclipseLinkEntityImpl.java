@@ -52,7 +52,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class OrmEclipseLinkEntityImpl
 	extends AbstractOrmEntity<XmlEntity>
-	implements OrmEclipseLinkEntity
+	implements
+		OrmEclipseLinkEntity,
+		OrmEclipseLinkConverterContainer.Owner
 {
 	protected final OrmEclipseLinkReadOnly readOnly;
 
@@ -132,7 +134,11 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlTypeMapping);
+		return new OrmEclipseLinkConverterContainerImpl(this, this, this.xmlTypeMapping);
+	}
+
+	public int getNumberSupportedConverters() {
+		return Integer.MAX_VALUE;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -148,7 +154,14 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {
-		return new TransformationIterable<AttributeMapping, EclipseLinkConverter>(this.getAttributeMappings(), ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER);
+		return new CompositeIterable<EclipseLinkConverter>(this.getAttributeMappingConverterLists());
+	}
+
+	protected Iterable<Iterable<? extends EclipseLinkConverter>> getAttributeMappingConverterLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<? extends EclipseLinkConverter>>(
+				this.getAttributeMappings(),
+				ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER
+			);
 	}
 
 

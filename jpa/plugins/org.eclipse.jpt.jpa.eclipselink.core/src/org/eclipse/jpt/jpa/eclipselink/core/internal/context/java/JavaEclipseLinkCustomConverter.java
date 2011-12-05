@@ -18,7 +18,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -108,31 +107,4 @@ public class JavaEclipseLinkCustomConverter
 				StringTools.stringsAreEqual(this.getFullyQualifiedConverterClass(), ((JavaEclipseLinkCustomConverter)eclipseLinkConverter).getFullyQualifiedConverterClass());
 	}
 
-	// ********** adapter **********
-
-	public static class Adapter
-		extends AbstractAdapter
-	{
-		private static final Adapter INSTANCE = new Adapter();
-		public static Adapter instance() {
-			return INSTANCE;
-		}
-
-		private Adapter() {
-			super();
-		}
-
-		public Class<EclipseLinkCustomConverter> getConverterType() {
-			return EclipseLinkCustomConverter.class;
-		}
-
-		@Override
-		protected String getAnnotationName() {
-			return EclipseLinkConverterAnnotation.ANNOTATION_NAME;
-		}
-
-		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(EclipseLinkNamedConverterAnnotation converterAnnotation, JavaJpaContextNode parent) {
-			return new JavaEclipseLinkCustomConverter(parent, (EclipseLinkConverterAnnotation) converterAnnotation);
-		}
-	}
 }

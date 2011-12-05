@@ -22,21 +22,25 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCh
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkClassExtractor2_1AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConvertAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConverterAnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConverters2_2AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCustomizerAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkExistenceCheckingAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkJoinFetchAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkMultitenant2_3AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkMutableAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkObjectTypeConverterAnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkObjectTypeConverters2_2AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkPrimaryKeyAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkPrivateOwnedAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkReadOnlyAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkReadTransformerAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConverterAnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConverters2_2AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTenantDiscriminatorColumns2_3AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTransformationAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTypeConverterAnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTypeConverters2_2AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkVariableOneToOneAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkWriteTransformerAnnotationDefinition;
 
@@ -75,21 +79,21 @@ public class EclipseLink2_3JpaAnnotationDefinitionProvider
 		EclipseLinkChangeTrackingAnnotationDefinition.instance(),
 		EclipseLinkClassExtractor2_1AnnotationDefinition.instance(),
 		EclipseLinkConvertAnnotationDefinition.instance(),
-		EclipseLinkConverterAnnotationDefinition.instance(),
+		EclipseLinkConverters2_2AnnotationDefinition.instance(),
 		EclipseLinkCustomizerAnnotationDefinition.instance(),
 		EclipseLinkExistenceCheckingAnnotationDefinition.instance(),
 		EclipseLinkJoinFetchAnnotationDefinition.instance(),
 		EclipseLinkMultitenant2_3AnnotationDefinition.instance(),
 		EclipseLinkMutableAnnotationDefinition.instance(),
-		EclipseLinkObjectTypeConverterAnnotationDefinition.instance(),
+		EclipseLinkObjectTypeConverters2_2AnnotationDefinition.instance(),
 		EclipseLinkPrimaryKeyAnnotationDefinition.instance(),
 		EclipseLinkPrivateOwnedAnnotationDefinition.instance(),
 		EclipseLinkReadOnlyAnnotationDefinition.instance(),
 		EclipseLinkReadTransformerAnnotationDefinition.instance(),
-		EclipseLinkStructConverterAnnotationDefinition.instance(),
+		EclipseLinkStructConverters2_2AnnotationDefinition.instance(),
 		EclipseLinkTenantDiscriminatorColumns2_3AnnotationDefinition.instance(),
 		EclipseLinkTransformationAnnotationDefinition.instance(),
-		EclipseLinkTypeConverterAnnotationDefinition.instance(),
+		EclipseLinkTypeConverters2_2AnnotationDefinition.instance(),
 		EclipseLinkVariableOneToOneAnnotationDefinition.instance(),
 		EclipseLinkWriteTransformerAnnotationDefinition.instance()
 	};
@@ -99,8 +103,13 @@ public class EclipseLink2_3JpaAnnotationDefinitionProvider
 		CollectionTools.addAll(definitions, NESTABLE_ANNOTATION_DEFINITIONS);
 	}
 
-	protected static final NestableAnnotationDefinition[]  NESTABLE_ANNOTATION_DEFINITIONS = new NestableAnnotationDefinition[] {
-		EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition.instance()
+	protected static final NestableAnnotationDefinition[] NESTABLE_ANNOTATION_DEFINITIONS = new NestableAnnotationDefinition[] {
+		EclipseLinkConverterAnnotationDefinition.instance(),
+		EclipseLinkObjectTypeConverterAnnotationDefinition.instance(),
+		EclipseLinkStructConverterAnnotationDefinition.instance(),
+		EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition.instance(),
+		EclipseLinkTypeConverterAnnotationDefinition.instance(),
 	};
+
 
 }

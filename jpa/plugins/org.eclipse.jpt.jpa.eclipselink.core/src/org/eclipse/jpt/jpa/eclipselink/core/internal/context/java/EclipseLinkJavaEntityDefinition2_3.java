@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscr
 public class EclipseLinkJavaEntityDefinition2_3
 	extends JavaTypeMappingDefinitionWrapper
 {
-	private static final JavaTypeMappingDefinition DELEGATE = EclipseLinkJavaEntityDefinition2_0.instance();
+	private static final JavaTypeMappingDefinition DELEGATE = EclipseLinkJavaEntityDefinition2_2.instance();
 
 	// singleton
 	private static final JavaTypeMappingDefinition INSTANCE = new EclipseLinkJavaEntityDefinition2_3();

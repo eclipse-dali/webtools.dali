@@ -11,8 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -21,6 +22,8 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 
@@ -32,8 +35,9 @@ public final class SourceEclipseLinkConverterAnnotation
 	implements EclipseLinkConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(EclipseLink.CONVERTERS);
 
-	private static final DeclarationAnnotationElementAdapter<String> CONVERTER_CLASS_ADAPTER = buildConverterClassAdapter();
+	private final DeclarationAnnotationElementAdapter<String> converterClassDeclarationAdapter;
 	private final AnnotationElementAdapter<String> converterClassAdapter;
 	private String converterClass;
 	private TextRange converterClassTextRange;
@@ -45,9 +49,25 @@ public final class SourceEclipseLinkConverterAnnotation
 	// we need a flag since the f-q name can be null
 	private boolean fqConverterClassNameStale = true;
 
-	public SourceEclipseLinkConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
-		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
-		this.converterClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, CONVERTER_CLASS_ADAPTER);
+
+	public static SourceEclipseLinkConverterAnnotation buildSourceConverterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildConverterDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildConverterAnnotationAdapter(element, idaa);
+		return new SourceEclipseLinkConverterAnnotation(
+			parent,
+			element,
+			idaa,
+			iaa);
+	}
+
+	public SourceEclipseLinkConverterAnnotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement element,
+			IndexedDeclarationAnnotationAdapter daa,
+			IndexedAnnotationAdapter annotationAdapter) {
+		super(parent, element, daa, annotationAdapter);
+		this.converterClassDeclarationAdapter = this.buildConverterDeclarationClassAdapter();
+		this.converterClassAdapter = this.buildConverterClassAdapter();
 	}
 
 	public String getAnnotationName() {
@@ -120,7 +140,15 @@ public final class SourceEclipseLinkConverterAnnotation
 	}
 
 	private TextRange buildConverterClassTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(CONVERTER_CLASS_ADAPTER, astRoot);
+		return this.getElementTextRange(this.converterClassDeclarationAdapter, astRoot);
+	}
+
+	private DeclarationAnnotationElementAdapter<String> buildConverterDeclarationClassAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<String>(this.daa, EclipseLink.CONVERTER__CONVERTER_CLASS, SimpleTypeStringExpressionConverter.instance());
+	}
+
+	private AnnotationElementAdapter<String> buildConverterClassAdapter() {
+		return this.buildStringElementAdapter(this.converterClassDeclarationAdapter);
 	}
 
 	public boolean converterClassImplementsInterface(String interfaceName, CompilationUnit astRoot) {
@@ -148,7 +176,17 @@ public final class SourceEclipseLinkConverterAnnotation
 
 	// ********** static methods **********
 
-	private static DeclarationAnnotationElementAdapter<String> buildConverterClassAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CONVERTER__CONVERTER_CLASS, SimpleTypeStringExpressionConverter.instance());
+	private static IndexedAnnotationAdapter buildConverterAnnotationAdapter(AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+		return new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildConverterDeclarationAnnotationAdapter(int index) {
+		IndexedDeclarationAnnotationAdapter idaa = 
+			new CombinationIndexedDeclarationAnnotationAdapter(
+				DECLARATION_ANNOTATION_ADAPTER,
+				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				ANNOTATION_NAME);
+		return idaa;
 	}
 }

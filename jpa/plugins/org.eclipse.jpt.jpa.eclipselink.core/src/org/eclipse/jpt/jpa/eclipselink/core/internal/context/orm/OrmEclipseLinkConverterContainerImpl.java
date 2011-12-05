@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConvertersHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
@@ -39,7 +39,9 @@ public class OrmEclipseLinkConverterContainerImpl
 	extends AbstractOrmXmlContextNode
 	implements OrmEclipseLinkConverterContainer
 {
-	private final XmlConvertersHolder xmlConvertersHolder;
+
+	private final Owner owner;
+	private final XmlConverterContainer xmlConverterContainer;
 
 	protected final ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter> customConverterContainer;
 	protected final ContextListContainer<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter> objectTypeConverterContainer;
@@ -47,9 +49,10 @@ public class OrmEclipseLinkConverterContainerImpl
 	protected final ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> typeConverterContainer;
 
 
-	public OrmEclipseLinkConverterContainerImpl(XmlContextNode parent, XmlConvertersHolder xmlConvertersHolder) {
+	public OrmEclipseLinkConverterContainerImpl(XmlContextNode parent, Owner owner,  XmlConverterContainer xmlConverterContainer) {
 		super(parent);
-		this.xmlConvertersHolder = xmlConvertersHolder;
+		this.owner = owner;
+		this.xmlConverterContainer = xmlConverterContainer;
 
 		this.customConverterContainer = this.buildCustomConverterContainer();
 		this.objectTypeConverterContainer = this.buildObjectTypeConverterContainer();
@@ -96,7 +99,7 @@ public class OrmEclipseLinkConverterContainerImpl
 	public OrmEclipseLinkCustomConverter addCustomConverter(int index) {
 		XmlConverter xmlConverter = this.buildXmlCustomConverter();
 		OrmEclipseLinkCustomConverter converter = this.customConverterContainer.addContextElement(index, xmlConverter);
-		this.xmlConvertersHolder.getConverters().add(index, xmlConverter);
+		this.xmlConverterContainer.getConverters().add(index, xmlConverter);
 		return converter;
 	}
 
@@ -110,12 +113,12 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	public void removeCustomConverter(int index) {
 		this.customConverterContainer.removeContextElement(index);
-		this.xmlConvertersHolder.getConverters().remove(index);
+		this.xmlConverterContainer.getConverters().remove(index);
 	}
 
 	public void moveCustomConverter(int targetIndex, int sourceIndex) {
 		this.customConverterContainer.moveContextElement(targetIndex, sourceIndex);
-		this.xmlConvertersHolder.getConverters().move(targetIndex, sourceIndex);
+		this.xmlConverterContainer.getConverters().move(targetIndex, sourceIndex);
 	}
 
 	protected OrmEclipseLinkCustomConverter buildCustomConverter(XmlConverter xmlConverter) {
@@ -128,7 +131,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	protected ListIterable<XmlConverter> getXmlCustomConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlConverter>(this.xmlConvertersHolder.getConverters());
+		return new LiveCloneListIterable<XmlConverter>(this.xmlConverterContainer.getConverters());
 	}
 
 	protected ContextListContainer<OrmEclipseLinkCustomConverter, XmlConverter> buildCustomConverterContainer() {
@@ -179,7 +182,7 @@ public class OrmEclipseLinkConverterContainerImpl
 	public OrmEclipseLinkObjectTypeConverter addObjectTypeConverter(int index) {
 		XmlObjectTypeConverter xmlConverter = this.buildXmlObjectTypeConverter();
 		OrmEclipseLinkObjectTypeConverter converter = this.objectTypeConverterContainer.addContextElement(index, xmlConverter);
-		this.xmlConvertersHolder.getObjectTypeConverters().add(index, xmlConverter);
+		this.xmlConverterContainer.getObjectTypeConverters().add(index, xmlConverter);
 		return converter;
 	}
 
@@ -193,12 +196,12 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	public void removeObjectTypeConverter(int index) {
 		this.objectTypeConverterContainer.removeContextElement(index);
-		this.xmlConvertersHolder.getObjectTypeConverters().remove(index);
+		this.xmlConverterContainer.getObjectTypeConverters().remove(index);
 	}
 
 	public void moveObjectTypeConverter(int targetIndex, int sourceIndex) {
 		this.objectTypeConverterContainer.moveContextElement(targetIndex, sourceIndex);
-		this.xmlConvertersHolder.getObjectTypeConverters().move(targetIndex, sourceIndex);
+		this.xmlConverterContainer.getObjectTypeConverters().move(targetIndex, sourceIndex);
 	}
 
 	protected OrmEclipseLinkObjectTypeConverter buildObjectTypeConverter(XmlObjectTypeConverter xmlConverter) {
@@ -211,7 +214,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	protected ListIterable<XmlObjectTypeConverter> getXmlObjectTypeConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlObjectTypeConverter>(this.xmlConvertersHolder.getObjectTypeConverters());
+		return new LiveCloneListIterable<XmlObjectTypeConverter>(this.xmlConverterContainer.getObjectTypeConverters());
 	}
 
 	protected ContextListContainer<OrmEclipseLinkObjectTypeConverter, XmlObjectTypeConverter> buildObjectTypeConverterContainer() {
@@ -261,7 +264,7 @@ public class OrmEclipseLinkConverterContainerImpl
 	public OrmEclipseLinkStructConverter addStructConverter(int index) {
 		XmlStructConverter xmlConverter = this.buildXmlStructConverter();
 		OrmEclipseLinkStructConverter converter = this.structConverterContainer.addContextElement(index, xmlConverter);
-		this.xmlConvertersHolder.getStructConverters().add(index, xmlConverter);
+		this.xmlConverterContainer.getStructConverters().add(index, xmlConverter);
 		return converter;
 	}
 
@@ -275,12 +278,12 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	public void removeStructConverter(int index) {
 		this.structConverterContainer.removeContextElement(index);
-		this.xmlConvertersHolder.getStructConverters().remove(index);
+		this.xmlConverterContainer.getStructConverters().remove(index);
 	}
 
 	public void moveStructConverter(int targetIndex, int sourceIndex) {
 		this.structConverterContainer.moveContextElement(targetIndex, sourceIndex);
-		this.xmlConvertersHolder.getStructConverters().move(targetIndex, sourceIndex);
+		this.xmlConverterContainer.getStructConverters().move(targetIndex, sourceIndex);
 	}
 
 	protected OrmEclipseLinkStructConverter buildStructConverter(XmlStructConverter xmlConverter) {
@@ -293,7 +296,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	protected ListIterable<XmlStructConverter> getXmlStructConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlStructConverter>(this.xmlConvertersHolder.getStructConverters());
+		return new LiveCloneListIterable<XmlStructConverter>(this.xmlConverterContainer.getStructConverters());
 	}
 
 	protected ContextListContainer<OrmEclipseLinkStructConverter, XmlStructConverter> buildStructConverterContainer() {
@@ -344,7 +347,7 @@ public class OrmEclipseLinkConverterContainerImpl
 	public OrmEclipseLinkTypeConverter addTypeConverter(int index) {
 		XmlTypeConverter xmlConverter = this.buildXmlTypeConverter();
 		OrmEclipseLinkTypeConverter converter = this.typeConverterContainer.addContextElement(index, xmlConverter);
-		this.xmlConvertersHolder.getTypeConverters().add(index, xmlConverter);
+		this.xmlConverterContainer.getTypeConverters().add(index, xmlConverter);
 		return converter;
 	}
 
@@ -358,12 +361,12 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	public void removeTypeConverter(int index) {
 		this.typeConverterContainer.removeContextElement(index);
-		this.xmlConvertersHolder.getTypeConverters().remove(index);
+		this.xmlConverterContainer.getTypeConverters().remove(index);
 	}
 
 	public void moveTypeConverter(int targetIndex, int sourceIndex) {
 		this.typeConverterContainer.moveContextElement(targetIndex, sourceIndex);
-		this.xmlConvertersHolder.getTypeConverters().move(targetIndex, sourceIndex);
+		this.xmlConverterContainer.getTypeConverters().move(targetIndex, sourceIndex);
 	}
 
 	protected OrmEclipseLinkTypeConverter buildTypeConverter(XmlTypeConverter xmlConverter) {
@@ -376,7 +379,7 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	protected ListIterable<XmlTypeConverter> getXmlTypeConverters() {
 		// clone to reduce chance of concurrency problems
-		return new LiveCloneListIterable<XmlTypeConverter>(this.xmlConvertersHolder.getTypeConverters());
+		return new LiveCloneListIterable<XmlTypeConverter>(this.xmlConverterContainer.getTypeConverters());
 	}
 
 	protected ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> buildTypeConverterContainer() {
@@ -586,7 +589,7 @@ public class OrmEclipseLinkConverterContainerImpl
 	}
 	
 	public TextRange getValidationTextRange() {
-		TextRange textRange = this.xmlConvertersHolder.getValidationTextRange();
+		TextRange textRange = this.xmlConverterContainer.getValidationTextRange();
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
@@ -601,6 +604,17 @@ public class OrmEclipseLinkConverterContainerImpl
 					this.getStructConverters(),
 					this.getTypeConverters()
 				);
+	}
+
+	public int getConvertersSize() {
+		return this.getCustomConvertersSize()
+			+ this.getObjectTypeConvertersSize()
+			+ this.getStructConvertersSize()
+			+ this.getTypeConvertersSize();
+	}
+
+	public int getNumberSupportedConverters() {
+		return this.owner.getNumberSupportedConverters();
 	}
 
 	@Override

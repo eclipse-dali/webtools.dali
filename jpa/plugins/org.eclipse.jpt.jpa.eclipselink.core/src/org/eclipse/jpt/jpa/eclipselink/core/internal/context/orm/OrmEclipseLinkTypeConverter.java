@@ -19,9 +19,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -214,42 +211,5 @@ public class OrmEclipseLinkTypeConverter
 		return super.isIdentical(eclipseLinkConverter) && 
 				StringTools.stringsAreEqual(this.getDataType(), (((EclipseLinkTypeConverter)eclipseLinkConverter).getDataType())) &&
 				StringTools.stringsAreEqual(this.getObjectType(), ((EclipseLinkTypeConverter)eclipseLinkConverter).getObjectType());
-	}
-
-	// ********** adapter **********
-
-	public static class Adapter
-		extends AbstractAdapter
-	{
-		private static final Adapter INSTANCE = new Adapter();
-		public static Adapter instance() {
-			return INSTANCE;
-		}
-
-		private Adapter() {
-			super();
-		}
-
-		public Class<EclipseLinkTypeConverter> getConverterType() {
-			return EclipseLinkTypeConverter.class;
-		}
-
-		public XmlTypeConverter getXmlConverter(XmlConverterHolder xmlConverterContainer) {
-			return xmlConverterContainer.getTypeConverter();
-		}
-
-		public OrmEclipseLinkTypeConverter buildConverter(XmlNamedConverter xmlConverter, XmlContextNode parent) {
-			return new OrmEclipseLinkTypeConverter(parent, (XmlTypeConverter) xmlConverter);
-		}
-
-		@Override
-		protected XmlTypeConverter buildXmlConverter() {
-			return EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverter();
-		}
-
-		@Override
-		public void setXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter) {
-			xmlConverterContainer.setTypeConverter((XmlTypeConverter) xmlConverter);
-		}
 	}
 }

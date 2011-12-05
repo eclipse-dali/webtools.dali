@@ -1324,8 +1324,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		return new CompositeIterable<ReplaceEdit>(
 				super.createRenameTypeEdits(originalType, newName),
 				this.createMapKeyClassRenameTypeEdits(originalType, newName),
-				this.createTargetClassRenameTypeEdits(originalType, newName),
-				this.createConverterRenameTypeEdits(originalType, newName)
+				this.createTargetClassRenameTypeEdits(originalType, newName)
 			);
 	}
 
@@ -1353,20 +1352,13 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		return EmptyIterable.instance();
 	}
 
-	protected Iterable<ReplaceEdit> createConverterRenameTypeEdits(IType originalType, String newName) {
-		return (this.converter != null) ?
-				this.converter.createRenameTypeEdits(originalType, newName) :
-				EmptyIterable.<ReplaceEdit>instance();
-	}
-
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
 				super.createMoveTypeEdits(originalType, newPackage),
 				this.createMapKeyClassMoveTypeEdits(originalType, newPackage),
-				this.createTargetClassMoveTypeEdits(originalType, newPackage),
-				this.createConverterMoveTypeEdits(originalType, newPackage)
+				this.createTargetClassMoveTypeEdits(originalType, newPackage)
 			);
 	}
 
@@ -1390,20 +1382,13 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		return EmptyIterable.instance();
 	}
 
-	protected Iterable<ReplaceEdit> createConverterMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return (this.converter != null) ?
-				this.converter.createMoveTypeEdits(originalType, newPackage) :
-				EmptyIterable.<ReplaceEdit>instance();
-	}
-
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 				super.createRenamePackageEdits(originalPackage, newName),
 				this.createMapKeyClassRenamePackageEdits(originalPackage, newName),
-				this.createTargetClassRenamePackageEdits(originalPackage, newName),
-				this.createConverterRenamePackageEdits(originalPackage, newName)
+				this.createTargetClassRenamePackageEdits(originalPackage, newName)
 			);
 	}
 
@@ -1429,12 +1414,6 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			}
 		}
 		return EmptyIterable.instance();
-	}
-
-	protected Iterable<ReplaceEdit> createConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return (this.converter != null) ?
-				this.converter.createRenamePackageEdits(originalPackage, newName) :
-				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 

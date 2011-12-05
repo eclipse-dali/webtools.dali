@@ -20,11 +20,11 @@ import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.2
  * @since 2.1
  */
 public interface EclipseLinkOneToManyMapping 
-	extends OneToManyMapping, EclipseLinkRelationshipMapping
+	extends OneToManyMapping, EclipseLinkRelationshipMapping, EclipseLinkConvertibleMapping
 {
 	EclipseLinkOneToManyRelationship getRelationship();
 	

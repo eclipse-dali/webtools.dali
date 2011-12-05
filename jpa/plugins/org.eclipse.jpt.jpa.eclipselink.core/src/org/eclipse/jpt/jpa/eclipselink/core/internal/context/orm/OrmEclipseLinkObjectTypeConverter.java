@@ -31,8 +31,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValida
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConversionValue;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -413,50 +411,12 @@ public class OrmEclipseLinkObjectTypeConverter
 		boolean isIdentical = true;
 		if (this.getConversionValuesSize() != CollectionTools.size(conversionValues)) {
 			return false;
-		} else {
-			for (int i=0; i<this.getConversionValuesSize(); i++) {
-					if (!(CollectionTools.get(this.getConversionValues(), i)).isIdentical(CollectionTools.get(conversionValues, i))) {
-						isIdentical = false;
-					}
+		}
+		for (int i=0; i<this.getConversionValuesSize(); i++) {
+			if (!(CollectionTools.get(this.getConversionValues(), i)).isIdentical(CollectionTools.get(conversionValues, i))) {
+				isIdentical = false;
 			}
 		}
 		return isIdentical;
-	}
-
-	// ********** adapter **********
-
-	public static class Adapter
-		extends AbstractAdapter
-	{
-		private static final Adapter INSTANCE = new Adapter();
-		public static Adapter instance() {
-			return INSTANCE;
-		}
-
-		private Adapter() {
-			super();
-		}
-
-		public Class<EclipseLinkObjectTypeConverter> getConverterType() {
-			return EclipseLinkObjectTypeConverter.class;
-		}
-
-		public XmlObjectTypeConverter getXmlConverter(XmlConverterHolder xmlConverterContainer) {
-			return xmlConverterContainer.getObjectTypeConverter();
-		}
-
-		public OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlNamedConverter xmlConverter, XmlContextNode parent) {
-			return new OrmEclipseLinkObjectTypeConverter(parent, (XmlObjectTypeConverter) xmlConverter);
-		}
-
-		@Override
-		protected XmlObjectTypeConverter buildXmlConverter() {
-			return EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverter();
-		}
-
-		@Override
-		protected void setXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter) {
-			xmlConverterContainer.setObjectTypeConverter((XmlObjectTypeConverter) xmlConverter);
-		}
 	}
 }

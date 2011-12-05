@@ -34,6 +34,14 @@ public class JavaEclipseLinkManyToManyMapping2_0Composite
 	}
 
 	@Override
+	protected void initializeLayout(Composite container) {
+		initializeManyToManyCollapsibleSection(container);
+		initializeJoiningStrategyCollapsibleSection(container);
+		initializeConvertersCollapsibleSection(container);
+		initializeOrderingCollapsibleSection(container);
+	}
+
+	@Override
 	protected void initializeManyToManySection(Composite container) {
 		new TargetEntityComposite(this, container);
 		new FetchTypeComposite(this, container);

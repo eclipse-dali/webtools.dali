@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMappedSuperclassAdvancedComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
@@ -92,7 +93,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite
 	}
 	
 	protected void initializeConvertersSection(Composite container, PropertyValueModel<OrmEclipseLinkConverterContainer> converterHolder) {
-		new OrmEclipseLinkConvertersComposite(this, converterHolder, container);
+		new EclipseLinkConvertersComposite(this, converterHolder, container);
 	}
 	
 	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterContainerModel() {

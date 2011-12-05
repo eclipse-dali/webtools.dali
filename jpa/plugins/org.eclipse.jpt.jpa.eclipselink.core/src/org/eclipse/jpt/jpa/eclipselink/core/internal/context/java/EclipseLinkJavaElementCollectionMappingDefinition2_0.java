@@ -14,7 +14,11 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 
 public class EclipseLinkJavaElementCollectionMappingDefinition2_0
 	extends JavaAttributeMappingDefinitionWrapper
@@ -50,7 +54,11 @@ public class EclipseLinkJavaElementCollectionMappingDefinition2_0
 	}
 
 	private static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
-		EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME
+		EclipseLinkConverterAnnotation.ANNOTATION_NAME,
+		EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME,
+		EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME,
+		EclipseLinkStructConverterAnnotation.ANNOTATION_NAME,
+		EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME
 	};
 	private static final Iterable<String> ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY);
 

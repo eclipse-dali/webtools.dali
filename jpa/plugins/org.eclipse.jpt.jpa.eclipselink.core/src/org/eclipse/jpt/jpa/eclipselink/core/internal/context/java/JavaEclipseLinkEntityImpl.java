@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -46,7 +47,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class JavaEclipseLinkEntityImpl
 	extends AbstractJavaEntity
-	implements JavaEclipseLinkEntity
+	implements JavaEclipseLinkEntity, JavaEclipseLinkConverterContainer.Owner
 {
 	protected final JavaEclipseLinkCaching caching;
 
@@ -125,7 +126,7 @@ public class JavaEclipseLinkEntityImpl
 	}
 
 	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
-		return new JavaEclipseLinkConverterContainerImpl(this);
+		return new JavaEclipseLinkConverterContainerImpl(this, this);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -141,7 +142,14 @@ public class JavaEclipseLinkEntityImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {
-		return new TransformationIterable<AttributeMapping, EclipseLinkConverter>(this.getAttributeMappings(), ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER);
+		return new CompositeIterable<EclipseLinkConverter>(this.getAttributeMappingConverterLists());
+	}
+
+	protected Iterable<Iterable<? extends EclipseLinkConverter>> getAttributeMappingConverterLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<? extends EclipseLinkConverter>>(
+				this.getAttributeMappings(),
+				ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER
+			);
 	}
 
 
@@ -222,6 +230,9 @@ public class JavaEclipseLinkEntityImpl
 		return ((JavaCacheableHolder2_0) this.getCaching()).calculateDefaultCacheable();
 	}
 
+	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
+		return this.getJavaResourceType();
+	}
 
 	// ********** Java completion proposals **********
 

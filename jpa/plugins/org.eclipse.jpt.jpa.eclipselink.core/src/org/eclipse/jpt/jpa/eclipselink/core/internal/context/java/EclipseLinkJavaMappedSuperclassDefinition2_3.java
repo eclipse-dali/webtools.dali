@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaTypeMappingDefinitionW
 public class EclipseLinkJavaMappedSuperclassDefinition2_3
 	extends JavaTypeMappingDefinitionWrapper
 {
-	private static final JavaTypeMappingDefinition DELEGATE = EclipseLinkJavaMappedSuperclassDefinition2_0.instance();
+	private static final JavaTypeMappingDefinition DELEGATE = EclipseLinkJavaMappedSuperclassDefinition2_2.instance();
 
 	// singleton
 	private static final JavaTypeMappingDefinition INSTANCE = new EclipseLinkJavaMappedSuperclassDefinition2_3();

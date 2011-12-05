@@ -16,7 +16,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 
 /**
@@ -82,33 +81,4 @@ public class JavaEclipseLinkStructConverter
 		return this.getConverterClass();
 	}
 
-
-	// ********** adapter **********
-
-	public static class Adapter
-		extends AbstractAdapter
-	{
-		private static final Adapter INSTANCE = new Adapter();
-		public static Adapter instance() {
-			return INSTANCE;
-		}
-
-		private Adapter() {
-			super();
-		}
-
-		public Class<EclipseLinkStructConverter> getConverterType() {
-			return EclipseLinkStructConverter.class;
-		}
-
-		@Override
-		protected String getAnnotationName() {
-			return EclipseLinkStructConverterAnnotation.ANNOTATION_NAME;
-		}
-
-		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(EclipseLinkNamedConverterAnnotation converterAnnotation, JavaJpaContextNode parent) {
-			return new JavaEclipseLinkStructConverter(parent, (EclipseLinkStructConverterAnnotation) converterAnnotation);
-		}
-
-	}
 }

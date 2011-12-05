@@ -16,10 +16,7 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 
 public class OrmEclipseLinkCustomConverter
@@ -60,7 +57,7 @@ public class OrmEclipseLinkCustomConverter
 
 	@Override
 	protected ReplaceEdit createRenamePackageEdit(String newName) {
-		return xmlConverter.createRenamePackageEdit(newName);
+		return this.xmlConverter.createRenamePackageEdit(newName);
 	}
 
 
@@ -85,42 +82,5 @@ public class OrmEclipseLinkCustomConverter
 	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
 		return super.isIdentical(eclipseLinkConverter) && 
 				StringTools.stringsAreEqual(this.getConverterClass(), ((EclipseLinkCustomConverter)eclipseLinkConverter).getConverterClass());
-	}
-
-	// ********** adapter **********
-
-	public static class Adapter
-		extends AbstractAdapter
-	{
-		private static final Adapter INSTANCE = new Adapter();
-		public static Adapter instance() {
-			return INSTANCE;
-		}
-
-		private Adapter() {
-			super();
-		}
-
-		public Class<EclipseLinkCustomConverter> getConverterType() {
-			return EclipseLinkCustomConverter.class;
-		}
-
-		public XmlConverter getXmlConverter(XmlConverterHolder xmlConverterContainer) {
-			return xmlConverterContainer.getConverter();
-		}
-
-		public OrmEclipseLinkCustomConverter buildConverter(XmlNamedConverter xmlConverter, XmlContextNode parent) {
-			return new OrmEclipseLinkCustomConverter(parent, (XmlConverter) xmlConverter);
-		}
-
-		@Override
-		protected XmlConverter buildXmlConverter() {
-			return EclipseLinkOrmFactory.eINSTANCE.createXmlConverter();
-		}
-
-		@Override
-		public void setXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter) {
-			xmlConverterContainer.setConverter((XmlConverter) xmlConverter);
-		}
 	}
 }

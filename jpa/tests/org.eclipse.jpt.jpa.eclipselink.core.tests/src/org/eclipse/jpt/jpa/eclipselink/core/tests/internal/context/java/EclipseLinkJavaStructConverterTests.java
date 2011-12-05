@@ -15,11 +15,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
@@ -76,9 +75,8 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModel
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkStructConverter converter = (EclipseLinkStructConverter) eclipseLinkConvert.getConverter();
+		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
+		EclipseLinkStructConverter converter = basicMapping.getConverterContainer().getStructConverters().iterator().next();
 		
 		assertEquals("foo", converter.getName());
 	}
@@ -88,9 +86,8 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModel
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkStructConverter converter = (EclipseLinkStructConverter) eclipseLinkConvert.getConverter();
+		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
+		EclipseLinkStructConverter converter = basicMapping.getConverterContainer().getStructConverters().iterator().next();
 		assertEquals("foo", converter.getName());
 		
 		converter.setName("bar");
@@ -98,19 +95,19 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModel
 			
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkStructConverterAnnotation converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
+		EclipseLinkStructConverterAnnotation converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("bar", converterAnnotation.getName());
 
 		
 		converter.setName(null);
 		assertEquals(null, converter.getName());
-		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, converterAnnotation.getName());
 
 
 		converter.setName("bar");
 		assertEquals("bar", converter.getName());
-		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("bar", converterAnnotation.getName());
 	}
 	
@@ -119,30 +116,30 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModel
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkStructConverter converter = (EclipseLinkStructConverter) eclipseLinkConvert.getConverter();
+		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
+		EclipseLinkStructConverter converter = basicMapping.getConverterContainer().getStructConverters().iterator().next();
 
 		assertEquals("foo", converter.getName());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkStructConverterAnnotation converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
+		EclipseLinkStructConverterAnnotation converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setName("bar");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("bar", converter.getName());
 		
-		resourceField.removeAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
-		assertEquals(null, eclipseLinkConvert.getConverter());
+		assertFalse(basicMapping.getConverterContainer().getStructConverters().iterator().hasNext());
 		
-		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.addAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.addAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(eclipseLinkConvert.getConverter());
+		converter = basicMapping.getConverterContainer().getStructConverters().iterator().next();
+		assertNotNull(converter);
 		
 		converterAnnotation.setName("FOO");
 		getJpaProject().synchronizeContextModel();
-		assertEquals("FOO", eclipseLinkConvert.getConverter().getName());	
+		assertEquals("FOO", converter.getName());	
 	}
 	
 
@@ -151,9 +148,8 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModel
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkStructConverter converter = (EclipseLinkStructConverter) eclipseLinkConvert.getConverter();
+		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
+		EclipseLinkStructConverter converter = basicMapping.getConverterContainer().getStructConverters().iterator().next();
 		
 		assertEquals("Foo", converter.getConverterClass());
 	}
@@ -163,9 +159,8 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModel
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkStructConverter converter = (EclipseLinkStructConverter) eclipseLinkConvert.getConverter();
+		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
+		EclipseLinkStructConverter converter = basicMapping.getConverterContainer().getStructConverters().iterator().next();
 		assertEquals("Foo", converter.getConverterClass());
 		
 		converter.setConverterClass("Bar");
@@ -173,19 +168,19 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModel
 			
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkStructConverterAnnotation converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
+		EclipseLinkStructConverterAnnotation converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", converterAnnotation.getConverter());
 
 		
 		converter.setConverterClass(null);
 		assertEquals(null, converter.getConverterClass());
-		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals(null, converterAnnotation.getConverter());
 
 
 		converter.setConverterClass("Bar");
 		assertEquals("Bar", converter.getConverterClass());
-		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", converterAnnotation.getConverter());
 	}
 	
@@ -194,29 +189,29 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModel
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
-		EclipseLinkStructConverter converter = (EclipseLinkStructConverter) eclipseLinkConvert.getConverter();
+		JavaEclipseLinkBasicMapping basicMapping = (JavaEclipseLinkBasicMapping) persistentAttribute.getMapping();
+		EclipseLinkStructConverter converter = basicMapping.getConverterContainer().getStructConverters().iterator().next();
 
 		assertEquals("Foo", converter.getConverterClass());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
-		EclipseLinkStructConverterAnnotation converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
+		EclipseLinkStructConverterAnnotation converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
 		converterAnnotation.setConverter("Bar");
 		getJpaProject().synchronizeContextModel();
 		assertEquals("Bar", converter.getConverterClass());
 		
-		resourceField.removeAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
+		resourceField.removeAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
-		assertEquals(null, eclipseLinkConvert.getConverter());
+		assertFalse(basicMapping.getConverterContainer().getStructConverters().iterator().hasNext());
 		
-		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.addAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
+		converterAnnotation = (EclipseLinkStructConverterAnnotation) resourceField.addAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME);		
 		getJpaProject().synchronizeContextModel();
-		assertNotNull(eclipseLinkConvert.getConverter());
+		converter = basicMapping.getConverterContainer().getStructConverters().iterator().next();
+		assertNotNull(converter);
 		
 		converterAnnotation.setConverter("FooBar");
 		getJpaProject().synchronizeContextModel();
-		assertEquals("FooBar", ((EclipseLinkStructConverter) eclipseLinkConvert.getConverter()).getConverterClass());	
+		assertEquals("FooBar", converter.getConverterClass());	
 	}
 }

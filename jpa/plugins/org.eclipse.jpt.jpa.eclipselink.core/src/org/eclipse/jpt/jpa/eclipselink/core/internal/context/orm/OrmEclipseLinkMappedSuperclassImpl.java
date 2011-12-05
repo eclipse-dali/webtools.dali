@@ -47,7 +47,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class OrmEclipseLinkMappedSuperclassImpl
 	extends AbstractOrmMappedSuperclass<XmlMappedSuperclass>
-	implements OrmEclipseLinkMappedSuperclass, OrmCacheableHolder2_0
+	implements
+		OrmEclipseLinkMappedSuperclass,
+		OrmCacheableHolder2_0,
+		OrmEclipseLinkConverterContainer.Owner
 {
 	protected final OrmEclipseLinkReadOnly readOnly;
 
@@ -131,7 +134,11 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, this.xmlTypeMapping);
+		return new OrmEclipseLinkConverterContainerImpl(this, this, this.xmlTypeMapping);
+	}
+
+	public int getNumberSupportedConverters() {
+		return Integer.MAX_VALUE;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -147,7 +154,14 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	}
 
 	protected Iterable<EclipseLinkConverter> getAttributeMappingConverters_() {
-		return new TransformationIterable<AttributeMapping, EclipseLinkConverter>(this.getAttributeMappings(), ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER);
+		return new CompositeIterable<EclipseLinkConverter>(this.getAttributeMappingConverterLists());
+	}
+
+	protected Iterable<Iterable<? extends EclipseLinkConverter>> getAttributeMappingConverterLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<? extends EclipseLinkConverter>>(
+				this.getAttributeMappings(),
+				ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER
+			);
 	}
 
 

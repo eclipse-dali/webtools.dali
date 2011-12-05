@@ -22,7 +22,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverterHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -152,99 +151,5 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 
 	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
 		return StringTools.stringsAreEqual(this.getName(), eclipseLinkConverter.getName());
-	}
-
-	// ********** adapter **********
-
-	/**
-	 * This interface allows a client to interact with various
-	 * EclipseLink <code>orm.xml</code> converters via the same protocol.
-	 */
-	public interface Adapter
-	{
-		/**
-		 * Return the type of converter handled by the adapter.
-		 */
-		Class<? extends EclipseLinkConverter> getConverterType();
-
-		/**
-		 * Build a converter corresponding to the specified XML converter
-		 * container if the container holds the adapter's XML converter. Return
-		 * <code>null</code> otherwise.
-		 * This is used to build a converter during construction of the
-		 * converter's parent.
-		 */
-		OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlConverterHolder xmlConverterContainer, XmlContextNode parent);
-
-		/**
-		 * Return the adapter's XML converter for the specified XML converter
-		 * container. Return <code>null</code> if the container does not hold
-		 * the adapter's XML converter.
-		 * The returned XML converter is compared to the parent's
-		 * converter's XML converter while the context model is synchronized
-		 * with the resource model. If it has changed, the parent will build
-		 * a new converter (via the adapter).
-		 * 
-		 * @see #buildConverter(XmlNamedConverter, XmlContextNode)
-		 */
-		XmlNamedConverter getXmlConverter(XmlConverterHolder xmlConverterContainer);
-
-		/**
-		 * Build a converter using the specified XML converter.
-		 * This is used when the context model is synchronized with the
-		 * resource model (and the resource model has changed).
-		 * 
-		 * @see #getXmlConverter(XmlConverterHolder)
-		 */
-		OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlNamedConverter xmlConverter, XmlContextNode parent);
-
-		/**
-		 * Build a new converter and its corresponding XML converter.
-		 * The XML converter will be added to the XML converter container once
-		 * the context converter has been added to the context model.
-		 * 
-		 * @see #addXmlConverter(XmlConverterHolder, XmlNamedConverter)
-		 */
-		OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlContextNode parent);
-
-		/**
-		 * Remove the adapter's XML converter from the specified XML converter
-		 * container.
-		 */
-		void removeXmlConverter(XmlConverterHolder xmlConverterContainer);
-
-		/**
-		 * Add the specified XML converter to the specified XML converter
-		 * container.
-		 */
-		void addXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter);
-	}
-
-
-	// ********** abstract adapter **********
-
-	public abstract static class AbstractAdapter
-		implements Adapter
-	{
-		public OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlConverterHolder xmlConverterContainer, XmlContextNode parent) {
-			XmlNamedConverter xmlConverter = this.getXmlConverter(xmlConverterContainer);
-			return (xmlConverter == null) ? null : this.buildConverter(xmlConverter, parent);
-		}
-
-		public OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlContextNode parent) {
-			return this.buildConverter(this.buildXmlConverter(), parent);
-		}
-
-		protected abstract XmlNamedConverter buildXmlConverter();
-
-		public void removeXmlConverter(XmlConverterHolder xmlConverterContainer) {
-			this.setXmlConverter(xmlConverterContainer, null);
-		}
-
-		public void addXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter) {
-			this.setXmlConverter(xmlConverterContainer, xmlConverter);
-		}
-
-		protected abstract void setXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter);
 	}
 }

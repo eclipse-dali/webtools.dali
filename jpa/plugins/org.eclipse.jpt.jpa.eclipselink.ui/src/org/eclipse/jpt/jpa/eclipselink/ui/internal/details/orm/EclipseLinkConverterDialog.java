@@ -17,11 +17,11 @@ import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -31,23 +31,23 @@ public class EclipseLinkConverterDialog
 	extends ValidatingDialog<EclipseLinkConverterStateObject>
 {
 	/**
-	 * The associated persistence unit
+	 * The associated converter container
 	 */
-	EclipseLinkPersistenceUnit pUnit;
+	EclipseLinkConverterContainer converterContainer;
 	
 	// ********** constructors **********
 
 	/**
 	 * Use this constructor to edit an existing conversion value
 	 */
-	public EclipseLinkConverterDialog(Shell parent, EclipseLinkPersistenceUnit pUnit) {
+	public EclipseLinkConverterDialog(Shell parent, EclipseLinkConverterContainer converterContainer) {
 		super(parent);
-		this.pUnit = pUnit;
+		this.converterContainer = converterContainer;
 	}
 
 	@Override
 	protected EclipseLinkConverterStateObject buildStateObject() {
-		return new EclipseLinkConverterStateObject(pUnit);
+		return new EclipseLinkConverterStateObject(this.converterContainer);
 	}
 
 	// ********** open **********

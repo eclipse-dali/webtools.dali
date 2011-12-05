@@ -50,7 +50,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkEntityMappingsImpl
 	extends AbstractEntityMappings
-	implements EclipseLinkEntityMappings
+	implements 
+		EclipseLinkEntityMappings, 
+		OrmEclipseLinkConverterContainer.Owner
 {
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
@@ -97,7 +99,11 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
-		return new OrmEclipseLinkConverterContainerImpl(this, (XmlEntityMappings) this.xmlEntityMappings);
+		return new OrmEclipseLinkConverterContainerImpl(this, this, (XmlEntityMappings) this.xmlEntityMappings);
+	}
+
+	public int getNumberSupportedConverters() {
+		return Integer.MAX_VALUE;
 	}
 
 	@SuppressWarnings("unchecked")

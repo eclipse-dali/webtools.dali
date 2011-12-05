@@ -10,11 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
@@ -41,7 +37,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -358,54 +353,6 @@ public abstract class AbstractOrmBasicMapping<X extends XmlBasic>
 
 	public void removeXmlColumn() {
 		this.xmlAttributeMapping.setColumn(null);
-	}
-
-
-	//************ refactoring ************
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-				super.createRenameTypeEdits(originalType, newName),
-				this.createConverterRenameTypeEdits(originalType, newName)
-			);
-	}
-
-	protected Iterable<ReplaceEdit> createConverterRenameTypeEdits(IType originalType, String newName) {
-		return (this.converter != null) ?
-				this.converter.createRenameTypeEdits(originalType, newName) :
-				EmptyIterable.<ReplaceEdit>instance();
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return new CompositeIterable<ReplaceEdit>(
-				super.createMoveTypeEdits(originalType, newPackage),
-				this.createConverterMoveTypeEdits(originalType, newPackage)
-			);
-	}
-
-	protected Iterable<ReplaceEdit> createConverterMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return (this.converter != null) ?
-				this.converter.createMoveTypeEdits(originalType, newPackage) :
-				EmptyIterable.<ReplaceEdit>instance();
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-				super.createRenamePackageEdits(originalPackage, newName),
-				this.createConverterRenamePackageEdits(originalPackage, newName)
-			);
-	}
-
-	protected Iterable<ReplaceEdit> createConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return (this.converter != null) ?
-				this.converter.createRenamePackageEdits(originalPackage, newName) :
-				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 
