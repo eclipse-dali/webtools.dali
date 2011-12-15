@@ -13,7 +13,7 @@
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAdditionalCriteria" eSuperTypes="#//v2_2/XmlAdditionalCriteria_2_2"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlArray" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping #//v2_3/XmlArray_2_3"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlArray" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping #//v2_3/XmlArray_2_3 #//XmlConvertibleMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeMapping" abstract="true"
       interface="true" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlAttributeMapping #//XmlAccessMethodsHolder #//XmlPropertyContainer"/>
   <eClassifiers xsi:type="ecore:EClass" name="Attributes" eSuperTypes="../../org.eclipse.jpt.jpa.core/model/orm.ecore#//Attributes #//v2_3/XmlAttributes_2_3">
@@ -663,7 +663,12 @@
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="v2_3" nsURI="jpt.eclipselink.orm.v2_3.xmi" nsPrefix="org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3">
-    <eClassifiers xsi:type="ecore:EClass" name="XmlArray_2_3" abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlArray_2_3" abstract="true" interface="true"
+        eSuperTypes="#//XmlConverterContainer ../../org.eclipse.jpt.jpa.core/model/orm.ecore#//XmlConvertibleMapping ../../org.eclipse.jpt.jpa.core/model/orm.ecore#//ColumnMapping">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="databaseType" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetClass" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeType" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlAttributes_2_3" abstract="true"
         interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="structures" upperBound="-1"
@@ -768,7 +773,9 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="primaryKey" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlStructure_2_3" abstract="true"
-        interface="true"/>
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeType" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="MultitenantType">
       <eLiterals name="SINGLE_TABLE"/>
       <eLiterals name="TABLE_PER_TENANT" value="1" literal="TABLE_PER_TENANT"/>

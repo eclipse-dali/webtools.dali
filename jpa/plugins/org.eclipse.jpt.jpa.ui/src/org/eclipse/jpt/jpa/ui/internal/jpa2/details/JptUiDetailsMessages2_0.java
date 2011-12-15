@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Localized messages used by Dali mapping panes.
  *
- * @version 2.3
+ * @version 3.2
  * @since 2.3
  */
 public class JptUiDetailsMessages2_0 
@@ -64,6 +64,12 @@ public class JptUiDetailsMessages2_0
 	public static String LockModeComposite_none;
 
 	public static String TargetClassComposite_label;
+
+	public static String ArrayMapping2_3_label;
+	public static String ArrayMapping2_3_linkLabel;
+
+	public static String StructureMapping2_3_label;
+	public static String StructureMapping2_3_linkLabel;
 	
 	private static final String BUNDLE_NAME = "jpt_ui_details2_0"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiDetailsMessages2_0.class;

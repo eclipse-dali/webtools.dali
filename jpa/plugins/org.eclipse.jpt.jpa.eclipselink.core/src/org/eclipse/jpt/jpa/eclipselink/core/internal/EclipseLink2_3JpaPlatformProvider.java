@@ -20,6 +20,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaArrayMappingDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingDefinition2_2;
@@ -34,6 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingDefinition2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingDefinition2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaStructureMappingDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVariableOneToOneMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingDefinition2_2;
@@ -133,10 +135,12 @@ public class EclipseLink2_3JpaPlatformProvider
 		JavaTransientMappingDefinition.instance(),
 		EclipseLinkJavaBasicCollectionMappingDefinition2_0.instance(),
 		EclipseLinkJavaBasicMapMappingDefinition2_0.instance(),
+		EclipseLinkJavaArrayMappingDefinition2_3.instance(),
 		EclipseLinkJavaElementCollectionMappingDefinition2_2.instance(),
 		EclipseLinkJavaIdMappingDefinition2_2.instance(),
 		EclipseLinkJavaVersionMappingDefinition2_2.instance(),
 		EclipseLinkJavaBasicMappingDefinition2_2.instance(),
+		EclipseLinkJavaStructureMappingDefinition2_3.instance(),
 		EclipseLinkJavaEmbeddedMappingDefinition2_2.instance(),
 		EclipseLinkJavaEmbeddedIdMappingDefinition2_2.instance(),
 		EclipseLinkJavaTransformationMappingDefinition2_0.instance(),

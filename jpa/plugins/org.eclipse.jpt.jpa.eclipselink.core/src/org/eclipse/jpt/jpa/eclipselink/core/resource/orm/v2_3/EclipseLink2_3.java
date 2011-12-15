@@ -23,6 +23,10 @@ public interface EclipseLink2_3
 
 	// EclipseLink 2.3 specific nodes
 	String ARRAY = "array";
+		String ARRAY__DATABASE_TYPE = "database-type";
+		String ARRAY__TARGET_CLASS = "target-class";
+		String ARRAY__ATTRIBUTE_TYPE = "attribute-type";
+
 	String COMPOSITE_MEMBER = "composite-member";
 
 	String MULTITENANT = "multitenant";
@@ -42,6 +46,7 @@ public interface EclipseLink2_3
 	String STRUCT = "struct";
 		String STRUCT__NAME = "name";
 	String STRUCTURE = "structure";
+		String STRUCTURE__ATTRIBUTE_TYPE = "attribute-type";
 
 	String TENANT_DISCRIMINATOR_COLUMN = "tenant-discriminator-column";
 		String TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY = "context-property";

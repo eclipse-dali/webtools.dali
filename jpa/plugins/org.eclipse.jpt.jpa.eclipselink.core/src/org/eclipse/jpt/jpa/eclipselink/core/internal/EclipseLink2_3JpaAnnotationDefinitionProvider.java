@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkArray2_3AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkBasicCollectionAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkBasicMapAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCacheAnnotationDefinition;
@@ -36,6 +37,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkRe
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkReadTransformerAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConverterAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConverters2_2AnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructure2_3AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTenantDiscriminatorColumn2_3AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTenantDiscriminatorColumns2_3AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTransformationAnnotationDefinition;
@@ -73,6 +75,7 @@ public class EclipseLink2_3JpaAnnotationDefinitionProvider
 	}
 
 	protected static final AnnotationDefinition[] ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
+		EclipseLinkArray2_3AnnotationDefinition.instance(),
 		EclipseLinkBasicCollectionAnnotationDefinition.instance(),
 		EclipseLinkBasicMapAnnotationDefinition.instance(),
 		EclipseLinkCacheAnnotationDefinition.instance(),
@@ -91,6 +94,7 @@ public class EclipseLink2_3JpaAnnotationDefinitionProvider
 		EclipseLinkReadOnlyAnnotationDefinition.instance(),
 		EclipseLinkReadTransformerAnnotationDefinition.instance(),
 		EclipseLinkStructConverters2_2AnnotationDefinition.instance(),
+		EclipseLinkStructure2_3AnnotationDefinition.instance(),
 		EclipseLinkTenantDiscriminatorColumns2_3AnnotationDefinition.instance(),
 		EclipseLinkTransformationAnnotationDefinition.instance(),
 		EclipseLinkTypeConverters2_2AnnotationDefinition.instance(),

@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -56,6 +58,26 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -162,6 +184,41 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Type</em>' attribute.
+	 * @see #setAttributeType(String)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructure_2_3_AttributeType()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getAttributeType()
+	{
+		return attributeType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructure#getAttributeType <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Attribute Type</em>' attribute.
+	 * @see #getAttributeType()
+	 * @generated
+	 */
+	public void setAttributeType(String newAttributeType)
+	{
+		String oldAttributeType = attributeType;
+		attributeType = newAttributeType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_STRUCTURE__ATTRIBUTE_TYPE, oldAttributeType, attributeType));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -193,6 +250,8 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_STRUCTURE__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_STRUCTURE__ATTRIBUTE_TYPE:
+				return getAttributeType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -215,6 +274,9 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_STRUCTURE__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -235,6 +297,9 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 			case EclipseLinkOrmPackage.XML_STRUCTURE__PROPERTIES:
 				getProperties().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_STRUCTURE__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -253,6 +318,8 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_STRUCTURE__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_STRUCTURE__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -292,6 +359,7 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_STRUCTURE__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_3Package.XML_STRUCTURE_23__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -333,10 +401,28 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmV2_3Package.XML_STRUCTURE_23__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_STRUCTURE__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (attributeType: ");
+		result.append(attributeType);
+		result.append(')');
+		return result.toString();
 	}
 
 	public String getMappingKey() {
@@ -356,8 +442,22 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
-			buildAccessTranslator()
+			buildAccessTranslator(),
+			buildAttributeTypeTranslator(),
+			buildPropertyTranslator(),
+			buildAccessMethodsTranslator()
 		};
 	}
 
+	protected static Translator buildAttributeTypeTranslator() {
+		return new Translator(EclipseLink2_3.STRUCTURE__ATTRIBUTE_TYPE, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlStructure_2_3_AttributeType(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildPropertyTranslator() {
+		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
+	}
+
+	protected static Translator buildAccessMethodsTranslator() {
+		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
+	}
 } // XmlStructure

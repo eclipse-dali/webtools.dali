@@ -10,13 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import java.util.ArrayList;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 
 public class EclipseLinkOrmXml2_2Definition
-	extends EclipseLinkOrmXml2_1Definition
+	extends AbstractEclipseLinkOrmXmlDefinition
 {
 	// singleton
 	private static final OrmXmlDefinition INSTANCE = 
@@ -34,63 +37,22 @@ public class EclipseLinkOrmXml2_2Definition
 	/**
 	 * Enforce singleton usage
 	 */
-	protected EclipseLinkOrmXml2_2Definition() {
+	private EclipseLinkOrmXml2_2Definition() {
 		super();
 	}
 	
-	
-//	@Override
-//	public EFactory getResourceNodeFactory() {
-//		return EclipseLinkOrmFactory.eINSTANCE;
-//	}
-	
+
 	@Override
 	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
-		return new EclipseLinkOrmXml2_1ContextNodeFactory();
+		return EclipseLinkOrmXml2_1Definition.instance().getContextNodeFactory();
 	}
 	
-	@Override
 	public JptResourceType getResourceType() {
 		return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_2_RESOURCE_TYPE;
 	}
 	
-	
-	// ********* ORM type mappings *********
-	
-//	@Override
-//	protected OrmTypeMappingDefinition[] buildOrmTypeMappingDefinitions() {
-//		// order should not matter here, but we'll use the same order as for java
-//		// @see {@link EclipseLink1_1JpaPlatformProvider}
-//		// NOTE: no new type mapping providers from eclipselink 1.0 to 1.1
-//		return new OrmTypeMappingDefinition[] {
-//			OrmEntityDefinition.instance(),
-//			OrmEmbeddableDefinition.instance(),
-//			OrmMappedSuperclassDefinition.instance()};
-//	}
-	
-	
-	// ********** ORM attribute mappings **********
-	
-//	@Override
-//	protected OrmAttributeMappingDefinition[] buildOrmAttributeMappingDefinitions() {
-//		// order should not matter here, but we'll use the same order as for java
-//		// @see {@link EclipseLink1_1JpaPlatformProvider}
-//		return new OrmAttributeMappingDefinition[] {
-//			OrmTransientMappingDefinition.instance(),
-//			OrmEclipseLinkBasicCollectionMappingDefinition.instance(),
-//			OrmEclipseLinkBasicMapMappingDefinition.instance(),
-//			OrmElementCollectionMapping2_0Definition.instance(),
-//			OrmIdMappingDefinition.instance(),
-//			OrmVersionMappingDefinition.instance(),
-//			OrmBasicMappingDefinition.instance(),
-//			OrmEmbeddedMappingDefinition.instance(),
-//			OrmEmbeddedIdMappingDefinition.instance(),
-//			OrmEclipseLinkTransformationMappingDefinition.instance(),
-//			OrmManyToManyMappingDefinition.instance(),
-//			OrmManyToOneMappingDefinition.instance(),
-//			OrmOneToManyMappingDefinition.instance(),
-//			OrmOneToOneMappingDefinition.instance(),
-//			OrmEclipseLinkVariableOneToOneMappingDefinition.instance(),
-//			NullOrmAttributeMappingDefinition.instance()};
-//	}
+	@Override
+	protected void addAttributeMappingDefinitionsTo(ArrayList<OrmAttributeMappingDefinition> definitions) {
+		CollectionTools.addAll(definitions, EclipseLinkOrmXml2_0Definition.ECLIPSELINK_2_0_ATTRIBUTE_MAPPING_DEFINITIONS);
+	}
 }

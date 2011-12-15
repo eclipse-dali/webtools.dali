@@ -225,13 +225,112 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public static final int XML_ARRAY_23 = 0;
 
 	/**
+	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__CONVERTERS = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__CONVERTERS;
+
+	/**
+	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__TYPE_CONVERTERS = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__TYPE_CONVERTERS;
+
+	/**
+	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__OBJECT_TYPE_CONVERTERS = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__OBJECT_TYPE_CONVERTERS;
+
+	/**
+	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__STRUCT_CONVERTERS = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER__STRUCT_CONVERTERS;
+
+	/**
+	 * The feature id for the '<em><b>Lob</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__LOB = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__TEMPORAL = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Enumerated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__ENUMERATED = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__COLUMN = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Database Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__DATABASE_TYPE = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__TARGET_CLASS = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY_23__ATTRIBUTE_TYPE = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 6;
+
+	/**
 	 * The number of structural features of the '<em>Xml Array 23</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY_23_FEATURE_COUNT = 0;
+	public static final int XML_ARRAY_23_FEATURE_COUNT = EclipseLinkOrmPackage.XML_CONVERTER_CONTAINER_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Structures</b></em>' containment reference list.
@@ -758,13 +857,22 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public static final int XML_TENANT_DISCRIMINATOR_COLUMN_23_FEATURE_COUNT = OrmPackage.XML_BASE_DISCRIMINATOR_COLUMN_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_STRUCTURE_23__ATTRIBUTE_TYPE = 0;
+
+	/**
 	 * The number of structural features of the '<em>Xml Structure 23</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_STRUCTURE_23_FEATURE_COUNT = 0;
+	public static final int XML_STRUCTURE_23_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType <em>Multitenant Type</em>}' enum.
@@ -1709,6 +1817,21 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3#getAttributeType <em>Attribute Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3#getAttributeType()
+	 * @see #getXmlStructure_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlStructure_2_3_AttributeType()
+	{
+		return (EAttribute)xmlStructure_2_3EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3 <em>Xml Array 23</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1719,6 +1842,51 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 	public EClass getXmlArray_2_3()
 	{
 		return xmlArray_2_3EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3#getDatabaseType <em>Database Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Database Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3#getDatabaseType()
+	 * @see #getXmlArray_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlArray_2_3_DatabaseType()
+	{
+		return (EAttribute)xmlArray_2_3EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3#getTargetClass <em>Target Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Target Class</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3#getTargetClass()
+	 * @see #getXmlArray_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlArray_2_3_TargetClass()
+	{
+		return (EAttribute)xmlArray_2_3EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3#getAttributeType <em>Attribute Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3#getAttributeType()
+	 * @see #getXmlArray_2_3()
+	 * @generated
+	 */
+	public EAttribute getXmlArray_2_3_AttributeType()
+	{
+		return (EAttribute)xmlArray_2_3EClass.getEStructuralFeatures().get(2);
 	}
 
 
@@ -1798,6 +1966,9 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 
 		// Create classes and their features
 		xmlArray_2_3EClass = createEClass(XML_ARRAY_23);
+		createEAttribute(xmlArray_2_3EClass, XML_ARRAY_23__DATABASE_TYPE);
+		createEAttribute(xmlArray_2_3EClass, XML_ARRAY_23__TARGET_CLASS);
+		createEAttribute(xmlArray_2_3EClass, XML_ARRAY_23__ATTRIBUTE_TYPE);
 
 		xmlAttributes_2_3EClass = createEClass(XML_ATTRIBUTES_23);
 		createEReference(xmlAttributes_2_3EClass, XML_ATTRIBUTES_23__STRUCTURES);
@@ -1865,6 +2036,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		createEAttribute(xmlTenantDiscriminatorColumn_2_3EClass, XML_TENANT_DISCRIMINATOR_COLUMN_23__PRIMARY_KEY);
 
 		xmlStructure_2_3EClass = createEClass(XML_STRUCTURE_23);
+		createEAttribute(xmlStructure_2_3EClass, XML_STRUCTURE_23__ATTRIBUTE_TYPE);
 
 		// Create enums
 		multitenantTypeEEnum = createEEnum(MULTITENANT_TYPE);
@@ -1895,21 +2067,27 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI);
 		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
+		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 
 		// Create type parameters
 
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		xmlArray_2_3EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConverterContainer());
+		xmlArray_2_3EClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
+		xmlArray_2_3EClass.getESuperTypes().add(theOrmPackage.getColumnMapping());
 		xmlEntity_2_3EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlMultitenantHolder());
 		xmlMappedSuperclass_2_3EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlMultitenantHolder());
 		xmlTenantDiscriminatorColumn_2_3EClass.getESuperTypes().add(theOrmPackage.getXmlBaseDiscriminatorColumn());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlArray_2_3EClass, XmlArray_2_3.class, "XmlArray_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlArray_2_3_DatabaseType(), theXMLTypePackage.getString(), "databaseType", null, 0, 1, XmlArray_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlArray_2_3_TargetClass(), theXMLTypePackage.getString(), "targetClass", null, 0, 1, XmlArray_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlArray_2_3_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlArray_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlAttributes_2_3EClass, XmlAttributes_2_3.class, "XmlAttributes_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlAttributes_2_3_Structures(), this.getXmlStructure_2_3(), null, "structures", null, 0, -1, XmlAttributes_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1977,6 +2155,7 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		initEAttribute(getXmlTenantDiscriminatorColumn_2_3_PrimaryKey(), ecorePackage.getEBooleanObject(), "primaryKey", null, 0, 1, XmlTenantDiscriminatorColumn_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlStructure_2_3EClass, XmlStructure_2_3.class, "XmlStructure_2_3", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlStructure_2_3_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlStructure_2_3.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(multitenantTypeEEnum, MultitenantType.class, "MultitenantType");
@@ -2422,6 +2601,14 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		public static final EClass XML_STRUCTURE_23 = eINSTANCE.getXmlStructure_2_3();
 
 		/**
+		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_STRUCTURE_23__ATTRIBUTE_TYPE = eINSTANCE.getXmlStructure_2_3_AttributeType();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3 <em>Xml Array 23</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2430,6 +2617,30 @@ public class EclipseLinkOrmV2_3Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_ARRAY_23 = eINSTANCE.getXmlArray_2_3();
+
+		/**
+		 * The meta object literal for the '<em><b>Database Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_ARRAY_23__DATABASE_TYPE = eINSTANCE.getXmlArray_2_3_DatabaseType();
+
+		/**
+		 * The meta object literal for the '<em><b>Target Class</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_ARRAY_23__TARGET_CLASS = eINSTANCE.getXmlArray_2_3_TargetClass();
+
+		/**
+		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_ARRAY_23__ATTRIBUTE_TYPE = eINSTANCE.getXmlArray_2_3_AttributeType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlElementCollection_2_3 <em>Xml Element Collection 23</em>}' class.

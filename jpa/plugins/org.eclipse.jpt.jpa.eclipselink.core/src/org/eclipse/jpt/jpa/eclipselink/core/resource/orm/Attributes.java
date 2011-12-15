@@ -488,6 +488,8 @@ public class Attributes extends org.eclipse.jpt.jpa.core.resource.orm.Attributes
 		CollectionTools.addAll(attributeMappings, this.getEmbeddeds().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
 		CollectionTools.addAll(attributeMappings, this.getTransformations().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
 		CollectionTools.addAll(attributeMappings, this.getTransients().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getArrays().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getStructures().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
 		return attributeMappings;
 	}
 

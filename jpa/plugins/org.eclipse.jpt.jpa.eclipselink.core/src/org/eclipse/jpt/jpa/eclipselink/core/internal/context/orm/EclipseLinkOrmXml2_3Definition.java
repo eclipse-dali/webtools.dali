@@ -9,13 +9,29 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import java.util.ArrayList;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.jpa.core.context.orm.NullOrmAttributeMappingDefinition;
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmBasicMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmEmbeddedIdMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmEmbeddedMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmIdMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmManyToManyMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmManyToOneMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToManyMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToOneMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionMapping2_0Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 
 
 public class EclipseLinkOrmXml2_3Definition
-		extends EclipseLinkOrmXml2_2Definition {
+		extends AbstractEclipseLinkOrmXmlDefinition {
 	
 	// singleton
 	private static final OrmXmlDefinition INSTANCE = new EclipseLinkOrmXml2_3Definition();
@@ -36,9 +52,43 @@ public class EclipseLinkOrmXml2_3Definition
 		super();
 	}
 	
-	
-	@Override
+
 	public JptResourceType getResourceType() {
 		return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_3_RESOURCE_TYPE;
 	}
+
+	@Override
+	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
+		return new EclipseLinkOrmXml2_3ContextNodeFactory();
+	}
+
+	@Override
+	protected void addAttributeMappingDefinitionsTo(ArrayList<OrmAttributeMappingDefinition> definitions) {
+		CollectionTools.addAll(definitions, ECLIPSELINK_2_3_ATTRIBUTE_MAPPING_DEFINITIONS);
+	}
+
+	/**
+	 * Order should not matter here; but we'll use the same order as for Java.
+	 * @see EclipseLink2_3JpaPlatformProvider
+	 */
+	protected static final OrmAttributeMappingDefinition[] ECLIPSELINK_2_3_ATTRIBUTE_MAPPING_DEFINITIONS = new OrmAttributeMappingDefinition[] {
+		OrmTransientMappingDefinition.instance(),
+		OrmEclipseLinkBasicCollectionMappingDefinition.instance(),
+		OrmEclipseLinkBasicMapMappingDefinition.instance(),
+		OrmEclipseLinkArrayMapping2_3Definition.instance(),
+		OrmElementCollectionMapping2_0Definition.instance(),
+		OrmIdMappingDefinition.instance(),
+		OrmVersionMappingDefinition.instance(),
+		OrmBasicMappingDefinition.instance(),
+		OrmEclipseLinkStructureMapping2_3Definition.instance(),
+		OrmEmbeddedMappingDefinition.instance(),
+		OrmEmbeddedIdMappingDefinition.instance(),
+		OrmEclipseLinkTransformationMappingDefinition.instance(),
+		OrmManyToManyMappingDefinition.instance(),
+		OrmManyToOneMappingDefinition.instance(),
+		OrmOneToManyMappingDefinition.instance(),
+		OrmOneToOneMappingDefinition.instance(),
+		OrmEclipseLinkVariableOneToOneMappingDefinition.instance(),
+		NullOrmAttributeMappingDefinition.instance()
+	};
 }

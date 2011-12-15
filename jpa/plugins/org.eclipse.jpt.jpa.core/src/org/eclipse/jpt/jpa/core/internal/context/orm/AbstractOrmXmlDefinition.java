@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.ArrayList;
 
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
@@ -79,7 +80,19 @@ public abstract class AbstractOrmXmlDefinition
 		return definitions;
 	}
 
-	protected abstract void addTypeMappingDefinitionsTo(ArrayList<OrmTypeMappingDefinition> definitions);
+	protected void addTypeMappingDefinitionsTo(ArrayList<OrmTypeMappingDefinition> definitions) {
+		CollectionTools.addAll(definitions, TYPE_MAPPING_DEFINITIONS);
+	}
+
+	/**
+	 * Order should not matter here; but we'll use the same order as for Java.
+	 * @see GenericJpaPlatformProvider
+	 */
+	protected static final OrmTypeMappingDefinition[] TYPE_MAPPING_DEFINITIONS = new OrmTypeMappingDefinition[] {
+		OrmEntityDefinition.instance(),
+		OrmEmbeddableDefinition.instance(),
+		OrmMappedSuperclassDefinition.instance()
+	};
 
 
 	// ********** attribute mapping definitions **********

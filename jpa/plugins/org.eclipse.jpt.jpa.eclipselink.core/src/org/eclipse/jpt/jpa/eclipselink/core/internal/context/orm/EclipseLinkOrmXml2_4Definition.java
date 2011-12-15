@@ -9,13 +9,17 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import java.util.ArrayList;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 
 
 public class EclipseLinkOrmXml2_4Definition
-		extends EclipseLinkOrmXml2_2Definition {
+		extends AbstractEclipseLinkOrmXmlDefinition {
 
 	// singleton
 	private static final OrmXmlDefinition INSTANCE = new EclipseLinkOrmXml2_4Definition();
@@ -37,8 +41,18 @@ public class EclipseLinkOrmXml2_4Definition
 	}
 
 
-	@Override
 	public JptResourceType getResourceType() {
 		return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_4_RESOURCE_TYPE;
 	}
+
+	@Override
+	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
+		return EclipseLinkOrmXml2_3Definition.instance().getContextNodeFactory();
+	}
+
+	@Override
+	protected void addAttributeMappingDefinitionsTo(ArrayList<OrmAttributeMappingDefinition> definitions) {
+		CollectionTools.addAll(definitions, EclipseLinkOrmXml2_3Definition.ECLIPSELINK_2_3_ATTRIBUTE_MAPPING_DEFINITIONS);
+	}
+
 }

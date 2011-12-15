@@ -82,6 +82,8 @@ public class EclipseLink2_3JavaResourceUiDefinition
 		definitions.add(JavaEclipseLinkBasicMapMappingUiDefinition.instance());
 		definitions.add(JavaEclipseLinkVariableOneToOneMappingUiDefinition.instance());
 		definitions.add(JavaEclipseLinkTransformationMappingUiDefinition.instance());
+		definitions.add(JavaEclipseLinkArrayMapping2_3UiDefinition.instance());
+		definitions.add(JavaEclipseLinkStructureMapping2_3UiDefinition.instance());
 
 		definitions.add(JavaElementCollectionMapping2_0UiDefinition.instance());
 	}

@@ -539,7 +539,11 @@
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_3/MultitenantType/TABLE_PER_TENANT"/>
         <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//v2_3/MultitenantType/VPD"/>
       </genEnums>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlArray_2_3"/>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlArray_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlArray_2_3/databaseType"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlArray_2_3/targetClass"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlArray_2_3/attributeType"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3/structures"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_3/XmlAttributes_2_3/arrays"/>
@@ -605,7 +609,9 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminatorColumn_2_3/table"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlTenantDiscriminatorColumn_2_3/primaryKey"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStructure_2_3"/>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_3/XmlStructure_2_3">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_3/XmlStructure_2_3/attributeType"/>
+      </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="EclipseLinkOrmV2_4" basePackage="org.eclipse.jpt.jpa.eclipselink.core.resource.orm"
         disposableProviderFactory="true" adapterFactory="false" fileExtensions="EclipselinkOrmV2_4"
