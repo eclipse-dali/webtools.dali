@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -62,7 +62,8 @@ public class DatabaseGroup
 	private final Set<Listener> listeners = Collections.synchronizedSet(new HashSet<Listener>());
 
 	// these are kept in synch with the selection
-	ConnectionProfile selectedConnectionProfile;
+	private ConnectionProfile selectedConnectionProfile;
+	
 	private Schema selectedSchema;
 
 	private final Combo connectionComboBox;
@@ -79,7 +80,7 @@ public class DatabaseGroup
 
 	// ********** construction **********
 
-	DatabaseGroup(IWizardContainer wizardContainer, JpaProject jpaProject, Composite parent, ResourceManager resourceManager, int widthHint) {
+	protected DatabaseGroup(IWizardContainer wizardContainer, JpaProject jpaProject, Composite parent, ResourceManager resourceManager, int widthHint) {
 		super();
 		this.wizardContainer = wizardContainer;
 		this.jpaProject = jpaProject;
@@ -87,43 +88,36 @@ public class DatabaseGroup
 
 		// connection combo-box
 		this.buildLabel(parent, 1, JptUiEntityGenMessages.connection);
-		this.connectionComboBox = this.buildComboBox(parent, widthHint, this.buildConnectionComboBoxSelectionListener());
+		this.connectionComboBox = this.buildConnectionComboBox(parent, widthHint);
 
 		// add connection button
 		Button addConnectionButton = this.buildButton(parent, JptUiEntityGenMessages.addConnectionLink, ImageRepository.getAddConnectionButtonImage(this.resourceManager), this.buildAddConnectionLinkSelectionListener());
-		GridData data = new GridData();
-		addConnectionButton.setLayoutData(data);
-
+		addConnectionButton.setLayoutData(new GridData());
 
 		// A composite holds the reconnect button & text
 		this.buildLabel(parent, 1, ""); //$NON-NLS-1$
 		Composite comp = new Composite( parent , SWT.NONE );
-		GridData gd = new GridData();
-		gd.grabExcessHorizontalSpace = true ;
-		gd.horizontalSpan = 2;
-		comp.setLayoutData( gd );
-		GridLayout gl = new GridLayout(2, false);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true ;
+		gridData.horizontalSpan = 2;
+		comp.setLayoutData(gridData);
+		GridLayout gridLayout = new GridLayout(2, false);
 		// Make the reconnect button to be closer to the connection combo.
-		gl.marginTop = -5;
-		comp.setLayout(gl);
+		gridLayout.marginTop = -5;
+		comp.setLayout(gridLayout);
+
+		// reconnection button
 		this.reconnectButton = this.buildButton(comp, JptUiEntityGenMessages.connectLink, ImageRepository.getReconnectButtonImage(this.resourceManager),  this.buildReconnectLinkSelectionListener());
 		this.buildLabel(comp, 1, JptUiEntityGenMessages.schemaInfo);
 
 		// schema combo-box
 		this.buildLabel(parent, 1, JptUiEntityGenMessages.schema);
-		this.schemaComboBox = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
-		data = new GridData(SWT.BEGINNING, SWT.CENTER, true, false);
-		data.horizontalAlignment = SWT.FILL;
-		data.horizontalSpan = 1;
-		data.grabExcessHorizontalSpace = true ;
-		this.schemaComboBox.setLayoutData(data);
-		this.schemaComboBox.addSelectionListener(this.buildSchemaComboBoxSelectionListener());
+		this.schemaComboBox = this.buildSchemaComboBox(parent);
 		// filler
 		new Label(parent, SWT.NULL);
 
 		this.connectionListener = this.buildConnectionListener();
 	}
-
 
 	public void init()
 	{
@@ -131,10 +125,10 @@ public class DatabaseGroup
 		this.selectedConnectionProfile = this.getJpaProjectConnectionProfile();
 		this.selectedSchema = this.getDefaultSchema();
 
-		if (this.selectedSchema != null) {
+		if(this.selectedSchema != null) {
 			this.fireSchemaChanged(this.selectedSchema);
 		}
-		if (this.selectedConnectionProfile != null) {
+		if(this.selectedConnectionProfile != null) {
 			this.selectedConnectionProfile.addConnectionListener(this.connectionListener);
 			this.fireConnectionProfileChanged(this.selectedConnectionProfile);
 		}
@@ -142,20 +136,23 @@ public class DatabaseGroup
 		this.updateConnectionComboBox();
 		this.updateSchemaComboBox();
 		this.updateReconnectLink();
-
 	}
+	
 	// ********** intra-wizard methods **********
 
-	Schema getSelectedSchema() {
+	public Schema getSelectedSchema() {
 		return this.selectedSchema;
 	}
 
-	void dispose() {
-		if (this.selectedConnectionProfile != null) {
+	public void dispose() {
+		if(this.selectedConnectionProfile != null) {
 			this.selectedConnectionProfile.removeConnectionListener(this.connectionListener);
 		}
 	}
-
+	
+	public boolean connectionIsActive() {
+		return (this.selectedConnectionProfile != null) && (this.selectedConnectionProfile.isActive());
+	}
 
 	// ********** internal methods **********
 
@@ -182,10 +179,10 @@ public class DatabaseGroup
 	 */
 	private void updateConnectionComboBox() {
 		this.connectionComboBox.removeAll();
-		for (String cpName : this.buildSortedConnectionProfileNames()) {
+		for(String cpName : this.buildSortedConnectionProfileNames()) {
 			this.connectionComboBox.add(cpName);
 		}
-		if (this.selectedConnectionProfile != null) {
+		if(this.selectedConnectionProfile != null) {
 			this.connectionComboBox.select(this.connectionComboBox.indexOf(this.selectedConnectionProfile.getName()));
 		}
 	}
@@ -211,11 +208,11 @@ public class DatabaseGroup
 	 */
 	private void updateSchemaComboBox() {
 		this.schemaComboBox.removeAll();
-		for (String name : this.getSchemaNames()) {
+		for(String name : this.getSchemaNames()) {
 			this.schemaComboBox.add(name);
 		}
 		// the current schema *should* be in the current connection profile
-		if (this.selectedSchema != null) {
+		if(this.selectedSchema != null) {
 			this.schemaComboBox.select(this.schemaComboBox.indexOf(this.selectedSchema.getName()));
 		}
 	}
@@ -233,7 +230,7 @@ public class DatabaseGroup
 	 */
 	private ConnectionProfile checkJpaProjectConnectionProfile(String cpName) {
 		ConnectionProfile cp = this.getJpaProjectConnectionProfile();
-		if ((cp != null) && cp.getName().equals(cpName)) {
+		if((cp != null) && cp.getName().equals(cpName)) {
 			return cp;
 		}
 		return this.buildConnectionProfile(cpName);
@@ -246,19 +243,21 @@ public class DatabaseGroup
 
 	// ********** listener callbacks **********
 
-	void selectedConnectionChanged() {
+	private void selectedConnectionChanged() {
 		String text = this.connectionComboBox.getText();
-		if (text.length() == 0) {
-			if (this.selectedConnectionProfile == null) {
+		if(text.length() == 0) {
+			if(this.selectedConnectionProfile == null) {
 				return;  // no change
 			}
 			this.selectedConnectionProfile.removeConnectionListener(this.connectionListener);
 			this.selectedConnectionProfile = null;
-		} else {
-			if (this.selectedConnectionProfile == null) {
+		} 
+		else {
+			if(this.selectedConnectionProfile == null) {
 				this.selectedConnectionProfile = this.checkJpaProjectConnectionProfile(text);
-			} else {
-				if (text.equals(this.selectedConnectionProfile.getName())) {
+			} 
+			else {
+				if(text.equals(this.selectedConnectionProfile.getName())) {
 					return;  // no change
 				}
 				this.selectedConnectionProfile.removeConnectionListener(this.connectionListener);
@@ -270,10 +269,10 @@ public class DatabaseGroup
 		this.connectionChanged();
 	}
 
-	void selectedSchemaChanged() {
+	private void selectedSchemaChanged() {
 		Schema old = this.selectedSchema;
 		this.selectedSchema = this.jpaProject.getDefaultDbSchemaContainer().getSchemaNamed(this.schemaComboBox.getText());
-		if (this.selectedSchema != old) {
+		if(this.selectedSchema != old) {
 			fireSchemaChanged(this.selectedSchema);
 		}
 	}
@@ -283,12 +282,12 @@ public class DatabaseGroup
 	 * If the user creates a new connection profile, start using it and
 	 * connect it
 	 */
-	void addConnection() {
+	private void addConnection() {
 		String addedProfileName = DTPUiTools.createNewConnectionProfile();
-		if (addedProfileName == null) {
+		if(addedProfileName == null) {
 			return;  // user pressed "Cancel"
 		}
-		if (this.selectedConnectionProfile != null) {
+		if(this.selectedConnectionProfile != null) {
 			this.selectedConnectionProfile.removeConnectionListener(this.connectionListener);
 		}
 		this.selectedConnectionProfile = this.buildConnectionProfile(addedProfileName);
@@ -300,39 +299,43 @@ public class DatabaseGroup
 		this.updateSchemaComboBox();
 	}
 
-	void reconnect() {
+	private void reconnect() {
 		try {
-			wizardContainer.run(true, true, new IRunnableWithProgress(){
-				public void run( final IProgressMonitor monitor ) 
+			this.wizardContainer.run(true, true, new IRunnableWithProgress() {
+				public void run(final IProgressMonitor monitor) 
 			    	throws InvocationTargetException, InterruptedException
 			    {
 					monitor.beginTask(JptUiEntityGenMessages.connectingToDatabase, 10);
 					final SynchronizedBoolean finished = new SynchronizedBoolean(false);
-					Thread t = new Thread(){
+					Thread t = new Thread() {
 						@Override
 						public void run() {
 							try {
 								DatabaseGroup.this.selectedConnectionProfile.connect();
-							} catch (Exception ex) {
+							} 
+							catch (Exception ex) {
 								JptJpaUiPlugin.log(ex);
-							} finally {
+							} 
+							finally {
 								finished.setTrue();
 							}
 						}						
 					};
 					t.start();
-					while (finished.isFalse()){
-						Thread.sleep(1000);
-						monitor.worked(1);
-					}
+// Updating the monitor caused TablesSelectorWizardPage buttons to be disable
+//					while(finished.isFalse()) {
+//						Thread.sleep(1000);
+//						monitor.worked(1);
+//					}
 			        // everything should be synchronized when we get the resulting open event
 					monitor.done();
 			    }
 			});
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			JptJpaUiPlugin.log(e);
 		}
-		wizardContainer.updateButtons();
+		this.wizardContainer.updateButtons();
 	}
 
 	/**
@@ -342,10 +345,10 @@ public class DatabaseGroup
 	 *     - the connection was closed (never happens?)
 	 * we need to update the schema stuff and the reconnect link
 	 */
-	void connectionChanged() {
+	private void connectionChanged() {
 		Schema old = this.selectedSchema;
 		this.selectedSchema = this.getDefaultSchema();
-		if (this.selectedSchema != old) {
+		if(this.selectedSchema != old) {
 			this.fireSchemaChanged(this.selectedSchema);
 		}
 		this.updateSchemaComboBox();
@@ -439,17 +442,16 @@ public class DatabaseGroup
 		};
 	}
 
-
 	// ********** listeners **********
 
 	public void addListener(Listener listener) {
-		if ( ! this.listeners.add(listener)) {
+		if( ! this.listeners.add(listener)) {
 			throw new IllegalArgumentException("duplicate listener: " + listener); //$NON-NLS-1$
 		}
 	}
 
 	public void removeListener(Listener listener) {
-		if ( ! this.listeners.remove(listener)) {
+		if( ! this.listeners.remove(listener)) {
 			throw new IllegalArgumentException("missing listener: " + listener); //$NON-NLS-1$
 		}
 	}
@@ -458,53 +460,55 @@ public class DatabaseGroup
 		return new CloneIterator<Listener>(this.listeners);
 	}
 
-	void fireConnectionProfileChanged(ConnectionProfile connectionProfile) {
-		for (Iterator<Listener> stream = this.listeners(); stream.hasNext(); ) {
+	private void fireConnectionProfileChanged(ConnectionProfile connectionProfile) {
+		for(Iterator<Listener> stream = this.listeners(); stream.hasNext(); ) {
 			stream.next().selectedConnectionProfileChanged(connectionProfile);
 		}
 	}
 
-	void fireSchemaChanged(Schema schema) {
-		for (Iterator<Listener> stream = this.listeners(); stream.hasNext(); ) {
+	private void fireSchemaChanged(Schema schema) {
+		for(Iterator<Listener> stream = this.listeners(); stream.hasNext(); ) {
 			stream.next().selectedSchemaChanged(schema);
 		}
 	}
 
 	// ********** UI components **********
 
-	/**
-	 * build and return a label
-	 */
 	private Label buildLabel(Composite parent, int span, String text) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(text);
-		GridData gd = new GridData();
-		gd.horizontalSpan = span;
-		label.setLayoutData(gd);
+		GridData gridData = new GridData();
+		gridData.horizontalSpan = span;
+		label.setLayoutData(gridData);
 		return label;
 	}
 
-	/**
-	 * build and return a combo-box
-	 */
-	private Combo buildComboBox(Composite parent, int widthHint, SelectionListener listener) {
+	private Combo buildConnectionComboBox(Composite parent, int widthHint) {
 		Combo combo = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
-		combo.addSelectionListener(listener);
-		GridData data = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		//data.grabExcessHorizontalSpace = true ;
-		data.widthHint = widthHint;
-		combo.setLayoutData(data);
+		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		//gridData.grabExcessHorizontalSpace = true ;
+		gridData.widthHint = widthHint;
+		combo.setLayoutData(gridData);
+		combo.addSelectionListener(this.buildConnectionComboBoxSelectionListener());
 		return combo;
 	}
 
-	/**
-	 * build and return a link
-	 */
+	private Combo buildSchemaComboBox(Composite parent) {
+		Combo combo = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
+		GridData gridData = new GridData(SWT.BEGINNING, SWT.CENTER, true, false);
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.horizontalSpan = 1;
+		gridData.grabExcessHorizontalSpace = true ;
+		combo.setLayoutData(gridData);
+		combo.addSelectionListener(this.buildSchemaComboBoxSelectionListener());
+		return combo;
+	}
+
 	private Button buildButton(Composite parent, String toolTipText, Image image, SelectionListener listener) {
 		Button button = new Button(parent, SWT.NONE);
-		GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
-		data.horizontalSpan = 1;
-		button.setLayoutData(data);
+		GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
+		gridData.horizontalSpan = 1;
+		button.setLayoutData(gridData);
 		button.setImage( image );
 		button.setToolTipText( toolTipText);
 		button.addSelectionListener(listener);
@@ -520,6 +524,7 @@ public class DatabaseGroup
 	public interface Listener extends EventListener
 	{
 		void selectedConnectionProfileChanged(ConnectionProfile connectionProfile);
+		
 		void selectedSchemaChanged(Schema schema);
 	}
 

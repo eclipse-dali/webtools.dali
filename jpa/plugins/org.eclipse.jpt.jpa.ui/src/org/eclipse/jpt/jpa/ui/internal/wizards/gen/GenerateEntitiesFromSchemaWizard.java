@@ -442,12 +442,6 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	public ORMGenCustomizer getCustomizer (){
 		return customizer;
 	} 
-//	Collection<Table> getPossibleTables() {
-//		if ( this.tablesSelectorPage != null) {
-//			return this.tablesSelectorPage.getTables();
-//		}
-//		return ( this.projectDefaultSchemaExists()) ? CollectionTools.collection( this.getDefaultSchema().tables()) : Collections.<Table>emptyList();
-//	}
 	
 	public ConnectionProfile getProjectConnectionProfile() {
 		return this.jpaProject.getConnectionProfile();
