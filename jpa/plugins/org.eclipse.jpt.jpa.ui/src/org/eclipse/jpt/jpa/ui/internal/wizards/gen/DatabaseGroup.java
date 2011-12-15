@@ -169,8 +169,30 @@ public class DatabaseGroup
 	 * called at start-up and when the selected connection profile changes
 	 */
 	private Schema getDefaultSchema() {
-		return (this.selectedConnectionProfile == this.getJpaProjectConnectionProfile()) ?
-						jpaProject.getDefaultDbSchema()	: null;
+		Schema schema = null;
+		// If a schema is specified for the JPA project, set schema to the schema of the JPA project
+		if (this.getJpaProjectConnectionProfile() != null) {
+			// schema could be null when the default schema does not exist
+			schema = jpaProject.getDefaultDbSchema();
+		}
+		
+		// selected connection profile could be null when no connection specified
+		if (schema == null && this.selectedConnectionProfile != null) {
+			// check if the selected connection profile is active
+			if (this.selectedConnectionProfile.isActive()) {
+				// if active, get the default schema of the selected connection profile
+				schema = this.selectedConnectionProfile.getDatabase().getDefaultSchema();
+				// if the default schema does not exist, get the first available schema
+				if (schema == null) {
+					Iterable<Schema> schemata = this.selectedConnectionProfile.getDatabase().getSchemata();
+					if (schemata.iterator().hasNext()) {
+						schema = schemata.iterator().next();
+					}
+				}
+			}
+		}
+		
+		return schema;
 	}
 
 	/**
