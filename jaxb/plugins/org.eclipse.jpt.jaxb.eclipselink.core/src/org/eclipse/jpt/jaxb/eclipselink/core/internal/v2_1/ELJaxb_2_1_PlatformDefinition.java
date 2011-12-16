@@ -27,6 +27,8 @@ import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.AbstractELJaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlInverseReferenceMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlInverseReferenceAnnotationDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlPathAnnotationDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlPathsAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlTransformationAnnotationDefinition;
 
 
@@ -79,12 +81,15 @@ public class ELJaxb_2_1_PlatformDefinition
 		return ArrayTools.addAll(
 				getGenericJaxbPlatformDefinition().getAnnotationDefinitions(),
 				XmlInverseReferenceAnnotationDefinition.instance(),
+				XmlPathsAnnotationDefinition.instance(),
 				XmlTransformationAnnotationDefinition.instance());
 	}
 	
 	@Override
 	protected NestableAnnotationDefinition[] buildNestableAnnotationDefinitions() {
-		return getGenericJaxbPlatformDefinition().getNestableAnnotationDefinitions();
+		return ArrayTools.addAll(
+				getGenericJaxbPlatformDefinition().getNestableAnnotationDefinitions(),
+				XmlPathAnnotationDefinition.instance());
 	}
 	
 	@Override

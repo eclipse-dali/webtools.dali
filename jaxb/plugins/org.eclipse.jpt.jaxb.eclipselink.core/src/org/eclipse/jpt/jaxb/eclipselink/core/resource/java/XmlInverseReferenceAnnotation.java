@@ -13,7 +13,19 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
-
+/**
+ * Corresponds to the EclipseLink annotation
+ * org.eclipse.persistence.oxm.annotations.XmlInverseReference
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.2
+ * @since 3.0
+ */
 public interface XmlInverseReferenceAnnotation
 		extends Annotation {
 	
@@ -39,4 +51,9 @@ public interface XmlInverseReferenceAnnotation
 	 * Return the text range of this annotation if the element is absent.
 	 */
 	TextRange getMappedByTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return whether the specified text position is within the 'mappedBy' element.
+	 */
+	boolean mappedByTouches(int pos, CompilationUnit astRoot);
 }

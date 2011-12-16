@@ -75,7 +75,7 @@ public class SourceXmlInverseReferenceAnnotation
 	}
 	
 	
-	// ********** mappedBy
+	// ***** mappedBy *****
 	
 	public String getMappedBy() {
 		return this.mappedBy;
@@ -100,5 +100,9 @@ public class SourceXmlInverseReferenceAnnotation
 	
 	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.mappedByDeclarationAdapter, astRoot);
+	}
+	
+	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(this.mappedByDeclarationAdapter, pos, astRoot);
 	}
 }

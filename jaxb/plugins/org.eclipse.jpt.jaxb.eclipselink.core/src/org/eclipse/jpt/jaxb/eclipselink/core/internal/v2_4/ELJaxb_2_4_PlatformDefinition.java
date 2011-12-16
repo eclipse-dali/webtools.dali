@@ -12,11 +12,11 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_4;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2.ELJaxb_2_2_PlatformDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3.ELJaxb_2_3_PlatformDefinition;
 
 
 public class ELJaxb_2_4_PlatformDefinition
-		extends  ELJaxb_2_2_PlatformDefinition {
+		extends  ELJaxb_2_3_PlatformDefinition {
 	
 	// singleton
 	private static final JaxbPlatformDefinition INSTANCE = new ELJaxb_2_4_PlatformDefinition();

@@ -15,63 +15,63 @@ import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotatio
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlInverseReferenceAnnotation;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
 
 
-public class BinaryXmlInverseReferenceAnnotation
+public class BinaryXmlPathAnnotation
 		extends BinaryAnnotation
-		implements XmlInverseReferenceAnnotation {
+		implements XmlPathAnnotation {
 	
-	private String mappedBy;
+	private String value;
 	
 	
-	public BinaryXmlInverseReferenceAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlPathAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
-		this.mappedBy = buildMappedBy();
+		this.value = buildValue();
 	}
 	
 	
 	public String getAnnotationName() {
-		return ELJaxb.XML_INVERSE_REFERENCE;
+		return ELJaxb.XML_PATH;
 	}
 	
 	@Override
 	public void update() {
 		super.update();
-		setMappedBy_(buildMappedBy());
+		setValue_(buildValue());
 	}
 	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.mappedBy);
+		sb.append(this.value);
 	}
 	
 	
-	// ***** mappedBy *****
+	// ***** value *****
 	
-	public String getMappedBy() {
-		return this.mappedBy;
+	public String getValue() {
+		return this.value;
 	}
 	
-	public void setMappedBy(String mappedBy) {
+	public void setValue(String value) {
 		throw new UnsupportedOperationException();
 	}
 	
-	private void setMappedBy_(String mappedBy) {
-		String old = this.mappedBy;
-		this.mappedBy = mappedBy;
-		this.firePropertyChanged(MAPPED_BY_PROPERTY, old, mappedBy);
+	private void setValue_(String value) {
+		String old = this.value;
+		this.value = value;
+		this.firePropertyChanged(VALUE_PROPERTY, old, value);
 	}
 	
-	private String buildMappedBy() {
-		return (String) this.getJdtMemberValue(ELJaxb.XML_INVERSE_REFERENCE__MAPPED_BY);
+	private String buildValue() {
+		return (String) this.getJdtMemberValue(ELJaxb.XML_PATH__VALUE);
 	}
 	
-	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 	
-	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
+	public boolean valueTouches(int pos, CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 }

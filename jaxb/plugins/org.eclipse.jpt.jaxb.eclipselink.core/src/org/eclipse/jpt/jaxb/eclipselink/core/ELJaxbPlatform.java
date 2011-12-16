@@ -9,9 +9,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core;
 
+import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 
 public class ELJaxbPlatform {
@@ -30,7 +32,15 @@ public class ELJaxbPlatform {
 	
 	public static final JaxbPlatformDescription VERSION_2_4
 			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_4"); //$NON-NLS-1$
-
+	
+	
+	public static JaxbPlatformDescription getDefaultPlatform(IProjectFacetVersion jaxbVersion) {
+		if (jaxbVersion.equals(JaxbFacet.VERSION_2_1)) {
+			return VERSION_2_1;
+		}
+		return VERSION_2_4;
+	}
+	
 	
 	/**
 	 * Not for instantiation
