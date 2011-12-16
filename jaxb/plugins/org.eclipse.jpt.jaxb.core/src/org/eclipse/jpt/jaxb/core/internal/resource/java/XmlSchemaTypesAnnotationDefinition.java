@@ -22,39 +22,41 @@ import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
  * javax.xml.bind.annotation.adapters.XmlJavaTypeAdaptersAnnotation
  */
 public final class XmlSchemaTypesAnnotationDefinition
-	implements AnnotationDefinition
-{
+		implements AnnotationDefinition {
+	
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new XmlSchemaTypesAnnotationDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private XmlSchemaTypesAnnotationDefinition() {
 		super();
 	}
-
+	
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		return new SourceNamedAnnotation(parent, annotatedElement, getAnnotationName());
 	}
-
+	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryNamedAnnotation(parent, jdtAnnotation, getAnnotationName());
 	}
-
+	
 	public String getAnnotationName() {
 		return JAXB.XML_SCHEMA_TYPES;
 	}
-
 }
