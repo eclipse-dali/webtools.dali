@@ -16,6 +16,10 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JptJaxbCoreMessages {
 	
+	public static String CONTEXT_MODEL_SYNC_JOB_NAME;
+	public static String UPDATE_JOB_NAME;
+	public static String PREFERENCES_FLUSH_JOB_NAME;
+	
 	public static String ClassesGenerator_generatingClasses;
 	public static String ClassesGenerator_generatingClassesTask;
 	
@@ -28,8 +32,6 @@ public class JptJaxbCoreMessages {
 	
 	public static String UserLibraryValidator_incompatibleJavaFacet;
 	public static String UserLibraryValidator_incompatibleJavaLibrary;
-	
-	public static String PREFERENCES_FLUSH_JOB_NAME;
 	
 	public static String SchemaGenerator_creatingJAXBPropertiesFileTask;
 	

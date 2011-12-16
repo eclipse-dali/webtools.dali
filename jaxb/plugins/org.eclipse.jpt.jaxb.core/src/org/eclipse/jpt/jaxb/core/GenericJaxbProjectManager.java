@@ -23,6 +23,8 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.ILock;
 import org.eclipse.core.runtime.jobs.Job;
@@ -30,6 +32,9 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
+import org.eclipse.jpt.common.core.internal.utility.CallbackJobSynchronizer;
+import org.eclipse.jpt.common.core.internal.utility.JobCommand;
+import org.eclipse.jpt.common.core.internal.utility.JobSynchronizer;
 import org.eclipse.jpt.common.utility.Command;
 import org.eclipse.jpt.common.utility.internal.AsynchronousCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.SimpleCommandExecutor;
@@ -38,8 +43,12 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
+import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.SimpleJaxbProjectConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
@@ -377,7 +386,8 @@ class GenericJaxbProjectManager
 		if (jaxbProject == null) {
 			return null;
 		}
-//		jaxbProject.setUpdateSynchronizer(new CallbackAsynchronousSynchronizer());
+		jaxbProject.setContextModelSynchronizer(buildJobContextModelSynchronizer(jaxbProject));
+		jaxbProject.setUpdateSynchronizer(buildJobUpdateSynchronizer(jaxbProject));
 		return jaxbProject;
 	}
 	
@@ -399,6 +409,44 @@ class GenericJaxbProjectManager
 		config.setProject(project);
 		config.setPlatformDefinition(JptJaxbCorePlugin.getJaxbPlatformManager().buildJaxbPlatformDefinition(project));
 		return config;
+	}
+	
+	private Synchronizer buildJobContextModelSynchronizer(JaxbProject jaxbProject) {
+		return new JobSynchronizer(
+				buildContextModelJobName(jaxbProject),
+				buildContextModelJobCommand(jaxbProject),
+				jaxbProject.getProject());
+	}
+	
+	private String buildContextModelJobName(JaxbProject jaxbProject) {
+		return NLS.bind(JptJaxbCoreMessages.CONTEXT_MODEL_SYNC_JOB_NAME, jaxbProject.getName());
+	}
+	
+	private JobCommand buildContextModelJobCommand(final JaxbProject jaxbProject) {
+		return new JobCommand() {
+			public IStatus execute(IProgressMonitor monitor) {
+				return jaxbProject.synchronizeContextModel(monitor);
+			}
+		};
+	}
+	
+	private CallbackSynchronizer buildJobUpdateSynchronizer(JaxbProject jaxbProject) {
+		return new CallbackJobSynchronizer(
+				buildUpdateJobName(jaxbProject),
+				buildUpdateJobCommand(jaxbProject),
+				jaxbProject.getProject());
+	}
+	
+	private String buildUpdateJobName(JaxbProject jaxbProject) {
+		return NLS.bind(JptJaxbCoreMessages.UPDATE_JOB_NAME, jaxbProject.getName());
+	}
+	
+	private JobCommand buildUpdateJobCommand(final JaxbProject jaxbProject) {
+		return new JobCommand() {
+			public IStatus execute(IProgressMonitor monitor) {
+				return jaxbProject.update(monitor);
+			}
+		};
 	}
 	
 	/* private */ void removeJaxbProject(JaxbProject jaxbProject) {
