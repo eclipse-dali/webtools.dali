@@ -55,15 +55,7 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	}
 	
 	public boolean typeIsValid(XsdTypeDefinition xsdType, boolean isItemType, boolean allowExtension, boolean allowRestriction) {
-		XsdTypeDefinition type = this;
-		if (isItemType) {
-			type = (type.getKind() == XsdTypeDefinition.Kind.SIMPLE) ? 
-					((XsdSimpleTypeDefinition) type).getItemType() : null;
-		}
-		if (type == null) {
-			return false;
-		}
-		return type.getXSDComponent().getBadTypeDerivation(xsdType.getXSDComponent(), allowExtension, allowRestriction) == null;
+		return getXSDComponent().getBadTypeDerivation(xsdType.getXSDComponent(), allowExtension, allowRestriction) == null;
 	}
 	
 	public XsdTypeDefinition getBaseType() {

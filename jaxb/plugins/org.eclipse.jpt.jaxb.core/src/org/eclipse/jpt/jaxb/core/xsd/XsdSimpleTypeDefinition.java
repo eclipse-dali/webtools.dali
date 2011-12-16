@@ -31,9 +31,42 @@ public class XsdSimpleTypeDefinition
 		return Kind.SIMPLE;
 	}
 	
+	@Override
+	public boolean typeIsValid(XsdTypeDefinition xsdType, boolean isItemType, boolean allowExtension, boolean allowRestriction) {
+		if (isItemType) {
+			XsdSimpleTypeDefinition itemType = getItemType();
+			return (itemType == null) ? false : itemType.typeIsValid(xsdType, false, allowExtension, allowRestriction);
+		}
+//		if (getXSDComponent().getVariety() == XSDVariety.UNION_LITERAL) {
+//			for (XsdSimpleTypeDefinition memberType : getMemberTypes()) {
+//				if (! memberType.typeIsValid(xsdType, isItemType, allowExtension, allowRestriction)) {
+//					return false;
+//				}
+//			}
+//			return true;
+//		}
+		return super.typeIsValid(xsdType, isItemType, allowExtension, allowRestriction);
+	}
+	
+	/**
+	 * If the type is of variety LIST, this will return the item type of the list
+	 */
 	public XsdSimpleTypeDefinition getItemType() {
 		XSDSimpleTypeDefinition xsdItemType = getXSDComponent().getItemTypeDefinition();
 		return (xsdItemType == null) ? null : (XsdSimpleTypeDefinition) XsdUtil.getAdapter(xsdItemType);
+	}
+	
+	/**
+	 * If the type is of variety UNION, this will return the member types of the union
+	 */
+	public Iterable<XsdSimpleTypeDefinition> getMemberTypes() {
+		return new TransformationIterable<XSDSimpleTypeDefinition, XsdSimpleTypeDefinition>(
+				getXSDComponent().getMemberTypeDefinitions()) {
+			@Override
+			protected XsdSimpleTypeDefinition transform(XSDSimpleTypeDefinition o) {
+				return (XsdSimpleTypeDefinition) XsdUtil.getAdapter(o);
+			}
+		};
 	}
 	
 	@Override

@@ -20,14 +20,6 @@ public class XsdAttributeDeclaration
 	
 	@Override
 	public boolean typeIsValid(XsdTypeDefinition xsdType, boolean isItemType) {
-		XsdTypeDefinition type = getType();
-		if (isItemType) {
-			type = (type.getKind() == XsdTypeDefinition.Kind.SIMPLE) ? 
-					((XsdSimpleTypeDefinition) type).getItemType() : null;
-		}
-		if (type == null) {
-			return false;
-		}
-		return type.getXSDComponent().getBadTypeDerivation(xsdType.getXSDComponent(), true, true) == null;
+		return getType().typeIsValid(xsdType, isItemType);
 	}
 }
