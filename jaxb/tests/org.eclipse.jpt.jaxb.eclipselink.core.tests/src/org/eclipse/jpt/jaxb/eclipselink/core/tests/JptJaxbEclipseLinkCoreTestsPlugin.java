@@ -25,22 +25,12 @@ public class JptJaxbEclipseLinkCoreTestsPlugin
 	
 	private static JptJaxbEclipseLinkCoreTestsPlugin INSTANCE;
 	
-	public static final String ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.eclipselink.jar";
-	
 	
 	public static JptJaxbEclipseLinkCoreTestsPlugin instance() {
 		return INSTANCE;
 	}
 	
-	public static String eclipseLinkJarName() {
-		return getSystemProperty(ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY);
-	}
-
-	private static String getSystemProperty(String propertyName) {
-		return System.getProperty(propertyName);
-	}
-	
-	
+		
 	// ********** plug-in implementation **********
 	
 	public JptJaxbEclipseLinkCoreTestsPlugin() {

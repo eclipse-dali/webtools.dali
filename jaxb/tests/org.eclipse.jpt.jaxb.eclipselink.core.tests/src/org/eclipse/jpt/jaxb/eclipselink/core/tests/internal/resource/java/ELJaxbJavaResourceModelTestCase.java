@@ -12,8 +12,8 @@ package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.java;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.tests.internal.resource.java.JavaResourceModelTestCase;
+import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1.ELJaxb_2_1_PlatformDefinition;
-import org.eclipse.jpt.jaxb.eclipselink.core.tests.JptJaxbEclipseLinkCoreTestsPlugin;
 
 
 public class ELJaxbJavaResourceModelTestCase 
@@ -27,7 +27,7 @@ public class ELJaxbJavaResourceModelTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.javaProject.addJar(JptJaxbEclipseLinkCoreTestsPlugin.eclipseLinkJarName());
+		this.javaProject.addJar(TestJaxbProject.elJaxbJarName());
 	}
 	
 	@Override

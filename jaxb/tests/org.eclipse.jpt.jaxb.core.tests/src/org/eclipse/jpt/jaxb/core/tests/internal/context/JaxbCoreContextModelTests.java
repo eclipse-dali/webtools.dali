@@ -13,18 +13,26 @@ package org.eclipse.jpt.jaxb.core.tests.internal.context;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.jaxb.core.tests.internal.JaxbCoreTests;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.java.JaxbCoreJavaContextModelTests;
 
-public class JaxbCoreContextModelTests extends TestCase
-{
+public class JaxbCoreContextModelTests
+		extends TestCase {
+	
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JaxbCoreContextModelTests.class.getName());
-
-		suite.addTestSuite(GenericContextRootTests.class);
-		suite.addTest(JaxbCoreJavaContextModelTests.suite());
+		
+		if (JaxbCoreTests.requiredJarsExists()) {
+			suite.addTestSuite(GenericContextRootTests.class);
+			suite.addTest(JaxbCoreJavaContextModelTests.suite());
+		}
+		else {
+			suite.addTest(TestSuite.warning(JaxbCoreTests.buildMissingJarErrorMessage()));
+		}
 		return suite;
 	}
-
+	
+	
 	private JaxbCoreContextModelTests() {
 		super();
 		throw new UnsupportedOperationException();

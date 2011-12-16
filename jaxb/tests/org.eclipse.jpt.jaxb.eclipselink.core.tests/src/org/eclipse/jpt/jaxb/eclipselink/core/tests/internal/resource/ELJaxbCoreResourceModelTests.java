@@ -15,18 +15,18 @@ import junit.framework.TestSuite;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.java.ELJaxbJavaResourceModelTests;
 
 
-public class JaxbEclipseLinkCoreResourceModelTests 
+public class ELJaxbCoreResourceModelTests 
 		extends TestCase {
 	
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JaxbEclipseLinkCoreResourceModelTests.class.getName());
+		TestSuite suite = new TestSuite(ELJaxbCoreResourceModelTests.class.getName());
 
 		suite.addTest(ELJaxbJavaResourceModelTests.suite());
 		return suite;
 	}
 	
 	
-	private JaxbEclipseLinkCoreResourceModelTests() {
+	private ELJaxbCoreResourceModelTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

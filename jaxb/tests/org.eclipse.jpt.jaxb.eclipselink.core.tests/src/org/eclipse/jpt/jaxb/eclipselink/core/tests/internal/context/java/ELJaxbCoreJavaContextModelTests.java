@@ -7,23 +7,24 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal;
+package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.java;
 
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.JaxbEclipseLinkCoreResourceModelTests;
 
 
-public class JaxbEclipseLinkCoreTests {
+public class ELJaxbCoreJavaContextModelTests
+		extends TestCase {
 	
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JaxbEclipseLinkCoreTests.class.getPackage().getName());
-		suite.addTest(JaxbEclipseLinkCoreResourceModelTests.suite());
+		TestSuite suite = new TestSuite(ELJaxbCoreJavaContextModelTests.class.getName());
+		suite.addTestSuite(ELJavaXmlInverseReferenceMappingTests.class);
 		return suite;
 	}
 	
 	
-	private JaxbEclipseLinkCoreTests() {
+	private ELJaxbCoreJavaContextModelTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}
