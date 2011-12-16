@@ -40,14 +40,14 @@ public class TestJaxbProject
 	// ***** static methods *****
 	
 	public static final String JAXB_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jaxb.jar";
-	public static final String EL_JAXB_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.eljaxb.jar";
+	public static final String ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.eclipselink.jar";
 	
 	public static String jaxbJarName() {
 		return getSystemProperty(JAXB_JAR_NAME_SYSTEM_PROPERTY);
 	}
 	
-	public static String elJaxbJarName() {
-		return getSystemProperty(EL_JAXB_JAR_NAME_SYSTEM_PROPERTY);
+	public static String eclipselinkJarName() {
+		return getSystemProperty(ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY);
 	}
 	
 	private static String getSystemProperty(String propertyName) {
@@ -80,8 +80,8 @@ public class TestJaxbProject
 				((IProjectFacetVersion) config.getProperty(IFacetDataModelProperties.FACET_VERSION)).getVersionString();
 		this.installFacet(JaxbFacet.ID, jaxbFacetVersion, config);
 		this.addJar(jaxbJarName());
-		if (elJaxbJarName() != null) {
-			this.addJar(elJaxbJarName());
+		if (eclipselinkJarName() != null) {
+			this.addJar(eclipselinkJarName());
 		}
 		this.jaxbProject = JptJaxbCorePlugin.getJaxbProject(this.getProject());
 		this.jaxbProject.setContextModelSynchronizer(this.buildSynchronousContextModelSynchronizer());

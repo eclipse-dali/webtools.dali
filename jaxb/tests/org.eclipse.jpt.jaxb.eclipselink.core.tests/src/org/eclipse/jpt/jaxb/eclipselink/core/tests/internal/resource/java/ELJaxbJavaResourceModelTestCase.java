@@ -27,7 +27,7 @@ public class ELJaxbJavaResourceModelTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.javaProject.addJar(TestJaxbProject.elJaxbJarName());
+		this.javaProject.addJar(TestJaxbProject.eclipselinkJarName());
 	}
 	
 	@Override

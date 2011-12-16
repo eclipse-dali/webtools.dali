@@ -31,18 +31,18 @@ public class ELJaxbCoreTests {
 	}
 	
 	public static boolean elJaxbJarPropertyExists() {
-		return getSystemProperty(TestJaxbProject.EL_JAXB_JAR_NAME_SYSTEM_PROPERTY) != null;
+		return getSystemProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY) != null;
 	}
 	
 	public static boolean elJaxbJarFileExists() {
-		return (new File(getSystemProperty(TestJaxbProject.EL_JAXB_JAR_NAME_SYSTEM_PROPERTY))).exists();
+		return (new File(getSystemProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY))).exists();
 	}
 	
 	public static String buildMissingJarErrorMessage() {
 		if( ! elJaxbJarPropertyExists()) {
-			return errorMissingProperty(TestJaxbProject.EL_JAXB_JAR_NAME_SYSTEM_PROPERTY);
+			return errorMissingProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY);
 		}
-		return errorJarFileDoesNotExist(getSystemProperty(TestJaxbProject.EL_JAXB_JAR_NAME_SYSTEM_PROPERTY));
+		return errorJarFileDoesNotExist(getSystemProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY));
 	}
 	
 	/*********** private **********/
