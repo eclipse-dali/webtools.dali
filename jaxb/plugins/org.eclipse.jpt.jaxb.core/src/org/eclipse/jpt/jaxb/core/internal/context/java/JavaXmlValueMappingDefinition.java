@@ -27,7 +27,8 @@ public class JavaXmlValueMappingDefinition
 
 	private static final String[] SUPPORTING_ANNOTATION_NAMES = {
 			JAXB.XML_LIST,
-			JAXB.XML_JAVA_TYPE_ADAPTER };
+			JAXB.XML_JAVA_TYPE_ADAPTER,
+			JAXB.XML_SCHEMA_TYPE };
 
 	/**
 	 * Return the singleton.

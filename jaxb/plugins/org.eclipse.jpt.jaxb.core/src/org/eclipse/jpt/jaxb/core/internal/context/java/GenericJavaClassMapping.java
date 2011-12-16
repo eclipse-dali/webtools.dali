@@ -36,7 +36,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
-import org.eclipse.jpt.jaxb.core.context.JaxbBasicMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -691,21 +691,21 @@ public class GenericJavaClassMapping
 	}
 	
 	public JaxbAttributeMapping getXmlIdMapping() {
-		Iterator<JaxbBasicMapping> idMappings = getBasicMappingsWithXmlID().iterator();
+		Iterator<XmlNamedNodeMapping> idMappings = getBasicMappingsWithXmlID().iterator();
 		return (idMappings.hasNext()) ? idMappings.next() : null;
 	}
 	
-	protected Iterable<JaxbBasicMapping> getBasicMappingsWithXmlID(){
-		return new FilteringIterable<JaxbBasicMapping>(getBasicMappings()){
+	protected Iterable<XmlNamedNodeMapping> getBasicMappingsWithXmlID(){
+		return new FilteringIterable<XmlNamedNodeMapping>(getBasicMappings()){
 			@Override
-			protected boolean accept(JaxbBasicMapping basicMapping) {
+			protected boolean accept(XmlNamedNodeMapping basicMapping) {
 				return basicMapping.getXmlID() != null;
 			}
 		};
 	}
 	
-	protected Iterable<JaxbBasicMapping> getBasicMappings() {
-		return new SubIterableWrapper<JaxbAttributeMapping, JaxbBasicMapping>(getBasicMappings_());
+	protected Iterable<XmlNamedNodeMapping> getBasicMappings() {
+		return new SubIterableWrapper<JaxbAttributeMapping, XmlNamedNodeMapping>(getBasicMappings_());
 	}
 	
 	protected Iterable<JaxbAttributeMapping> getBasicMappings_(){
@@ -1030,7 +1030,7 @@ public class GenericJavaClassMapping
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
 			if ((attribute.getMappingKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY
 					|| attribute.getMappingKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY)
-					&& ((JaxbBasicMapping) attribute.getMapping()).getXmlID() != null) {
+					&& ((XmlNamedNodeMapping) attribute.getMapping()).getXmlID() != null) {
 				localAttributes.add(attribute);
 				allAttributes.add(attribute);
 			}
@@ -1039,7 +1039,7 @@ public class GenericJavaClassMapping
 		for (JaxbPersistentAttribute attribute : getInheritedAttributes()) {
 			if ((attribute.getMappingKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY
 					|| attribute.getMappingKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY)
-					&& ((JaxbBasicMapping) attribute.getMapping()).getXmlID() != null) {
+					&& ((XmlNamedNodeMapping) attribute.getMapping()).getXmlID() != null) {
 				allAttributes.add(attribute);
 			}
 		}

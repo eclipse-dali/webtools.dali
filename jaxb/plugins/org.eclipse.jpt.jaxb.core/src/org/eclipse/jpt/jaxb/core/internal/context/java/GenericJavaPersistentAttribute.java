@@ -422,7 +422,7 @@ public class GenericJavaPersistentAttribute
 		JavaAttributeMappingDefinition currentMappingDefinition = getCurrentMappingDefinition();
 		Iterable<String> supportingAnnotationNames = currentMappingDefinition.getSupportingAnnotationNames();
 		
-		for (Annotation annotation : getJavaResourceAttribute().getAnnotations()) {
+		for (Annotation annotation : getJavaResourceAttribute().getAllAnnotations()) {
 			if (Tools.valuesAreDifferent(currentMappingDefinition.getAnnotationName(), annotation.getAnnotationName())
 					&& ! CollectionTools.contains(supportingAnnotationNames, annotation.getAnnotationName())) {
 				messages.add(

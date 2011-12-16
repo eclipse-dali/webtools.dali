@@ -40,7 +40,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlAttributeMapping
-		extends AbstractJavaBasicMapping<XmlAttributeAnnotation>
+		extends AbstractJavaXmlNamedNodeMapping<XmlAttributeAnnotation>
 		implements XmlAttributeMapping {
 	
 	protected final JaxbQName qName;
@@ -292,7 +292,7 @@ public class GenericJavaXmlAttributeMapping
 	
 	
 	protected class XmlIDREFContext
-			extends AbstractJavaBasicMapping.XmlIDREFContext {
+			extends AbstractJavaXmlNamedNodeMapping.XmlIDREFContext {
 		
 		public Iterable<ValidatableReference> getReferences() {
 			

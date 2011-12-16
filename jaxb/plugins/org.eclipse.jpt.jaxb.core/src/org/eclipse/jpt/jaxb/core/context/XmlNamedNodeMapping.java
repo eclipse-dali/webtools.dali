@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.context;
 import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
 
 /**
- * Represents a JAXB mapping of an attribute to a single xml attribute or element
+ * Common interface for XmlElementMapping and XmlAttributeMapping
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,19 +23,8 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdFeature;
  * @version 3.2
  * @since 3.0
  */
-public interface JaxbBasicMapping
-		extends JaxbAttributeMapping, XmlAdaptableMapping, XmlListMapping {
-	
-	// ***** xml schema type *****
-	
-	String XML_SCHEMA_TYPE_PROPERTY = "xmlSchemaType"; //$NON-NLS-1$
-	
-	XmlSchemaType getXmlSchemaType();
-	
-	XmlSchemaType addXmlSchemaType();
-	
-	void removeXmlSchemaType();
-	
+public interface XmlNamedNodeMapping
+		extends XmlNodeMapping {
 	
 	// ***** XmlID *****
 	

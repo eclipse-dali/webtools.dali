@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlElementMapping
-		extends AbstractJavaBasicMapping<XmlElementAnnotation>
+		extends AbstractJavaXmlNamedNodeMapping<XmlElementAnnotation>
 		implements XmlElementMapping {
 	
 	protected final XmlElement xmlElement;
@@ -277,7 +277,7 @@ public class GenericJavaXmlElementMapping
 	
 	
 	protected class XmlIDREFContext
-			extends AbstractJavaBasicMapping.XmlIDREFContext {
+			extends AbstractJavaXmlNamedNodeMapping.XmlIDREFContext {
 		
 		public Iterable<ValidatableReference> getReferences() {
 			

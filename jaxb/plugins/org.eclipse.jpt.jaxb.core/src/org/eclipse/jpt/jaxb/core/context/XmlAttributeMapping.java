@@ -23,7 +23,7 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface XmlAttributeMapping
-		extends JaxbBasicMapping {	
+		extends XmlNamedNodeMapping {	
 	
 	// ***** qname *****
 	

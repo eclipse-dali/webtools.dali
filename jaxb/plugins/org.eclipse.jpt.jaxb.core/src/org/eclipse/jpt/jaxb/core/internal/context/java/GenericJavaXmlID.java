@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.context.JaxbBasicMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
@@ -31,14 +31,14 @@ public class GenericJavaXmlID
 
 	protected final XmlIDAnnotation resourceXmlID;
 
-	public GenericJavaXmlID(JaxbBasicMapping parent, XmlIDAnnotation resource) {
+	public GenericJavaXmlID(XmlNamedNodeMapping parent, XmlIDAnnotation resource) {
 		super(parent);
 		this.resourceXmlID = resource;
 	}
 	
 	
-	public JaxbBasicMapping getMapping() {
-		return (JaxbBasicMapping) getParent();
+	public XmlNamedNodeMapping getMapping() {
+		return (XmlNamedNodeMapping) getParent();
 	}
 	
 	protected JaxbPersistentAttribute getPersistentAttribute() {

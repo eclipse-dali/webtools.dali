@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 /**
- * Represents a JAXB mapping that may be annotated with XmlList
+ * Common interface for XmlElementMapping, XmlAttributeMapping, and XmlValueMapping
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,9 +19,21 @@ package org.eclipse.jpt.jaxb.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @version 3.2
- * @since 3.2
+ * @since 3.0
  */
-public interface XmlListMapping {
+public interface XmlNodeMapping
+		extends JaxbAttributeMapping, XmlAdaptableMapping {
+	
+	// ***** xml schema type *****
+	
+	String XML_SCHEMA_TYPE_PROPERTY = "xmlSchemaType"; //$NON-NLS-1$
+	
+	XmlSchemaType getXmlSchemaType();
+	
+	XmlSchemaType addXmlSchemaType();
+	
+	void removeXmlSchemaType();
+	
 	
 	// ***** XmlList *****
 	

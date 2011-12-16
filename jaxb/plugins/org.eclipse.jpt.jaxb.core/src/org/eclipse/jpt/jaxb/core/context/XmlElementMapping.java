@@ -22,7 +22,7 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface XmlElementMapping
-		extends JaxbBasicMapping {
+		extends XmlNamedNodeMapping {
 	
 	XmlElement getXmlElement();
 	
