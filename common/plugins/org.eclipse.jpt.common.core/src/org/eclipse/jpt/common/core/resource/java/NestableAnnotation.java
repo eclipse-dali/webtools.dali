@@ -23,12 +23,11 @@ package org.eclipse.jpt.common.core.resource.java;
  * @since 2.0
  */
 public interface NestableAnnotation
-	extends Annotation
-{
+		extends Annotation {
+	
 	/**
 	 * Move the annotation to the specified index within its container annotation.
 	 * This should only be called when the annotation is actually nested.
 	 */
 	void moveAnnotation(int index);
-
 }

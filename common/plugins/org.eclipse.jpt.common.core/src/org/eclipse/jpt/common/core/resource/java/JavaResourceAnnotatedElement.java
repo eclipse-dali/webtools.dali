@@ -133,6 +133,13 @@ public interface JavaResourceAnnotatedElement
 	// ********** queries **********
 		
 	/**
+	 * Return all top level annotations.
+	 * If there is a container annotation, return that and not any nestables within it.
+	 * If there is a nestable alone, return that and not the container.
+	 */
+	Iterable<Annotation> getAllAnnotations();
+	
+	/**
 	 * Return whether the underlying JDT member is currently annotated with any recognized
 	 * annotations.
 	 */

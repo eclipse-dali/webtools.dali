@@ -344,9 +344,24 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 
 
 	// ********** miscellaneous **********
-
+	
+	public Iterable<Annotation> getAllAnnotations() {
+		return new CompositeIterable<Annotation>(
+				getAnnotations(),
+				getContainerOrNestableAnnotations());
+	}
+	
+	protected Iterable<Annotation> getContainerOrNestableAnnotations() {
+		return new TransformationIterable<AnnotationContainer, Annotation>(this.annotationContainers.values()) {
+			@Override
+			protected Annotation transform(AnnotationContainer o) {
+				return (o.getContainerAnnotation() != null) ? o.getContainerAnnotation() : CollectionTools.get(o.getNestedAnnotations(), 0);
+			}
+		};
+	}
+	
 	public boolean isAnnotated() {
-		return ! this.annotations.isEmpty() || ! this.annotationContainers.isEmpty();
+		return ! (this.annotations.isEmpty() && this.annotationContainers.isEmpty());
 	}
 
 	public boolean isAnnotatedWith(Iterable<String> annotationNames) {

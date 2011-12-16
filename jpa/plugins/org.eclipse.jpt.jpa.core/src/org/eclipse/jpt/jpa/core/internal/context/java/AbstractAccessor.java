@@ -128,7 +128,11 @@ public abstract class AbstractAccessor
 
 
 		// ********** misc **********
-
+		
+		public Iterable<Annotation> getAllAnnotations() {
+			return EmptyIterable.instance();
+		}
+		
 		public boolean isAnnotated() {
 			return false;
 		}
