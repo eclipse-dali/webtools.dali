@@ -40,6 +40,10 @@
          version="0.0.0"/>
 
    <includes
+         id="org.eclipse.jpt.jaxb.eclipselink.tests.feature"
+         version="0.0.0"/>
+
+   <includes
          id="org.eclipse.jpt.jpadiagrameditor.tests.feature"
          version="0.0.0"/>
 
