@@ -11,31 +11,43 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.persistence.jpa.jpql.spi.IEmbeddable;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeVisitor;
+import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 
 /**
  * The concrete implementation of {@link IEmbeddable} that is wrapping the design-time
  * representation of a JPA embeddable.
  *
- * @version 3.0
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-final class JpaEmbeddable extends JpaManagedType
-                          implements IEmbeddable {
+public class JpaEmbeddable extends JpaManagedType
+                           implements IEmbeddable {
 
 	/**
 	 * Creates a new <code>JpaEmbeddable</code>.
 	 *
 	 * @param provider The provider of JPA managed types
 	 * @param embeddable The design-time model object wrapped by this class
+	 * @param mappingBuilder The builder that is responsible to create the {@link IMapping} wrapping
+	 * a persistent attribute or property
 	 */
-	JpaEmbeddable(JpaManagedTypeProvider provider, Embeddable embeddable) {
-		super(provider, embeddable);
+	public JpaEmbeddable(JpaManagedTypeProvider provider,
+	                     Embeddable embeddable,
+	                     IMappingBuilder<AttributeMapping> mappingBuilder) {
+
+		super(provider, embeddable, mappingBuilder);
 	}
 
 	/**
@@ -49,7 +61,7 @@ final class JpaEmbeddable extends JpaManagedType
 	 * {@inheritDoc}
 	 */
 	@Override
-	Embeddable getManagedType() {
+	protected Embeddable getManagedType() {
 		return (Embeddable) super.getManagedType();
 	}
 

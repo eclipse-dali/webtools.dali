@@ -11,7 +11,7 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
@@ -20,11 +20,16 @@ import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
  * The concrete implementation of {@link ITypeDeclaration} that is wrapping the design-time
  * representation of the declaration description of a type.
  *
- * @version 3.0
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-final class JpaTypeDeclaration implements ITypeDeclaration {
+public class JpaTypeDeclaration implements ITypeDeclaration {
 
 	/**
 	 * The dimensionality of the array or 0 if the type is not an array.
@@ -48,7 +53,7 @@ final class JpaTypeDeclaration implements ITypeDeclaration {
 	 * @param genericTypes The generics of the given type or an empty list if the type is not
 	 * parameterized
 	 */
-	JpaTypeDeclaration(IType type, ITypeDeclaration[] genericTypes) {
+	public JpaTypeDeclaration(IType type, ITypeDeclaration[] genericTypes) {
 		this(type, genericTypes, 0);
 	}
 
@@ -60,7 +65,7 @@ final class JpaTypeDeclaration implements ITypeDeclaration {
 	 * parameterized
 	 * @param dimensionality The dimensionality of the array or 0 if it's not an array
 	 */
-	JpaTypeDeclaration(IType type, ITypeDeclaration[] genericTypes, int dimensionality) {
+	public JpaTypeDeclaration(IType type, ITypeDeclaration[] genericTypes, int dimensionality) {
 		super();
 		this.type           = type;
 		this.genericTypes   = genericTypes;

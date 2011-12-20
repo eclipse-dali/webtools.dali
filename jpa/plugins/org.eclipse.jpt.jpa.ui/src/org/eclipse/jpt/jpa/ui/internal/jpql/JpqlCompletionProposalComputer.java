@@ -13,6 +13,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -21,29 +23,27 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.jpt.jpa.core.internal.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
-import org.eclipse.persistence.jpa.internal.jpql.WordParser;
-import org.eclipse.persistence.jpa.internal.jpql.parser.Expression;
-import org.eclipse.persistence.jpa.internal.jpql.parser.IdentifierRole;
-import org.eclipse.persistence.jpa.internal.jpql.parser.JPQLExpression;
 import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
+import org.eclipse.persistence.jpa.jpql.WordParser;
+import org.eclipse.persistence.jpa.jpql.parser.Expression;
+import org.eclipse.persistence.jpa.jpql.parser.IdentifierRole;
 import org.eclipse.persistence.jpa.jpql.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
-import static org.eclipse.jpt.common.utility.internal.CollectionTools.*;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
 
 /**
  * The abstract definition of JPQL content assist support.
  *
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-@SuppressWarnings({"nls", "restriction"})
+@SuppressWarnings("nls")
 abstract class JpqlCompletionProposalComputer<T> {
 
 	/**
@@ -91,14 +91,13 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 * This helper is responsible to retrieve the possible proposals to complete or to add more
 	 * information to a JPQL based on the position of the cursor.
 	 */
-	final JpaJpqlQueryHelper queryHelper;
+	JpaJpqlQueryHelper queryHelper;
 
 	/**
 	 * Creates a new <code>JpqlCompletionProposalComputer</code>.
 	 */
 	public JpqlCompletionProposalComputer() {
 		super();
-		queryHelper = new JpaJpqlQueryHelper();
 	}
 
 	/**
@@ -188,7 +187,7 @@ abstract class JpqlCompletionProposalComputer<T> {
 	private T buildIdentifierProposal(String proposal) {
 
 		String additionalInfo = additionalInfo(proposal);
-		IdentifierRole role = JPQLExpression.identifierRole(proposal);
+		IdentifierRole role = queryHelper.getQueryContext().getExpressionRegistry().getIdentifierRole(proposal);
 		boolean realFunction = (role == IdentifierRole.FUNCTION) && isRealFunction(proposal);
 		int cursorOffset = 0;
 
@@ -265,6 +264,7 @@ abstract class JpqlCompletionProposalComputer<T> {
 		this.offset      = offset;
 		this.actualQuery = actualQuery;
 		this.namedQuery  = namedQuery;
+		this.queryHelper = namedQuery.getJpaProject().getJpaPlatform().getJpqlQueryHelper();
 
 		// It's possible the string has literal representation of the escape characters, if required,
 		// convert them into actual escape characters and adjust the position accordingly
@@ -273,17 +273,21 @@ abstract class JpqlCompletionProposalComputer<T> {
 		this.position    = positions[0];
 		this.partialWord = partialWord();
 
-		// Gather the possible proposals
-		this.queryHelper.setQuery(namedQuery, jpqlQuery);
-		this.contentAssistProposals = queryHelper.buildContentAssistProposals(positions[0]);
-		this.queryHelper.dispose();
-
-		// Create the proposals for those proposals
 		List<T> proposals = new ArrayList<T>();
-		addAbstractSchemaNames    (proposals);
-		addIdentificationVariables(proposals);
-		addIdentifiers            (proposals);
-		addMappings               (proposals);
+
+		try {
+			this.queryHelper.setQuery(namedQuery, jpqlQuery);
+			this.contentAssistProposals = queryHelper.buildContentAssistProposals(positions[0]);
+
+			// Create the proposals for those proposals
+			addAbstractSchemaNames    (proposals);
+			addIdentificationVariables(proposals);
+			addIdentifiers            (proposals);
+			addMappings               (proposals);
+		}
+		finally {
+			this.queryHelper.dispose();
+		}
 
 		return proposals;
 	}
@@ -367,8 +371,8 @@ abstract class JpqlCompletionProposalComputer<T> {
 	private Image mappingImage(IMapping mapping) {
 		switch (mapping.getMappingType()) {
 			case BASIC:               return getImage(JptUiIcons.BASIC);
-			case BASIC_COLLECTION:    return getImage(JptUiIcons.ELEMENT_COLLECTION);
-			case BASIC_MAP:           return getImage(JptUiIcons.ELEMENT_COLLECTION);
+//			case BASIC_COLLECTION:    return getImage(JptUiIcons.ELEMENT_COLLECTION);
+//			case BASIC_MAP:           return getImage(JptUiIcons.ELEMENT_COLLECTION);
 			case ELEMENT_COLLECTION:  return getImage(JptUiIcons.ELEMENT_COLLECTION);
 			case EMBEDDED:            return getImage(JptUiIcons.EMBEDDED);
 			case EMBEDDED_ID:         return getImage(JptUiIcons.EMBEDDED_ID);
@@ -377,8 +381,8 @@ abstract class JpqlCompletionProposalComputer<T> {
 			case MANY_TO_ONE:         return getImage(JptUiIcons.MANY_TO_ONE);
 			case ONE_TO_MANY:         return getImage(JptUiIcons.ONE_TO_MANY);
 			case ONE_TO_ONE:          return getImage(JptUiIcons.ONE_TO_ONE);
-			case TRANSFORMATION:      return getImage(JptUiIcons.BASIC);      // TODO
-			case VARIABLE_ONE_TO_ONE: return getImage(JptUiIcons.ONE_TO_ONE); // TODO
+//			case TRANSFORMATION:      return getImage(JptUiIcons.BASIC);      // TODO
+//			case VARIABLE_ONE_TO_ONE: return getImage(JptUiIcons.ONE_TO_ONE); // TODO
 			case VERSION:             return getImage(JptUiIcons.VERSION);
 			default:                  return getImage(JptUiIcons.TRANSIENT);
 		}
@@ -407,7 +411,10 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 */
 	public void sessionEnded() {
 
-		queryHelper.disposeProvider();
+		if (queryHelper != null) {
+			queryHelper.disposeProvider();
+		}
+
 		clearInformation();
 
 		if (imageRegistry != null) {
@@ -429,6 +436,10 @@ abstract class JpqlCompletionProposalComputer<T> {
 	private boolean shouldUseLowercaseIdentifiers() {
 		String value = JptJpaUiPlugin.instance().getPreferenceStore().getString(JptJpaUiPlugin.JPQL_IDENTIFIER_CASE_PREF_KEY);
 		return JptJpaUiPlugin.JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE.equals(value);
+	}
+
+	private <I extends Comparable<? super I>> Iterable<I> sort(Iterable<I> iterator) {
+		return CollectionTools.sort(iterator);
 	}
 
 	private Iterable<IEntity> sortByNames(Iterable<IEntity> abstractSchemaTypes) {

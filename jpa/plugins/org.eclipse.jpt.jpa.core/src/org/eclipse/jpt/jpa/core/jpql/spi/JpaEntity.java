@@ -11,27 +11,34 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.persistence.jpa.jpql.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeVisitor;
+import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.spi.IQuery;
 
 /**
  * The concrete implementation of {@link IEntity} that is wrapping the design-time representation
  * of a JPA entity.
  *
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
  * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-final class JpaEntity extends JpaManagedType
-                      implements IEntity {
+public class JpaEntity extends JpaManagedType
+                       implements IEntity {
 
 	/**
 	 * The cached used to quickly retrieve any queries that have been cached.
@@ -43,9 +50,14 @@ final class JpaEntity extends JpaManagedType
 	 *
 	 * @param provider The provider of JPA managed types
 	 * @param entity The design-time model object wrapped by this class
+	 * @param mappingBuilder The builder that is responsible to create the {@link IMapping} wrapping
+	 * a persistent attribute or property
 	 */
-	JpaEntity(JpaManagedTypeProvider provider, Entity entity) {
-		super(provider, entity);
+	public JpaEntity(JpaManagedTypeProvider provider,
+	                 Entity entity,
+	                 IMappingBuilder<AttributeMapping> mappingBuilder) {
+
+		super(provider, entity, mappingBuilder);
 	}
 
 	/**
@@ -55,7 +67,7 @@ final class JpaEntity extends JpaManagedType
 		visitor.visit(this);
 	}
 
-	private IQuery buildQuery(JpaManagedTypeProvider provider, NamedQuery namedQuery) {
+	protected IQuery buildQuery(JpaManagedTypeProvider provider, NamedQuery namedQuery) {
 		return new JpaQuery(provider, namedQuery);
 	}
 
@@ -63,7 +75,7 @@ final class JpaEntity extends JpaManagedType
 	 * {@inheritDoc}
 	 */
 	@Override
-	Entity getManagedType() {
+	protected Entity getManagedType() {
 		return (Entity) super.getManagedType();
 	}
 
@@ -82,21 +94,21 @@ final class JpaEntity extends JpaManagedType
 		return queries.get(queryName);
 	}
 
-	private void initializeQueries() {
+	protected void initializeQueries() {
 		if (queries == null) {
 			queries = new HashMap<String, IQuery>();
 			initializeQueries(queries);
 		}
 	}
 
-	private void initializeQueries(Map<String, IQuery> queries) {
+	protected void initializeQueries(Map<String, IQuery> queries) {
 		JpaManagedTypeProvider provider = getProvider();
 		for (NamedQuery namedQuery : getNamedQueries()) {
 			queries.put(namedQuery.getName(), buildQuery(provider, namedQuery));
 		}
 	}
 
-	private ListIterable<? extends NamedQuery> getNamedQueries() {
+	protected ListIterable<? extends NamedQuery> getNamedQueries() {
 		return getManagedType().getQueryContainer().getNamedQueries();
 	}
 

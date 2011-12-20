@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -30,22 +30,23 @@ public class GenericJpaPlatformFactory
 	public GenericJpaPlatformFactory() {
 		super();
 	}
-	
+
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
 			this.buildJpaVersion(),
-			new GenericJpaFactory(), 
+			new GenericJpaFactory(),
 			new JpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance()),
-			GenericJpaPlatformProvider.instance(), 
-			this.buildJpaPlatformVariation());
+			GenericJpaPlatformProvider.instance(),
+			this.buildJpaPlatformVariation(),
+			GenericJpaJpqlQueryHelper.instance());
 	}
-	
-	
+
+
 	private JpaPlatform.Version buildJpaVersion() {
 		return new SimpleVersion(JpaFacet.VERSION_1_0.getVersionString());
 	}
-	
+
 	protected JpaPlatformVariation buildJpaPlatformVariation() {
 		return new JpaPlatformVariation() {
 			public Supported getTablePerConcreteClassInheritanceIsSupported() {
@@ -74,7 +75,7 @@ public class GenericJpaPlatformFactory
 		public String getVersion() {
 			return this.getJpaVersion();
 		}
-		
+
 		public String getJpaVersion() {
 			return this.jpaVersion;
 		}
@@ -85,7 +86,7 @@ public class GenericJpaPlatformFactory
 		public boolean isCompatibleWithJpaVersion(String version) {
 			return JPA_VERSION_COMPARATOR.compare(this.jpaVersion, version) >= 0;
 		}
-		
+
 		@Override
 		public String toString() {
 			return "JPA version: " + this.getJpaVersion(); //$NON-NLS-1$

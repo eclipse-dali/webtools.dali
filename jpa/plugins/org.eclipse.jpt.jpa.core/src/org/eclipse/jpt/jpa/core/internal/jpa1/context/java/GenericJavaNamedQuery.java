@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
-import org.eclipse.jpt.jpa.core.internal.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -36,7 +37,7 @@ public class GenericJavaNamedQuery
 
 	@Override
 	protected void validateQuery_(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		JpaJpqlQueryHelper helper = new JpaJpqlQueryHelper();
+		JpaJpqlQueryHelper helper = getJpaPlatform().getJpqlQueryHelper();
 		helper.validate(this, this.query, this.getQueryAnnotation().getQueryTextRange(astRoot), 1, messages);
 	}
 

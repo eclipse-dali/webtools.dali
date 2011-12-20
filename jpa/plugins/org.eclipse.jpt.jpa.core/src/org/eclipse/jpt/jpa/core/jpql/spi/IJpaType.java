@@ -11,22 +11,27 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 
 /**
  * An internal interface used by all 3 implementations of {@link IType}.
  *
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
  * @see JavaType
  * @see JpaType
  * @see SimpleType
  *
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-interface IJpaType extends IType {
+public interface IJpaType extends IType {
 
 	/**
 	 * Manually sets the declaration of this {@link IType}, which gives the information about type

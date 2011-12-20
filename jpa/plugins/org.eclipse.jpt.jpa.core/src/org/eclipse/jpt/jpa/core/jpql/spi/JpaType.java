@@ -11,7 +11,7 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -43,16 +43,23 @@ import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
+import org.eclipse.persistence.jpa.jpql.util.iterator.CloneIterator;
+import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
 
 /**
  * The concrete implementation of {@link org.eclipse.persistence.jpa.query.spi.IType IType} that is
  * wrapping the design-time representation of a Java type.
  *
- * @version 3.0
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-final class JpaType implements IJpaType {
+public class JpaType implements IJpaType {
 
 	/**
 	 * The cached collection of {@link IConstructor constructors}.
@@ -108,14 +115,14 @@ final class JpaType implements IJpaType {
 	 * @param typeRepository The external form of a type repository
 	 * @param type The design-time representation of a Java type
 	 */
-	JpaType(JpaTypeRepository typeRepository, IType type) {
+	public JpaType(JpaTypeRepository typeRepository, IType type) {
 		super();
 		this.type           = type;
 		this.typeName       = type.getFullyQualifiedName();
 		this.typeRepository = typeRepository;
 	}
 
-	private CompilationUnit buildCompilationUnit() {
+	protected CompilationUnit buildCompilationUnit() {
 
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(type.getTypeRoot());
@@ -126,7 +133,7 @@ final class JpaType implements IJpaType {
 		return (CompilationUnit) parser.createAST(new NullProgressMonitor());
 	}
 
-	private Collection<IConstructor> buildConstructors() {
+	protected Collection<IConstructor> buildConstructors() {
 
 		ITypeBinding typeBinding = getTypeBinding();
 
@@ -174,7 +181,7 @@ final class JpaType implements IJpaType {
 		return Collections.emptyList();
 	}
 
-	private String[] buildEnumConstants() {
+	protected String[] buildEnumConstants() {
 
 		try {
 			// Retrieve the enum constants from IType
@@ -197,7 +204,7 @@ final class JpaType implements IJpaType {
 		return ExpressionTools.EMPTY_STRING_ARRAY;
 	}
 
-	private ITypeBinding buildTypeBinding() {
+	protected ITypeBinding buildTypeBinding() {
 
 		// This code was copied from ASTNodes.getTypeBinding(CompilationUnit, IType)
 		try {
@@ -243,18 +250,18 @@ final class JpaType implements IJpaType {
 		return null;
 	}
 
-	private ITypeDeclaration buildTypeDeclaration() {
+	protected ITypeDeclaration buildTypeDeclaration() {
 		return new JpaTypeDeclaration(this, new ITypeDeclaration[0]);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Iterable<IConstructor> constructors() {
+	public IterableIterator<IConstructor> constructors() {
 		if (constructors == null) {
 			constructors = buildConstructors();
 		}
-		return constructors;
+		return new CloneIterator<IConstructor>(constructors);
 	}
 
 	/**
@@ -289,7 +296,7 @@ final class JpaType implements IJpaType {
 		return typeName;
 	}
 
-	private ASTNode getParent(ASTNode node, Class<? extends ASTNode> parentClass) {
+	protected ASTNode getParent(ASTNode node, Class<? extends ASTNode> parentClass) {
 
 		do {
 			node = node.getParent();
@@ -304,11 +311,11 @@ final class JpaType implements IJpaType {
 	 *
 	 * @return The design-time representation of a Java type
 	 */
-	IType getType() {
+	protected IType getType() {
 		return type;
 	}
 
-	private ITypeBinding getTypeBinding() {
+	protected ITypeBinding getTypeBinding() {
 		if ((typeBinding == null) && !typeBindingResolved) {
 			typeBinding = buildTypeBinding();
 			typeBindingResolved = true;
@@ -331,7 +338,7 @@ final class JpaType implements IJpaType {
 	 *
 	 * @return The external form of the type repository
 	 */
-	JpaTypeRepository getTypeRepository() {
+	protected JpaTypeRepository getTypeRepository() {
 		return typeRepository;
 	}
 

@@ -11,7 +11,7 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
@@ -23,11 +23,16 @@ import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
 /**
  * The concrete implementation of {@link IConstructor} that is wrapping a Java constructor.
  *
- * @version 2.3
- * @since 2.3
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
+ * @since 3.0
  * @author Pascal Filion
  */
-final class JavaConstructor implements IConstructor {
+public class JavaConstructor implements IConstructor {
 
 	/**
 	 * The actual Java constructor.
@@ -50,13 +55,13 @@ final class JavaConstructor implements IConstructor {
 	 * @param type The declaring type of this constructor
 	 * @param constructor The actual Java constructor
 	 */
-	JavaConstructor(JavaType type, Constructor<?> constructor) {
+	public JavaConstructor(JavaType type, Constructor<?> constructor) {
 		super();
 		this.type = type;
 		this.constructor = constructor;
 	}
 
-	private ITypeDeclaration[] buildParameterTypes() {
+	protected ITypeDeclaration[] buildParameterTypes() {
 
 		Class<?>[] types = constructor.getParameterTypes();
 		Type[] genericTypes = constructor.getGenericParameterTypes();
@@ -69,7 +74,7 @@ final class JavaConstructor implements IConstructor {
 		return typeDeclarations;
 	}
 
-	private ITypeDeclaration buildTypeDeclaration(Class<?> javaType, Type genericType) {
+	protected ITypeDeclaration buildTypeDeclaration(Class<?> javaType, Type genericType) {
 		ITypeRepository typeRepository = getTypeRepository();
 		IType type = typeRepository.getType(javaType);
 		return new JavaTypeDeclaration(typeRepository, type, genericType, javaType.isArray());
@@ -85,7 +90,7 @@ final class JavaConstructor implements IConstructor {
 		return parameterTypes;
 	}
 
-	private ITypeRepository getTypeRepository() {
+	protected ITypeRepository getTypeRepository() {
 		return type.getTypeRepository();
 	}
 

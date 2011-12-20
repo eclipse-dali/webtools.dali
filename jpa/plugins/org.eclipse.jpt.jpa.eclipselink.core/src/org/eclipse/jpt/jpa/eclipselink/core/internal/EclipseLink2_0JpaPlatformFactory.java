@@ -3,7 +3,7 @@
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
+*
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
@@ -38,18 +38,19 @@ public class EclipseLink2_0JpaPlatformFactory
 		return new GenericJpaPlatform(
 			id,
 			buildJpaVersion(),
-			new EclipseLink2_0JpaFactory(), 
+			new EclipseLink2_0JpaFactory(),
 			this.buildAnnotationProvider(),
-			EclipseLink2_0JpaPlatformProvider.instance(), 
-			this.buildJpaVariation());
+			EclipseLink2_0JpaPlatformProvider.instance(),
+			this.buildJpaVariation(),
+			EclipseLink2_0JpaJpqlQueryHelper.instance());
 	}
-	
+
 	protected JpaPlatform.Version buildJpaVersion() {
 		return new EclipseLinkVersion(
 				JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_0,
 				JpaFacet.VERSION_2_0.getVersionString());
 	}
-	
+
 	protected AnnotationProvider buildAnnotationProvider() {
 		return new JpaAnnotationProvider(
 			Generic2_0JpaAnnotationDefinitionProvider.instance(),

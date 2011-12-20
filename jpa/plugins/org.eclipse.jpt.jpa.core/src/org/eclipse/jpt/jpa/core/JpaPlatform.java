@@ -3,11 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
+
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
@@ -21,13 +23,13 @@ import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 
 /**
- * This interface is to be implemented by a JPA vendor to provide extensions to 
+ * This interface is to be implemented by a JPA vendor to provide extensions to
  * the core JPA model. The core JPA model will provide functionality for JPA
  * spec annotations in Java, <code>persistence.xml</code> and mapping
  * (<code>orm.xml</code>) files.
- * The <code>org.eclipse.jpt.jpa.core.generic</code> extension supplies 
- * resource models for those file types. As another vendor option you 
- * will have to supply those resource models as well or different ones 
+ * The <code>org.eclipse.jpt.jpa.core.generic</code> extension supplies
+ * resource models for those file types. As another vendor option you
+ * will have to supply those resource models as well or different ones
  * as necessary. In the extension point you actually provide a
  * {@link JpaPlatformFactory} that will build the JPA platform.
  * <p>
@@ -40,8 +42,8 @@ import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
  * See the <code>org.eclipse.jpt.jpa.core.jpaPlatforms</code> extension point.
  * @see JpaPlatformFactory
  * @see JpaPlatformProvider
- * 
- * @version 3.0
+ *
+ * @version 3.1
  * @since 2.0
  */
 public interface JpaPlatform
@@ -52,18 +54,18 @@ public interface JpaPlatform
 	 * Get the ID for this platform
 	 */
 	String getId();
-	
+
 	/**
 	 * Return the description for this platform
 	 */
 	JpaPlatformDescription getDescription();
-	
+
 	/**
-	 * Get the version object for this platform. 
+	 * Get the version object for this platform.
 	 */
 	Version getJpaVersion();
-	
-	
+
+
 	// ********** factory **********
 
 	/**
@@ -121,15 +123,15 @@ public interface JpaPlatform
 	 */
 	Iterable<DefaultJavaAttributeMappingDefinition> getDefaultJavaAttributeMappingDefinitions();
 
-	
+
 	// ********** resource types and definitions **********
-	
+
 	/**
 	 * Return whether the platform supports the specified resource type.
 	 * This method is consistent with {@link #getResourceDefinition(JptResourceType)}.
 	 */
 	boolean supportsResourceType(JptResourceType resourceType);
-	
+
 	/**
 	 * Return the platform's resource definition for the specified resource type.
 	 * The returned definition describes the platform's corresponding context model.
@@ -138,15 +140,15 @@ public interface JpaPlatform
 	 * This method is consistent with {@link #supportsResourceType(JptResourceType)}.
 	 */
 	ResourceDefinition getResourceDefinition(JptResourceType resourceType);
-	
+
 	/**
 	 * Return the most recent supported resource type for the specified content
 	 * type. Throw an {@link IllegalArgumentException} if the content type is not
 	 * supported by the platform.
 	 */
 	JptResourceType getMostRecentSupportedResourceType(IContentType contentType);
-	
-	
+
+
 	// ********** database **********
 
 	/**
@@ -162,7 +164,7 @@ public interface JpaPlatform
 	 */
 	EntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder();
 
-	
+
 	// ********** platform variation **********
 
 	/**
@@ -170,21 +172,31 @@ public interface JpaPlatform
 	 */
 	JpaPlatformVariation getJpaVariation();
 
-	
+
+	// ********** Hermes integration **********
+
+	/**
+	 * Return the helper that integrates into the Hermes parser and that provides functionality
+	 * related to JPQL queries (example: content assist, validation).
+	 * @since 3.1
+	 */
+	JpaJpqlQueryHelper getJpqlQueryHelper();
+
+
 	interface Version {
-		
+
 		/**
 		 * Return the platform's version.
 		 */
 		String getVersion();
-		
+
 		/**
 		 * Return the highest JPA specification version supported by the platform.
 		 * @see JpaFacet#VERSION_1_0
 		 * @see JpaFacet#VERSION_2_0
 		 */
 		String getJpaVersion();
-		
+
 		/**
 		 * Return whether the platform is compatible with the specified JPA
 		 * specification version.

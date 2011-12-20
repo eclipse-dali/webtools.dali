@@ -11,7 +11,7 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +28,17 @@ import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
  * The concrete implementation of {@link ITypeRepository} that is wrapping the design-time
  * representation of a type repository.
  *
- * @version 3.0
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
 @SuppressWarnings("nls")
-final class JpaTypeRepository implements ITypeRepository {
+public class JpaTypeRepository implements ITypeRepository {
 
 	/**
 	 * The Java project that gives access the design-time objects representing the Java types.
@@ -67,13 +72,13 @@ final class JpaTypeRepository implements ITypeRepository {
 	 * @param javaProject The Java project that gives access the design-time objects representing
 	 * the Java types
 	 */
-	JpaTypeRepository(IJavaProject javaProject) {
+	public JpaTypeRepository(IJavaProject javaProject) {
 		super();
 		this.javaProject = javaProject;
 		this.types       = new HashMap<String, IJpaType>();
 	}
 
-	private String buildInnerTypeName(String typeName, int index) {
+	protected String buildInnerTypeName(String typeName, int index) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(typeName.substring(0, index));
 		sb.append("$");
@@ -81,7 +86,7 @@ final class JpaTypeRepository implements ITypeRepository {
 		return sb.toString();
 	}
 
-	private Map<String, Class<?>> buildPrimitives() {
+	protected Map<String, Class<?>> buildPrimitives() {
 		Map<String, Class<?>> primitives = new HashMap<String, Class<?>>();
 		primitives.put(Byte     .TYPE.getName(), Byte     .TYPE);
 		primitives.put(Short    .TYPE.getName(), Short    .TYPE);
@@ -94,25 +99,25 @@ final class JpaTypeRepository implements ITypeRepository {
 		return primitives;
 	}
 
-	private IJpaType buildType(Class<?> javaType) {
+	protected IJpaType buildType(Class<?> javaType) {
 		JavaType jpaType = new JavaType(this, javaType);
 		types.put(jpaType.getName(), jpaType);
 		return jpaType;
 	}
 
-	private IJpaType buildType(IType type) {
+	protected IJpaType buildType(IType type) {
 		JpaType jpaType = new JpaType(this, type);
 		types.put(jpaType.getName(), jpaType);
 		return jpaType;
 	}
 
-	private IJpaType buildType(String typeName) {
+	protected IJpaType buildType(String typeName) {
 		IJpaType jpaType = new SimpleType(this, typeName);
 		types.put(typeName, jpaType);
 		return jpaType;
 	}
 
-	private String convertToJavaArrayType(String typeName) {
+	protected String convertToJavaArrayType(String typeName) {
 
 		int index = typeName.indexOf("[]");
 		int dimensionality = (typeName.length() - index) / 2;
@@ -159,7 +164,7 @@ final class JpaTypeRepository implements ITypeRepository {
 		return sb.toString();
 	}
 
-	private Class<?> findPrimitive(String typeName) {
+	protected Class<?> findPrimitive(String typeName) {
 		if (primitives == null) {
 			primitives = buildPrimitives();
 		}
@@ -173,7 +178,7 @@ final class JpaTypeRepository implements ITypeRepository {
 	 * @param typeName The fully qualified type name
 	 * @return The design-time Java type if it could be retrieved; <code>null</code> otherwise
 	 */
-	IType findType(String typeName) {
+	protected IType findType(String typeName) {
 		try {
 			return javaProject.findType(typeName);
 		}
@@ -216,7 +221,7 @@ final class JpaTypeRepository implements ITypeRepository {
 	 *
 	 * @return The Java project, which gives access to the class path
 	 */
-	IJavaProject getJavaProject() {
+	protected IJavaProject getJavaProject() {
 		return javaProject;
 	}
 
@@ -237,7 +242,7 @@ final class JpaTypeRepository implements ITypeRepository {
 	 * @param resource The workspace location of the {@link IType} to retrieve
 	 * @return The design-time representation of a Java type
 	 */
-	IType getType(IResource resource) {
+	protected IType getType(IResource resource) {
 		try {
 			return (IType) javaProject.findElement((IPath) resource);
 		}
@@ -276,7 +281,7 @@ final class JpaTypeRepository implements ITypeRepository {
 		return typeHelper;
 	}
 
-	private IJpaType loadArrayType(String typeName) {
+	protected IJpaType loadArrayType(String typeName) {
 
 		IJpaType type = types.get(typeName);
 
@@ -305,7 +310,7 @@ final class JpaTypeRepository implements ITypeRepository {
 		return type;
 	}
 
-	private IJpaType loadInnerType(String typeName) {
+	protected IJpaType loadInnerType(String typeName) {
 
 		while (true) {
 
@@ -332,7 +337,7 @@ final class JpaTypeRepository implements ITypeRepository {
 		}
 	}
 
-	private IJpaType loadJavaArrayType(String typeName) {
+	protected IJpaType loadJavaArrayType(String typeName) {
 
 		IJpaType type = types.get(typeName);
 
@@ -360,7 +365,7 @@ final class JpaTypeRepository implements ITypeRepository {
 		return type;
 	}
 
-	private IJpaType loadTypeImp(String typeName) {
+	protected IJpaType loadTypeImp(String typeName) {
 
 		IJpaType type = types.get(typeName);
 
@@ -395,7 +400,7 @@ final class JpaTypeRepository implements ITypeRepository {
 		return type;
 	}
 
-	private IJpaType unresolvableType() {
+	protected IJpaType unresolvableType() {
 		if (unresolvableType == null) {
 			unresolvableType = new SimpleType(this, IJpaType.UNRESOLVABLE_TYPE);
 		}

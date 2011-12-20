@@ -11,27 +11,33 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
+import org.eclipse.persistence.jpa.jpql.util.iterator.CloneIterator;
+import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
 
 /**
  * The concrete implementation of {@link IType} that is wrapping a Java type.
  *
- * @version 2.3
- * @since 2.3
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
+ * @since 3.0
  * @author Pascal Filion
  */
-final class JavaType implements IJpaType {
+public class JavaType implements IJpaType {
 
 	/**
 	 * The cached {@link IConstructor IConstructors}.
@@ -69,18 +75,18 @@ final class JavaType implements IJpaType {
 	 * @param typeRepository The external form of a type repository
 	 * @param type The actual Java type wrapped by this class
 	 */
-	JavaType(ITypeRepository typeRepository, Class<?> type) {
+	public JavaType(ITypeRepository typeRepository, Class<?> type) {
 		super();
 		this.type           = type;
 		this.typeName       = type.getName();
 		this.typeRepository = typeRepository;
 	}
 
-	private IConstructor buildConstructor(Constructor<?> constructor) {
+	protected IConstructor buildConstructor(Constructor<?> constructor) {
 		return new JavaConstructor(this, constructor);
 	}
 
-	private Collection<IConstructor> buildConstructors() {
+	protected Collection<IConstructor> buildConstructors() {
 
 		Constructor<?>[] javaConstructors = type.getDeclaredConstructors();
 		Collection<IConstructor> constructors = new ArrayList<IConstructor>(javaConstructors.length);
@@ -92,7 +98,7 @@ final class JavaType implements IJpaType {
 		return constructors;
 	}
 
-	private String[] buildEnumConstants() {
+	protected String[] buildEnumConstants() {
 
 		if (!type.isEnum()) {
 			return ExpressionTools.EMPTY_STRING_ARRAY;
@@ -111,11 +117,11 @@ final class JavaType implements IJpaType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Iterable<IConstructor> constructors() {
+	public IterableIterator<IConstructor> constructors() {
 		if (constructors == null) {
 			constructors = buildConstructors();
 		}
-		return Collections.unmodifiableCollection(constructors);
+		return new CloneIterator<IConstructor>(constructors);
 	}
 
 	/**
@@ -155,7 +161,7 @@ final class JavaType implements IJpaType {
 	 *
 	 * @return The actual Java type, if <code>null</code> is returned; then the class could not be resolved
 	 */
-	Class<?> getType() {
+	protected Class<?> getType() {
 		return type;
 	}
 
@@ -174,7 +180,7 @@ final class JavaType implements IJpaType {
 	 *
 	 * @return The repository of {@link IType ITypes}
 	 */
-	ITypeRepository getTypeRepository() {
+	protected ITypeRepository getTypeRepository() {
 		return typeRepository;
 	}
 

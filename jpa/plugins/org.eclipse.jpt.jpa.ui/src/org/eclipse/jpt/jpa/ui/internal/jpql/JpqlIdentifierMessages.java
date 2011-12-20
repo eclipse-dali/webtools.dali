@@ -17,16 +17,16 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.persistence.jpa.internal.jpql.parser.Expression;
+import org.eclipse.persistence.jpa.jpql.parser.Expression;
 
 /**
  * The localized messages describing the JPQL identifiers.
  *
- * @version 3.0
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-@SuppressWarnings({"nls", "restriction"})
+@SuppressWarnings("nls")
 final class JpqlIdentifierMessages extends NLS {
 
 	// JPA 1.0 identifiers

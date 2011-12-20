@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -13,9 +13,9 @@ import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
-import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
+import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -30,8 +30,8 @@ public class Generic2_0JpaPlatformFactory
 	public Generic2_0JpaPlatformFactory() {
 		super();
 	}
-	
-	
+
+
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
@@ -39,13 +39,14 @@ public class Generic2_0JpaPlatformFactory
 			new GenericJpaFactory2_0(),
 			new JpaAnnotationProvider(Generic2_0JpaAnnotationDefinitionProvider.instance()),
 			Generic2_0JpaPlatformProvider.instance(),
-			this.buildJpaPlatformVariation());
+			this.buildJpaPlatformVariation(),
+			Generic2_0JpaJpqlQueryHelper.instance());
 	}
-	
+
 	private JpaPlatform.Version buildJpaVersion() {
 		return new SimpleVersion(JpaFacet.VERSION_2_0.getVersionString());
 	}
-	
+
 	protected JpaPlatformVariation buildJpaPlatformVariation() {
 		return new JpaPlatformVariation() {
 			//table_per_class inheritance support is optional in the 2.0 spec

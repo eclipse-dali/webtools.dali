@@ -417,8 +417,10 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 	}
 
 	private void disposeQueryHelper() {
-		queryHelper.dispose();
-		queryHelper.disposeProvider();
+		if (queryHelper != null) {
+			queryHelper.dispose();
+			queryHelper.disposeProvider();
+		}
 	}
 
 	private KeyStroke findContentAssistTrigger() {
@@ -550,11 +552,14 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 
 	private void subjectChanged(PropertyChangeEvent e) {
 
-		// Disposes of the internal data since the subject changed
 		disposeQueryHelper();
 
 		// Prevent undoing the actual query that was set
 		if (e.getNewValue() != null) {
+
+			namedQuery  = (NamedQuery) e.getNewValue();
+			queryHelper = namedQuery.getJpaProject().getJpaPlatform().getJpqlQueryHelper();
+
 			sourceViewer.getUndoManager().reset();
 			validate();
 		}
@@ -568,28 +573,34 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 	 */
 	private void validate() {
 
-		NamedQuery query = query();
+		// First clear any existing problems
 		annotationModel.removeAllAnnotations();
 
-		if ((query != null) && !styledText.isDisposed()) {
-			try {
-				String jpqlQuery = styledText.getText();
-				queryHelper.setQuery(query, jpqlQuery);
-				String parsedJpqlQuery = queryHelper.getParsedJPQLQuery();
+		// Nothing to validate
+		if ((query() == null) ||
+		    styledText.isDisposed() ||
+		    StringTools.stringIsEmpty(styledText.getText())) {
 
-				for (JPQLQueryProblem problem : sortProblems(queryHelper.validate())) {
+			return;
+		}
 
-					// Create the range
-					int[] positions = queryHelper.buildPositions(problem, parsedJpqlQuery, jpqlQuery);
+		try {
+			String jpqlQuery = styledText.getText();
+			queryHelper.setQuery(query(), jpqlQuery);
+			String parsedJpqlQuery = queryHelper.getParsedJPQLQuery();
 
-					// Add the problem to the tool tip
-					Annotation annotation = new Annotation(ERROR_TYPE, true, buildMessage(problem));
-					annotationModel.addAnnotation(annotation, new Position(positions[0], positions[1] - positions[0]));
-				}
+			for (JPQLQueryProblem problem : sortProblems(queryHelper.validate())) {
+
+				// Create the range
+				int[] positions = queryHelper.buildPositions(problem, parsedJpqlQuery, jpqlQuery);
+
+				// Add the problem to the tool tip
+				Annotation annotation = new Annotation(ERROR_TYPE, true, buildMessage(problem));
+				annotationModel.addAnnotation(annotation, new Position(positions[0], positions[1] - positions[0]));
 			}
-			finally {
-				queryHelper.dispose();
-			}
+		}
+		finally {
+			queryHelper.dispose();
 		}
 	}
 

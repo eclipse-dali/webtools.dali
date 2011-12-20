@@ -11,31 +11,44 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
+import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
+import org.eclipse.persistence.jpa.jpql.util.iterator.CloneIterator;
+import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
 
 /**
  * The abstract definition of {@link IManagedType} defined for wrapping the design-time mapped class
  * object.
  *
- * @version 3.0
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-abstract class JpaManagedType implements IManagedType {
+public abstract class JpaManagedType implements IManagedType {
 
 	/**
 	 * The design-time model object wrapped by this class.
 	 */
 	private final TypeMapping managedType;
+
+	/**
+	 * The builder that is responsible to create the {@link IMapping} wrapping a persistent attribute
+	 * or property.
+	 */
+	private IMappingBuilder<AttributeMapping> mappingBuilder;
 
 	/**
 	 * The cached collection of {@link IMapping mappings} that prevent rebuilding them every time one
@@ -58,18 +71,37 @@ abstract class JpaManagedType implements IManagedType {
 	 *
 	 * @param managedType The provider of JPA managed types
 	 * @param mappedClass The design-time model object wrapped by this class
+	 * @param mappingBuilder The builder that is responsible to create the {@link IMapping} wrapping
+	 * a persistent attribute or property
 	 */
-	JpaManagedType(JpaManagedTypeProvider provider, TypeMapping managedType) {
+	protected JpaManagedType(JpaManagedTypeProvider provider,
+	                         TypeMapping managedType,
+	                         IMappingBuilder<AttributeMapping> mappingBuilder) {
+
 		super();
-		this.provider    = provider;
-		this.managedType = managedType;
+		this.provider       = provider;
+		this.managedType    = managedType;
+		this.mappingBuilder = mappingBuilder;
 	}
 
-	private IMapping buildMapping(AttributeMapping mapping) {
-		return new JpaMapping(this, mapping);
+	/**
+	 * Creates the external form that needs to wrap the given {@link AttributeMapping}. By default,
+	 * the call is delegated to {@link IMappingBuilder}.
+	 *
+	 * @param mapping The mapping to wrap with a {@link IMapping}
+	 * @return A new concrete instance of {@link IMapping}
+	 */
+	protected IMapping buildMapping(AttributeMapping mapping) {
+		return mappingBuilder.buildMapping(this, mapping);
 	}
 
-	private Map<String, IMapping> buildMappings() {
+	/**
+	 * Creates an external form for each {@link AttributeMapping} and stores them by using their
+	 * mapping name.
+	 *
+	 * @return The mappings mapped by their name
+	 */
+	protected Map<String, IMapping> buildMappings() {
 		Map<String, IMapping> mappings = new HashMap<String, IMapping>();
 		for (AttributeMapping mapping  : managedType.getAllAttributeMappings()) {
 			mappings.put(mapping.getName(), buildMapping(mapping));
@@ -89,14 +121,24 @@ abstract class JpaManagedType implements IManagedType {
 	 *
 	 * @return The managed type wrapped by this external form
 	 */
-	TypeMapping getManagedType() {
+	protected TypeMapping getManagedType() {
 		return managedType;
+	}
+
+	/**
+	 * Returns the builder that is responsible to create the {@link IMapping} wrapping a persistent
+	 * attribute or property.
+	 *
+	 * @return The concrete implementation of {@link IMappingBuilder}
+	 */
+	protected IMappingBuilder<AttributeMapping> getMappingBuilder() {
+		return mappingBuilder;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public final IMapping getMappingNamed(String name) {
+	public IMapping getMappingNamed(String name) {
 		initializeMappings();
 		return mappings.get(name);
 	}
@@ -104,21 +146,24 @@ abstract class JpaManagedType implements IManagedType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final JpaManagedTypeProvider getProvider() {
+	public JpaManagedTypeProvider getProvider() {
 		return provider;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public final IType getType() {
+	public IType getType() {
 		if (type == null) {
 			type = provider.getTypeRepository().getType(managedType.getPersistentType().getName());
 		}
 		return type;
 	}
 
-	private void initializeMappings() {
+	/**
+	 * Initializes this managed type.
+	 */
+	protected void initializeMappings() {
 		if (mappings == null) {
 			mappings = buildMappings();
 		}
@@ -127,8 +172,8 @@ abstract class JpaManagedType implements IManagedType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final Iterable<IMapping> mappings() {
+	public IterableIterator<IMapping> mappings() {
 		initializeMappings();
-		return Collections.unmodifiableCollection(mappings.values());
+		return new CloneIterator<IMapping>(mappings.values());
 	}
 }

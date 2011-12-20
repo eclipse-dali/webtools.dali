@@ -11,22 +11,28 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
+import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeProvider;
 import org.eclipse.persistence.jpa.jpql.spi.IQuery;
 
 /**
  * The concrete implementation of {@link IQuery} that is wrapping the design-time representation
  * of a JPQL query.
  *
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
  * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
 @SuppressWarnings("nls")
-public final class JpaQuery implements IQuery {
+public class JpaQuery implements IQuery {
 
 	/**
 	 * The actual JPQL query, which can differ from the one owned by the model object, which happens
@@ -37,7 +43,7 @@ public final class JpaQuery implements IQuery {
 	/**
 	 *  The provider of managed types.
 	 */
-	private JpaManagedTypeProvider provider;
+	private IManagedTypeProvider provider;
 
 	/**
 	 * The model object holding onto the JPQL query.
@@ -50,7 +56,7 @@ public final class JpaQuery implements IQuery {
 	 * @param provider The provider of managed types
 	 * @param query The model object of the JPQL query
 	 */
-	public JpaQuery(JpaManagedTypeProvider provider, NamedQuery query) {
+	public JpaQuery(IManagedTypeProvider provider, NamedQuery query) {
 		this(provider, query, query.getQuery());
 	}
 
@@ -62,7 +68,7 @@ public final class JpaQuery implements IQuery {
 	 * @param actualQuery The actual JPQL query, which can differ from the one owned by the model
 	 * object, which happens when the model is out of sync because it has not been updated yet
 	 */
-	JpaQuery(JpaManagedTypeProvider provider, NamedQuery query, String actualQuery) {
+	public JpaQuery(IManagedTypeProvider provider, NamedQuery query, String actualQuery) {
 		super();
 		initialize(provider, query, actualQuery);
 	}
@@ -77,7 +83,7 @@ public final class JpaQuery implements IQuery {
 	/**
 	 * {@inheritDoc}
 	 */
-	public JpaManagedTypeProvider getProvider() {
+	public IManagedTypeProvider getProvider() {
 		return provider;
 	}
 
@@ -86,11 +92,11 @@ public final class JpaQuery implements IQuery {
 	 *
 	 * @return The design-time representation of a JPQL query
 	 */
-	NamedQuery getQuery() {
+	protected NamedQuery getQuery() {
 		return query;
 	}
 
-	private void initialize(JpaManagedTypeProvider provider, NamedQuery query, String actualQuery) {
+	protected void initialize(IManagedTypeProvider provider, NamedQuery query, String actualQuery) {
 
 		this.query       = query;
 		this.provider    = provider;

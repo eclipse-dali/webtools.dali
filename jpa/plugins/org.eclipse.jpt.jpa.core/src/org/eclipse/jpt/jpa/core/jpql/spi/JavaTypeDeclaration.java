@@ -11,7 +11,7 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
@@ -28,15 +28,20 @@ import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
  * The concrete implementation of {@link ITypeDeclaration} that is wrapping the representation
  * of the declaration description of a type.
  *
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
  * @see IMapping
  * @see IType
  *
- * @version 2.3
- * @since 2.3
+ * @version 3.1
+ * @since 3.0
  * @author Pascal Filion
  */
 @SuppressWarnings("nls")
-final class JavaTypeDeclaration implements ITypeDeclaration {
+public class JavaTypeDeclaration implements ITypeDeclaration {
 
 	/**
 	 * Determines whether the type declaration represents an array.
@@ -72,10 +77,10 @@ final class JavaTypeDeclaration implements ITypeDeclaration {
 	 * @param genericType The actual type that contains the generics, if any is present
 	 * @param array Determines whether the type declaration represents an array
 	 */
-	JavaTypeDeclaration(ITypeRepository typeRepository,
-	                    IType type,
-	                    Object genericType,
-	                    boolean array) {
+	public JavaTypeDeclaration(ITypeRepository typeRepository,
+	                           IType type,
+	                           Object genericType,
+	                           boolean array) {
 
 		super();
 		this.type           = type;
@@ -84,7 +89,7 @@ final class JavaTypeDeclaration implements ITypeDeclaration {
 		this.typeRepository = typeRepository;
 	}
 
-	private String buildArrayTypeName(String arrayTypeName) {
+	protected String buildArrayTypeName(String arrayTypeName) {
 
 		StringBuilder sb = new StringBuilder();
 		int index = arrayTypeName.indexOf('[');
@@ -107,7 +112,7 @@ final class JavaTypeDeclaration implements ITypeDeclaration {
 		return sb.toString();
 	}
 
-	private ITypeDeclaration[] buildParameterTypes() {
+	protected ITypeDeclaration[] buildParameterTypes() {
 
 		List<ITypeDeclaration> parameterTypes = new ArrayList<ITypeDeclaration>();
 
@@ -147,7 +152,7 @@ final class JavaTypeDeclaration implements ITypeDeclaration {
 		return parameterTypes.toArray(new ITypeDeclaration[parameterTypes.size()]);
 	}
 
-	private JavaTypeDeclaration buildTypeDeclaration(Class<?> javaType) {
+	protected JavaTypeDeclaration buildTypeDeclaration(Class<?> javaType) {
 		return new JavaTypeDeclaration(
 			typeRepository,
 			getType(javaType),
@@ -156,7 +161,7 @@ final class JavaTypeDeclaration implements ITypeDeclaration {
 		);
 	}
 
-	private JavaTypeDeclaration buildTypeDeclaration(Object genericType) {
+	protected JavaTypeDeclaration buildTypeDeclaration(Object genericType) {
 
 		// <T1, ..., Tn>
 		if (genericType instanceof ParameterizedType) {
@@ -199,7 +204,7 @@ final class JavaTypeDeclaration implements ITypeDeclaration {
 		return buildTypeDeclaration((Class<?>) genericType);
 	}
 
-	private String elementType(String typeName) {
+	protected String elementType(String typeName) {
 
 		if (typeName.equals("boolean")) return "Z";
 		if (typeName.equals("byte"))    return "B";
@@ -235,7 +240,7 @@ final class JavaTypeDeclaration implements ITypeDeclaration {
 		return type;
 	}
 
-	private IType getType(Class<?> type) {
+	protected IType getType(Class<?> type) {
 		return typeRepository.getType(type);
 	}
 

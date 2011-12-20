@@ -11,7 +11,7 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -24,11 +24,16 @@ import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
  * The concrete implementation of {@link IConstructor} that is wrapping the design-time
  * representation of a Java constructor.
  *
- * @version 3.0
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-final class JpaConstructor implements IConstructor {
+public class JpaConstructor implements IConstructor {
 
 	/**
 	 * The design-time representation of a Java constructor.
@@ -52,13 +57,13 @@ final class JpaConstructor implements IConstructor {
 	 * @param type The type owning the constructor
 	 * @param constructor The design-time representation of a Java constructor
 	 */
-	JpaConstructor(JpaType type, IMethodBinding constructor) {
+	public JpaConstructor(JpaType type, IMethodBinding constructor) {
 		super();
 		this.type        = type;
 		this.constructor = constructor;
 	}
 
-	private ITypeDeclaration buildTypeDeclaration(ITypeBinding parameterType) {
+	protected ITypeDeclaration buildTypeDeclaration(ITypeBinding parameterType) {
 
 		boolean array = parameterType.isArray();
 		String typeParameterName;
@@ -108,7 +113,7 @@ final class JpaConstructor implements IConstructor {
 		);
 	}
 
-	private ITypeDeclaration[] buildTypeDeclarations() {
+	protected ITypeDeclaration[] buildTypeDeclarations() {
 
 		ITypeBinding[] parameterTypes = constructor.getParameterTypes();
 		ITypeDeclaration[] declarations = new ITypeDeclaration[parameterTypes.length];

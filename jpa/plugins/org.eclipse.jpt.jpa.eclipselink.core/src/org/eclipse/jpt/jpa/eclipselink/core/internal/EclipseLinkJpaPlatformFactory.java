@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -16,9 +16,9 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
+import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 
@@ -36,29 +36,30 @@ public class EclipseLinkJpaPlatformFactory
 	public EclipseLinkJpaPlatformFactory() {
 		super();
 	}
-	
+
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
 			buildJpaVersion(),
-			new EclipseLinkJpaFactory(), 
-			buildAnnotationProvider(), 
-			EclipseLinkJpaPlatformProvider.instance(), 
-			buildJpaPlatformVariation());
+			new EclipseLinkJpaFactory(),
+			buildAnnotationProvider(),
+			EclipseLinkJpaPlatformProvider.instance(),
+			buildJpaPlatformVariation(),
+			EclipseLinkJpaJpqlQueryHelper.instance());
 	}
-	
+
 	private JpaPlatform.Version buildJpaVersion() {
 		return new EclipseLinkVersion(
 				JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_0,
 				JpaFacet.VERSION_1_0.getVersionString());
 	}
-	
+
 	protected AnnotationProvider buildAnnotationProvider() {
 		return new JpaAnnotationProvider(
 			GenericJpaAnnotationDefinitionProvider.instance(),
 			EclipseLinkJpaAnnotationDefinitionProvider.instance());
 	}
-	
+
 	protected JpaPlatformVariation buildJpaPlatformVariation() {
 		return new JpaPlatformVariation() {
 			public Supported getTablePerConcreteClassInheritanceIsSupported() {
@@ -85,7 +86,7 @@ public class EclipseLinkJpaPlatformFactory
 		public String getVersion() {
 			return this.eclipseLinkVersion;
 		}
-		
+
 		/**
 		 * Return whether the platform is compatible with the specified EclipseLink version.
 		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_1_0

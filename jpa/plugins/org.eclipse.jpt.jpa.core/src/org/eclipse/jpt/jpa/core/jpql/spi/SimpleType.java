@@ -11,23 +11,29 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.lang.annotation.Annotation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
+import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
+import org.eclipse.persistence.jpa.jpql.util.iterator.NullIterator;
 
 /**
  * The concrete implementation of {@link IType} that is wrapping the type name only.
  *
- * @version 3.0
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-final class SimpleType implements IJpaType {
+public class SimpleType implements IJpaType {
 
 	/**
 	 * Caches the type hierarchy of the {@link IType} in order to prevent rebuilding it each time.
@@ -49,7 +55,7 @@ final class SimpleType implements IJpaType {
 	 *
 	 * @param typeName The fully qualified name of the Java type
 	 */
-	SimpleType(JpaTypeRepository typeRepository, String typeName) {
+	public SimpleType(JpaTypeRepository typeRepository, String typeName) {
 		super();
 		this.typeRepository = typeRepository;
 		this.typeName       = typeName;
@@ -58,8 +64,8 @@ final class SimpleType implements IJpaType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Iterable<IConstructor> constructors() {
-		return EmptyIterable.instance();
+	public IterableIterator<IConstructor> constructors() {
+		return NullIterator.instance();
 	}
 
 	/**

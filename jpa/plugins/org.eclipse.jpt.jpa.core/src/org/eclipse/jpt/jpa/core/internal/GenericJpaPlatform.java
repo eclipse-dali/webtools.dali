@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal;
 
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.AnnotationProvider;
@@ -53,8 +55,10 @@ public class GenericJpaPlatform
 
 	private final JpaPlatformVariation jpaVariation;
 
+	private final JpaJpqlQueryHelper jpqlQueryHelper;
 
-	public GenericJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, AnnotationProvider annotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation) {
+
+	public GenericJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, AnnotationProvider annotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation, JpaJpqlQueryHelper jpqlQueryHelper) {
 		super();
 		this.id = id;
 		this.jpaVersion = jpaVersion;
@@ -62,6 +66,7 @@ public class GenericJpaPlatform
 		this.annotationProvider = annotationProvider;
 		this.jpaVariation = jpaVariation;
 		this.platformProvider = platformProvider;
+		this.jpqlQueryHelper = jpqlQueryHelper;
 	}
 
 
@@ -194,5 +199,12 @@ public class GenericJpaPlatform
 
 	public JpaPlatformVariation getJpaVariation() {
 		return this.jpaVariation;
+	}
+
+
+	// ********** Hermes integration **********
+
+	public JpaJpqlQueryHelper getJpqlQueryHelper() {
+		return jpqlQueryHelper;
 	}
 }

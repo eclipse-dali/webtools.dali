@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
-import org.eclipse.jpt.jpa.core.internal.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
@@ -97,10 +98,11 @@ public class GenericOrmNamedQuery2_0
 
 	@Override
 	protected void validateQuery_(java.util.List<IMessage> messages, IReporter reporter) {
+
 		// Convert the literal escape characters into actual escape characters
 		String jpqlQuery = ExpressionTools.unescape(this.query, new int[1]);
 
-		JpaJpqlQueryHelper helper = new JpaJpqlQueryHelper();
+		JpaJpqlQueryHelper helper = getJpaPlatform().getJpqlQueryHelper();
 		helper.validate(this, jpqlQuery, this.getQueryTextRange(), 0, messages);
 	}
 

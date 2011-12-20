@@ -11,7 +11,10 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql;
+
+import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
+import org.eclipse.jpt.jpa.core.jpql.spi.JpaQuery;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
@@ -20,9 +23,11 @@ import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationPreferences;
+import org.eclipse.persistence.jpa.jpql.AbstractJPQLQueryHelper;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
-import org.eclipse.persistence.jpa.jpql.JPQLQueryHelper;
 import org.eclipse.persistence.jpa.jpql.JPQLQueryProblem;
+import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
+import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeProvider;
 import org.eclipse.persistence.jpa.jpql.spi.IQuery;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -40,24 +45,31 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  *     <li>{@link #validateSemantic()}.</li>
  *     </ul></li>
  *
- * @version 3.0
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
 @SuppressWarnings("nls")
-public final class JpaJpqlQueryHelper extends JPQLQueryHelper {
+public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 
 	/**
 	 * Caches the provider in order to prevent recreating the SPI representation of the JPA artifacts
 	 * more than once.
 	 */
-	private JpaManagedTypeProvider managedTypeProvider;
+	private IManagedTypeProvider managedTypeProvider;
 
 	/**
 	 * Creates a new <code>JpaQueryHelper</code>.
+	 *
+	 * @param jpqlGrammar The grammar that defines how to parse a JPQL query
 	 */
-	public JpaJpqlQueryHelper() {
-		super();
+	protected JpaJpqlQueryHelper(JPQLGrammar jpqlGrammar) {
+		super(jpqlGrammar);
 	}
 
 	/**
@@ -111,12 +123,12 @@ public final class JpaJpqlQueryHelper extends JPQLQueryHelper {
 	 * @return A new {@link IMessage} that has the required information to display the problem
 	 * underline and the error message in the Problems view
 	 */
-	private IMessage buildProblem(NamedQuery namedQuery,
-	                              TextRange textRange,
-	                              JPQLQueryProblem problem,
-	                              String parsedJpqlQuery,
-	                              String actualQuery,
-	                              int offset) {
+	protected IMessage buildProblem(NamedQuery namedQuery,
+	                                TextRange textRange,
+	                                JPQLQueryProblem problem,
+	                                String parsedJpqlQuery,
+	                                String actualQuery,
+	                                int offset) {
 
 		// Convert the positions from the parsed JPQL query to the actual JPQL query
 		int[] positions = buildPositions(problem, parsedJpqlQuery, actualQuery);
@@ -149,9 +161,13 @@ public final class JpaJpqlQueryHelper extends JPQLQueryHelper {
 		return message;
 	}
 
-	private JpaManagedTypeProvider buildProvider(NamedQuery query) {
-		return new JpaManagedTypeProvider(query.getJpaProject(), query.getPersistenceUnit());
-	}
+	/**
+	 * Creates
+	 *
+	 * @param query
+	 * @return
+	 */
+	public abstract JpaManagedTypeProvider buildProvider(NamedQuery query);
 
 	/**
 	 * Disposes the provider so the application metadata is not kept in memory.
@@ -185,14 +201,14 @@ public final class JpaJpqlQueryHelper extends JPQLQueryHelper {
 	 * problem
 	 * @return The global severity for validating JPQL queries
 	 */
-	private int severity(Object targetObject) {
+	protected int severity(Object targetObject) {
 		return JpaValidationPreferences.getProblemSeverityPreference(
 			targetObject,
 			JpaValidationMessages.JPQL_QUERY_VALIDATION
 		);
 	}
 
-	private boolean shouldValidate(NamedQuery namedQuery) {
+	protected boolean shouldValidate(NamedQuery namedQuery) {
 		return JpaValidationPreferences.getProblemSeverityPreference(
 			namedQuery,
 			JpaValidationMessages.JPQL_QUERY_VALIDATION

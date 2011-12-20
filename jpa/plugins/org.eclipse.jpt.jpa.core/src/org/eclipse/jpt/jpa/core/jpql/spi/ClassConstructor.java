@@ -11,7 +11,7 @@
  *     Oracle - initial API and implementation
  *
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.jpql;
+package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import org.eclipse.jdt.core.BindingKey;
 import org.eclipse.jdt.core.IMethod;
@@ -26,11 +26,16 @@ import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
  * representation of a Java constructor (either coming from a Java compiled file or a Java source
  * file).
  *
- * @version 3.0
+ * Provisional API: This interface is part of an interim API that is still under development and
+ * expected to change significantly before reaching stability. It is available at this early stage
+ * to solicit feedback from pioneering adopters on the understanding that any code that uses this
+ * API will almost certainly be broken (repeatedly) as the API evolves.
+ *
+ * @version 3.1
  * @since 3.0
  * @author Pascal Filion
  */
-final class ClassConstructor implements IConstructor {
+public class ClassConstructor implements IConstructor {
 
 	/**
 	 * The information of the constructor.
@@ -54,13 +59,13 @@ final class ClassConstructor implements IConstructor {
 	 * @param type The declaring type of this constructor
 	 * @param methodInfo The information of the constructor
 	 */
-	ClassConstructor(JpaType type, IMethod method) {
+	public ClassConstructor(JpaType type, IMethod method) {
 		super();
 		this.type   = type;
 		this.method = method;
 	}
 
-	private ITypeDeclaration[] buildParameterTypes() {
+	protected ITypeDeclaration[] buildParameterTypes() {
 
 		BindingKey bindingKey = new BindingKey(method.getKey());
 		String signature = bindingKey.toSignature();
@@ -88,7 +93,7 @@ final class ClassConstructor implements IConstructor {
 		return typeDeclarations;
 	}
 
-	private ITypeDeclaration[] buildTypeParameters(String signature) {
+	protected ITypeDeclaration[] buildTypeParameters(String signature) {
 
 		String[] typeParameters = Signature.getTypeArguments(signature);
 		ITypeDeclaration[] generics = new ITypeDeclaration[typeParameters.length];
@@ -137,7 +142,7 @@ final class ClassConstructor implements IConstructor {
 		return typeDeclarations;
 	}
 
-	private ITypeRepository getTypeRepository() {
+	protected ITypeRepository getTypeRepository() {
 		return type.getTypeRepository();
 	}
 }

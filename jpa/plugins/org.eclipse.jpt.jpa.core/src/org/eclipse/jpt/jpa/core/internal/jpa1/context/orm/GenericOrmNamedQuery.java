@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
-import org.eclipse.jpt.jpa.core.internal.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -35,10 +36,11 @@ public class GenericOrmNamedQuery
 
 	@Override
 	protected void validateQuery_(java.util.List<IMessage> messages, IReporter reporter) {
+
 		// Convert the literal escape characters into actual escape characters
 		String jpqlQuery = ExpressionTools.unescape(this.query, new int[1]);
 
-		JpaJpqlQueryHelper helper = new JpaJpqlQueryHelper();
+		JpaJpqlQueryHelper helper = getJpaPlatform().getJpqlQueryHelper();
 		helper.validate(this, jpqlQuery, this.getQueryTextRange(), 0, messages);
 	}
 
