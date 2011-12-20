@@ -11,10 +11,12 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -85,14 +87,16 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_columnDefinitionLabel,
 			buildColumnDefinitionHolder(getSubjectHolder())
 		);
-//remove this for EclipseLink 2.3 platform - see bug 361866
-//		// Primary key tri-state check box
-//		addTriStateCheckBoxWithDefault(
-//			addSubPane(container, 4),
-//			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_primaryKey,
-//			buildPrimaryKeyHolder(),
-//			buildPrimaryKeyStringHolder(),
-//			EclipseLinkHelpContextIds.TENANT_DISCRIMINATOR_COLUMN_PRIMARY_KEY);
+
+		// Primary key tri-state check box
+		TriStateCheckBox pkCheckBox = addTriStateCheckBoxWithDefault(
+			addSubPane(container, 4),
+			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumnComposite_primaryKey,
+			buildPrimaryKeyHolder(),
+			buildPrimaryKeyStringHolder(),
+			EclipseLinkHelpContextIds.TENANT_DISCRIMINATOR_COLUMN_PRIMARY_KEY);
+
+		SWTTools.controlVisibleState(new EclipseLink2_4ProjectFlagModel<ReadOnlyTenantDiscriminatorColumn2_3>(this.getSubjectHolder()), pkCheckBox.getCheckBox());
 	}
 
 	private ColumnCombo<ReadOnlyTenantDiscriminatorColumn2_3> addNameCombo(Composite container) {

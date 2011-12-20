@@ -55,7 +55,8 @@ public class EclipseLinkEntityPrimaryKeyValidator
 	@Override
 	protected boolean definesPrimaryKey(TypeMapping typeMapping) {
 		return super.definesPrimaryKey(typeMapping)
-			|| ((EclipseLinkTypeMapping) typeMapping).usesPrimaryKeyColumns();
+			|| ((EclipseLinkTypeMapping) typeMapping).usesPrimaryKeyColumns()
+			|| ((EclipseLinkTypeMapping) typeMapping).usesPrimaryKeyTenantDiscriminatorColumns();
 	}
 	
 	@Override

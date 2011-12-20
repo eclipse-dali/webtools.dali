@@ -671,6 +671,15 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		return this.getSuperMappedSuperclass(superTypeMapping);
 	}
 
+	public boolean usesPrimaryKeyTenantDiscriminatorColumns() {
+		for (ReadOnlyTenantDiscriminatorColumn2_3 column : getTenantDiscriminatorColumns()) {
+			if (column.isPrimaryKey()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 	// ********** validation **********
 

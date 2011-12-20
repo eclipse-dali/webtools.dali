@@ -139,4 +139,8 @@ public class NullJavaEclipseLinkMultitenancy2_3
 	public boolean specifiedTenantDiscriminatorColumnsAllowed() {
 		return false;
 	}
+
+	public boolean usesPrimaryKeyTenantDiscriminatorColumns() {
+		return false;
+	}
 }

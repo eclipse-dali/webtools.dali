@@ -41,6 +41,12 @@ public interface EclipseLinkTypeMapping
 	 */
 	boolean usesPrimaryKeyColumns();
 
+	/**
+	 * Return true if the type mapping is multitenant and any of the tenant discriminator
+	 * columns (specified or default) have the primaryKey option set to true
+	 */
+	boolean usesPrimaryKeyTenantDiscriminatorColumns();
+
 	Iterable<EclipseLinkConverter> getConverters();
 
 	Transformer<AttributeMapping, Iterable<EclipseLinkConverter>> ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER =

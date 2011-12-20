@@ -134,6 +134,10 @@ public class JavaEclipseLinkEmbeddableImpl
 		return false;
 	}
 
+	public boolean usesPrimaryKeyTenantDiscriminatorColumns() {
+		return false;
+	}
+
 	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
 		return this.getJavaResourceType();
 	}

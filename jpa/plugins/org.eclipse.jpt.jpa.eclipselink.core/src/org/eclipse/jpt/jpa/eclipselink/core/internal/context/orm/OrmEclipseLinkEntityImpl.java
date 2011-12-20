@@ -234,6 +234,10 @@ public class OrmEclipseLinkEntityImpl
 		return (javaEntity != null) && javaEntity.usesPrimaryKeyColumns();
 	}
 
+	public boolean usesPrimaryKeyTenantDiscriminatorColumns() {
+		return getMultitenancy().usesPrimaryKeyTenantDiscriminatorColumns();
+	}
+
 	@Override
 	protected boolean buildSpecifiedDiscriminatorColumnIsAllowed() {
 		return super.buildSpecifiedDiscriminatorColumnIsAllowed() && ! this.classExtractorIsUsed();

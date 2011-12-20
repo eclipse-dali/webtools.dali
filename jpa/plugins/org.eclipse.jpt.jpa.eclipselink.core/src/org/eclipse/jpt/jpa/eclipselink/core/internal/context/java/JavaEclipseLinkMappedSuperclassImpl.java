@@ -201,6 +201,10 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		return this.getJavaResourceType().getAnnotation(EclipseLink.PRIMARY_KEY) != null;
 	}
 
+	public boolean usesPrimaryKeyTenantDiscriminatorColumns() {
+		return getMultitenancy().usesPrimaryKeyTenantDiscriminatorColumns();
+	}
+
 	public JavaCacheable2_0 getCacheable() {
 		return ((JavaCacheableHolder2_0) this.getCaching()).getCacheable();
 	}

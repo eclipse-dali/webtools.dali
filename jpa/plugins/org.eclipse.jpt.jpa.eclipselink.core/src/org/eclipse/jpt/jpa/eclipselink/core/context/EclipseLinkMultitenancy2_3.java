@@ -152,4 +152,11 @@ public interface EclipseLinkMultitenancy2_3
 	boolean specifiedTenantDiscriminatorColumnsAllowed();
  		String SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_ALLOWED_PROPERTY = "specifiedTenantDiscriminatorColumnsAllowed"; //$NON-NLS-1$
 
+
+	/**
+	 * Return true if any of the tenant discriminator columns (specified or default)
+	 * have the primaryKey option set to true
+	 */
+ 	boolean usesPrimaryKeyTenantDiscriminatorColumns();
+
 }

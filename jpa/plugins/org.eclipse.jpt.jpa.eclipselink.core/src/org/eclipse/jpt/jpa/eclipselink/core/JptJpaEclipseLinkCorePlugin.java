@@ -152,7 +152,15 @@ public class JptJpaEclipseLinkCorePlugin extends Plugin
 	// ********** public static methods **********
 
 	public static boolean nodeIsEclipseLink2_3Compatible(JpaNode jpaNode) {
-		return ((EclipseLinkVersion) jpaNode.getJpaProject().getJpaPlatform().getJpaVersion()).isCompatibleWithVersion(ECLIPSELINK_PLATFORM_VERSION_2_3);
+		return nodeIsEclipseLinkVersionCompatible(jpaNode, ECLIPSELINK_PLATFORM_VERSION_2_3);
+	}
+
+	public static boolean nodeIsEclipseLink2_4Compatible(JpaNode jpaNode) {
+		return nodeIsEclipseLinkVersionCompatible(jpaNode, ECLIPSELINK_PLATFORM_VERSION_2_4);
+	}
+
+	public static boolean nodeIsEclipseLinkVersionCompatible(JpaNode jpaNode, String version) {
+		return ((EclipseLinkVersion) jpaNode.getJpaProject().getJpaPlatform().getJpaVersion()).isCompatibleWithVersion(version);
 	}
 
 	/**

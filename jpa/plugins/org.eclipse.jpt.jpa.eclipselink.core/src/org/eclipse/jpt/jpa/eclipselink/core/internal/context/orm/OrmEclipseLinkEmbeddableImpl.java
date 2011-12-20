@@ -152,6 +152,10 @@ public class OrmEclipseLinkEmbeddableImpl
 		return false;
 	}
 
+	public boolean usesPrimaryKeyTenantDiscriminatorColumns() {
+		return false;
+	}
+
 
 	// ********** refactoring **********
 

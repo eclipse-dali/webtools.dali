@@ -246,6 +246,10 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		return (javaMappedSuperclass != null) && javaMappedSuperclass.usesPrimaryKeyColumns();
 	}
 
+	public boolean usesPrimaryKeyTenantDiscriminatorColumns() {
+		return getMultitenancy().usesPrimaryKeyTenantDiscriminatorColumns();
+	}
+
 	public OrmCacheable2_0 getCacheable() {
 		return this.getCacheableHolder().getCacheable();
 	}
