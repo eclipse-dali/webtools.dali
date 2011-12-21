@@ -27,13 +27,13 @@ public class BinaryEclipseLinkMultitenantAnnotation2_3
 	implements EclipseLinkMultitenantAnnotation2_3
 {
 	private MultitenantType2_3 value;
-//	private Boolean includeCriteria; // added in EclipseLink 2.4
+	private Boolean includeCriteria; // added in EclipseLink 2.4
 
 
 	public BinaryEclipseLinkMultitenantAnnotation2_3(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
-//		this.includeCriteria = this.buildIncludeCriteria();
+		this.includeCriteria = this.buildIncludeCriteria();
 	}
 
 	public String getAnnotationName() {
@@ -44,7 +44,7 @@ public class BinaryEclipseLinkMultitenantAnnotation2_3
 	public void update() {
 		super.update();
 		this.setValue_(this.buildValue());
-//		this.setIncludeCriteria_(this.buildIncludeCriteria());
+		this.setIncludeCriteria_(this.buildIncludeCriteria());
 	}
 
 
@@ -77,27 +77,27 @@ public class BinaryEclipseLinkMultitenantAnnotation2_3
 		throw new UnsupportedOperationException();
 	}
 
-//	// ***** include criteria
-//	public Boolean getIncludeCriteria() {
-//		return this.includeCriteria;
-//	}
-//
-//	public void setIncludeCriteria(Boolean includeCriteria) {
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	private void setIncludeCriteria_(Boolean includeCriteria) {
-//		Boolean old = this.includeCriteria;
-//		this.includeCriteria = includeCriteria;
-//		this.firePropertyChanged(INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
-//	}
-//
-//	private Boolean buildIncludeCriteria() {
-//		return (Boolean) this.getJdtMemberValue(EclipseLink.MULTITENANT__INCLUDE_CRITERIA);
-//	}
-//
-//	public TextRange getIncludeCriteriaTextRange(CompilationUnit astRoot) {
-//		throw new UnsupportedOperationException();
-//	}
+	// ***** include criteria
+	public Boolean getIncludeCriteria() {
+		return this.includeCriteria;
+	}
+
+	public void setIncludeCriteria(Boolean includeCriteria) {
+		throw new UnsupportedOperationException();
+	}
+
+	private void setIncludeCriteria_(Boolean includeCriteria) {
+		Boolean old = this.includeCriteria;
+		this.includeCriteria = includeCriteria;
+		this.firePropertyChanged(INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
+	}
+
+	private Boolean buildIncludeCriteria() {
+		return (Boolean) this.getJdtMemberValue(EclipseLink.MULTITENANT__INCLUDE_CRITERIA);
+	}
+
+	public TextRange getIncludeCriteriaTextRange(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
 
 }

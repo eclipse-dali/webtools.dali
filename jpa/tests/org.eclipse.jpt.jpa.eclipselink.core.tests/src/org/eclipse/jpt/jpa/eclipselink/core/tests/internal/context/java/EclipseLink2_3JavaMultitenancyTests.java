@@ -228,62 +228,62 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		assertEquals(EclipseLinkMultitenantType2_3.VPD, getJavaMultitenancy().getSpecifiedType());		
 		assertEquals(MultitenantType2_3.VPD, multitenant.getValue());
 	}
-//
-//	public void testIsIncludeCriteria() throws Exception {
-//		createTestEntityWithMultitenant();
-//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-//
-//		assertEquals(true, getJavaMultitenancy().isIncludeCriteria());
-//
-//		getJavaMultitenancy().setSpecifiedIncludeCriteria(Boolean.FALSE);
-//		assertEquals(false, getJavaMultitenancy().isIncludeCriteria());
-//	}
-//
-//	public void testGetSpecifiedIncludeCriteria() throws Exception {
-//		createTestEntityWithMultitenant();
-//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-//
-//		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
-//
-//		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
-//		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
-//		multitenant.setIncludeCriteria(Boolean.FALSE);
-//		getJpaProject().synchronizeContextModel();
-//
-//		assertEquals(Boolean.FALSE, getJavaMultitenancy().getSpecifiedIncludeCriteria());
-//
-//		multitenant.setIncludeCriteria(Boolean.TRUE);
-//		getJpaProject().synchronizeContextModel();
-//
-//		assertEquals(Boolean.TRUE, getJavaMultitenancy().getSpecifiedIncludeCriteria());
-//
-//		multitenant.setIncludeCriteria(null);
-//		getJpaProject().synchronizeContextModel();
-//
-//		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
-//		multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
-//		assertNotNull(multitenant);
-//	}
-//
-//	public void testSetSpecifiedIncludeCriteria() throws Exception {
-//		createTestEntityWithMultitenant();
-//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-//
-//		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
-//
-//		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
-//		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
-//
-//		assertNull(multitenant.getIncludeCriteria());
-//
-//		getJavaMultitenancy().setSpecifiedIncludeCriteria(Boolean.TRUE);
-//		assertEquals(Boolean.TRUE, multitenant.getIncludeCriteria());
-//
-//		getJavaMultitenancy().setSpecifiedIncludeCriteria(null);
-//		multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
-//		assertNull(multitenant.getIncludeCriteria());
-//		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
-//	}
+
+	public void testIsIncludeCriteria() throws Exception {
+		createTestEntityWithMultitenant();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(true, getJavaMultitenancy().isIncludeCriteria());
+
+		getJavaMultitenancy().setSpecifiedIncludeCriteria(Boolean.FALSE);
+		assertEquals(false, getJavaMultitenancy().isIncludeCriteria());
+	}
+
+	public void testGetSpecifiedIncludeCriteria() throws Exception {
+		createTestEntityWithMultitenant();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
+		multitenant.setIncludeCriteria(Boolean.FALSE);
+		getJpaProject().synchronizeContextModel();
+
+		assertEquals(Boolean.FALSE, getJavaMultitenancy().getSpecifiedIncludeCriteria());
+
+		multitenant.setIncludeCriteria(Boolean.TRUE);
+		getJpaProject().synchronizeContextModel();
+
+		assertEquals(Boolean.TRUE, getJavaMultitenancy().getSpecifiedIncludeCriteria());
+
+		multitenant.setIncludeCriteria(null);
+		getJpaProject().synchronizeContextModel();
+
+		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
+		multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
+		assertNotNull(multitenant);
+	}
+
+	public void testSetSpecifiedIncludeCriteria() throws Exception {
+		createTestEntityWithMultitenant();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
+
+		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
+		EclipseLinkMultitenantAnnotation2_3 multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
+
+		assertNull(multitenant.getIncludeCriteria());
+
+		getJavaMultitenancy().setSpecifiedIncludeCriteria(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, multitenant.getIncludeCriteria());
+
+		getJavaMultitenancy().setSpecifiedIncludeCriteria(null);
+		multitenant = (EclipseLinkMultitenantAnnotation2_3) resourceType.getAnnotation(EclipseLinkMultitenantAnnotation2_3.ANNOTATION_NAME);
+		assertNull(multitenant.getIncludeCriteria());
+		assertNull(getJavaMultitenancy().getSpecifiedIncludeCriteria());
+	}
 
 	public void testSpecifiedTenantDiscriminatorColumn() throws Exception {
 		createTestEntityWithTenantDiscriminatorColumn();

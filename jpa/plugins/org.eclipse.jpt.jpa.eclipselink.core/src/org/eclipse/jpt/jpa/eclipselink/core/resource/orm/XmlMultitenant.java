@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.MultitenantType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
@@ -364,6 +365,10 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 		result.append(includeCriteria);
 		result.append(')');
 		return result.toString();
+	}
+
+	public TextRange getIncludeCriteriaTextRange() {
+		return getAttributeTextRange(EclipseLink2_4.MULTITENANT__INCLUDE_CRITERIA); 
 	}
 
 	// ********** translators **********

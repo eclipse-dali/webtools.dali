@@ -10,8 +10,11 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.Collection;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
@@ -19,6 +22,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
@@ -31,6 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorC
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
@@ -88,6 +93,16 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
             addMultitenantStrategyCombo(subPane).getControl(), 
             EclipseLinkHelpContextIds.MULTITENANCY_STRATEGY
             );
+
+		// Include criteria tri-state check box
+		TriStateCheckBox includeCriteriaCheckBox = addTriStateCheckBoxWithDefault(
+			subPane,
+			EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_includeCriteria,
+			buildIncludeCriteriaHolder(),
+			buildIncludeCriteriaStringHolder(),
+			EclipseLinkHelpContextIds.MULTITENANCY_INCLUDE_CRITERIA);
+
+		SWTTools.controlVisibleState(new EclipseLink2_4ProjectFlagModel<EclipseLinkMultitenancy2_3>(this.getSubjectHolder()), includeCriteriaCheckBox.getCheckBox());
 
 		// Tenant discriminator columns group pane
 		Group tenantDiscriminatorColumnGroupPane = addTitledGroup(
@@ -163,6 +178,49 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		};
 	}
 
+	WritablePropertyValueModel<Boolean> buildIncludeCriteriaHolder() {
+		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_INCLUDE_CRITERIA_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getSpecifiedIncludeCriteria();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setSpecifiedIncludeCriteria(value);
+			}
+		};
+	}
+
+	PropertyValueModel<String> buildIncludeCriteriaStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultIncludeCriteriaHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_includeCriteriaWithDefault, defaultStringValue);
+				}
+				return EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_includeCriteria;
+			}
+		};
+	}
+
+	PropertyValueModel<Boolean> buildDefaultIncludeCriteriaHolder() {
+		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(
+				getSubjectHolder(),
+				EclipseLinkMultitenancy2_3.SPECIFIED_INCLUDE_CRITERIA_PROPERTY,
+				EclipseLinkMultitenancy2_3.DEFAULT_INCLUDE_CRITERIA_PROPERTY) {
+
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedIncludeCriteria() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isIncludeCriteria());
+			}
+		};
+	}
+
 	protected TenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>  buildTenantDiscriminatorColumnsComposite(Composite container) {
 		return new TenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>(
 			getSubjectHolder(),
@@ -170,7 +228,6 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 			getWidgetFactory(),
 			buildTenantDiscriminatorColumnsEditor());
 	}
-
 
 	protected TenantDiscriminatorColumnsEditor<EclipseLinkMultitenancy2_3> buildTenantDiscriminatorColumnsEditor() {
 		return new TenantDiscriminatorColumnsProvider();

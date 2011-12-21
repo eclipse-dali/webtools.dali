@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 
 /**
@@ -55,5 +56,7 @@ public interface XmlMultitenant_2_4 extends JpaEObject
 	 * @generated
 	 */
 	void setIncludeCriteria(Boolean value);
+
+	TextRange getIncludeCriteriaTextRange();
 
 } // XmlMultitenant_2_4

@@ -66,8 +66,8 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	protected EclipseLinkMultitenantType2_3 specifiedType;
 	protected EclipseLinkMultitenantType2_3 defaultType;
 
-//	protected Boolean specifiedIncludeCriteria;
-//	protected boolean defaultIncludeCriteria;
+	protected Boolean specifiedIncludeCriteria;
+	protected boolean defaultIncludeCriteria;
 
 	protected final ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3> specifiedTenantDiscriminatorColumnContainer;
 	protected final OrmReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
@@ -83,7 +83,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 
 		this.specifiedMultitenant = isMultitenantElementSpecified();
 		this.specifiedType = this.buildSpecifiedType();
-//		this.specifiedIncludeCriteria = this.buildSpecifiedIncludeCriteria();
+		this.specifiedIncludeCriteria = this.buildSpecifiedIncludeCriteria();
 		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
 		this.specifiedTenantDiscriminatorColumnContainer = this.buildSpecifiedTenantDiscriminatorColumnContainer();
 		this.defaultTenantDiscriminatorColumn = this.buildTenantDiscriminatorColumn(null);
@@ -98,7 +98,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 		super.synchronizeWithResourceModel();
 		this.setSpecifiedMultitenant_(isMultitenantElementSpecified());
 		this.setSpecifiedType_(this.buildSpecifiedType());
-//		this.setSpecifiedIncludeCriteria_(this.buildSpecifiedIncludeCriteria());
+		this.setSpecifiedIncludeCriteria_(this.buildSpecifiedIncludeCriteria());
 		this.syncSpecifiedTenantDiscriminatorColumns();
 	}
 
@@ -114,7 +114,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 
 		this.setDefaultMultitenant(useJavaValue ? javaMultitenantPolicy.isMultitenant() : this.buildDefaultMultitenant());
 		this.setDefaultType(useJavaValue ? javaMultitenantPolicy.getType() : this.buildDefaultType());
-//		this.setDefaultIncludeCriteria(useJavaValue ? javaMultitenantPolicy.isIncludeCriteria() : DEFAULT_INCLUDE_CRITERIA);
+		this.setDefaultIncludeCriteria(useJavaValue ? javaMultitenantPolicy.isIncludeCriteria() : this.buildDefaultIncludeCriteria());
 		this.setSpecifiedTenantDiscriminatorColumnsAllowed(this.buildSpecifiedTenantDiscriminatorColumnsAllowed());
 		this.updateDefaultTenantDiscriminatorColumns();
 	}
@@ -227,43 +227,50 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 
 	// ********** include criteria **********
 
-//	public boolean isIncludeCriteria() {
-//		return (this.specifiedIncludeCriteria != null) ? this.specifiedIncludeCriteria.booleanValue() : this.defaultIncludeCriteria;
-//	}
-//
-//	public Boolean getSpecifiedIncludeCriteria() {
-//		return this.specifiedIncludeCriteria;
-//	}
-//
-//	public void setSpecifiedIncludeCriteria(Boolean includeCriteria) {
-//		if (this.valuesAreDifferent(this.specifiedIncludeCriteria, includeCriteria)) {
-//			XmlMultitenant xmlMultitenant = this.getXmlMultitenantForUpdate();
-//			this.setSpecifiedIncludeCriteria_(includeCriteria);
-//			xmlMultitenant.setIncludeCriteria(includeCriteria);
-//		}
-//	}
-//
-//	protected void setSpecifiedIncludeCriteria_(Boolean includeCriteria) {
-//		Boolean old = this.specifiedIncludeCriteria;
-//		this.specifiedIncludeCriteria = includeCriteria;
-//		this.firePropertyChanged(SPECIFIED_INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
-//	}
-//
-//	protected Boolean buildSpecifiedIncludeCriteria() {
-//		XmlMultitenant xmlMultitenant = this.getXmlMultitenant();
-//		return (xmlMultitenant == null) ? null : xmlMultitenant.getIncludeCriteria();
-//	}
-//
-//
-//	public boolean isDefaultIncludeCriteria() {
-//		return this.defaultIncludeCriteria;
-//	}
-//
-//	protected void setDefaultIncludeCriteria(boolean includeCriteria) {
-//		boolean old = this.defaultIncludeCriteria;
-//		this.defaultIncludeCriteria = includeCriteria;
-//		this.firePropertyChanged(DEFAULT_INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
-//	}
+	public boolean isIncludeCriteria() {
+		return (this.specifiedIncludeCriteria != null) ? this.specifiedIncludeCriteria.booleanValue() : this.defaultIncludeCriteria;
+	}
+
+	public Boolean getSpecifiedIncludeCriteria() {
+		return this.specifiedIncludeCriteria;
+	}
+
+	public void setSpecifiedIncludeCriteria(Boolean includeCriteria) {
+		if (this.valuesAreDifferent(this.specifiedIncludeCriteria, includeCriteria)) {
+			XmlMultitenant xmlMultitenant = this.getXmlMultitenantForUpdate();
+			this.setSpecifiedIncludeCriteria_(includeCriteria);
+			xmlMultitenant.setIncludeCriteria(includeCriteria);
+		}
+	}
+
+	protected void setSpecifiedIncludeCriteria_(Boolean includeCriteria) {
+		Boolean old = this.specifiedIncludeCriteria;
+		this.specifiedIncludeCriteria = includeCriteria;
+		this.firePropertyChanged(SPECIFIED_INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
+	}
+
+	protected Boolean buildSpecifiedIncludeCriteria() {
+		XmlMultitenant xmlMultitenant = this.getXmlMultitenant();
+		return (xmlMultitenant == null) ? null : xmlMultitenant.getIncludeCriteria();
+	}
+
+
+	public boolean isDefaultIncludeCriteria() {
+		return this.defaultIncludeCriteria;
+	}
+
+	protected void setDefaultIncludeCriteria(boolean includeCriteria) {
+		boolean old = this.defaultIncludeCriteria;
+		this.defaultIncludeCriteria = includeCriteria;
+		this.firePropertyChanged(DEFAULT_INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
+	}
+
+	protected boolean buildDefaultIncludeCriteria() {
+		if (getType() == EclipseLinkMultitenantType2_3.VPD) {
+			return false;
+		}
+		return DEFAULT_INCLUDE_CRITERIA;
+	}
 
 
 	// ********** tenant discriminator columns **********
@@ -745,6 +752,17 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 			for (OrmVirtualTenantDiscriminatorColumn2_3 column : this.getDefaultTenantDiscriminatorColumns()) {
 				column.validate(messages, reporter);
 			}
+		}
+		if (this.getSpecifiedIncludeCriteria() == Boolean.TRUE && getType() == EclipseLinkMultitenantType2_3.VPD) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.NORMAL_SEVERITY,
+					EclipseLinkJpaValidationMessages.MULTITENANT_VPD_INCLUDE_CRITERIA_WILL_BE_IGNORED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getXmlMultitenant().getIncludeCriteriaTextRange()
+				)
+			);			
 		}
 	}
 

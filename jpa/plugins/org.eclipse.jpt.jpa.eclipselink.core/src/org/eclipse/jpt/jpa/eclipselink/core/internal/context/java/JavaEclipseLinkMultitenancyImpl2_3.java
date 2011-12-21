@@ -65,7 +65,8 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	protected EclipseLinkMultitenantType2_3 specifiedType;
 	protected EclipseLinkMultitenantType2_3 defaultType;
 
-//	protected Boolean specifiedIncludeCriteria;
+	protected Boolean specifiedIncludeCriteria;
+	protected boolean defaultIncludeCriteria;
 
 	protected final JavaReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
 	protected final ContextListContainer<JavaTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3> specifiedTenantDiscriminatorColumnContainer;
@@ -81,7 +82,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		EclipseLinkMultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
 		this.specifiedMultitenant = multitenantAnnotation.isSpecified();
 		this.specifiedType = EclipseLinkMultitenantType2_3.fromJavaResourceModel(multitenantAnnotation.getValue());
-//		this.specifiedIncludeCriteria = multitenantAnnotation.getIncludeCriteria();
+		this.specifiedIncludeCriteria = multitenantAnnotation.getIncludeCriteria();
 		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
 		this.specifiedTenantDiscriminatorColumnContainer = this.buildSpecifiedTenantDiscriminatorColumnContainer();
 		this.defaultTenantDiscriminatorColumn = this.buildTenantDiscriminatorColumn(this.buildNullTenantDiscriminatorColumnAnnotation());
@@ -97,7 +98,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 
 		EclipseLinkMultitenantAnnotation2_3 multitenantAnnotation = this.getMultitenantAnnotation();
 		this.setSpecifiedType_(EclipseLinkMultitenantType2_3.fromJavaResourceModel(multitenantAnnotation.getValue()));
-//		this.setSpecifiedIncludeCriteria_(multitenantAnnotation.getIncludeCriteria());
+		this.setSpecifiedIncludeCriteria_(multitenantAnnotation.getIncludeCriteria());
 		this.syncSpecifiedTenantDiscriminatorColumns();
 	}
 
@@ -108,6 +109,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		this.setSpecifiedMultitenant_(this.isMultitenantAnnotationSpecified());
 		this.setDefaultMultitenant(this.buildDefaultMultitenant());
 		this.setDefaultType(this.buildDefaultType());
+		this.setDefaultIncludeCriteria(this.buildDefaultIncludeCriteria());
 		this.setSpecifiedTenantDiscriminatorColumnsAllowed(this.buildSpecifiedTenantDiscriminatorColumnsAllowed());
 		this.updateDefaultTenantDiscriminatorColumns();
 	}
@@ -210,30 +212,43 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 
-//	// ********** include criteria **********
-//
-//	public boolean isIncludeCriteria() {
-//		return (this.specifiedIncludeCriteria != null) ? this.specifiedIncludeCriteria.booleanValue() : this.isDefaultIncludeCriteria();
-//	}
-//
-//	public Boolean getSpecifiedIncludeCriteria() {
-//		return this.specifiedIncludeCriteria;
-//	}
-//
-//	public void setSpecifiedIncludeCriteria(Boolean includeCriteria) {
-//		this.getMultitenantAnnotation().setIncludeCriteria(includeCriteria);
-//		this.setSpecifiedIncludeCriteria_(includeCriteria);
-//	}
-//
-//	protected void setSpecifiedIncludeCriteria_(Boolean includeCriteria) {
-//		Boolean old = this.specifiedIncludeCriteria;
-//		this.specifiedIncludeCriteria = includeCriteria;
-//		this.firePropertyChanged(SPECIFIED_INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
-//	}
-//
-//	public boolean isDefaultIncludeCriteria() {
-//		return DEFAULT_INCLUDE_CRITERIA;
-//	}
+	// ********** include criteria **********
+
+	public boolean isIncludeCriteria() {
+		return (this.specifiedIncludeCriteria != null) ? this.specifiedIncludeCriteria.booleanValue() : this.isDefaultIncludeCriteria();
+	}
+
+	public Boolean getSpecifiedIncludeCriteria() {
+		return this.specifiedIncludeCriteria;
+	}
+
+	public void setSpecifiedIncludeCriteria(Boolean includeCriteria) {
+		this.getMultitenantAnnotation().setIncludeCriteria(includeCriteria);
+		this.setSpecifiedIncludeCriteria_(includeCriteria);
+	}
+
+	protected void setSpecifiedIncludeCriteria_(Boolean includeCriteria) {
+		Boolean old = this.specifiedIncludeCriteria;
+		this.specifiedIncludeCriteria = includeCriteria;
+		this.firePropertyChanged(SPECIFIED_INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
+	}
+
+	public boolean isDefaultIncludeCriteria() {
+		return this.defaultIncludeCriteria;
+	}
+
+	protected void setDefaultIncludeCriteria(boolean includeCriteria) {
+		boolean old = this.defaultIncludeCriteria;
+		this.defaultIncludeCriteria = includeCriteria;
+		this.firePropertyChanged(DEFAULT_INCLUDE_CRITERIA_PROPERTY, old, includeCriteria);
+	}
+
+	protected boolean buildDefaultIncludeCriteria() {
+		if (getType() == EclipseLinkMultitenantType2_3.VPD) {
+			return false;
+		}
+		return DEFAULT_INCLUDE_CRITERIA;
+	}
 
 
 	// ********** tenant discriminator columns **********
@@ -728,6 +743,17 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 			for (JavaVirtualTenantDiscriminatorColumn2_3 column : this.getDefaultTenantDiscriminatorColumns()) {
 				column.validate(messages, reporter, astRoot);
 			}
+		}
+		if (this.getSpecifiedIncludeCriteria() == Boolean.TRUE && getType() == EclipseLinkMultitenantType2_3.VPD) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.NORMAL_SEVERITY,
+					EclipseLinkJpaValidationMessages.MULTITENANT_VPD_INCLUDE_CRITERIA_WILL_BE_IGNORED,
+					EMPTY_STRING_ARRAY,
+					this,
+					this.getMultitenantAnnotation().getIncludeCriteriaTextRange(astRoot)
+				)
+			);			
 		}
 	}
 

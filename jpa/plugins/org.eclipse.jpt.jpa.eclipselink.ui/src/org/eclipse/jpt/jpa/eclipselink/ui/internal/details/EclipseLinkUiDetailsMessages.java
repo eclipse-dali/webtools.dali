@@ -177,6 +177,8 @@ public class EclipseLinkUiDetailsMessages extends NLS {
 	public static String EclipseLinkMultitenancyComposite_single_table;
 	public static String EclipseLinkMultitenancyComposite_table_per_tenant;
 	public static String EclipseLinkMultitenancyComposite_vpd;
+	public static String EclipseLinkMultitenancyComposite_includeCriteria;
+	public static String EclipseLinkMultitenancyComposite_includeCriteriaWithDefault;
 
 	static {
 		NLS.initializeMessages("eclipselink_ui_details", EclipseLinkUiDetailsMessages.class);

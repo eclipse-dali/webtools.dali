@@ -50,19 +50,19 @@ public final class NullEclipseLinkMultitenantAnnotation2_3
 		return null;
 	}
 
-//	// ***** include criteria
-//	public Boolean getIncludeCriteria() {
-//		return null;
-//	}
-//
-//	public void setIncludeCriteria(Boolean includeCriteria) {
-//		if (includeCriteria != null) {
-//			this.addAnnotation().setIncludeCriteria(includeCriteria);
-//		}
-//	}
-//
-//	public TextRange getIncludeCriteriaTextRange(CompilationUnit astRoot) {
-//		return null;
-//	}
+	// ***** include criteria
+	public Boolean getIncludeCriteria() {
+		return null;
+	}
+
+	public void setIncludeCriteria(Boolean includeCriteria) {
+		if (includeCriteria != null) {
+			this.addAnnotation().setIncludeCriteria(includeCriteria);
+		}
+	}
+
+	public TextRange getIncludeCriteriaTextRange(CompilationUnit astRoot) {
+		return null;
+	}
 
 }

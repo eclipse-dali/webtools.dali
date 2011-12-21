@@ -55,6 +55,7 @@ public interface EclipseLinkHelpContextIds {
 	public static final String PERSISTENCE_OPTIONS_TARGET_SERVER = PREFIX + "options_targetServer";
 
 	public static final String MULTITENANCY_STRATEGY = PREFIX + "multitenancy_strategy";
+	public static final String MULTITENANCY_INCLUDE_CRITERIA = PREFIX + "multitenancy_includeCriteria";
 	public static final String MULTITENANCY_TENANT_DISCRIMINATOR_COLUMNS = PREFIX + "multitenancy_tenantDiscriminatorColumns";
 	public static final String TENANT_DISCRIMINATOR_COLUMN_NAME = PREFIX + "tenantDiscriminatorColumn_name";
 	public static final String TENANT_DISCRIMINATOR_COLUMN_TABLE = PREFIX + "tenantDiscriminatorColumn_table";
