@@ -146,7 +146,7 @@
 				icon="icons/full/etool16/new_entity_wiz.gif"
 				id="org.eclipse.jpt.jpa.ui.NewEntityAction"
 				label="%NewEntityAction.label"
-				pulldown="true"
+				style="pulldown"
 				toolbarPath="Normal/JptWizards">
 			</action>
 		</actionSet>
