@@ -12,6 +12,8 @@ package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.ELJaxbCoreTests;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.java.ELJaxbJavaResourceModelTests;
 
 
@@ -21,7 +23,12 @@ public class ELJaxbCoreResourceModelTests
 	public static Test suite() {
 		TestSuite suite = new TestSuite(ELJaxbCoreResourceModelTests.class.getName());
 
-		suite.addTest(ELJaxbJavaResourceModelTests.suite());
+		if (ELJaxbCoreTests.requiredJarsExists()) {
+			suite.addTest(ELJaxbJavaResourceModelTests.suite());
+		}
+		else {
+			suite.addTest(TestSuite.warning(ELJaxbCoreTests.buildMissingJarErrorMessage()));
+		}
 		return suite;
 	}
 	

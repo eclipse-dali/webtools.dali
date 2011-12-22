@@ -10,8 +10,10 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal;
 
 import java.io.File;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
 import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.ELJaxbCoreContextModelTests;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.ELJaxbCoreResourceModelTests;
@@ -27,19 +29,36 @@ public class ELJaxbCoreTests {
 	}
 	
 	public static boolean requiredJarsExists() {
-		return elJaxbJarPropertyExists() && elJaxbJarFileExists();
+		return jaxbJarPropertyExists() 
+			&& jaxbJarFileExists()
+			&& eclipselinkJarPropertyExists() 
+			&& eclipselinkJarFileExists();
 	}
 	
-	public static boolean elJaxbJarPropertyExists() {
+	public static boolean jaxbJarPropertyExists() {
+		return getSystemProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY) != null;
+	}
+	
+	public static boolean jaxbJarFileExists() {
+		return (new File(getSystemProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY))).exists();
+	}
+	
+	public static boolean eclipselinkJarPropertyExists() {
 		return getSystemProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY) != null;
 	}
 	
-	public static boolean elJaxbJarFileExists() {
+	public static boolean eclipselinkJarFileExists() {
 		return (new File(getSystemProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY))).exists();
 	}
 	
 	public static String buildMissingJarErrorMessage() {
-		if( ! elJaxbJarPropertyExists()) {
+		if( ! jaxbJarPropertyExists()) {
+			return errorMissingProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY);
+		}
+		else if( ! jaxbJarFileExists()) {
+			return errorJarFileDoesNotExist(getSystemProperty(TestJaxbProject.JAXB_JAR_NAME_SYSTEM_PROPERTY));
+		}
+		else if( ! eclipselinkJarPropertyExists()) {
 			return errorMissingProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY);
 		}
 		return errorJarFileDoesNotExist(getSystemProperty(TestJaxbProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY));

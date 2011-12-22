@@ -13,6 +13,8 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.eclipse.jpt.jaxb.core.tests.internal.JaxbCoreTests;
 import org.eclipse.jpt.jaxb.core.tests.internal.resource.java.JaxbJavaResourceModelTests;
 
 
@@ -21,9 +23,14 @@ public class JaxbCoreResourceModelTests extends TestCase
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JaxbCoreResourceModelTests.class.getName());
 
-		suite.addTestSuite(JaxbIndexResourceTests.class);
-		suite.addTestSuite(JaxbPropertiesResourceTests.class);
-		suite.addTest(JaxbJavaResourceModelTests.suite());
+		if (JaxbCoreTests.requiredJarsExists()) {
+			suite.addTestSuite(JaxbIndexResourceTests.class);
+			suite.addTestSuite(JaxbPropertiesResourceTests.class);
+			suite.addTest(JaxbJavaResourceModelTests.suite());
+		}
+		else {
+			suite.addTest(TestSuite.warning(JaxbCoreTests.buildMissingJarErrorMessage()));
+		}
 		return suite;
 	}
 
