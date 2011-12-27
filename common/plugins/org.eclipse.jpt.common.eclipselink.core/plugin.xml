@@ -51,11 +51,7 @@
 		point="org.eclipse.wst.xml.core.catalogContributions">
 		
 		<catalogContribution id="default">
-			
-			<public
-				publicId="http://www.eclipse.org/eclipselink/xsds/persistence/orm"
-				uri="schemas/eclipselink_orm_2_4.xsd"/>
-			
+
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_0.xsd"
 				uri="schemas/eclipselink_orm_1_0.xsd"/>
@@ -79,19 +75,15 @@
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_2.xsd"
 				uri="schemas/eclipselink_orm_2_2.xsd"/>
-			
+
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_3.xsd"
 				uri="schemas/eclipselink_orm_2_3.xsd"/>
-			
+
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_4.xsd"
-				uri="schemas/eclipselink_orm_2_4.xsd"/>
-			
-			<public
-				publicId="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
-				uri="schemas/eclipselink_oxm_2_4.xsd"/>
-			
+				uri="platform:/plugin/org.eclipse.persistence.jpa/org/eclipse/persistence/jpa/eclipselink_orm_2_4.xsd"/>
+
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_0.xsd"
 				uri="schemas/eclipselink_oxm_2_0.xsd"/>
@@ -103,22 +95,18 @@
    			<uri
          		name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_2.xsd"
          		uri="schemas/eclipselink_oxm_2_2.xsd"/>
-			
+
 			<uri
          		name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_3.xsd"
          		uri="schemas/eclipselink_oxm_2_3.xsd"/>
-			
+
 			<uri
          		name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_4.xsd"
-         		uri="schemas/eclipselink_oxm_2_4.xsd"/>
-			
-			<public
-				publicId="http://www.eclipse.org/eclipselink/xsds/persistence"
-				uri="schemas/eclipselink_persistence_map_2.3.xsd"/>				
-			
+         		uri="platform:/plugin/org.eclipse.persistence.moxy/org/eclipse/persistence/jaxb/eclipselink_oxm_2_4.xsd"/>
+
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_persistence_map_1.0.xsd"
-				uri="schemas/eclipselink_persistence_map_1.0.xsd"/>
+				uri="platform:/plugin/org.eclipse.persistence.core/org/eclipse/persistence/eclipselink_persistence_map_1.0.xsd"/>
 			
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_persistence_map_1.1.xsd"
@@ -131,10 +119,10 @@
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_persistence_map_2.0.xsd"
 				uri="schemas/eclipselink_persistence_map_2.0.xsd"/>
-			
+
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_persistence_map_2.3.xsd"
-				uri="schemas/eclipselink_persistence_map_2.3.xsd"/>
+				uri="platform:/plugin/org.eclipse.persistence.core/org/eclipse/persistence/eclipselink_persistence_map_2.3.xsd"/>
 			
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_sessions_1.0.xsd"
@@ -151,10 +139,10 @@
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_sessions_2.0.xsd"
 				uri="schemas/eclipselink_sessions_2.0.xsd"/>	
-				
+
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_sessions_2.1.xsd"
-				uri="schemas/eclipselink_sessions_2.1.xsd"/>	
+				uri="platform:/plugin/org.eclipse.persistence.core/org/eclipse/persistence/eclipselink_sessions_2.1.xsd"/>	
 			
 		</catalogContribution>
 		
