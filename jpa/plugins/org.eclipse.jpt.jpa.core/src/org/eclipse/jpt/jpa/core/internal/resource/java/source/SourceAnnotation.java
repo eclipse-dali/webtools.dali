@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,8 +34,8 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.ContainerAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 
 /**
@@ -102,8 +102,8 @@ public abstract class SourceAnnotation<A extends AnnotatedElement>
 	// ********** convenience methods **********
 
 	@Override
-	public JavaResourcePersistentMember getParent() {
-		return (JavaResourcePersistentMember) super.getParent();
+	public JavaResourceAnnotatedElement getParent() {
+		return (JavaResourceAnnotatedElement) super.getParent();
 	}
 
 	protected IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
