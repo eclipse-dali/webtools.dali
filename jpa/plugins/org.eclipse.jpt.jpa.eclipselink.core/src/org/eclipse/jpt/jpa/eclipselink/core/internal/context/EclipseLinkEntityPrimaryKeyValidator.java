@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011  Oracle. 
+ *  Copyright (c) 2010, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.PrimaryKeyTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -62,5 +63,13 @@ public class EclipseLinkEntityPrimaryKeyValidator
 	@Override
 	protected boolean specifiesIdClass() {
 		return super.specifiesIdClass() || definesIdClass(typeMapping());
+	}
+
+
+	@Override
+	protected void validateIdClassAttributesWithPropertyAccess(
+			JavaPersistentType idClass, List<IMessage> messages,
+			IReporter reporter) {
+		//do nothing - Eclipselink does not care about the existence status of property methods
 	}
 }

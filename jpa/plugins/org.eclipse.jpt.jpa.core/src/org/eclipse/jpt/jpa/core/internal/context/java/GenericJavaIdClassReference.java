@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,9 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
@@ -199,6 +200,7 @@ public class GenericJavaIdClassReference
 	protected JavaResourceType getIdClassJavaResourceType() {
 		return (JavaResourceType) this.getJpaProject().getJavaResourceType(this.fullyQualifiedIdClassName, Kind.TYPE);
 	}
+
 	protected JavaPersistentType buildIdClass(JavaResourceType resourceClass) {
 		return this.getJpaFactory().buildJavaPersistentType(this, resourceClass);
 	}
@@ -251,17 +253,56 @@ public class GenericJavaIdClassReference
 	protected void validateIdClass(List<IMessage> messages, IReporter reporter,	CompilationUnit astRoot) {
 		if (this.isSpecified()) {
 			JavaResourceType jrt = this.getIdClassJavaResourceType();
-			if ((jrt != null) && (jrt.isAnnotatedWith(getJpaProject().getTypeMappingAnnotations()))) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_VALID,
-								new String[] {jrt.getName()}, 
-								this,
-								this.getValidationTextRange(astRoot)
-						)
-				);
-			} 
+			if (jrt != null) {
+
+				if (!jrt.isPublic()) {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,
+									new String[] {jrt.getQualifiedName()}, 
+									this,
+									this.getValidationTextRange(astRoot)
+									)
+							);
+				}
+
+				if (!JDTTools.typeIsSubType(this.getJpaProject().getJavaProject(), jrt.getQualifiedName(), JDTTools.SERIALIZABLE_CLASS_NAME)) {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,
+									new String[] {jrt.getQualifiedName()}, 
+									this,
+									this.getValidationTextRange(astRoot)
+									)
+							);
+				}
+
+				if (!jrt.hasEqualsMethod()) {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,
+									new String[] {jrt.getQualifiedName()}, 
+									this,
+									this.getValidationTextRange(astRoot)
+									)
+							);
+				}
+
+				if (!jrt.hasHashCodeMethod()) {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,
+									new String[] {jrt.getQualifiedName()}, 
+									this,
+									this.getValidationTextRange(astRoot)
+									)
+							);
+				}
+			}
 		}
 	}
 	

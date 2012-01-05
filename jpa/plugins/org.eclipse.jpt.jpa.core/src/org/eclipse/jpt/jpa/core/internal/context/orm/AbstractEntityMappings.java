@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -478,6 +478,14 @@ public abstract class AbstractEntityMappings
 
 	public JavaResourceAbstractType resolveJavaResourceType(String className) {
 		return (JavaResourceAbstractType) this.resolveType(RESOURCE_TYPE_LOOKUP_ADAPTER, className);
+	}
+
+	public JavaResourceAbstractType resolveJavaResourceType(String className, JavaResourceAbstractType.Kind kind) {
+		JavaResourceAbstractType resourceType = this.resolveJavaResourceType(className);
+		if (resourceType == null || resourceType.getKind() != kind) {
+			return null;
+		}
+		return resourceType;
 	}
 
 	public IType resolveJdtType(String className) {

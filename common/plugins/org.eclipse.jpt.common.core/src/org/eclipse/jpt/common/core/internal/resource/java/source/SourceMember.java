@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,6 +36,7 @@ abstract class SourceMember<M extends Member>
 
 	boolean static_;  // 'static' is a reserved word
 
+	boolean protected_; // 'protected' is a reserved word
 
 	// ********** construction/initialization **********
 
@@ -51,6 +52,7 @@ abstract class SourceMember<M extends Member>
 		this.transient_ = this.buildTransient(binding);
 		this.public_ = this.buildPublic(binding);
 		this.static_ = this.buildStatic(binding);
+		this.protected_ = this.buildProtected(binding);
 	}
 
 	@Override
@@ -61,6 +63,7 @@ abstract class SourceMember<M extends Member>
 		this.syncTransient(this.buildTransient(binding));
 		this.syncPublic(this.buildPublic(binding));
 		this.syncStatic(this.buildStatic(binding));
+		this.syncProtected(this.buildProtected(binding));
 	}
 
 
@@ -166,7 +169,21 @@ abstract class SourceMember<M extends Member>
 	private boolean buildStatic(IBinding binding) {
 		return (binding == null) ? false : Modifier.isStatic(binding.getModifiers());
 	}
+	
+	// ***** protected
+	public boolean isProtected() {
+		return this.protected_;
+	}
 
+	private void syncProtected(boolean astProtected) {
+		boolean old = this.protected_;
+		this.protected_ = astProtected;
+		this.firePropertyChanged(PROTECTED_PROPERTY, old, astProtected);
+	}
+
+	private boolean buildProtected(IBinding binding) {
+		return (binding == null) ? false : Modifier.isProtected(binding.getModifiers());
+	}
 
 	// ********** miscellaneous **********
 
@@ -175,6 +192,10 @@ abstract class SourceMember<M extends Member>
 	}
 
 	public void resolveTypes(CompilationUnit astRoot) {
+	}
+
+	public boolean isPublicOrProtected() {
+		return isPublic() || isProtected();
 	}
 
 }

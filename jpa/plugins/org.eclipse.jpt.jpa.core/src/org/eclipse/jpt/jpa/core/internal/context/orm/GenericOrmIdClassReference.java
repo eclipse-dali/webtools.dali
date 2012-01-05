@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -330,17 +331,56 @@ public class GenericOrmIdClassReference
 	
 	protected void validateIdClass(List<IMessage> messages, IReporter reporter) {
 		if (this.isSpecified()) {
-			JavaResourceAbstractType jrt = getEntityMappings().resolveJavaResourceType(this.getIdClassName());
-			if ((jrt != null) && (jrt.isAnnotatedWith(this.getJpaProject().getTypeMappingAnnotations()))) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_VALID,
-								EMPTY_STRING_ARRAY, 
-								this,
-								this.getValidationTextRange()
-						)
-				);
+			JavaResourceType jrt = this.getIdClassJavaResourceType();
+			if (jrt != null) {
+
+				if (!jrt.isPublic()) {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,
+									new String[] {jrt.getQualifiedName()}, 
+									this,
+									this.getValidationTextRange()
+									)
+							);
+				}
+
+				if (!JDTTools.typeIsSubType(this.getJpaProject().getJavaProject(), jrt.getQualifiedName(), JDTTools.SERIALIZABLE_CLASS_NAME)) {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,
+									new String[] {jrt.getQualifiedName()}, 
+									this,
+									this.getValidationTextRange()
+									)
+							);
+				}
+
+				if (!jrt.hasEqualsMethod()) {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,
+									new String[] {jrt.getQualifiedName()}, 
+									this,
+									this.getValidationTextRange()
+									)
+							);
+				}
+
+				if (!jrt.hasHashCodeMethod()) {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,
+									new String[] {jrt.getQualifiedName()}, 
+									this,
+									this.getValidationTextRange()
+									)
+							);
+				}
 			} else if (StringTools.stringIsEmpty(this.getIdClassName())) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
@@ -363,6 +403,10 @@ public class GenericOrmIdClassReference
 				);
 			}
 		}
+	}
+
+	protected JavaResourceType getIdClassJavaResourceType() {
+		return (JavaResourceType) getEntityMappings().resolveJavaResourceType(this.getIdClassName(), Kind.TYPE);
 	}
 
 	protected boolean idClassExists() {

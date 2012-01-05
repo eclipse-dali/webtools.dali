@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011  Oracle. 
+ *  Copyright (c) 2010, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -70,4 +70,13 @@ public class EclipseLinkMappedSuperclassPrimaryKeyValidator
 		return super.definesPrimaryKey(typeMapping)
 			|| ((EclipseLinkTypeMapping) typeMapping).usesPrimaryKeyColumns();
 	}
+
+
+	@Override
+	protected void validateIdClassAttributesWithPropertyAccess(
+			JavaPersistentType idClass, List<IMessage> messages,
+			IReporter reporter) {
+		//do nothing - Eclipselink does not care about the existence status of property methods
+	}
+
 }

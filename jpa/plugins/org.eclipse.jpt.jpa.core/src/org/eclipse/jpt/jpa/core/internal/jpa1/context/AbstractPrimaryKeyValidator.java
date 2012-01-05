@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.HashBag;
@@ -19,7 +21,9 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -31,6 +35,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.PrimaryKeyTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.SingleRelationshipMapping2_0;
@@ -40,9 +45,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class AbstractPrimaryKeyValidator
 	implements JptValidator
 {
-	private TypeMapping typeMapping;
+	private final TypeMapping typeMapping;
 	
-	private PrimaryKeyTextRangeResolver textRangeResolver;
+	private final PrimaryKeyTextRangeResolver textRangeResolver;
 	
 	public static final String[] EMPTY_STRING_ARRAY = StringTools.EMPTY_STRING_ARRAY;
 	
@@ -168,9 +173,8 @@ public abstract class AbstractPrimaryKeyValidator
 			validateIdClass_derivedIdMappingMatchingIdClass(idClass, messages, reporter);
 			return;
 		}
-		for (JavaPersistentAttribute idClassAttribute : 
-				new SubIterableWrapper<ReadOnlyPersistentAttribute, JavaPersistentAttribute>(
-					idClass.getAllAttributes())) {
+
+		for (JavaPersistentAttribute idClassAttribute : this.getAllIdClassAttributes(idClass)) {
 			boolean foundMatch = false;
 			for (AttributeMapping attributeMapping : getAttributeMappings(typeMapping())) {
 				if (idClassAttribute.getName().equals(attributeMapping.getName())) {
@@ -211,8 +215,75 @@ public abstract class AbstractPrimaryKeyValidator
 						textRangeResolver().getIdClassTextRange()));
 			}
 		}
+
+		// This is for validating if a type mapping has extra id attributes that do not match
+		// an attribute on the id class, which is a supplement of the validation right above
+		for (AttributeMapping attributeMapping : getPrimaryKeyMappings(typeMapping())) {
+			AccessType type = attributeMapping.getPersistentAttribute().getOwningPersistentType().getAccess();
+			if (type == AccessType.FIELD) {
+				checkMissingAttribute(idClass, attributeMapping, messages, reporter);
+			} else if (type == AccessType.PROPERTY) {
+				// EclipseLink does not care about the existence status of property methods,
+				// but the matching field in the id class still needs to exist
+				if (!CollectionTools.contains(getIdClassFieldNames(idClass), attributeMapping.getName())) {
+					messages.add(DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
+							new String[] {attributeMapping.getName()},
+							typeMapping(),
+							textRangeResolver().getIdClassTextRange()));
+				} else {
+					// Validation for missing property methods is only for generic platform
+					checkMissingAttributeWithPropertyAccess(idClass, attributeMapping, messages, reporter);
+				}
+			}
+		}
+
+		// This is for validating cases when id class has property-based access
+		if (typeMapping().getPersistentType().getAccess() == AccessType.PROPERTY) {
+			validateIdClassAttributesWithPropertyAccess(idClass, messages, reporter);
+		}
+
+		validateIdClassConstructor(idClass, messages, reporter);
+	}
+
+	protected void checkMissingAttribute(JavaPersistentType idClass,
+			AttributeMapping attributeMapping, List<IMessage> messages, IReporter reporter) {
+		if (!CollectionTools.contains(getIdClassAttributeNames(idClass), attributeMapping.getName())) {
+			messages.add(DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
+					new String[] {attributeMapping.getName()},
+					typeMapping(),
+					textRangeResolver().getIdClassTextRange())
+					);
+		}
+	}
+
+	protected abstract void validateIdClassAttributesWithPropertyAccess(
+			JavaPersistentType idClass, List<IMessage> messages,
+			IReporter reporter);
+
+	protected void validateIdClassConstructor(JavaPersistentType idClass,
+			List<IMessage> messages, IReporter reporter) {
+		if (!idClass.getJavaResourceType().hasNoArgConstructor()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_NO_ARG_CONSTRUCTOR,
+							new String[] {idClass.getName()}, 
+							typeMapping(),
+							textRangeResolver().getIdClassTextRange())
+					);
+		}
 	}
 	
+	protected void checkMissingAttributeWithPropertyAccess(JavaPersistentType idClass,
+			AttributeMapping attributeMapping, 
+			List<IMessage> messages, IReporter reporter) {
+		// do nothing
+	}
+
 	protected void validateIdClass_derivedIdMappingMatchingIdClass(
 			JavaPersistentType idClass, List<IMessage> messages, IReporter reporter) {
 		
@@ -258,6 +329,63 @@ public abstract class AbstractPrimaryKeyValidator
 				textRangeResolver().getIdClassTextRange()));
 	}
 	
+	protected void validateIdClassPropertyMethods(
+			JavaPersistentType idClass, List<IMessage> messages, IReporter reporter) {
+
+			for (JavaPersistentAttribute attribute : getAllIdClassAttributes(idClass)) {
+				PropertyAccessor accessor = (PropertyAccessor)attribute.getAccessor();
+
+				// validate getter method
+				JavaResourceMethod getter = accessor.getResourceGetter();
+				if (getter != null) {
+					validatePropertyMethod(idClass, getter.getMethodName(), messages, reporter);
+				}
+
+				// validate setter method
+				JavaResourceMethod setter = accessor.getResourceSetter();
+				if (setter != null) {
+					validatePropertyMethod(idClass, setter.getMethodName(), messages, reporter);
+				}
+			}
+	}
+
+	private void validatePropertyMethod(JavaPersistentType idClass,
+			String methodName, List<IMessage> messages, IReporter reporter) {
+
+		JavaResourceMethod method = idClass.getJavaResourceType().getMethod(methodName);
+
+		if (!method.isPublicOrProtected()) {
+			messages.add(DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TYPE_MAPPING_ID_CLASS_PROPERTY_METHOD_NOT_PUBLIC,
+					new String[] {idClass.getJavaResourceType().getQualifiedName(), methodName},
+					typeMapping(), 
+					textRangeResolver().getIdClassTextRange()
+					));
+		}
+	}
+
+	protected Iterable<String> getIdClassAttributeNames(JavaPersistentType idClass) {
+		return new TransformationIterable<JavaPersistentAttribute, String>(getAllIdClassAttributes(idClass)) {
+			@Override
+			protected String transform(JavaPersistentAttribute attribute) {
+				return attribute.getName();
+			}
+		};
+	}
+
+	protected Iterable<JavaPersistentAttribute> getAllIdClassAttributes(JavaPersistentType idClass) {
+		return new SubIterableWrapper<ReadOnlyPersistentAttribute, JavaPersistentAttribute>(idClass.getAllAttributes());
+	}
+
+	protected Iterable<String> getIdClassFieldNames(JavaPersistentType idClass) {
+		return new TransformationIterable<JavaResourceField, String>(idClass.getJavaResourceType().getFields()) {
+			@Override
+			protected String transform(JavaResourceField attribute) {
+				return attribute.getName();
+			}
+		};
+	}
 	
 	// **************** convenience methods ********************************************************
 	

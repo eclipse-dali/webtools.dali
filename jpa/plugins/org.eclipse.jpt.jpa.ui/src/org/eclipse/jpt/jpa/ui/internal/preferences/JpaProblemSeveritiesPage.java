@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -324,22 +324,29 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR,								JpaValidationMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR);		
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_FINAL_CLASS,																		JpaValidationMessages.TYPE_MAPPING_FINAL_CLASS);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_AND_EMBEDDED_ID_BOTH_USED,							JpaValidationMessages.TYPE_MAPPING_ID_CLASS_AND_EMBEDDED_ID_BOTH_USED);	//3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,							JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST);	//3.2
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_DUPLICATE_MATCH,				JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_DUPLICATE_MATCH);	//3.0 M7
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_NO_MATCH,							JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_MAPPING_NO_MATCH);	//3.0 M7
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH,										JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NO_MATCH);	//3.0 M7
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY,								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_NOT_PRIMARY_KEY);	//3.0 M7
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,					JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE);	//3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,											JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD);	//3.2
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,										JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD); //3.2
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_MISSING_NO_ARG_CONSTRUCTOR,										JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_NO_ARG_CONSTRUCTOR); //3.2
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_MISSING_PUBLIC_NO_ARG_CONSTRUCTOR,								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_PUBLIC_NO_ARG_CONSTRUCTOR); //3.2
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY,														JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY);	//3.0 M7
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,															JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST);	//3.0 M7
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_NOT_VALID,															JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_VALID);	//3.0 M7
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_REDEFINED,															JpaValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED);	//3.0 M7
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_REQUIRED,															JpaValidationMessages.TYPE_MAPPING_ID_CLASS_REQUIRED);	//3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,														JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST);	//3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,										JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE);	//3.2
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,														JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC);	//3.2
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_PROPERTY_METHOD_NOT_PUBLIC,										JpaValidationMessages.TYPE_MAPPING_ID_CLASS_PROPERTY_METHOD_NOT_PUBLIC);	//3.2
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_REDEFINED,														JpaValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED);	//3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_REQUIRED,														JpaValidationMessages.TYPE_MAPPING_ID_CLASS_REQUIRED);	//3.0 M7
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_ID_CLASS_WITH_MAPS_ID,													JpaValidationMessages.TYPE_MAPPING_ID_CLASS_WITH_MAPS_ID);	//3.0 M7
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE,						JpaValidationMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE);	//3.0 M7
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_MEMBER_CLASS,																	JpaValidationMessages.TYPE_MAPPING_MEMBER_CLASS);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_MULTIPLE_EMBEDDED_ID,														JpaValidationMessages.TYPE_MAPPING_MULTIPLE_EMBEDDED_ID);	//3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE,									JpaValidationMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE);	//3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_MEMBER_CLASS,															JpaValidationMessages.TYPE_MAPPING_MEMBER_CLASS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_MULTIPLE_EMBEDDED_ID,													JpaValidationMessages.TYPE_MAPPING_MULTIPLE_EMBEDDED_ID);	//3.0 M7
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE,												JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE);	//3.0 M7
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS,														JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS);	//3.0 M7
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS,													JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS);	//3.0 M7
 	}
 
 	private void addAttributeLevelCategory(Composite parent) {

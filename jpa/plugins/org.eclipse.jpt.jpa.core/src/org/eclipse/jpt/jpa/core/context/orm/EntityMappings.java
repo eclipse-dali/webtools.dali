@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -169,6 +169,18 @@ public interface EntityMappings
 	 * @see #getPackage()
 	 */
 	JavaResourceAbstractType resolveJavaResourceType(String className);
+
+	/**
+	 * Return the Java resource type for the specified class name and kind
+	 * found in the JPA project. First look for one with the specified
+	 * name (since it might be fully qualified) and kind. If not found, 
+	 * prepend the default package name and try again.
+	 * 
+	 * Return null if invalid or absent or if the kind does not match.
+	 * 
+	 * @see #getPackage()
+	 */
+	JavaResourceAbstractType resolveJavaResourceType(String className, JavaResourceAbstractType.Kind kind);
 
 	/**
 	 * Return the persistent type for the specified class name

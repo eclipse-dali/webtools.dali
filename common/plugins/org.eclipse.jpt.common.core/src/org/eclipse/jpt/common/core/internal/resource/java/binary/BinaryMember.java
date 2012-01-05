@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,6 +36,7 @@ abstract class BinaryMember
 	private boolean transient_;  // 'transient' is a reserved word
 	private boolean public_;  // 'public' is a reserved word
 	private boolean static_;  // 'static' is a reserved word
+	boolean protected_; // 'protected' is a reserved word
 
 
 	// ********** construction/initialization **********
@@ -46,6 +47,7 @@ abstract class BinaryMember
 		this.transient_ = this.buildTransient();
 		this.public_ = this.buildPublic();
 		this.static_ = this.buildStatic();
+		this.protected_ = this.buildProtected();
 	}
 
 
@@ -58,6 +60,7 @@ abstract class BinaryMember
 		this.setTransient(this.buildTransient());
 		this.setPublic(this.buildPublic());
 		this.setStatic(this.buildStatic());
+		this.setProtected(this.buildProtected());
 	}
 
 
@@ -143,6 +146,25 @@ abstract class BinaryMember
 		}
 	}
 
+	// ***** protected
+	public boolean isProtected() {
+		return this.protected_;
+	}
+
+	private void setProtected(boolean protected_) {
+		boolean old = this.protected_;
+		this.protected_ = protected_;
+		this.firePropertyChanged(PROTECTED_PROPERTY, old, protected_);
+	}
+
+	private boolean buildProtected() {
+		try {
+			return Flags.isProtected(this.getMember().getFlags());
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.log(ex);
+			return false;
+		}
+	}
 
 	// ********** miscellaneous **********
 
@@ -250,6 +272,9 @@ abstract class BinaryMember
 		return names;
 	}
 	
+	public boolean isPublicOrProtected() {
+		return isPublic() || isProtected();
+	}
 	
 	// ********** IMember adapter **********
 

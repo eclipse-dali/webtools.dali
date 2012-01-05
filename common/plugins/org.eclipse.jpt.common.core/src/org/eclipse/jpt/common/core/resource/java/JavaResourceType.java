@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -54,6 +54,11 @@ public interface JavaResourceType
 	 * Return whether the type has a public or protected no-arg constructor *or* only the default constructor
 	 */
 	boolean hasPublicOrProtectedNoArgConstructor();
+
+	/**
+	 * Return whether the type has a public or protected no-arg constructor *or* only the default constructor
+	 */
+	boolean hasPublicNoArgConstructor();
 		
 	/**
 	 * Return whether the type has any field that have relevant annotations
@@ -66,6 +71,16 @@ public interface JavaResourceType
 	 * on them (which can be used to infer the type's access type).
 	 */
 	boolean hasAnyAnnotatedMethods();
+
+	/**
+	 * Return whether the type has equals() method
+	 */
+	boolean hasEqualsMethod();
+	
+	/**
+	 * Return whether the type has hashCode() method
+	 */
+	boolean hasHashCodeMethod();
 
 	// ********** fields **********
 
@@ -84,4 +99,5 @@ public interface JavaResourceType
 	Iterable<JavaResourceMethod> getMethods();
 		String METHODS_COLLECTION = "methods"; //$NON-NLS-1$
 
+	JavaResourceMethod getMethod(String propertyName);
 }

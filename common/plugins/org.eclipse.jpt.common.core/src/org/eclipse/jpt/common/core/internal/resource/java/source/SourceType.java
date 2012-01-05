@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,6 +33,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TreeIterable;
@@ -279,6 +280,19 @@ final class SourceType
 		return false;
 	}
 	
+	public boolean hasPublicNoArgConstructor() {
+		Iterable<JavaResourceMethod> constructors = getConstructors();
+		if (CollectionTools.size(constructors) == 0) {
+			return true;
+		}
+		for (JavaResourceMethod constructor : constructors) {
+			if (constructor.getParametersSize() == 0) {
+				return Modifier.isPublic(constructor.getModifiers());
+			}
+		}
+		return false;
+	}
+
 	protected Iterable<JavaResourceMethod> getConstructors() {
 		return new FilteringIterable<JavaResourceMethod>(getMethods()) {
 			@Override
@@ -556,5 +570,43 @@ final class SourceType
 			}
 		}
 		return false;
+	}
+	
+	// Two more requirements for a valid equals() method:
+	// 1. It should be public 
+	// 2. The return type should be boolean
+	// Both requirements are validated by the compiler so they are excluded here
+	public boolean hasEqualsMethod() {
+		for (JavaResourceMethod method : this.getMethods()) {
+			if (StringTools.stringsAreEqual(method.getMethodName(), "equals")
+					&& method.getParametersSize() == 1
+					&& StringTools.stringsAreEqual(method.getParameterTypeName(0), Object.class.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// Two more requirements for a valid hashCode() method:
+	// 1. It should be public 
+	// 2. The return type should be int
+	// Both requirements are validated by the compiler so they are excluded here
+	public boolean hasHashCodeMethod() {
+		for (JavaResourceMethod method : this.getMethods()) {
+			if (StringTools.stringsAreEqual(method.getMethodName(), "hashCode")
+					&& method.getParametersSize() == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public JavaResourceMethod getMethod(String propertyName) {
+		for (JavaResourceMethod method : this.getMethods()) {
+			if (StringTools.stringsAreEqual(method.getMethodName(), propertyName)) {
+				return method;
+			}
+		}
+		return null;
 	}
 }
