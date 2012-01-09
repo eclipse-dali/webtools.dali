@@ -12,8 +12,13 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbFactory;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.ELJaxbContextRoot;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAttributeMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElementMapping;
 
 
 public class ELJaxb_2_1_Factory
@@ -42,5 +47,15 @@ public class ELJaxb_2_1_Factory
 	@Override
 	public JaxbContextRoot buildContextRoot(JaxbProject parent) {
 		return new ELJaxbContextRoot(parent);
+	}
+	
+	@Override
+	public XmlAttributeMapping buildJavaXmlAttributeMapping(JaxbPersistentAttribute parent) {
+		return new ELJavaXmlAttributeMapping(parent);
+	}
+	
+	@Override
+	public XmlElementMapping buildJavaXmlElementMapping(JaxbPersistentAttribute parent) {
+		return new ELJavaXmlElementMapping(parent);
 	}
 }

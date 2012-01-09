@@ -25,6 +25,8 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.AbstractELJaxbPlatformDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElementMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlInverseReferenceMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlInverseReferenceAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlPathAnnotationDefinition;
@@ -95,6 +97,8 @@ public class ELJaxb_2_1_PlatformDefinition
 	@Override
 	protected void addDefaultJavaAttributeMappingDefinitionsTo(
 			ArrayList<DefaultJavaAttributeMappingDefinition> definitions) {
+		CollectionTools.addAll(definitions, ELJavaXmlAttributeMappingDefinition.instance());
+		CollectionTools.addAll(definitions, ELJavaXmlElementMappingDefinition.instance());
 		CollectionTools.addAll(definitions, getGenericJaxbPlatformDefinition().getDefaultJavaAttributeMappingDefinitions());
 	}
 	
