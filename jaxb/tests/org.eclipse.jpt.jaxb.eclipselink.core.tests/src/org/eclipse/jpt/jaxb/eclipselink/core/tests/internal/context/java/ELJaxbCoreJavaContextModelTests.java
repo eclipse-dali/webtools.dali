@@ -19,6 +19,8 @@ public class ELJaxbCoreJavaContextModelTests
 	
 	public static Test suite() {
 		TestSuite suite = new TestSuite(ELJaxbCoreJavaContextModelTests.class.getName());
+		suite.addTestSuite(ELJavaXmlAttributeMappingTests.class);
+		suite.addTestSuite(ELJavaXmlElementMappingTests.class);
 		suite.addTestSuite(ELJavaXmlInverseReferenceMappingTests.class);
 		return suite;
 	}
