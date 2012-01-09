@@ -697,7 +697,41 @@ public abstract class AnnotationTestCase
 		NormalAnnotation normalAnnotation = this.replaceMarkerAnnotation(annotation);
 		return this.addMemberValuePair(normalAnnotation, pair);
 	}
-
+	
+	protected void setMemberValuePair(ModifiedDeclaration declaration, String annotationName, String value) {
+		setMemberValuePair(declaration, annotationName, "value", value);
+	}
+		
+	protected void setMemberValuePair(ModifiedDeclaration declaration, String annotationName, String elementName, String value) {
+		Annotation annotation = declaration.getAnnotationNamed(annotationName);
+		if (annotation == null) {
+			annotation = addNormalAnnotation(declaration.getDeclaration(), annotationName);
+		}
+		else if (annotation instanceof MarkerAnnotation) {
+			annotation = replaceMarkerAnnotation((MarkerAnnotation) annotation);
+		}
+		setMemberValuePair((NormalAnnotation) annotation, elementName, value);
+	}
+	
+	protected void setMemberValuePair(NormalAnnotation annotation, String elementName, String value) {
+		MemberValuePair memberValuePair = this.memberValuePair(annotation, elementName);
+		if (memberValuePair == null) {
+			addMemberValuePair(annotation, elementName, value);
+		}
+		else {
+			memberValuePair.setValue(newStringLiteral(annotation.getAST(), value));
+		}
+	}
+	
+	protected void removeMemberValuePair(ModifiedDeclaration declaration, String annotationName) {
+		removeMemberValuePair(declaration, annotationName, "value");
+	}
+	
+	protected void removeMemberValuePair(ModifiedDeclaration declaration, String annotationName, String elementName) {
+		NormalAnnotation annotation = (NormalAnnotation) declaration.getAnnotationNamed(annotationName);
+		values(annotation).remove(memberValuePair(annotation, elementName));
+	}
+	
 	protected void setEnumMemberValuePair(ModifiedDeclaration declaration, String annotationName, String enumValue) {
 		NormalAnnotation annotation = (NormalAnnotation) declaration.getAnnotationNamed(annotationName);
 		if (annotation == null) {
