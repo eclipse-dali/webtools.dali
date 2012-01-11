@@ -155,30 +155,6 @@ public class JoiningStrategyJoinColumnsComposite
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 	
-	protected CachingTransformationPropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy, Boolean> buildJoinColumnsPaneEnabledHolder() {
-		return new CachingTransformationPropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy, Boolean>(
-			new ValueListAdapter<ReadOnlyJoinColumnRelationshipStrategy>(
-				new ReadOnlyWritablePropertyValueModelWrapper<ReadOnlyJoinColumnRelationshipStrategy>(getSubjectHolder()), 
-				ReadOnlyJoinColumnRelationshipStrategy.SPECIFIED_JOIN_COLUMNS_LIST)) {
-			
-			@Override
-			protected Boolean transform(ReadOnlyJoinColumnRelationshipStrategy value) {
-				if (value == null) {
-					return Boolean.FALSE;
-				}
-				return super.transform(value);
-			}
-			
-			@Override
-			protected Boolean transform_(ReadOnlyJoinColumnRelationshipStrategy value) {
-				boolean virtual = value.getRelationship().getMapping().getPersistentAttribute().isVirtual();
-				return Boolean.valueOf(! virtual && value.getSpecifiedJoinColumnsSize() > 0);
-			}
-		};
-
-	}
-	
-	
 	private class JoinColumnPaneEnablerHolder 
 		extends CachingTransformationPropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy, Boolean>
 	{
