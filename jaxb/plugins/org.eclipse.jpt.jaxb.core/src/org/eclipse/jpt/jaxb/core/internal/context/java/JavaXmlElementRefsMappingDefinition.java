@@ -36,7 +36,7 @@ public class JavaXmlElementRefsMappingDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private JavaXmlElementRefsMappingDefinition() {
+	protected JavaXmlElementRefsMappingDefinition() {
 		super();
 	}
 	
