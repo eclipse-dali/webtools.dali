@@ -37,7 +37,7 @@ public class ELJavaXmlTransformationMappingDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private ELJavaXmlTransformationMappingDefinition() {
+	protected ELJavaXmlTransformationMappingDefinition() {
 		super();
 	}
 	

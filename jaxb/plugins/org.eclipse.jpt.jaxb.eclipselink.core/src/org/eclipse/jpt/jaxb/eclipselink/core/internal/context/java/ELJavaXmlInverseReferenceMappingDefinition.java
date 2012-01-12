@@ -28,7 +28,7 @@ public class ELJavaXmlInverseReferenceMappingDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private ELJavaXmlInverseReferenceMappingDefinition() {
+	protected ELJavaXmlInverseReferenceMappingDefinition() {
 		super();
 	}
 	

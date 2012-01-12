@@ -25,30 +25,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
  * @since 3.2
  */
 public interface ELXmlNamedNodeMapping
-		extends XmlNamedNodeMapping {
+		extends XmlNamedNodeMapping, ELXmlPathMapping {
 	
-	// ***** xmlPath *****
-	
-	/**
-	 * String associated with changes to the xmlPath property
-	 */
-	String XML_PATH_PROPERTY = "xmlPath";  ///$NON-NLS-1$
-	
-	/**
-	 * Return the xmlPath property value.
-	 * A null indicates it is not specified.
-	 */
-	ELXmlPath getXmlPath();
-	
-	/**
-	 * Add (and return) an xmlPath property value.
-	 * (Specifies the property)
-	 */
-	ELXmlPath addXmlPath();
-	
-	/**
-	 * Remove the xmlPath property value.
-	 * (Unspecifies the property)
-	 */
-	void removeXmlPath();
 }

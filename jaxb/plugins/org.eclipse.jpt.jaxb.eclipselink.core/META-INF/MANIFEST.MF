@@ -21,6 +21,7 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="[3.7.100,4.0.0)",
  org.eclipse.wst.common.project.facet.core;bundle-version="[1.4.200,2.0.0)",
  org.eclipse.wst.validation;bundle-version="[1.2.300,2.0.0)"
 Export-Package: org.eclipse.jpt.jaxb.eclipselink.core,
+ org.eclipse.jpt.jaxb.eclipselink.core.context.java,
  org.eclipse.jpt.jaxb.eclipselink.core.internal;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.core.internal.context;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;x-internal:=true,

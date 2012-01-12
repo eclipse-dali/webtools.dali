@@ -9,28 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
 
 
-public interface ELXmlPath
-		extends JaxbContextNode {
+public interface ELXmlAnyAttributeMapping
+		extends XmlAnyAttributeMapping, ELXmlPathMapping {
 	
-	// ***** value *****
-	
-	/**
-	 * String associated with changes to the value property
-	 */
-	String VALUE_PROPERTY = "value";  ///$NON-NLS-1$
-	
-	/**
-	 * Return the value property value.
-	 * A null indicates it is not specified.
-	 */
-	String getValue();
-	
-	/**
-	 * Set the value property value.
-	 * Null unspecifies the value.
-	 */
-	void setValue(String value);
 }

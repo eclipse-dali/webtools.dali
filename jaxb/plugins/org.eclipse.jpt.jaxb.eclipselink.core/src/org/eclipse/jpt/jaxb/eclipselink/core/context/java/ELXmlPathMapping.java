@@ -9,28 +9,31 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 
-
-public interface ELXmlPath
-		extends JaxbContextNode {
+public interface ELXmlPathMapping {
 	
-	// ***** value *****
+	// ***** xmlPath *****
 	
 	/**
-	 * String associated with changes to the value property
+	 * String associated with changes to the xmlPath property
 	 */
-	String VALUE_PROPERTY = "value";  ///$NON-NLS-1$
+	String XML_PATH_PROPERTY = "xmlPath";  ///$NON-NLS-1$
 	
 	/**
-	 * Return the value property value.
+	 * Return the xmlPath property value.
 	 * A null indicates it is not specified.
 	 */
-	String getValue();
+	ELXmlPath getXmlPath();
 	
 	/**
-	 * Set the value property value.
-	 * Null unspecifies the value.
+	 * Add (and return) an xmlPath property value.
+	 * (Specifies the property)
 	 */
-	void setValue(String value);
+	ELXmlPath addXmlPath();
+	
+	/**
+	 * Remove the xmlPath property value.
+	 * (Unspecifies the property)
+	 */
+	void removeXmlPath();
 }

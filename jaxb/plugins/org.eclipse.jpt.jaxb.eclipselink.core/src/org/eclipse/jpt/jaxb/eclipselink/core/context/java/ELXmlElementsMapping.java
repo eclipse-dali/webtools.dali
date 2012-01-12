@@ -9,28 +9,27 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 
 
-public interface ELXmlPath
-		extends JaxbContextNode {
+public interface ELXmlElementsMapping
+		extends XmlElementsMapping {
 	
-	// ***** value *****
-	
-	/**
-	 * String associated with changes to the value property
-	 */
-	String VALUE_PROPERTY = "value";  ///$NON-NLS-1$
+	// ***** xmlPaths *****
 	
 	/**
-	 * Return the value property value.
-	 * A null indicates it is not specified.
+	 * String associated with changes to the xmlPaths list
 	 */
-	String getValue();
+	String XML_PATHS_LIST = "xmlPaths";  ///$NON-NLS-1$
 	
-	/**
-	 * Set the value property value.
-	 * Null unspecifies the value.
-	 */
-	void setValue(String value);
+	ListIterable<ELXmlPath> getXmlPaths();
+	
+	int getXmlPathsSize();
+	
+	ELXmlPath addXmlPath(int index);
+	
+	void removeXmlPath(int index);
+	
+	void moveXmlPath(int targetIndex, int sourceIndex);
 }

@@ -12,18 +12,15 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 import java.util.StringTokenizer;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.jaxb.core.JaxbFactory;
-import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
-import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
 
 
 public class ELJavaXmlAttributeMappingDefinition
-		extends AbstractJavaAttributeMappingDefinition
+		extends JavaXmlAttributeMappingDefinition
 		implements DefaultJavaAttributeMappingDefinition {
 	
 	// singleton
@@ -45,27 +42,16 @@ public class ELJavaXmlAttributeMappingDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	private ELJavaXmlAttributeMappingDefinition() {
+	protected ELJavaXmlAttributeMappingDefinition() {
 		super();
 	}
 	
 	
-	public String getKey() {
-		return JavaXmlAttributeMappingDefinition.instance().getKey();
-	}
-	
-	public String getAnnotationName() {
-		return JavaXmlAttributeMappingDefinition.instance().getKey();
-	}
-	
+	@Override
 	public Iterable<String> getSupportingAnnotationNames() {
 		return new CompositeIterable<String>(
-				JavaXmlAttributeMappingDefinition.instance().getSupportingAnnotationNames(),
+				super.getSupportingAnnotationNames(),
 				new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES));
-	}
-	
-	public JaxbAttributeMapping buildMapping(JaxbPersistentAttribute persistentAttribute, JaxbFactory factory) {
-		return JavaXmlAttributeMappingDefinition.instance().buildMapping(persistentAttribute, factory);
 	}
 	
 	public boolean isDefault(JaxbPersistentAttribute persistentAttribute) {

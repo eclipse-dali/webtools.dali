@@ -13,12 +13,18 @@ import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbFactory;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.ELJaxbContextRoot;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAnyAttributeMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElementMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElementsMapping;
 
 
 public class ELJaxb_2_1_Factory
@@ -50,6 +56,16 @@ public class ELJaxb_2_1_Factory
 	}
 	
 	@Override
+	public XmlAnyAttributeMapping buildJavaXmlAnyAttributeMapping(JaxbPersistentAttribute parent) {
+		return new ELJavaXmlAnyAttributeMapping(parent);
+	}
+	
+	@Override
+	public XmlAnyElementMapping buildJavaXmlAnyElementMapping(JaxbPersistentAttribute parent) {
+		return new ELJavaXmlAnyElementMapping(parent);
+	}
+	
+	@Override
 	public XmlAttributeMapping buildJavaXmlAttributeMapping(JaxbPersistentAttribute parent) {
 		return new ELJavaXmlAttributeMapping(parent);
 	}
@@ -57,5 +73,10 @@ public class ELJaxb_2_1_Factory
 	@Override
 	public XmlElementMapping buildJavaXmlElementMapping(JaxbPersistentAttribute parent) {
 		return new ELJavaXmlElementMapping(parent);
+	}
+	
+	@Override
+	public XmlElementsMapping buildJavaXmlElementsMapping(JaxbPersistentAttribute parent) {
+		return new ELJavaXmlElementsMapping(parent);
 	}
 }
