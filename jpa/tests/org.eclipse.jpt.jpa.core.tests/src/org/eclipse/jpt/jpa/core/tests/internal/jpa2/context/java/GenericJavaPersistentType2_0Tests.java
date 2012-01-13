@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -424,7 +424,7 @@ public class GenericJavaPersistentType2_0Tests extends Generic2_0ContextModelTes
 		
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(AccessType.FIELD);
 
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
@@ -461,10 +461,10 @@ public class GenericJavaPersistentType2_0Tests extends Generic2_0ContextModelTes
 		createTestEntity();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(AccessType.FIELD);
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}
 	
@@ -493,7 +493,7 @@ public class GenericJavaPersistentType2_0Tests extends Generic2_0ContextModelTes
 		createTestEntityAnnotatedField();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 	}
 
@@ -517,7 +517,7 @@ public class GenericJavaPersistentType2_0Tests extends Generic2_0ContextModelTes
 		createTestEntityAnnotatedField();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(AccessType.PROPERTY);
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 		

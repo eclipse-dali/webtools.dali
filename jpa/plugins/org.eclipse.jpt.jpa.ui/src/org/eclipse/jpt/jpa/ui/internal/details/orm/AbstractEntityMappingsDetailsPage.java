@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,12 +16,12 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJpaDetailsPage;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -127,13 +127,7 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 			JpaHelpContextIds.ENTITY_ORM_CATALOG
 		);
 
-		// Access Type widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_access,
-			addAccessTypeCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_ACCESS
-		);
+		new AccessTypeComposite(this, getSubjectHolder(), container);
 	}
 
 	protected void initializePersistenceUnitMetadataCollapsibleSection(Composite container) {
@@ -142,46 +136,6 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 			buildPersistentUnitMetadataHolder(),
 			addSubPane(container, 5)
 		);
-	}
-	
-	protected EnumFormComboViewer<EntityMappings, AccessType> addAccessTypeCombo(Composite container) {
-
-		return new EnumFormComboViewer<EntityMappings, AccessType>(this, container) {
-
-			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(EntityMappings.DEFAULT_ACCESS_PROPERTY);
-				propertyNames.add(EntityMappings.SPECIFIED_ACCESS_PROPERTY);
-			}
-
-			@Override
-			protected AccessType[] getChoices() {
-				return AccessType.values();
-			}
-
-			@Override
-			protected AccessType getDefaultValue() {
-				return getSubject().getDefaultAccess();
-			}
-
-			@Override
-			protected String displayString(AccessType value) {
-				return value == AccessType.FIELD ?
-						JptUiDetailsOrmMessages.EntityMappingsDetailsPage_field :
-						JptUiDetailsOrmMessages.EntityMappingsDetailsPage_property;
-			}
-
-			@Override
-			protected AccessType getValue() {
-				return getSubject().getSpecifiedAccess();
-			}
-
-			@Override
-			protected void setValue(AccessType value) {
-				getSubject().setSpecifiedAccess(value);
-			}
-		};
 	}
 
 	protected CatalogCombo<EntityMappings> addCatalogCombo(Composite container) {

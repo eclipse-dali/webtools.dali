@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -41,7 +41,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @since 2.0
 */
 public interface EntityMappings
-	extends MappingFileRoot, PersistentType.Owner
+	extends MappingFileRoot, PersistentType.Owner, AccessHolder
 {
 	/**
 	 * Covariant override.
@@ -73,12 +73,6 @@ public interface EntityMappings
 	String getPackage();
 	void setPackage(String package_);
 		String PACKAGE_PROPERTY = "package"; //$NON-NLS-1$
-
-	AccessType getSpecifiedAccess();
-	void setSpecifiedAccess(AccessType access);
-		String SPECIFIED_ACCESS_PROPERTY = "specifiedAccess"; //$NON-NLS-1$
-	AccessType getDefaultAccess();
-		String DEFAULT_ACCESS_PROPERTY = "defaultAccess"; //$NON-NLS-1$
 
 	/**
 	 * Return the database schema container, which can be either a catalog or,

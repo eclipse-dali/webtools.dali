@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -490,7 +490,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		getEntityMappings().setSpecifiedAccess(AccessType.FIELD);
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(AccessType.PROPERTY);		
 		//entityMappings access wins over persistence-unit-defaults access
 		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
@@ -498,7 +498,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		//persistence-unit-defaults access used now
 		assertEquals(AccessType.PROPERTY, ormPersistentType.getDefaultAccess());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(null);
 		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		ormPersistentType.getJavaPersistentType().getAttributeNamed("id").setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -506,7 +506,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		getEntityMappings().setSpecifiedAccess(AccessType.PROPERTY);
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 
 		ormPersistentType.getJavaPersistentType().getAttributeNamed("id").setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);

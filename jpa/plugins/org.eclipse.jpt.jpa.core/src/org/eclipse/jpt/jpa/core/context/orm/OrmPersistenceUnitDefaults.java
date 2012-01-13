@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -31,16 +31,12 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * @since 2.1
  */
 public interface OrmPersistenceUnitDefaults
-	extends MappingFilePersistenceUnitDefaults
+	extends MappingFilePersistenceUnitDefaults, AccessHolder
 {
 	/**
 	 * Covariant override.
 	 */
 	OrmPersistenceUnitMetadata getParent();
-
-	// ********** access **********
-	void setAccess(AccessType value);
-		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$
 
 	// ********** schema container **********
 	SchemaContainer getDbSchemaContainer();

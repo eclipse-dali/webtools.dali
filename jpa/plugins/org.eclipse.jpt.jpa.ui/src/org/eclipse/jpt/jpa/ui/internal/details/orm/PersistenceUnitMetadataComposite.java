@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,12 +19,12 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0XmlFlagModel;
@@ -89,47 +89,6 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 
 	protected PropertyValueModel<OrmPersistenceUnitDefaults> getPersistenceUnitDefaultsHolder() {
 		return this.persistenceUnitDefaultsHolder;
-	}
-
-	protected EnumFormComboViewer<OrmPersistenceUnitDefaults, AccessType> addAccessTypeCombo(Composite container) {
-
-		return new EnumFormComboViewer<OrmPersistenceUnitDefaults, AccessType>(this, getPersistenceUnitDefaultsHolder(), container) {
-
-			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(OrmPersistenceUnitDefaults.ACCESS_PROPERTY);
-			}
-
-			@Override
-			protected AccessType[] getChoices() {
-				return AccessType.values();
-			}
-
-			@Override
-			protected AccessType getDefaultValue() {
-				return null;
-			}
-
-			@Override
-			protected String displayString(AccessType value) {
-				return buildDisplayString(
-					JptUiDetailsOrmMessages.class,
-					PersistenceUnitMetadataComposite.class,
-					value
-				);
-			}
-
-			@Override
-			protected AccessType getValue() {
-				return getSubject().getAccess();
-			}
-
-			@Override
-			protected void setValue(AccessType value) {
-				getSubject().setAccess(value);
-			}
-		};
 	}
 
 	protected WritablePropertyValueModel<Boolean> buildCascadePersistHolder() {
@@ -293,13 +252,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 			JpaHelpContextIds.ENTITY_ORM_CATALOG
 		);
 
-		// Access Type widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_access,
-			addAccessTypeCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_ACCESS
-		);
+		new AccessTypeComposite(this, this.getPersistenceUnitDefaultsHolder(), container);
 
 		// Delimited Identifiers check-box
 		Button diCheckBox = this.addCheckBox(

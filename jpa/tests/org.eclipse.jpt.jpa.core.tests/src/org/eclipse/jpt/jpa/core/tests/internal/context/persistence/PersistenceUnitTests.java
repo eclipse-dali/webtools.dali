@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1089,17 +1089,17 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		assertEquals(null, persistenceUnit.getDefaultAccess());
 		
-		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
+		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(AccessType.PROPERTY);		
 		assertEquals(AccessType.PROPERTY, persistenceUnit.getDefaultAccess());
 		
-		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
+		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(AccessType.FIELD);	
 		assertEquals(AccessType.FIELD, persistenceUnit.getDefaultAccess());
 		
-		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);	
+		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(null);	
 		assertFalse(ormMappingFile.getRoot().getPersistenceUnitMetadata().resourceExists());
 		assertEquals(null, persistenceUnit.getDefaultAccess());
 				
-		orm2MappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
+		orm2MappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedAccess(AccessType.FIELD);	
 		assertEquals(AccessType.FIELD, persistenceUnit.getDefaultAccess());
 	}
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	extends AbstractOrmXmlContextNode
 	implements OrmPersistenceUnitDefaults2_0
 {
-	protected AccessType access;
+	protected AccessType specifiedAccess;
 
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
@@ -46,7 +46,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 
 	protected AbstractOrmPersistenceUnitDefaults(OrmPersistenceUnitMetadata parent) {
 		super(parent);
-		this.access = this.buildAccess();
+		this.specifiedAccess = this.buildSpecifiedAccess();
 		this.specifiedCatalog = this.buildSpecifiedCatalog();
 		this.specifiedSchema = this.buildSpecifiedSchema();
 		this.cascadePersist = this.buildCascadePersist();
@@ -59,7 +59,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setAccess_(this.buildAccess());
+		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.setSpecifiedCatalog_(this.buildSpecifiedCatalog());
 		this.setSpecifiedSchema_(this.buildSpecifiedSchema());
 		this.setCascadePersist_(this.buildCascadePersist());
@@ -77,25 +77,33 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	// ********** access **********
 
 	public AccessType getAccess() {
-		return this.access;
+		return this.getSpecifiedAccess();
 	}
 
-	public void setAccess(AccessType access) {
-		if (this.valuesAreDifferent(this.access, access)) {
+	public AccessType getDefaultAccess() {
+		return null;
+	}
+
+	public AccessType getSpecifiedAccess() {
+		return this.specifiedAccess;
+	}
+
+	public void setSpecifiedAccess(AccessType access) {
+		if (this.valuesAreDifferent(this.specifiedAccess, access)) {
 			XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaultsForUpdate();
-			this.setAccess_(access);
+			this.setSpecifiedAccess_(access);
 			xmlDefaults.setAccess(AccessType.toOrmResourceModel(access));
 			this.removeXmlDefaultsIfUnset();
 		}
 	}
 
-	protected void setAccess_(AccessType access) {
-		AccessType old = this.access;
-		this.access = access;
-		this.firePropertyChanged(ACCESS_PROPERTY, old, access);
+	protected void setSpecifiedAccess_(AccessType access) {
+		AccessType old = this.specifiedAccess;
+		this.specifiedAccess = access;
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
 	}
 
-	protected AccessType buildAccess() {
+	protected AccessType buildSpecifiedAccess() {
 		XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaults();
 		return (xmlDefaults == null) ? null : AccessType.fromOrmResourceModel(xmlDefaults.getAccess());
 	}

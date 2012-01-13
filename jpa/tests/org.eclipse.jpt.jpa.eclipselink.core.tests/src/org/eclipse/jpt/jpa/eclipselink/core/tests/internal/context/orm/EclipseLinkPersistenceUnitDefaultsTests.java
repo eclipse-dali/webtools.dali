@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -317,54 +317,54 @@ public class EclipseLinkPersistenceUnitDefaultsTests
 	
 	public void testModifyAccess() throws Exception {		
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
-		assertNull(persistenceUnitDefaults.getAccess());
+		assertNull(persistenceUnitDefaults.getSpecifiedAccess());
 		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 		
 		//set access in the context model, verify resource model modified
-		persistenceUnitDefaults.setAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, persistenceUnitDefaults.getAccess());
+		persistenceUnitDefaults.setSpecifiedAccess(AccessType.PROPERTY);
+		assertEquals(AccessType.PROPERTY, persistenceUnitDefaults.getSpecifiedAccess());
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.AccessType.PROPERTY, getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 		
 		//set access to null in the context model
-		persistenceUnitDefaults.setAccess(null);
-		assertNull(persistenceUnitDefaults.getAccess());
+		persistenceUnitDefaults.setSpecifiedAccess(null);
+		assertNull(persistenceUnitDefaults.getSpecifiedAccess());
 		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 	}
 	
 	public void testModifyAccess2() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
-		assertNull(persistenceUnitDefaults.getAccess());
+		assertNull(persistenceUnitDefaults.getSpecifiedAccess());
 		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 		
 		//set access in the context model, verify resource model modified
-		persistenceUnitDefaults.setAccess(AccessType.FIELD);
-		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getAccess());
+		persistenceUnitDefaults.setSpecifiedAccess(AccessType.FIELD);
+		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getSpecifiedAccess());
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.AccessType.FIELD, getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 		
 		//set another element on the persistence-unit-defaults element so it doesn't get removed
 		getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCascadePersist(true);
 		//set access to null in the context model
-		persistenceUnitDefaults.setAccess(null);
-		assertNull(persistenceUnitDefaults.getAccess());
+		persistenceUnitDefaults.setSpecifiedAccess(null);
+		assertNull(persistenceUnitDefaults.getSpecifiedAccess());
 		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 	}
 	
 	public void testModifyAccess3() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
-		assertNull(persistenceUnitDefaults.getAccess());
+		assertNull(persistenceUnitDefaults.getSpecifiedAccess());
 		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 		//set another element on the persistence-unit-metadata element so only persistence-unit-defaults element gets removed
 		getXmlEntityMappings().setPersistenceUnitMetadata(EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		
 		//set access in the context model, verify resource model modified
-		persistenceUnitDefaults.setAccess(AccessType.FIELD);
-		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getAccess());
+		persistenceUnitDefaults.setSpecifiedAccess(AccessType.FIELD);
+		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getSpecifiedAccess());
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.AccessType.FIELD, getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 		
 		//set access to null in the context model
-		persistenceUnitDefaults.setAccess(null);
-		assertNull(persistenceUnitDefaults.getAccess());
+		persistenceUnitDefaults.setSpecifiedAccess(null);
+		assertNull(persistenceUnitDefaults.getSpecifiedAccess());
 		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
 	}
 
