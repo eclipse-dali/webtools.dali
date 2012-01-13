@@ -38,7 +38,7 @@ public class GenericJavaXmlElementWrapper
 		extends AbstractJavaContextNode
 		implements XmlElementWrapper {
 	
-	protected final XmlElementWrapperAnnotation annotation;
+	protected final Context context;
 	
 	protected JaxbQName qName;
 	
@@ -47,9 +47,9 @@ public class GenericJavaXmlElementWrapper
 	protected Boolean specifiedNillable;
 	
 	
-	public GenericJavaXmlElementWrapper(JaxbAttributeMapping parent, XmlElementWrapperAnnotation annotation) {
+	public GenericJavaXmlElementWrapper(JaxbAttributeMapping parent, Context context) {
 		super(parent);
-		this.annotation = annotation;
+		this.context = context;
 		this.qName = buildQName();
 		this.specifiedRequired = buildSpecifiedRequired();
 		this.specifiedNillable = this.buildSpecifiedNillable();
@@ -79,6 +79,10 @@ public class GenericJavaXmlElementWrapper
 	
 	protected JaxbPackage getJaxbPackage() {
 		return getJaxbClassMapping().getJaxbType().getJaxbPackage();
+	}
+	
+	protected XmlElementWrapperAnnotation getAnnotation() {
+		return this.context.getAnnotation();
 	}
 	
 	
@@ -121,7 +125,7 @@ public class GenericJavaXmlElementWrapper
 	}
 	
 	public void setSpecifiedRequired(Boolean newSpecifiedRequired) {
-		this.annotation.setRequired(newSpecifiedRequired);
+		getAnnotation().setRequired(newSpecifiedRequired);
 		this.setSpecifiedRequired_(newSpecifiedRequired);
 	}
 	
@@ -132,7 +136,7 @@ public class GenericJavaXmlElementWrapper
 	}
 	
 	protected Boolean buildSpecifiedRequired() {
-		return this.annotation.getRequired();
+		return getAnnotation().getRequired();
 	}
 	
 	
@@ -151,7 +155,7 @@ public class GenericJavaXmlElementWrapper
 	}
 	
 	public void setSpecifiedNillable(Boolean newSpecifiedNillable) {
-		this.annotation.setNillable(newSpecifiedNillable);
+		getAnnotation().setNillable(newSpecifiedNillable);
 		this.setSpecifiedNillable_(newSpecifiedNillable);
 	}
 	
@@ -162,7 +166,7 @@ public class GenericJavaXmlElementWrapper
 	}
 	
 	protected Boolean buildSpecifiedNillable() {
-		return this.annotation.getNillable();
+		return getAnnotation().getNillable();
 	}
 	
 	
@@ -199,8 +203,6 @@ public class GenericJavaXmlElementWrapper
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		this.qName.validate(messages, reporter, astRoot);
-		
 		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
@@ -209,11 +211,41 @@ public class GenericJavaXmlElementWrapper
 					this,
 					getValidationTextRange(astRoot)));
 		}
+		
+		validateQName(messages, reporter, astRoot);
+	}
+	
+	protected void validateQName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		this.qName.validate(messages, reporter, astRoot);
 	}
 	
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.annotation.getTextRange(astRoot);
+		return getAnnotation().getTextRange(astRoot);
+	}
+	
+	
+	public interface Context {
+		
+		/**
+		 * This should never be null
+		 */
+		XmlElementWrapperAnnotation getAnnotation();
+	}
+	
+	
+	public static class SimpleContext
+			implements Context {
+		
+		protected XmlElementWrapperAnnotation annotation;
+		
+		public SimpleContext(XmlElementWrapperAnnotation annotation) {
+			this.annotation = annotation;
+		}
+		
+		public XmlElementWrapperAnnotation getAnnotation() {
+			return this.annotation;
+		}
 	}
 	
 	
@@ -278,7 +310,7 @@ public class GenericJavaXmlElementWrapper
 		
 		@Override
 		protected QNameAnnotation getAnnotation(boolean createIfNull) {
-			return GenericJavaXmlElementWrapper.this.annotation;
+			return GenericJavaXmlElementWrapper.this.getAnnotation();
 		}
 	}
 }

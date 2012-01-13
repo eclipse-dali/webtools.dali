@@ -9,19 +9,23 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class ELJavaXmlAttributeMapping
 		extends GenericJavaXmlAttributeMapping
 		implements ELXmlAttributeMapping {
 	
-	private ELJavaXmlPath xmlPath;
+	protected ELJavaXmlPath xmlPath;
 	
 	
 	public ELJavaXmlAttributeMapping(JaxbPersistentAttribute parent) {
@@ -97,6 +101,16 @@ public class ELJavaXmlAttributeMapping
 	
 	protected XmlPathAnnotation getXmlPathAnnotation() {
 		return (XmlPathAnnotation) getJavaResourceAttribute().getAnnotation(0, ELJaxb.XML_PATH);
+	}
+	
+	
+	// ***** validation *****
+	
+	@Override
+	protected void validateQName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (this.xmlPath == null) {
+			super.validateQName(messages, reporter, astRoot);
+		}
 	}
 	
 	

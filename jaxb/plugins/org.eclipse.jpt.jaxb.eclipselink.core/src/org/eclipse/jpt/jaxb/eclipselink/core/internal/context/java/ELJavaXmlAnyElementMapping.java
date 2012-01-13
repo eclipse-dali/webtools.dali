@@ -21,7 +21,7 @@ public class ELJavaXmlAnyElementMapping
 		extends GenericJavaXmlAnyElementMapping 
 		implements ELXmlAnyElementMapping {
 	
-	private ELJavaXmlPath xmlPath;
+	protected ELJavaXmlPath xmlPath;
 	
 	
 	public ELJavaXmlAnyElementMapping(JaxbPersistentAttribute parent) {

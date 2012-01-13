@@ -55,7 +55,7 @@ public class GenericJavaXmlElementsMapping
 	
 	public GenericJavaXmlElementsMapping(JaxbPersistentAttribute parent) {
 		super(parent);
-		this.xmlElementContainer = this.buildXmlElementContainer();
+		this.xmlElementContainer = buildXmlElementContainer();
 		initializeXmlElementWrapper();
 		initializeXmlIDREF();
 	}
@@ -138,9 +138,8 @@ public class GenericJavaXmlElementsMapping
 		if (this.xmlElementWrapper != null) {
 			throw new IllegalStateException();
 		}
-		XmlElementWrapperAnnotation annotation = 
-				(XmlElementWrapperAnnotation) getJavaResourceAttribute().addAnnotation(JAXB.XML_ELEMENT_WRAPPER);
-		XmlElementWrapper xmlElementWrapper = buildXmlElementWrapper(annotation);
+		getJavaResourceAttribute().addAnnotation(JAXB.XML_ELEMENT_WRAPPER);
+		XmlElementWrapper xmlElementWrapper = buildXmlElementWrapper();
 		setXmlElementWrapper_(xmlElementWrapper);
 		return xmlElementWrapper;
 	}
@@ -159,8 +158,8 @@ public class GenericJavaXmlElementsMapping
 		firePropertyChanged(XML_ELEMENT_WRAPPER_PROPERTY, oldXmlElementWrapper, xmlElementWrapper);
 	}
 	
-	protected XmlElementWrapper buildXmlElementWrapper(XmlElementWrapperAnnotation xmlElementWrapperAnnotation) {
-		return new GenericJavaXmlElementWrapper(this, xmlElementWrapperAnnotation);
+	protected XmlElementWrapper buildXmlElementWrapper() {
+		return new GenericJavaXmlElementWrapper(this, new GenericJavaXmlElementWrapper.SimpleContext(getXmlElementWrapperAnnotation()));
 	}
 	
 	protected XmlElementWrapperAnnotation getXmlElementWrapperAnnotation() {
@@ -168,20 +167,18 @@ public class GenericJavaXmlElementsMapping
 	}
 	
 	protected void initializeXmlElementWrapper() {
-		XmlElementWrapperAnnotation annotation = getXmlElementWrapperAnnotation();
-		if (annotation != null) {
-			this.xmlElementWrapper = buildXmlElementWrapper(annotation);
+		if (getXmlElementWrapperAnnotation() != null) {
+			this.xmlElementWrapper = buildXmlElementWrapper();
 		}
 	}
 	
 	protected void syncXmlElementWrapper() {
-		XmlElementWrapperAnnotation annotation = getXmlElementWrapperAnnotation();
-		if (annotation != null) {
+		if (getXmlElementWrapperAnnotation() != null) {
 			if (this.xmlElementWrapper != null) {
 				this.xmlElementWrapper.synchronizeWithResourceModel();
 			}
 			else {
-				setXmlElementWrapper_(buildXmlElementWrapper(annotation));
+				setXmlElementWrapper_(buildXmlElementWrapper());
 			}
 		}
 		else {

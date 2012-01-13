@@ -183,9 +183,12 @@ public class GenericJavaXmlAttributeMapping
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		this.qName.validate(messages, reporter, astRoot);
-		
+		validateQName(messages, reporter, astRoot);
 		validateSchemaType(messages, reporter, astRoot);
+	}
+	
+	protected void validateQName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		this.qName.validate(messages, reporter, astRoot);
 	}
 	
 	protected void validateSchemaType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {

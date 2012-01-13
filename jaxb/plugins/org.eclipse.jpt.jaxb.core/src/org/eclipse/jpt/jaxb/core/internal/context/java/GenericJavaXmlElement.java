@@ -351,9 +351,13 @@ public class GenericJavaXmlElement
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.qName.validate(messages, reporter, astRoot);
+		validateQName(messages, reporter, astRoot);
 		validateType(messages, reporter, astRoot);
 		validateSchemaType(messages, reporter, astRoot);
+	}
+	
+	protected void validateQName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		this.qName.validate(messages, reporter, astRoot);
 	}
 	
 	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {

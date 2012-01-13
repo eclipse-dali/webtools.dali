@@ -26,7 +26,8 @@ public class ELJavaXmlElementsMappingDefinition
 	
 	private static final String[] SUPPORTING_ANNOTATION_NAMES = 
 			{
-				ELJaxb.XML_PATH };
+				ELJaxb.XML_PATH,
+				ELJaxb.XML_PATHS };
 	
 	/**
 	 * Return the singleton.

@@ -9,19 +9,26 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.XmlElement;
+import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementMapping;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlElementMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class ELJavaXmlElementMapping
 		extends GenericJavaXmlElementMapping
 		implements ELXmlElementMapping {
 	
-	private ELJavaXmlPath xmlPath;
+	protected ELJavaXmlPath xmlPath;
 	
 	
 	public ELJavaXmlElementMapping(JaxbPersistentAttribute parent) {
@@ -100,11 +107,63 @@ public class ELJavaXmlElementMapping
 	}
 	
 	
+	// ***** misc *****
+	
+	@Override
+	protected XmlElement buildXmlElement() {
+		return new ELJavaXmlElement(this, new XmlElementContext());
+	}
+	
+	@Override
+	protected XmlElementWrapper buildXmlElementWrapper() {
+		return new ELJavaXmlElementWrapper(this, new XmlElementWrapperContext());
+	}
+	
+	
+	// ***** validation *****
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		if (this.xmlPath != null) {
+			validateXmlPath(messages, reporter, astRoot);
+		}
+	}
+	
+	protected void validateXmlPath(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		
+	}
+	
+	
 	protected class XmlPathContext
 			implements ELJavaXmlPath.Context {
 		
 		public XmlPathAnnotation getAnnotation() {
 			return ELJavaXmlElementMapping.this.getXmlPathAnnotation();
+		}
+	}
+	
+	
+	protected class XmlElementContext
+			extends GenericJavaXmlElementMapping.XmlElementContext
+			implements ELJavaXmlElement.Context {
+		
+		public ELJavaXmlPath getXmlPath() {
+			return ELJavaXmlElementMapping.this.xmlPath;
+		}
+	}
+	
+	
+	protected class XmlElementWrapperContext
+			implements ELJavaXmlElementWrapper.Context {
+		
+		public XmlElementWrapperAnnotation getAnnotation() {
+			return ELJavaXmlElementMapping.this.getXmlElementWrapperAnnotation();
+		}
+		
+		public ELXmlPath getXmlPath() {
+			return ELJavaXmlElementMapping.this.xmlPath;
 		}
 	}
 }
