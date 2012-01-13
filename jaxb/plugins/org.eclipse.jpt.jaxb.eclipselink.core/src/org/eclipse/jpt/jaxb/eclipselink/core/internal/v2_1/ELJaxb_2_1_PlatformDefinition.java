@@ -108,12 +108,12 @@ public class ELJaxb_2_1_PlatformDefinition
 	@Override
 	protected void addSpecifiedJavaAttributeMappingDefinitionsTo(
 			ArrayList<JavaAttributeMappingDefinition> definitions) {
-		CollectionTools.addAll(definitions, getGenericJaxbPlatformDefinition().getSpecifiedJavaAttributeMappingDefinitions());
 		CollectionTools.addAll(definitions, ELJavaXmlAnyAttributeMappingDefinition.instance());
 		CollectionTools.addAll(definitions, ELJavaXmlAnyElementMappingDefinition.instance());
 		CollectionTools.addAll(definitions, ELJavaXmlAttributeMappingDefinition.instance());
 		CollectionTools.addAll(definitions, ELJavaXmlElementMappingDefinition.instance());
 		CollectionTools.addAll(definitions, ELJavaXmlElementsMappingDefinition.instance());
 		CollectionTools.addAll(definitions, ELJavaXmlInverseReferenceMappingDefinition.instance());
+		CollectionTools.addAll(definitions, getGenericJaxbPlatformDefinition().getSpecifiedJavaAttributeMappingDefinitions());
 	}
 }
