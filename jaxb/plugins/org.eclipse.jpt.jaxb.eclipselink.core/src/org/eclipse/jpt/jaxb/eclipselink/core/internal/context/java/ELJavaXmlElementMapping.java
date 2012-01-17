@@ -149,8 +149,8 @@ public class ELJavaXmlElementMapping
 			extends GenericJavaXmlElementMapping.XmlElementContext
 			implements ELJavaXmlElement.Context {
 		
-		public ELJavaXmlPath getXmlPath() {
-			return ELJavaXmlElementMapping.this.xmlPath;
+		public boolean hasXmlPath() {
+			return ELJavaXmlElementMapping.this.xmlPath != null;
 		}
 	}
 	
@@ -162,8 +162,8 @@ public class ELJavaXmlElementMapping
 			return ELJavaXmlElementMapping.this.getXmlElementWrapperAnnotation();
 		}
 		
-		public ELXmlPath getXmlPath() {
-			return ELJavaXmlElementMapping.this.xmlPath;
+		public boolean hasXmlPath() {
+			return ELJavaXmlElementMapping.this.xmlPath != null;
 		}
 	}
 }

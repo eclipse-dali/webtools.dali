@@ -32,7 +32,7 @@ public class ELJavaXmlElement
 	
 	@Override
 	protected void validateQName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (getContext().getXmlPath() != null) {
+		if (! getContext().hasXmlPath()) {
 			super.validateQName(messages, reporter, astRoot);
 		}
 	}
@@ -41,6 +41,6 @@ public class ELJavaXmlElement
 	public interface Context
 			extends GenericJavaXmlElement.Context {
 		
-		ELJavaXmlPath getXmlPath();
+		boolean hasXmlPath();
 	}
 }

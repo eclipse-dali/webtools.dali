@@ -336,7 +336,7 @@ public class GenericJavaXmlElementsMapping
 	
 	protected void validateDuplicateTypesAndQNames(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		Bag<String> xmlElementTypes = new HashBag<String>();
-		Bag<QName> xmlElementQnames = new HashBag<QName>();
+		Bag<QName> xmlElementQNames = new HashBag<QName>();
 		
 		for (XmlElement xmlElement : getXmlElements()) {
 			String typeName = xmlElement.getFullyQualifiedType();
@@ -345,36 +345,44 @@ public class GenericJavaXmlElementsMapping
 			}
 			String elementName = xmlElement.getQName().getName();
 			if (! StringTools.stringIsEmpty(elementName)) {
-				xmlElementQnames.add(new QName(xmlElement.getQName().getNamespace(), elementName));
+				xmlElementQNames.add(new QName(xmlElement.getQName().getNamespace(), elementName));
 			}
 		}
 		
 		for (XmlElement xmlElement : getXmlElements()) {
-			String xmlElementType = xmlElement.getFullyQualifiedType();
-			if (xmlElementTypes.count(xmlElementType) > 1) {
-				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_TYPE,
-								new String[] { xmlElementType },
-								xmlElement,
-								xmlElement.getTypeTextRange(astRoot)));
-			}
-			
-			String xmlElementNamespace = xmlElement.getQName().getNamespace();
-			String xmlElementName = xmlElement.getQName().getName();
-			if (xmlElementQnames.count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
-				messages.add(
-						DefaultValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JaxbValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_QNAME,
-								new String[] { xmlElementName },
-								xmlElement,
-								xmlElement.getQName().getNameTextRange(astRoot)));
-			}
+			validateDuplicateType(xmlElement, xmlElementTypes, messages, astRoot);
+			validateDuplicateQName(xmlElement, xmlElementQNames, messages, astRoot);	
 		}
 	}
 	
+	protected void validateDuplicateType(XmlElement xmlElement, Bag<String> xmlElementTypes,
+				List<IMessage> messages, CompilationUnit astRoot) {
+		String xmlElementType = xmlElement.getFullyQualifiedType();
+		if (xmlElementTypes.count(xmlElementType) > 1) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_TYPE,
+							new String[] { xmlElementType },
+							xmlElement,
+							xmlElement.getTypeTextRange(astRoot)));
+		}
+	}
+	
+	protected void validateDuplicateQName(XmlElement xmlElement, Bag<QName> xmlElementQNames,
+				List<IMessage> messages, CompilationUnit astRoot) {
+		String xmlElementNamespace = xmlElement.getQName().getNamespace();
+		String xmlElementName = xmlElement.getQName().getName();
+		if (xmlElementQNames.count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_QNAME,
+							new String[] { xmlElementName },
+							xmlElement,
+							xmlElement.getQName().getNameTextRange(astRoot)));
+		}	
+	}
 	
 	protected class XmlElementContainer
 			extends ContextListContainer<XmlElement, XmlElementAnnotation> {

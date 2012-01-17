@@ -9,16 +9,31 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
+import java.util.Iterator;
+import java.util.List;
+import javax.xml.namespace.QName;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.Bag;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.XmlElement;
+import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementsMapping;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlElementsMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class ELJavaXmlElementsMapping
@@ -90,6 +105,77 @@ public class ELJavaXmlElementsMapping
 	}
 	
 	
+	// ***** misc *****
+	
+	@Override
+	protected XmlElement buildXmlElement(XmlElementAnnotation xmlElementAnnotation) {
+		return new ELJavaXmlElement(this, new XmlElementContext(xmlElementAnnotation));
+	}
+	
+	@Override
+	protected XmlElementWrapper buildXmlElementWrapper() {
+		return new ELJavaXmlElementWrapper(this, new XmlElementWrapperContext());
+	}
+	
+	
+	// ***** validation *****
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		if (getXmlPathsSize() > 0 ) {
+			validateXmlPaths(messages, reporter, astRoot);
+		}
+	}
+	
+	protected void validateXmlPaths(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		Iterator<XmlElement> xmlElements = getXmlElements().iterator();
+		Iterator<ELJavaXmlPath> xmlPaths = this.xmlPathContainer.getContextElements().iterator();
+		
+		while (xmlElements.hasNext() && xmlPaths.hasNext()) {
+			xmlElements.next();
+			xmlPaths.next();
+		}
+		
+		if (xmlElements.hasNext()) {
+			messages.add(
+					ELJaxbValidationMessageBuilder.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							ELJaxbValidationMessages.XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS,
+							this,
+							getXmlPathsTextRange(astRoot)));
+		}
+		
+		while (xmlPaths.hasNext()) {
+			ELJavaXmlPath xmlPath = xmlPaths.next();
+			messages.add(
+					ELJaxbValidationMessageBuilder.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							ELJaxbValidationMessages.XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS,
+							this,
+							xmlPath.getValidationTextRange(astRoot)));
+		}
+	}
+	
+	@Override
+	protected void validateDuplicateQName(XmlElement xmlElement, Bag<QName> xmlElementQNames, 
+				List<IMessage> messages, CompilationUnit astRoot) {
+		
+		if (getXmlPathsSize() == 0) { 
+			super.validateDuplicateQName(xmlElement, xmlElementQNames, messages, astRoot);
+		}
+	}
+	
+	protected TextRange getXmlPathsTextRange(CompilationUnit astRoot) {
+		Annotation annotation = getJavaResourceAttribute().getAnnotation(ELJaxb.XML_PATHS);
+		if (annotation == null) {
+			annotation = getJavaResourceAttribute().getAnnotation(0, ELJaxb.XML_PATH);
+		}
+		return annotation.getTextRange(astRoot);
+	}
+	
+	
 	protected class XmlPathContainer
 			extends ContextListContainer<ELJavaXmlPath, XmlPathAnnotation> {
 		
@@ -113,6 +199,8 @@ public class ELJavaXmlElementsMapping
 			// in the context of this mapping, there will never be an ELXmlPath without an annotation
 			return contextElement.getAnnotation();
 		}
+		
+//		public int indexOf(Xml)
 	}
 	
 	
@@ -128,6 +216,32 @@ public class ELJavaXmlElementsMapping
 		
 		public XmlPathAnnotation getAnnotation() {
 			return this.annotation;
+		}
+	}
+	
+	
+	protected class XmlElementContext
+			extends GenericJavaXmlElementsMapping.XmlElementContext
+			implements ELJavaXmlElement.Context {
+		
+		protected XmlElementContext(XmlElementAnnotation annotation) {
+			super(annotation);
+		}
+		
+		public boolean hasXmlPath() {
+			return ELJavaXmlElementsMapping.this.getXmlPathsSize() > 0;
+		}
+	}
+	
+	protected class XmlElementWrapperContext
+			implements ELJavaXmlElementWrapper.Context {
+		
+		public XmlElementWrapperAnnotation getAnnotation() {
+			return ELJavaXmlElementsMapping.this.getXmlElementWrapperAnnotation();
+		}
+		
+		public boolean hasXmlPath() {
+			return ELJavaXmlElementsMapping.this.getXmlPathsSize() > 0;
 		}
 	}
 }

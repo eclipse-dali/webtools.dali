@@ -146,8 +146,8 @@ public class ELJavaXmlAnyElementMapping
 			return ELJavaXmlAnyElementMapping.this.getXmlElementWrapperAnnotation();
 		}
 		
-		public ELXmlPath getXmlPath() {
-			return ELJavaXmlAnyElementMapping.this.xmlPath;
+		public boolean hasXmlPath() {
+			return ELJavaXmlAnyElementMapping.this.xmlPath != null;
 		}
 	}
 }
