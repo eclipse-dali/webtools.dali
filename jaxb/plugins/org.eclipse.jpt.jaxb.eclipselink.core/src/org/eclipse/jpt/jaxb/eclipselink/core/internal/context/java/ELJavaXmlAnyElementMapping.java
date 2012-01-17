@@ -9,12 +9,18 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAnyElementMapping;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class ELJavaXmlAnyElementMapping
@@ -100,11 +106,48 @@ public class ELJavaXmlAnyElementMapping
 	}
 	
 	
+	// ***** misc *****
+	
+	@Override
+	protected XmlElementWrapper buildXmlElementWrapper() {
+		return new ELJavaXmlElementWrapper(this, new XmlElementWrapperContext());
+	}
+	
+	
+	// ***** validation *****
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		if (this.xmlPath != null) {
+			validateXmlPath(messages, reporter, astRoot);
+		}
+	}
+	
+	protected void validateXmlPath(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		
+	}
+	
+	
 	protected class XmlPathContext
 			implements ELJavaXmlPath.Context {
 		
 		public XmlPathAnnotation getAnnotation() {
 			return ELJavaXmlAnyElementMapping.this.getXmlPathAnnotation();
+		}
+	}
+	
+	
+	protected class XmlElementWrapperContext
+			implements ELJavaXmlElementWrapper.Context {
+		
+		public XmlElementWrapperAnnotation getAnnotation() {
+			return ELJavaXmlAnyElementMapping.this.getXmlElementWrapperAnnotation();
+		}
+		
+		public ELXmlPath getXmlPath() {
+			return ELJavaXmlAnyElementMapping.this.xmlPath;
 		}
 	}
 }
