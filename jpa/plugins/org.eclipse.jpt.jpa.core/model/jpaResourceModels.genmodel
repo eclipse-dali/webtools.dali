@@ -21,10 +21,6 @@
   </genPackages>
   <genPackages prefix="Orm" basePackage="org.eclipse.jpt.jpa.core.resource" disposableProviderFactory="true"
       adapterFactory="false" ecorePackage="orm.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//AccessType">
-      <genEnumLiterals ecoreEnumLiteral="orm.ecore#//AccessType/PROPERTY"/>
-      <genEnumLiterals ecoreEnumLiteral="orm.ecore#//AccessType/FIELD"/>
-    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//DiscriminatorType">
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//DiscriminatorType/STRING"/>
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//DiscriminatorType/CHAR"/>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,6 @@ public interface XmlAccessHolder extends JpaEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.core.resource.orm.AccessType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Access</em>' attribute isn't clear,
@@ -46,23 +45,21 @@ public interface XmlAccessHolder extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.AccessType
-	 * @see #setAccess(AccessType)
+	 * @see #setAccess(String)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlAccessHolder_Access()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	AccessType getAccess();
+	String getAccess();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder#getAccess <em>Access</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.AccessType
 	 * @see #getAccess()
 	 * @generated
 	 */
-	void setAccess(AccessType value);
+	void setAccess(String value);
 
 } // XmlAccessHolder

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
+ *  Copyright (c) 2009, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -149,8 +149,6 @@ public class OrmFactory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
-			case OrmPackage.ACCESS_TYPE:
-				return createAccessTypeFromString(eDataType, initialValue);
 			case OrmPackage.DISCRIMINATOR_TYPE:
 				return createDiscriminatorTypeFromString(eDataType, initialValue);
 			case OrmPackage.ENUM_TYPE:
@@ -178,8 +176,6 @@ public class OrmFactory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
-			case OrmPackage.ACCESS_TYPE:
-				return convertAccessTypeToString(eDataType, instanceValue);
 			case OrmPackage.DISCRIMINATOR_TYPE:
 				return convertDiscriminatorTypeToString(eDataType, instanceValue);
 			case OrmPackage.ENUM_TYPE:
@@ -789,28 +785,6 @@ public class OrmFactory extends EFactoryImpl
 	{
 		XmlVersion xmlVersion = new XmlVersion();
 		return xmlVersion;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public AccessType createAccessTypeFromString(EDataType eDataType, String initialValue)
-	{
-		AccessType result = AccessType.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertAccessTypeToString(EDataType eDataType, Object instanceValue)
-	{
-		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**

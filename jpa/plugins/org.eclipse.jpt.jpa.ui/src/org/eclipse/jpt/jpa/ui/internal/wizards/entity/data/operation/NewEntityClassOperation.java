@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2010 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2012 by SAP AG, Walldorf. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -537,7 +537,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		if (!model.isFieldAccess()) {
 			accessTypeString = PROPERTY;
 		}
-		return AccessType.fromOrmResourceModel(OrmFactory.eINSTANCE.createAccessTypeFromString(null, accessTypeString));// TODO
+		return AccessType.fromOrmResourceModel(accessTypeString);// TODO
 	}
 
 	protected InheritanceType getModelInheritanceType(CreateEntityTemplateModel model) {

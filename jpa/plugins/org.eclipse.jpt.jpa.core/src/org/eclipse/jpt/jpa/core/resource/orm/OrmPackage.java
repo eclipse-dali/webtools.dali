@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -5878,16 +5878,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_VERSION_FEATURE_COUNT = ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.AccessType <em>Access Type</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.AccessType
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAccessType()
-	 * @generated
-	 */
-	public static final int ACCESS_TYPE = 91;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5895,7 +5885,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 92;
+	public static final int DISCRIMINATOR_TYPE = 91;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -5905,7 +5895,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 93;
+	public static final int ENUM_TYPE = 92;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -5915,7 +5905,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 94;
+	public static final int FETCH_TYPE = 93;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -5925,7 +5915,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 95;
+	public static final int GENERATION_TYPE = 94;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -5935,7 +5925,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 96;
+	public static final int INHERITANCE_TYPE = 95;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -5945,7 +5935,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 97;
+	public static final int TEMPORAL_TYPE = 96;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -6583,13 +6573,6 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlOrderableEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EEnum accessTypeEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -9906,19 +9889,6 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.jpt.jpa.core.resource.orm.AccessType <em>Access Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Access Type</em>'.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.AccessType
-	 * @generated
-	 */
-	public EEnum getAccessType()
-	{
-		return accessTypeEEnum;
-	}
-
-	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.jpa.core.resource.orm.DiscriminatorType <em>Discriminator Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10352,7 +10322,6 @@ public class OrmPackage extends EPackageImpl
 		xmlVersionEClass = createEClass(XML_VERSION);
 
 		// Create enums
-		accessTypeEEnum = createEEnum(ACCESS_TYPE);
 		discriminatorTypeEEnum = createEEnum(DISCRIMINATOR_TYPE);
 		enumTypeEEnum = createEEnum(ENUM_TYPE);
 		fetchTypeEEnum = createEEnum(FETCH_TYPE);
@@ -10562,7 +10531,7 @@ public class OrmPackage extends EPackageImpl
 		initEClass(abstractXmlTypeMappingEClass, AbstractXmlTypeMapping.class, "AbstractXmlTypeMapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlAccessHolderEClass, XmlAccessHolder.class, "XmlAccessHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlAccessHolder_Access(), this.getAccessType(), "access", null, 0, 1, XmlAccessHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlAccessHolder_Access(), theXMLTypePackage.getString(), "access", null, 0, 1, XmlAccessHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlAttributeMappingEClass, XmlAttributeMapping.class, "XmlAttributeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlAttributeMapping_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlAttributeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -10836,10 +10805,6 @@ public class OrmPackage extends EPackageImpl
 		initEClass(xmlVersionEClass, XmlVersion.class, "XmlVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
-		initEEnum(accessTypeEEnum, AccessType.class, "AccessType");
-		addEEnumLiteral(accessTypeEEnum, AccessType.PROPERTY);
-		addEEnumLiteral(accessTypeEEnum, AccessType.FIELD);
-
 		initEEnum(discriminatorTypeEEnum, DiscriminatorType.class, "DiscriminatorType");
 		addEEnumLiteral(discriminatorTypeEEnum, DiscriminatorType.STRING);
 		addEEnumLiteral(discriminatorTypeEEnum, DiscriminatorType.CHAR);
@@ -12924,16 +12889,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_ORDERABLE__ORDER_BY = eINSTANCE.getXmlOrderable_OrderBy();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.core.resource.orm.AccessType <em>Access Type</em>}' enum.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.core.resource.orm.AccessType
-		 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAccessType()
-		 * @generated
-		 */
-		public static final EEnum ACCESS_TYPE = eINSTANCE.getAccessType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.core.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.

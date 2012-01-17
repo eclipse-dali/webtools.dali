@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -84,10 +84,14 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 	protected EList<XmlNamedNativeQuery> namedNativeQueries;
 
 	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
+	 * The default value of the '{@link #getAccess() <em>Access</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccess()
+	 * @generated
+	 * @ordered
 	 */
-	protected static final AccessType ACCESS_EDEFAULT = null;
+	protected static final String ACCESS_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
@@ -97,7 +101,7 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 	 * @generated
 	 * @ordered
 	 */
-	protected AccessType access = ACCESS_EDEFAULT;
+	protected String access = ACCESS_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
@@ -518,7 +522,6 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 
 	/**
 	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.jpa.core.resource.orm.AccessType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Access</em>' attribute isn't clear,
@@ -526,13 +529,12 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.AccessType
-	 * @see #setAccess(AccessType)
+	 * @see #setAccess(String)
 	 * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlAccessHolder_Access()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	public AccessType getAccess()
+	public String getAccess()
 	{
 		return access;
 	}
@@ -542,14 +544,13 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.jpa.core.resource.orm.AccessType
 	 * @see #getAccess()
 	 * @generated
 	 */
-	public void setAccess(AccessType newAccess)
+	public void setAccess(String newAccess)
 	{
-		AccessType oldAccess = access;
-		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
+		String oldAccess = access;
+		access = newAccess;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_MAPPINGS__ACCESS, oldAccess, access));
 	}
@@ -786,7 +787,7 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 				getNamedNativeQueries().addAll((Collection<? extends XmlNamedNativeQuery>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
-				setAccess((AccessType)newValue);
+				setAccess((String)newValue);
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				setDescription((String)newValue);
@@ -902,7 +903,7 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
-				return access != ACCESS_EDEFAULT;
+				return ACCESS_EDEFAULT == null ? access != null : !ACCESS_EDEFAULT.equals(access);
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:

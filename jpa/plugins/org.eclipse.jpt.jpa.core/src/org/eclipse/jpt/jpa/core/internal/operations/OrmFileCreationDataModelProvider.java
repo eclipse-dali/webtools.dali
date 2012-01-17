@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2011  Oracle. 
+ *  Copyright (c) 2008, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -160,7 +160,7 @@ public class OrmFileCreationDataModelProvider
 	@Override
 	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
 		if (propertyName.equals(DEFAULT_ACCESS)) {
-			return accessPropertyDescriptor((AccessType) getProperty(DEFAULT_ACCESS));
+			return accessPropertyDescriptor((String) getProperty(DEFAULT_ACCESS));
 		}
 		if (propertyName.equals(PERSISTENCE_UNIT)) {
 			return persistenceUnitPropertyDescriptor(getStringProperty(PERSISTENCE_UNIT));
@@ -168,11 +168,11 @@ public class OrmFileCreationDataModelProvider
 		return super.getPropertyDescriptor(propertyName);
 	}
 	
-	protected DataModelPropertyDescriptor accessPropertyDescriptor(AccessType accessType) {
+	protected DataModelPropertyDescriptor accessPropertyDescriptor(String accessType) {
 		if (accessType == null) {
 			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
 		}
-		return new DataModelPropertyDescriptor(accessType, accessType.getName());
+		return new DataModelPropertyDescriptor(accessType);
 	}
 	
 	DataModelPropertyDescriptor persistenceUnitPropertyDescriptor(String persistenceUnitName) {

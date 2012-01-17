@@ -64,7 +64,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlTypeMapping" abstract="true"
       eSuperTypes="#//XmlTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAccessHolder" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="#//AccessType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeMapping" abstract="true"
       interface="true" eSuperTypes="#//v2_0/XmlAttributeMapping_2_0">
@@ -398,10 +398,6 @@
         lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" eSuperTypes="#//AbstractXmlAttributeMapping #//ColumnMapping #//XmlConvertibleMapping"/>
-  <eClassifiers xsi:type="ecore:EEnum" name="AccessType">
-    <eLiterals name="PROPERTY"/>
-    <eLiterals name="FIELD" value="1"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="DiscriminatorType">
     <eLiterals name="STRING"/>
     <eLiterals name="CHAR" value="1"/>

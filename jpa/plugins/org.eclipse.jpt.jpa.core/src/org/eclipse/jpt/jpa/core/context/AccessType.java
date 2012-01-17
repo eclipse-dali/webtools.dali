@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,9 +40,9 @@ public enum AccessType {
 
 
 	private org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType;
-	private org.eclipse.jpt.jpa.core.resource.orm.AccessType ormAccessType;
+	private String ormAccessType;
 
-	AccessType(org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType, org.eclipse.jpt.jpa.core.resource.orm.AccessType ormAccessType) {
+	AccessType(org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType, String ormAccessType) {
 		if (javaAccessType == null) {
 			throw new NullPointerException();
 		}
@@ -57,7 +57,7 @@ public enum AccessType {
 		return this.javaAccessType;
 	}
 
-	public org.eclipse.jpt.jpa.core.resource.orm.AccessType getOrmAccessType() {
+	public String getOrmAccessType() {
 		return this.ormAccessType;
 	}
 
@@ -81,20 +81,20 @@ public enum AccessType {
 		return (accessType == null) ? null : accessType.getJavaAccessType();
 	}
 
-	public static AccessType fromOrmResourceModel(org.eclipse.jpt.jpa.core.resource.orm.AccessType ormAccessType) {
+	public static AccessType fromOrmResourceModel(String ormAccessType) {
 		return (ormAccessType == null) ? null : fromOrmResourceModel_(ormAccessType);
 	}
 
-	private static AccessType fromOrmResourceModel_(org.eclipse.jpt.jpa.core.resource.orm.AccessType ormAccessType) {
+	private static AccessType fromOrmResourceModel_(String ormAccessType) {
 		for (AccessType accessType : AccessType.values()) {
-			if (accessType.getOrmAccessType() == ormAccessType) {
+			if (accessType.getOrmAccessType().equals(ormAccessType)) {
 				return accessType;
 			}
 		}
 		return null;
 	}
 
-	public static org.eclipse.jpt.jpa.core.resource.orm.AccessType toOrmResourceModel(AccessType accessType) {
+	public static String toOrmResourceModel(AccessType accessType) {
 		return (accessType == null) ? null : accessType.getOrmAccessType();
 	}
 
