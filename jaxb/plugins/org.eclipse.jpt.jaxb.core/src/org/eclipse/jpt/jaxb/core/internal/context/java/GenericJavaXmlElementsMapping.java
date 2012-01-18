@@ -29,6 +29,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
+import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -446,6 +447,14 @@ public class GenericJavaXmlElementsMapping
 		
 		public boolean hasXmlList() {
 			return false;
+		}
+		
+		public boolean hasXmlSchemaType() {
+			return false;
+		}
+		
+		public XmlSchemaType getXmlSchemaType() {
+			return null;
 		}
 	}
 	

@@ -23,6 +23,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
+import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlIDREF.ValidatableReference;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
@@ -269,6 +270,14 @@ public class GenericJavaXmlElementMapping
 		
 		public boolean hasXmlList() {
 			return GenericJavaXmlElementMapping.this.isXmlList();
+		}
+		
+		public boolean hasXmlSchemaType() {
+			return getXmlSchemaType() != null;
+		}
+		
+		public XmlSchemaType getXmlSchemaType() {
+			return GenericJavaXmlElementMapping.this.getXmlSchemaType();
 		}
 	}
 	

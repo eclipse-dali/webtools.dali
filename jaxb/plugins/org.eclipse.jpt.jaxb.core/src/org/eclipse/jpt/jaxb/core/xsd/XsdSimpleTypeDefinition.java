@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.xsd.XSDEnumerationFacet;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
+import org.eclipse.xsd.XSDVariety;
 
 
 public class XsdSimpleTypeDefinition
@@ -37,14 +38,11 @@ public class XsdSimpleTypeDefinition
 			XsdSimpleTypeDefinition itemType = getItemType();
 			return (itemType == null) ? false : itemType.typeIsValid(xsdType, false, allowExtension, allowRestriction);
 		}
-//		if (getXSDComponent().getVariety() == XSDVariety.UNION_LITERAL) {
-//			for (XsdSimpleTypeDefinition memberType : getMemberTypes()) {
-//				if (! memberType.typeIsValid(xsdType, isItemType, allowExtension, allowRestriction)) {
-//					return false;
-//				}
-//			}
-//			return true;
-//		}
+		if (getXSDComponent().getVariety() == XSDVariety.UNION_LITERAL) {
+			if (XsdUtil.getSchemaForSchema().getTypeDefinition("string").typeIsValid(xsdType, isItemType, allowExtension, allowRestriction)) {
+				return true;
+			}
+		}
 		return super.typeIsValid(xsdType, isItemType, allowExtension, allowRestriction);
 	}
 	

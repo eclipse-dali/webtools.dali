@@ -101,6 +101,10 @@ public class GenericJavaXmlElement
 		return this.context;
 	}
 	
+	protected JaxbAttributeMapping getAttributeMapping() {
+		return getContext().getAttributeMapping();
+	}
+	
 	protected JaxbPersistentAttribute getPersistentAttribute() {
 		return getContext().getAttributeMapping().getPersistentAttribute();
 	}
@@ -373,7 +377,7 @@ public class GenericJavaXmlElement
 		else if (! StringTools.stringIsEmpty(this.specifiedType)
 				// verify that type actually exists before validating
 				&& JDTTools.findType(getJaxbProject().getJavaProject(), fqType) != null) {
-			String attributeBaseType = getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
+			String attributeBaseType = getAttributeMapping().getValueTypeName();
 			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
 				messages.add(
 						DefaultValidationMessages.buildMessage(
@@ -404,6 +408,9 @@ public class GenericJavaXmlElement
 		}
 		else if (this.context.hasXmlIDREF()) {
 			expectedSchemaType = XsdUtil.getSchemaForSchema().getTypeDefinition("IDREF");
+		}
+		else if (this.context.hasXmlSchemaType()) {
+			expectedSchemaType = this.context.getXmlSchemaType().getXsdTypeDefinition();
 		}
 		else if (! XmlElement.DEFAULT_TYPE_PROPERTY.equals(getFullyQualifiedType())) {
 			expectedSchemaType = getTypeXsdTypeDefinition();
@@ -473,5 +480,9 @@ public class GenericJavaXmlElement
 		boolean hasXmlIDREF();
 		
 		boolean hasXmlList();
+		
+		boolean hasXmlSchemaType();
+		
+		XmlSchemaType getXmlSchemaType();
 	}
 }
