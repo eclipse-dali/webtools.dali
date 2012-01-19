@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,16 +12,15 @@ package org.eclipse.jpt.jpa.core.internal.context.persistence;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -143,37 +142,54 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	/**
 	 * Put into persistenceUnit properties.
 	 * 
-	 * @param key -
+	 * @param propertyId -
 	 *            property name
 	 * @param value -
 	 *            property value
 	 */
-	protected void putProperty(String key, Object value) {
-		this.putProperty(key, value, false);
+	protected void putProperty(String propertyId, String value) {
+		this.putProperty(propertyId, value, false);
 	}
 
-	@SuppressWarnings("unchecked")
-	protected void putProperty(String key, Object value, boolean allowDuplicates) {
-		String persistenceUnitKey = this.persistenceUnitKeyOf(key);
-		if ((value != null) && value.getClass().isEnum()) {
-			this.putEnumValue(persistenceUnitKey, (Enum) value, allowDuplicates);
-		} 
-		else {
-			this.putPersistenceUnitProperty(persistenceUnitKey, null, value, allowDuplicates);
-		}
+	protected void putProperty(String propertyId, String value, boolean allowDuplicates) {
+		String persistenceUnitKey = this.persistenceUnitKeyOf(propertyId);
+		this.putPersistenceUnitProperty(persistenceUnitKey, null, value, allowDuplicates);
+	}
+
+	protected void putProperty(String propertyId, Boolean value) {
+		this.putProperty(propertyId, value, false);
+	}
+
+	protected void putProperty(String propertyId, Boolean value, boolean allowDuplicates) {
+		this.putProperty(propertyId, this.getPropertyStringValueOf(value), allowDuplicates);
+	}
+
+	protected void putProperty(String propertyId, Integer value) {
+		this.putProperty(propertyId, value, false);
+	}
+
+	protected void putProperty(String propertyId, Integer value, boolean allowDuplicates) {
+		this.putProperty(propertyId, this.getPropertyStringValueOf(value), allowDuplicates);
+	}
+
+	protected void putProperty(String propertyId, PersistenceXmlEnumValue value) {
+		this.putProperty(propertyId, value, false);
+	}
+
+	protected void putProperty(String propertyId, PersistenceXmlEnumValue value, boolean allowDuplicates) {
+		this.putProperty(propertyId, this.getPropertyStringValueOf(value), allowDuplicates);
 	}
 
 	/**
 	 * Removes a persistenceUnit property.
 	 * 
-	 * @param key -
+	 * @param propertyId -
 	 *            property name
 	 * @param value -
 	 *            property value
 	 */
-	protected void removeProperty(String key, String value) {
-		String persistenceUnitKey = this.persistenceUnitKeyOf(key);
-		
+	protected void removeProperty(String propertyId, String value) {
+		String persistenceUnitKey = this.persistenceUnitKeyOf(propertyId);
 		this.getPersistenceUnit().removeProperty(persistenceUnitKey, value);
 	}
 
@@ -243,6 +259,18 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		return (p == null) ? null : getIntegerValueOf(p.getValue());
 	}
 
+	protected Integer getIntegerValueOf(String puStringValue) {
+		if  (StringTools.stringIsEmpty(puStringValue)) {
+			return null;
+		}
+		try {
+			return Integer.valueOf(puStringValue);
+		}
+		catch (NumberFormatException nfe) {
+			return null;
+		}
+	}
+
 	protected Integer getIntegerValue(String key, String keySuffix) {
 		return this.getIntegerValue((keySuffix == null) ? key : key + keySuffix);
 	}
@@ -281,7 +309,7 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	 * @param allowDuplicate
 	 */
 	protected void putIntegerValue(String key, String keySuffix, Integer newValue, boolean allowDuplicate) {
-		this.putPersistenceUnitProperty(key, keySuffix, newValue, allowDuplicate);
+		this.putPersistenceUnitProperty(key, keySuffix, this.getPropertyStringValueOf(newValue), allowDuplicate);
 	}
 
 	// ****** Boolean convenience methods ******* 
@@ -290,7 +318,14 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	 */
 	protected Boolean getBooleanValue(String persistenceUnitKey) {
 		PersistenceUnit.Property p = this.getPersistenceUnit().getProperty(persistenceUnitKey);
-		return (p == null) ? null : getBooleanValueOf(p.getValue());
+		return (p == null) ? null : this.getBooleanValueOf(p.getValue());
+	}
+	
+	protected Boolean getBooleanValueOf(String puStringValue) {
+		if (StringTools.stringIsEmpty(puStringValue)) {
+			return null;
+		}
+		return Boolean.valueOf(puStringValue);
 	}
 
 	protected Boolean getBooleanValue(String key, String keySuffix) {
@@ -331,19 +366,19 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	 * @param allowDuplicate
 	 */
 	protected void putBooleanValue(String key, String keySuffix, Boolean newValue, boolean allowDuplicate) {
-		this.putPersistenceUnitProperty(key, keySuffix, newValue, allowDuplicate);
+		this.putPersistenceUnitProperty(key, keySuffix, this.getPropertyStringValueOf(newValue), allowDuplicate);
 	}
 
 	// ****** Enum convenience methods ******* 
 	/**
 	 * Returns the Enum value of the given Property from the PersistenceXml.
 	 */
-	protected <T extends Enum<T>> T getEnumValue(String persistenceUnitKey, T[] enumValues) {
+	protected <T extends PersistenceXmlEnumValue> T getEnumValue(String persistenceUnitKey, T[] enumValues) {
 		PersistenceUnit.Property p = this.getPersistenceUnit().getProperty(persistenceUnitKey);
 		return (p == null) ? null : getEnumValueOf(p.getValue(), enumValues);
 	}
 
-	protected <T extends Enum<T>> T getEnumValue(String key, String keySuffix, T[] enumValues) {
+	protected <T extends PersistenceXmlEnumValue> T getEnumValue(String key, String keySuffix, T[] enumValues) {
 		return this.getEnumValue((keySuffix == null) ? key : key + keySuffix, enumValues);
 	}
 
@@ -353,15 +388,15 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	 * @param key -
 	 *            property key
 	 */
-	protected <T extends Enum<T>> void putEnumValue(String key, T newValue) {
+	protected <T extends PersistenceXmlEnumValue> void putEnumValue(String key, T newValue) {
 		this.putEnumValue(key, null, newValue, false);
 	}
 
-	protected <T extends Enum<T>> void putEnumValue(String key, T newValue, boolean allowDuplicate) {
+	protected <T extends PersistenceXmlEnumValue> void putEnumValue(String key, T newValue, boolean allowDuplicate) {
 		this.putEnumValue(key, null, newValue, allowDuplicate);
 	}
 
-	protected <T extends Enum<T>> void putEnumValue(String key, String keySuffix, T newValue, boolean allowDuplicate) {
+	protected <T extends PersistenceXmlEnumValue> void putEnumValue(String key, String keySuffix, T newValue, boolean allowDuplicate) {
 		this.putPersistenceUnitProperty(key, keySuffix, getPropertyStringValueOf(newValue), allowDuplicate);
 	}
 
@@ -408,32 +443,11 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		this.putPersistenceUnitProperty(persistenceUnitKey, null, persistenceUnitValue, false);
 	}
 
-	// ****** Static methods ******* 
-	
-	public static Boolean getBooleanValueOf(String puStringValue) {
-		if (StringTools.stringIsEmpty(puStringValue)) {
-			return null;
-		}
-		return Boolean.valueOf(puStringValue);
-	}
-
-	public static Integer getIntegerValueOf(String puStringValue) {
-		if  (StringTools.stringIsEmpty(puStringValue)) {
-			return null;
-		}
-		try {
-			return Integer.valueOf(puStringValue);
-		}
-		catch (NumberFormatException nfe) {
-			return null;
-		}
-	}
-
 	/**
 	 * Returns the enum constant of the specified enum type with the specified
 	 * Property string value.
 	 */
-	public static <T extends Enum<T>> T getEnumValueOf(String puStringValue, T[] enumValues) {
+	protected <T extends PersistenceXmlEnumValue> T getEnumValueOf(String puStringValue, T[] enumValues) {
 		for (T enumValue : enumValues) {
 			if (getPropertyStringValueOf(enumValue).equals(puStringValue)) {
 				return enumValue;
@@ -445,12 +459,29 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	/**
 	 * Returns the Property string value of the given property value.
 	 */
-	public static String getPropertyStringValueOf(Object value) {
+	protected String getPropertyStringValueOf(PersistenceXmlEnumValue value) {
 		if (value == null) {
 			return null;
 		}
-		if (value.getClass().isEnum()) {
-			return (String) ReflectionTools.getStaticFieldValue(value.getClass(), value.toString().toUpperCase(Locale.ENGLISH));
+		return value.getPropertyValue();
+	}
+
+	/**
+	 * Returns the Property string value of the given property value.
+	 */
+	protected String getPropertyStringValueOf(Boolean value) {
+		if (value == null) {
+			return null;
+		}
+		return value.toString();
+	}
+
+	/**
+	 * Returns the Property string value of the given property value.
+	 */
+	protected String getPropertyStringValueOf(Integer value) {
+		if (value == null) {
+			return null;
 		}
 		return value.toString();
 	}
@@ -461,9 +492,8 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		return this.propertyNames;
 	}
 
-	private void putPersistenceUnitProperty(String key, String keySuffix, Object value, boolean allowDuplicates) {
+	private void putPersistenceUnitProperty(String key, String keySuffix, String stringValue, boolean allowDuplicates) {
 		String persistenceUnitKey = (keySuffix == null) ? key : key + keySuffix;
-		String stringValue = (value == null) ? null : value.toString();
 		this.getPersistenceUnit().setProperty(persistenceUnitKey, stringValue, allowDuplicates);
 	}
 

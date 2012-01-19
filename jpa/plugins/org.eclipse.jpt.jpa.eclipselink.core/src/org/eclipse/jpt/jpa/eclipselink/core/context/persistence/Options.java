@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 
 /**
  *  Session Options
@@ -48,8 +47,7 @@ public interface Options extends PersistenceUnitProperties
 		static final String TARGET_DATABASE_PROPERTY = "targetDatabase"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_TARGET_DATABASE = "eclipselink.target-database"; //$NON-NLS-1$
-		static final String DEFAULT_TARGET_DATABASE = 
-			AbstractPersistenceUnitProperties.getPropertyStringValueOf(TargetDatabase.auto);
+		static final String DEFAULT_TARGET_DATABASE = TargetDatabase.auto.getPropertyValue();
 
 	String getDefaultTargetServer();
 	String getTargetServer();
@@ -58,8 +56,7 @@ public interface Options extends PersistenceUnitProperties
 		static final String TARGET_SERVER_PROPERTY = "targetServer"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_TARGET_SERVER = "eclipselink.target-server"; //$NON-NLS-1$
-		static final String DEFAULT_TARGET_SERVER = 
-			AbstractPersistenceUnitProperties.getPropertyStringValueOf(TargetServer.none);
+		static final String DEFAULT_TARGET_SERVER = TargetServer.none.getPropertyValue();
 
 	String getDefaultEventListener();
 	String getEventListener();

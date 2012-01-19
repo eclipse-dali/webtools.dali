@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.tests.internal.context.persistence;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.model.event.ListEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -18,8 +17,8 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 
 /**
@@ -78,7 +77,14 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	// ****** convenience test methods *******
 
 	protected String getPropertyStringValueOf(Object value) {
-		return AbstractPersistenceUnitProperties.getPropertyStringValueOf(value);
+		if (value == null) {
+			return null;
+		}
+		//TODO yes, I know, an instanceof check, this is a LOT of work to get rid of in the tests
+		if (value instanceof PersistenceXmlEnumValue) {
+			return ((PersistenceXmlEnumValue) value).getPropertyValue();
+		}
+		return value.toString();
 	}
 
 	protected <E> E getFirstElement(Iterator<E> iterator) {

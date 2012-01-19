@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 
 /**
  * Logging
@@ -72,8 +71,7 @@ public interface Logging extends PersistenceUnitProperties
 		static final String LOGGER_PROPERTY = "logger"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_LOGGER = "eclipselink.logging.logger"; //$NON-NLS-1$
-		static final String DEFAULT_LOGGER = 
-			AbstractPersistenceUnitProperties.getPropertyStringValueOf(Logger.default_logger);
-		static final String[] RESERVED_LOGGER_NAMES = {Logger.DEFAULT_LOGGER, Logger.JAVA_LOGGER, Logger.SERVER_LOGGER};
+		static final String DEFAULT_LOGGER = Logger.default_logger.getPropertyValue();
+		static final String[] RESERVED_LOGGER_NAMES = {Logger.default_logger.getPropertyValue(), Logger.java_logger.getPropertyValue(), Logger.server_logger.getPropertyValue()};
 		String ECLIPSELINK_LOGGER_CLASS_NAME = "org.eclipse.persistence.logging.SessionLog"; //$NON-NLS-1$
 }

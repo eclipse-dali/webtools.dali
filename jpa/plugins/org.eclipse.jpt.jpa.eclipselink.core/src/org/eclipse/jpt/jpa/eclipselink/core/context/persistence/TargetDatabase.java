@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,70 +9,57 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
+
 /**
  *  TargetDatabase
  */
-public enum TargetDatabase {
-			attunity,
-			auto,
-			cloudscape,
-			database,
-			db2,
-			db2mainframe,
-			dbase,
-			derby,
-			hsql,
-			informix,
-			javadb,
-			maxdb,
-			mysql,
-			oracle,
-			oracle11,
-			oracle10,
-			oracle9,
-			oracle8,
-			pointbase,
-			postgresql,
-			sqlanywhere,
-			sqlserver,
-			sybase,
-			symfoware,
-			timesten;
+public enum TargetDatabase implements PersistenceXmlEnumValue {
+	attunity("Attunity"), //$NON-NLS-1$
+	auto("Auto"), //$NON-NLS-1$
+	cloudscape("Cloudscape"), //$NON-NLS-1$
+	database("Database"), //$NON-NLS-1$
+	db2("DB2"), //$NON-NLS-1$
+	db2mainframe("DB2Mainframe"), //$NON-NLS-1$
+	dbase("DBase"), //$NON-NLS-1$
+	derby("Derby"), //$NON-NLS-1$
+	hsql("HSQL"), //$NON-NLS-1$
+	informix("Informix"), //$NON-NLS-1$
+	javadb("JavaDB"), //$NON-NLS-1$
+	maxdb("MaxDB"), //$NON-NLS-1$
+	mysql("MySQL"), //$NON-NLS-1$
+	oracle("Oracle"), //$NON-NLS-1$
+	oracle11("Oracle11"), //$NON-NLS-1$
+	oracle10("Oracle10g"), //$NON-NLS-1$
+	oracle9("Oracle9i"), //$NON-NLS-1$
+	oracle8("Oracle8i"), //$NON-NLS-1$
+	pointbase("PointBase"), //$NON-NLS-1$
+	postgresql("PostgreSQL"), //$NON-NLS-1$
+	sqlanywhere("SQLAnywhere"), //$NON-NLS-1$
+	sqlserver("SQLServer"), //$NON-NLS-1$
+	sybase("Sybase"), //$NON-NLS-1$
+	symfoware("Symfoware"), //$NON-NLS-1$
+	timesten("TimesTen"); //$NON-NLS-1$
 
-	// EclipseLink value string
-	static final String ATTUNITY = "Attunity";
-    static final String AUTO = "Auto";
-    static final String CLOUDSCAPE = "Cloudscape";
-    static final String DATABASE = "Database";
-    static final String DB2 = "DB2";
-    static final String DB2MAINFRAME = "DB2Mainframe";
-    static final String DBASE = "DBase";
-    static final String DERBY = "Derby";
-    static final String HSQL = "HSQL";
-    static final String INFORMIX = "Informix";
-    static final String JAVADB = "JavaDB";
-    static final String MAXDB = "MaxDB";
-    static final String MYSQL = "MySQL";
-    static final String ORACLE = "Oracle";
-    static final String ORACLE11 = "Oracle11";
-    static final String ORACLE10 = "Oracle10g";
-    static final String ORACLE9 = "Oracle9i";
-    static final String ORACLE8 = "Oracle8i";
-    static final String POINTBASE = "PointBase";
-    static final String POSTGRESQL = "PostgreSQL";
-    static final String SQLANYWHERE = "SQLAnywhere";
-    static final String SQLSERVER = "SQLServer";
-    static final String SYBASE = "Sybase";
-    static final String SYMFOWARE = "Symfoware";
-    static final String TIMESTEN = "TimesTen";
+	private final String propertyValue;
+
+	TargetDatabase(String propertyValue) {
+		this.propertyValue = propertyValue;
+	}
+
+	/**
+	 * The string used as the property value in the persistence.xml
+	 */
+	public String getPropertyValue() {
+		return this.propertyValue;
+	}
 
 	/**
 	 * Return the TargetDatabase value corresponding to the given literal.
 	 */
 	public static TargetDatabase getTargetDatabaseFor(String literal) {
-		
-		for( TargetDatabase targetDatabase : TargetDatabase.values()) {
-			if(targetDatabase.toString().equals(literal)) {
+		for (TargetDatabase targetDatabase : TargetDatabase.values()) {
+			if (targetDatabase.toString().equals(literal)) {
 				return targetDatabase;
 			}
 		}
@@ -80,6 +67,6 @@ public enum TargetDatabase {
 	}
 
 	public static boolean isOracleDatabase(String literal) {
-		return literal.contains("Oracle");
+		return literal.contains("Oracle"); //$NON-NLS-1$
 	}
 }

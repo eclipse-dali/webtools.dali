@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
@@ -37,9 +36,9 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
@@ -189,7 +188,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	private void buildLoggingProperties(Properties properties) {
 		this.putProperty(properties,
 			Logging.ECLIPSELINK_LEVEL,
-			LoggingLevel.FINE);
+			LoggingLevel.fine);
 		this.putProperty(properties,
 			Logging.ECLIPSELINK_TIMESTAMP,
 			FALSE);
@@ -214,19 +213,20 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		properties.put(key, (value == null) ? "" : value);	  //$NON-NLS-1$
 	}
 
+	protected void putProperty(Properties properties, String key, PersistenceXmlEnumValue value) {
+		this.putProperty(properties, key, getPropertyStringValueOf(value));
+	}
+
 	/**
 	 * Returns the Property string value of the given property value.
 	 */
-	protected String getPropertyStringValueOf(Object value) {
+	protected String getPropertyStringValueOf(PersistenceXmlEnumValue value) {
 		if (value == null) {
 			return null;
 		}
-		if (value.getClass().isEnum()) {
-			return (String) ReflectionTools.getStaticFieldValue(value.getClass(), value.toString().toUpperCase(Locale.ENGLISH));
-		}
-		return value.toString();
+		return value.getPropertyValue();
 	}
-	
+
 	protected void buildAllProperties(Properties properties) {
 		this.buildConnectionProperties(properties);
 		this.buildConnectionPoolingProperties(properties);
@@ -247,11 +247,11 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	private void buildDDLModeProperties(Properties properties) {
 		this.putProperty(properties,  
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
-			this.getPropertyStringValueOf(this.outputMode));
+			this.outputMode);
 		
 		this.putProperty(properties,  
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
-			DdlGenerationType.DROP_AND_CREATE_TABLES);
+			DdlGenerationType.drop_and_create_tables);
 
 		this.putProperty(properties,  
 			SchemaGeneration.ECLIPSELINK_CREATE_FILE_NAME,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 
 /**
  *  Customization
@@ -108,9 +107,8 @@ public interface Customization extends PersistenceUnitProperties
 		static final String PROFILER_PROPERTY = "profiler"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_PROFILER = "eclipselink.profiler"; //$NON-NLS-1$
-		static final String DEFAULT_PROFILER = 
-			AbstractPersistenceUnitProperties.getPropertyStringValueOf(Profiler.no_profiler);
-		static final String[] RESERVED_PROFILER_NAMES = {Profiler.NO_PROFILER, Profiler.PERFORMANCE_PROFILER, Profiler.QUERY_MONITOR};
+		static final String DEFAULT_PROFILER = Profiler.no_profiler.getPropertyValue();
+		static final String[] RESERVED_PROFILER_NAMES = {Profiler.no_profiler.getPropertyValue(), Profiler.performance_profiler.getPropertyValue(), Profiler.query_monitor.getPropertyValue()};
 		String ECLIPSELINK_SESSION_PROFILER_CLASS_NAME = "org.eclipse.persistence.sessions.SessionProfiler"; //$NON-NLS-1$
 		
 	Boolean getDefaultValidationOnly();

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,42 +9,43 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
+
 /**
  *  TargetServer
  */
-public enum TargetServer {
-			none,
-			oc4j,
-			sunas9,
-			websphere,
-			websphere_6_1,
-			websphere_7,
-			weblogic,
-			weblogic_9,
-			weblogic_10,
-			jboss,
-			netweaver_7_1;
+public enum TargetServer implements PersistenceXmlEnumValue {
+	none("None"), //$NON-NLS-1$
+	oc4j("OC4J"), //$NON-NLS-1$
+	sunas9("SunAS9"), //$NON-NLS-1$
+	websphere("WebSphere"), //$NON-NLS-1$
+	websphere_6_1("WebSphere_6_1"), //$NON-NLS-1$
+	websphere_7("WebSphere_7"), //$NON-NLS-1$
+	weblogic("WebLogic"), //$NON-NLS-1$
+	weblogic_9("WebLogic_9"), //$NON-NLS-1$
+	weblogic_10("WebLogic_10"), //$NON-NLS-1$
+	jboss("JBoss"), //$NON-NLS-1$
+	netweaver_7_1("NetWeaver_7_1"); //$NON-NLS-1$
 
-	// EclipseLink value string
-	static final String NONE = "None";
-	static final String OC4J = "OC4J";
-	static final String SUNAS9 = "SunAS9";
-	static final String WEBSPHERE = "WebSphere";
-	static final String WEBSPHERE_6_1 = "WebSphere_6_1";
-	static final String WEBSPHERE_7 = "WebSphere_7";
-	static final String WEBLOGIC = "WebLogic";
-	static final String WEBLOGIC_9 = "WebLogic_9";
-	static final String WEBLOGIC_10 = "WebLogic_10";
-	static final String JBOSS = "JBoss";
-    static final String SAPNETWEAVER_7_1 = "NetWeaver_7_1";
+	private final String propertyValue;
+
+	TargetServer(String propertyValue) {
+		this.propertyValue = propertyValue;
+	}
+
+	/**
+	 * The string used as the property value in the persistence.xml
+	 */
+	public String getPropertyValue() {
+		return this.propertyValue;
+	}
 
 	/**
 	 * Return the TargetServer value corresponding to the given literal.
 	 */
 	public static TargetServer getTargetServerFor(String literal) {
-		
-		for( TargetServer targetServer : TargetServer.values()) {
-			if(targetServer.toString().equals(literal)) {
+		for (TargetServer targetServer : TargetServer.values()) {
+			if (targetServer.toString().equals(literal)) {
 				return targetServer;
 			}
 		}
