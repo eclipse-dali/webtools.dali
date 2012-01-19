@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -84,6 +84,7 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -103,16 +104,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * JPA project. Holds all the JPA stuff.
- * 
+ *
  * The JPA platform provides the hooks for vendor-specific stuff.
- * 
+ *
  * The JPA files are the "resource" model (i.e. objects that correspond directly
  * to Eclipse resources; e.g. Java source code files, XML files, JAR files).
- * 
+ *
  * The root context node is the "context"model (i.e. objects that attempt to
  * model the JPA spec, using the "resource" model as an adapter to the Eclipse
  * resources).
- * 
+ *
  * The data source is an adapter to the DTP meta-data model.
  */
 public abstract class AbstractJpaProject
@@ -155,7 +156,7 @@ public abstract class AbstractJpaProject
 	protected final JptResourceModelListener resourceModelListener;
 
 	/**
-	 * The root of the model representing the collated resources associated with 
+	 * The root of the model representing the collated resources associated with
 	 * the JPA project.
 	 */
 	protected final JpaRootContextNode rootContextNode;
@@ -196,7 +197,7 @@ public abstract class AbstractJpaProject
 	 */
 	// TODO move to persistence unit... :-(
 	protected final JpaDataSource dataSource;
-	
+
 	/**
 	 * A catalog name used to override the connection's default catalog.
 	 */
@@ -276,7 +277,7 @@ public abstract class AbstractJpaProject
 	protected boolean requiresParent() {
 		return false;
 	}
-	
+
 	@Override
 	public IResource getResource() {
 		return this.project;
@@ -353,7 +354,7 @@ public abstract class AbstractJpaProject
 	public String getName() {
 		return this.project.getName();
 	}
-	
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
@@ -457,47 +458,47 @@ public abstract class AbstractJpaProject
 
 
 	// ********** user override default catalog **********
-	
+
 	public String getUserOverrideDefaultCatalog() {
 		return this.userOverrideDefaultCatalog;
 	}
-	
+
 	public void setUserOverrideDefaultCatalog(String catalog) {
 		String old = this.userOverrideDefaultCatalog;
 		this.userOverrideDefaultCatalog = catalog;
 		JptJpaCorePlugin.setUserOverrideDefaultCatalog(this.project, catalog);
 		this.firePropertyChanged(USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY, old, catalog);
 	}
-	
-	
+
+
 	// ********** user override default schema **********
-	
+
 	public String getUserOverrideDefaultSchema() {
 		return this.userOverrideDefaultSchema;
 	}
-	
+
 	public void setUserOverrideDefaultSchema(String schema) {
 		String old = this.userOverrideDefaultSchema;
 		this.userOverrideDefaultSchema = schema;
 		JptJpaCorePlugin.setUserOverrideDefaultSchema(this.project, schema);
 		this.firePropertyChanged(USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY, old, schema);
 	}
-	
-	
+
+
 	// ********** discover annotated classes **********
-	
+
 	public boolean discoversAnnotatedClasses() {
 		return this.discoversAnnotatedClasses;
 	}
-	
+
 	public void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses) {
 		boolean old = this.discoversAnnotatedClasses;
 		this.discoversAnnotatedClasses = discoversAnnotatedClasses;
 		JptJpaCorePlugin.setDiscoverAnnotatedClasses(this.project, discoversAnnotatedClasses);
 		this.firePropertyChanged(DISCOVERS_ANNOTATED_CLASSES_PROPERTY, old, discoversAnnotatedClasses);
 	}
-	
-	
+
+
 	// ********** JPA files **********
 
 	public Iterable<JpaFile> getJpaFiles() {
@@ -552,7 +553,7 @@ public abstract class AbstractJpaProject
 			}
 		}
 		else if ( ! this.fileResourceLocationIsValid(file)) {
-			return null;  
+			return null;
 		}
 
 		JpaFile jpaFile = this.buildJpaFile(file);
@@ -953,13 +954,13 @@ public abstract class AbstractJpaProject
 	}
 
 	public Iterable<JavaResourcePackage> getJavaResourcePackages(){
-		return new FilteringIterable<JavaResourcePackage>( 
+		return new FilteringIterable<JavaResourcePackage>(
 				new TransformationIterable<JpaFile, JavaResourcePackage>(this.getPackageInfoSourceJpaFiles()) {
 				@Override
 				protected JavaResourcePackage transform(JpaFile jpaFile) {
 					return ((JavaResourcePackageInfoCompilationUnit) jpaFile.getResourceModel()).getPackage();
 				}
-			}) 
+			})
 			{
 			@Override
 			protected boolean accept(JavaResourcePackage packageInfo) {
@@ -1283,7 +1284,7 @@ public abstract class AbstractJpaProject
 	 * This would not be a problem if Dali received the resource change event
 	 * <em>before</em> JDT and simply removed the JPA project; but JDT receives
 	 * the resource change event first and converts it into the problematic
-	 * Java change event.... 
+	 * Java change event....
 	 */
 	protected boolean jpaFileIsAlive(JpaFile jpaFile) {
 		IFile file = jpaFile.getFile();
@@ -1297,7 +1298,7 @@ public abstract class AbstractJpaProject
 			return fileResourceLocationIsValid(file);
 		}
 	}
-	
+
 	/**
 	 * pre-condition:
 	 * delta.getElement().getElementType() == IJavaElement.JAVA_PROJECT
@@ -1376,13 +1377,18 @@ public abstract class AbstractJpaProject
 
 
 	// ********** validation **********
-	
+
 	public Iterable<IMessage> getValidationMessages(IReporter reporter) {
 		List<IMessage> messages = new ArrayList<IMessage>();
-		this.validate(messages, reporter);
+		try {
+			this.validate(messages, reporter);
+		}
+		finally {
+			this.disposeValidation(reporter);
+		}
 		return new SnapshotCloneIterable<IMessage>(messages);
 	}
-	
+
 	protected void validate(List<IMessage> messages, IReporter reporter) {
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
@@ -1404,7 +1410,7 @@ public abstract class AbstractJpaProject
 		Map<String, Object> enablementVariables = new HashMap<String, Object>();
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, getJpaPlatform().getId());
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, getJpaPlatform().getDescription());
-		
+
 		ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(getProject(), JpaFacet.FACET);
 		IFacetedProject facetedProject = ProjectFacetsManager.create(getProject());
 		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JpaFacet.FACET);
@@ -1454,8 +1460,8 @@ public abstract class AbstractJpaProject
 			);
 		}
 	}
-	
-	
+
+
 	// ********** dispose **********
 
 	public void dispose() {
@@ -1469,47 +1475,62 @@ public abstract class AbstractJpaProject
 			jpaFile.getResourceModel().removeResourceModelListener(this.resourceModelListener);
 		}
 	}
-	
-	
+
+	/**
+	 * Once validation got executed, this is called to dispose cached information.
+	 */
+	protected void disposeValidation(IReporter reporter) {
+		this.disposeJpqlQueryHelper(reporter);
+	}
+
+	/**
+	 * Disposes the cached information stored in the JPQL query helper.
+	 */
+	protected void disposeJpqlQueryHelper(IReporter reporter) {
+		JpaJpqlQueryHelper helper = getJpaPlatform().getJpqlQueryHelper();
+		helper.disposeProvider();
+		helper.dispose();
+	}
+
 	// ********** resource model listener **********
-	
+
 	protected JptResourceModelListener buildResourceModelListener() {
 		return new DefaultResourceModelListener();
 	}
 
-	protected class DefaultResourceModelListener 
-		implements JptResourceModelListener 
+	protected class DefaultResourceModelListener
+		implements JptResourceModelListener
 	{
 		protected DefaultResourceModelListener() {
 			super();
 		}
-		
+
 		public void resourceModelChanged(JptResourceModel jpaResourceModel) {
 //			String msg = Thread.currentThread() + " resource model change: " + jpaResourceModel;
 //			System.out.println(msg);
 //			new Exception(msg).printStackTrace(System.out);
 			AbstractJpaProject.this.synchronizeContextModel(jpaResourceModel);
 		}
-		
+
 		public void resourceModelReverted(JptResourceModel jpaResourceModel) {
 			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
 			AbstractJpaProject.this.removeJpaFile(file);
 			AbstractJpaProject.this.addJpaFile(file);
 		}
-		
+
 		public void resourceModelUnloaded(JptResourceModel jpaResourceModel) {
 			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
 			AbstractJpaProject.this.removeJpaFile(file);
 		}
 	}
-	
+
 	protected void synchronizeContextModel(@SuppressWarnings("unused") JptResourceModel jpaResourceModel) {
 		this.synchronizeContextModel();
 	}
 
-	
+
 	// ********** resource events **********
-	
+
 	// TODO need to do the same thing for external projects and compilation units
 	public void projectChanged(IResourceDelta delta) {
 		if (delta.getResource().equals(this.getProject())) {
@@ -1689,7 +1710,7 @@ public abstract class AbstractJpaProject
 	 */
 	protected abstract class ResourceDeltaVisitor implements IResourceDeltaVisitor {
 		protected boolean encounteredSignificantChange = false;
-		
+
 		protected ResourceDeltaVisitor() {
 			super();
 		}
@@ -1866,7 +1887,7 @@ public abstract class AbstractJpaProject
 	 * only useful for synchronous <em>syncs</em> and <em>updates</em>; since
 	 * the job scheduling rules will prevent the <em>sync</em> and
 	 * <em>update</em> jobs from running concurrently.
-	 * 
+	 *
 	 * @see #updateAndWait()
 	 */
 	protected void update() {
