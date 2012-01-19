@@ -167,6 +167,19 @@
 	</extension>
 	
 	
+	<!-- TODO: builderName = "Eclipselink Static Weaving Builder" -->
+	<extension 
+		id="builder" 
+		name="Eclipselink Static Weaving Builder"
+		point="org.eclipse.core.resources.builders">
+		
+		<builder hasNature="false">
+			<run class="org.eclipse.jpt.jpa.eclipselink.core.internal.builder.EclipselinkStaticWeavingBuilder"/>
+		</builder>
+	</extension>
+	
+	
+	
 	<!-- ***** WTP extensions ***** -->
 
 	<extension

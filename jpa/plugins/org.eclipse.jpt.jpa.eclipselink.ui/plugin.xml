@@ -124,4 +124,56 @@
 		
 	</extension>
 	
+	<extension
+		point="org.eclipse.ui.preferencePages">
+		
+		<page
+			id="org.eclipse.jpt.jpa.ui.jpaPreferences"
+			category="org.eclipse.jpt.jpa.ui.preferences"
+			class="org.eclipse.jpt.jpa.ui.internal.preferences.JpaPreferencesPage"
+			name="JPA"/>	<!--  TODO -->
+			
+		<page
+			id="org.eclipse.jpt.jpa.eclipselink.ui.eclipselinkProjectPreferences"
+			category="org.eclipse.jpt.jpa.ui.jpaPreferences"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.weave.EclipselinkPreferencePage"
+			name="EclipseLink">	<!--  TODO -->
+		</page>
+		
+	</extension>
+	
+	<extension
+		point="org.eclipse.ui.propertyPages">
+		
+		<page
+			id="org.eclipse.jpt.jpa.ui.jpaProjectProperties"
+			name="JPA"
+			class="org.eclipse.jpt.jpa.ui.internal.properties.JpaProjectPropertiesPage">
+			<enabledWhen>
+				<adapt type="org.eclipse.core.resources.IProject">
+					<test 
+						forcePluginActivation="true"
+						property="org.eclipse.wst.common.project.facet.core.projectFacet"
+						value="jpt.jpa"/>
+				</adapt>
+			</enabledWhen>
+		</page>	<!--  TODO -->
+		
+		<page
+			id="org.eclipse.jpt.jpa.eclipselink.ui.eclipselinkProjectProperties"
+			name="EclipseLink"
+			category="org.eclipse.jpt.jpa.ui.jpaProjectProperties"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.weave.EclipselinkPreferencePage">
+			<enabledWhen>
+				<adapt type="org.eclipse.core.resources.IProject">
+					<test
+						forcePluginActivation="true"
+						property="org.eclipse.wst.common.project.facet.core.projectFacet"
+						value="jpt.jpa"/>
+				</adapt>
+			</enabledWhen>
+		</page>
+		
+	</extension>
+	
 </plugin>

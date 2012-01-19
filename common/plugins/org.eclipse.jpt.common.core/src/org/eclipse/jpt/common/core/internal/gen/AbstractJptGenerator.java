@@ -53,7 +53,7 @@ public abstract class AbstractJptGenerator
 	protected final IJavaProject javaProject;
 	protected final String projectLocation;
 
-	private final boolean isDebug = false;
+	private boolean isDebug = false;
 
 	// ********** constructors **********
 
@@ -372,6 +372,10 @@ public abstract class AbstractJptGenerator
 	private void specifyWorkingDir() {
 		File workingDir = new Path(this.projectLocation).toFile();
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, workingDir.getAbsolutePath());
+	}
+
+	protected void setDebug(boolean isDebug) {
+		this.isDebug = isDebug;
 	}
 	
 }
