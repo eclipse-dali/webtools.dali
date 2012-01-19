@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,11 +69,18 @@ public class EclipseLinkCacheCoordinationTypeComposite extends Pane<EclipseLinkC
 
 			@Override
 			protected String displayString(EclipseLinkCacheCoordinationType value) {
-				return buildDisplayString(
-					EclipseLinkUiDetailsMessages.class,
-					EclipseLinkCacheCoordinationTypeComposite.this,
-					value
-				);
+				switch (value) {
+					case INVALIDATE_CHANGED_OBJECTS :
+						return EclipseLinkUiDetailsMessages.EclipseLinkCacheCoordinationTypeComposite_invalidate_changed_objects;
+					case SEND_NEW_OBJECTS_WITH_CHANGES :
+						return EclipseLinkUiDetailsMessages.EclipseLinkCacheCoordinationTypeComposite_send_new_objects_with_changes;
+					case SEND_OBJECT_CHANGES :
+						return EclipseLinkUiDetailsMessages.EclipseLinkCacheCoordinationTypeComposite_send_object_changes;
+					case NONE :
+						return EclipseLinkUiDetailsMessages.EclipseLinkCacheCoordinationTypeComposite_none;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

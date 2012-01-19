@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -137,47 +136,11 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 			final LabelProvider labelProvider = buildLabelProvider();
 
 			public int compare(Object value1, Object value2) {
-				String displayString1 = labelProvider.getText(value1);
-				String displayString2 = labelProvider.getText(value2);
+				String displayString1 = this.labelProvider.getText(value1);
+				String displayString2 = this.labelProvider.getText(value2);
 				return Collator.getInstance().compare(displayString1, displayString2);
 			}
 		};
-	}
-
-	/**
-	 * Retrieves the localized string from the given NLS class by creating the
-	 * key. That key is the concatenation of the composite's short class name
-	 * with the toString() of the given value separated by an underscore.
-	 *
-	 * @param nlsClass The NLS class used to retrieve the localized text
-	 * @param compositeClass The class used for creating the key, its short class
-	 * name is the beginning of the key
-	 * @param value The value used to append its toString() to the generated key
-	 * @return The localized text associated with the value
-	 */
-	protected final String buildDisplayString(Class<?> nlsClass,
-	                                          Class<?> compositeClass,
-	                                          Object value) {
-
-		return SWTUtil.buildDisplayString(nlsClass, compositeClass, value);
-	}
-
-	/**
-	 * Retrieves the localized string from the given NLS class by creating the
-	 * key. That key is the concatenation of the composite's short class name
-	 * with the toString() of the given value separated by an underscore.
-	 *
-	 * @param nlsClass The NLS class used to retrieve the localized text
-	 * @param composite The object used to retrieve the short class name that is
-	 * the beginning of the key
-	 * @param value The value used to append its toString() to the generated key
-	 * @return The localized text associated with the value
-	 */
-	protected final String buildDisplayString(Class<?> nlsClass,
-	                                          Object composite,
-	                                          Object value) {
-
-		return SWTUtil.buildDisplayString(nlsClass, composite, value);
 	}
 
 	/**
@@ -279,7 +242,7 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 	 * @return
 	 */
 	final ComboViewer getComboViewer() {
-		return comboViewer;
+		return this.comboViewer;
 	}
 
 	/**
@@ -305,7 +268,7 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 	private void populateCombo() {
 
 		removeAll();
-		comboViewer.add(buildChoices());
+		this.comboViewer.add(buildChoices());
 		updateSelection();
 	}
 
@@ -340,7 +303,7 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 	 * Updates the combo's selected item.
 	 */
 	private void updateSelection() {
-		comboViewer.setSelection(buildSelection());
+		this.comboViewer.setSelection(buildSelection());
 		updateCursor();
 	}
 

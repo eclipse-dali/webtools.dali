@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -73,7 +73,16 @@ public class FlushClearCacheComposite extends Pane<Caching>
 
 			@Override
 			protected String displayString(FlushClearCache value) {
-				return this.buildDisplayString(EclipseLinkUiMessages.class, FlushClearCacheComposite.class, value);
+				switch (value) {
+					case drop :
+						return EclipseLinkUiMessages.FlushClearCacheComposite_drop;
+					case drop_invalidate :
+						return EclipseLinkUiMessages.FlushClearCacheComposite_drop_invalidate;
+					case merge :
+						return EclipseLinkUiMessages.FlushClearCacheComposite_merge;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

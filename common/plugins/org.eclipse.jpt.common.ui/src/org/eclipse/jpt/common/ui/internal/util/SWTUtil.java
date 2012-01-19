@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.util;
 
-import java.util.Locale;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.jface.dialogs.Dialog;
@@ -17,7 +16,6 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.ui.internal.widgets.NullPostExecution;
 import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -71,48 +69,6 @@ public class SWTUtil {
 		ComboHandler handler = new ComboHandler();
 		combo.addFocusListener(handler);
 		combo.addModifyListener(handler);
-	}
-
-	/**
-	 * Retrieves the localized string from the given NLS class by creating the
-	 * key. That key is the concatenation of the composite's short class name
-	 * with the toString() of the given value separated by an underscore.
-	 *
-	 * @param nlsClass The NLS class used to retrieve the localized text
-	 * @param compositeClass The class used for creating the key, its short class
-	 * name is the beginning of the key
-	 * @param value The value used to append its toString() to the generated key
-	 * @return The localized text associated with the value
-	 */
-	public static String buildDisplayString(Class<?> nlsClass,
-	                                        Class<?> compositeClass,
-	                                        Object value) {
-
-		StringBuilder sb = new StringBuilder();
-		sb.append(compositeClass.getSimpleName());
-		sb.append("_");
-		sb.append(value.toString().toLowerCase(Locale.ENGLISH));//bug 234953
-		//TODO in a future release we should not be converting the key using toLowerCase()
-
-		return (String) ReflectionTools.getStaticFieldValue(nlsClass, sb.toString());
-	}
-
-	/**
-	 * Retrieves the localized string from the given NLS class by creating the
-	 * key. That key is the concatenation of the composite's short class name
-	 * with the toString() of the given value separated by an underscore.
-	 *
-	 * @param nlsClass The NLS class used to retrieve the localized text
-	 * @param composite The object used to retrieve the short class name that is
-	 * the beginning of the key
-	 * @param value The value used to append its toString() to the generated key
-	 * @return The localized text associated with the value
-	 */
-	public static final String buildDisplayString(Class<?> nlsClass,
-	                                              Object composite,
-	                                              Object value) {
-
-		return buildDisplayString(nlsClass, composite.getClass(), value);
 	}
 
 	/**

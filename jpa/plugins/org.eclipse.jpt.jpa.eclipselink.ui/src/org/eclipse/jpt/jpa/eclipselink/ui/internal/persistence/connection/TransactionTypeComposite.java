@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -74,7 +74,14 @@ public class TransactionTypeComposite<T extends Connection>
 
 			@Override
 			protected String displayString(PersistenceUnitTransactionType value) {
-				return this.buildDisplayString(EclipseLinkUiMessages.class, TransactionTypeComposite.this, value);
+				switch (value) {
+					case JTA :
+						return EclipseLinkUiMessages.TransactionTypeComposite_jta;
+					case RESOURCE_LOCAL :
+						return EclipseLinkUiMessages.TransactionTypeComposite_resource_local;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

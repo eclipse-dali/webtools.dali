@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,7 +59,18 @@ public class BatchWritingComposite<T extends Connection>
 
 			@Override
 			protected String displayString(BatchWriting value) {
-				return buildDisplayString(EclipseLinkUiMessages.class, BatchWritingComposite.this, value);
+				switch (value) {
+					case buffered :
+						return EclipseLinkUiMessages.BatchWritingComposite_buffered;
+					case jdbc :
+						return EclipseLinkUiMessages.BatchWritingComposite_jdbc;
+					case none :
+						return EclipseLinkUiMessages.BatchWritingComposite_none;
+					case oracle_jdbc :
+						return EclipseLinkUiMessages.BatchWritingComposite_oracle_jdbc;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

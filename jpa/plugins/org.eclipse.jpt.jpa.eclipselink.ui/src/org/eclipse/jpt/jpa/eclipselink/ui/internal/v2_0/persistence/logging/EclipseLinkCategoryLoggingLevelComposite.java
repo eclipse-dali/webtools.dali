@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.logging;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -23,7 +22,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class EclipseLinkCategoryLoggingLevelComposite extends Pane<Logging2_0>
 {
-	private String property;
 	
 	/**
 	 * Creates a new <code>EclipseLinkCategoryLoggingLevelComposite</code>.
@@ -42,51 +40,35 @@ public class EclipseLinkCategoryLoggingLevelComposite extends Pane<Logging2_0>
 
 	@Override
 	protected void initializeLayout(Composite parent) {
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.SQL_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_sqlLoggingLevelLabel);
 		
-		this.property = Logging2_0.SQL_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_connectionLoggingLevelLabel);
 		
-		this.property = Logging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.EVENT_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_eventLoggingLevelLabel);
 		
-		this.property = Logging2_0.EVENT_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.CONNECTION_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_connectionLoggingLevelLabel);
 		
-		this.property = Logging2_0.CONNECTION_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.QUERY_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_queryLoggingLevelLabel);
 		
-		this.property = Logging2_0.QUERY_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.CACHE_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_cacheLoggingLevelLabel);
 		
-		this.property = Logging2_0.CACHE_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.PROPAGATION_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_propagationLoggingLevelLabel);
 		
-		this.property = Logging2_0.PROPAGATION_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_sequencingLoggingLevelLabel);
 		
-		this.property = Logging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.EJB_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_ejbLoggingLevelLabel);
 		
-		this.property = Logging2_0.EJB_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.DMS_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_dmsLoggingLevelLabel);
 		
-		this.property = Logging2_0.DMS_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_ejb_or_metadataLoggingLevelLabel);
 		
-		this.property = Logging2_0.EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
-		
-		this.property = Logging2_0.METAMODEL_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.METAMODEL_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_jpa_metamodelLoggingLevelLabel);
 
-		this.property = Logging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_weaverLoggingLevelLabel);
 		
-		this.property = Logging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_propertiesLoggingLevelLabel);
 		
-		this.property = Logging2_0.SERVER_CATEGORY_LOGGING_PROPERTY;
-		new CategoryLoggingLevelComboViewer(this, parent);
+		new CategoryLoggingLevelComboViewer(this, parent, Logging2_0.SERVER_CATEGORY_LOGGING_PROPERTY, EclipseLinkUiMessages.PersistenceXmlLoggingTab_serverLoggingLevelLabel);
 	}
 	
 
@@ -95,6 +77,7 @@ public class EclipseLinkCategoryLoggingLevelComposite extends Pane<Logging2_0>
 	{
 		private static final String DEFAULT_PROPERTY = Logging2_0.CATEGORIES_DEFAULT_LOGGING_PROPERTY;
 		final private String category;
+		final private String labelString;
 		
 		/**
 		 * Creates a new <code>CategoryLoggingLevelComposite</code>.
@@ -106,11 +89,14 @@ public class EclipseLinkCategoryLoggingLevelComposite extends Pane<Logging2_0>
 		 */
 		public CategoryLoggingLevelComboViewer(
 					Pane<? extends Logging2_0> parentComposite, 
-					Composite parent
-					) {
+					Composite parent,
+					String property,
+					String labelString) {
 			super(parentComposite, parent);
 			
-			this.category = EclipseLinkCategoryLoggingLevelComposite.this.property;
+			this.category = property;
+			this.labelString = labelString;
+			initializeLayout2(this.getControl());
 		}
 
 		private EnumFormComboViewer<Logging2_0, LoggingLevel> addLoggingLevelCombo(Composite container) {
@@ -153,7 +139,28 @@ public class EclipseLinkCategoryLoggingLevelComposite extends Pane<Logging2_0>
 
 				@Override
 				protected String displayString(LoggingLevel value) {
-					return this.buildDisplayString(EclipseLinkUiMessages.class, EclipseLinkCategoryLoggingLevelComposite.class, value);
+					switch (value) {
+						case all :
+							return EclipseLinkUiMessages.EclipseLinkCategoryLoggingLevelComposite_all;
+						case config :
+							return EclipseLinkUiMessages.EclipseLinkCategoryLoggingLevelComposite_config;
+						case fine :
+							return EclipseLinkUiMessages.EclipseLinkCategoryLoggingLevelComposite_fine;
+						case finer :
+							return EclipseLinkUiMessages.EclipseLinkCategoryLoggingLevelComposite_finer;
+						case finest :
+							return EclipseLinkUiMessages.EclipseLinkCategoryLoggingLevelComposite_finest;
+						case info :
+							return EclipseLinkUiMessages.EclipseLinkCategoryLoggingLevelComposite_info;
+						case off :
+							return EclipseLinkUiMessages.EclipseLinkCategoryLoggingLevelComposite_off;
+						case severe :
+							return EclipseLinkUiMessages.EclipseLinkCategoryLoggingLevelComposite_severe;
+						case warning :
+							return EclipseLinkUiMessages.EclipseLinkCategoryLoggingLevelComposite_warning;
+						default :
+							throw new IllegalStateException();
+					}
 				}
 
 				@Override
@@ -175,23 +182,17 @@ public class EclipseLinkCategoryLoggingLevelComposite extends Pane<Logging2_0>
 		}
 
 		@Override
-		protected void initializeLayout(Composite parent) {
+		protected void initializeLayout(Composite container) {
+			// see initializeLayout2
+		}
+
+		protected void initializeLayout2(Composite parent) {
 			this.addLabeledComposite(
 					parent,
-					this.buildLabelString(),
+					this.labelString,
 					this.addLoggingLevelCombo(parent),
 					null	// TODO
 			);
-		}
-		
-		private String buildLabelString() {
-
-			StringBuilder sb = new StringBuilder();
-			sb.append("PersistenceXmlLoggingTab_");	 //$NON-NLS-1$
-			sb.append(EclipseLinkCategoryLoggingLevelComposite.this.property);
-			sb.append("Label");	 //$NON-NLS-1$
-			
-			return (String) ReflectionTools.getStaticFieldValue(EclipseLinkUiMessages.class, sb.toString());
 		}
 	}
 }

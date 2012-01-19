@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.Collection;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.FetchableMapping;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingComposite;
@@ -93,16 +93,19 @@ public class EclipseLinkJoinFetchComposite extends Pane<EclipseLinkJoinFetch> {
 			
 			@Override
 			protected String displayString(EclipseLinkJoinFetchType value) {
-				return buildDisplayString(
-					EclipseLinkUiDetailsMessages.class,
-					EclipseLinkJoinFetchComposite.this,
-					value
-				);
+				switch (value) {
+					case INNER :
+						return EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_inner;
+					case OUTER :
+						return EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_outer;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 			
 			@Override
 			protected String nullDisplayString() {
-				return JptCoreMessages.NONE;
+				return JptCommonUiMessages.NoneSelected;
 			}
 
 			@Override

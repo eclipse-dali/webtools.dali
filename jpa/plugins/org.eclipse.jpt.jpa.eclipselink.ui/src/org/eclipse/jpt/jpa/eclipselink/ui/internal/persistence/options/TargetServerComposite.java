@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,11 +70,32 @@ public class TargetServerComposite extends Pane<Options>
 	}
 
 	private String buildDisplayString(String targetServerName) {
-		
-		return SWTUtil.buildDisplayString(
-			EclipseLinkUiMessages.class, 
-			this.getClass(), 
-			TargetServer.valueOf(targetServerName));
+		switch (TargetServer.valueOf(targetServerName)) {
+			case jboss :
+				return EclipseLinkUiMessages.TargetServerComposite_jboss;
+			case netweaver_7_1 :
+				return EclipseLinkUiMessages.TargetServerComposite_netweaver_7_1;
+			case none :
+				return EclipseLinkUiMessages.TargetServerComposite_none;
+			case oc4j :
+				return EclipseLinkUiMessages.TargetServerComposite_oc4j;
+			case sunas9 :
+				return EclipseLinkUiMessages.TargetServerComposite_sunas9;
+			case weblogic :
+				return EclipseLinkUiMessages.TargetServerComposite_weblogic;
+			case weblogic_10 :
+				return EclipseLinkUiMessages.TargetServerComposite_weblogic_10;
+			case weblogic_9 :
+				return EclipseLinkUiMessages.TargetServerComposite_weblogic_9;
+			case websphere :
+				return EclipseLinkUiMessages.TargetServerComposite_websphere;
+			case websphere_6_1 :
+				return EclipseLinkUiMessages.TargetServerComposite_websphere_6_1;
+			case websphere_7 :
+				return EclipseLinkUiMessages.TargetServerComposite_websphere_7;
+			default :
+				throw new IllegalStateException();
+		}
 	}
 
 	private Comparator<String> buildTargetServerComparator() {

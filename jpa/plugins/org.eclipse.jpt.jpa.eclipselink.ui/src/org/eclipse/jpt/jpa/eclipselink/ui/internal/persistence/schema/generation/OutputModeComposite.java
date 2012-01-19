@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,7 +58,16 @@ public class OutputModeComposite extends Pane<SchemaGeneration>
 
 			@Override
 			protected String displayString(OutputMode value) {
-				return this.buildDisplayString(EclipseLinkUiMessages.class, OutputModeComposite.this, value);
+				switch (value) {
+					case both :
+						return EclipseLinkUiMessages.OutputModeComposite_both;
+					case database :
+						return EclipseLinkUiMessages.OutputModeComposite_database;
+					case sql_script :
+						return EclipseLinkUiMessages.OutputModeComposite_sql_script;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

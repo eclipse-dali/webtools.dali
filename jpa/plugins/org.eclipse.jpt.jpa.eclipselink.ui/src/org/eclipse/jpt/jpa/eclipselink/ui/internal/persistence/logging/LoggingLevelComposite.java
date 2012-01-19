@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,7 +63,28 @@ public class LoggingLevelComposite extends Pane<Logging>
 
 			@Override
 			protected String displayString(LoggingLevel value) {
-				return this.buildDisplayString(EclipseLinkUiMessages.class, LoggingLevelComposite.this, value);
+				switch (value) {
+					case all :
+						return EclipseLinkUiMessages.LoggingLevelComposite_all;
+					case config :
+						return EclipseLinkUiMessages.LoggingLevelComposite_config;
+					case fine :
+						return EclipseLinkUiMessages.LoggingLevelComposite_fine;
+					case finer :
+						return EclipseLinkUiMessages.LoggingLevelComposite_finer;
+					case finest :
+						return EclipseLinkUiMessages.LoggingLevelComposite_finest;
+					case info :
+						return EclipseLinkUiMessages.LoggingLevelComposite_info;
+					case off :
+						return EclipseLinkUiMessages.LoggingLevelComposite_off;
+					case severe :
+						return EclipseLinkUiMessages.LoggingLevelComposite_severe;
+					case warning :
+						return EclipseLinkUiMessages.LoggingLevelComposite_warning;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

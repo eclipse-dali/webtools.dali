@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -194,11 +194,16 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 
 			@Override
 			protected String displayString(DiscriminatorType value) {
-				return buildDisplayString(
-					JptUiDetailsMessages.class,
-					DiscriminatorColumnComposite.class,
-					value
-				);
+				switch (value) {
+					case CHAR :
+						return JptUiDetailsMessages.DiscriminatorColumnComposite_char;
+					case INTEGER :
+						return JptUiDetailsMessages.DiscriminatorColumnComposite_integer;
+					case STRING :
+						return JptUiDetailsMessages.DiscriminatorColumnComposite_string;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 			
 			@Override

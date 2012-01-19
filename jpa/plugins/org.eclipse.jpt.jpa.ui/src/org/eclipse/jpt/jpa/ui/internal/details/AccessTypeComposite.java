@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -96,11 +96,14 @@ public class AccessTypeComposite extends Pane<AccessHolder> {
 
 			@Override
 			protected String displayString(AccessType value) {
-				return buildDisplayString(
-					JptUiMessages.class,
-					AccessTypeComposite.this,
-					value
-				);
+				switch (value) {
+					case FIELD :
+						return JptUiMessages.AccessTypeComposite_field;
+					case PROPERTY :
+						return JptUiMessages.AccessTypeComposite_property;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

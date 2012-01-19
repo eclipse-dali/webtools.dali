@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,11 +70,60 @@ public class TargetDatabaseComposite extends Pane<Options>
 	}
 
 	private String buildDisplayString(String targetDatabaseName) {
-		
-		return SWTUtil.buildDisplayString(
-			EclipseLinkUiMessages.class, 
-			this.getClass(), 
-			TargetDatabase.valueOf(targetDatabaseName));
+		switch (TargetDatabase.valueOf(targetDatabaseName)) {
+			case attunity :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_attunity;
+			case auto :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_auto;
+			case cloudscape :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_cloudscape;
+			case database :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_database;
+			case db2 :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_db2;
+			case db2mainframe :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_db2mainframe;
+			case dbase :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_dbase;
+			case derby :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_derby;
+			case hsql :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_hsql;
+			case informix :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_informix;
+			case javadb :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_javadb;
+			case maxdb :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_maxdb;
+			case mysql :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_mysql;
+			case oracle :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_oracle;
+			case oracle10 :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_oracle10;
+			case oracle11 :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_oracle11;
+			case oracle8 :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_oracle8;
+			case oracle9 :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_oracle9;
+			case pointbase :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_pointbase;
+			case postgresql :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_postgresql;
+			case sqlanywhere :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_sqlanywhere;
+			case sqlserver :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_sqlserver;
+			case sybase :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_sybase;
+			case symfoware :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_symfoware;
+			case timesten :
+				return EclipseLinkUiMessages.TargetDatabaseComposite_timesten;
+			default :
+				throw new IllegalStateException();
+		}
 	}
 
 	private Comparator<String> buildTargetDatabaseComparator() {

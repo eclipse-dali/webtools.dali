@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,7 +66,14 @@ public class TransactionTypeComposite extends Pane<JpaConnection2_0>
 
 			@Override
 			protected String displayString(PersistenceUnitTransactionType value) {
-				return this.buildDisplayString(JptUiPersistence2_0Messages.class, TransactionTypeComposite.this, value);
+				switch (value) {
+					case JTA :
+						return JptUiPersistence2_0Messages.TransactionTypeComposite_jta;
+					case RESOURCE_LOCAL :
+						return JptUiPersistence2_0Messages.TransactionTypeComposite_resource_local;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,7 +70,16 @@ public class JdbcExclusiveConnectionModeComposite<T extends Connection>
 
 			@Override
 			protected String displayString(ExclusiveConnectionMode value) {
-				return this.buildDisplayString(EclipseLinkUiMessages.class, JdbcExclusiveConnectionModeComposite.this, value);
+				switch (value) {
+					case always :
+						return EclipseLinkUiMessages.JdbcExclusiveConnectionModeComposite_always;
+					case isolated :
+						return EclipseLinkUiMessages.JdbcExclusiveConnectionModeComposite_isolated;
+					case transactional :
+						return EclipseLinkUiMessages.JdbcExclusiveConnectionModeComposite_transactional;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

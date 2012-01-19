@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -68,11 +68,26 @@ public class LockModeComposite extends Pane<NamedQuery2_0>
 
 			@Override
 			protected String displayString(LockModeType2_0 value) {
-				return this.buildDisplayString(
-					JptUiDetailsMessages2_0.class,
-					LockModeComposite.this,
-					value
-				);
+				switch (value) {
+					case NONE :
+						return JptUiDetailsMessages2_0.LockModeComposite_none;
+					case OPTIMISTIC :
+						return JptUiDetailsMessages2_0.LockModeComposite_optimistic;
+					case OPTIMISTIC_FORCE_INCREMENT :
+						return JptUiDetailsMessages2_0.LockModeComposite_optimistic_force_increment;
+					case PESSIMISTIC_FORCE_INCREMENT :
+						return JptUiDetailsMessages2_0.LockModeComposite_pessimistic_force_increment;
+					case PESSIMISTIC_READ :
+						return JptUiDetailsMessages2_0.LockModeComposite_pessimistic_read;
+					case PESSIMISTIC_WRITE :
+						return JptUiDetailsMessages2_0.LockModeComposite_pessimistic_write;
+					case READ :
+						return JptUiDetailsMessages2_0.LockModeComposite_read;
+					case WRITE :
+						return JptUiDetailsMessages2_0.LockModeComposite_write;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

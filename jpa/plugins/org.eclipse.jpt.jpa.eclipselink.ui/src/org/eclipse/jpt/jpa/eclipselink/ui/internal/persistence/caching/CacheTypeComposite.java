@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -117,11 +117,22 @@ public class CacheTypeComposite extends Pane<CachingEntity>
 
 		@Override
 		protected String displayString(CacheType value) {
-			return buildDisplayString(
-				EclipseLinkUiMessages.class,
-				CacheTypeComposite.this,
-				value
-			);
+			switch (value) {
+				case full :
+					return EclipseLinkUiMessages.CacheTypeComposite_full;
+				case weak :
+					return EclipseLinkUiMessages.CacheTypeComposite_weak;
+				case soft :
+					return EclipseLinkUiMessages.CacheTypeComposite_soft;
+				case soft_weak :
+					return EclipseLinkUiMessages.CacheTypeComposite_soft_weak;
+				case hard_weak :
+					return EclipseLinkUiMessages.CacheTypeComposite_hard_weak;
+				case none  :
+					return EclipseLinkUiMessages.CacheTypeComposite_none;
+				default :
+					throw new IllegalStateException();
+			}
 		}
 
 		@Override

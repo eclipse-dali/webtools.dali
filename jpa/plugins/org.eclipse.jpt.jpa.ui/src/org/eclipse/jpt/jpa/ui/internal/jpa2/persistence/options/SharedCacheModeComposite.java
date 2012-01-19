@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -77,7 +77,20 @@ public class SharedCacheModeComposite extends Pane<PersistenceUnit2_0>
 
 			@Override
 			protected String displayString(SharedCacheMode value) {
-				return this.buildDisplayString(JptUiPersistence2_0Messages.class, SharedCacheModeComposite.this, value);
+				switch (value) {
+					case ALL :
+						return JptUiPersistence2_0Messages.SharedCacheModeComposite_all;
+					case DISABLE_SELECTIVE :
+						return JptUiPersistence2_0Messages.SharedCacheModeComposite_disable_selective;
+					case ENABLE_SELECTIVE :
+						return JptUiPersistence2_0Messages.SharedCacheModeComposite_enable_selective;
+					case NONE :
+						return JptUiPersistence2_0Messages.SharedCacheModeComposite_none;
+					case UNSPECIFIED :
+						return JptUiPersistence2_0Messages.SharedCacheModeComposite_unspecified;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

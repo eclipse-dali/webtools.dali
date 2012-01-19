@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -82,11 +82,18 @@ public class EclipseLinkChangeTrackingComposite extends Pane<EclipseLinkChangeTr
 
 			@Override
 			protected String displayString(EclipseLinkChangeTrackingType value) {
-				return buildDisplayString(
-					EclipseLinkUiDetailsMessages.class,
-					EclipseLinkChangeTrackingComposite.this,
-					value
-				);
+				switch (value) {
+					case ATTRIBUTE :
+						return EclipseLinkUiDetailsMessages.EclipseLinkChangeTrackingComposite_attribute;
+					case AUTO :
+						return EclipseLinkUiDetailsMessages.EclipseLinkChangeTrackingComposite_auto;
+					case DEFERRED :
+						return EclipseLinkUiDetailsMessages.EclipseLinkChangeTrackingComposite_deferred;
+					case OBJECT :
+						return EclipseLinkUiDetailsMessages.EclipseLinkChangeTrackingComposite_object;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

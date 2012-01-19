@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
@@ -78,12 +77,12 @@ public class TemporalTypeComposite extends Pane<TemporalConverter> {
 		return new PropertyAspectAdapter<TemporalConverter, TemporalType>(getSubjectHolder(), TemporalConverter.TEMPORAL_TYPE_PROPERTY) {
 			@Override
 			protected TemporalType buildValue_() {
-				return subject.getTemporalType();
+				return this.subject.getTemporalType();
 			}
 
 			@Override
 			protected void setValue_(TemporalType value) {
-				subject.setTemporalType(value);
+				this.subject.setTemporalType(value);
 			}
 		};
 	}
@@ -117,11 +116,16 @@ public class TemporalTypeComposite extends Pane<TemporalConverter> {
 	}
 
 	String displayString(TemporalType temporalType) {
-		return SWTUtil.buildDisplayString(
-			JptUiDetailsMessages.class,
-			TemporalTypeComposite.this,
-			temporalType.name()
-		);
+		switch (temporalType) {
+			case DATE :
+				return JptUiDetailsMessages.TemporalTypeComposite_date;
+			case TIME :
+				return JptUiDetailsMessages.TemporalTypeComposite_time;
+			case TIMESTAMP :
+				return JptUiDetailsMessages.TemporalTypeComposite_timestamp;
+			default :
+				throw new IllegalStateException();
+		}
 	}
 	
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {

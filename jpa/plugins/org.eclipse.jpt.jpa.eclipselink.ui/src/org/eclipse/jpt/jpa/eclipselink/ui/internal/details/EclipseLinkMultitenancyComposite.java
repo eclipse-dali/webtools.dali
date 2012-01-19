@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -159,11 +159,16 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 
 			@Override
 			protected String displayString(EclipseLinkMultitenantType2_3 value) {
-				return buildDisplayString(
-					EclipseLinkUiDetailsMessages.class,
-					EclipseLinkMultitenancyComposite.class,
-					value
-				);
+				switch (value) {
+					case SINGLE_TABLE :
+						return EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_single_table;
+					case TABLE_PER_TENANT :
+						return EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_table_per_tenant;
+					case VPD :
+						return EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_vpd;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,7 +58,16 @@ public class WeavingComposite extends Pane<Customization>
 
 			@Override
 			protected String displayString(Weaving value) {
-				return buildDisplayString(EclipseLinkUiMessages.class, WeavingComposite.this, value);
+				switch (value) {
+					case true_ :
+						return EclipseLinkUiMessages.WeavingComposite_true_;
+					case false_ :
+						return EclipseLinkUiMessages.WeavingComposite_false_;
+					case static_ :
+						return EclipseLinkUiMessages.WeavingComposite_static_;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

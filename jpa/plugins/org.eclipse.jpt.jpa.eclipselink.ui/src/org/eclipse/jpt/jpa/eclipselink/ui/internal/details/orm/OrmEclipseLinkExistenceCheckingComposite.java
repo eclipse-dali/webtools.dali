@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -80,11 +80,18 @@ public class OrmEclipseLinkExistenceCheckingComposite extends Pane<EclipseLinkCa
 
 			@Override
 			protected String displayString(EclipseLinkExistenceType value) {
-				return buildDisplayString(
-					EclipseLinkUiDetailsMessages.class,
-					OrmEclipseLinkExistenceCheckingComposite.this,
-					value
-				);
+				switch (value) {
+					case CHECK_CACHE :
+						return EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_check_cache;
+					case CHECK_DATABASE :
+						return EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_check_database;
+					case ASSUME_EXISTENCE :
+						return EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_assume_existence;
+					case ASSUME_NON_EXISTENCE :
+						return EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_assume_non_existence;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

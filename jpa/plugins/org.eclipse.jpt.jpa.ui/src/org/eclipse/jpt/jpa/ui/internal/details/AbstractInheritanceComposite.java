@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -267,11 +267,16 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 
 			@Override
 			protected String displayString(InheritanceType value) {
-				return buildDisplayString(
-					JptUiDetailsMessages.class,
-					AbstractInheritanceComposite.class,
-					value
-				);
+				switch (value) {
+					case JOINED :
+						return JptUiDetailsMessages.AbstractInheritanceComposite_joined;
+					case SINGLE_TABLE :
+						return JptUiDetailsMessages.AbstractInheritanceComposite_single_table;
+					case TABLE_PER_CLASS :
+						return JptUiDetailsMessages.AbstractInheritanceComposite_table_per_class;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

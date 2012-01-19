@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,6 @@ import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.details.DiscriminatorColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.DatabaseObjectCombo;
@@ -274,11 +273,16 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 
 			@Override
 			protected String displayString(DiscriminatorType value) {
-				return buildDisplayString(
-					JptUiDetailsMessages.class,
-					DiscriminatorColumnComposite.class,
-					value
-				);
+				switch (value) {
+					case CHAR :
+						return JptUiDetailsMessages.DiscriminatorColumnComposite_char;
+					case INTEGER :
+						return JptUiDetailsMessages.DiscriminatorColumnComposite_integer;
+					case STRING :
+						return JptUiDetailsMessages.DiscriminatorColumnComposite_string;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

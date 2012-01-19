@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -110,11 +110,18 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 
 			@Override
 			protected String displayString(GenerationType value) {
-				return buildDisplayString(
-					JptUiDetailsMessages.class,
-					GeneratedValueComposite.this,
-					value
-				);
+				switch (value) {
+					case AUTO :
+						return JptUiDetailsMessages.GeneratedValueComposite_auto;
+					case IDENTITY :
+						return JptUiDetailsMessages.GeneratedValueComposite_identity;
+					case SEQUENCE :
+						return JptUiDetailsMessages.GeneratedValueComposite_sequence;
+					case TABLE :
+						return JptUiDetailsMessages.GeneratedValueComposite_table;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override

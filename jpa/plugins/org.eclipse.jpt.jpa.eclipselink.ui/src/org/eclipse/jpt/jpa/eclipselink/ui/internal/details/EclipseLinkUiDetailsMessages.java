@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -85,14 +85,10 @@ public class EclipseLinkUiDetailsMessages extends NLS {
 	public static String TypeSection_converted;
 	
 	public static String EclipseLinkExistenceCheckingComposite_label;
-	public static String JavaEclipseLinkExistenceCheckingComposite_check_cache;
-	public static String JavaEclipseLinkExistenceCheckingComposite_check_database;
-	public static String JavaEclipseLinkExistenceCheckingComposite_assume_existence;
-	public static String JavaEclipseLinkExistenceCheckingComposite_assume_non_existence;
-	public static String OrmEclipseLinkExistenceCheckingComposite_check_cache;
-	public static String OrmEclipseLinkExistenceCheckingComposite_check_database;
-	public static String OrmEclipseLinkExistenceCheckingComposite_assume_existence;
-	public static String OrmEclipseLinkExistenceCheckingComposite_assume_non_existence;
+	public static String EclipseLinkExistenceCheckingComposite_check_cache;
+	public static String EclipseLinkExistenceCheckingComposite_check_database;
+	public static String EclipseLinkExistenceCheckingComposite_assume_existence;
+	public static String EclipseLinkExistenceCheckingComposite_assume_non_existence;
 	
 	public static String EclipseLinkExpiryComposite_expirySection;
 	public static String EclipseLinkExpiryComposite_noExpiry;

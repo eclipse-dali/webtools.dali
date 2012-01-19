@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -77,7 +77,16 @@ public class ValidationModeComposite extends Pane<PersistenceUnit2_0>
 
 			@Override
 			protected String displayString(ValidationMode value) {
-				return this.buildDisplayString(JptUiPersistence2_0Messages.class, ValidationModeComposite.this, value);
+				switch (value) {
+					case AUTO :
+						return JptUiPersistence2_0Messages.ValidationModeComposite_auto;
+					case CALLBACK :
+						return JptUiPersistence2_0Messages.ValidationModeComposite_callback;
+					case NONE :
+						return JptUiPersistence2_0Messages.ValidationModeComposite_none;
+					default :
+						throw new IllegalStateException();
+				}
 			}
 
 			@Override
