@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.node.Node;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -266,26 +265,6 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 		}
 
 		subjectHolder.setValue(subject);
-	}
-
-	/**
-	 * Asynchronously launches this dialog in the UI thread.
-	 */
-	public final void openDialog() {
-		SWTUtil.setUserInterfaceActive(false);
-		SWTUtil.show(this);
-	}
-
-	/**
-	 * Asynchronously launches this dialog in the UI thread and invoke the given
-	 * <code>PostExecution</code> to perform any post-task.
-	 *
-	 * @param postExecution This interface let the caller to invoke a piece of
-	 * code once the dialog is disposed
-	 */
-	public final void openDialog(PostExecution<? extends Dialog<T>> execution) {
-		SWTUtil.setUserInterfaceActive(false);
-		SWTUtil.show(this, execution);
 	}
 
 	/**

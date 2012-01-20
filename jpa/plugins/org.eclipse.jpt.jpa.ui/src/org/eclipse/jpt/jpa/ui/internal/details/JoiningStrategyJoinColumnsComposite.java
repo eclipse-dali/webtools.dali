@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
@@ -111,17 +110,12 @@ public class JoiningStrategyJoinColumnsComposite
 	void addJoinColumn(ReadOnlyJoinColumnRelationshipStrategy joiningStrategy) {
 		JoinColumnInJoiningStrategyDialog dialog =
 			new JoinColumnInJoiningStrategyDialog(getShell(), joiningStrategy, null);
-		dialog.openDialog(buildAddJoinColumnPostExecution());
-	}
-	
-	private PostExecution<JoinColumnInJoiningStrategyDialog> buildAddJoinColumnPostExecution() {
-		return new PostExecution<JoinColumnInJoiningStrategyDialog>() {
-			public void execute(JoinColumnInJoiningStrategyDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					addJoinColumn(dialog.getSubject());
-				}
-			}
-		};
+
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+		if (dialog.wasConfirmed()) {
+			addJoinColumn(dialog.getSubject());
+		}
 	}
 	
 	void addJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
@@ -138,17 +132,12 @@ public class JoiningStrategyJoinColumnsComposite
 	void editJoinColumn(ReadOnlyJoinColumnRelationshipStrategy joiningStrategy, ReadOnlyJoinColumn joinColumn) {
 		JoinColumnInJoiningStrategyDialog dialog =
 			new JoinColumnInJoiningStrategyDialog(getShell(), joiningStrategy, joinColumn);
-		dialog.openDialog(buildEditJoinColumnPostExecution());
-	}
-	
-	private PostExecution<JoinColumnInJoiningStrategyDialog> buildEditJoinColumnPostExecution() {
-		return new PostExecution<JoinColumnInJoiningStrategyDialog>() {
-			public void execute(JoinColumnInJoiningStrategyDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					updateJoinColumn(dialog.getSubject());
-				}
-			}
-		};
+
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+		if (dialog.wasConfirmed()) {
+			updateJoinColumn(dialog.getSubject());
+		}
 	}
 	
 	void updateJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {

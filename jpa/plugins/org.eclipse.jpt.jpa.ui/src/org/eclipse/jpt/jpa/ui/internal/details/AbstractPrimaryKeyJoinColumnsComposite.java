@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -83,30 +82,14 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 			null
 		);
 
-		dialog.openDialog(buildAddPrimaryKeyJoinColumnPostExecution());
-	}
-
-	private PostExecution<PrimaryKeyJoinColumnDialog> buildAddPrimaryKeyJoinColumnPostExecution() {
-		return new PostExecution<PrimaryKeyJoinColumnDialog>() {
-			public void execute(PrimaryKeyJoinColumnDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					addJoinColumn(dialog.getSubject());
-				}
-			}
-		};
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+		if (dialog.wasConfirmed()) {
+			addJoinColumn(dialog.getSubject());
+		}
 	}
 
 	protected abstract ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder();
-
-	private PostExecution<PrimaryKeyJoinColumnDialog> buildEditPrimaryKeyJoinColumnPostExecution() {
-		return new PostExecution<PrimaryKeyJoinColumnDialog>() {
-			public void execute(PrimaryKeyJoinColumnDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					editJoinColumn(dialog.getSubject());
-				}
-			}
-		};
-	}
 
 	private WritablePropertyValueModel<PrimaryKeyJoinColumn> buildJoinColumnHolder() {
 		return new SimplePropertyValueModel<PrimaryKeyJoinColumn>();
@@ -243,7 +226,11 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 			joinColumn
 		);
 
-		dialog.openDialog(buildEditPrimaryKeyJoinColumnPostExecution());
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+		if (dialog.wasConfirmed()) {
+			editJoinColumn(dialog.getSubject());
+		}
 	}
 
 	/*

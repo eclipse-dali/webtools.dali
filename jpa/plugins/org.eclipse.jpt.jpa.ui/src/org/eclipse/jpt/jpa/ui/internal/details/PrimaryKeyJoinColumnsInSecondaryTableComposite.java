@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
@@ -112,17 +111,11 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 		PrimaryKeyJoinColumnInSecondaryTableDialog dialog =
 			new PrimaryKeyJoinColumnInSecondaryTableDialog(getShell(), (SecondaryTable) getSubject(), null);
 
-		dialog.openDialog(buildAddPrimaryKeyJoinColumnPostExecution());
-	}
-
-	private PostExecution<PrimaryKeyJoinColumnInSecondaryTableDialog> buildAddPrimaryKeyJoinColumnPostExecution() {
-		return new PostExecution<PrimaryKeyJoinColumnInSecondaryTableDialog>() {
-			public void execute(PrimaryKeyJoinColumnInSecondaryTableDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					addJoinColumn(dialog.getSubject());
-				}
-			}
-		};
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+		if (dialog.wasConfirmed()) {
+			addJoinColumn(dialog.getSubject());
+		}
 	}
 
 	private PropertyValueModel<Boolean> buildControlBooleanHolder() {
@@ -150,16 +143,6 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 		return new PropertyListValueModelAdapter<ReadOnlyPrimaryKeyJoinColumn>(
 			buildDefaultJoinColumnHolder()
 		);
-	}
-
-	private PostExecution<PrimaryKeyJoinColumnInSecondaryTableDialog> buildEditPrimaryKeyJoinColumnPostExecution() {
-		return new PostExecution<PrimaryKeyJoinColumnInSecondaryTableDialog>() {
-			public void execute(PrimaryKeyJoinColumnInSecondaryTableDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					editPrimaryKeyJoinColumn(dialog.getSubject());
-				}
-			}
-		};
 	}
 
 	String buildJoinColumnLabel(ReadOnlyPrimaryKeyJoinColumn joinColumn) {
@@ -290,7 +273,11 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 				joinColumn
 			);
 
-		dialog.openDialog(buildEditPrimaryKeyJoinColumnPostExecution());
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+		if (dialog.wasConfirmed()) {
+			editPrimaryKeyJoinColumn(dialog.getSubject());
+		}
 	}
 
 	void editPrimaryKeyJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,15 +15,13 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -52,11 +50,19 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 @SuppressWarnings("nls")
 public abstract class PersistenceUnitMappingFilesComposite
 		extends Pane<PersistenceUnit> {
-	
+
+	private WritablePropertyValueModel<MappingFileRef> selectedItemHolder;	
+
 	public PersistenceUnitMappingFilesComposite(
 			Pane<? extends PersistenceUnit> parentPane, Composite parent) {
 		
 		super(parentPane, parent);
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.selectedItemHolder = buildSelectedItemHolder();
 	}
 	
 	
@@ -67,7 +73,7 @@ public abstract class PersistenceUnitMappingFilesComposite
 				container,
 				buildAdapter(),
 				buildItemListHolder(),
-				buildSelectedItemHolder(),
+				this.selectedItemHolder,
 				buildLabelProvider(),
 				JpaHelpContextIds.PERSISTENCE_XML_GENERAL) {
 			
@@ -93,9 +99,7 @@ public abstract class PersistenceUnitMappingFilesComposite
 	 *
 	 * @param listSelectionModel The selection model used to select the new files
 	 */
-	private void addJPAMappingDescriptor(ObjectListSelectionModel listSelectionModel) {
-		
-		IProject project = getSubject().getJpaProject().getProject();
+	private void addJPAMappingDescriptor() {
 		
 		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
 				getShell(),
@@ -107,18 +111,29 @@ public abstract class PersistenceUnitMappingFilesComposite
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_title);
 		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_message);
 		dialog.addFilter(new XmlMappingFileViewerFilter(getSubject().getJpaProject()));
-		dialog.setInput(project);
+		dialog.setInput(getSubject().getJpaProject().getProject());
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 
-		SWTUtil.show(
-				dialog,
-				buildSelectionDialogPostExecution(listSelectionModel));
+		dialog.setBlockOnOpen(true);
+		if (dialog.open() == Window.OK) {
+			for (Object result : dialog.getResult()) {
+				IFile file = (IFile) result;
+				IProject project = file.getProject();
+				IPath runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, file.getFullPath());
+				String fileName = runtimePath.toPortableString();
+				if (mappingFileRefExists(fileName)) {
+					continue;
+				}
+				MappingFileRef mappingFileRef = getSubject().addSpecifiedMappingFileRef(fileName);
+				this.selectedItemHolder.setValue(mappingFileRef);
+			}
+		}
 	}
 	
 	private Adapter buildAdapter() {
 		return new AddRemoveListPane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addJPAMappingDescriptor(listSelectionModel);
+				addJPAMappingDescriptor();
 			}
 			
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
@@ -191,33 +206,6 @@ public abstract class PersistenceUnitMappingFilesComposite
 	
 	private WritablePropertyValueModel<MappingFileRef> buildSelectedItemHolder() {
 		return new SimplePropertyValueModel<MappingFileRef>();
-	}
-	
-	private PostExecution<ElementTreeSelectionDialog> buildSelectionDialogPostExecution(
-			final ObjectListSelectionModel listSelectionModel) {
-		
-		return new PostExecution<ElementTreeSelectionDialog>() {
-			
-			public void execute(ElementTreeSelectionDialog dialog) {
-				
-				if (dialog.getReturnCode() == IDialogConstants.CANCEL_ID) {
-					return;
-				}
-				
-				for (Object result : dialog.getResult()) {
-					IFile file = (IFile) result;
-					IProject project = file.getProject();
-					IPath runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, file.getFullPath());
-					String fileName = runtimePath.toPortableString();
-					if (mappingFileRefExists(fileName)) {
-						continue;
-					}
-					MappingFileRef mappingFileRef = getSubject().addSpecifiedMappingFileRef(fileName);
-					
-					listSelectionModel.addSelectedValue(mappingFileRef);
-				}
-			}
-		};
 	}
 	
 	private boolean mappingFileRefExists(String fileName) {

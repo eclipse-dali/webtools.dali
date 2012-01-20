@@ -9,13 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.util;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.AssertionFailedException;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.common.ui.internal.widgets.NullPostExecution;
-import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -37,7 +32,6 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("nls")
 public class SWTUtil {
 
 	/**
@@ -71,34 +65,6 @@ public class SWTUtil {
 		combo.addModifyListener(handler);
 	}
 
-	/**
-	 * Creates the <code>Runnable</code> that will invoke the given
-	 * <code>PostExecution</code> in order to its execution to be done in the
-	 * UI thread.
-	 *
-	 * @param dialog The dialog that was just diposed
-	 * @param postExecution The post execution once the dialog is disposed
-	 * @return The <code>Runnable</code> that will invoke
-	 * {@link PostExecution#execute(Dialog)}
-	 */
-	@SuppressWarnings("unchecked")
-	private static <D1 extends Dialog, D2 extends D1>
-		Runnable buildPostExecutionRunnable(
-			final D1 dialog,
-			final PostExecution<D2> postExecution) {
-
-		return new Runnable() {
-			public void run() {
-				setUserInterfaceActive(false);
-				try {
-					postExecution.execute((D2) dialog);
-				}
-				finally {
-					setUserInterfaceActive(true);
-				}
-			}
-		};
-	}
 
 	/**
 	 * Convenience method for getting the current shell. If the current thread is
@@ -198,81 +164,6 @@ public class SWTUtil {
 		}
 	}
 
-	/**
-	 * Sets whether the entire shell and its widgets should be enabled or
-	 * everything should be unaccessible.
-	 *
-	 * @param active <code>true</code> to make all the UI active otherwise
-	 * <code>false</code> to deactivate it
-	 */
-	public static void setUserInterfaceActive(boolean active) {
-		Shell[] shells = getStandardDisplay().getShells();
-
-		for (Shell shell : shells) {
-			shell.setEnabled(active);
-		}
-	}
-
-	/**
-	 * Asynchronously launches the specified dialog in the UI thread.
-	 *
-	 * @param dialog The dialog to show on screen
-	 * @param postExecution This interface let the caller to invoke a piece of
-	 * code once the dialog is disposed
-	 */
-	public static <D1 extends Dialog, D2 extends D1>
-		void show(final D1 dialog, final PostExecution<D2> postExecution) {
-
-		try {
-			Assert.isNotNull(dialog,        "The dialog cannot be null");
-			Assert.isNotNull(postExecution, "The PostExecution cannot be null");
-		}
-		catch (AssertionFailedException e) {
-			// Make sure the UI is interactive
-			setUserInterfaceActive(true);
-			throw e;
-		}
-
-		new Thread() {
-			@Override
-			public void run() {
-				asyncExec(
-					new Runnable() {
-						public void run() {
-							showImp(dialog, postExecution);
-						}
-					}
-				);
-			}
-		}.start();
-	}
-
-	/**
-	 * Asynchronously launches the specified dialog in the UI thread.
-	 *
-	 * @param dialog The dialog to show on screen
-	 */
-	public static void show(Dialog dialog) {
-		show(dialog, NullPostExecution.<Dialog>instance());
-	}
-
-	/**
-	 * Asynchronously launches the specified dialog in the UI thread.
-	 *
-	 * @param dialog The dialog to show on screen
-	 * @param postExecution This interface let the caller to invoke a piece of
-	 * code once the dialog is disposed
-	 */
-	private static <D1 extends Dialog, D2 extends D1>
-		void showImp(D1 dialog, PostExecution<D2> postExecution) {
-
-		setUserInterfaceActive(true);
-		dialog.open();
-
-		if (postExecution != NullPostExecution.<D2>instance()) {
-			asyncExec(buildPostExecutionRunnable(dialog, postExecution));
-		}
-	}
 
 	/**
 	 * Causes the <code>run()</code> method of the given runnable to be invoked

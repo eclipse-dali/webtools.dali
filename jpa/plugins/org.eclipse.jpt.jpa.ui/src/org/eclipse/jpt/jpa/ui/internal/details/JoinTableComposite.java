@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
@@ -203,7 +202,11 @@ public class JoinTableComposite
 		InverseJoinColumnInJoinTableDialog dialog =
 			new InverseJoinColumnInJoinTableDialog(getShell(), joinTable, null);
 
-		dialog.openDialog(buildAddInverseJoinColumnPostExecution());
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+		if (dialog.wasConfirmed()) {
+			addInverseJoinColumnFromDialog(dialog.getSubject());
+		}
 	}
 
 	void addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
@@ -219,27 +222,6 @@ public class JoinTableComposite
 	private void setSelectedInverseJoinColumn(JoinColumn joinColumn) {
 		this.inverseJoinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
-
-	private PostExecution<InverseJoinColumnInJoinTableDialog> buildAddInverseJoinColumnPostExecution() {
-		return new PostExecution<InverseJoinColumnInJoinTableDialog>() {
-			public void execute(InverseJoinColumnInJoinTableDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					addInverseJoinColumnFromDialog(dialog.getSubject());
-				}
-			}
-		};
-	}
-
-	private PostExecution<InverseJoinColumnInJoinTableDialog> buildEditInverseJoinColumnPostExecution() {
-		return new PostExecution<InverseJoinColumnInJoinTableDialog>() {
-			public void execute(InverseJoinColumnInJoinTableDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					editInverseJoinColumn(dialog.getSubject());
-				}
-			}
-		};
-	}
-
 
 	private InverseJoinColumnsProvider buildInverseJoinColumnsEditor() {
 		return new InverseJoinColumnsProvider();
@@ -273,7 +255,12 @@ public class JoinTableComposite
 		InverseJoinColumnInJoinTableDialog dialog =
 			new InverseJoinColumnInJoinTableDialog(getShell(), getSubject(), joinColumn);
 
-		dialog.openDialog(buildEditInverseJoinColumnPostExecution());
+
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+		if (dialog.wasConfirmed()) {
+			editInverseJoinColumn(dialog.getSubject());
+		}
 	}
 
 	void updateInverseJoinColumns() {

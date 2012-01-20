@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
@@ -86,7 +85,11 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		JoinColumnInReferenceTableDialog dialog =
 			new JoinColumnInReferenceTableDialog(getShell(), referenceTable, null);
 
-		dialog.openDialog(buildAddJoinColumnPostExecution());
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+		if (dialog.wasConfirmed()) {
+			addJoinColumnFromDialog(dialog.getSubject());
+		}
 	}
 
 	void addJoinColumnFromDialog(JoinColumnInReferenceTableStateObject stateObject) {
@@ -97,26 +100,6 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 
 	private void setSelectedJoinColumn(JoinColumn joinColumn) {
 		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
-	}
-
-	private PostExecution<JoinColumnInReferenceTableDialog> buildAddJoinColumnPostExecution() {
-		return new PostExecution<JoinColumnInReferenceTableDialog>() {
-			public void execute(JoinColumnInReferenceTableDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					addJoinColumnFromDialog(dialog.getSubject());
-				}
-			}
-		};
-	}
-
-	private PostExecution<JoinColumnInReferenceTableDialog> buildEditJoinColumnPostExecution() {
-		return new PostExecution<JoinColumnInReferenceTableDialog>() {
-			public void execute(JoinColumnInReferenceTableDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					editJoinColumn(dialog.getSubject());
-				}
-			}
-		};
 	}
 
 	protected JoinColumnsProvider buildJoinColumnsEditor() {
@@ -282,7 +265,11 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		JoinColumnInReferenceTableDialog dialog =
 			new JoinColumnInReferenceTableDialog(getShell(), getSubject(), joinColumn);
 
-		dialog.openDialog(buildEditJoinColumnPostExecution());
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+		if (dialog.wasConfirmed()) {
+			editJoinColumn(dialog.getSubject());
+		}
 	}
 
 	void editJoinColumn(JoinColumnInReferenceTableStateObject stateObject) {

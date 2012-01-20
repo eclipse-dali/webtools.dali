@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal.persistence.details;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -61,6 +59,8 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 public abstract class PersistenceUnitJarFilesComposite 
 	extends Pane<PersistenceUnit>
 {
+	private WritablePropertyValueModel<JarFileRef> selectedItemHolder;	
+
 	/**
 	 * Creates a new <code>PersistenceUnitJPAMappingDescriptorsComposite</code>.
 	 *
@@ -72,6 +72,12 @@ public abstract class PersistenceUnitJarFilesComposite
 			Composite parent) {
 
 		super(parentPane, parent, false);
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.selectedItemHolder = buildSelectedItemHolder();
 	}
 
 	
@@ -88,7 +94,7 @@ public abstract class PersistenceUnitJarFilesComposite
 			container,
 			this.buildAdapter(),
 			this.buildItemListHolder(),
-			this.buildSelectedItemHolder(),
+			this.selectedItemHolder,
 			this.buildLabelProvider(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		) {
@@ -119,7 +125,7 @@ public abstract class PersistenceUnitJarFilesComposite
 	private Adapter buildAdapter() {
 		return new AddRemoveListPane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addJarFileRef(listSelectionModel);
+				addJarFileRef();
 			}
 			
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
@@ -176,7 +182,7 @@ public abstract class PersistenceUnitJarFilesComposite
 		};
 	}
 	
-	private void addJarFileRef(ObjectListSelectionModel listSelectionModel) {
+	private void addJarFileRef() {
 		IProject project = getSubject().getJpaProject().getProject();
 
 		ElementTreeSelectionDialog dialog = new ArchiveFileSelectionDialog(
@@ -186,36 +192,25 @@ public abstract class PersistenceUnitJarFilesComposite
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_jarFileDialog_title);
 		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_jarFileDialog_message);
 		dialog.setInput(project);
+
+
+		dialog.setBlockOnOpen(true);
 		
-		SWTUtil.show(
-			dialog,
-			buildSelectionDialogPostExecution(listSelectionModel)
-		);
+		if (dialog.open() == Window.OK) {		
+			for (Object result : dialog.getResult()) {
+				String filePath = (String) result;
+				if (jarFileRefExists(filePath)) {
+					continue;
+				}
+				JarFileRef jarFileRef = getSubject().addJarFileRef(filePath);
+
+				this.selectedItemHolder.setValue(jarFileRef);
+			}
+		}
 	}
 	
 	protected ArchiveFileSelectionDialog.DeploymentPathCalculator buildJarFileDeploymentPathCalculator() {
 		return new ArchiveFileSelectionDialog.ModuleDeploymentPathCalculator();
-	}
-	
-	private PostExecution<ElementTreeSelectionDialog> buildSelectionDialogPostExecution(
-			final ObjectListSelectionModel listSelectionModel) {
-		return new PostExecution<ElementTreeSelectionDialog>() {
-			public void execute(ElementTreeSelectionDialog dialog) {
-				if (dialog.getReturnCode() == IDialogConstants.CANCEL_ID) {
-					return;
-				}
-				
-				for (Object result : dialog.getResult()) {
-					String filePath = (String) result;
-					if (jarFileRefExists(filePath)) {
-						continue;
-					}
-					JarFileRef jarFileRef = getSubject().addJarFileRef(filePath);
-
-					listSelectionModel.addSelectedValue(jarFileRef);
-				}
-			}
-		};
 	}
 	
 	private boolean jarFileRefExists(String fileName) {
