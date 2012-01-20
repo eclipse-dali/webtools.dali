@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
+
 /**
  * Context model corresponding to:<ul>
  * <li>the XML resource model
@@ -24,33 +27,34 @@ package org.eclipse.jpt.jpa.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
+ * @version 3.2
  * @since 2.0
  */
-public enum AccessType {
+public class AccessType {
 
-	FIELD(
+	public static final AccessType FIELD = new AccessType(
 			org.eclipse.jpt.jpa.core.resource.java.AccessType.FIELD,
-			org.eclipse.jpt.jpa.core.resource.orm.AccessType.FIELD
-		),
-	PROPERTY(
+			org.eclipse.jpt.jpa.core.resource.orm.AccessType.FIELD,
+			"Field" //$NON-NLS-1$
+		);
+	public static final AccessType PROPERTY = new AccessType(
 			org.eclipse.jpt.jpa.core.resource.java.AccessType.PROPERTY,
-			org.eclipse.jpt.jpa.core.resource.orm.AccessType.PROPERTY
+			org.eclipse.jpt.jpa.core.resource.orm.AccessType.PROPERTY,
+			"Property" //$NON-NLS-1$
 		);
 
 
-	private org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType;
-	private String ormAccessType;
+	protected final org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType;
+	protected final String ormAccessType;
+	protected final String displayString;
 
-	AccessType(org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType, String ormAccessType) {
-		if (javaAccessType == null) {
-			throw new NullPointerException();
-		}
+	public AccessType(org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType, String ormAccessType, String displayString) {
 		if (ormAccessType == null) {
 			throw new NullPointerException();
 		}
 		this.javaAccessType = javaAccessType;
 		this.ormAccessType = ormAccessType;
+		this.displayString = displayString;
 	}
 
 	public org.eclipse.jpt.jpa.core.resource.java.AccessType getJavaAccessType() {
@@ -61,15 +65,18 @@ public enum AccessType {
 		return this.ormAccessType;
 	}
 
+	public String getDisplayString() {
+		return this.displayString;
+	}
 
 	// ********** static methods **********
 
-	public static AccessType fromJavaResourceModel(org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType) {
-		return (javaAccessType == null) ? null : fromJavaResourceModel_(javaAccessType);
+	public static AccessType fromJavaResourceModel(org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType, JpaPlatform jpaPlatform, JptResourceType resourceType) {
+		return (javaAccessType == null) ? null : fromJavaResourceModel_(javaAccessType, jpaPlatform, resourceType);
 	}
 
-	private static AccessType fromJavaResourceModel_(org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType) {
-		for (AccessType accessType : AccessType.values()) {
+	private static AccessType fromJavaResourceModel_(org.eclipse.jpt.jpa.core.resource.java.AccessType javaAccessType, JpaPlatform jpaPlatform, JptResourceType resourceType) {
+		for (AccessType accessType : jpaPlatform.getJpaVariation().getSupportedAccessTypes(resourceType)) {
 			if (accessType.getJavaAccessType() == javaAccessType) {
 				return accessType;
 			}
@@ -81,12 +88,12 @@ public enum AccessType {
 		return (accessType == null) ? null : accessType.getJavaAccessType();
 	}
 
-	public static AccessType fromOrmResourceModel(String ormAccessType) {
-		return (ormAccessType == null) ? null : fromOrmResourceModel_(ormAccessType);
+	public static AccessType fromOrmResourceModel(String ormAccessType, JpaPlatform jpaPlatform, JptResourceType resourceType) {
+		return (ormAccessType == null) ? null : fromOrmResourceModel_(ormAccessType, jpaPlatform, resourceType);
 	}
 
-	private static AccessType fromOrmResourceModel_(String ormAccessType) {
-		for (AccessType accessType : AccessType.values()) {
+	private static AccessType fromOrmResourceModel_(String ormAccessType, JpaPlatform jpaPlatform, JptResourceType resourceType) {
+		for (AccessType accessType : jpaPlatform.getJpaVariation().getSupportedAccessTypes(resourceType)) {
 			if (accessType.getOrmAccessType().equals(ormAccessType)) {
 				return accessType;
 			}

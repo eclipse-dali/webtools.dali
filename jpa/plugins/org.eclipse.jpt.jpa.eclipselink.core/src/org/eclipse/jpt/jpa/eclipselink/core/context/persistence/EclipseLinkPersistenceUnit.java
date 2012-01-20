@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -91,6 +91,9 @@ public class EclipseLinkPersistenceUnit
 
 	protected final Vector<ReadOnlyTenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumns = new Vector<ReadOnlyTenantDiscriminatorColumn2_3>();
 
+	protected String defaultGetMethod;
+	protected String defaultSetMethod;
+
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
 	}
@@ -115,6 +118,16 @@ public class EclipseLinkPersistenceUnit
 			return (OrmEclipseLinkPersistenceUnitMetadata) metadata;
 		}
 		return null;
+	}
+
+	@Override
+	protected void updatePersistenceUnitMetadata() {
+		super.updatePersistenceUnitMetadata();
+		OrmEclipseLinkPersistenceUnitMetadata metadata = this.getEclipseLinkMetadata();
+
+		EclipseLinkPersistenceUnitDefaults defaults = (metadata == null) ? null : metadata.getPersistenceUnitDefaults();
+		this.setDefaultGetMethod(this.buildDefaultGetMethod(defaults));
+		this.setDefaultSetMethod(this.buildDefaultSetMethod(defaults));
 	}
 
 	// ********** properties **********
@@ -505,6 +518,48 @@ public class EclipseLinkPersistenceUnit
 		return true;
 	}
 
+
+	public String getDefaultGetMethod() {
+		return this.defaultGetMethod;
+	}
+
+	protected void setDefaultGetMethod(String getMethod) {
+		String old = this.defaultGetMethod;
+		this.defaultGetMethod = getMethod;
+		this.firePropertyChanged(DEFAULT_GET_METHOD_PROPERTY, old, getMethod);
+	}
+
+	/**
+	 * String constant associated with changes to the persistence unit's
+	 * default get method.
+	 */
+	public static final String DEFAULT_GET_METHOD_PROPERTY = "defaultGetMethod"; //$NON-NLS-1$
+
+	protected String buildDefaultGetMethod(EclipseLinkPersistenceUnitDefaults defaults) {
+		String getMethod = (defaults == null) ? null : defaults.getGetMethod();
+		return (getMethod != null) ? getMethod : null;
+	}
+
+	public String getDefaultSetMethod() {
+		return this.defaultSetMethod;
+	}
+
+	protected void setDefaultSetMethod(String setMethod) {
+		String old = this.defaultSetMethod;
+		this.defaultSetMethod = setMethod;
+		this.firePropertyChanged(DEFAULT_SET_METHOD_PROPERTY, old, setMethod);
+	}
+
+	/**
+	 * String constant associated with changes to the persistence unit's
+	 * default set method.
+	 */
+	public static final String DEFAULT_SET_METHOD_PROPERTY = "defaultSetMethod"; //$NON-NLS-1$
+
+	protected String buildDefaultSetMethod(EclipseLinkPersistenceUnitDefaults defaults) {
+		String setMethod = (defaults == null) ? null : defaults.getSetMethod();
+		return (setMethod != null) ? setMethod : null;
+	}
 
 	// ********** validation **********
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
@@ -86,7 +87,14 @@ public class AccessTypeComposite extends Pane<AccessHolder> {
 
 			@Override
 			protected AccessType[] getChoices() {
-				return AccessType.values();
+				if (getSubject() == null) {
+					return new AccessType[]{};
+				}
+				return getJpaPlatformVariation().getSupportedAccessTypes(getSubject().getResourceType());
+			}
+
+			JpaPlatformVariation getJpaPlatformVariation() {
+				return getSubject().getJpaProject().getJpaPlatform().getJpaVariation();
 			}
 
 			@Override
@@ -96,14 +104,7 @@ public class AccessTypeComposite extends Pane<AccessHolder> {
 
 			@Override
 			protected String displayString(AccessType value) {
-				switch (value) {
-					case FIELD :
-						return JptUiMessages.AccessTypeComposite_field;
-					case PROPERTY :
-						return JptUiMessages.AccessTypeComposite_property;
-					default :
-						throw new IllegalStateException();
-				}
+				return value.getDisplayString();
 			}
 
 			@Override

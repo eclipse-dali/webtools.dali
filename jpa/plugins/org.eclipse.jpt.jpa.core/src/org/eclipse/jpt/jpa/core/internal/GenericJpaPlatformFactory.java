@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal;
 
-import java.util.Comparator;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
+import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaFactory;
-import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -55,14 +55,15 @@ public class GenericJpaPlatformFactory
 			public boolean isJoinTableOverridable() {
 				return false;
 			}
+			public AccessType[] getSupportedAccessTypes(JptResourceType resourceType) {
+				return GENERIC_SUPPORTED_ACCESS_TYPES;
+			}
 		};
 	}
 
 
 	public static class SimpleVersion implements JpaPlatform.Version {
 		protected final String jpaVersion;
-
-		public static final Comparator<String> JPA_VERSION_COMPARATOR = new DefaultVersionComparator();
 
 		public SimpleVersion(String jpaVersion) {
 			super();
@@ -84,7 +85,7 @@ public class GenericJpaPlatformFactory
 		 * For now, generic platforms are backward-compatible.
 		 */
 		public boolean isCompatibleWithJpaVersion(String version) {
-			return JPA_VERSION_COMPARATOR.compare(this.jpaVersion, version) >= 0;
+			return VERSION_COMPARATOR.compare(this.jpaVersion, version) >= 0;
 		}
 
 		@Override

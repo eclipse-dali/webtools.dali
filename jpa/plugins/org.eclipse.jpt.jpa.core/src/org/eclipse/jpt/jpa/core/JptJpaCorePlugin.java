@@ -33,7 +33,6 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
 import org.eclipse.jpt.jpa.core.internal.platform.JpaPlatformManagerImpl;
 import org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jpt.jpa.core.platform.GenericPlatform;
@@ -705,7 +704,11 @@ public class JptJpaCorePlugin
 	}
 
 	public static boolean nodeIsXml2_0Compatible(XmlContextNode xmlContextNode) {
-		return SimpleVersion.JPA_VERSION_COMPARATOR.compare(xmlContextNode.getResourceType().getVersion(), org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0.SCHEMA_VERSION) >= 0;
+		return resourceTypeIsCompatible(xmlContextNode.getResourceType(), org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0.SCHEMA_VERSION);
+	}
+
+	public static boolean resourceTypeIsCompatible(JptResourceType resourceType, String version) {
+		return JpaPlatform.Version.VERSION_COMPARATOR.compare(resourceType.getVersion(), version) >= 0;
 	}
 
 	/**

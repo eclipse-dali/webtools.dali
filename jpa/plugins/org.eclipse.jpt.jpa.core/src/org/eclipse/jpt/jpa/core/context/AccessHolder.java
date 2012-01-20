@@ -41,7 +41,7 @@ public interface AccessHolder
 	String SPECIFIED_ACCESS_PROPERTY = "specifiedAccess"; //$NON-NLS-1$
 
 	/**
-	 * Return the default access type, never null
+	 * Return the default access type
 	 */
 	AccessType getDefaultAccess();
 

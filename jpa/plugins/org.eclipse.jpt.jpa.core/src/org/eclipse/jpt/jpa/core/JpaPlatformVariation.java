@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,9 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
+
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.jpa.core.context.AccessType;
 
 /**
  * A JpaPlatform contains a JpaPlatformVariation.  This is used for various jpa spec
@@ -39,7 +42,10 @@ public interface JpaPlatformVariation
 	 * can be overridden with an association override.
 	 */
 	boolean isJoinTableOverridable();
-	
+
+	AccessType[] getSupportedAccessTypes(JptResourceType resourceType);
+
+	AccessType[] GENERIC_SUPPORTED_ACCESS_TYPES = new AccessType[] {AccessType.FIELD, AccessType.PROPERTY};
 
 	public enum Supported {
 		/**

@@ -1,0 +1,228 @@
+/*******************************************************************************
+ * Copyright (c) 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
+
+import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentType;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessMethodsHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
+
+/**
+ * <code>eclipselink-orm.xml</code> persistent type:<ul>
+ * <li>mapping
+ * <li>access
+ * <li>access-methods
+ * <li>attributes
+ * <li>super persistent type
+ * <li>Java persistent type
+ * </ul>
+ */
+public class OrmEclipseLinkPersistentType
+	extends SpecifiedOrmPersistentType
+	implements EclipseLinkAccessMethodsHolder
+{
+
+	protected String specifiedGetMethod;
+	protected String defaultGetMethod;
+
+	protected String specifiedSetMethod;
+	protected String defaultSetMethod;
+
+
+	public OrmEclipseLinkPersistentType(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
+		super(parent, xmlTypeMapping);
+		this.specifiedGetMethod = this.buildSpecifiedGetMethod();
+		this.specifiedSetMethod = this.buildSpecifiedSetMethod();
+	}
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedGetMethod_(this.buildSpecifiedGetMethod());
+		this.setSpecifiedSetMethod_(this.buildSpecifiedSetMethod());
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultGetMethod(this.buildDefaultGetMethod());
+		this.setDefaultSetMethod(this.buildDefaultSetMethod());
+	}
+
+
+	//*************** get method *****************
+
+	public String getGetMethod() {
+		String specifiedGetMethod = this.getSpecifiedGetMethod();
+		return (specifiedGetMethod != null) ? specifiedGetMethod : this.defaultGetMethod;
+	}
+
+	public String getDefaultGetMethod() {
+		return this.defaultGetMethod;
+	}
+	@Override
+	protected AccessType buildDefaultAccess() {
+		if ( ! this.mapping.isMetadataComplete()) {
+			if (this.javaPersistentType != null) {
+				if (this.javaPersistentTypeHasSpecifiedAccess()) {
+					return this.javaPersistentType.getAccess();
+				}
+				if (this.superPersistentType != null) {
+					return this.superPersistentType.getAccess();
+				}
+			}
+		}
+		AccessType access = this.getMappingFileRoot().getAccess();
+		return (access != null) ? access : AccessType.FIELD;  // default to FIELD if no specified access found
+	}
+
+	//TODO get the default get method from the java VirtualAccessMethods annotation and from the super type
+	protected String buildDefaultGetMethod() {
+		if (getAccess() == EclipseLinkAccessType.VIRTUAL) {
+			String defaultGetMethod = getEntityMappings().getDefaultGetMethod();
+			return defaultGetMethod != null ? defaultGetMethod : DEFAULT_GET_METHOD;
+		}
+		return null;
+	}
+
+	protected void setDefaultGetMethod(String getMethod) {
+		String old = this.defaultGetMethod;
+		this.defaultGetMethod = getMethod;
+		this.firePropertyChanged(DEFAULT_GET_METHOD_PROPERTY, old, getMethod);
+	}
+
+	public String getSpecifiedGetMethod() {
+		return this.specifiedGetMethod;
+	}
+
+	public void setSpecifiedGetMethod(String getMethod) {
+		if (this.valuesAreDifferent(this.specifiedGetMethod, getMethod)) {
+			XmlAccessMethods xmlAccessMethods = this.getXmlAccessMethodsForUpdate();
+			this.setSpecifiedGetMethod_(getMethod);
+			xmlAccessMethods.setGetMethod(getMethod);
+			this.removeXmlAccessMethodsIfUnset();
+		}
+	}
+
+	protected void setSpecifiedGetMethod_(String getMethod) {
+		String old = this.specifiedGetMethod;
+		this.specifiedGetMethod = getMethod;
+		this.firePropertyChanged(SPECIFIED_GET_METHOD_PROPERTY, old, getMethod);
+	}
+
+	protected String buildSpecifiedGetMethod() {
+		XmlAccessMethods accessMethods = this.getXmlAccessMethods();
+		return accessMethods != null ? accessMethods.getGetMethod() : null;
+	}
+
+
+	//*************** set method *****************
+
+	public String getSetMethod() {
+		String specifiedSetMethod = this.getSpecifiedSetMethod();
+		return (specifiedSetMethod != null) ? specifiedSetMethod : this.defaultSetMethod;
+	}
+
+	public String getDefaultSetMethod() {
+		return this.defaultSetMethod;
+	}
+
+	protected void setDefaultSetMethod(String setMethod) {
+		String old = this.defaultSetMethod;
+		this.defaultSetMethod = setMethod;
+		this.firePropertyChanged(DEFAULT_SET_METHOD_PROPERTY, old, setMethod);
+	}
+
+	protected String buildDefaultSetMethod() {
+		if (getAccess() == EclipseLinkAccessType.VIRTUAL) {
+			//TODO get the default set method from the java VirtualAccessMethods annotation/super persistent type, embedded parent, etc
+			String defaultSetMethod = getEntityMappings().getDefaultSetMethod();
+			return defaultSetMethod != null ? defaultSetMethod : DEFAULT_SET_METHOD;
+		}
+		return null;
+	}
+
+	public String getSpecifiedSetMethod() {
+		return this.specifiedSetMethod;
+	}
+
+	public void setSpecifiedSetMethod(String setMethod) {
+		if (this.valuesAreDifferent(this.specifiedSetMethod, setMethod)) {
+			XmlAccessMethods xmlAccessMethods = this.getXmlAccessMethodsForUpdate();
+			this.setSpecifiedSetMethod_(setMethod);
+			xmlAccessMethods.setSetMethod(setMethod);
+			this.removeXmlAccessMethodsIfUnset();
+		}
+	}
+
+	protected void setSpecifiedSetMethod_(String setMethod) {
+		String old = this.specifiedSetMethod;
+		this.specifiedSetMethod = setMethod;
+		this.firePropertyChanged(SPECIFIED_SET_METHOD_PROPERTY, old, setMethod);
+	}
+
+	protected String buildSpecifiedSetMethod() {
+		XmlAccessMethods accessMethods = this.getXmlAccessMethods();
+		return accessMethods != null ? accessMethods.getSetMethod() : null;
+	}
+
+	//*************** XML access methods *****************
+
+	protected XmlAccessMethodsHolder getXmlAccessMethodsHolder() {
+		//or do we only build an OrmEclipseLinkPersistentType for 2.1++ projects
+		//TODO KFB instanceof check here or platform check? this will result in a CCE for pre El 2.1 projects
+		return (XmlAccessMethodsHolder) this.getXmlTypeMapping();
+	}
+
+	protected XmlAccessMethods getXmlAccessMethods() {
+		return getXmlAccessMethodsHolder().getAccessMethods();
+	}
+
+	/**
+	 * Build the XML access methods (and XML defaults and XML metadata if necessary) if it does not exist.
+	 */
+	protected XmlAccessMethods getXmlAccessMethodsForUpdate() {
+		XmlAccessMethods xmlAccessMethods = this.getXmlAccessMethodsHolder().getAccessMethods();
+		return (xmlAccessMethods != null) ? xmlAccessMethods : this.buildXmlAccessMethods();
+	}
+
+	protected XmlAccessMethods buildXmlAccessMethods() {
+		XmlAccessMethods xmlAccessMethods = this.buildXmlAccessMethods_();
+		this.getXmlAccessMethodsHolder().setAccessMethods(xmlAccessMethods);
+		return xmlAccessMethods;
+	}
+
+	protected XmlAccessMethods buildXmlAccessMethods_() {
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlAccessMethods();
+	}
+
+	/**
+	 * clear the XML access methods if appropriate
+	 */
+	protected void removeXmlAccessMethodsIfUnset() {
+		if (this.getXmlAccessMethods().isUnset()) {
+			this.getXmlAccessMethodsHolder().setAccessMethods(null);
+		}
+	}
+
+	@Override
+	protected EclipseLinkEntityMappings getEntityMappings() {
+		return (EclipseLinkEntityMappings) super.getEntityMappings();
+	}
+
+}

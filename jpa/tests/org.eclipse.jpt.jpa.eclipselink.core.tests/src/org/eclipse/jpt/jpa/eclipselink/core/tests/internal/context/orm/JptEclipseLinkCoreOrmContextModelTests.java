@@ -31,14 +31,14 @@ public class JptEclipseLinkCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLinkOrmOneToManyMappingTests.class);
 		suite.addTestSuite(EclipseLinkOrmOneToOneMappingTests.class);
 		suite.addTestSuite(EclipseLinkOrmPersistentAttributeTests.class);
+		suite.addTestSuite(EclipseLink2_1OrmPersistentTypeTests.class);
 		suite.addTestSuite(EclipseLinkOrmVersionMappingTests.class);
 		suite.addTestSuite(EclipseLinkOrmTransientMappingTests.class);
 		suite.addTestSuite(EclipseLinkOrmConverterTests.class);
 		suite.addTestSuite(EclipseLinkOrmObjectTypeConverterTests.class);
 		suite.addTestSuite(EclipseLinkOrmStructConverterTests.class);
 		suite.addTestSuite(EclipseLinkOrmTypeConverterTests.class);
-		suite.addTestSuite(EclipseLinkOrmCachingTests.class);
-		suite.addTestSuite(EclipseLink2_3OrmMultitenancyTests.class);		
+		suite.addTestSuite(EclipseLinkOrmCachingTests.class);	
 		suite.addTestSuite(EclipseLink1_1OrmPersistentAttributeTests.class);		
 		suite.addTestSuite(EclipseLink1_1OrmPersistentTypeTests.class);	
 		suite.addTestSuite(EclipseLink1_1OrmTransientMappingTests.class);	
@@ -50,6 +50,9 @@ public class JptEclipseLinkCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLink2_0OrmMappedSuperclassTests.class);
 		suite.addTestSuite(EclipseLink2_0OrmOneToOneMappingTests.class);
 		suite.addTestSuite(EclipseLink2_0OrmOneToManyMappingTests.class);
+		suite.addTestSuite(EclipseLink2_1EntityMappingsTests.class);
+		suite.addTestSuite(EclipseLink2_1PersistenceUnitDefaultsTests.class);
+		suite.addTestSuite(EclipseLink2_3OrmMultitenancyTests.class);
 		return suite;
 	}
 	

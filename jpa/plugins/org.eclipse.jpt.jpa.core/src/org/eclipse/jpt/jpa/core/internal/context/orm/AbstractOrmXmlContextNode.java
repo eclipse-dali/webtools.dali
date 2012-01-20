@@ -60,7 +60,7 @@ public abstract class AbstractOrmXmlContextNode
 	protected boolean isOrmXml2_0Compatible() {
 		String version = this.getMappingFileRoot().getVersion();
 		try {
-			return (version != null) && SimpleVersion.JPA_VERSION_COMPARATOR.compare(version, "2.0") >= 0; //$NON-NLS-1$
+			return (version != null) && SimpleVersion.VERSION_COMPARATOR.compare(version, "2.0") >= 0; //$NON-NLS-1$
 		} catch (VersionFormatException ex) {
 			return false;
 		}

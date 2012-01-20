@@ -332,7 +332,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected AccessType buildSpecifiedAccess() {
-		return AccessType.fromOrmResourceModel(this.xmlEntityMappings.getAccess());
+		return AccessType.fromOrmResourceModel(this.xmlEntityMappings.getAccess(), this.getJpaPlatform(), this.getResourceType());
 	}
 
 	public AccessType getDefaultAccess() {

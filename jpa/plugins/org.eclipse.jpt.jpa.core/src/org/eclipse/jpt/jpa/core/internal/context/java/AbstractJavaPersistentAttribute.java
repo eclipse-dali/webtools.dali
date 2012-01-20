@@ -176,7 +176,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 */
 	protected AccessType buildSpecifiedAccess() {
 		Access2_0Annotation accessAnnotation = this.getAccessAnnotation();
-		return (accessAnnotation == null) ? null : AccessType.fromJavaResourceModel(accessAnnotation.getValue());
+		return (accessAnnotation == null) ? null : AccessType.fromJavaResourceModel(accessAnnotation.getValue(), this.getJpaPlatform(), this.getResourceType());
 	}
 
 	protected Access2_0Annotation getAccessAnnotation() {

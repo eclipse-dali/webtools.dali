@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
+import java.util.Comparator;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 
 import org.eclipse.core.resources.IFile;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
+import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to
@@ -184,6 +186,8 @@ public interface JpaPlatform
 
 
 	interface Version {
+
+		Comparator<String> VERSION_COMPARATOR = new DefaultVersionComparator();
 
 		/**
 		 * Return the platform's version.

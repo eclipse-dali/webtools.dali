@@ -20,8 +20,6 @@ import org.eclipse.osgi.util.NLS;
 public class JptUiMessages {
 
 	public static String AccessTypeComposite_access;
-	public static String AccessTypeComposite_field;
-	public static String AccessTypeComposite_property;
 	public static String AddToEarComposite_earMemberShip;
 	public static String AddToEarComposite_addToEarLabel;
 	public static String AddToEarComposite_earProjectLabel;

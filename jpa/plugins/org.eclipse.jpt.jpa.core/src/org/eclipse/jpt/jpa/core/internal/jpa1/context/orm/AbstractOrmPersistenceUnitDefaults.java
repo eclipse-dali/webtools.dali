@@ -105,7 +105,7 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 
 	protected AccessType buildSpecifiedAccess() {
 		XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaults();
-		return (xmlDefaults == null) ? null : AccessType.fromOrmResourceModel(xmlDefaults.getAccess());
+		return (xmlDefaults == null) ? null : AccessType.fromOrmResourceModel(xmlDefaults.getAccess(), this.getJpaPlatform(), this.getResourceType());
 	}
 
 

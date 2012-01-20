@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessMethodsHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
 
 /**
@@ -19,7 +20,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorCo
  * <code>persistence-unit-defaults</code> element
  */
 public interface EclipseLinkPersistenceUnitDefaults
-	extends OrmPersistenceUnitDefaults2_0
+	extends OrmPersistenceUnitDefaults2_0, EclipseLinkAccessMethodsHolder
 {
 
 	// ********** tenant discriminator columns **********

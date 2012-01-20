@@ -40,6 +40,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.Command;
 import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
@@ -537,7 +538,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		if (!model.isFieldAccess()) {
 			accessTypeString = PROPERTY;
 		}
-		return AccessType.fromOrmResourceModel(accessTypeString);// TODO
+		return AccessType.fromOrmResourceModel(accessTypeString, getJpaProject().getJpaPlatform(), JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE);// TODO
 	}
 
 	protected InheritanceType getModelInheritanceType(CreateEntityTemplateModel model) {

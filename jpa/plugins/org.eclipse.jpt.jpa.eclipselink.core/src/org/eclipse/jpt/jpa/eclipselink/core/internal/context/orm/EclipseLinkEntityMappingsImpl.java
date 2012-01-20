@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,6 +41,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorCo
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmVirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
@@ -61,12 +62,22 @@ public class EclipseLinkEntityMappingsImpl
 
 	protected final ContextListContainer<OrmVirtualTenantDiscriminatorColumn2_3, ReadOnlyTenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumnContainer;
 
+
+	protected String specifiedGetMethod;
+	protected String defaultGetMethod;
+
+	protected String specifiedSetMethod;
+	protected String defaultSetMethod;
+
+
 	public EclipseLinkEntityMappingsImpl(OrmXml parent, XmlEntityMappings resource) {
 		super(parent, resource);
 		this.converterContainer = this.buildConverterContainer();
 		this.tenantDiscriminatorColumnOwner = this.buildTenantDiscriminatorColumnOwner();
 		this.specifiedTenantDiscriminatorColumnContainer = this.buildSpecifiedTenantDiscriminatorColumnContainer();
 		this.defaultTenantDiscriminatorColumnContainer = this.buildDefaultTenantDiscriminatorColumnContainer();
+		this.specifiedGetMethod = this.buildSpecifiedGetMethod();
+		this.specifiedSetMethod = this.buildSpecifiedSetMethod();
 	}
 
 
@@ -77,6 +88,8 @@ public class EclipseLinkEntityMappingsImpl
 		super.synchronizeWithResourceModel();
 		this.converterContainer.synchronizeWithResourceModel();
 		this.syncSpecifiedTenantDiscriminatorColumns();
+		this.setSpecifiedGetMethod_(this.buildSpecifiedGetMethod());
+		this.setSpecifiedSetMethod_(this.buildSpecifiedSetMethod());
 	}
 
 	@Override
@@ -85,6 +98,8 @@ public class EclipseLinkEntityMappingsImpl
 		this.converterContainer.update();
 		this.updateNodes(this.getSpecifiedTenantDiscriminatorColumns());
 		this.updateDefaultTenantDiscriminatorColumns();
+		this.setDefaultGetMethod(this.buildDefaultGetMethod());
+		this.setDefaultSetMethod(this.buildDefaultSetMethod());
 	}
 
 	@Override
@@ -387,6 +402,131 @@ public class EclipseLinkEntityMappingsImpl
 			return EclipseLinkEntityMappingsImpl.this.getValidationTextRange();
 		}
 	}
+
+
+	//*************** get method *****************
+
+	public String getGetMethod() {
+		String specifiedGetMethod = this.getSpecifiedGetMethod();
+		return (specifiedGetMethod != null) ? specifiedGetMethod : this.defaultGetMethod;
+	}
+
+	public String getDefaultGetMethod() {
+		return this.defaultGetMethod;
+	}
+
+	protected String buildDefaultGetMethod() {
+		return this.getPersistenceUnit().getDefaultGetMethod();
+	}
+
+	protected void setDefaultGetMethod(String getMethod) {
+		String old = this.defaultGetMethod;
+		this.defaultGetMethod = getMethod;
+		this.firePropertyChanged(DEFAULT_GET_METHOD_PROPERTY, old, getMethod);
+	}
+
+	public String getSpecifiedGetMethod() {
+		return this.specifiedGetMethod;
+	}
+
+	public void setSpecifiedGetMethod(String getMethod) {
+		if (this.valuesAreDifferent(this.specifiedGetMethod, getMethod)) {
+			XmlAccessMethods xmlAccessMethods = this.getXmlAccessMethodsForUpdate();
+			this.setSpecifiedGetMethod_(getMethod);
+			xmlAccessMethods.setGetMethod(getMethod);
+			this.removeXmlAccessMethodsIfUnset();
+		}
+	}
+
+	protected void setSpecifiedGetMethod_(String getMethod) {
+		String old = this.specifiedGetMethod;
+		this.specifiedGetMethod = getMethod;
+		this.firePropertyChanged(SPECIFIED_GET_METHOD_PROPERTY, old, getMethod);
+	}
+
+	protected String buildSpecifiedGetMethod() {
+		XmlAccessMethods xmlAccessMethods = getXmlAccessMethods();
+		return xmlAccessMethods != null ? xmlAccessMethods.getGetMethod() : null;
+	}
+
+
+	//*************** set method *****************
+
+	public String getSetMethod() {
+		String specifiedSetMethod = this.getSpecifiedSetMethod();
+		return (specifiedSetMethod != null) ? specifiedSetMethod : this.defaultSetMethod;
+	}
+
+	public String getDefaultSetMethod() {
+		return this.defaultSetMethod;
+	}
+
+	protected void setDefaultSetMethod(String setMethod) {
+		String old = this.defaultSetMethod;
+		this.defaultSetMethod = setMethod;
+		this.firePropertyChanged(DEFAULT_SET_METHOD_PROPERTY, old, setMethod);
+	}
+
+	protected String buildDefaultSetMethod() {
+		return this.getPersistenceUnit().getDefaultSetMethod();
+	}
+
+	public String getSpecifiedSetMethod() {
+		return this.specifiedSetMethod;
+	}
+
+	public void setSpecifiedSetMethod(String setMethod) {
+		if (this.valuesAreDifferent(this.specifiedSetMethod, setMethod)) {
+			XmlAccessMethods xmlAccessMethods = this.getXmlAccessMethodsForUpdate();
+			this.setSpecifiedSetMethod_(setMethod);
+			xmlAccessMethods.setSetMethod(setMethod);
+			this.removeXmlAccessMethodsIfUnset();
+		}
+	}
+
+	protected void setSpecifiedSetMethod_(String setMethod) {
+		String old = this.specifiedSetMethod;
+		this.specifiedSetMethod = setMethod;
+		this.firePropertyChanged(SPECIFIED_SET_METHOD_PROPERTY, old, setMethod);
+	}
+
+	protected String buildSpecifiedSetMethod() {
+		XmlAccessMethods xmlAccessMethods = getXmlAccessMethods();
+		return xmlAccessMethods != null ? xmlAccessMethods.getSetMethod() : null;
+	}
+
+	//*************** XML access methods *****************
+	protected XmlAccessMethods getXmlAccessMethods() {
+		return getXmlEntityMappings().getAccessMethods();
+	}
+
+	/**
+	 * Build the XML access methods (and XML defaults and XML metadata if necessary) if it does not exist.
+	 */
+	protected XmlAccessMethods getXmlAccessMethodsForUpdate() {
+		XmlAccessMethods xmlAccessMethods = getXmlAccessMethods();
+		return (xmlAccessMethods != null) ? xmlAccessMethods : this.buildXmlAccessMethods();
+	}
+
+	protected XmlAccessMethods buildXmlAccessMethods() {
+		XmlAccessMethods xmlAccessMethods = this.buildXmlAccessMethods_();
+		this.getXmlEntityMappings().setAccessMethods(xmlAccessMethods);
+		return xmlAccessMethods;
+	}
+
+	protected XmlAccessMethods buildXmlAccessMethods_() {
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlAccessMethods();
+	}
+
+	/**
+	 * clear the XML access methods if appropriate
+	 */
+	protected void removeXmlAccessMethodsIfUnset() {
+		if (this.getXmlAccessMethods().isUnset()) {
+			this.getXmlEntityMappings().setAccessMethods(null);
+		}
+	}
+
 
 	// ********** misc **********
 

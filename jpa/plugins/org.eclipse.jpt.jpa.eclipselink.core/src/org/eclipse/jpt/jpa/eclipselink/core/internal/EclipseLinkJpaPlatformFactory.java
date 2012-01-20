@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
-import java.util.Comparator;
 import org.eclipse.jpt.common.core.AnnotationProvider;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
+import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
-import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -68,12 +68,14 @@ public class EclipseLinkJpaPlatformFactory
 			public boolean isJoinTableOverridable() {
 				return false;
 			}
+			public AccessType[] getSupportedAccessTypes(JptResourceType resourceType) {
+				return GENERIC_SUPPORTED_ACCESS_TYPES;
+			}
 		};
 	}
 
 
 	public static class EclipseLinkVersion extends SimpleVersion {
-		public static final Comparator<String> VERSION_COMPARATOR = new DefaultVersionComparator();
 
 		protected final String eclipseLinkVersion;
 
