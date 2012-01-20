@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,9 +20,7 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.resource.JFaceColors;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaNode;
@@ -196,19 +194,6 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		};
 	}
 
-	private PostExecution<MappingSelectionDialog> buildPostExecution() {
-
-		return new PostExecution<MappingSelectionDialog>() {
-			public void execute(MappingSelectionDialog dialog) {
-
-				if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
-					MappingUiDefinition definition = (MappingUiDefinition) dialog.getFirstResult();
-					morphMapping(definition);
-				}
-			}
-		};
-	}
-
 	/**
 	 * Creates the full localized string by formatting the label text returned
 	 * by the <code>MappingChangeHandler</code> with the mapping name and the
@@ -348,7 +333,11 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	protected void openMappingSelectionDialog() {
 
 		MappingSelectionDialog dialog = new MappingSelectionDialog();
-		SWTUtil.show(dialog, buildPostExecution());
+		dialog.setBlockOnOpen(true);
+		if (dialog.open() == IDialogConstants.OK_ID) {
+			MappingUiDefinition<?,?> definition = (MappingUiDefinition<?,?>) dialog.getFirstResult();
+			morphMapping(definition);
+		}
 	}
 
 	/**
@@ -476,7 +465,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 */
 	protected class MappingSelectionDialog extends FilteredItemsSelectionDialog 
 	{
-		private MappingUiDefinition defaultDefinition;
+		private MappingUiDefinition<?,?> defaultDefinition;
 		
 		/**
 		 * Creates a new <code>MappingSelectionDialog</code>.
@@ -499,7 +488,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 						return null;
 					}
 
-					MappingUiDefinition definition = (MappingUiDefinition) element;
+					MappingUiDefinition<?,?> definition = (MappingUiDefinition<?,?>) element;
 					return definition.getImage();
 				}
 
@@ -509,7 +498,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 						return "";
 					}
 					
-					MappingUiDefinition definition = (MappingUiDefinition) element;
+					MappingUiDefinition<?,?> definition = (MappingUiDefinition<?,?>) element;
 					return definition.getLabel();
 				}
 			};
