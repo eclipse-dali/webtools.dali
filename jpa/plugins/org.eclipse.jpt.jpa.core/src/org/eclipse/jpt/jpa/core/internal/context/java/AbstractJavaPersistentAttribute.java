@@ -42,8 +42,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttributeCompatibility;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -580,11 +578,6 @@ public abstract class AbstractJavaPersistentAttribute
 
 	public JavaResourceAttribute getResourceAttribute() {
 		return this.accessor.getResourceAttribute();
-	}
-	
-	//TODO compatibility method should be removed for Juno release
-	public JavaResourcePersistentAttribute getResourcePersistentAttribute(){
-		return new JavaResourcePersistentAttributeCompatibility(this.getResourceAttribute());
 	}
 
 	public String getPrimaryKeyColumnName() {

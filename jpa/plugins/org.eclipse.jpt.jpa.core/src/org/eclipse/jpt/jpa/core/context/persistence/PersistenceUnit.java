@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,8 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
-
-import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -302,9 +300,6 @@ public interface PersistenceUnit
 	 * both specified and implied.
 	 */
 	Iterable<ClassRef> getClassRefs();
-	
-	//TODO Remove legacy compatibility method in Juno release
-	Iterator<ClassRef> classRefs();
 
 	/**
 	 * Return the size of the persistence unit's list of class refs,

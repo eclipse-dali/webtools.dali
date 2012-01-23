@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -75,9 +72,6 @@ public interface PersistentType
 	 * Return the persistent type's persistent attributes.
 	 */
 	ListIterable<? extends ReadOnlyPersistentAttribute> getAttributes();
-
-	//TODO remove this compatibility API in the Juno release
-	<T extends ReadOnlyPersistentAttribute> ListIterator<T> attributes();
 	
 	/**
 	 * Return the number of the persistent type's persistent attributes.
@@ -94,9 +88,6 @@ public interface PersistentType
 	 * inheritance hierarchy.
 	 */
 	Iterable<ReadOnlyPersistentAttribute> getAllAttributes();
-	
-	//TODO remove this compatibility API in the Juno release
-	Iterator<ReadOnlyPersistentAttribute> allAttributes();
 
 	/**
 	 * Return the names of all the persistent attributes in the

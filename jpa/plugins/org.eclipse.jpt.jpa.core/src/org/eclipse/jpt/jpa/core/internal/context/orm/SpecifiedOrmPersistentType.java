@@ -14,7 +14,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
@@ -372,12 +371,6 @@ public abstract class SpecifiedOrmPersistentType
 	public ListIterable<OrmReadOnlyPersistentAttribute> getAttributes() {
 		return new CompositeListIterable<OrmReadOnlyPersistentAttribute>(this.getReadOnlySpecifiedAttributes(), this.getVirtualAttributes());
 	}
-	
-	//TODO remove this compatibility method in the Juno release
-	public ListIterator<OrmReadOnlyPersistentAttribute> attributes() {
-		return this.getAttributes().iterator();
-	}
-
 
 	public int getAttributesSize() {
 		return this.getSpecifiedAttributesSize() + this.getVirtualAttributesSize();
@@ -401,11 +394,6 @@ public abstract class SpecifiedOrmPersistentType
 					}
 				}
 			);
-	}
-	
-	//TODO remove this compatibility method in the Juno release
-	public Iterator<ReadOnlyPersistentAttribute> allAttributes() {
-		return getAllAttributes().iterator();
 	}
 
 	public Iterable<String> getAllAttributeNames() {

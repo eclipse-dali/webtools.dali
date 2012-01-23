@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,8 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
-
-import java.util.ListIterator;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
@@ -42,9 +40,6 @@ public interface QueryContainer
 	 * Return the container's named queries.
 	 */
 	ListIterable<? extends NamedQuery> getNamedQueries();
-	
-	//TODO remove this compatibility API in the Juno release
-	<T extends NamedQuery> ListIterator<T> namedQueries();
 
 	String NAMED_QUERIES_LIST = "namedQueries"; //$NON-NLS-1$
 

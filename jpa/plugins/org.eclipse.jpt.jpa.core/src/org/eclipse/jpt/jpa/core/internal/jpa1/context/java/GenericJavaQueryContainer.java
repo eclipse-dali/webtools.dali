@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
@@ -82,11 +81,6 @@ public class GenericJavaQueryContainer
 
 	public ListIterable<JavaNamedQuery> getNamedQueries() {
 		return this.namedQueryContainer.getContextElements();
-	}
-	
-	//TODO remove this compatibility method in the Juno release
-	public ListIterator<JavaNamedQuery> namedQueries() {
-		return this.getNamedQueries().iterator();
 	}
 
 	public int getNamedQueriesSize() {

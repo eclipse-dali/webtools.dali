@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -385,11 +384,6 @@ public abstract class AbstractJavaPersistentType
 	public ListIterable<JavaPersistentAttribute> getAttributes() {
 		return new LiveCloneListIterable<JavaPersistentAttribute>(this.attributes);
 	}
-	
-	//TODO remove this legacy compatibility method in the Juno release
-	public ListIterator<JavaPersistentAttribute> attributes() {
-		return this.getAttributes().iterator(); 
-	}
 
 	public int getAttributesSize() {
 		return this.attributes.size();
@@ -422,11 +416,6 @@ public abstract class AbstractJavaPersistentType
 					}
 				}
 			);
-	}
-	
-	//TODO remove this compatibility method in the Juno release
-	public Iterator<ReadOnlyPersistentAttribute> allAttributes() {
-		return getAllAttributes().iterator();
 	}
 
 	public Iterable<String> getAllAttributeNames() {
