@@ -48,7 +48,7 @@ public class CascadeDialog extends TrayDialog {
 						"&persist",		//$NON-NLS-1$
 						"&merge",		//$NON-NLS-1$
 						"&remove",		//$NON-NLS-1$
-						"r&efresh"};	//$NON-NLS-1$
+						"&refresh"};	//$NON-NLS-1$
 
 	
 	private Button[] allButtons = new Button[ALL_CASCADES.length];
