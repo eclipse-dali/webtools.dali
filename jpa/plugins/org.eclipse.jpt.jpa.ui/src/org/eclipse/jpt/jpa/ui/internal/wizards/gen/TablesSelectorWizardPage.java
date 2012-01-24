@@ -81,7 +81,7 @@ class TablesSelectorWizardPage extends WizardPage {
 	private JpaProject jpaProject;
 	private Schema schema;
 	private ORMGenCustomizer customizer;
-	private boolean updatePersistenceXml;
+	private boolean updatePersistenceXml = true;
 
 	private DatabaseGroup databaseGroup;
 	private CheckboxTableViewer tableTable;
