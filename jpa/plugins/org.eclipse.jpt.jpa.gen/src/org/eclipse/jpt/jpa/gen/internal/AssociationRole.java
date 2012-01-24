@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.gen.internal;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jpt.common.utility.internal.StringTools;
+
 /**
  * Represents an association role (the referrer or referenced role).
  * 
@@ -243,15 +245,17 @@ public class AssociationRole implements java.io.Serializable
 	}
 	
 	/**
-	 * Returns the cascade value for this role, or null if none.
+	 * Returns the cascade value for this role.
+	 * An empty string will return if none.
 	 */
 	public String getCascade() {
 		return mCascade;
 	}
 	
 	public void setCascade(String cascade) {
+		// if no checkbox is selected, set cascade to an empty string
 		if (cascade != null && cascade.length() == 0) {
-			cascade = null;
+			cascade = StringTools.EMPTY_STRING;
 		}
 		mCascade = cascade;
 	}
