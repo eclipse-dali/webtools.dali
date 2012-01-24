@@ -156,6 +156,10 @@ public class ELJavaXmlElementsMapping
 							this,
 							xmlPath.getValidationTextRange(astRoot)));
 		}
+		
+		for (ELJavaXmlPath xmlPath : this.xmlPathContainer.getContextElements()) {
+			xmlPath.validate(messages, reporter, astRoot);
+		}
 	}
 	
 	@Override

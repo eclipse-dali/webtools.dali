@@ -132,7 +132,7 @@ public class ELJavaXmlElementMapping
 	}
 	
 	protected void validateXmlPath(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		
+		this.xmlPath.validate(messages, reporter, astRoot);
 	}
 	
 	

@@ -9,12 +9,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class ELJavaXmlAnyAttributeMapping
@@ -97,6 +101,22 @@ public class ELJavaXmlAnyAttributeMapping
 	
 	protected XmlPathAnnotation getXmlPathAnnotation() {
 		return (XmlPathAnnotation) getJavaResourceAttribute().getAnnotation(0, ELJaxb.XML_PATH);
+	}
+	
+	
+	// ***** validation *****
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		if (this.xmlPath != null) {
+			validateXmlPath(messages, reporter, astRoot);
+		}
+	}
+	
+	protected void validateXmlPath(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		this.xmlPath.validate(messages, reporter, astRoot);
 	}
 	
 	

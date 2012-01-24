@@ -111,6 +111,13 @@ public class ELJavaXmlAttributeMapping
 		if (this.xmlPath == null) {
 			super.validateQName(messages, reporter, astRoot);
 		}
+		else {
+			validateXmlPath(messages, reporter, astRoot);
+		}
+	}
+	
+	protected void validateXmlPath(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		this.xmlPath.validate(messages, reporter, astRoot);
 	}
 	
 	

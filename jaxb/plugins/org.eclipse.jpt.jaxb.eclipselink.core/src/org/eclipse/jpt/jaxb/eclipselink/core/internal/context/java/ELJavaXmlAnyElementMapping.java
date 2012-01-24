@@ -126,7 +126,7 @@ public class ELJavaXmlAnyElementMapping
 	}
 	
 	protected void validateXmlPath(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		
+		this.xmlPath.validate(messages, reporter, astRoot);
 	}
 	
 	
