@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -41,7 +41,7 @@ import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -102,10 +102,30 @@ public abstract class JpaMapping implements IMapping {
 		};
 	}
 
+	protected IType buildType() {
+
+		PersistentAttribute property = mapping.getPersistentAttribute();
+		String typeName = property.getTypeName();
+
+		// The attribute could be virtual, incorrectly specified in the orm.xml
+		if (typeName == null) {
+			return getTypeRepository().getTypeHelper().unknownType();
+		}
+
+		return getTypeRepository().getType(typeName);
+	}
+
 	protected ITypeDeclaration buildTypeDeclaration() {
 
 		PersistentAttribute property = mapping.getPersistentAttribute();
-		boolean array = property.getTypeName().endsWith("[]");
+		String typeName = property.getTypeName();
+
+		// The attribute could be virtual, incorrectly specified in the orm.xml
+		if (typeName == null) {
+			return getTypeRepository().getTypeHelper().unknownTypeDeclaration();
+		}
+
+		boolean array = typeName.endsWith("[]");
 		int dimensionality = 0;
 
 		if (array) {
@@ -228,8 +248,7 @@ public abstract class JpaMapping implements IMapping {
 	 */
 	public IType getType() {
 		if (type == null) {
-			PersistentAttribute property = mapping.getPersistentAttribute();
-			type = getTypeRepository().getType(property.getTypeName());
+			type = buildType();
 		}
 		return type;
 	}
