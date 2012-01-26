@@ -1489,7 +1489,6 @@ public abstract class AbstractJpaProject
 	protected void disposeJpqlQueryHelper(IReporter reporter) {
 		JpaJpqlQueryHelper helper = getJpaPlatform().getJpqlQueryHelper();
 		helper.disposeProvider();
-		helper.dispose();
 	}
 
 	// ********** resource model listener **********

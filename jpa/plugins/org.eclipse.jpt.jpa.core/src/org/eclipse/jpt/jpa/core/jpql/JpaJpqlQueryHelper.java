@@ -13,9 +13,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpql;
 
-import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
-import org.eclipse.jpt.jpa.core.jpql.spi.JpaQuery;
-
 import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -23,6 +20,8 @@ import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationPreferences;
+import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
+import org.eclipse.jpt.jpa.core.jpql.spi.JpaQuery;
 import org.eclipse.persistence.jpa.jpql.AbstractJPQLQueryHelper;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.JPQLQueryProblem;
@@ -232,25 +231,32 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	                     int offset,
 	                     List<IMessage> messages) {
 
-		// Make this quick check so we don't validate the query, which is time consuming
-		if (shouldValidate(namedQuery)) {
+		try {
+			// Make this quick check so we don't validate the query, which is time consuming
+			if (shouldValidate(namedQuery)) {
 
-			setQuery(namedQuery, jpqlQuery);
-			String parsedJpqlQuery = getParsedJPQLQuery();
+				setQuery(namedQuery, jpqlQuery);
+				String parsedJpqlQuery = getParsedJPQLQuery();
 
-			for (JPQLQueryProblem problem : validate()) {
+				for (JPQLQueryProblem problem : validate()) {
 
-				IMessage message = buildProblem(
-					namedQuery,
-					textRange,
-					problem,
-					parsedJpqlQuery,
-					jpqlQuery,
-					offset
-				);
+					IMessage message = buildProblem(
+						namedQuery,
+						textRange,
+						problem,
+						parsedJpqlQuery,
+						jpqlQuery,
+						offset
+					);
 
-				messages.add(message);
+					messages.add(message);
+				}
 			}
+		}
+		finally {
+			// Only dispose the helper, managedTypeProvider should only be disposed
+			// once all queries in the project have been validated
+			dispose();
 		}
 	}
 }
