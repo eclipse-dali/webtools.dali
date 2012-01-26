@@ -167,14 +167,13 @@
 	</extension>
 	
 	
-	<!-- TODO: builderName = "Eclipselink Static Weaving Builder" -->
 	<extension 
 		id="builder" 
-		name="Eclipselink Static Weaving Builder"
+		name="%builderName"
 		point="org.eclipse.core.resources.builders">
 		
 		<builder hasNature="false">
-			<run class="org.eclipse.jpt.jpa.eclipselink.core.internal.builder.EclipselinkStaticWeavingBuilder"/>
+			<run class="org.eclipse.jpt.jpa.eclipselink.core.builder.EclipselinkStaticWeavingBuilder"/>
 		</builder>
 	</extension>
 	

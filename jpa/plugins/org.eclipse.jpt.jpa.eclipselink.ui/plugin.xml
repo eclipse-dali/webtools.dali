@@ -131,23 +131,23 @@
 			id="org.eclipse.jpt.jpa.ui.jpaPreferences"
 			category="org.eclipse.jpt.jpa.ui.preferences"
 			class="org.eclipse.jpt.jpa.ui.internal.preferences.JpaPreferencesPage"
-			name="JPA"/>	<!--  TODO -->
-			
+			name="%jpaNode"/>
+
 		<page
 			id="org.eclipse.jpt.jpa.eclipselink.ui.eclipselinkProjectPreferences"
 			category="org.eclipse.jpt.jpa.ui.jpaPreferences"
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.weave.EclipselinkPreferencePage"
-			name="EclipseLink">	<!--  TODO -->
+			name="%eclipseLinkNode">
 		</page>
 		
 	</extension>
 	
 	<extension
 		point="org.eclipse.ui.propertyPages">
-		
+
 		<page
 			id="org.eclipse.jpt.jpa.ui.jpaProjectProperties"
-			name="JPA"
+			name="%jpaNode"
 			class="org.eclipse.jpt.jpa.ui.internal.properties.JpaProjectPropertiesPage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
@@ -157,11 +157,11 @@
 						value="jpt.jpa"/>
 				</adapt>
 			</enabledWhen>
-		</page>	<!--  TODO -->
+		</page>
 		
 		<page
 			id="org.eclipse.jpt.jpa.eclipselink.ui.eclipselinkProjectProperties"
-			name="EclipseLink"
+			name="%eclipseLinkNode"
 			category="org.eclipse.jpt.jpa.ui.jpaProjectProperties"
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.weave.EclipselinkPreferencePage">
 			<enabledWhen>

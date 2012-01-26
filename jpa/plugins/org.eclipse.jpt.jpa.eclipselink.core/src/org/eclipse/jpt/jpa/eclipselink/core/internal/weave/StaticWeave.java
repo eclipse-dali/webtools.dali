@@ -49,8 +49,6 @@ public class StaticWeave extends AbstractJptGenerator
 			String loglevel, 
 			String persistenceinfo, 
 			IProgressMonitor monitor) {
-		
-//		System.out.println(" ##### StaticWeave.weave() Running");	//TODELETE
 
 		if(javaProject == null) {
 			throw new NullPointerException("javaProject is null");   //$NON-NLS-1$
@@ -79,8 +77,8 @@ public class StaticWeave extends AbstractJptGenerator
 		this.persistenceinfo = persistenceinfo;
 
 		this.mainType = WEAVING_CLASS;
-		
-		this.setDebug(true);		// TODO remove
+
+		this.setDebug(false);
 	}
 
 	// ********** overrides **********

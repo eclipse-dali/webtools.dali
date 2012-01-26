@@ -376,6 +376,22 @@ public class EclipseLinkUiMessages {
 	public static String GenerationOutputModeWizardPage_desc;
 	public static String GenerationOutputModeWizardPage_generationOutputMode;
 
+	// Static Weaving
+	public static String EclipselinkPreferencePage_description;
+	public static String EclipselinkPreferencePage_staticWeavingGroupBox;
+	public static String EclipselinkPreferencePage_weaveClassesOnBuildLabel;
+	public static String EclipselinkPreferencePage_sourceLabel;
+	public static String EclipselinkPreferencePage_selectSourceLabel;
+	public static String EclipselinkPreferencePage_sourceFolderSelectionLabel;
+	public static String EclipselinkPreferencePage_targetLabel;
+	public static String EclipselinkPreferencePage_selectTargetLabel;
+	public static String EclipselinkPreferencePage_targetFolderSelectionLabel;
+	public static String EclipselinkPreferencePage_persistenceInfoLabel;
+	public static String EclipselinkPreferencePage_selectPersistenceInfoLabel;
+	public static String EclipselinkPreferencePage_persistenceInfoFolderSelectionLabel;
+	public static String EclipselinkPreferencePage_logLevelLabel;
+	public static String EclipselinkPreferencePage_browse;
+
 
 	private static final String BUNDLE_NAME = "eclipselink_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = EclipseLinkUiMessages.class;

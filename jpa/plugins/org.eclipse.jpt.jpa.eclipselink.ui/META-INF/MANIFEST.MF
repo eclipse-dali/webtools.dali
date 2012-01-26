@@ -48,5 +48,6 @@ Export-Package: org.eclipse.jpt.jpa.eclipselink.ui,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.customization;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.logging;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.options;x-internal:=true,
+ org.eclipse.jpt.jpa.eclipselink.ui.internal.weave;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;x-internal:=true
 Import-Package: com.ibm.icu.text;version="4.0.1"
