@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -29,7 +29,7 @@ import org.eclipse.persistence.jpa.jpql.util.iterator.NullIterator;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -53,6 +53,7 @@ public class SimpleType implements IJpaType {
 	/**
 	 * Creates a new <code>SimpleType</code>.
 	 *
+	 * @param typeRepository The external form of a type repository
 	 * @param typeName The fully qualified name of the Java type
 	 */
 	public SimpleType(JpaTypeRepository typeRepository, String typeName) {
@@ -99,6 +100,10 @@ public class SimpleType implements IJpaType {
 		return typeDeclaration;
 	}
 
+	protected JpaTypeRepository getTypeRepository() {
+		return typeRepository;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -110,7 +115,7 @@ public class SimpleType implements IJpaType {
 	 * {@inheritDoc}
 	 */
 	public boolean isAssignableTo(IType type) {
-		return typeRepository.equals(type.getName());
+		return false;
 	}
 
 	/**

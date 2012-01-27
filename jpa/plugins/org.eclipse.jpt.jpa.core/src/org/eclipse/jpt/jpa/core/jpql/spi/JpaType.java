@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -55,7 +55,7 @@ import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -269,7 +269,7 @@ public class JpaType implements IJpaType {
 	 */
 	@Override
 	public boolean equals(Object object) {
-		return (this == object) || equals((org.eclipse.persistence.jpa.jpql.spi.IType) object);
+		return equals((org.eclipse.persistence.jpa.jpql.spi.IType) object);
 	}
 
 	/**
@@ -362,7 +362,7 @@ public class JpaType implements IJpaType {
 	 */
 	public boolean isAssignableTo(org.eclipse.persistence.jpa.jpql.spi.IType otherType) {
 
-		if (this == otherType) {
+		if (equals(otherType)) {
 			return true;
 		}
 
