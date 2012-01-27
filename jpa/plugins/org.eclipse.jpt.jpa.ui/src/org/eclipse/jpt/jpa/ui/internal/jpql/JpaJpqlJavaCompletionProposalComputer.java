@@ -58,7 +58,7 @@ import org.eclipse.swt.graphics.Image;
  * This computer adds content assist support when it is invoked inside the query element of {@link
  * javax.persistence.NamedQuery &#64;NamedQuery}.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -180,7 +180,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 		if (structureNode instanceof JavaPersistentType) {
 			JavaPersistentType persistentType = (JavaPersistentType) structureNode;
 			JavaTypeMapping typeMapping = persistentType.getMapping();
-			
+
 			for (Query query : typeMapping.getQueries()){
 				if (query.getType().equals(NamedQuery.class)){
 					JavaNamedQuery namedQuery = (JavaNamedQuery)query;

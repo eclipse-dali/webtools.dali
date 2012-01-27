@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -183,11 +184,10 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	// ********** validation **********
 
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		this.validateName(messages, astRoot);
-		this.validateQuery(messages, reporter, astRoot);
+		this.validateQuery(queryHelper, messages, reporter, astRoot);
 	}
 
 	protected void validateName(List<IMessage> messages, CompilationUnit astRoot) {
@@ -204,7 +204,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 		}
 	}
 
-	protected void validateQuery(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	public void validateQuery(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if (StringTools.stringIsEmpty(this.query)){
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -216,11 +216,11 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 				)
 			);
 		} else {
-			this.validateQuery_(messages, reporter, astRoot);
+			this.validateQuery_(queryHelper, messages, reporter, astRoot);
 		}
 	}
 
-	protected abstract void validateQuery_(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot);
+	protected abstract void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot);
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.queryAnnotation.getTextRange(astRoot);
@@ -236,7 +236,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 				StringTools.stringsAreEqual(this.getQuery(), query.getQuery()) &&
 				hintsAreIdentical(query.getHints());
 	}
-	
+
 	private boolean hintsAreIdentical(ListIterable<? extends QueryHint> hints) {
 		boolean isIdentical = true;
 		if (this.getHintsSize() != CollectionTools.size(hints)) {

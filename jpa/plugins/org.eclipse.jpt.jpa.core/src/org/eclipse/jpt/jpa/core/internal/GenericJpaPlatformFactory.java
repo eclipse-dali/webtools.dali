@@ -16,6 +16,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaFactory;
+import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar1_0;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -39,9 +40,8 @@ public class GenericJpaPlatformFactory
 			new JpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance()),
 			GenericJpaPlatformProvider.instance(),
 			this.buildJpaPlatformVariation(),
-			GenericJpaJpqlQueryHelper.instance());
+			JPQLGrammar1_0.instance());
 	}
-
 
 	private JpaPlatform.Version buildJpaVersion() {
 		return new SimpleVersion(JpaFacet.VERSION_1_0.getVersionString());
@@ -60,7 +60,6 @@ public class GenericJpaPlatformFactory
 			}
 		};
 	}
-
 
 	public static class SimpleVersion implements JpaPlatform.Version {
 		protected final String jpaVersion;
@@ -92,7 +91,5 @@ public class GenericJpaPlatformFactory
 		public String toString() {
 			return "JPA version: " + this.getJpaVersion(); //$NON-NLS-1$
 		}
-
 	}
-
 }

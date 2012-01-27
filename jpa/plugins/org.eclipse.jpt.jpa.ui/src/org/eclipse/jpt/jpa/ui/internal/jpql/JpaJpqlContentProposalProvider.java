@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -75,8 +75,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
@@ -103,7 +101,7 @@ import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
  * <p>
  * TODO. Add syntax highlight for the JPQL identifiers.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -256,6 +254,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 					IDocument document = event.getDocument();
 					String text = document.get(0, document.getLength());
 					textHolder.setValue(text);
+					validate();
 				}
 				catch (BadLocationException e) {
 					// Simply ignore, should never happen
@@ -274,19 +273,6 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 			public EvaluationResult evaluate(IEvaluationContext context) {
 				Object variable = context.getVariable(ISources.ACTIVE_FOCUS_CONTROL_NAME);
 				return (variable == styledText) ? EvaluationResult.TRUE : EvaluationResult.FALSE;
-			}
-		};
-	}
-
-	private FocusListener buildFocusListener() {
-		return new FocusListener() {
-			public void focusGained(FocusEvent e) {
-			}
-			public void focusLost(FocusEvent e) {
-				// Only dispose the query helper if the content proposal popup doesn't grab the focus
-				if (!sourceViewerConfiguration.contentAssistant.hasProposalPopupFocus()) {
-					disposeQueryHelper();
-				}
 			}
 		};
 	}
@@ -416,13 +402,6 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		handlerService.deactivateHandler(handlerActivation);
 	}
 
-	private void disposeQueryHelper() {
-		if (queryHelper != null) {
-			queryHelper.dispose();
-			queryHelper.disposeProvider();
-		}
-	}
-
 	private KeyStroke findContentAssistTrigger() {
 
 		IBindingService bindingService = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
@@ -475,7 +454,6 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		sourceViewer.getDocument().addDocumentListener(buildDocumentListener());
 
 		styledText = sourceViewer.getTextWidget();
-		styledText.addFocusListener(buildFocusListener());
 		styledText.addModifyListener(buildModifyListener());
 		styledText.addDisposeListener(buildDisposeListener());
 
@@ -552,18 +530,18 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 
 	private void subjectChanged(PropertyChangeEvent e) {
 
-		disposeQueryHelper();
+		namedQuery = (NamedQuery) e.getNewValue();
 
-		// Prevent undoing the actual query that was set
-		if (e.getNewValue() != null) {
+		if (namedQuery != null) {
 
-			namedQuery  = (NamedQuery) e.getNewValue();
-			queryHelper = namedQuery.getJpaProject().getJpaPlatform().getJpqlQueryHelper();
-
+			// Prevent undoing the actual query that was set
 			sourceViewer.getUndoManager().reset();
+
+			// Make sure the new query is validated
 			validate();
 		}
 		else {
+			queryHelper = null;
 			annotationModel.removeAllAnnotations();
 		}
 	}
@@ -585,6 +563,13 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		}
 
 		try {
+			// The information was disposed but the content might be updated outside of the pane,
+			// like in the editor itself, make sure NamedQuery and the helper are initialized
+			if (queryHelper == null) {
+				namedQuery = query();
+				queryHelper = namedQuery.getPersistenceUnit().createJpqlQueryHelper();
+			}
+
 			String jpqlQuery = styledText.getText();
 			queryHelper.setQuery(query(), jpqlQuery);
 			String parsedJpqlQuery = queryHelper.getParsedJPQLQuery();

@@ -16,7 +16,10 @@ package org.eclipse.jpt.jpa.core.jpql;
 import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationPreferences;
@@ -27,6 +30,7 @@ import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.JPQLQueryProblem;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeProvider;
+import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.spi.IQuery;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -70,6 +74,8 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	protected JpaJpqlQueryHelper(JPQLGrammar jpqlGrammar) {
 		super(jpqlGrammar);
 	}
+
+	protected abstract IMappingBuilder<AttributeMapping> buildMappingBuilder();
 
 	/**
 	 * Calculates the start and end positions by adjusting them to be at the same position within
@@ -161,18 +167,22 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	}
 
 	/**
-	 * Creates
+	 * Creates a new {@link JpaManagedTypeProvider} which will provide access to the application's
+	 * JPA metadata information.
 	 *
-	 * @param query
-	 * @return
+	 * @param jpaProject The JPA project associated with the Eclipse project
+	 * @param persistenceUnit The persistence unit model
+	 * @return A new {@link JpaManagedTypeProvider}
 	 */
-	public abstract JpaManagedTypeProvider buildProvider(NamedQuery query);
+	protected JpaManagedTypeProvider buildProvider(JpaProject jpaProject, PersistenceUnit persistenceUnit) {
+		return new JpaManagedTypeProvider(jpaProject, persistenceUnit, buildMappingBuilder());
+	}
 
-	/**
-	 * Disposes the provider so the application metadata is not kept in memory.
-	 */
-	public void disposeProvider() {
-		managedTypeProvider = null;
+	protected int getValidationPreference(NamedQuery namedQuery) {
+		return JpaValidationPreferences.getProblemSeverityPreference(
+			namedQuery,
+			JpaValidationMessages.JPQL_QUERY_VALIDATION
+		);
 	}
 
 	/**
@@ -185,7 +195,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	public void setQuery(NamedQuery namedQuery, String actualQuery) {
 
 		if (managedTypeProvider == null) {
-			managedTypeProvider = buildProvider(namedQuery);
+			managedTypeProvider = buildProvider(namedQuery.getJpaProject(), namedQuery.getPersistenceUnit());
 		}
 
 		IQuery query = new JpaQuery(managedTypeProvider, namedQuery, actualQuery);
@@ -208,10 +218,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	}
 
 	protected boolean shouldValidate(NamedQuery namedQuery) {
-		return JpaValidationPreferences.getProblemSeverityPreference(
-			namedQuery,
-			JpaValidationMessages.JPQL_QUERY_VALIDATION
-		) == -1;
+		return getValidationPreference(namedQuery) == -1;
 	}
 
 	/**
@@ -254,8 +261,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 			}
 		}
 		finally {
-			// Only dispose the helper, managedTypeProvider should only be disposed
-			// once all queries in the project have been validated
+			// Only dispose the information related to the query
 			dispose();
 		}
 	}

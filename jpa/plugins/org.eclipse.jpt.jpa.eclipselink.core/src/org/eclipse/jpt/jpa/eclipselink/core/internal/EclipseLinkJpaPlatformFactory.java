@@ -21,6 +21,7 @@ import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar1;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -45,7 +46,7 @@ public class EclipseLinkJpaPlatformFactory
 			buildAnnotationProvider(),
 			EclipseLinkJpaPlatformProvider.instance(),
 			buildJpaPlatformVariation(),
-			EclipseLinkJpaJpqlQueryHelper.instance());
+			EclipseLinkJPQLGrammar1.instance());
 	}
 
 	private JpaPlatform.Version buildJpaVersion() {
@@ -108,5 +109,4 @@ public class EclipseLinkJpaPlatformFactory
 			return super.toString() + " EclipseLink version: " + this.getVersion(); //$NON-NLS-1$
 		}
 	}
-
 }

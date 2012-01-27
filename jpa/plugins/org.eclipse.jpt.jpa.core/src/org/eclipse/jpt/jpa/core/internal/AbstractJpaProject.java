@@ -84,7 +84,6 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
-import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -1380,12 +1379,7 @@ public abstract class AbstractJpaProject
 
 	public Iterable<IMessage> getValidationMessages(IReporter reporter) {
 		List<IMessage> messages = new ArrayList<IMessage>();
-		try {
-			this.validate(messages, reporter);
-		}
-		finally {
-			this.disposeValidation(reporter);
-		}
+		this.validate(messages, reporter);
 		return new SnapshotCloneIterable<IMessage>(messages);
 	}
 
@@ -1476,20 +1470,6 @@ public abstract class AbstractJpaProject
 		}
 	}
 
-	/**
-	 * Once validation got executed, this is called to dispose cached information.
-	 */
-	protected void disposeValidation(IReporter reporter) {
-		this.disposeJpqlQueryHelper(reporter);
-	}
-
-	/**
-	 * Disposes the cached information stored in the JPQL query helper.
-	 */
-	protected void disposeJpqlQueryHelper(IReporter reporter) {
-		JpaJpqlQueryHelper helper = getJpaPlatform().getJpqlQueryHelper();
-		helper.disposeProvider();
-	}
 
 	// ********** resource model listener **********
 

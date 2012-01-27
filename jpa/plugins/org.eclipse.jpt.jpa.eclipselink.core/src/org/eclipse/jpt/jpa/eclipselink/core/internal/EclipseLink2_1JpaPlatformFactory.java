@@ -23,6 +23,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionP
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkVersion;
+import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar2_1;
 
 public class EclipseLink2_1JpaPlatformFactory
 	extends EclipseLink2_0JpaPlatformFactory
@@ -34,7 +35,6 @@ public class EclipseLink2_1JpaPlatformFactory
 		super();
 	}
 
-
 	@Override
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
@@ -44,7 +44,7 @@ public class EclipseLink2_1JpaPlatformFactory
 			this.buildAnnotationProvider(),
 			EclipseLink2_1JpaPlatformProvider.instance(),
 			this.buildJpaVariation(),
-			EclipseLink2_1JpaJpqlQueryHelper.instance());
+			EclipseLinkJPQLGrammar2_1.instance());
 	}
 
 	@Override
@@ -85,5 +85,4 @@ public class EclipseLink2_1JpaPlatformFactory
 	}
 
 	public static final AccessType[] ECLIPSELINK_SUPPORTED_ACCESS_TYPES = new AccessType[] {AccessType.FIELD, AccessType.PROPERTY, EclipseLinkAccessType.VIRTUAL};
-
 }

@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal;
 
-import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.AnnotationProvider;
@@ -35,6 +33,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
+import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -55,10 +54,10 @@ public class GenericJpaPlatform
 
 	private final JpaPlatformVariation jpaVariation;
 
-	private final JpaJpqlQueryHelper jpqlQueryHelper;
+	private final JPQLGrammar jpqlGrammar;
 
 
-	public GenericJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, AnnotationProvider annotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation, JpaJpqlQueryHelper jpqlQueryHelper) {
+	public GenericJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, AnnotationProvider annotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation, JPQLGrammar jpqlGrammar) {
 		super();
 		this.id = id;
 		this.jpaVersion = jpaVersion;
@@ -66,7 +65,7 @@ public class GenericJpaPlatform
 		this.annotationProvider = annotationProvider;
 		this.jpaVariation = jpaVariation;
 		this.platformProvider = platformProvider;
-		this.jpqlQueryHelper = jpqlQueryHelper;
+		this.jpqlGrammar = jpqlGrammar;
 	}
 
 
@@ -204,7 +203,7 @@ public class GenericJpaPlatform
 
 	// ********** Hermes integration **********
 
-	public JpaJpqlQueryHelper getJpqlQueryHelper() {
-		return jpqlQueryHelper;
+	public JPQLGrammar getJpqlGrammar() {
+		return jpqlGrammar;
 	}
 }

@@ -10,8 +10,6 @@
 package org.eclipse.jpt.jpa.core;
 
 import java.util.Comparator;
-import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.AnnotationProvider;
@@ -22,6 +20,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
+import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 
 /**
@@ -45,7 +44,7 @@ import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
  * @see JpaPlatformFactory
  * @see JpaPlatformProvider
  *
- * @version 3.1
+ * @version 3.2
  * @since 2.0
  */
 public interface JpaPlatform
@@ -178,11 +177,10 @@ public interface JpaPlatform
 	// ********** Hermes integration **********
 
 	/**
-	 * Return the helper that integrates into the Hermes parser and that provides functionality
-	 * related to JPQL queries (example: content assist, validation).
-	 * @since 3.1
+	 * Return the JPQL grammar that will be used to parse JPQL queries.
+	 * @since 3.2
 	 */
-	JpaJpqlQueryHelper getJpqlQueryHelper();
+	JPQLGrammar getJpqlGrammar();
 
 
 	interface Version {

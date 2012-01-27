@@ -46,6 +46,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
@@ -55,6 +56,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorC
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkConverter;
@@ -153,17 +155,17 @@ public class EclipseLinkPersistenceUnit
 		Property cacheTypeDefaultProperty = getCacheTypeDefaultProperty();
 		return cacheTypeDefaultProperty != null ? cacheTypeDefaultProperty.getValue() : null;
 	}
-	
+
 	public String getDefaultCacheSizePropertyValue() {
 		Property cacheSizeDefaultProperty = getCacheSizeDefaultProperty();
 		return cacheSizeDefaultProperty != null ? cacheSizeDefaultProperty.getValue() : null;
 	}
-	
+
 	public String getDefaultCacheSharedPropertyValue() {
 		Property cacheSharedDefaultProperty = getCacheSharedDefaultProperty();
 		return cacheSharedDefaultProperty != null ? cacheSharedDefaultProperty.getValue() : null;
 	}
-	
+
 	public Logging getLogging() {
 		return this.logging;
 	}
@@ -176,7 +178,7 @@ public class EclipseLinkPersistenceUnit
 	public SchemaGeneration getSchemaGeneration() {
 		return this.schemaGeneration;
 	}
-	
+
 	protected GeneralProperties buildEclipseLinkGeneralProperties() {
 		return new EclipseLinkGeneralProperties(this);
 	}
@@ -489,12 +491,12 @@ public class EclipseLinkPersistenceUnit
 	@Override
 	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
 		super.setSpecifiedSharedCacheMode(specifiedSharedCacheMode);
-		
+
 		if(specifiedSharedCacheMode == SharedCacheMode.NONE) {
 			this.caching.removeDefaultCachingProperties();
 		}
 	}
-	
+
 	@Override
 	protected SharedCacheMode buildDefaultSharedCacheMode() {
 		return SharedCacheMode.DISABLE_SELECTIVE;
@@ -563,6 +565,10 @@ public class EclipseLinkPersistenceUnit
 
 	// ********** validation **********
 
+	public JpaJpqlQueryHelper createJpqlQueryHelper() {
+		return new EclipseLinkJpaJpqlQueryHelper(this.getJpaPlatform().getJpqlGrammar());
+	}
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
@@ -606,7 +612,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected void validateDefaultCachingProperty(Property cachingProperty, List<IMessage> messages) {
-		
+
 		if(this.getSharedCacheMode() == SharedCacheMode.NONE) {
 			if(cachingProperty != null) {
 				messages.add(
@@ -621,7 +627,7 @@ public class EclipseLinkPersistenceUnit
 			}
 		}
 	}
-	
+
 	protected void validateLoggerProperty(Property loggerProperty, List<IMessage> messages) {
 		if ((loggerProperty == null) || (loggerProperty.getValue() == null) ) {
 			return;
@@ -826,7 +832,7 @@ public class EclipseLinkPersistenceUnit
 				}
 		}
 	}
-	
+
 
 	protected ArrayList<Property> getLegacyDescriptorCustomizerProperties() {
 		ArrayList<Property> result = new ArrayList<Property>();
@@ -849,7 +855,7 @@ public class EclipseLinkPersistenceUnit
 	private Property getCacheSizeDefaultProperty() {
 		return this.getProperty(Caching.ECLIPSELINK_CACHE_SIZE_DEFAULT);
 	}
-	
+
 	private Property getCacheSharedDefaultProperty() {
 		return this.getProperty(Caching.ECLIPSELINK_CACHE_SHARED_DEFAULT);
 	}
@@ -871,21 +877,21 @@ public class EclipseLinkPersistenceUnit
 	private Iterable<Property> getEntityCacheSizeProperties() {
 		return this.getEntityPropertiesWithPrefix(Caching.ECLIPSELINK_CACHE_SIZE);
 	}
-	
+
 	/**
 	 * Returns Entity Cache Type Properties, excluding default.
 	 */
 	private Iterable<Property> getEntityCacheTypeProperties() {
 		return this.getEntityPropertiesWithPrefix(Caching.ECLIPSELINK_CACHE_TYPE);
 	}
-	
+
 	/**
 	 * Returns Descriptor Customizer Properties.
 	 */
 	private Iterable<Property> getDescriptorCustomizerProperties() {
 		return this.getEntityPropertiesWithPrefix(Customization.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER);
 	}
-	
+
 	/**
 	 * Returns Entity Properties with the given prefix,
 	 * excluding Entity which name equals "default".
@@ -902,7 +908,7 @@ public class EclipseLinkPersistenceUnit
 	private Property getLoggerProperty() {
 		return this.getProperty(Logging.ECLIPSELINK_LOGGER);
 	}
-	
+
 	private Property getExceptionHandlerProperty() {
 		return this.getProperty(Customization.ECLIPSELINK_EXCEPTION_HANDLER);
 	}
@@ -938,7 +944,7 @@ public class EclipseLinkPersistenceUnit
 				if (dups.size() > 1) {
 					// if duplicate name exists, check the types of the converters with the duplicate name
 					HashMap<Class<? extends JpaNamedContextNode>, ArrayList<EclipseLinkConverter>> convertersByType = this.mapByType(dups);
-					// if more than one types of converters have the same name, 
+					// if more than one types of converters have the same name,
 					// report duplicate error on every converter in the list;
 					if (convertersByType.size() > 1) {
 						String[] parms = new String[] {converterName};
@@ -1004,7 +1010,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	@Override
-	protected void checkForDuplicateGenerators(List<IMessage> messages) {		
+	protected void checkForDuplicateGenerators(List<IMessage> messages) {
 		HashMap<String, ArrayList<Generator>> generatorsByName = this.mapByName(this.getGenerators());
 		for (Map.Entry<String, ArrayList<Generator>> entry : generatorsByName.entrySet()) {
 			String generatorName = entry.getKey();
@@ -1013,7 +1019,7 @@ public class EclipseLinkPersistenceUnit
 				if (dups.size() > 1) {
 					// if duplicate name exists, check the types of the generators with the duplicate name
 					HashMap<Class<? extends JpaNamedContextNode>, ArrayList<Generator>> generatorsByType = this.mapByType(dups);
-					// if more than one types of generators have the same name, 
+					// if more than one types of generators have the same name,
 					// report duplicate error on every generator in the list;
 					if (generatorsByType.size() > 1) {
 						String[] parms = new String[] {generatorName};
@@ -1083,7 +1089,7 @@ public class EclipseLinkPersistenceUnit
 				if (dups.size() > 1) {
 					// if duplicate name exists, check the types of the queries with the duplicate name
 					HashMap<Class<? extends JpaNamedContextNode>, ArrayList<Query>> querisByType = this.mapByType(dups);
-					// if more than one types of queries have the same name, 
+					// if more than one types of queries have the same name,
 					// report duplicate error on every query in the list;
 					if (querisByType.size() > 1) {
 						String[] parms = new String[] {queryName};
@@ -1132,7 +1138,7 @@ public class EclipseLinkPersistenceUnit
 			}
 		}
 	}
-	
+
 	private boolean hasDuplicateQuery(Query query, ArrayList<Query> queries) {
 		boolean isDuplicate = false;
 		for (int i=0; i<queries.size(); i++) {
@@ -1142,9 +1148,9 @@ public class EclipseLinkPersistenceUnit
 		}
 		return isDuplicate;
 	}
-	
+
 	private <N extends JpaNamedContextNode> HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>> mapByType(Iterable<N> nodes) {
-		HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>> map = 	
+		HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>> map =
 				new HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>>();
 		for (N node : nodes) {
 			Class<? extends JpaNamedContextNode> type = node.getType();

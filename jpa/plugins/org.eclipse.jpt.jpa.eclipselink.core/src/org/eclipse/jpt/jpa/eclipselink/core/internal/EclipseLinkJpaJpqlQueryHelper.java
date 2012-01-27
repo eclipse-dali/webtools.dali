@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -13,37 +13,75 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
-
-import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar1;
+import org.eclipse.jpt.jpa.eclipselink.core.jpql.spi.EclipseLinkMappingBuilder;
+import org.eclipse.persistence.jpa.jpql.AbstractContentAssistVisitor;
+import org.eclipse.persistence.jpa.jpql.AbstractGrammarValidator;
+import org.eclipse.persistence.jpa.jpql.AbstractSemanticValidator;
+import org.eclipse.persistence.jpa.jpql.EclipseLinkContentAssistVisitor;
+import org.eclipse.persistence.jpa.jpql.EclipseLinkGrammarValidator;
+import org.eclipse.persistence.jpa.jpql.EclipseLinkJPQLQueryContext;
+import org.eclipse.persistence.jpa.jpql.EclipseLinkSemanticValidator;
+import org.eclipse.persistence.jpa.jpql.JPQLQueryContext;
+import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
+import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 
 /**
- * The EclipseLink 1.0 implementation of {@link JpaJpqlQueryHelper}.
+ * The abstract implementation of {@link JpaJpqlQueryHelper} that supports EclipseLink.
  *
- * @version 2.4
- * @since 2.4
+ * @version 3.2
+ * @since 3.1
  * @author Pascal Filion
  */
-public class EclipseLinkJpaJpqlQueryHelper extends AbstractEclipseLinkJpaJpqlQueryHelper {
-
-	/**
-	 * The singleton instance of this helper.
-	 */
-	private static final JpaJpqlQueryHelper INSTANCE = new EclipseLinkJpaJpqlQueryHelper();
+public class EclipseLinkJpaJpqlQueryHelper extends JpaJpqlQueryHelper {
 
 	/**
 	 * Creates a new <code>EclipseLinkJpaJpqlQueryHelper</code>.
+	 *
+	 * @param jpqlGrammar The grammar that defines how to parse a JPQL query
 	 */
-	private EclipseLinkJpaJpqlQueryHelper() {
-		super(EclipseLinkJPQLGrammar1.instance());
+	public EclipseLinkJpaJpqlQueryHelper(JPQLGrammar jpqlGrammar) {
+		super(jpqlGrammar);
 	}
 
 	/**
-	 * Returns the singleton instance of this helper.
-	 *
-	 * @return The singleton instance of this helper
+	 * {@inheritDoc}
 	 */
-	public static JpaJpqlQueryHelper instance() {
-		return INSTANCE;
+	@Override
+	protected AbstractContentAssistVisitor buildContentAssistVisitor(JPQLQueryContext queryContext) {
+		return new EclipseLinkContentAssistVisitor(queryContext);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected AbstractGrammarValidator buildGrammarValidator(JPQLQueryContext queryContext) {
+		return new EclipseLinkGrammarValidator(queryContext);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected JPQLQueryContext buildJPQLQueryContext(JPQLGrammar jpqlGrammar) {
+		return new EclipseLinkJPQLQueryContext(jpqlGrammar);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected IMappingBuilder<AttributeMapping> buildMappingBuilder() {
+		return new EclipseLinkMappingBuilder();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected AbstractSemanticValidator buildSemanticValidator(JPQLQueryContext queryContext) {
+		return new EclipseLinkSemanticValidator(queryContext);
 	}
 }

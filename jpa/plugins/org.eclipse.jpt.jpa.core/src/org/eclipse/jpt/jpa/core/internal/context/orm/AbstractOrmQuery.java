@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQueryHint;
@@ -199,11 +200,10 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	// ********** validation **********
 
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
+	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validateName(messages);
-		this.validateQuery(messages, reporter);
+		this.validateQuery(queryHelper, messages, reporter);
 	}
 
 	protected void validateName(List<IMessage> messages) {
@@ -220,7 +220,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		}
 	}
 
-	protected void validateQuery(List<IMessage> messages, IReporter reporter) {
+	protected void validateQuery(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		if (StringTools.stringIsEmpty(this.query)){
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -232,11 +232,11 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 				)
 			);
 		} else {
-			this.validateQuery_(messages, reporter);
+			this.validateQuery_(queryHelper, messages, reporter);
 		}
 	}
 
-	protected abstract void validateQuery_(List<IMessage> messages, IReporter reporter);
+	protected abstract void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter);
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.xmlQuery.getValidationTextRange();
@@ -256,7 +256,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 				StringTools.stringsAreEqual(this.getQuery(), query.getQuery()) &&
 				hintsAreIdentical(query.getHints());
 	}
-	
+
 	private boolean hintsAreIdentical(ListIterable<? extends QueryHint> hints) {
 		boolean isIdentical = true;
 		if (this.getHintsSize() != CollectionTools.size(hints)) {

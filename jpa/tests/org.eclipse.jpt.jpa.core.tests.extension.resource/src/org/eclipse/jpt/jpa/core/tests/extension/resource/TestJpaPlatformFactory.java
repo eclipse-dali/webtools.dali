@@ -19,6 +19,7 @@ import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
+import org.eclipse.persistence.jpa.jpql.parser.DefaultJPQLGrammar;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -35,7 +36,6 @@ public class TestJpaPlatformFactory
 		super();
 	}
 
-
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
@@ -44,7 +44,7 @@ public class TestJpaPlatformFactory
 			new JpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance()),
 			TestJpaPlatformProvider.instance(),
 			buildJpaPlatformVariation(),
-			TestJpaJpqlQueryHelper.instance());
+			DefaultJPQLGrammar.instance());
 	}
 
 	private JpaPlatform.Version buildJpaVersion() {

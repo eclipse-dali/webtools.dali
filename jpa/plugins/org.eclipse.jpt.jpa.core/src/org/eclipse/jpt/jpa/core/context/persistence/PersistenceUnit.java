@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
 import org.eclipse.text.edits.DeleteEdit;
@@ -37,8 +38,8 @@ import org.eclipse.text.edits.ReplaceEdit;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 3.0
+ *
+ * @version 3.2
  * @since 2.0
  */
 public interface PersistenceUnit
@@ -66,6 +67,14 @@ public interface PersistenceUnit
 	 * Set the persistence unit's name.
 	 */
 	void setName(String name);
+
+
+	// ********** transaction type **********
+
+	/**
+	 * Creates a new {@link JpaJpqlQueryHelper} that provides functionality related to JPQL queries.
+	 */
+	JpaJpqlQueryHelper createJpqlQueryHelper();
 
 
 	// ********** transaction type **********
@@ -429,8 +438,8 @@ public interface PersistenceUnit
 	Property getProperty(String propertyName);
 
 	/**
-	 * Return all the properties in the persistence unit with the specified 
-	 * name. Return an empty Iterable if the persistence unit does not contain 
+	 * Return all the properties in the persistence unit with the specified
+	 * name. Return an empty Iterable if the persistence unit does not contain
 	 * a property with the specified name.
 	 */
 	Iterable<Property> getPropertiesNamed(String propertyName);
@@ -725,7 +734,7 @@ public interface PersistenceUnit
 	 */
 	boolean validatesAgainstDatabase();
 
-	
+
 	// ********** refactoring **********
 
 	/**
@@ -745,7 +754,7 @@ public interface PersistenceUnit
 	 * The originalType has not yet been renamed, the newName is the new short name.
 	 */
 	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
-	
+
 	/**
 	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
 	 * The originalType has not yet been moved.
@@ -766,14 +775,14 @@ public interface PersistenceUnit
 
 	/**
 	 * Create ReplaceEdits for renaming any references to the originalFile to the newName.
-	 * Return an EmptyIterable if there are not any references.	
+	 * Return an EmptyIterable if there are not any references.
 	 * The originalFile has not yet been renamed, the newName is the new short name.
 	 */
 	Iterable<ReplaceEdit> createRenameMappingFileEdits(IFile originalFile, String newName);
 
 	/**
 	 * Create ReplaceEdits for moving any references to the originalFile to the destination.
-	 * Return an EmptyIterable if there are not any references.	
+	 * Return an EmptyIterable if there are not any references.
 	 * The originalFile has not been moved yet.
 	 */
 	Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath runtineDestination);
@@ -785,8 +794,8 @@ public interface PersistenceUnit
 	Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath runtimeDestination);
 
 	/**
-	 * Return a location relative to the beginning of the persistence.xml for 
-	 * inserting a new mapping-file element. If there are existing mapping files, 
+	 * Return a location relative to the beginning of the persistence.xml for
+	 * inserting a new mapping-file element. If there are existing mapping files,
 	 * the location should be after those. If no existing mapping files then make
 	 * sure the location does not violate the persistence.xml schema.
 	 */

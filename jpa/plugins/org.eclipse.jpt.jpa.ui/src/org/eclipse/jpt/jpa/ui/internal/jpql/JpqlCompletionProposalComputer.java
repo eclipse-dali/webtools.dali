@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -13,8 +13,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
-import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -23,6 +21,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
@@ -39,7 +38,7 @@ import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
 /**
  * The abstract definition of JPQL content assist support.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -78,7 +77,7 @@ abstract class JpqlCompletionProposalComputer<T> {
 	int offset;
 
 	/**
-	 *
+	 * The word before the position of the cursor.
 	 */
 	private String partialWord;
 
@@ -88,8 +87,8 @@ abstract class JpqlCompletionProposalComputer<T> {
 	int position;
 
 	/**
-	 * This helper is responsible to retrieve the possible proposals to complete or to add more
-	 * information to a JPQL based on the position of the cursor.
+	 * This helper contains all the information necessary for retrieving the possible proposals
+	 * required by content assist and to validate JPQL queries.
 	 */
 	JpaJpqlQueryHelper queryHelper;
 
@@ -261,35 +260,38 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 */
 	final List<T> buildProposals(NamedQuery namedQuery, String actualQuery, int offset, int position) {
 
-		this.offset      = offset;
-		this.actualQuery = actualQuery;
-		this.namedQuery  = namedQuery;
-		this.queryHelper = namedQuery.getJpaProject().getJpaPlatform().getJpqlQueryHelper();
-
-		// It's possible the string has literal representation of the escape characters, if required,
-		// convert them into actual escape characters and adjust the position accordingly
-		int[] positions  = { position };
-		this.jpqlQuery   = modifyJpqlQuery(actualQuery, positions);
-		this.position    = positions[0];
-		this.partialWord = partialWord();
-
-		List<T> proposals = new ArrayList<T>();
-
 		try {
+			this.offset      = offset;
+			this.actualQuery = actualQuery;
+			this.namedQuery  = namedQuery;
+
+			// It's possible the string has literal representation of the escape characters, if required,
+			// convert them into actual escape characters and adjust the position accordingly
+			int[] positions  = { position };
+			this.jpqlQuery   = modifyJpqlQuery(actualQuery, positions);
+			this.position    = positions[0];
+			this.partialWord = partialWord();
+
+			// Create the query helper, initialize it and then retrieve the content assist proposals
+			if (this.queryHelper == null) {
+				this.queryHelper = namedQuery.getPersistenceUnit().createJpqlQueryHelper();
+			}
+
 			this.queryHelper.setQuery(namedQuery, jpqlQuery);
 			this.contentAssistProposals = queryHelper.buildContentAssistProposals(positions[0]);
 
 			// Create the proposals for those proposals
+			List<T> proposals = new ArrayList<T>();
 			addAbstractSchemaNames    (proposals);
 			addIdentificationVariables(proposals);
 			addIdentifiers            (proposals);
 			addMappings               (proposals);
+
+			return proposals;
 		}
 		finally {
-			this.queryHelper.dispose();
+			clearInformation();
 		}
-
-		return proposals;
 	}
 
 	final void checkCanceled(IProgressMonitor monitor) throws InterruptedException {
@@ -299,10 +301,10 @@ abstract class JpqlCompletionProposalComputer<T> {
 	}
 
 	/**
-	 * Clears the information used to retrieve the content assist proposals.
+	 * Clears the cached information.
 	 */
 	final void clearInformation() {
-
+		namedQuery  = null;
 		offset      = -1;
 		position    = -1;
 		actualQuery = null;
@@ -411,10 +413,7 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 */
 	public void sessionEnded() {
 
-		if (queryHelper != null) {
-			queryHelper.disposeProvider();
-		}
-
+		queryHelper = null;
 		clearInformation();
 
 		if (imageRegistry != null) {

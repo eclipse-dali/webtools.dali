@@ -9,8 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
-
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
@@ -20,6 +18,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -99,9 +98,8 @@ public class GenericJavaNamedQuery2_0
 	// ********** validation **********
 
 	@Override
-	protected void validateQuery_(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		JpaJpqlQueryHelper helper = getJpaPlatform().getJpqlQueryHelper();
-		helper.validate(this, this.query, this.getQueryAnnotation().getQueryTextRange(astRoot), 1, messages);
+	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		queryHelper.validate(this, this.query, this.getQueryAnnotation().getQueryTextRange(astRoot), 1, messages);
 	}
 
 	@Override

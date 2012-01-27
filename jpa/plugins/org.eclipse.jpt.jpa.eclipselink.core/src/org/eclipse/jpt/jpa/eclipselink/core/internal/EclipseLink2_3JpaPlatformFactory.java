@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkVersion;
-
+import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar2_3;
 
 public class EclipseLink2_3JpaPlatformFactory
 		extends EclipseLink2_0JpaPlatformFactory {
@@ -33,7 +33,6 @@ public class EclipseLink2_3JpaPlatformFactory
 		super();
 	}
 
-
 	@Override
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
@@ -43,7 +42,7 @@ public class EclipseLink2_3JpaPlatformFactory
 			buildAnnotationProvider(),
 			EclipseLink2_3JpaPlatformProvider.instance(),
 			buildJpaVariation(),
-			EclipseLink2_3JpaJpqlQueryHelper.instance());
+			EclipseLinkJPQLGrammar2_3.instance());
 	}
 
 	@Override

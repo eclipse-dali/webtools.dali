@@ -84,6 +84,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
@@ -2248,8 +2249,11 @@ public abstract class AbstractPersistenceUnit
 	 */
 	protected void validateQueries(List<IMessage> messages, IReporter reporter) {
 		this.checkForDuplicateQueries(messages);
+
+		JpaJpqlQueryHelper queryHelper = this.createJpqlQueryHelper();
+
 		for (Query query : this.getQueries()) {
-			this.validate(query, messages, reporter);
+			this.validate(query, queryHelper, messages, reporter);
 		}
 	}
 
@@ -2285,11 +2289,12 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	// TODO bjv isn't it obvious?
-	protected void validate(Query query, List<IMessage> messages, IReporter reporter) {
+	protected void validate(Query query, JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		if (query instanceof OrmQuery) {
-			((OrmQuery) query).validate(messages, reporter);
-		} else {
-			((JavaQuery) query).validate(messages, reporter, null);
+			((OrmQuery) query).validate(queryHelper, messages, reporter);
+		}
+		else {
+			((JavaQuery) query).validate(queryHelper, messages, reporter, null);
 		}
 	}
 
@@ -2316,7 +2321,7 @@ public abstract class AbstractPersistenceUnit
 			}
 		}
 	}
-	
+
 	/**
 	 * Return a map of the type mappings keyed by type mapping name (typically
 	 * the short class name).
