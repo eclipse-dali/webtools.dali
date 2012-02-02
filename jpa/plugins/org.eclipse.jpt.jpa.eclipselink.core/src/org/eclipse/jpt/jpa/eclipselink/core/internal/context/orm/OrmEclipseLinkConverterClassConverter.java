@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
@@ -82,6 +81,13 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 
 	protected void updateConverterResourceType() {
 		this.converterResourceType = this.getConverterJavaResourceType();
+	}
+
+
+	// ********** JDT IType **********
+
+	public IType getConverterJdtType() {
+		return this.getMappingFileRoot().resolveJdtType(this.converterClass);
 	}
 
 
@@ -184,10 +190,6 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	}
 
 	protected abstract TextRange getXmlConverterClassTextRange();
-
-	protected IJavaProject getJavaProject() {
-		return this.getJpaProject().getJavaProject();
-	}
 
 
 	// ********** refactoring **********

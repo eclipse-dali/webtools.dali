@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
@@ -20,6 +21,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.swt.widgets.Composite;
 
@@ -92,7 +94,7 @@ public class EclipseLinkStructConverterComposite extends Pane<EclipseLinkStructC
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<EclipseLinkStructConverter, String>(getSubjectHolder(), EclipseLinkStructConverter.CONVERTER_CLASS_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkStructConverter, String>(getSubjectHolder(), EclipseLinkConverterClassConverter.CONVERTER_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getConverterClass();
@@ -138,6 +140,11 @@ public class EclipseLinkStructConverterComposite extends Pane<EclipseLinkStructC
 			@Override
 			protected char getEnclosingTypeSeparator() {
 				return getSubject().getEnclosingTypeSeparator();
+			}
+
+			@Override
+			protected IType resolveJdtType() {
+				return getSubject().getConverterJdtType();
 			}
 		};
 	}

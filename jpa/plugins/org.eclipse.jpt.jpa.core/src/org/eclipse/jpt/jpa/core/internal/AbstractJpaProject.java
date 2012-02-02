@@ -363,6 +363,7 @@ public abstract class AbstractJpaProject
 		return this.project;
 	}
 
+	@Override
 	public IJavaProject getJavaProject() {
 		return JavaCore.create(this.project);
 	}

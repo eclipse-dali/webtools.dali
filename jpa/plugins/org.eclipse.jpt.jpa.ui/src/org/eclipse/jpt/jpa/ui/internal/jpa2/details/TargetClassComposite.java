@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -70,6 +71,11 @@ public class TargetClassComposite extends ClassChooserComboPane<ElementCollectio
 	@Override
 	protected IJavaProject getJavaProject() {
 		return getSubject().getJpaProject().getJavaProject();
+	}
+
+	@Override
+	protected IType resolveJdtType() {
+		return getSubject().getTargetClassJdtType();
 	}
 
     @Override

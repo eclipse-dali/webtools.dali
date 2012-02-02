@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -314,6 +314,10 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected TypeMapping getResolvedTargetTypeMapping() {
 		PersistentType resolvedTargetType = this.getResolvedTargetType();
 		return (resolvedTargetType == null) ? null : resolvedTargetType.getMapping();
+	}
+
+	public IType getTargetClassJdtType() {
+		return this.getEntityMappings().resolveJdtType(this.getTargetClass());
 	}
 
 
@@ -852,6 +856,10 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected PersistentType getResolvedMapKeyType() {
 		return this.resolvePersistentType(this.getMapKeyClass());
+	}
+
+	public IType getMapKeyClassJdtType() {
+		return this.getEntityMappings().resolveJdtType(this.getMapKeyClass());
 	}
 
 

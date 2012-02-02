@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2006, 2011 Oracle. All rights reserved.
+* Copyright (c) 2006, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -72,7 +73,12 @@ public class TargetEntityComposite
     protected char getEnclosingTypeSeparator() {
     	return getSubject().getTargetEntityEnclosingTypeSeparator();
     }
-    
+
+	@Override
+	protected IType resolveJdtType() {
+		return getSubject().getTargetEntityJdtType();
+	}
+
     @Override
 	protected WritablePropertyValueModel<String> buildTextHolder() {
 		return new PropertyAspectAdapter<RelationshipMapping, String>(this.getSubjectHolder(), RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -112,6 +113,11 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 			@Override
 			protected char getEnclosingTypeSeparator() {
 				return getSubject().getResultClassEnclosingTypeSeparator();
+			}
+
+			@Override
+			protected IType resolveJdtType() {
+				return getSubject().getResultClassJdtType();
 			}
 		};
 	}

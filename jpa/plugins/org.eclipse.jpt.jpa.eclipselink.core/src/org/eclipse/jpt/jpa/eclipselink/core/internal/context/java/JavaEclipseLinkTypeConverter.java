@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -85,6 +87,9 @@ public class JavaEclipseLinkTypeConverter
 		this.firePropertyChanged(FULLY_QUALIFIED_DATA_TYPE_PROPERTY, old, dataType);
 	}
 
+	public IType getDataTypeJdtType() {
+		return JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedDataType());
+	}
 
 	// ********** object type **********
 
@@ -117,11 +122,16 @@ public class JavaEclipseLinkTypeConverter
 	}
 
 
+	public IType getObjectTypeJdtType() {
+		return JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedObjectType());
+	}
+
 	// ********** misc **********
 
 	public Class<EclipseLinkTypeConverter> getType() {
 		return EclipseLinkTypeConverter.class;
 	}
+
 
 	// ********** validation *********
 

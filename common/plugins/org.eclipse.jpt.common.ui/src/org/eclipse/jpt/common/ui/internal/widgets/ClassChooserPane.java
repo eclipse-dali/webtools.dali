@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -157,7 +157,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	protected void hyperLinkSelected() {
-		IType type = getType();
+		IType type = resolveJdtType();
 		if (type != null) {
 			openInEditor(type);	
 		}
@@ -166,18 +166,11 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		}
 	}
 	
-	protected IType getType() {
-		if (getClassName() == null) {
+	protected IType resolveJdtType() {
+		if (this.getClassName() == null) {
 			return null;
 		}
-		IType type = null;
-		try {
-			type = getJavaProject().findType(getClassName().replace('$', '.'));
-		}
-		catch (JavaModelException e) {
-			JptCommonUiPlugin.log(e);
-		}
-		return type;
+		return JDTTools.findType(this.getJavaProject(), this.getClassName().replace('$', '.'));
 	}
 	
 	protected void createType() {
@@ -248,9 +241,8 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 	
 	protected void openInEditor(IType type) {
-		IJavaElement javaElement = type.getParent();
 		try {
-			JavaUI.openInEditor(javaElement, true, true);
+			JavaUI.openInEditor(type, true, true);
 		}
 		catch (JavaModelException e) {
 			JptCommonUiPlugin.log(e);

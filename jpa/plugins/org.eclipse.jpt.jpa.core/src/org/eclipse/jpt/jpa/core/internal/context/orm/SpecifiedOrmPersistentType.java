@@ -276,14 +276,14 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	/**
-	 * Use {@link #getMappingClassName()} instead of {@link #getName()} to
+	 * Use {@link OrmTypeMapping#getClass_()} instead of {@link #getName()} to
 	 * look up the Java resource type because {@link #getName()}
 	 * simply delegates to the existing Java resource persistent type. (In
 	 * which case we wouldn't need to resolve it, would we?) [bug 339560]
 	 * @see #updateJavaPersistentType()
 	 */
 	protected JavaResourceAbstractType resolveJavaResourceType() {
-		return this.getEntityMappings().resolveJavaResourceType(this.getMappingClassName());
+		return this.getEntityMappings().resolveJavaResourceType(this.mapping.getClass_());
 	}
 
 	/**

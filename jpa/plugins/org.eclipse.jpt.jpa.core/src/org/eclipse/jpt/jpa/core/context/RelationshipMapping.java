@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jdt.core.IType;
 
 /**
  * JPA relationship (1:1, 1:m, m:1, m:m) mapping.
@@ -18,7 +20,7 @@ package org.eclipse.jpt.jpa.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.2
  * @since 2.0
  */
 public interface RelationshipMapping
@@ -61,7 +63,14 @@ public interface RelationshipMapping
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getTargetEntityEnclosingTypeSeparator();
-		
+
+	/**
+	 * Return the {@link IType} that is resolved from the target entity name
+	 * or null if none exists.
+	 */
+	IType getTargetEntityJdtType();
+
+
 	// **************** cascade **************************************
 
 	Cascade getCascade();

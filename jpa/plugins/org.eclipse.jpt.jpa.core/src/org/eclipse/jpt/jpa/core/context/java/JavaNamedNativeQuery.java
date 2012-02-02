@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,12 +21,19 @@ import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.2
  * @since 2.0
  */
 public interface JavaNamedNativeQuery
 	extends NamedNativeQuery, JavaQuery
 {
 	NamedNativeQueryAnnotation getQueryAnnotation();
+
+	/**
+	 * If the result class is specified, this will return it fully qualified. If not
+	 * specified, then it will return null
+	 */
+	String getFullyQualifiedResultClass();
+		String FULLY_QUALIFIED_RESULT_CLASS_PROPERTY = "fullyQualifiedResultClass"; //$NON-NLS-1$
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
@@ -337,6 +338,10 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected Entity getResolvedTargetEntity() {
 		return this.getPersistenceUnit().getEntity(this.fullyQualifiedTargetClass);
+	}
+
+	public IType getTargetClassJdtType() {
+		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedTargetClass);
 	}
 
 
@@ -898,6 +903,10 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected Entity getResolvedMapKeyEntity() {
 		return this.getPersistenceUnit().getEntity(this.fullyQualifiedMapKeyClass);
+	}
+
+	public IType getMapKeyClassJdtType() {
+		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedMapKeyClass);
 	}
 
 

@@ -136,6 +136,10 @@ public class GenericOrmIdClassReference
 		return this.getIdClassName() != null;
 	}
 
+	public IType getIdClassJdtType() {
+		return this.getEntityMappings().resolveJdtType(this.getIdClassName());
+	}
+
 
 	// ********** xml id class ref **********
 

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -69,6 +70,10 @@ public class GenericOrmNamedNativeQuery
 
 	public char getResultClassEnclosingTypeSeparator() {
 		return '$';
+	}
+
+	public IType getResultClassJdtType() {
+		return this.getMappingFileRoot().resolveJdtType(this.getResultClass());
 	}
 
 

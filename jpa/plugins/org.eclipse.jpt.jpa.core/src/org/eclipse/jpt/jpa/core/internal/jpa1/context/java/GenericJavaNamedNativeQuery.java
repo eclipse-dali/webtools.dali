@@ -10,7 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -30,6 +32,7 @@ public class GenericJavaNamedNativeQuery
 	implements JavaNamedNativeQuery
 {
 	protected String resultClass;
+	protected String fullyQualifiedResultClass;
 
 	protected String resultSetMapping;
 
@@ -50,6 +53,11 @@ public class GenericJavaNamedNativeQuery
 		this.setResultSetMapping_(this.queryAnnotation.getResultSetMapping());
 	}
 
+	@Override
+	public void update() {
+		super.update();
+		this.setFullyQualifiedResultClass(this.buildFullyQualifiedResultClass());
+	}
 
 	// ********** result class **********
 
@@ -68,8 +76,26 @@ public class GenericJavaNamedNativeQuery
 		this.firePropertyChanged(RESULT_CLASS_PROPERTY, old, resultClass);
 	}
 
+	public String getFullyQualifiedResultClass() {
+		return this.fullyQualifiedResultClass;
+	}
+
+	protected void setFullyQualifiedResultClass(String resultClass) {
+		String old = this.fullyQualifiedResultClass;
+		this.fullyQualifiedResultClass = resultClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_RESULT_CLASS_PROPERTY, old, resultClass);
+	}
+
+	protected String buildFullyQualifiedResultClass() {
+		return this.queryAnnotation.getFullyQualifiedResultClassName();
+	}
+
 	public char getResultClassEnclosingTypeSeparator() {
 		return '.';
+	}
+
+	public IType getResultClassJdtType() {
+		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedResultClass);
 	}
 
 

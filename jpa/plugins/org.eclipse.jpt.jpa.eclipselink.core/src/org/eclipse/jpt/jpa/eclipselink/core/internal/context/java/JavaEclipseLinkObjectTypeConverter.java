@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -107,6 +109,10 @@ public class JavaEclipseLinkObjectTypeConverter
 		this.firePropertyChanged(FULLY_QUALIFIED_DATA_TYPE_PROPERTY, old, dataType);
 	}
 
+	public IType getDataTypeJdtType() {
+		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedDataType);
+	}
+
 
 	// ********** object type **********
 
@@ -136,6 +142,10 @@ public class JavaEclipseLinkObjectTypeConverter
 		String old = this.fullyQualifiedObjectType;
 		this.fullyQualifiedObjectType = objectType;
 		this.firePropertyChanged(FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY, old, objectType);
+	}
+
+	public IType getObjectTypeJdtType() {
+		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedObjectType);
 	}
 
 

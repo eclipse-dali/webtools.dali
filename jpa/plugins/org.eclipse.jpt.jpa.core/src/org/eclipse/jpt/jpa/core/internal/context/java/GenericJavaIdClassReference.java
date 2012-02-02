@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
@@ -99,6 +100,10 @@ public class GenericJavaIdClassReference
 
 	public boolean isSpecified() {
 		return this.idClassName != null;
+	}
+
+	public IType getIdClassJdtType() {
+		return JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedIdClassName());
 	}
 
 

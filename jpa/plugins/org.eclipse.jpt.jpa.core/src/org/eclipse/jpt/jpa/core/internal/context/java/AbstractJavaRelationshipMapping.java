@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -145,12 +146,16 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	}
 
 	public Entity getResolvedTargetEntity() {
-		return (this.fullyQualifiedTargetEntity == null) ? null : this.getPersistenceUnit().getEntity(this.fullyQualifiedTargetEntity);
+		return this.getPersistenceUnit().getEntity(this.fullyQualifiedTargetEntity);
 	}
 
 	// sub-classes like this to be public
 	public PersistentType getResolvedTargetType() {
-		return (this.fullyQualifiedTargetEntity == null) ? null : this.getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetEntity);
+		return this.getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetEntity);
+	}
+
+	public IType getTargetEntityJdtType() {
+		return JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetEntity());
 	}
 
 	public char getTargetEntityEnclosingTypeSeparator() {
