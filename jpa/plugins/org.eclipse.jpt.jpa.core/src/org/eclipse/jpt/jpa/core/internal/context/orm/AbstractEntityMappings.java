@@ -10,7 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IJavaProject;
@@ -95,6 +97,9 @@ public abstract class AbstractEntityMappings
 	protected final ContextListContainer<OrmTableGenerator, XmlTableGenerator> tableGeneratorContainer;
 
 	protected final OrmQueryContainer queryContainer;
+
+	// Lookup of classname to Class to resolve wrapper classes
+	protected static Map<String, Class<?>> PRIMITIVE_WRAPPER_CLASSES = null;
 
 
 	protected AbstractEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
@@ -489,6 +494,10 @@ public abstract class AbstractEntityMappings
 	}
 
 	public IType resolveJdtType(String className) {
+		Class<?> wrapperClass = getPrimitiveWrapperClassForName(className);
+		if (wrapperClass != null) {
+			className = wrapperClass.getName();
+		}
 		return (IType) this.resolveType(JDT_TYPE_LOOKUP_ADAPTER, className);
 	}
 
@@ -496,21 +505,25 @@ public abstract class AbstractEntityMappings
 		if (className == null) {
 			return null;
 		}
-
+	    //No global package defined or the class name is qualified, use the className. 
+		//Otherwise, prepend the global package name.
+		if (this.getPackage() != null && className.indexOf('.') == -1) {
+			className = this.prependGlobalPackage(className);
+		}
 		// static inner class listed in orm.xml will use '$', replace with '.'
 		className = className.replace('$', '.');
 
-		// first try to resolve using only the locally specified name...
-		Object type = adapter.resolveType(this, className);
-		if (type != null) {
-			return type;
-		}
+			return adapter.resolveType(this, className);
+	}
 
-		// ...then try to resolve by prepending the global package name
-		if (this.getPackage() == null) {
-			return null;
-		}
-		return adapter.resolveType(this, this.getPackage() + '.' + className);
+	/**
+	 * preconditions: 
+	 * 		getPackage() is not null
+	 * 		unqualifiedClassName is not qualified (contains no '.')
+	 */
+	protected String prependGlobalPackage(String unqualifiedClassName) {
+		// Format of global package is "foo.bar"
+		return this.getPackage() + '.' + unqualifiedClassName;
 	}
 
 	protected interface TypeLookupAdapter {
@@ -538,6 +551,24 @@ public abstract class AbstractEntityMappings
 				return JDTTools.findType(javaProject, className);
 			}
 		};
+
+	protected static Class<?> getPrimitiveWrapperClassForName(String className) {
+		if (PRIMITIVE_WRAPPER_CLASSES == null) {
+			PRIMITIVE_WRAPPER_CLASSES = new HashMap<String, Class<?>>();
+			PRIMITIVE_WRAPPER_CLASSES.put("Boolean", Boolean.class); //$NON-NLS-1$
+			PRIMITIVE_WRAPPER_CLASSES.put("Byte", Byte.class); //$NON-NLS-1$
+			PRIMITIVE_WRAPPER_CLASSES.put("Character", Character.class); //$NON-NLS-1$
+			PRIMITIVE_WRAPPER_CLASSES.put("Double", Double.class); //$NON-NLS-1$
+			PRIMITIVE_WRAPPER_CLASSES.put("Float", Float.class); //$NON-NLS-1$
+			PRIMITIVE_WRAPPER_CLASSES.put("Integer", Integer.class); //$NON-NLS-1$
+			PRIMITIVE_WRAPPER_CLASSES.put("Long", Long.class); //$NON-NLS-1$
+			PRIMITIVE_WRAPPER_CLASSES.put("Number", Number.class); //$NON-NLS-1$
+			PRIMITIVE_WRAPPER_CLASSES.put("Short", Short.class); //$NON-NLS-1$
+			PRIMITIVE_WRAPPER_CLASSES.put("String", String.class); //$NON-NLS-1$
+        }
+        
+        return (className == null) ? null : PRIMITIVE_WRAPPER_CLASSES.get(className); 
+    }
 
 	/**
 	 * We have to calculate the new persistent type's index.

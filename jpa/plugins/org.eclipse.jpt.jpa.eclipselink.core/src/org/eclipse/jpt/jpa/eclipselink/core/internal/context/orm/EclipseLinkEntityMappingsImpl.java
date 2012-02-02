@@ -107,6 +107,25 @@ public class EclipseLinkEntityMappingsImpl
 		return (XmlEntityMappings) super.getXmlEntityMappings();
 	}
 
+
+	// ********** types **********
+
+	/**
+	 * preconditions: 
+	 * 		getPackage() is not null
+	 * 		unqualifiedClassName is not qualified (contains no '.')
+	 */
+	@Override
+	protected String prependGlobalPackage(String unqualifiedClassName) {
+		// Format of global package is "foo.bar."
+		if (this.getPackage().endsWith(".")) { //$NON-NLS-1$
+			return this.getPackage() + unqualifiedClassName;
+		}
+		// Format of global package is "foo.bar"
+		return super.prependGlobalPackage(unqualifiedClassName);
+	}
+
+
 	// ********** converter container **********
 
 	public OrmEclipseLinkConverterContainer getConverterContainer() {
