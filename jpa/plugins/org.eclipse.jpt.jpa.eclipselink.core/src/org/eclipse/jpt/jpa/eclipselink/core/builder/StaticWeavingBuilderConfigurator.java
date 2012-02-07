@@ -239,7 +239,7 @@ public class StaticWeavingBuilderConfigurator
 		return STATIC_WEAVE_PREFIX + id;
 	}
 	
-	public void setPreference(String id, String staticWeavePreference) {
+	private void setPreference(String id, String staticWeavePreference) {
 		IEclipsePreferences projectPrefs = JptJpaCorePlugin.getProjectPreferences(this.project);
 		
 		this.setPreference_(projectPrefs, id, staticWeavePreference);
@@ -259,7 +259,7 @@ public class StaticWeavingBuilderConfigurator
 	
 	private String getJavaProjectOutputLocation() {
 		try {
-			return getJavaProjectOutputLocationPath().toOSString();
+			return this.getJavaProjectOutputLocationPath().toOSString();
 		}
 		catch (CoreException e) {
 			return "."; 				//$NON-NLS-1$
@@ -270,7 +270,7 @@ public class StaticWeavingBuilderConfigurator
 	 * @return output location path relative to the project
 	 */
 	private IPath getJavaProjectOutputLocationPath()  throws CoreException {
-		IPath outputLocation = getJavaProject().getOutputLocation();
+		IPath outputLocation = this.getJavaProject().getOutputLocation();
     	String projectName = outputLocation.segment(0);
 
     	if(this.project.getName().equals(projectName)) {

@@ -123,25 +123,7 @@
 		</perspectiveExtension>
 		
 	</extension>
-	
-	<extension
-		point="org.eclipse.ui.preferencePages">
-		
-		<page
-			id="org.eclipse.jpt.jpa.ui.jpaPreferences"
-			category="org.eclipse.jpt.jpa.ui.preferences"
-			class="org.eclipse.jpt.jpa.ui.internal.preferences.JpaPreferencesPage"
-			name="%jpaNode"/>
 
-		<page
-			id="org.eclipse.jpt.jpa.eclipselink.ui.eclipselinkProjectPreferences"
-			category="org.eclipse.jpt.jpa.ui.jpaPreferences"
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.weave.EclipselinkPreferencePage"
-			name="%eclipseLinkNode">
-		</page>
-		
-	</extension>
-	
 	<extension
 		point="org.eclipse.ui.propertyPages">
 
