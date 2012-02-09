@@ -56,7 +56,7 @@ public interface JavaResourceAttribute
 	 * This name will not include the type's generic type arguments
 	 * (e.g. "java.util.Collection<java.lang.String>" will only return
 	 * "java.util.Collection").
-	 * @see #typeTypeArgumentNames()
+	 * @see #getTypeTypeArgumentNames()
 	 */
 	String getTypeName();
 		String TYPE_NAME_PROPERTY = "typeName"; //$NON-NLS-1$
