@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
@@ -32,7 +31,6 @@ public class JavaEclipseLinkCustomizer
 	private String specifiedCustomizerClass;
 
 	private String fullyQualifiedCustomizerClass;
-		public static final String FULLY_QUALIFIED_CUSTOMIZER_CLASS_PROPERTY = "fullyQualifiedCustomizerClass"; //$NON-NLS-1$
 
 
 	public JavaEclipseLinkCustomizer(EclipseLinkJavaTypeMapping parent) {
@@ -117,10 +115,6 @@ public class JavaEclipseLinkCustomizer
 		return (annotation == null) ? null : annotation.getFullyQualifiedCustomizerClassName();
 	}
 
-	public IType getCustomizerClassJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedCustomizerClass);
-	}
-
 
 	// ********** customizer annotation **********
 
@@ -170,33 +164,37 @@ public class JavaEclipseLinkCustomizer
 	}
 
 	protected void validateCustomizerClass(List<IMessage> messages,CompilationUnit astRoot) {
-		IJavaProject javaProject = getPersistenceUnit().getJpaProject().getJavaProject();
+		if (this.getFullyQualifiedCustomizerClass() == null) {
+			return;
+		}
+		//if the type cannot be resolved there is no need to perform the following validation,
+		//JDT will note the error in the source
+		IType customizerJdtType =  JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedCustomizerClass());
+		if (customizerJdtType == null) {
+			return;
+		}
+		if (!JDTTools.typeHasPublicZeroArgConstructor(customizerJdtType)) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
+							new String[] {this.getFullyQualifiedCustomizerClass()},
+							this,
+							this.getCustomizerClassTextRange(astRoot)
+					)
+			);
+		} 
 		EclipseLinkCustomizerAnnotation annotation = this.getCustomizerAnnotation();
-		if (annotation != null && annotation.getValue() != null && 
-				//if the type cannot be resolved there is no need to perform the following validation,
-				//JDT will note the error in the source
-				JDTTools.findType(javaProject, annotation.getValue()) != null) {
-			if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, this.getFullyQualifiedCustomizerClass())) {
-				messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
-								new String[] {this.getFullyQualifiedCustomizerClass()},
-								this,
-								this.getCustomizerClassTextRange(astRoot)
-						)
-				);
-			} else if (!annotation.customizerClassImplementsInterface(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME, astRoot)) {
-				messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
-								new String[] {this.getFullyQualifiedCustomizerClass()},
-								this,
-								this.getCustomizerClassTextRange(astRoot)
-						)
-				);
-			} 
+		if (!annotation.customizerClassImplementsInterface(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME, astRoot)) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
+							new String[] {this.getFullyQualifiedCustomizerClass()},
+							this,
+							this.getCustomizerClassTextRange(astRoot)
+					)
+			);
 		}
 	}
 
