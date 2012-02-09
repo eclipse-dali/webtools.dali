@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -94,8 +93,8 @@ public class IdClassComposite
 		}
 
 		@Override
-		protected IType resolveJdtType() {
-			return getSubject().getIdClassJdtType();
+		protected String getFullyQualifiedClassName() {
+			return getSubject().getFullyQualifiedIdClassName();
 		}
 
 		@Override

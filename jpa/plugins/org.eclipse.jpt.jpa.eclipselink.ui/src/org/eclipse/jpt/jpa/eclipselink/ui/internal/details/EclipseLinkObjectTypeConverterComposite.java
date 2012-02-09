@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -167,8 +166,8 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			}
 
 			@Override
-			protected IType resolveJdtType() {
-				return getSubject().getDataTypeJdtType();
+			protected String getFullyQualifiedClassName() {
+				return getSubject().getFullyQualifiedDataType();
 			}
 		};
 	}
@@ -228,8 +227,8 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			}
 
 			@Override
-			protected IType resolveJdtType() {
-				return getSubject().getObjectTypeJdtType();
+			protected String getFullyQualifiedClassName() {
+				return getSubject().getFullyQualifiedObjectType();
 			}
 		};
 	}

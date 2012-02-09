@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -78,8 +77,8 @@ public class EclipseLinkCustomizerComposite extends Pane<EclipseLinkCustomizer>
 		}
 
 		@Override
-		protected IType resolveJdtType() {
-			return getSubject().getCustomizerClassJdtType();
+		protected String getFullyQualifiedClassName() {
+			return getSubject().getFullyQualifiedCustomizerClass();
 		}
 
 		@Override

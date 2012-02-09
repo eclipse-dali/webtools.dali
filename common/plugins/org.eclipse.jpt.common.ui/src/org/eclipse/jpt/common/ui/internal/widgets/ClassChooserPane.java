@@ -167,10 +167,11 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 	
 	protected IType resolveJdtType() {
-		if (this.getClassName() == null) {
+		String className = this.getFullyQualifiedClassName();
+		if (className == null) {
 			return null;
 		}
-		return JDTTools.findType(this.getJavaProject(), this.getClassName().replace('$', '.'));
+		return JDTTools.findType(this.getJavaProject(), className);
 	}
 	
 	protected void createType() {
@@ -329,6 +330,14 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 * @return The class name or <code>null</code> if none is defined
 	 */
 	protected abstract String getClassName();
+
+	/**
+	 * Return the fully qualified class name ('.' qualification)
+	 * Override this method if getClassName() does not return the fully qualified name
+	 */
+	protected String getFullyQualifiedClassName() {
+		return this.getClassName() == null ? null : this.getClassName().replace('$', '.');
+	}
 
 	protected IPackageFragmentRoot getFirstJavaSourceFolder() {
 		Iterator<IPackageFragmentRoot> i = JDTTools.getJavaSourceFolders(getJavaProject()).iterator();

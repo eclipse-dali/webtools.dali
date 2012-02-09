@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -105,8 +104,8 @@ public class OrmJavaClassChooser extends Pane<OrmTypeMapping> {
 			}
 
 			@Override
-			protected IType resolveJdtType() {
-				return super.getSubject().getJdtType();
+			protected String getFullyQualifiedClassName() {
+				return getSubject().getPersistentType().getName();
 			}
 		};
 	}

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -74,14 +73,17 @@ public class TargetEntityComposite
     	return getSubject().getTargetEntityEnclosingTypeSeparator();
     }
 
-	@Override
-	protected IType resolveJdtType() {
-		return getSubject().getTargetEntityJdtType();
-	}
+    @Override
+    protected String getFullyQualifiedClassName() {
+    	return getSubject().getFullyQualifiedTargetEntity();
+    }
 
     @Override
 	protected WritablePropertyValueModel<String> buildTextHolder() {
-		return new PropertyAspectAdapter<RelationshipMapping, String>(this.getSubjectHolder(), RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY) {
+		return new PropertyAspectAdapter<RelationshipMapping, String>(
+			this.getSubjectHolder(),
+			RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY,
+			RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 

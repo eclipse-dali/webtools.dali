@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
@@ -143,8 +142,8 @@ public class EclipseLinkCustomConverterComposite extends Pane<EclipseLinkCustomC
 			}
 
 			@Override
-			protected IType resolveJdtType() {
-				return getSubject().getConverterJdtType();
+			protected String getFullyQualifiedClassName() {
+				return getSubject().getFullyQualifiedConverterClass();
 			}
 		};
 	}

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -116,8 +115,8 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 			}
 
 			@Override
-			protected IType resolveJdtType() {
-				return getSubject().getResultClassJdtType();
+			protected String getFullyQualifiedClassName() {
+				return getSubject().getFullyQualifiedResultClass();
 			}
 		};
 	}

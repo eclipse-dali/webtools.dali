@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -74,13 +73,16 @@ public class TargetClassComposite extends ClassChooserComboPane<ElementCollectio
 	}
 
 	@Override
-	protected IType resolveJdtType() {
-		return getSubject().getTargetClassJdtType();
+	protected String getFullyQualifiedClassName() {
+		return getSubject().getFullyQualifiedTargetClass();
 	}
 
     @Override
 	protected WritablePropertyValueModel<String> buildTextHolder() {
-		return new PropertyAspectAdapter<ElementCollectionMapping2_0, String>(this.getSubjectHolder(), ElementCollectionMapping2_0.SPECIFIED_TARGET_CLASS_PROPERTY) {
+		return new PropertyAspectAdapter<ElementCollectionMapping2_0, String>(
+			this.getSubjectHolder(), 
+			ElementCollectionMapping2_0.SPECIFIED_TARGET_CLASS_PROPERTY,
+			ElementCollectionMapping2_0.DEFAULT_TARGET_CLASS_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 
