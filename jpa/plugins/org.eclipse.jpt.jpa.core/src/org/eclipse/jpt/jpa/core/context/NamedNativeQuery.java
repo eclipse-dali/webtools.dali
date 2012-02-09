@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jdt.core.IType;
-
 /**
  * named native query
  * <p>
@@ -33,17 +31,18 @@ public interface NamedNativeQuery
 		String RESULT_CLASS_PROPERTY = "resultClass"; //$NON-NLS-1$
 
 	/**
+	 * If the result class is specified, this will return it fully qualified. If not
+	 * specified, then it will return null
+	 */
+	String getFullyQualifiedResultClass();
+		String FULLY_QUALIFIED_RESULT_CLASS_PROPERTY = "fullyQualifiedResultClass"; //$NON-NLS-1$
+
+	/**
 	 * Return the character to be used for browsing or
 	 * creating the result class {@link org.eclipse.jdt.core.IType IType}.
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getResultClassEnclosingTypeSeparator();
-
-	/**
-	 * Return the {@link IType} that is resolved from the result class name
-	 * or null if none exists.
-	 */
-	IType getResultClassJdtType();
 
 
 	// ********** result set mapping **********

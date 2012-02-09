@@ -32,13 +32,12 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	implements EclipseLinkConverterClassConverter
 {
 	private String converterClass;
+	private String fullyQualifiedConverterClass;
 
-	protected JavaResourceAbstractType converterResourceType;
 
-
-	public OrmEclipseLinkConverterClassConverter(XmlContextNode parent, X xmlConverter, String converterClass) {
+	public OrmEclipseLinkConverterClassConverter(XmlContextNode parent, X xmlConverter) {
 		super(parent, xmlConverter);
-		this.converterClass = converterClass;
+		this.converterClass = this.getXmlConverterClass();
 	}
 
 
@@ -50,6 +49,11 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 		this.setConverterClass_(this.getXmlConverterClass());
 	}
 
+	@Override
+	public void update() {
+		super.update();
+		this.setFullyQualifiedConverterClass(this.buildFullyQualifiedConverterClass());
+	}
 
 	// ********** converter class **********
 
@@ -68,27 +72,30 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 		this.firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 
+	public String getFullyQualifiedConverterClass() {
+		return this.fullyQualifiedConverterClass;
+	}
+
+	protected void setFullyQualifiedConverterClass(String converterClass) {
+		String old = this.fullyQualifiedConverterClass;
+		this.fullyQualifiedConverterClass = converterClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_CONVERTER_CLASS_PROPERTY, old, converterClass);
+	}
+
+	protected String buildFullyQualifiedConverterClass() {
+		return this.getMappingFileRoot().getFullyQualifiedName(this.converterClass);
+	}
+
 	protected JavaResourceAbstractType getConverterJavaResourceType() {
-		return this.getMappingFileRoot().resolveJavaResourceType(this.converterClass);
+		if (this.fullyQualifiedConverterClass == null) {
+			return null;
+		}
+		return this.getJpaProject().getJavaResourceType(this.fullyQualifiedConverterClass);
 	}
 
 	protected abstract String getXmlConverterClass();
 
 	protected abstract void setXmlConverterClass(String converterClass);
-
-
-	// ********** resource interaction **********
-
-	protected void updateConverterResourceType() {
-		this.converterResourceType = this.getConverterJavaResourceType();
-	}
-
-
-	// ********** JDT IType **********
-
-	public IType getConverterJdtType() {
-		return this.getMappingFileRoot().resolveJdtType(this.converterClass);
-	}
 
 
 	// ********** validation **********
@@ -112,12 +119,13 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 			return;
 		}
 
-		if ( ! this.converterClassExists()) {
+		IType converterJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedConverterClass()); 
+		if (converterJdtType == null) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_EXISTS,
-					new String[] {this.converterClass},
+					new String[] {this.getFullyQualifiedConverterClass()},
 					this,
 					this.getConverterClassTextRange()
 				)
@@ -130,7 +138,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					this.getEclipseLinkConverterInterfaceErrorMessage(),
-					new String[] {this.converterClass},
+					new String[] {this.getFullyQualifiedConverterClass()},
 					this,
 					this.getConverterClassTextRange()
 				)
@@ -146,19 +154,6 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 
 	protected abstract String getEclipseLinkConverterInterfaceErrorMessage();
 
-	protected boolean converterClassExists() {
-		return this.typeExists(this.converterClass) ||
-				this.typeExists(this.getAlternateConverterClass());
-	}
-
-	/**
-	 * Add <code>null</code> check.
-	 */
-	protected boolean typeExists(String typeName) {
-		return (typeName != null) && 
-				(JDTTools.findType(this.getJavaProject(), typeName) != null);
-	}
-
 	/**
 	 * Add <code>null</code> check.
 	 */
@@ -168,21 +163,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	}
 
 	protected boolean converterClassImplementsInterface(String interfaceName) {
-		return this.typeImplementsInterface(this.converterClass, interfaceName) ||
-				this.typeImplementsInterface(this.getAlternateConverterClass(), interfaceName);
-	}
-
-	/**
-	 * If present, append the mapping file package to the converter class and
-	 * return it. Return <code>null</code> if the mapping file package is not
-	 * specified.
-	 */
-	protected String getAlternateConverterClass() {
-		String mappingFilePackage = this.getMappingFileRoot().getPackage();
-		if (StringTools.stringIsEmpty(mappingFilePackage)) {
-			return null;
-		}
-		return mappingFilePackage + '.' + this.converterClass;
+		return this.typeImplementsInterface(this.getFullyQualifiedConverterClass(), interfaceName);
 	}
 
 	protected TextRange getConverterClassTextRange() {
@@ -220,8 +201,8 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	}
 
 	protected boolean isFor(String typeName) {
-		JavaResourceAbstractType converterType = this.getConverterJavaResourceType();
-		return (converterType != null) && converterType.getQualifiedName().equals(typeName);
+		String converterType = this.getFullyQualifiedConverterClass();
+		return (converterType != null) && converterType.equals(typeName);
 	}
 
 	protected boolean isIn(IPackageFragment packageFragment) {

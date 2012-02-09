@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -194,13 +194,13 @@ public interface JpaProject
 	Iterable<String> getTypeMappingAnnotations();
 
 	/**
-	 * Return the Java resource type for the specified type.
+	 * Return the Java resource type for the fully qualified type name.
 	 * Return null if invalid or absent.
 	 */
 	JavaResourceAbstractType getJavaResourceType(String typeName);
 
 	/**
-	 * Return the {@link JavaResourceAbstractType} with the specified type name and kind.
+	 * Return the {@link JavaResourceAbstractType} with the fully qualified type name and kind.
 	 * Return null if invalid or absent or if the kind does not match.
 	 */
 	JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind);

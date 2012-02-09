@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.1
+ * @version 3.2
  * @since 2.3
  */
 public interface CollectionMapping2_0
@@ -51,10 +51,12 @@ public interface CollectionMapping2_0
 	char getMapKeyClassEnclosingTypeSeparator();
 
 	/**
-	 * Return the {@link IType} that is resolved from the map key class name
-	 * or null if none exists.
+	 * If the map key class is specified, this will return it fully qualified.
+	 * If not specified, it returns the default map key class, which is always
+	 * fully qualified.
 	 */
-	IType getMapKeyClassJdtType();
+	String getFullyQualifiedMapKeyClass();
+		String FULLY_QUALIFIED_MAP_KEY_CLASS_PROPERTY = "fullyQualifiedMapKeyClass"; //$NON-NLS-1$
 
 
 	// ********** map key column **********

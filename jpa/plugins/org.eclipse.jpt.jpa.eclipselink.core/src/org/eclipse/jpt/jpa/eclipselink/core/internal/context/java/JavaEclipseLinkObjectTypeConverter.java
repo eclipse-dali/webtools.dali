@@ -12,9 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -39,11 +37,9 @@ public class JavaEclipseLinkObjectTypeConverter
 {
 	private String dataType;
 	private String fullyQualifiedDataType;
-		public static final String FULLY_QUALIFIED_DATA_TYPE_PROPERTY = "fullyQualifiedDataType"; //$NON-NLS-1$
 
 	private String objectType;
 	private String fullyQualifiedObjectType;
-		public static final String FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY = "fullyQualifiedObjectType"; //$NON-NLS-1$
 
 	protected final ContextListContainer<JavaEclipseLinkConversionValue, EclipseLinkConversionValueAnnotation> conversionValueContainer;
 
@@ -109,10 +105,6 @@ public class JavaEclipseLinkObjectTypeConverter
 		this.firePropertyChanged(FULLY_QUALIFIED_DATA_TYPE_PROPERTY, old, dataType);
 	}
 
-	public IType getDataTypeJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedDataType);
-	}
-
 
 	// ********** object type **********
 
@@ -142,10 +134,6 @@ public class JavaEclipseLinkObjectTypeConverter
 		String old = this.fullyQualifiedObjectType;
 		this.fullyQualifiedObjectType = objectType;
 		this.firePropertyChanged(FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY, old, objectType);
-	}
-
-	public IType getObjectTypeJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedObjectType);
 	}
 
 

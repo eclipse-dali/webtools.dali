@@ -82,7 +82,17 @@ public final class JDTTools {
 		}
 	}
 
-	private static boolean typeIsSubType(IJavaProject javaProject, IType potentialSubType, String potentialSuperType) throws JavaModelException {
+	public static boolean typeIsSubType(IJavaProject javaProject, IType potentialSubType, String potentialSuperType) {
+		try {
+			return typeIsSubType_(javaProject, potentialSubType, potentialSuperType);
+		}
+		catch (JavaModelException ex) {
+			JptCommonCorePlugin.log(ex);
+			return false;
+		}
+	}
+
+	private static boolean typeIsSubType_(IJavaProject javaProject, IType potentialSubType, String potentialSuperType) throws JavaModelException {
 		return typeIsSubType(javaProject, potentialSubType, javaProject.findType(potentialSuperType));
 	}
 
@@ -241,7 +251,7 @@ public final class JDTTools {
 		if (typeIsOtherValidBasicType(fullyQualifiedName)) {
 			return true;
 		}
-		if (typeIsSubType(javaProject, type, SERIALIZABLE_CLASS_NAME)) {
+		if (typeIsSubType_(javaProject, type, SERIALIZABLE_CLASS_NAME)) {
 			return true;
 		}
 		if (type.isEnum()) {
@@ -293,26 +303,31 @@ public final class JDTTools {
 	
 	public static boolean classHasPublicZeroArgConstructor(IJavaProject javaProject, String className) {
 		if (javaProject != null && className != null) {
-			boolean hasDefinedConstructor = false;
 			IType type = findType(javaProject, className);
 			if (type != null) {
-				try {
-					for (IMethod method : type.getMethods()) {
-						if (method.isConstructor()) {
-							if ((method.getNumberOfParameters() == 0) && (Flags.isPublic(method.getFlags()))) {
-								return true;
-							}
-							hasDefinedConstructor = true;
-						}
-					}
-					//When there's no defined constructor, the default constructor is in place.
-					if (!hasDefinedConstructor) {
+				return typeHasPublicZeroArgConstructor(type);
+			}
+		}
+		return false;
+	}
+
+	public static boolean typeHasPublicZeroArgConstructor(IType type) {
+		boolean hasDefinedConstructor = false;
+		try {
+			for (IMethod method : type.getMethods()) {
+				if (method.isConstructor()) {
+					if ((method.getNumberOfParameters() == 0) && (Flags.isPublic(method.getFlags()))) {
 						return true;
 					}
-				} catch (JavaModelException ex) {
-					JptCommonCorePlugin.log(ex);
+					hasDefinedConstructor = true;
 				}
 			}
+			//When there's no defined constructor, the default constructor is in place.
+			if (!hasDefinedConstructor) {
+				return true;
+			}
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.log(ex);
 		}
 		return false;
 	}

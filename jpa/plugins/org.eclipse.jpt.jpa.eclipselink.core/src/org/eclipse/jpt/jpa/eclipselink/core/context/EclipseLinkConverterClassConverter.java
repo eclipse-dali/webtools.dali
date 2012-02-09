@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jdt.core.IType;
-
 /**
  * Corresponds to a *ConverterClassConverter resource model object
  * 
@@ -31,9 +29,6 @@ public interface EclipseLinkConverterClassConverter
 		String CONVERTER_CLASS_PROPERTY = "converterClass"; //$NON-NLS-1$
 	void setConverterClass(String converterClass);
 
-	/**
-	 * Return the {@link IType} that is resolved from the converter class name
-	 * or null if none exists.
-	 */
-	IType getConverterJdtType();
+	String getFullyQualifiedConverterClass();	
+		String FULLY_QUALIFIED_CONVERTER_CLASS_PROPERTY = "fullyQualifiedConverterClass"; //$NON-NLS-1$
 }

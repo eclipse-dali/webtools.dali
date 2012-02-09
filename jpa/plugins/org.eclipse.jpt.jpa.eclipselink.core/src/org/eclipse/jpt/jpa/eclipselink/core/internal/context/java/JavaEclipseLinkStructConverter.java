@@ -76,8 +76,7 @@ public class JavaEclipseLinkStructConverter
 	/**
 	 * Since the converter class is a string, it must be fully-qualified.
 	 */
-	@Override
-	protected String getFullyQualifiedConverterClass() {
+	public String getFullyQualifiedConverterClass() {
 		return this.getConverterClass();
 	}
 

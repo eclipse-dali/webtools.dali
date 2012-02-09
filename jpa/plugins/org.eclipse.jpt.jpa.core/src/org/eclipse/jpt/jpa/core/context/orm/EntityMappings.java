@@ -63,10 +63,12 @@ public interface EntityMappings
 	 * file only. The <code>package</code> subelement is overridden if the fully
 	 * qualified class name is specified for a class and the two disagree."
 	 * <p>
+	 * Partial packages are not supported. The package element should only be used
+	 * if a class is not qualified (does not have a '.')
+	 * 
 	 * <strong>NB:</strong> No mention of how to resolve duplicates in the
-	 * "default" package or sub-packages:<ul>
+	 * "default" package:<ul>
 	 * <li><code>Bar</code> (in "default" package) vs. <code>foo.Bar</code>
-	 * <li><code>baz.Bar</code> vs. <code>foo.baz.Bar</code>
 	 * </ul>
 	 * when package is specified as <code>foo</code>.
 	 */
@@ -156,9 +158,8 @@ public interface EntityMappings
 
 	/**
 	 * Return the Java resource type for the specified class name
-	 * found in the JPA project. First look for one with the specified
-	 * name (since it might be fully qualified). If not found, prepend the
-	 * default package name and try again.
+	 * found in the JPA project. Prepend the default package name
+	 * if the class name is not fully qualified (does not contain a '.').
 	 * 
 	 * @see #getPackage()
 	 */
@@ -166,9 +167,8 @@ public interface EntityMappings
 
 	/**
 	 * Return the Java resource type for the specified class name and kind
-	 * found in the JPA project. First look for one with the specified
-	 * name (since it might be fully qualified) and kind. If not found, 
-	 * prepend the default package name and try again.
+	 * found in the JPA project. Prepend the default package name
+	 * if the class name is not fully qualified (does not contain a '.').
 	 * 
 	 * Return null if invalid or absent or if the kind does not match.
 	 * 
@@ -178,9 +178,8 @@ public interface EntityMappings
 
 	/**
 	 * Return the persistent type for the specified class name
-	 * found in the persistence unit. First look for one with the specified
-	 * name (since it might be fully qualified). If not found, prepend the
-	 * default package name and try again.
+	 * found in the persistence unit. Prepend the default package name
+	 * if the class name is not fully qualified (does not contain a '.').
 	 * 
 	 * @see #getPackage()
 	 */
@@ -188,13 +187,21 @@ public interface EntityMappings
 
 	/**
 	 * Return the JDT IType resource type for the specified class name
-	 * found in the Java project. First look for one with the specified
-	 * name (since it might be fully qualified). If not found, prepend the
-	 * default package name and try again.
+	 * found in the Java project. Prepend the default package name
+	 * if the class name is not fully qualified (does not contain a '.').
 	 * 
 	 * @see #getPackage()
 	 */
 	IType resolveJdtType(String className);
+
+	/**
+	 * If the specified class name is not qualified (does not contain a '.')
+	 * then prepend the default package name. Inner classes must
+	 * be specified with a '$' for this to work.
+	 * 
+	 * @see #getPackage()
+	 */
+	String getFullyQualifiedName(String className);
 
 
 	// ********** refactoring **********

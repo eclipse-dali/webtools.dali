@@ -27,8 +27,10 @@ public class OrmEclipseLinkTypeConverter
 	implements EclipseLinkTypeConverter
 {
 	private String dataType;
+	private String fullyQualifiedDataType;
 
 	private String objectType;
+	private String fullyQualifiedObjectType;
 
 
 	public OrmEclipseLinkTypeConverter(XmlContextNode parent, XmlTypeConverter xmlConverter) {
@@ -45,6 +47,13 @@ public class OrmEclipseLinkTypeConverter
 		super.synchronizeWithResourceModel();
 		this.setDataType_(this.xmlConverter.getDataType());
 		this.setObjectType_(this.xmlConverter.getObjectType());
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setFullyQualifiedDataType(this.buildFullyQualifiedDataType());
+		this.setFullyQualifiedObjectType(this.buildFullyQualifiedObjectType());
 	}
 
 
@@ -64,6 +73,19 @@ public class OrmEclipseLinkTypeConverter
 		this.dataType = dataType;
 		this.firePropertyChanged(DATA_TYPE_PROPERTY, old, dataType);
 	}
+	public String getFullyQualifiedDataType() {
+		return this.fullyQualifiedDataType;
+	}
+
+	protected void setFullyQualifiedDataType(String dataType) {
+		String old = this.fullyQualifiedDataType;
+		this.fullyQualifiedDataType = dataType;
+		this.firePropertyChanged(FULLY_QUALIFIED_DATA_TYPE_PROPERTY, old, dataType);
+	}
+
+	protected String buildFullyQualifiedDataType() {
+		return this.getMappingFileRoot().getFullyQualifiedName(this.dataType);
+	}
 
 	protected boolean dataTypeIsFor(String typeName) {
 		return this.typeIsFor(this.getDataTypeJavaResourceType(), typeName);
@@ -74,13 +96,11 @@ public class OrmEclipseLinkTypeConverter
 	}
 
 	protected JavaResourceAbstractType getDataTypeJavaResourceType() {
-		return this.getMappingFileRoot().resolveJavaResourceType(this.dataType);
+		if (this.fullyQualifiedDataType == null) {
+			return null;
+		}
+		return this.getJpaProject().getJavaResourceType(this.fullyQualifiedDataType);
 	}
-
-	public IType getDataTypeJdtType() {
-		return this.getMappingFileRoot().resolveJdtType(this.getDataType());
-	}
-
 
 	// ********** object type **********
 
@@ -99,6 +119,20 @@ public class OrmEclipseLinkTypeConverter
 		this.firePropertyChanged(OBJECT_TYPE_PROPERTY, old, objectType);
 	}
 
+	public String getFullyQualifiedObjectType() {
+		return this.fullyQualifiedObjectType;
+	}
+
+	protected void setFullyQualifiedObjectType(String objectType) {
+		String old = this.fullyQualifiedObjectType;
+		this.fullyQualifiedObjectType = objectType;
+		this.firePropertyChanged(FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY, old, objectType);
+	}
+
+	protected String buildFullyQualifiedObjectType() {
+		return this.getMappingFileRoot().getFullyQualifiedName(this.objectType);
+	}
+
 	protected boolean objectTypeIsFor(String typeName) {
 		return this.typeIsFor(this.getObjectTypeJavaResourceType(), typeName);
 	}
@@ -108,11 +142,10 @@ public class OrmEclipseLinkTypeConverter
 	}
 
 	protected JavaResourceAbstractType getObjectTypeJavaResourceType() {
-		return this.getMappingFileRoot().resolveJavaResourceType(this.objectType);
-	}
-
-	public IType getObjectTypeJdtType() {
-		return this.getMappingFileRoot().resolveJdtType(this.getObjectType());
+		if (this.fullyQualifiedObjectType == null) {
+			return null;
+		}
+		return this.getJpaProject().getJavaResourceType(this.fullyQualifiedObjectType);
 	}
 
 

@@ -10,9 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -92,10 +90,6 @@ public class GenericJavaNamedNativeQuery
 
 	public char getResultClassEnclosingTypeSeparator() {
 		return '.';
-	}
-
-	public IType getResultClassJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedResultClass);
 	}
 
 

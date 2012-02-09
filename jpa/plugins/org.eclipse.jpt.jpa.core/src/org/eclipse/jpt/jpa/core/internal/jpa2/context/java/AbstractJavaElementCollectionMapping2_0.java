@@ -11,8 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
@@ -338,10 +336,6 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected Entity getResolvedTargetEntity() {
 		return this.getPersistenceUnit().getEntity(this.fullyQualifiedTargetClass);
-	}
-
-	public IType getTargetClassJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedTargetClass);
 	}
 
 
@@ -903,10 +897,6 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	protected Entity getResolvedMapKeyEntity() {
 		return this.getPersistenceUnit().getEntity(this.fullyQualifiedMapKeyClass);
-	}
-
-	public IType getMapKeyClassJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedMapKeyClass);
 	}
 
 
@@ -1514,30 +1504,30 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return;
 		}
 
-		IJavaProject javaProject = this.getJpaProject().getJavaProject();
-		if (JDTTools.findType(javaProject, targetClass) != null) {
-			if ( ! JDTTools.typeIsBasic(javaProject, targetClass) && (this.getResolvedTargetEmbeddable() == null)) {
-				if (this.getPersistentAttribute().isVirtual()) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-							new String[] {this.getName(), targetClass},
-							this,
-							this.getTargetClassTextRange(astRoot)
-						)
-					);
-				} else {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-							new String[] {targetClass},
-							this,
-							this.getTargetClassTextRange(astRoot)
-						)
-					);
-				}
+		if (JDTTools.typeIsBasic(this.getJavaProject(), targetClass)) {
+			return;
+		}
+		if (this.getResolvedTargetEmbeddable() == null) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
+						new String[] {this.getName(), targetClass},
+						this,
+						this.getTargetClassTextRange(astRoot)
+					)
+				);
+			} else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
+						new String[] {targetClass},
+						this,
+						this.getTargetClassTextRange(astRoot)
+					)
+				);
 			}
 		}
 	}

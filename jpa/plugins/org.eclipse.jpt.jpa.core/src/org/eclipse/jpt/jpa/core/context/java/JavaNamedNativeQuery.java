@@ -29,11 +29,4 @@ public interface JavaNamedNativeQuery
 {
 	NamedNativeQueryAnnotation getQueryAnnotation();
 
-	/**
-	 * If the result class is specified, this will return it fully qualified. If not
-	 * specified, then it will return null
-	 */
-	String getFullyQualifiedResultClass();
-		String FULLY_QUALIFIED_RESULT_CLASS_PROPERTY = "fullyQualifiedResultClass"; //$NON-NLS-1$
-
 }

@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
@@ -127,6 +126,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 {
 	protected String specifiedTargetClass;
 	protected String defaultTargetClass;
+	protected String fullyQualifiedTargetClass;
 
 	protected FetchType specifiedFetch;
 	protected FetchType defaultFetch;
@@ -150,6 +150,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	protected String specifiedMapKeyClass;
 	protected String defaultMapKeyClass;
+	protected String fullyQualifiedMapKeyClass;
 
 	protected final OrmColumn mapKeyColumn;
 	protected OrmConverter mapKeyConverter;  // map key converter - never null
@@ -233,6 +234,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	public void update() {
 		super.update();
 		this.setDefaultTargetClass(this.buildDefaultTargetClass());
+		this.setFullyQualifiedTargetClass(this.buildFullyQualifiedTargetClass());
 		this.setDefaultFetch(this.buildDefaultFetch());
 		this.orderable.update();
 		this.collectionTable.update();
@@ -245,6 +247,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 		this.setKeyType(this.buildKeyType());
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
+		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
 
 		this.mapKeyColumn.update();
 		this.mapKeyConverter.update();
@@ -253,6 +256,24 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		this.updateDefaultMapKeyJoinColumn();
 	}
 
+
+	// ********** fully-qualified target class **********
+
+	public String getFullyQualifiedTargetClass() {
+		return this.fullyQualifiedTargetClass;
+	}
+
+	protected void setFullyQualifiedTargetClass(String targetClass) {
+		String old = this.fullyQualifiedTargetClass;
+		this.fullyQualifiedTargetClass = targetClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_TARGET_CLASS_PROPERTY, old, targetClass);
+	}
+
+	protected String buildFullyQualifiedTargetClass() {
+		return (this.specifiedTargetClass == null) ?
+				this.defaultTargetClass :
+				this.getEntityMappings().getFullyQualifiedName(this.specifiedTargetClass);
+	}
 
 	// ********** target class **********
 
@@ -298,7 +319,10 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** resolved target type/embeddable/entity **********
 
 	public PersistentType getResolvedTargetType() {
-		return this.resolvePersistentType(this.getTargetClass());
+		if (this.fullyQualifiedTargetClass == null) {
+			return null;
+		}
+		return this.getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetClass);
 	}
 
 	protected Embeddable getResolvedTargetEmbeddable() {
@@ -314,10 +338,6 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected TypeMapping getResolvedTargetTypeMapping() {
 		PersistentType resolvedTargetType = this.getResolvedTargetType();
 		return (resolvedTargetType == null) ? null : resolvedTargetType.getMapping();
-	}
-
-	public IType getTargetClassJdtType() {
-		return this.getEntityMappings().resolveJdtType(this.getTargetClass());
 	}
 
 
@@ -774,6 +794,24 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 
+	// ********** fully-qualified map key class **********
+
+	public String getFullyQualifiedMapKeyClass() {
+		return this.fullyQualifiedMapKeyClass;
+	}
+
+	protected void setFullyQualifiedMapKeyClass(String mapKeyClass) {
+		String old = this.fullyQualifiedMapKeyClass;
+		this.fullyQualifiedMapKeyClass = mapKeyClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected String buildFullyQualifiedMapKeyClass() {
+		return (this.specifiedMapKeyClass == null) ?
+				this.defaultMapKeyClass :
+				this.getEntityMappings().getFullyQualifiedName(this.specifiedMapKeyClass);
+	}
+
 	// ********** map key class **********
 
 	public String getMapKeyClass() {
@@ -855,11 +893,10 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected PersistentType getResolvedMapKeyType() {
-		return this.resolvePersistentType(this.getMapKeyClass());
-	}
-
-	public IType getMapKeyClassJdtType() {
-		return this.getEntityMappings().resolveJdtType(this.getMapKeyClass());
+		if (this.fullyQualifiedMapKeyClass == null) {
+			return null;
+		}
+		return this.getPersistenceUnit().getPersistentType(this.fullyQualifiedMapKeyClass);
 	}
 
 
@@ -1451,36 +1488,36 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			);
 			return;
 		}
-		if ( ! this.targetClassExists()) {
+		if (JDTTools.typeIsBasic(this.getJavaProject(), this.getFullyQualifiedTargetClass())) {
+			return;
+		}
+		IType jdtType = JDTTools.findType(getJavaProject(), this.getFullyQualifiedTargetClass());
+		//If a persistent type exists, but no underlying java class, then 
+		//you will get validation on that persistent type instead of here
+		if (jdtType == null && this.getResolvedTargetType() == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
-					EMPTY_STRING_ARRAY,
+					new String[] {this.getFullyQualifiedTargetClass()},
 					this,
 					this.getTargetClassTextRange()
 				)
 			);
 			return;
 		}
-		IJavaProject javaProject = this.getJpaProject().getJavaProject();
-		if ( ! JDTTools.typeIsBasic(javaProject, this.getTargetClass()) && (this.getResolvedTargetEmbeddable() == null)) {
+		if (this.getResolvedTargetEmbeddable() == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-					new String[] {this.getTargetClass()},
+					new String[] {this.getFullyQualifiedTargetClass()},
 					this,
 					this.getTargetClassTextRange()
 				)
 			);
 		}
 	}
-
-	protected boolean targetClassExists() {
-		return getEntityMappings().resolveJdtType(this.getTargetClass()) != null;
-	}
-
 	protected TextRange getTargetClassTextRange() {
 		return this.getValidationTextRange(this.xmlAttributeMapping.getTargetClassTextRange());
 	}
@@ -1493,7 +1530,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void validateMapKeyClass_(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(getMapKeyClass())) {
+		if (StringTools.stringIsEmpty(this.getMapKeyClass())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -1506,22 +1543,19 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return;
 		}
 
-		if ( ! this.mapKeyClassExists()) {
+		IType mapKeyJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
+		if (mapKeyJdtType == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
-					EMPTY_STRING_ARRAY,
+					new String[] {this.getFullyQualifiedMapKeyClass()},
 					this,
 					this.getMapKeyClassTextRange()
 				)
 			);
 			return;
 		}
-	}
-
-	protected boolean mapKeyClassExists() {
-		return getEntityMappings().resolveJdtType(this.getMapKeyClass()) != null;
 	}
 
 	protected TextRange getMapKeyClassTextRange() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,14 +31,6 @@ public interface JavaCollectionMapping2_0
 	extends CollectionMapping2_0, JavaCollectionMapping, JavaConvertibleKeyMapping2_0
 {
 	JavaAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
-
-	/**
-	 * If the map key class is specified, this will return it fully qualified.
-	 * If not specified, it returns the default map key class, which is always
-	 * fully qualified.
-	 */
-	String getFullyQualifiedMapKeyClass();
-		String FULLY_QUALIFIED_MAP_KEY_CLASS_PROPERTY = "fullyQualifiedMapKeyClass"; //$NON-NLS-1$
 	
 	ListIterable<? extends JavaJoinColumn> getSpecifiedMapKeyJoinColumns();
 	JavaJoinColumn getSpecifiedMapKeyJoinColumn(int index);

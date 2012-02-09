@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -48,6 +47,7 @@ public class GenericOrmIdClassReference
 
 	protected String specifiedIdClassName;
 	protected String defaultIdClassName;
+	protected String fullyQualifiedIdClassName;
 	protected JavaPersistentType idClass;
 
 
@@ -72,7 +72,39 @@ public class GenericOrmIdClassReference
 	public void update() {
 		super.update();
 		this.setDefaultIdClassName(this.buildDefaultIdClassName());
+		this.setFullyQualifiedIdClassName(this.buildFullyQualifiedIdClassName());
+		// update the id class *after* we have the fully qualified name
 		this.updateIdClass();
+	}
+
+
+	// ********** fully-qualified id class name **********
+
+	public String getFullyQualifiedIdClassName() {
+		return this.fullyQualifiedIdClassName;
+	}
+
+	/**
+	 * We clear out {@link #idClass} here because it needs to be rebuilt, the
+	 * fully qualified name has changed. 
+	 */
+	protected void setFullyQualifiedIdClassName(String name) {
+		String old = this.fullyQualifiedIdClassName;
+		this.fullyQualifiedIdClassName = name;
+		if (this.firePropertyChanged(FULLY_QUALIFIED_ID_CLASS_PROPERTY, old, name)) {
+			// clear out the Java id class here, it will be rebuilt during "update"
+			if (this.idClass != null) {
+				this.idClass.dispose();
+				this.setIdClass(null);
+			}
+		}
+	}
+
+	protected String buildFullyQualifiedIdClassName() {
+		return (this.specifiedIdClassName == null) ?
+			//this is the fully qualified java id class name
+			this.defaultIdClassName :
+			this.getEntityMappings().getFullyQualifiedName(this.specifiedIdClassName);
 	}
 
 
@@ -95,21 +127,10 @@ public class GenericOrmIdClassReference
 		}
 	}
 
-	/**
-	 * We clear out {@link #idClass} here because we cannot compare its name
-	 * to the specified name, since it may have been prefixed by the entity
-	 * mappings package.
-	 */
 	protected void setSpecifiedIdClassName_(String name) {
 		String old = this.specifiedIdClassName;
 		this.specifiedIdClassName = name;
-		if (this.firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, old, name)) {
-			// clear out the Java type here, it will be rebuilt during "update"
-			if (this.idClass != null) {
-				this.idClass.dispose();
-				this.setIdClass(null);
-			}
-		}
+		this.firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, old, name);
 	}
 
 	protected String buildSpecifiedIdClassName() {
@@ -134,10 +155,6 @@ public class GenericOrmIdClassReference
 
 	public boolean isSpecified() {
 		return this.getIdClassName() != null;
-	}
-
-	public IType getIdClassJdtType() {
-		return this.getEntityMappings().resolveJdtType(this.getIdClassName());
 	}
 
 
@@ -188,12 +205,13 @@ public class GenericOrmIdClassReference
 	}
 
 	/**
-	 * If the specified ID class name changes during
-	 * <em>sync</em>, the ID class will be cleared out in
-	 * {@link #setSpecifiedIdClassName_(String)}. If we get here and
+	 * If the fully qualified ID class name changes during
+	 * <em>update</em>, the ID class will be cleared out in
+	 * {@link #setFullyQualifiedIdClassName(String)}. If we get here and
 	 * the ID class is still present, we can
-	 * <code>sync</code> it. Of course, it might be still obsolete if the
-	 * entity mappings's package has changed....
+	 * <code>sync</code> it. In some circumstances it will be obsolete
+	 * since the name is changed during <em>update</em> (the id class name and
+	 * the entity mapping's package affect the fully qualified name)
 	 *
 	 * @see #updateIdClass()
 	 */
@@ -207,39 +225,36 @@ public class GenericOrmIdClassReference
 	 * @see #syncIdClass()
 	 */
 	protected void updateIdClass() {
-		JavaResourceType resourceIdClass = this.resolveJavaResourceIdClass();
-		if (resourceIdClass == null) {
+		if (this.fullyQualifiedIdClassName == null) {
 			if (this.idClass != null) {
 				this.idClass.dispose();
 				this.setIdClass(null);
 			}
 		} else {
 			if (this.idClass == null) {
-				this.setIdClass(this.buildIdClass(resourceIdClass));
+				this.setIdClass(this.buildIdClass());
 			} else {
-				if (this.idClass.getJavaResourceType() == resourceIdClass) {
+				if (this.idClass.getName().equals(this.fullyQualifiedIdClassName)) {
 					this.idClass.update();
 				} else {
 					this.idClass.dispose();
-					this.setIdClass(this.buildIdClass(resourceIdClass));
+					this.setIdClass(this.buildIdClass());
 				}
 			}
 		}
 	}
 
-	// TODO I'm not sure we should be go to the entity mappings to resolve
-	// our name if it is taken from the Java ID class reference...
 	protected JavaResourceType resolveJavaResourceIdClass() {
-		String idClassName = this.getIdClassName();
-		if (idClassName == null) {
+		if (this.fullyQualifiedIdClassName == null) {
 			return null;
 		}
-		JavaResourceAbstractType jrat = this.getEntityMappings().resolveJavaResourceType(idClassName);
-		if (jrat == null || jrat.getKind() != Kind.TYPE) {
-			return null;
-		}
-		JavaResourceType jrt = (JavaResourceType) jrat;
-		return jrt.isAnnotatedWith(getJpaProject().getTypeMappingAnnotations()) ? null : jrt;
+		JavaResourceType jrt = (JavaResourceType) this.getJpaProject().getJavaResourceType(this.fullyQualifiedIdClassName, Kind.TYPE);
+		return jrt == null || jrt.isAnnotatedWith(getJpaProject().getTypeMappingAnnotations()) ? null : jrt;
+	}
+
+	protected JavaPersistentType buildIdClass() {
+		JavaResourceType jrt = this.resolveJavaResourceIdClass();
+		return jrt != null ? this.buildIdClass(jrt) : null;
 	}
 
 	protected JavaPersistentType buildIdClass(JavaResourceType resourceIdClass) {
@@ -290,7 +305,7 @@ public class GenericOrmIdClassReference
 	// ********** refactoring **********
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return this.isFor(originalType.getFullyQualifiedName('.')) ?
+		return (this.getXmlIdClassRef() != null) && this.isFor(originalType.getFullyQualifiedName('.')) ?
 				new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalType, newName)) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}
@@ -304,13 +319,13 @@ public class GenericOrmIdClassReference
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return this.isFor(originalType.getFullyQualifiedName('.')) ?
+		return (this.getXmlIdClassRef() != null) && this.isFor(originalType.getFullyQualifiedName('.')) ?
 				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return this.isIn(originalPackage) ?
+		return (this.getXmlIdClassRef() != null) && this.isIn(originalPackage) ?
 				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}
@@ -335,6 +350,32 @@ public class GenericOrmIdClassReference
 	
 	protected void validateIdClass(List<IMessage> messages, IReporter reporter) {
 		if (this.isSpecified()) {
+			if (StringTools.stringIsEmpty(this.getIdClassName())) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY,
+								EMPTY_STRING_ARRAY, 
+								this,
+								this.getValidationTextRange()
+						)
+				);
+				return;
+			} 
+			IType idClassJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedIdClassName());
+			if (idClassJdtType == null) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,
+								new String[] {this.getFullyQualifiedIdClassName()},
+								this,
+								this.getValidationTextRange()
+						)
+				);
+				return;
+			}
+	
 			JavaResourceType jrt = this.getIdClassJavaResourceType();
 			if (jrt != null) {
 
@@ -350,7 +391,7 @@ public class GenericOrmIdClassReference
 							);
 				}
 
-				if (!JDTTools.typeIsSubType(this.getJpaProject().getJavaProject(), jrt.getQualifiedName(), JDTTools.SERIALIZABLE_CLASS_NAME)) {
+				if (!JDTTools.typeIsSubType(this.getJavaProject(), jrt.getQualifiedName(), JDTTools.SERIALIZABLE_CLASS_NAME)) {
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
@@ -385,36 +426,13 @@ public class GenericOrmIdClassReference
 									)
 							);
 				}
-			} else if (StringTools.stringIsEmpty(this.getIdClassName())) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NAME_EMPTY,
-								EMPTY_STRING_ARRAY, 
-								this,
-								this.getValidationTextRange()
-						)
-				);
-			} else if ( ! this.idClassExists()) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,
-								EMPTY_STRING_ARRAY,
-								this,
-								this.getValidationTextRange()
-						)
-				);
 			}
+			
 		}
 	}
 
 	protected JavaResourceType getIdClassJavaResourceType() {
 		return (JavaResourceType) getEntityMappings().resolveJavaResourceType(this.getIdClassName(), Kind.TYPE);
-	}
-
-	protected boolean idClassExists() {
-		return getEntityMappings().resolveJdtType(getIdClassName()) != null;
 	}
 
 	public TextRange getValidationTextRange() {

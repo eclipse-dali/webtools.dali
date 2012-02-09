@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
+ *  Copyright (c) 2010, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -27,9 +27,4 @@ import org.eclipse.jpt.jpa.core.context.IdClassReference;
 public interface JavaIdClassReference
 	extends IdClassReference, JavaJpaContextNode
 {
-	/**
-	 * Return the fully qualified name of the id class, taking into consideration the default value if applicable
-	 */
-	String getFullyQualifiedIdClassName();
-		String FULLY_QUALIFIED_ID_CLASS_PROPERTY = "fullyQualifiedIdClass"; //$NON-NLS-1$
 }

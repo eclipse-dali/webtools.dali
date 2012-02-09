@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 
 /**
@@ -36,16 +35,13 @@ public interface EclipseLinkCustomizer
 
 	String getDefaultCustomizerClass();
 		String DEFAULT_CUSTOMIZER_CLASS_PROPERTY = "defaultCustomizerClass"; //$NON-NLS-1$
+
+	String getFullyQualifiedCustomizerClass();
+		String FULLY_QUALIFIED_CUSTOMIZER_CLASS_PROPERTY = "fullyQualifiedCustomizerClass"; //$NON-NLS-1$
 	
 	/**
 	 * Return the char to be used for browsing or creating the customizer class IType.
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getCustomizerClassEnclosingTypeSeparator();
-
-	/**
-	 * Return the {@link IType} that is resolved from the customizer class name
-	 * or null if none exists.
-	 */
-	IType getCustomizerClassJdtType();
 }

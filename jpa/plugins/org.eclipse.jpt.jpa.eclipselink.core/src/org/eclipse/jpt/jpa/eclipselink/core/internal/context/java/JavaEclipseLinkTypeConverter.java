@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -26,11 +24,9 @@ public class JavaEclipseLinkTypeConverter
 {
 	private String dataType;
 	private String fullyQualifiedDataType;
-		public static final String FULLY_QUALIFIED_DATA_TYPE_PROPERTY = "fullyQualifiedDataType"; //$NON-NLS-1$
 
 	private String objectType;
 	private String fullyQualifiedObjectType;
-		public static final String FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY = "fullyQualifiedObjectType"; //$NON-NLS-1$
 
 
 	public JavaEclipseLinkTypeConverter(JavaJpaContextNode parent, EclipseLinkTypeConverterAnnotation converterAnnotation) {
@@ -87,9 +83,6 @@ public class JavaEclipseLinkTypeConverter
 		this.firePropertyChanged(FULLY_QUALIFIED_DATA_TYPE_PROPERTY, old, dataType);
 	}
 
-	public IType getDataTypeJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedDataType());
-	}
 
 	// ********** object type **********
 
@@ -121,10 +114,6 @@ public class JavaEclipseLinkTypeConverter
 		this.firePropertyChanged(FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY, old, objectType);
 	}
 
-
-	public IType getObjectTypeJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedObjectType());
-	}
 
 	// ********** misc **********
 

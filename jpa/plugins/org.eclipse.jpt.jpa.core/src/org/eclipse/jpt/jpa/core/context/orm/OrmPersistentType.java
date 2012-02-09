@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -172,12 +172,6 @@ public interface OrmPersistentType
 	// ********** misc **********
 
 	boolean contains(int textOffset);
-
-	/**
-	 * This is called by the persistent type's mapping when its class
-	 * (name) changes.
-	 */
-	void mappingClassChanged(String oldClass, String newClass);
 
 	/**
 	 * Return the Java persistent type that is referred to by the

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
@@ -152,10 +151,6 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	// sub-classes like this to be public
 	public PersistentType getResolvedTargetType() {
 		return this.getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetEntity);
-	}
-
-	public IType getTargetEntityJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetEntity());
 	}
 
 	public char getTargetEntityEnclosingTypeSeparator() {
@@ -332,30 +327,33 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 			);
 			return;
 		}
-		IJavaProject javaProject = this.getJpaProject().getJavaProject();
-		if (JDTTools.findType(javaProject, getFullyQualifiedTargetEntity()) != null) {
-			if (this.getResolvedTargetEntity() == null) {
-				if (this.getPersistentAttribute().isVirtual()) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
-							new String[] {this.getName(), this.getFullyQualifiedTargetEntity()},
-							this,
-							this.getValidationTextRange(astRoot)
-						)
-					);
-				} else {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-							new String[] {this.getFullyQualifiedTargetEntity()},
-							this,
-							this.getTargetEntityTextRange(astRoot)
-						)
-					);
-				}
+
+		IType targetEntityJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetEntity());
+		if (targetEntityJdtType == null) {
+			//java compiler will handle this case
+			return;
+		}
+		if (this.getResolvedTargetEntity() == null) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
+						new String[] {this.getName(), this.getFullyQualifiedTargetEntity()},
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			} else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
+						new String[] {this.getFullyQualifiedTargetEntity()},
+						this,
+						this.getTargetEntityTextRange(astRoot)
+					)
+				);
 			}
 		}
 	}

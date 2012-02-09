@@ -24,7 +24,7 @@ public class OrmEclipseLinkStructConverter
 	implements EclipseLinkStructConverter
 {
 	public OrmEclipseLinkStructConverter(XmlContextNode parent, XmlStructConverter xmlConverter) {
-		super(parent, xmlConverter, xmlConverter.getConverter());
+		super(parent, xmlConverter);
 	}
 
 

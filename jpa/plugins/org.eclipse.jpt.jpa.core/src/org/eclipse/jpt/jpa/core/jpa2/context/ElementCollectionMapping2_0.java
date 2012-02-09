@@ -51,17 +51,18 @@ public interface ElementCollectionMapping2_0
 		String DEFAULT_TARGET_CLASS_PROPERTY = "defaultTargetClass"; //$NON-NLS-1$
 
 	/**
+	 * If the target class is specified, this will return it fully qualified. If not
+	 * specified, it returns the default target class, which is always fully qualified
+	 */
+	String getFullyQualifiedTargetClass();
+		String FULLY_QUALIFIED_TARGET_CLASS_PROPERTY = "fullyQualifiedTargetClass"; //$NON-NLS-1$
+
+	/**
 	 * Return the character to be used for browsing or creating the target
 	 * class {@link IType}.
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getTargetClassEnclosingTypeSeparator();
-
-	/**
-	 * Return the {@link IType} that is resolved from the target class name
-	 * or null if none exists.
-	 */
-	IType getTargetClassJdtType();
 
 
 	// ********** collection table **********

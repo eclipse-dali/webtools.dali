@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -30,6 +29,7 @@ public class GenericOrmNamedNativeQuery
 	implements OrmNamedNativeQuery
 {
 	protected String resultClass;
+	protected String fullyQualifiedResultClass;
 
 	protected String resultSetMapping;
 
@@ -48,6 +48,11 @@ public class GenericOrmNamedNativeQuery
 		super.synchronizeWithResourceModel();
 		this.setResultClass_(this.xmlQuery.getResultClass());
 		this.setResultSetMapping_(this.xmlQuery.getResultSetMapping());
+	}
+	@Override
+	public void update() {
+		super.update();
+		this.setFullyQualifiedResultClass(this.buildFullyQualifiedResultClass());
 	}
 
 
@@ -68,12 +73,22 @@ public class GenericOrmNamedNativeQuery
 		this.firePropertyChanged(RESULT_CLASS_PROPERTY, old, resultClass);
 	}
 
-	public char getResultClassEnclosingTypeSeparator() {
-		return '$';
+	public String getFullyQualifiedResultClass() {
+		return this.fullyQualifiedResultClass;
 	}
 
-	public IType getResultClassJdtType() {
-		return this.getMappingFileRoot().resolveJdtType(this.getResultClass());
+	protected void setFullyQualifiedResultClass(String resultClass) {
+		String old = this.fullyQualifiedResultClass;
+		this.fullyQualifiedResultClass = resultClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_RESULT_CLASS_PROPERTY, old, resultClass);
+	}
+
+	protected String buildFullyQualifiedResultClass() {
+		return this.getMappingFileRoot().getFullyQualifiedName(this.resultClass);
+	}
+
+	public char getResultClassEnclosingTypeSeparator() {
+		return '$';
 	}
 
 

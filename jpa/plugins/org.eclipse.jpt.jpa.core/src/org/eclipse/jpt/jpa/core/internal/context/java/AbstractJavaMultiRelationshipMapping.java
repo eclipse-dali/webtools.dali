@@ -11,9 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
@@ -466,10 +464,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	protected Entity getResolvedMapKeyEntity() {
 		return this.getPersistenceUnit().getEntity(this.fullyQualifiedMapKeyClass);
-	}
-
-	public IType getMapKeyClassJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.fullyQualifiedMapKeyClass);
 	}
 
 	// ********** map key class annotation **********

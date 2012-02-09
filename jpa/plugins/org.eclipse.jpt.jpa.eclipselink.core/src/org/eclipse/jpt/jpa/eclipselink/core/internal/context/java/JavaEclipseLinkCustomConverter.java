@@ -28,7 +28,6 @@ public class JavaEclipseLinkCustomConverter
 	implements EclipseLinkCustomConverter
 {
 	private String fullyQualifiedConverterClass;
-		public static final String FULLY_QUALIFIED_CONVERTER_CLASS_PROPERTY = "fullyQualifiedConverterClass"; //$NON-NLS-1$
 
 
 	public JavaEclipseLinkCustomConverter(JavaJpaContextNode parent, EclipseLinkConverterAnnotation converterAnnotation) {
@@ -60,7 +59,6 @@ public class JavaEclipseLinkCustomConverter
 
 	// ********** fully qualified converter class **********
 
-	@Override
 	public String getFullyQualifiedConverterClass() {
 		return this.fullyQualifiedConverterClass;
 	}

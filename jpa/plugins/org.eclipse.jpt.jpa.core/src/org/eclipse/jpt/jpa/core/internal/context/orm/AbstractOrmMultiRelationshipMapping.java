@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -105,6 +106,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	protected String specifiedMapKeyClass;
 	protected String defaultMapKeyClass;
+	protected String fullyQualifiedMapKeyClass;
 
 	protected Type valueType;
 	protected Type keyType;
@@ -173,6 +175,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		this.orderable.update();
 
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
+		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
 
 		this.setValueType(this.buildValueType());
 		this.setKeyType(this.buildKeyType());
@@ -379,6 +382,24 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 
+	// ********** fully-qualified map key class **********
+
+	public String getFullyQualifiedMapKeyClass() {
+		return this.fullyQualifiedMapKeyClass;
+	}
+
+	protected void setFullyQualifiedMapKeyClass(String mapKeyClass) {
+		String old = this.fullyQualifiedMapKeyClass;
+		this.fullyQualifiedMapKeyClass = mapKeyClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected String buildFullyQualifiedMapKeyClass() {
+		return (this.specifiedMapKeyClass == null) ?
+				this.defaultMapKeyClass :
+				this.getEntityMappings().getFullyQualifiedName(this.specifiedMapKeyClass);
+	}
+
 	// ********** map key class **********
 
 	public String getMapKeyClass() {
@@ -460,11 +481,10 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected PersistentType getResolvedMapKeyType() {
-		return this.resolvePersistentType(this.getMapKeyClass());
-	}
-
-	public IType getMapKeyClassJdtType() {
-		return this.getEntityMappings().resolveJdtType(this.getMapKeyClass());
+		if (this.fullyQualifiedMapKeyClass == null) {
+			return null;
+		}
+		return this.getPersistenceUnit().getPersistentType(this.fullyQualifiedMapKeyClass);
 	}
 
 
@@ -993,22 +1013,19 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return;
 		}
 
-		if ( ! this.mapKeyClassExists()) {
+		IType mapKeyJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
+		if (mapKeyJdtType == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
-					EMPTY_STRING_ARRAY,
+					new String[] {this.getFullyQualifiedMapKeyClass()},
 					this,
 					this.getMapKeyClassTextRange()
 				)
 			);
 			return;
 		}
-	}
-
-	protected boolean mapKeyClassExists() {
-		return getEntityMappings().resolveJdtType(this.getMapKeyClass()) != null;
 	}
 
 	protected TextRange getMapKeyClassTextRange() {

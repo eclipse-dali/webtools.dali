@@ -21,7 +21,9 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -494,17 +496,26 @@ public abstract class AbstractEntityMappings
 	}
 
 	public IType resolveJdtType(String className) {
-		Class<?> wrapperClass = getPrimitiveWrapperClassForName(className);
-		if (wrapperClass != null) {
-			className = wrapperClass.getName();
-		}
 		return (IType) this.resolveType(JDT_TYPE_LOOKUP_ADAPTER, className);
 	}
 
-	protected Object resolveType(TypeLookupAdapter adapter, String className) {
-		if (className == null) {
+	/**
+	 * className passed in must have - $ for inner class
+	 * className is qualified or not qualified
+	 * append package if the name is not qualified
+	 */
+	public String getFullyQualifiedName(String className) {
+		if (StringTools.stringIsEmpty(className)) {
 			return null;
 		}
+		if (ClassName.isPrimitive(className)) {
+			return className;
+		}
+		Class<?> wrapperClass = getPrimitiveWrapperClassForName(className);
+		if (wrapperClass != null) {
+			return wrapperClass.getName();
+		}
+
 	    //No global package defined or the class name is qualified, use the className. 
 		//Otherwise, prepend the global package name.
 		if (this.getPackage() != null && className.indexOf('.') == -1) {
@@ -512,8 +523,14 @@ public abstract class AbstractEntityMappings
 		}
 		// static inner class listed in orm.xml will use '$', replace with '.'
 		className = className.replace('$', '.');
+		return className;
+	}
 
-			return adapter.resolveType(this, className);
+	protected Object resolveType(TypeLookupAdapter adapter, String className) {
+		if (className == null) {
+			return null;
+		}
+		return adapter.resolveType(this, this.getFullyQualifiedName(className));
 	}
 
 	/**
@@ -597,7 +614,8 @@ public abstract class AbstractEntityMappings
 	protected String normalizeClassName(String className) {
 		return ((this.package_ != null) &&
 				className.startsWith(this.package_) &&
-				(className.charAt(this.package_.length()) == '.')) ?
+				(className.charAt(this.package_.length()) == '.') &&
+				(className.indexOf('.', this.package_.length() + 1) == -1)) ?
 						className.substring(this.package_.length() + 1) :
 						className;
 	}

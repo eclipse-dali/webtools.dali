@@ -106,9 +106,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	protected void setClass_(String class_) {
 		String old = this.class_;
 		this.class_ = class_;
-		if (this.firePropertyChanged(CLASS_PROPERTY, old, class_)) {
-			this.getPersistentType().mappingClassChanged(old, class_);
-		}
+		this.firePropertyChanged(CLASS_PROPERTY, old, class_);
 	}
 
 
@@ -192,10 +190,6 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	public JavaResourceType getJavaResourceType() {
 		JavaPersistentType javaType = this.getJavaPersistentType();
 		return (javaType == null) ? null : javaType.getJavaResourceType();
-	}
-
-	public IType getJdtType() {
-		return getEntityMappings().resolveJdtType(this.getClass_());
 	}
 
 	protected EntityMappings getEntityMappings() {

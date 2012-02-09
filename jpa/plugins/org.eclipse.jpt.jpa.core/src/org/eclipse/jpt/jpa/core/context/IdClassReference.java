@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 
 /**
@@ -66,6 +65,12 @@ public interface IdClassReference
 	 * applies, this should also return true.
 	 */
 	boolean isSpecified();
+
+	/**
+	 * Return the fully qualified name of the id class, taking into consideration the default value if applicable
+	 */
+	String getFullyQualifiedIdClassName();
+		String FULLY_QUALIFIED_ID_CLASS_PROPERTY = "fullyQualifiedIdClass"; //$NON-NLS-1$
 	
 
 	// ********** id class **********
@@ -89,11 +94,5 @@ public interface IdClassReference
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getIdClassEnclosingTypeSeparator();
-
-	/**
-	 * Return the {@link IType} that is resolved from the id class name
-	 * or null if none exists.
-	 */
-	IType getIdClassJdtType();
 
 }

@@ -19,7 +19,6 @@ import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -91,6 +90,8 @@ public abstract class SpecifiedOrmPersistentType
 {
 	protected OrmTypeMapping mapping;  // never null
 
+	protected String name;
+
 	protected JavaPersistentType javaPersistentType;
 
 	protected AccessType specifiedAccess;
@@ -111,6 +112,7 @@ public abstract class SpecifiedOrmPersistentType
 	protected SpecifiedOrmPersistentType(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent);
 		this.mapping = this.buildMapping(xmlTypeMapping);
+		// 'name' is resolved in the update
 		// 'javaPersistentType' is resolved in the update
 		this.specifiedAccess = this.buildSpecifiedAccess();
 		this.defaultAccess = AccessType.FIELD;  // keep this non-null
@@ -135,6 +137,7 @@ public abstract class SpecifiedOrmPersistentType
 	public void update() {
 		super.update();
 		this.mapping.update();
+		this.setName(this.buildName());
 		this.updateJavaPersistentType();
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.updateNodes(this.getSpecifiedAttributes());
@@ -186,42 +189,38 @@ public abstract class SpecifiedOrmPersistentType
 	// ********** name **********
 
 	public String getName() {
-		return (this.javaPersistentType != null) ?
-				this.javaPersistentType.getName() :
-				this.getMappingClassName();
+		return this.name;
 	}
 
-	protected String getMappingClassName() {
-		return this.convertMappingClassName(this.mapping.getClass_());
+	protected void setName(String name) {
+		String old = this.name;
+		this.name = name;
+		if (this.firePropertyChanged(NAME_PROPERTY, old, name)) {
+			// clear out the Java persistent type here, it will be rebuilt during "update"
+			if (this.javaPersistentType != null) {
+				this.javaPersistentType.dispose();
+				this.setJavaPersistentType(null);
+			}
+		}
+	}
+
+	protected String buildName() {
+		return this.getEntityMappings().getFullyQualifiedName(this.getMappingClassName());		
 	}
 
 	public String getSimpleName(){
 		String className = this.getName();
 		return StringTools.stringIsEmpty(className) ? null : ClassName.getSimpleName(className);
 	}
+//
+//	public String getTypeQualifiedName() {
+//		
+//		this.mapping.getClass()
+//	}
 
-	/**
-	 * We clear out {@link #javaPersistentType} here because we cannot compare its name
-	 * to the mapping's class name, since it may have been prefixed by the entity
-	 * mappings package.
-	 */
-	public void mappingClassChanged(String oldClass, String newClass) {
-		this.firePropertyChanged(NAME_PROPERTY, this.convertMappingClassName(oldClass), this.convertMappingClassName(newClass));
-		// clear out the Java type here, it will be rebuilt during "update"
-		if (this.javaPersistentType != null) {
-			this.javaPersistentType.dispose();
-			this.setJavaPersistentType(null);
-		}
+	protected String getMappingClassName() {
+		return this.mapping.getClass_();
 	}
-
-	/**
-	 * Nested class names are specified with a <code>'$'</code>
-	 * in <code>orm.xml</code>.
-	 */
-	protected String convertMappingClassName(String name) {
-		return (name == null) ? null : name.replace('$', '.');
-	}
-
 
 	// ********** Java persistent type **********
 
@@ -236,12 +235,13 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	/**
-	 * If the persistent type's mapping's class (name) changes during
-	 * <em>sync</em>, the Java persistent type will be cleared out in
-	 * {@link #mappingClassChanged(String, String)}. If we get here and
-	 * the Java persistent type is still present, we can
-	 * <em>sync</em> it. Of course, it might still be obsolete if the
-	 * entity mappings's package has changed....
+	 * If the persistent type's name changes during <em>update</em>, 
+	 * the Java persistent type will be cleared out in
+	 * {@link #setName(String)}. If we get here and
+	 * the Java persistent type is present, we can
+	 * <em>sync</em> it. In some circumstances it will be obsolete
+	 * since the name is changed during update (the mapping class name or
+	 * the entity mapping's package affect the name)
 	 *
 	 * @see #updateJavaPersistentType()
 	 */
@@ -255,46 +255,46 @@ public abstract class SpecifiedOrmPersistentType
 	 * @see #syncJavaPersistentType()
 	 */
 	protected void updateJavaPersistentType() {
-		JavaResourceAbstractType resourceType = this.resolveJavaResourceType();
-		if (resourceType == null) {
+		String name = this.getName();
+		if (name == null) {
 			if (this.javaPersistentType != null) {
 				this.javaPersistentType.dispose();
 				this.setJavaPersistentType(null);
-			}
-		} else {
+			}			
+		}
+		else {
 			if (this.javaPersistentType == null) {
-				this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
-			} else {
-				if (this.javaPersistentType.getJavaResourceType() == resourceType) {
+				this.setJavaPersistentType(this.buildJavaPersistentType());
+			}
+			else {
+				if (this.javaPersistentType.getName().equals(name)) {
 					this.javaPersistentType.update();
 				} else {
 					this.javaPersistentType.dispose();
-					this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
+					this.setJavaPersistentType(this.buildJavaPersistentType());
 				}
 			}
 		}
 	}
 
 	/**
-	 * Use {@link OrmTypeMapping#getClass_()} instead of {@link #getName()} to
-	 * look up the Java resource type because {@link #getName()}
-	 * simply delegates to the existing Java resource persistent type. (In
-	 * which case we wouldn't need to resolve it, would we?) [bug 339560]
+	 * Return null it's an enum; don't build a JavaPersistentType
 	 * @see #updateJavaPersistentType()
 	 */
-	protected JavaResourceAbstractType resolveJavaResourceType() {
-		return this.getEntityMappings().resolveJavaResourceType(this.mapping.getClass_());
+	protected JavaResourceType resolveJavaResourceType() {
+		if (this.name == null) {
+			return null;
+		}
+		return (JavaResourceType) this.getJpaProject().getJavaResourceType(this.name, Kind.TYPE);
 	}
 
-	/**
-	 * Return null it's an enum; don't build a JavaPersistentType
-	 */
-	protected JavaPersistentType buildJavaPersistentType(JavaResourceAbstractType jrat) {
-		return jrat.getKind() == Kind.TYPE ? this.buildJavaPersistentType((JavaResourceType) jrat) : null;
+	protected JavaPersistentType buildJavaPersistentType() {
+		JavaResourceType jrt = this.resolveJavaResourceType();
+		return jrt != null ? this.buildJavaPersistentType(jrt) : null;
 	}
 
-	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrpt) {
-		return this.getJpaFactory().buildJavaPersistentType(this, jrpt);
+	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrt) {
+		return this.getJpaFactory().buildJavaPersistentType(this, jrt);
 	}
 
 
@@ -1334,22 +1334,11 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	public String getDefaultPackage() {
-		return this.getEntityMappings().getPackage();
+		return this.getEntityMappings().getDefaultPersistentTypePackage();
 	}
 
 	public boolean isFor(String typeName) {
-		String name = this.getName();
-		if (name == null) {
-			return false;
-		}
-		if (name.equals(typeName)) {
-			return true;
-		}
-		String defaultPackage = this.getDefaultPackage();
-		if (defaultPackage == null) {
-			return false;
-		}
-		return (defaultPackage + '.' +  name).equals(typeName);
+		return Tools.valuesAreEqual(typeName, this.getName());
 	}
 
 	public boolean isIn(IPackageFragment packageFragment) {
@@ -1357,21 +1346,16 @@ public abstract class SpecifiedOrmPersistentType
 		if (Tools.valuesAreEqual(packageName, packageFragment.getElementName())) {
 			return true;
 		}
-		String defaultPackage = this.getDefaultPackage();
-		if (defaultPackage == null) {
-			return false;
-		}
-		packageName = (packageName == null) ? defaultPackage : defaultPackage + '.' + packageName;
-		return packageName.equals(packageFragment.getElementName());
+		return false;
 	}
 
 	protected String getPackageName() {
-		String className = this.getName();
+		String className = this.getMappingClassName();
 		if (className == null) {
 			return null;
 		}
 		int lastPeriod = className.lastIndexOf('.');
-		return (lastPeriod == -1) ? null : className.substring(0, lastPeriod);
+		return (lastPeriod == -1) ? this.getDefaultPackage() : className.substring(0, lastPeriod);
 	}
 
 	public boolean contains(int textOffset) {

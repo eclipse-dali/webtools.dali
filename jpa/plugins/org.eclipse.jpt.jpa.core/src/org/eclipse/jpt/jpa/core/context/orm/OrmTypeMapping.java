@@ -38,7 +38,7 @@ public interface OrmTypeMapping
 	// ********** class **********
 
 	/**
-	 * <strong>NB:</strong> This may be a partial name to be prefixed by the
+	 * <strong>NB:</strong> This may be an unqualified name to be prefixed by the
 	 * entity mappings's package value.
 	 * 
 	 * @see EntityMappings#getPackage()
@@ -50,12 +50,6 @@ public interface OrmTypeMapping
 	 */
 	void setClass(String class_);
 		String CLASS_PROPERTY = "class"; //$NON-NLS-1$
-
-	/**
-	 * Return the {@link IType} that is resolved from the class name
-	 * or null if none exists.
-	 */
-	IType getJdtType();
 
 
 	// ********** metadata complete **********

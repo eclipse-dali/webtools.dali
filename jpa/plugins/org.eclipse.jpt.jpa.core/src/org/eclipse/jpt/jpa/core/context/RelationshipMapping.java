@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jdt.core.IType;
-
 /**
  * JPA relationship (1:1, 1:m, m:1, m:m) mapping.
  * <p>
@@ -65,10 +63,12 @@ public interface RelationshipMapping
 	char getTargetEntityEnclosingTypeSeparator();
 
 	/**
-	 * Return the {@link IType} that is resolved from the target entity name
-	 * or null if none exists.
+	 * If the target entity is specified, this will return it fully qualified.
+	 * If not specified, it returns the default target entity, which is always
+	 * fully qualified
 	 */
-	IType getTargetEntityJdtType();
+	String getFullyQualifiedTargetEntity();
+		String FULLY_QUALIFIED_TARGET_ENTITY_PROPERTY = "fullyQualifiedTargetEntity"; //$NON-NLS-1$
 
 
 	// **************** cascade **************************************

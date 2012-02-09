@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -76,10 +75,6 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 
 
 	// ********** JDT IType **********
-
-	public IType getConverterJdtType() {
-		return JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedConverterClass());
-	}
 
 	/**
 	 * Add <code>null</code> check.
@@ -169,8 +164,6 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 	protected boolean converterClassImplementsInterface(String interfaceName) {
 		return this.typeImplementsInterface(this.getFullyQualifiedConverterClass(), interfaceName);
 	}
-
-	protected abstract String getFullyQualifiedConverterClass();
 
 	protected TextRange getConverterClassTextRange(CompilationUnit astRoot) {
 		return this.getValidationTextRange(this.getAnnotationConverterClassTextRange(astRoot), astRoot);

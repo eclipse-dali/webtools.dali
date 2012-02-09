@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
@@ -33,11 +32,8 @@ public interface EclipseLinkObjectTypeConverter
 	void setDataType(String dataType);
 		String DATA_TYPE_PROPERTY = "dataType"; //$NON-NLS-1$
 
-	/**
-	 * Return the {@link IType} that is resolved from the data type name
-	 * or null if none exists.
-	 */
-	IType getDataTypeJdtType();	
+	String getFullyQualifiedDataType();	
+		String FULLY_QUALIFIED_DATA_TYPE_PROPERTY = "fullyQualifiedDataType"; //$NON-NLS-1$
 
 
 	// ********** object type **********
@@ -46,11 +42,8 @@ public interface EclipseLinkObjectTypeConverter
 	void setObjectType(String objectType);
 		String OBJECT_TYPE_PROPERTY = "objectType"; //$NON-NLS-1$
 
-	/**
-	 * Return the {@link IType} that is resolved from the object type class name
-	 * or null if none exists.
-	 */
-	IType getObjectTypeJdtType();	
+	String getFullyQualifiedObjectType();	
+		String FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY = "fullyQualifiedObjectType"; //$NON-NLS-1$
 
 
 	// ********** conversion values **********

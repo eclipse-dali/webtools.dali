@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -49,6 +50,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 {
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
+	protected String fullyQualifiedTargetEntity;
 
 	protected final OrmMappingRelationship relationship;
 
@@ -82,11 +84,30 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	public void update() {
 		super.update();
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
+		this.setFullyQualifiedTargetEntity(this.buildFullyQualifiedTargetEntity());
 		this.relationship.update();
 		this.cascade.update();
 		this.setDefaultFetch(this.buildDefaultFetch());
 	}
 
+
+	// ********** fully-qualified target entity **********
+
+	public String getFullyQualifiedTargetEntity() {
+		return this.fullyQualifiedTargetEntity;
+	}
+
+	protected void setFullyQualifiedTargetEntity(String entity) {
+		String old = this.fullyQualifiedTargetEntity;
+		this.fullyQualifiedTargetEntity = entity;
+		this.firePropertyChanged(FULLY_QUALIFIED_TARGET_ENTITY_PROPERTY, old, entity);
+	}
+
+	protected String buildFullyQualifiedTargetEntity() {
+		return (this.specifiedTargetEntity == null) ?
+				this.defaultTargetEntity :
+				this.getEntityMappings().getFullyQualifiedName(this.specifiedTargetEntity);
+	}
 
 	// ********** target entity **********
 
@@ -141,15 +162,14 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	// sub-classes like this to be public
 	public PersistentType getResolvedTargetType() {
-		return this.resolvePersistentType(this.getTargetEntity());
+		if (this.fullyQualifiedTargetEntity == null) {
+			return null;
+		}
+		return getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetEntity);
 	}
 
 	public char getTargetEntityEnclosingTypeSeparator() {
 		return '$';
-	}
-
-	public IType getTargetEntityJdtType() {
-		return this.getEntityMappings().resolveJdtType(this.getTargetEntity());
 	}
 
 
@@ -368,12 +388,15 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 			);
 			return;
 		}
-		if ( ! this.targetEntityExists()) {
+		IType jdtType = JDTTools.findType(getJavaProject(), this.getFullyQualifiedTargetEntity());
+		//If a persistent type exists, but no underlying java class, then 
+		//you will get validation on that persistent type instead of here
+		if (jdtType == null && this.getResolvedTargetType() == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.TARGET_ENTITY_NOT_EXIST,
-					EMPTY_STRING_ARRAY,
+					new String[] {this.getFullyQualifiedTargetEntity()},
 					this,
 					this.getTargetEntityTextRange()
 				)
@@ -385,18 +408,13 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-					new String[] {this.getTargetEntity()},
+					new String[] {this.getFullyQualifiedTargetEntity()},
 					this,
 					this.getTargetEntityTextRange()
 				)
 			);
 		}
 	}
-
-	protected boolean targetEntityExists() {
-		return getEntityMappings().resolveJdtType(this.getTargetEntity()) != null;
-	}
-
 
 	protected TextRange getTargetEntityTextRange() {
 		return this.getValidationTextRange(this.xmlAttributeMapping.getTargetEntityTextRange());

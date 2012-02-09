@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
@@ -41,6 +40,7 @@ public class OrmEclipseLinkCustomizer
 {
 	protected String specifiedCustomizerClass;
 	protected String defaultCustomizerClass;
+	protected String fullyQualifiedCustomizerClass;
 
 
 	public OrmEclipseLinkCustomizer(EclipseLinkOrmTypeMapping parent) {
@@ -61,6 +61,7 @@ public class OrmEclipseLinkCustomizer
 	public void update() {
 		super.update();
 		this.setDefaultCustomizerClass(this.buildDefaultCustomizerClass());
+		this.setFullyQualifiedCustomizerClass(this.buildFullyQualifiedCustomizerClass());
 	}
 
 
@@ -109,8 +110,21 @@ public class OrmEclipseLinkCustomizer
 		return (javaCustomizer == null) ? null : javaCustomizer.getFullyQualifiedCustomizerClass();
 	}
 
-	public IType getCustomizerClassJdtType() {
-		return this.getMappingFileRoot().resolveJdtType(this.getCustomizerClass());
+	public String getFullyQualifiedCustomizerClass() {
+		return this.fullyQualifiedCustomizerClass;
+	}
+
+	protected void setFullyQualifiedCustomizerClass(String customizerClass) {
+		String old = this.fullyQualifiedCustomizerClass;
+		this.fullyQualifiedCustomizerClass = customizerClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_CUSTOMIZER_CLASS_PROPERTY, old, customizerClass);
+	}
+
+	protected String buildFullyQualifiedCustomizerClass() {
+		return (this.specifiedCustomizerClass == null) ?
+			//this is the fully qualified java customizer class name
+			this.defaultCustomizerClass :
+			this.getEntityMappings().getFullyQualifiedName(this.specifiedCustomizerClass);
 	}
 
 
@@ -148,17 +162,10 @@ public class OrmEclipseLinkCustomizer
 	}
 
 	protected JavaResourceAbstractType getResourceCustomizerType() {
-		XmlClassReference customizerClassRef = this.getXmlCustomizerClassRef();
-		if (customizerClassRef == null) {
+		if (this.fullyQualifiedCustomizerClass == null) {
 			return null;
 		}
-
-		String className = customizerClassRef.getClassName();
-		if (className == null) {
-			return null;
-		}
-
-		return this.getEntityMappings().resolveJavaResourceType(className);
+		return this.getJpaProject().getJavaResourceType(this.fullyQualifiedCustomizerClass);
 	}
 
 
@@ -212,7 +219,7 @@ public class OrmEclipseLinkCustomizer
 	// ********** refactoring **********
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return this.isFor(originalType.getFullyQualifiedName('.')) ?
+		return this.getXmlCustomizerClassRef() != null && this.isFor(originalType.getFullyQualifiedName('.')) ?
 				new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName)) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}
@@ -222,13 +229,13 @@ public class OrmEclipseLinkCustomizer
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return this.isFor(originalType.getFullyQualifiedName('.')) ?
+		return this.getXmlCustomizerClassRef() != null && this.isFor(originalType.getFullyQualifiedName('.')) ?
 				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return this.isIn(originalPackage) ?
+		return this.getXmlCustomizerClassRef() != null && this.isIn(originalPackage) ?
 				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}
@@ -247,49 +254,56 @@ public class OrmEclipseLinkCustomizer
 	}
 
 	protected void validateCustomizerClass(List<IMessage> messages) {
-		IJavaProject javaProject = this.getPersistenceUnit().getJpaProject().getJavaProject();
-		if (this.getCustomizerClass() != null) {
-			if (StringTools.stringIsEmpty(this.getCustomizerClass())) {
-				messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_SPECIFIED,
-								EMPTY_STRING_ARRAY,
-								this,
-								this.getValidationTextRange()
-						)
-				);
-			} else if (JDTTools.findType(javaProject, this.getCustomizerClass()) == null) {
-				messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_EXIST,
-								new String[] { this.getCustomizerClass()},
-								this,
-								this.getValidationTextRange()
-						)
-				);
-			} else if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, this.getCustomizerClass())) {
-				messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
-								new String[] {this.getCustomizerClass()},
-								this,
-								this.getValidationTextRange()
-						)
-				);
-			} else if (!JDTTools.typeIsSubType(javaProject, this.getCustomizerClass(), ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
-				messages.add(
-						DefaultEclipseLinkJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
-								new String[] {this.getCustomizerClass()},
-								this,
-								this.getValidationTextRange()
-						)
-				);
-			}
+		if (this.getCustomizerClass() == null) {
+			return;
+		}
+		if (StringTools.stringIsEmpty(this.getCustomizerClass())) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_SPECIFIED,
+							EMPTY_STRING_ARRAY,
+							this,
+							this.getValidationTextRange()
+					)
+			);
+			return;
+		}
+
+		IType customizerJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedCustomizerClass());
+		if (customizerJdtType == null) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_EXIST,
+							new String[] {this.getFullyQualifiedCustomizerClass()},
+							this,
+							this.getValidationTextRange()
+					)
+			);
+			return;
+		}
+		if (!JDTTools.typeHasPublicZeroArgConstructor(customizerJdtType)) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
+							new String[] {this.getFullyQualifiedCustomizerClass()},
+							this,
+							this.getValidationTextRange()
+					)
+			);
+		}
+		if (!JDTTools.typeIsSubType(this.getJavaProject(), customizerJdtType, ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
+							new String[] {this.getFullyQualifiedCustomizerClass()},
+							this,
+							this.getValidationTextRange()
+					)
+			);
 		}
 	}
 
