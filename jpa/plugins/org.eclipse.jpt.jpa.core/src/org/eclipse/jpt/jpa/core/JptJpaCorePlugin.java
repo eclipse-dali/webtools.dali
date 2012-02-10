@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
+import java.util.Hashtable;
 import javax.xml.parsers.SAXParserFactory;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -28,10 +29,10 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.InternalJpaProjectManager;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.platform.JpaPlatformManagerImpl;
 import org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferenceInitializer;
@@ -63,10 +64,15 @@ import org.osgi.util.tracker.ServiceTracker;
  * @version 3.0
  * @since 2.0
  */
+// TODO bjv move to internal package and move all public stuff to adapters etc.
 public class JptJpaCorePlugin
 	extends Plugin
 {
-	private volatile GenericJpaProjectManager jpaProjectManager;
+	/**
+	 * Flag necessary to handle lazy-initialization appropriately.
+	 */
+	private volatile boolean active = false;
+	private final Hashtable<IWorkspace, InternalJpaProjectManager> jpaProjectManagers = new Hashtable<IWorkspace, InternalJpaProjectManager>();
 	private volatile ServiceTracker<?, SAXParserFactory> parserTracker;
 	private static volatile boolean flushPreferences = true;
 
@@ -229,51 +235,28 @@ public class JptJpaCorePlugin
 	
 	// ********** singleton **********
 
-	private static JptJpaCorePlugin INSTANCE;
-
-	/**
-	 * Return the singleton Dali core plug-in.
-	 */
-	public static JptJpaCorePlugin instance() {
-		return INSTANCE;
-	}
+	static JptJpaCorePlugin INSTANCE;
 
 
 	// ********** public static methods **********
 
 	/**
-	 * Return the singular JPA project manager corresponding
-	 * to the current workspace.
+	 * Return the JPA project manager corresponding to the specified workspace.
+	 * <p>
+	 * The preferred way to retrieve the JPA project manager is via the Eclipse
+	 * adapter framework:
+	 * <pre>
+	 * JpaProjectManager manager = (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class)
+	 * </pre>
+	 * @deprecated use <code>workspace.getAdapter(JpaProjectManager.class)</code>
 	 */
-	public static JpaProjectManager getJpaProjectManager() {
-		return INSTANCE.getJpaProjectManager_();
+	@Deprecated
+	public static JpaProjectManager getJpaProjectManager(IWorkspace workspace) {
+		return INSTANCE.getJpaProjectManager_(workspace);
 	}
 
-	/**
-	 * Return the JPA project corresponding to the specified Eclipse project,
-	 * or <code>null</code> if unable to associate the specified project with a
-	 * JPA project.
-	 */
-	public static JpaProject getJpaProject(IProject project) {
-		return getJpaProjectManager().getJpaProject(project);
-	}
-
-	/**
-	 * Return the JPA file corresponding to the specified Eclipse file,
-	 * or <code>null</code> if unable to associate the specified file with a JPA file.
-	 */
-	public static JpaFile getJpaFile(IFile file) {
-		return getJpaProjectManager().getJpaFile(file);
-	}
-
-	/**
-	 * The JPA settings associated with the specified Eclipse project
-	 * have changed in such a way as to require the associated
-	 * JPA project to be completely rebuilt
-	 * (e.g. when the user changes a project's JPA platform).
-	 */
-	public static void rebuildJpaProject(IProject project) {
-		getJpaProjectManager().rebuildJpaProject(project);
+	public static SAXParserFactory getSAXParserFactory() {
+		return INSTANCE.getSAXParserFactory_();
 	}
 
 	/**
@@ -293,11 +276,6 @@ public class JptJpaCorePlugin
 			log(ex);  // problems reading the project metadata - assume facet doesn't exist - return 'false'
 			return false;
 		}
-	}
-	
-	public static JpaFile getJpaFile(IProject project, IPath runtimePath) {
-		IFile xmlFile = JptCommonCorePlugin.getPlatformFile(project, runtimePath);
-		return xmlFile.exists() ? getJpaFile(xmlFile) : null;
 	}
 	
 	/**
@@ -571,7 +549,7 @@ public class JptJpaCorePlugin
 	 * <pre>
 	 *     Resource '/JpaProjectManagerTests' is not open.
 	 * </pre>
-	 * See <code>JptCoreTestsPlugin.start(BundleContext)</code>
+	 * See <code>JptJpaCoreTestsPlugin.start(BundleContext)</code>
 	 */
 	@SuppressWarnings("unused")
 	private static void doNotFlushPreferences() {
@@ -712,20 +690,6 @@ public class JptJpaCorePlugin
 	}
 
 	/**
-	 * Return whether the JPA project manager's Java change listener is active.
-	 */
-	public static boolean javaElementChangeListenerIsActive() {
-		return getJpaProjectManager().javaElementChangeListenerIsActive();
-	}
-
-	/**
-	 * Set whether the JPA project manager's Java change listener is active.
-	 */
-	public static void setJavaElementChangeListenerIsActive(boolean javaElementChangeListenerIsActive) {
-		getJpaProjectManager().setJavaElementChangeListenerIsActive(javaElementChangeListenerIsActive);
-	}
-
-	/**
 	 * Log the specified message.
 	 */
 	public static void log(String msg) {
@@ -743,7 +707,7 @@ public class JptJpaCorePlugin
 	 * Log the specified message and exception or error.
 	 */
 	public static void log(String msg, Throwable throwable) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, msg, throwable));
+		log(new Status(IStatus.ERROR, PLUGIN_ID, msg, throwable));
 	}
 
 	/**
@@ -767,49 +731,66 @@ public class JptJpaCorePlugin
 
 
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public synchronized void start(BundleContext context) throws Exception {
 		super.start(context);
-		// nothing yet...
+		this.active = true;
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public synchronized void stop(BundleContext context) throws Exception {
 		try {
-			if (this.jpaProjectManager != null) {
-				this.jpaProjectManager.stop();
-				this.jpaProjectManager = null;
+			for (InternalJpaProjectManager jpaProjectManager : this.jpaProjectManagers.values()) {
+				jpaProjectManager.stop();
 			}
+			this.jpaProjectManagers.clear();
+
 			if (this.parserTracker != null) {
 				this.parserTracker.close();
 				this.parserTracker = null;
 			}
 		} finally {
+			this.active = false;
 			super.stop(context);
 		}
 	}
 
-	private synchronized GenericJpaProjectManager getJpaProjectManager_() {
-		if (this.jpaProjectManager == null) {
-			this.jpaProjectManager = this.buildJpaProjectManager();
-			this.jpaProjectManager.start();
+
+	// ********** state **********
+
+	/**
+	 * @see #getJpaProjectManager(IWorkspace)
+	 */
+	private synchronized InternalJpaProjectManager getJpaProjectManager_(IWorkspace workspace) {
+		InternalJpaProjectManager jpaProjectManager = this.jpaProjectManagers.get(workspace);
+		if (this.active && (jpaProjectManager == null)) {
+			jpaProjectManager = this.buildJpaProjectManager();
+			jpaProjectManager.start();
+			this.jpaProjectManagers.put(workspace, jpaProjectManager);
 		}
-		return this.jpaProjectManager;
+		return jpaProjectManager;
 	}
 
-	private GenericJpaProjectManager buildJpaProjectManager() {
-		return new GenericJpaProjectManager();
+	private InternalJpaProjectManager buildJpaProjectManager() {
+		return new InternalJpaProjectManager();
 	}
 
-	public synchronized SAXParserFactory getSAXParserFactory() {
-		SAXParserFactory factory = this.getParserTracker().getService();
+	/**
+	 * @see #getSAXParserFactory()
+	 */
+	private SAXParserFactory getSAXParserFactory_() {
+		ServiceTracker<?, SAXParserFactory> tracker = this.getParserTracker();
+		if (tracker == null) {
+			return null;
+		}
+		SAXParserFactory factory = tracker.getService();
 		if (factory != null) {
 			factory.setNamespaceAware(true);
 		}
 		return factory;
 	}
 
-	private ServiceTracker<?, SAXParserFactory> getParserTracker() {
-		if (this.parserTracker == null) {
+	private synchronized ServiceTracker<?, SAXParserFactory> getParserTracker() {
+		if (this.active && (this.parserTracker == null)) {
 			this.parserTracker = this.buildParserTracker();
 			this.parserTracker.open();
 		}
@@ -819,5 +800,4 @@ public class JptJpaCorePlugin
 	private ServiceTracker<?, SAXParserFactory> buildParserTracker() {
 		return new ServiceTracker<Object, SAXParserFactory>(this.getBundle().getBundleContext(), "javax.xml.parsers.SAXParserFactory", null); //$NON-NLS-1$
 	}
-
 }
