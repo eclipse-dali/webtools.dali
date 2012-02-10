@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,7 +65,7 @@ import java.util.NoSuchElementException;
  * @see Collection
  * @see Bag
  * @see SynchronizedBag
- * @see	Collections#synchronizedCollection(Collection)
+ * @see	java.util.Collections#synchronizedCollection(Collection)
  * @see IdentityHashBag
  */
 public class HashBag<E>
@@ -85,14 +85,14 @@ public class HashBag<E>
 	 * The hash table is rehashed when its size exceeds this threshold. (The
 	 * value of this field is <code>(int) (capacity * loadFactor)</code>.)
 	 *
-	 * @serial
+	 * @serial size threshold
 	 */
 	private int threshold;
 
 	/**
 	 * The load factor for the hash table.
 	 *
-	 * @serial
+	 * @serial load factor
 	 */
 	private final float loadFactor;
 
@@ -136,7 +136,7 @@ public class HashBag<E>
 	 * and the default load factor, which is 0.75.
 	 *
 	 * @param initialCapacity the initial capacity
-	 * @throws IllegalArgumentException if the initial capacity is less
+	 * @exception IllegalArgumentException if the initial capacity is less
 	 *     than zero
 	 */
 	public HashBag(int initialCapacity) {
@@ -149,7 +149,7 @@ public class HashBag<E>
 	 *
 	 * @param initialCapacity the initial capacity
 	 * @param loadFactor the load factor
-	 * @throws IllegalArgumentException if the initial capacity is less
+	 * @exception IllegalArgumentException if the initial capacity is less
 	 *     than zero or if the load factor is non-positive
 	 */
 	public HashBag(int initialCapacity, float loadFactor) {
@@ -486,7 +486,9 @@ public class HashBag<E>
 	/**
 	 * Hash table collision list entry.
 	 */
-	private static class Entry<E> implements Bag.Entry<E> {
+	private static class Entry<E>
+		implements Bag.Entry<E>
+	{
 		final int hash;
 		final E object;
 		int count;
@@ -569,8 +571,9 @@ public class HashBag<E>
 	private static final Iterator EMPTY_ITERATOR = new EmptyIterator();
 
 	@SuppressWarnings("rawtypes")
-	private static class EmptyIterator implements Iterator {
-
+	private static class EmptyIterator
+		implements Iterator
+	{
 		EmptyIterator() {
 			super();
 		}
@@ -589,7 +592,9 @@ public class HashBag<E>
 	}
 
 
-	private class HashIterator implements Iterator<E> {
+	private class HashIterator
+		implements Iterator<E>
+	{
 		private int index = HashBag.this.table.length;	// start at the end of the table
 		private Entry<E> nextEntry = null;
 		private int nextEntryCount = 0;
@@ -676,11 +681,12 @@ public class HashBag<E>
 			}
 			throw new ConcurrentModificationException();
 		}
-
 	}
 
 
-	private class EntryIterator implements Iterator<Entry<E>> {
+	private class EntryIterator
+		implements Iterator<Entry<E>>
+	{
 		private int index = HashBag.this.table.length;	// start at the end of the table
 		private Entry<E> nextEntry = null;
 		private Entry<E> lastReturnedEntry = null;
@@ -756,11 +762,12 @@ public class HashBag<E>
 			}
 			throw new ConcurrentModificationException();
 		}
-
 	}
 
 
-	private class UniqueIterator implements Iterator<E> {
+	private class UniqueIterator
+		implements Iterator<E>
+	{
 		private EntryIterator entryIterator = new EntryIterator();
 		
 		UniqueIterator() {
@@ -778,7 +785,6 @@ public class HashBag<E>
 		public void remove() {
 			this.entryIterator.remove();
 		}
-
 	}
 
 
@@ -873,5 +879,4 @@ public class HashBag<E>
 			this.add_(element, elementCount);
 		}
 	}
-
 }

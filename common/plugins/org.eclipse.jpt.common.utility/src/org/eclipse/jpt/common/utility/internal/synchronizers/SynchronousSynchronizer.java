@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.synchronizers;
 
 import java.util.Vector;
-import org.eclipse.jpt.common.utility.Command;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.CompositeException;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SynchronizedObject;
@@ -100,8 +100,7 @@ public class SynchronousSynchronizer
 			case EXECUTING:
 			case REPEAT:
 			case STOPPING:
-			default:
-				throw this.buildIllegalStateException();
+				throw this.buildISE();
 		}
 	}
 
@@ -142,9 +141,8 @@ public class SynchronousSynchronizer
 			case STOPPING:
 				// no further synchronizations are allowed
 				return false;
-			default:
-				throw this.buildIllegalStateException();
 		}
+		throw this.buildISE();
 	}
 
 	/**
@@ -186,7 +184,7 @@ public class SynchronousSynchronizer
 		switch (this.state.getValue()) {
 			case STOPPED:
 			case READY:
-				throw this.buildIllegalStateException();
+				throw this.buildISE();
 			case EXECUTING:
 				// synchronization has finished and there are no outstanding requests for another; return to "ready"
 				this.state.setValue(State.READY);
@@ -199,9 +197,8 @@ public class SynchronousSynchronizer
 				// a client has initiated a "stop"; mark the "stop" complete and perform no more synchronizations
 				this.state.setValue(State.STOPPED);
 				return false;
-			default:
-				throw this.buildIllegalStateException();
 		}
+		throw this.buildISE();
 	}
 
 	/**
@@ -212,7 +209,7 @@ public class SynchronousSynchronizer
 	public synchronized void stop() {
 		switch (this.state.getValue()) {
 			case STOPPED:
-				throw this.buildIllegalStateException();
+				throw this.buildISE();
 			case READY:
 				// simply return to "stopped" state
 				this.state.setValue(State.STOPPED);
@@ -224,9 +221,7 @@ public class SynchronousSynchronizer
 				this.waitUntilStopped();
 				break;
 			case STOPPING:
-				throw this.buildIllegalStateException();
-			default:
-				throw this.buildIllegalStateException();
+				throw this.buildISE();
 		}
 
 		if (this.exceptions.size() > 0) {
@@ -251,7 +246,7 @@ public class SynchronousSynchronizer
 		}
 	}
 
-	private IllegalStateException buildIllegalStateException() {
+	private IllegalStateException buildISE() {
 		return new IllegalStateException("state: " + this.state); //$NON-NLS-1$
 	}
 
@@ -259,5 +254,4 @@ public class SynchronousSynchronizer
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.state);
 	}
-
 }

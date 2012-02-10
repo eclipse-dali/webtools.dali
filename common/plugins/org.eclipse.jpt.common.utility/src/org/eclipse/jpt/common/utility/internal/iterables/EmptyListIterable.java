@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,8 +17,8 @@ import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 /**
  * An <code>EmptyListIterable</code> is just that.
  * Maybe just a touch better-performing than {@link java.util.Collections#EMPTY_LIST}
- * since we don't create a new {@link Iterator} every time {@link #iterator()} is called.
- * (Not sure why they do that....)
+ * since we don't create a new {@link java.util.Iterator} every time
+ * {@link #iterator()} is called. (Not sure why they do that....)
  * 
  * @param <E> the type of elements returned by the list iterable's list iterator
  * 

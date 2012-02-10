@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterators;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -92,7 +93,7 @@ public class CloneListIterator<E>
 	 */
 	protected CloneListIterator(Mutator<E> mutator, Object... array) {
 		super();
-		// build a copy of the list and keep it in synch with original (if the mutator allows changes)
+		// build a copy of the list and keep it in sync with original (if the mutator allows changes)
 		// that way the nested list iterator will maintain some of our state
 		this.listIterator = CollectionTools.list(array).listIterator();
 		this.mutator = mutator;
@@ -252,7 +253,9 @@ public class CloneListIterator<E>
 		void set(int index, T o);
 
 
-		final class ReadOnly<S> implements Mutator<S> {
+		final class ReadOnly<S>
+			implements Mutator<S>, Serializable
+		{
 			@SuppressWarnings("rawtypes")
 			public static final Mutator INSTANCE = new ReadOnly();
 			@SuppressWarnings("unchecked")
@@ -277,7 +280,7 @@ public class CloneListIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "CloneListIterator.Mutator.ReadOnly"; //$NON-NLS-1$
+				return StringTools.buildSingletonToString(this);
 			}
 			private static final long serialVersionUID = 1L;
 			private Object readResolve() {
@@ -285,7 +288,5 @@ public class CloneListIterator<E>
 				return INSTANCE;
 			}
 		}
-
 	}
-
 }

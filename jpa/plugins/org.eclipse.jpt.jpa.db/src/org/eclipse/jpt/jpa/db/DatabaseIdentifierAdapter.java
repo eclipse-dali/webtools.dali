@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db;
+
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * This interface allows clients of the Dali db package to control whether
@@ -33,7 +35,9 @@ public interface DatabaseIdentifierAdapter {
 	 * This adapter simply returns <code>false</code>, which is compatible
 	 * with JPA 1.0.
 	 */
-	final class Default implements DatabaseIdentifierAdapter {
+	final class Default
+		implements DatabaseIdentifierAdapter
+	{
 		public static final DatabaseIdentifierAdapter INSTANCE = new Default();
 		public static DatabaseIdentifierAdapter instance() {
 			return INSTANCE;
@@ -47,7 +51,7 @@ public interface DatabaseIdentifierAdapter {
 		}
 		@Override
 		public String toString() {
-			return this.getClass().getDeclaringClass().getSimpleName() + '.' + this.getClass().getSimpleName();
+			return StringTools.buildSingletonToString(this);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,8 +31,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public final class TriStateCheckBox
-{
+public final class TriStateCheckBox {
 	/**
 	 * A check box button.
 	 */
@@ -42,6 +41,15 @@ public final class TriStateCheckBox
 	 * The current selection state.
 	 */
 	private TriState state;
+
+	/**
+	 * The possible selections.
+	 */
+	enum TriState {
+		CHECKED,
+		PARTIALLY_CHECKED,
+		UNCHECKED
+	}
 
 	/**
 	 * Creates a new <code>TriStateCheckBox</code> with no text.
@@ -181,9 +189,8 @@ public final class TriStateCheckBox
 				return TriState.CHECKED;
 			case CHECKED:
 				return TriState.UNCHECKED;
-			default:
-				throw new IllegalStateException("unknown state: " + this.state);
 		}
+		throw new IllegalStateException("unknown state: " + this.state);
 	}
 
 	/**
@@ -274,14 +281,4 @@ public final class TriStateCheckBox
 				throw new IllegalStateException("unknown state: " + this.state);
 		}
 	}
-
-	/**
-	 * An enum containing the possible selections.
-	 */
-	enum TriState {
-		CHECKED,
-		PARTIALLY_CHECKED,
-		UNCHECKED
-	}
-
 }

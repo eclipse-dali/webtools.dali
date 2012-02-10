@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,7 +65,7 @@ public interface JpaProject2_0
 	/**
 	 * Return the JPA project's generated metamodel Java resource
 	 * top-level types.
-	 * @see org.eclipse.jpt.jpa.core.jpa2.MetamodelSychronizer.Tools.isGeneratedMetamodelTopLevelType(JavaResourceAbstractType, IPackageFragmentRoot)
+	 * @see MetamodelSynchronizer.MetamodelTools#isGeneratedMetamodelTopLevelType(JavaResourceAbstractType, IPackageFragmentRoot)
 	 */
 	Iterable<JavaResourceAbstractType> getGeneratedMetamodelTopLevelTypes();
 
@@ -88,15 +88,14 @@ public interface JpaProject2_0
 	/**
 	 * The settings used to construct a JPA 2.0 project.
 	 */
-	interface Config extends JpaProject.Config {
-
+	interface Config
+		extends JpaProject.Config
+	{
 		/**
 		 * Return the name of the folder that holds the generated Canonical
 		 * Metamodel. Return null if the Canonical Metamodel is not to be
 		 * generated.
 		 */
 		String getMetamodelSourceFolderName();
-
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterators;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -160,7 +161,9 @@ public class CloneIterator<E>
 		void remove(T element);
 
 
-		final class ReadOnly<S> implements Remover<S> {
+		final class ReadOnly<S>
+			implements Remover<S>, Serializable
+		{
 			@SuppressWarnings("rawtypes")
 			public static final Remover INSTANCE = new ReadOnly();
 			@SuppressWarnings("unchecked")
@@ -177,7 +180,7 @@ public class CloneIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "CloneIterator.Remover.ReadOnly"; //$NON-NLS-1$
+				return StringTools.buildSingletonToString(this);
 			}
 			private static final long serialVersionUID = 1L;
 			private Object readResolve() {
@@ -185,7 +188,6 @@ public class CloneIterator<E>
 				return INSTANCE;
 			}
 		}
-
 	}
 
 }

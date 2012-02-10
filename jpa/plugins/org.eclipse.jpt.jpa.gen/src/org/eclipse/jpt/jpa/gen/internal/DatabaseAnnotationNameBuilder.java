@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.gen.internal;
 
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ForeignKey;
 import org.eclipse.jpt.jpa.db.Table;
@@ -72,7 +73,9 @@ public interface DatabaseAnnotationNameBuilder {
 	 * The default implementation simple returns the database object's name,
 	 * unaltered.
 	 */
-	final class Default implements DatabaseAnnotationNameBuilder {
+	final class Default
+		implements DatabaseAnnotationNameBuilder
+	{
 		public static final DatabaseAnnotationNameBuilder INSTANCE = new Default();
 		public static DatabaseAnnotationNameBuilder instance() {
 			return INSTANCE;
@@ -98,7 +101,7 @@ public interface DatabaseAnnotationNameBuilder {
 		}
 		@Override
 		public String toString() {
-			return "DatabaseAnnotationNameBuilder.Default";  //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
 	}
 

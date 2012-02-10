@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.enumerations;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
@@ -18,7 +19,7 @@ import java.util.NoSuchElementException;
  * @param <E> the type of elements returned by the enumeration
  */
 public final class EmptyEnumeration<E>
-	implements Enumeration<E>
+	implements Enumeration<E>, Serializable
 {
 
 	// singleton
@@ -58,5 +59,4 @@ public final class EmptyEnumeration<E>
 		// replace this object with the singleton
 		return INSTANCE;
 	}
-
 }

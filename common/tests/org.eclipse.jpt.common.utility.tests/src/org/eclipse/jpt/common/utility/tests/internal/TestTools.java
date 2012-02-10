@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,19 +18,26 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import junit.framework.Assert;
+import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestFailure;
 import junit.framework.TestResult;
+import junit.textui.TestRunner;
+
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 
 /**
- * various tools that can be used by test cases
+ * Various tools that can be used by test cases.
  */
+@SuppressWarnings("nls")
 public final class TestTools {
 
 	/**
@@ -45,9 +52,57 @@ public final class TestTools {
 	}
 
 	/**
-	 * test an object's implementation of Serializable by serializing the
+	 * Execute the specified command. If it throws an exception, re-execute it
+	 * repeatedly until it executes without an exception.
+	 * There will be a one-second delay between each execution.
+	 * This is useful when calling third-party code that intermittently throws
+	 * exceptions but will <em>eventually</em> execute successfully (e.g. when
+	 * there are problems deleting files).
+	 */
+	public static void execute(TestCommand command) {
+		execute(command, -1);
+	}
+
+	/**
+	 * Execute the specified command. If it throws an exception, re-execute it
+	 * repeatedly until it executes without an exception. Execute the command
+	 * up to the specified number of attempts.
+	 * There will be a one-second delay between each execution.
+	 * This is useful when calling third-party code that intermittently throws
+	 * exceptions but will <em>eventually</em> execute successfully (e.g. when
+	 * there are problems deleting files).
+	 */
+	public static void execute(TestCommand command, int attempts) {
+		execute(command, attempts, 1000);
+	}
+
+	/**
+	 * Execute the specified command. If it throws an exception, re-execute it
+	 * repeatedly until it executes without an exception. Execute the command
+	 * up to the specified number of attemptsl with specified delay between
+	 * each execution.
+	 * This is useful when calling third-party code that intermittently throws
+	 * exceptions but will <em>eventually</em> execute successfully (e.g. when
+	 * there are problems deleting files).
+	 */
+	public static void execute(TestCommand command, int attempts, long delay) {
+		for (int i = 1; i <= attempts; i++) {  // NB: start with 1
+			try {
+				command.execute();
+				return;
+			} catch (Exception ex) {
+				if ((attempts != -1) && (i == attempts)) {
+					throw new RuntimeException("attempts: " + i, ex);
+				}
+				sleep(delay);
+			}
+		}
+	}
+
+	/**
+	 * Test an object's implementation of {@link Serializable} by serializing the
 	 * specified object to a byte array; then de-serializing the byte array and
-	 * returning the resultant object
+	 * returning the resultant object.
 	 */
 	public static <T> T serialize(T o) throws IOException, ClassNotFoundException {
 		ByteArrayOutputStream baOutStream = new ByteArrayOutputStream(2000);
@@ -69,14 +124,14 @@ public final class TestTools {
 	}
 
 	/**
-	 * redirect std out and std err to the specified stream
+	 * Redirect std out and std err to the specified stream.
 	 */
 	public static void redirectSystemStreamsTo(OutputStream outputStream) {
 		redirectSystemStreamsTo(new PrintStream(outputStream));
 	}
 
 	/**
-	 * redirect std out and std err to the specified stream
+	 * Redirect std out and std err to the specified stream.
 	 */
 	public static void redirectSystemStreamsTo(PrintStream printStream) {
 		System.setOut(printStream);
@@ -104,14 +159,14 @@ public final class TestTools {
 		}
 		for (String key : sortedKeys) {
 			stream.print(key);
-			stream.print(" => "); //$NON-NLS-1$
+			stream.print(" => ");
 			stream.print(System.getProperty(key));
 			stream.println();
 		}
 	}
 
 	/**
-	 * execute the specified test and return a text output of its results
+	 * Execute the specified test and return a text output of its results.
 	 */
 	public static String execute(TestCase testCase) {
 		long start = System.currentTimeMillis();
@@ -121,9 +176,9 @@ public final class TestTools {
 		StringWriter stringWriter = new StringWriter();
 		PrintWriter writer = new PrintWriter(stringWriter);
 		writer.print(testCase.getName());
-		writer.print(": "); //$NON-NLS-1$
+		writer.print(": ");
 		if (result.wasSuccessful()) {
-			writer.println("OK"); //$NON-NLS-1$
+			writer.println("OK");
 		} else {
 			TestFailure failure = null;
 			if (result.failures().hasMoreElements()) {
@@ -133,17 +188,17 @@ public final class TestTools {
 			}
 			failure.thrownException().printStackTrace(writer);
 		}
-		writer.print("elapsed time: "); //$NON-NLS-1$
+		writer.print("elapsed time: ");
 		long elapsed = end - start;
 		writer.print(elapsed / 1000L);
-		writer.println(" sec."); //$NON-NLS-1$
+		writer.println(" sec.");
 		return stringWriter.toString();
 	}
 
 	/**
 	 * Clear out all the instance variable of the specified test case, allowing
 	 * the various test fixtures to be garbage-collected. Typically this is
-	 * called in the #tearDown() method.
+	 * called in the test case's implementation of {@link TestCase#tearDown()}.
 	 */
 	public static void clear(TestCase testCase) throws IllegalAccessException {
 		for (Class<?> clazz = testCase.getClass(); clazz != TestCase_class; clazz = clazz.getSuperclass()) {
@@ -162,12 +217,28 @@ public final class TestTools {
 		}
 	}
 
+	/**
+	 * Return the value of the specified class's <code>DEBUG</code> constant.
+	 */
+	public static boolean debug(Class<?> clazz) {
+		Boolean debug = (Boolean) ReflectionTools.getStaticFieldValue(clazz, "DEBUG");
+		return debug.booleanValue();
+	}
+
+	/**
+	 * Verify the specified class's <code>DEBUG</code> constant is set to
+	 * <code>false</code>.
+	 */
+	public static void assertFalseDEBUG(Class<?> clazz) {
+		Assert.assertFalse("Recompile with \"DEBUG = false\": " + clazz.getName(), debug(clazz));
+	}
+	
 	private static final Class<TestCase> TestCase_class = TestCase.class;
 
 	/**
-	 * Workaround for a JUnit bug: JUnit does not configure the testing Thread
+	 * Workaround for a JUnit bug: JUnit does not configure the testing {@link Thread}
 	 * with a context class loader. This should probably happen in
-	 * TestRunner.doRunTest(Test), just before starting the thread.
+	 * {@link TestRunner#doRun(Test)}, just before starting the thread.
 	 */
 	public static void setUpJUnitThreadContextClassLoader() {
 		Thread.currentThread().setContextClassLoader(TestTools.class.getClassLoader());
@@ -180,5 +251,4 @@ public final class TestTools {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

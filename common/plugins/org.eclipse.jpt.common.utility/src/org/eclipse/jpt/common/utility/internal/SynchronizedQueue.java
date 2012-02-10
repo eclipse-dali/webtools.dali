@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
-import org.eclipse.jpt.common.utility.Command;
+import org.eclipse.jpt.common.utility.command.Command;
 
 /**
  * Thread-safe implementation of the {@link Queue} interface.
@@ -39,7 +39,7 @@ public class SynchronizedQueue<E>
 	 */
 	public SynchronizedQueue(Queue<E> queue, Object mutex) {
 		super();
-		if (queue == null) {
+		if ((queue == null) || (mutex == null)) {
 			throw new NullPointerException();
 		}
 		this.queue = queue;
@@ -287,7 +287,7 @@ public class SynchronizedQueue<E>
 	 * thread.
 	 */
 	public void execute(Command command) throws InterruptedException {
-		if (Thread.interrupted()) {
+		if (Thread.currentThread().isInterrupted()) {
 			throw new InterruptedException();
 		}
 		synchronized (this.mutex) {
@@ -344,5 +344,4 @@ public class SynchronizedQueue<E>
 			s.defaultWriteObject();
 		}
 	}
-
 }

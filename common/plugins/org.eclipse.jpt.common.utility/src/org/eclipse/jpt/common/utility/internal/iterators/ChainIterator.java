@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterators;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -102,7 +103,9 @@ public class ChainIterator<E>
 		T nextLink(T currentLink);
 
 
-		final class Null<S> implements Linker<S> {
+		final class Null<S>
+			implements Linker<S>, Serializable
+		{
 			@SuppressWarnings("rawtypes")
 			public static final Linker INSTANCE = new Null();
 			@SuppressWarnings("unchecked")
@@ -119,7 +122,7 @@ public class ChainIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "ChainIterator.Linker.Null"; //$NON-NLS-1$
+				return StringTools.buildSingletonToString(this);
 			}
 			private static final long serialVersionUID = 1L;
 			private Object readResolve() {
@@ -128,7 +131,10 @@ public class ChainIterator<E>
 			}
 		}
 
-		final class Disabled<S> implements Linker<S> {
+
+		final class Disabled<S>
+			implements Linker<S>, Serializable
+		{
 			@SuppressWarnings("rawtypes")
 			public static final Linker INSTANCE = new Disabled();
 			@SuppressWarnings("unchecked")
@@ -145,7 +151,7 @@ public class ChainIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "ChainIterator.Linker.Disabled"; //$NON-NLS-1$
+				return StringTools.buildSingletonToString(this);
 			}
 			private static final long serialVersionUID = 1L;
 			private Object readResolve() {
@@ -153,7 +159,5 @@ public class ChainIterator<E>
 				return INSTANCE;
 			}
 		}
-
 	}
-
 }

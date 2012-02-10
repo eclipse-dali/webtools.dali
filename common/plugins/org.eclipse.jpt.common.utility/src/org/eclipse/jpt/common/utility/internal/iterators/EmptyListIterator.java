@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterators;
 
+import java.io.Serializable;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * An <code>EmptyListIterator</code> is just that.
@@ -21,9 +21,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
  * @see org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable
  */
 public final class EmptyListIterator<E>
-	implements ListIterator<E>
+	implements ListIterator<E>, Serializable
 {
-
 	// singleton
 	@SuppressWarnings("rawtypes")
 	private static final EmptyListIterator INSTANCE = new EmptyListIterator();
@@ -35,6 +34,7 @@ public final class EmptyListIterator<E>
 	public static <T> ListIterator<T> instance() {
 		return INSTANCE;
 	}
+
 
 	/**
 	 * Ensure single instance.
@@ -81,7 +81,7 @@ public final class EmptyListIterator<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return this.getClass().getSimpleName();
 	}
 	
 	private static final long serialVersionUID = 1L;
@@ -89,5 +89,4 @@ public final class EmptyListIterator<E>
 		// replace this object with the singleton
 		return INSTANCE;
 	}
-
 }

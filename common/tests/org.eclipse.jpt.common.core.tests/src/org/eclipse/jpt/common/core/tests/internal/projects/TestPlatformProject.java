@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.tests.internal.TestCommand;
+import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 /**
  * This builds and holds a "general" Eclipse project.
@@ -52,9 +54,26 @@ public class TestPlatformProject {
 
 	private IProject buildPlatformProject(String projectName) throws CoreException {
 		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		p.create(null);
+		this.createProject(p);
 		p.open(null);
 		return p;
+	}
+
+	private void createProject(IProject p) {
+		TestTools.execute(new CreateProjectCommand(p), 4);
+	}
+
+	protected static class CreateProjectCommand
+		implements TestCommand
+	{
+		private final IProject project;
+		protected CreateProjectCommand(IProject project) {
+			super();
+			this.project = project;
+		}
+		public void execute() throws Exception {
+			this.project.create(null);
+		}
 	}
 
 
@@ -75,5 +94,4 @@ public class TestPlatformProject {
 		description.setNatureIds(ArrayTools.removeAllOccurrences(description.getNatureIds(), natureID));
 		this.project.setDescription(description, null);
 	}
-
 }

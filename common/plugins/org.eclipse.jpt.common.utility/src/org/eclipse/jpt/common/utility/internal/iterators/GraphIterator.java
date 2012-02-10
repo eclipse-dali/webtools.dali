@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterators;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -21,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
  * except that it cannot be assumed that all nodes assume a strict tree
  * structure. For instance, in a tree, a node cannot be a descendent of
  * itself, but a graph may have a cyclical structure.
- * 
+ *
  * A <code>GraphIterator</code> simplifies the traversal of a
  * graph of objects, where the objects' protocol(s) provides
  * a method for getting the next collection of nodes in the graph,
@@ -31,7 +32,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
  * can return their neighbors, which might also include the original
  * neighbor, but you only want to visit the original neighbor once.)
  * <p>
- * If a neighbor has already been visited (determined by using 
+ * If a neighbor has already been visited (determined by using
  * {@link #equals(Object)}), that neighbor is not visited again,
  * nor are the neighbors of that object.
  * <p>
@@ -45,11 +46,11 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
  * (alternatively, subclass <code>GraphIterator</code>
  * and override the {@link #neighbors(Object)} method)
  * </ul>
- * {@link #remove()} is not supported. This behavior, if 
+ * {@link #remove()} is not supported. This behavior, if
  * desired, must be implemented by the user of this class.
- * 
+ *
  * @param <E> the type of elements returned by the iterator
- * 
+ *
  * @see org.eclipse.jpt.common.utility.internal.iterables.GraphIterable
  */
 public class GraphIterator<E>
@@ -59,9 +60,9 @@ public class GraphIterator<E>
 	private final LinkedList<Iterator<? extends E>> iterators = new LinkedList<Iterator<? extends E>>();
 	private final HashSet<E> visitedNeighbors = new HashSet<E>();
 	private final MisterRogers<E> misterRogers;
-	
+
 	private Iterator<? extends E> currentIterator;
-	
+
 	private E nextNeighbor;
 	private boolean done;
 
@@ -167,7 +168,7 @@ public class GraphIterator<E>
 				this.visitedNeighbors.add(nextPossibleNeighbor);
 				this.iterators.add(this.neighbors(nextPossibleNeighbor));
 			}
-		} 
+		}
 		else {
 			for (Iterator<? extends Iterator<? extends E>> stream = this.iterators.iterator(); ! this.currentIterator.hasNext() && stream.hasNext(); ) {
 				this.currentIterator = stream.next();
@@ -208,10 +209,10 @@ public class GraphIterator<E>
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.currentIterator);
 	}
-	
-	
+
+
 	//********** inner classes **********
-	
+
 	/**
 	 * Used by {@link GraphIterator} to retrieve
 	 * the immediate neighbors of a node in the graph.
@@ -223,9 +224,11 @@ public class GraphIterator<E>
 		 * Return the immediate neighbors of the specified object.
 		 */
 		Iterator<? extends T> neighbors(T next);
-		
-		
-		final class Null<S> implements MisterRogers<S> {
+
+
+		final class Null<S>
+			implements MisterRogers<S>, Serializable
+		{
 			@SuppressWarnings("rawtypes")
 			public static final MisterRogers INSTANCE = new Null();
 			@SuppressWarnings("unchecked")
@@ -242,7 +245,7 @@ public class GraphIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "GraphIterator.MisterRogers.Null"; //$NON-NLS-1$
+				return StringTools.buildSingletonToString(this);
 			}
 			private static final long serialVersionUID = 1L;
 			private Object readResolve() {
@@ -252,7 +255,9 @@ public class GraphIterator<E>
 		}
 
 		/** The Mr. Rogers used when the {@link GraphIterator#neighbors(Object)} method is overridden. */
-		final class Disabled<S> implements MisterRogers<S> {
+		final class Disabled<S>
+			implements MisterRogers<S>, Serializable
+		{
 			@SuppressWarnings("rawtypes")
 			public static final MisterRogers INSTANCE = new Disabled();
 			@SuppressWarnings("unchecked")
@@ -269,7 +274,7 @@ public class GraphIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "GraphIterator.MisterRogers.Disabled"; //$NON-NLS-1$
+				return StringTools.buildSingletonToString(this);
 			}
 			private static final long serialVersionUID = 1L;
 			private Object readResolve() {
@@ -277,7 +282,5 @@ public class GraphIterator<E>
 				return INSTANCE;
 			}
 		}
-
 	}
-
 }
