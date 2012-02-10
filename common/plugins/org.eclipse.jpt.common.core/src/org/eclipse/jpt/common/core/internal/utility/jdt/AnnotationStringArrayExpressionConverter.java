@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedExpressionConverter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * Convert an array initializer or single expression to/from an array of
@@ -23,9 +24,9 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedExpressionConverter;
  * as elements in the array initializer.
  */
 public class AnnotationStringArrayExpressionConverter
-		extends AbstractExpressionConverter<String[]>
-		implements IndexedExpressionConverter<String> {
-	
+	extends AbstractExpressionConverter<String[]>
+	implements IndexedExpressionConverter<String>
+{
 	private final ExpressionConverter<String> elementConverter;
 	private final StringArrayExpressionConverter arrayConverter;
 
@@ -50,8 +51,7 @@ public class AnnotationStringArrayExpressionConverter
 	@Override
 	protected Expression convertObject(String[] strings, AST ast) {
 		return (strings.length == 1) ?
-				this.elementConverter.convert(strings[0], ast)
-			:
+				this.elementConverter.convert(strings[0], ast) :
 				this.arrayConverter.convertObject(strings, ast);
 	}
 
@@ -66,21 +66,33 @@ public class AnnotationStringArrayExpressionConverter
 	 */
 	@Override
 	protected String[] convertExpression(Expression expression) {
-		if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
-			return this.arrayConverter.convertArrayInitializer((ArrayInitializer) expression);
-		}
-		String result = this.elementConverter.convert(expression);
-		return (result == null) ? new String[0] : new String[] { result };
+		return (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) ?
+				this.convertArrayInitializer((ArrayInitializer) expression) :
+				this.convertNonArrayInitializer(expression);
 	}
-	
-	public Expression getSubexpression(int index, Expression expression) {
+
+	protected String[] convertArrayInitializer(ArrayInitializer arrayInitializer) {
+		return this.arrayConverter.convertArrayInitializer(arrayInitializer);
+	}
+
+	/**
+	 * The specified expression is <em>not</em> an array initializer.
+	 * If we have trouble converting the standalone expression, simply return an
+	 * empty array (as opposed to an array with a <code>null</code> element).
+	 */
+	protected String[] convertNonArrayInitializer(Expression expression) {
+		String element = this.elementConverter.convert(expression);
+		return (element == null) ? StringTools.EMPTY_STRING_ARRAY : new String[] { element };
+	}
+
+	public Expression selectExpression(Expression expression, int index) {
 		if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
-			return this.arrayConverter.getSubexpression(index, expression);
+			return this.arrayConverter.selectExpression(expression, index);
 		}
-		if (index > 0) {
-			throw new ArrayIndexOutOfBoundsException();
+		if (index == 0) {
+			return expression;
 		}
-		return expression;
+		throw new ArrayIndexOutOfBoundsException();
 	}
 
 
@@ -116,5 +128,4 @@ public class AnnotationStringArrayExpressionConverter
 	public static AnnotationStringArrayExpressionConverter forTypes() {
 		return new AnnotationStringArrayExpressionConverter(TypeStringExpressionConverter.instance());
 	}
-
 }

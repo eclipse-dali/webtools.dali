@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,21 +19,25 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedExpressionConverter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
- * Convert an array initializer to/from an array of strings (e.g. {"text0", "text1"}).
- * 
- * Do NOT use this class for converting array initializers in annotation elements.
+ * Convert an array initializer to/from an array of strings
+ * (e.g. <code>{"text0", "text1"}</code>).
+ * <p>
+ * Do <em>not</em> use this class for converting array initializers in
+ * annotation elements:
  * Java5 has a bit of syntactic sugar that allows a single-element array
- * initializer to not have curly braces. This converter will return null if it encounters
- * anything other than an array initializer.
- * 
- * Invalid entries in the array initializer will result in null elements in the
- * resulting string array. This allows clients to manipulate elements at
- * the appropriate index.
+ * initializer to not have curly braces. This converter will return
+ * an empty array if it encounters anything other than an array initializer.
+ * Use {@link AnnotationStringArrayExpressionConverter} for converting
+ * annotation elements.
+ * <p>
+ * Invalid entries in the array initializer will result in <code>null</code>
+ * elements in the resulting string array. This allows clients to manipulate
+ * elements at the appropriate index.
  */
 public class StringArrayExpressionConverter
-		extends AbstractExpressionConverter<String[]>
-		implements IndexedExpressionConverter<String> {
-	
+	extends AbstractExpressionConverter<String[]>
+	implements IndexedExpressionConverter<String>
+{
 	private final ExpressionConverter<String> elementConverter;
 	private final boolean removeArrayInitializerWhenEmpty;
 
@@ -51,12 +55,12 @@ public class StringArrayExpressionConverter
 		this.removeArrayInitializerWhenEmpty = removeArrayInitializerWhenEmpty;
 	}
 
-	/*
-	 * this method is 'public' so it can be called by
-	 * AnnotationStringArrayExpressionConverter
+	/**
+	 * This method is non-<code>private</code> so it can be called by
+	 * {@link AnnotationStringArrayExpressionConverter}
 	 */
 	@Override
-	public ArrayInitializer convertObject(String[] strings, AST ast) {
+	protected ArrayInitializer convertObject(String[] strings, AST ast) {
 		if ((strings.length == 0) && this.removeArrayInitializerWhenEmpty) {
 			return null;
 		}
@@ -73,12 +77,12 @@ public class StringArrayExpressionConverter
 		return arrayInitializer.expressions();
 	}
 
-	/*
-	 * this method is 'public' so it can be called by
-	 * AnnotationStringArrayExpressionConverter
+	/**
+	 * This method is non-<code>private</code> so it can be called by
+	 * {@link AnnotationStringArrayExpressionConverter}
 	 */
 	@Override
-	public String[] convertNull() {
+	protected String[] convertNull() {
 		return StringTools.EMPTY_STRING_ARRAY;
 	}
 
@@ -89,11 +93,11 @@ public class StringArrayExpressionConverter
 				StringTools.EMPTY_STRING_ARRAY;
 	}
 
-	/*
-	 * this method is 'public' so it can be called by
-	 * AnnotationStringArrayExpressionConverter
+	/**
+	 * This method is non-<code>private</code> so it can be called by
+	 * {@link AnnotationStringArrayExpressionConverter}
 	 */
-	public String[] convertArrayInitializer(ArrayInitializer arrayInitializer) {
+	String[] convertArrayInitializer(ArrayInitializer arrayInitializer) {
 		List<Expression> expressions = this.expressions(arrayInitializer);
 		int len = expressions.size();
 		String[] strings = new String[len];
@@ -102,10 +106,10 @@ public class StringArrayExpressionConverter
 		}
 		return strings;
 	}
-	
-	public Expression getSubexpression(int index, Expression expression) {
+
+	public Expression selectExpression(Expression expression, int index) {
 		if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
-			return expressions((ArrayInitializer) expression).get(index);
+			return this.expressions((ArrayInitializer) expression).get(index);
 		}
 		throw new ArrayIndexOutOfBoundsException();
 	}

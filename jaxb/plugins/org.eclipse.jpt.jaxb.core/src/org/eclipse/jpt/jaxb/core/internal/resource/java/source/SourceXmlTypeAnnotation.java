@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -310,11 +310,11 @@ public final class SourceXmlTypeAnnotation
 	}
 	
 	public TextRange getPropTextRange(int index, CompilationUnit astRoot) {
-		return getElementTextRange(getAnnotationElementSubvalueTextRange(this.propOrderDeclarationAdapter, index, astRoot), astRoot);
+		return getElementTextRange(this.selectAnnotationElementTextRange(this.propOrderDeclarationAdapter, index, astRoot), astRoot);
 	}
 	
 	public boolean propTouches(int index, int pos, CompilationUnit astRoot) {
-		return textRangeTouches(getAnnotationElementSubvalueTextRange(this.propOrderDeclarationAdapter, index, astRoot), pos);
+		return textRangeTouches(this.selectAnnotationElementTextRange(this.propOrderDeclarationAdapter, index, astRoot), pos);
 	}
 	
 	

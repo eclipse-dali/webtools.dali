@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,11 +38,9 @@ public abstract class SourceAnnotation
 {
 	protected final AnnotatedElement annotatedElement;
 
-	// TODO - make 'final' if we start using combination annotation adapters(?)
-	protected DeclarationAnnotationAdapter daa;
+	protected final DeclarationAnnotationAdapter daa;
 
-	// TODO - make 'final' if we start using combination annotation adapters(?)
-	protected AnnotationAdapter annotationAdapter;
+	protected final AnnotationAdapter annotationAdapter;
 
 
 	/**
@@ -124,7 +122,7 @@ public abstract class SourceAnnotation
 		// the AST is null for virtual Java attributes
 		// TODO remove the AST null check once we start storing text ranges
 		// in the resource model
-		return (astRoot == null) ? null : this.getTextRange(this.getAstAnnotation(astRoot));
+		return (astRoot == null) ? null : this.buildTextRange(this.getAstAnnotation(astRoot));
 	}
 
 	/**
@@ -168,7 +166,7 @@ public abstract class SourceAnnotation
 		// the AST is null for virtual Java attributes
 		// TODO remove the AST null check once we start storing text ranges
 		// in the resource model
-		return (astRoot == null) ? null : this.getTextRange(this.getAnnotationElementExpression(adapter, astRoot));
+		return (astRoot == null) ? null : this.buildTextRange(this.getAnnotationElementExpression(adapter, astRoot));
 	}
 
 	/**
@@ -177,39 +175,40 @@ public abstract class SourceAnnotation
 	protected Expression getAnnotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
 		return adapter.getExpression(this.annotatedElement.getModifiedDeclaration(astRoot));
 	}
-	
+
 	/**
-	 * Return the text range corresponding to the element's indexed subvalue
-	 * @throws ArrayIndexOutOfBoundsException if the index is out of range
+	 * Return the text range corresponding to the expression at the specified
+	 * index of the element's array.
+	 * @exception ArrayIndexOutOfBoundsException if the index is out of range
 	 */
-	protected TextRange getAnnotationElementSubvalueTextRange(IndexedDeclarationAnnotationElementAdapter<?> adapter, int index, CompilationUnit astRoot) {
+	protected TextRange selectAnnotationElementTextRange(IndexedDeclarationAnnotationElementAdapter<?> adapter, int index, CompilationUnit astRoot) {
 		// the AST is null for virtual Java attributes
 		// TODO remove the AST null check once we start storing text ranges
 		// in the resource model
-		return (astRoot == null) ? null : this.getTextRange(this.getAnnotationElementSubvalueExpression(adapter, index, astRoot));
+		return (astRoot == null) ? null : this.buildTextRange(this.selectAnnotationElementExpression(adapter, index, astRoot));
 	}
-	
+
 	/**
-	 * Return the expression corresponding to the element's indexed subvalue.
+	 * Return the expression at the specified index of the element's array.
 	 */
-	protected Expression getAnnotationElementSubvalueExpression(IndexedDeclarationAnnotationElementAdapter<?> adapter, int index, CompilationUnit astRoot) {
-		return adapter.getSubvalueExpression(index, this.annotatedElement.getModifiedDeclaration(astRoot));
+	protected Expression selectAnnotationElementExpression(IndexedDeclarationAnnotationElementAdapter<?> adapter, int index, CompilationUnit astRoot) {
+		return adapter.selectExpression(this.annotatedElement.getModifiedDeclaration(astRoot), index);
 	}
 
 	/**
 	 * Return the text range corresponding to the specified AST node.
-	 * If the AST node is null, return null.
+	 * Return <code>null</code> if the AST node is <code>null</code>.
 	 */
-	protected TextRange getTextRange(ASTNode astNode) {
+	protected TextRange buildTextRange(ASTNode astNode) {
 		return (astNode == null) ? null : ASTTools.buildTextRange(astNode);
 	}
 
-	
-	//*********** NestableAnnotation implementation ****************
+
+	// ********** NestableAnnotation implementation **********
 
 	/**
-	 * convenience implementation of method from NestableAnnotation interface
-	 * for subclasses
+	 * Convenience implementation of method from {@link NestableAnnotation} interface
+	 * for subclasses.
 	 */
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
@@ -218,13 +217,17 @@ public abstract class SourceAnnotation
 	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
 		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
-	
+
+
+	// ********** annotation container **********
+
 	/**
 	 * A container for nested annotations. The owner of the AnnotationContainer
 	 * needs to call initialize(CompilationUnit) on it.
 	 * @param <T> the type of the resource nestable annotations
 	 */
-	public abstract class AnnotationContainer<T extends NestableAnnotation> extends SourceNode.AnnotationContainer<T>
+	public abstract class AnnotationContainer<T extends NestableAnnotation>
+		extends SourceNode.AnnotationContainer<T>
 	{
 		protected AnnotationContainer() {
 			super();
@@ -237,12 +240,12 @@ public abstract class SourceAnnotation
 
 		@Override
 		protected void fireItemAdded(int index, T addedItem) {
-			SourceAnnotation.this.fireItemAdded(this.getAnnotationsPropertyName(), index, addedItem);			
+			SourceAnnotation.this.fireItemAdded(this.getAnnotationsPropertyName(), index, addedItem);
 		}
-		
+
 		@Override
 		protected void fireItemsRemoved(int index, java.util.List<T> removedItems) {
-			SourceAnnotation.this.fireItemsRemoved(this.getAnnotationsPropertyName(), index, removedItems);			
+			SourceAnnotation.this.fireItemsRemoved(this.getAnnotationsPropertyName(), index, removedItems);
 		}
 	}
 }

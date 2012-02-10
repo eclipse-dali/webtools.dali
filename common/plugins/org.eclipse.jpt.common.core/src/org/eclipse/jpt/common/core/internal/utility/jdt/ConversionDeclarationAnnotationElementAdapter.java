@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,13 +29,13 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	/**
 	 * The wrapped adapter that returns and takes AST expressions.
 	 */
-	private final DeclarationAnnotationElementAdapter<Expression> adapter;
+	protected final DeclarationAnnotationElementAdapter<Expression> adapter;
 
 	/**
 	 * The converter that converts AST expressions to other objects
 	 * (e.g. Strings).
 	 */
-	private final ExpressionConverter<T> converter;
+	protected final ExpressionConverter<T> converter;
 
 
 	// ********** constructors **********
@@ -56,13 +56,8 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 		this.adapter = adapter;
 		this.converter = converter;
 	}
-	
-	
-	protected ExpressionConverter<T> getConverter() {
-		return this.converter;
-	}
-	
-	
+
+
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
 	public T getValue(ModifiedDeclaration declaration) {
