@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
@@ -144,7 +144,8 @@ public class GenericMappingFileRef
 	protected ReplaceEdit createMoveEdit(IFolder originalFolder, IPath runtimeDestination) {
 		IProject project = originalFolder.getProject();
 		IPath fullPath = originalFolder.getFullPath();
-		IPath originalLocation = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
+		ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
+		IPath originalLocation = locator.getRuntimePath(fullPath);
 		return this.createMoveEdit(originalLocation, runtimeDestination);
 	}
 

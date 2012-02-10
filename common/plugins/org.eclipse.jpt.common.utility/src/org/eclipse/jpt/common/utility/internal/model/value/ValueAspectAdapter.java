@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,17 +16,18 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 
 /**
  * Abstract class that provides support for wrapping a {@link WritablePropertyValueModel}
- * and listening for changes to <em>aspects</em> of the <em>value</em> contained
- * by the {@link WritablePropertyValueModel}. Changes to the {@link WritablePropertyValueModel}'s
- * value are also monitored.
+ * and listening for changes to <em>aspects</em> of the <em>value</em> held
+ * by the {@link WritablePropertyValueModel}. Changes to the
+ * {@link WritablePropertyValueModel}'s value are also monitored.
  * <p>
  * This is useful if you have a value that may change, but whose aspects can also
  * change in a fashion that might be of interest to the client.
  * <p>
- * <strong>NB:</strong> Clients will need to listen for two different change notifications:
- * a property change event will be be fired when the <em>value</em> changes;
- * a state change event will be fired when an <em>aspect</em> of the value changes.
- * <p>
+ * <strong>NB:</strong> Clients will need to listen for two different change
+ * notifications:<ul>
+ * <li>a property change event will be be fired when the <em>value</em> changes;
+ * <li>a state change event will be fired when an <em>aspect</em> of the value changes.
+ * </ul>
  * Subclasses need to override two methods:<ul>
  * <li>{@link #engageValue_()}<p>
  *     begin listening to the appropriate aspect of the value and call
@@ -40,17 +41,17 @@ public abstract class ValueAspectAdapter<V>
 	extends PropertyValueModelWrapper<V>
 	implements WritablePropertyValueModel<V>
 {
-	/** Cache the value so we can disengage. Null until we have a listener*/
-	protected V value;
+	/** Cache the value so we can disengage. */
+	protected volatile V value;
 
 
 	// ********** constructors/initialization **********
 
 	/**
-	 * Constructor - the value holder is required.
+	 * Constructor - the value model is required.
 	 */
-	protected ValueAspectAdapter(WritablePropertyValueModel<V> valueHolder) {
-		super(valueHolder);
+	protected ValueAspectAdapter(WritablePropertyValueModel<V> valueModel) {
+		super(valueModel);
 		this.value = null;
 	}
 
@@ -73,21 +74,21 @@ public abstract class ValueAspectAdapter<V>
 	// ********** WritablePropertyValueModel implementation **********
 
 	public void setValue(V value) {
-		this.getValueHolder().setValue(value);
+		this.getValueModel().setValue(value);
 	}
 
 
 	// ********** PropertyValueModelWrapper implementation **********
 
 	@Override
-	protected void valueChanged(PropertyChangeEvent event) {
+	protected void wrappedValueChanged(PropertyChangeEvent event) {
 		this.disengageValue();
 		this.engageValue();
 		this.firePropertyChanged(event.clone(this));
 	}
 
 
-	// ********** extend change support **********
+	// ********** listeners **********
 
 	/**
 	 * Extend to start listening to the underlying model if necessary.
@@ -111,9 +112,6 @@ public abstract class ValueAspectAdapter<V>
 		}
 	}
 
-
-	// ********** AbstractPropertyValueModel overrides **********
-
 	/**
 	 * Extend to check for state change listeners.
 	 */
@@ -121,9 +119,6 @@ public abstract class ValueAspectAdapter<V>
 	protected boolean hasListeners() {
 		return this.hasAnyStateChangeListeners() || super.hasListeners();
 	}
-
-
-	// ********** PropertyValueModelWrapper overrides **********
 
 	/**
 	 * Extend to engage an aspect of the value model's value.
@@ -150,7 +145,7 @@ public abstract class ValueAspectAdapter<V>
 	 * Start listening to an aspect of the current value.
 	 */
 	protected void engageValue() {
-		this.value = this.valueHolder.getValue();
+		this.value = this.valueModel.getValue();
 		if (this.value != null) {
 			this.engageValue_();
 		}
@@ -158,7 +153,7 @@ public abstract class ValueAspectAdapter<V>
 
 	/**
 	 * Start listening to some aspect of the current value.
-	 * At this point we can be sure the value is not null.
+	 * At this point we can be sure the value is not <code>null</code>.
 	 */
 	protected abstract void engageValue_();
 
@@ -174,7 +169,7 @@ public abstract class ValueAspectAdapter<V>
 
 	/**
 	 * Stop listening to an aspect of the current value.
-	 * At this point we can be sure the value is not null.
+	 * At this point we can be sure the value is not <code>null</code>.
 	 */
 	protected abstract void disengageValue_();
 
@@ -189,13 +184,12 @@ public abstract class ValueAspectAdapter<V>
 	 * Our constructor accepts only a {@link WritablePropertyValueModel}{@code<V>}.
 	 */
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<V> getValueHolder() {
-		return (WritablePropertyValueModel<V>) this.valueHolder;
+	protected WritablePropertyValueModel<V> getValueModel() {
+		return (WritablePropertyValueModel<V>) this.valueModel;
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getValue());
 	}
-
 }

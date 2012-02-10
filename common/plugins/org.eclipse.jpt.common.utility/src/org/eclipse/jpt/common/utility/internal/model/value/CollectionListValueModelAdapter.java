@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,10 +27,10 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
  * a read-only {@link ListValueModel}, sorta.
  * <p>
  * To maintain a reasonably consistent appearance to client code, we
- * keep an internal list somewhat in synch with the wrapped collection.
+ * keep an internal list somewhat in sync with the wrapped collection.
  * <p>
  * <strong>NB:</strong> Since we only listen to the wrapped collection when we have
- * listeners ourselves and we can only stay in synch with the wrapped
+ * listeners ourselves and we can only stay in sync with the wrapped
  * collection while we are listening to it, results to various methods
  * (e.g. {@link #size()}, {@link #get(int)}) will be unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
@@ -128,7 +128,7 @@ public class CollectionListValueModelAdapter<E>
 	@Override
 	protected void engageModel() {
 		this.collectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
-		// synch our list *after* we start listening to the collection holder,
+		// sync our list *after* we start listening to the collection model,
 		// since its value might change when a listener is added
 		this.buildList();
 	}
@@ -213,5 +213,4 @@ public class CollectionListValueModelAdapter<E>
 	public void toString(StringBuilder sb) {
 		sb.append(this.list);
 	}
-
 }

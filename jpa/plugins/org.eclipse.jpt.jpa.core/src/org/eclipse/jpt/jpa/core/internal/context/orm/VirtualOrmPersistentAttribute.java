@@ -25,7 +25,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.FieldAccessor;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
@@ -299,8 +298,12 @@ public class VirtualOrmPersistentAttribute
 
 	// ********** JpaStructureNode implementation **********
 
-	public String getId() {
-		return OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID;
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
+
+	public Class<OrmPersistentAttribute> getType() {
+		return OrmPersistentAttribute.class;
 	}
 
 	public JpaStructureNode getStructureNode(int offset) {

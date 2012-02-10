@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @see SynchronizedInt
  */
 public final class SimpleIntReference
-	implements IntReference, Cloneable, Serializable
+	implements ModifiableIntReference, Cloneable, Serializable
 {
 	/** Backing <code>int</code>. */
 	private volatile int value = 0;
@@ -162,7 +162,7 @@ public final class SimpleIntReference
 
 	// ********** Comparable implementation **********
 
-	public int compareTo(ReadOnlyIntReference ref) {
+	public int compareTo(IntReference ref) {
 		int v = ref.getValue();
 		return (this.value < v) ? -1 : ((this.value == v) ? 0 : 1);
 	}

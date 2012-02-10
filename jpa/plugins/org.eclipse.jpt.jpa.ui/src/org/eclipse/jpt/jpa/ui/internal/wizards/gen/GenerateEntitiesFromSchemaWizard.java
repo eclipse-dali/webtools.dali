@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceRuleFactory;
@@ -21,7 +20,6 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -35,11 +33,11 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ForeignKey;
@@ -153,8 +151,8 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	 */
 	public ORMGenCustomizer createORMGenCustomizer(Schema schema){
 		JpaPlatform jpaPlatform = this.jpaProject.getJpaPlatform();
-		Object obj = Platform.getAdapterManager().getAdapter( jpaPlatform, ORMGenCustomizer.class );
-		if (obj != null  && obj instanceof ORMGenCustomizer) {
+		ORMGenCustomizer obj = PlatformTools.getAdapter( jpaPlatform, ORMGenCustomizer.class );
+		if (obj != null) {
 			this.customizer = (ORMGenCustomizer) obj; 
 			this.customizer.init(getCustomizationFile(), schema);  
 		} else{
@@ -266,7 +264,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		private boolean promptUser(final String className) {
 			// get on the UI thread synchronously, need feedback before continuing
 			final boolean ret[]=new boolean[1];
-			Display.getDefault().syncExec(new Runnable() {
+			org.eclipse.jpt.common.ui.internal.util.SWTUtil.syncExec(new Runnable() {
 				public void run() {
 					final OverwriteConfirmerDialog dialog = new OverwriteConfirmerDialog(Display.getCurrent().getActiveShell(), className);
 					dialog.open();
@@ -469,22 +467,26 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		Object sel = selection.getFirstElement();
 		if ( sel instanceof IResource ) {
 			IProject proj = ((IResource) sel).getProject();
-			JpaProject jpaProj = JptJpaCorePlugin.getJpaProject(proj);
+			JpaProject jpaProj = this.getJpaProject(proj);
 			this.jpaProject = jpaProj;
 		} else if( sel instanceof org.eclipse.jdt.core.IPackageFragmentRoot ) {
 			org.eclipse.jdt.core.IPackageFragmentRoot root = (org.eclipse.jdt.core.IPackageFragmentRoot) sel;
 			IProject proj = root.getJavaProject().getProject();
-			JpaProject jpaProj = JptJpaCorePlugin.getJpaProject(proj);
+			JpaProject jpaProj = this.getJpaProject(proj);
 			this.jpaProject = jpaProj;
 		} else if( sel instanceof org.eclipse.jdt.core.IPackageFragment) {
 			org.eclipse.jdt.core.IPackageFragment frag = (org.eclipse.jdt.core.IPackageFragment) sel;
 			IProject proj = frag.getJavaProject().getProject();
-			JpaProject jpaProj = JptJpaCorePlugin.getJpaProject(proj);
+			JpaProject jpaProj = this.getJpaProject(proj);
 			this.jpaProject = jpaProj;
 		}
 		
 		this.selection = selection;
 		this.setWindowTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
+	}
+
+	protected JpaProject getJpaProject(IProject project) {
+		return (JpaProject) project.getAdapter(JpaProject.class);
 	}
 
 	@Override

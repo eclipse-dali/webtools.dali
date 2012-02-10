@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,7 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
-
-import org.eclipse.jpt.common.utility.internal.BidiFilter;
+import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringWritablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -38,15 +37,20 @@ public class FilteringPropertyValueModelTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.objectHolder = new SimplePropertyValueModel<String>("foo");
-		this.filteredObjectHolder = new FilteringWritablePropertyValueModel<String>(this.objectHolder, this.buildFilter());
+		this.filteredObjectHolder = new FilteringWritablePropertyValueModel<String>(this.objectHolder, this.buildFilter(), this.buildSetFilter());
 	}
 
-	private BidiFilter<String> buildFilter() {
-		return new BidiFilter<String>() {
+	private Filter<String> buildFilter() {
+		return new Filter<String>() {
 			public boolean accept(String s) {
 				return (s != null) && s.startsWith("b");
 			}
-			public boolean reverseAccept(String s) {
+		};
+	}
+
+	private Filter<String> buildSetFilter() {
+		return new Filter<String>() {
+			public boolean accept(String s) {
 				return (s != null) && s.startsWith("b");
 			}
 		};
@@ -187,5 +191,4 @@ public class FilteringPropertyValueModelTests extends TestCase {
 		assertEquals(oldValue, e.getOldValue());
 		assertEquals(newValue, e.getNewValue());
 	}
-
 }

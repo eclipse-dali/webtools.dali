@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
-import java.util.Vector;
 import java.util.concurrent.ThreadFactory;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
 
 /**
  * A <code>ConsumerThreadCoordinator</code> controls the creation,
@@ -18,10 +18,6 @@ import java.util.concurrent.ThreadFactory;
  * the coordinator with a {@link Consumer} that both waits for the producer
  * to "produce" something to "consume" and, once the wait is over,
  * "consumes" whatever is available.
- * <p>
- * <strong>NB:</strong> The client-supplied consumer should handle any
- * exception appropriately (e.g. log the exception and return gracefully) so
- * the thread can continue executing.
  */
 public class ConsumerThreadCoordinator {
 	/**
@@ -49,10 +45,9 @@ public class ConsumerThreadCoordinator {
 	private volatile Thread thread;
 
 	/**
-	 * A list of the uncaught exceptions thrown by the consumer
-	 * during the current start/stop cycle.
+	 * This handles the exceptions thrown by the consumer.
 	 */
-	final Vector<Throwable> exceptions = new Vector<Throwable>();
+	/* CU private */ final ExceptionHandler exceptionHandler;
 
 
 	// ********** construction **********
@@ -61,39 +56,40 @@ public class ConsumerThreadCoordinator {
 	 * Construct a consumer thread coordinator for the specified consumer.
 	 * Use simple JDK thread(s) for the consumer thread(s).
 	 * Allow the consumer thread(s) to be assigned JDK-generated names.
+	 * Any exceptions thrown by the consumer will be handled by the
+	 * specified exception handler.
 	 */
-	public ConsumerThreadCoordinator(Consumer consumer) {
-		this(consumer, SimpleThreadFactory.instance());
-	}
-
-	/**
-	 * Construct a consumer thread coordinator for the specified consumer.
-	 * Use the specified thread factory to construct the consumer thread(s).
-	 * Allow the consumer thread(s) to be assigned JDK-generated names.
-	 */
-	public ConsumerThreadCoordinator(Consumer consumer, ThreadFactory threadFactory) {
-		this(consumer, threadFactory, null);
+	public ConsumerThreadCoordinator(Consumer consumer, ExceptionHandler exceptionHandler) {
+		this(consumer, null, exceptionHandler);
 	}
 
 	/**
 	 * Construct a consumer thread coordinator for the specified consumer.
 	 * Assign the consumer thread(s) the specified name.
 	 * Use simple JDK thread(s) for the consumer thread(s).
+	 * Any exceptions thrown by the consumer will be handled by the
+	 * specified exception handler.
 	 */
-	public ConsumerThreadCoordinator(Consumer consumer, String threadName) {
-		this(consumer, SimpleThreadFactory.instance(), threadName);
+	public ConsumerThreadCoordinator(Consumer consumer, String threadName, ExceptionHandler exceptionHandler) {
+		this(consumer, SimpleThreadFactory.instance(), threadName, exceptionHandler);
 	}
 
 	/**
 	 * Construct a consumer thread coordinator for the specified consumer.
 	 * Use the specified thread factory to construct the consumer thread(s).
 	 * Assign the consumer thread(s) the specified name.
+	 * Any exceptions thrown by the consumer will be handled by the
+	 * specified exception handler.
 	 */
-	public ConsumerThreadCoordinator(Consumer consumer, ThreadFactory threadFactory, String threadName) {
+	public ConsumerThreadCoordinator(Consumer consumer, ThreadFactory threadFactory, String threadName, ExceptionHandler exceptionHandler) {
 		super();
 		this.runnable = this.buildRunnable(consumer);
+		if ((threadFactory == null) || ((exceptionHandler == null))) {
+			throw new NullPointerException();
+		}
 		this.threadFactory = threadFactory;
 		this.threadName = threadName;
+		this.exceptionHandler = exceptionHandler;
 	}
 
 	private Runnable buildRunnable(Consumer consumer) {
@@ -101,10 +97,12 @@ public class ConsumerThreadCoordinator {
 	}
 
 
-	// ********** Lifecycle support **********
+	// ********** lifecycle support **********
 
 	/**
 	 * Build and start the consumer thread.
+	 * 
+	 * @exception IllegalStateException if the coordinator has already been started
 	 */
 	public synchronized void start() {
 		if (this.thread != null) {
@@ -128,28 +126,20 @@ public class ConsumerThreadCoordinator {
 	 * the consumer thread is finished executing. If any uncaught
 	 * exceptions were thrown while the consumer thread was executing,
 	 * wrap them in a composite exception and throw the composite exception.
+	 * 
+	 * @exception IllegalStateException if the coordinator has not been started
 	 */
-	public synchronized void stop() {
+	public synchronized void stop() throws InterruptedException {
 		if (this.thread == null) {
 			throw new IllegalStateException("Not started."); //$NON-NLS-1$
 		}
 		this.thread.interrupt();
-		try {
-			this.thread.join();
-		} catch (InterruptedException ex) {
-			// the thread that called #stop() was interrupted while waiting to
-			// join the consumer thread - ignore;
-			// 'thread' is still "interrupted", so its #run() loop will still stop
-			// after its current execution - we just won't wait around for it...
-		}
+		this.thread.join();
 		this.thread = null;
-
-		if (this.exceptions.size() > 0) {
-			Throwable[] temp = this.exceptions.toArray(new Throwable[this.exceptions.size()]);
-			this.exceptions.clear();
-			throw new CompositeException(temp);
-		}
 	}
+
+
+	// ********** misc **********
 
 	@Override
 	public String toString() {
@@ -161,11 +151,11 @@ public class ConsumerThreadCoordinator {
 
 	/**
 	 * This implementation of {@link Runnable} is a long-running consumer that
-	 * will repeatedly execute the consumer {@link Consumer#execute()} method.
+	 * will repeatedly execute the consumer {@link Consumer#consume()} method.
 	 * With each iteration, the consumer thread will wait
 	 * until the other consumer method, {@link Consumer#waitForProducer()}, allows the
 	 * consumer thread to proceed (i.e. there is something for the consumer to
-	 * consume). Once {@link Consumer#execute()} is finished, the thread will quiesce
+	 * consume). Once {@link Consumer#consume()} is finished, the thread will quiesce
 	 * until {@link Consumer#waitForProducer()} returns again.
 	 * Stop the thread by calling {@link Thread#interrupt()}.
 	 */
@@ -180,6 +170,9 @@ public class ConsumerThreadCoordinator {
 
 		RunnableConsumer(Consumer consumer) {
 			super();
+			if (consumer == null) {
+				throw new NullPointerException();
+			}
 			this.consumer = consumer;
 		}
 
@@ -188,44 +181,42 @@ public class ConsumerThreadCoordinator {
 		 * In each loop: Pause execution until {@link Consumer#waitForProducer()}
 		 * allows us to proceed.
 		 * <p>
-		 * If this thread is interrupted <em>during</em> {@link Consumer#execute()},
-		 * the call to {@link Thread#interrupted()} will stop the loop. If this thread is
+		 * If this thread is interrupted <em>during</em> {@link Consumer#consume()},
+		 * the call to {@link Thread#isInterrupted()} will stop the loop. If this thread is
 		 * interrupted during the call to {@link Consumer#waitForProducer()},
 		 * we will catch the {@link InterruptedException} and stop the loop also.
+		 * 
+		 * @see ConsumerThreadCoordinator#stop()
 		 */
 		public void run() {
-			while ( ! Thread.interrupted()) {
+			while ( ! Thread.currentThread().isInterrupted()) {
 				try {
 					this.consumer.waitForProducer();
 				} catch (InterruptedException ex) {
 					// we were interrupted while waiting, must be Quittin' Time
+					Thread.currentThread().interrupt();  // set the Thread's interrupt status
 					return;
+				} catch (RuntimeException ex) {
+					ConsumerThreadCoordinator.this.exceptionHandler.handleException(ex);
+					return;  // hmmm... kill the thread?
 				}
-				this.execute();
+				this.consume();
 			}
 		}
 
 		/**
-		 * Execute the consumer {@link Consumer#execute()} method.
+		 * Delegate to the consumer {@link Consumer#consume()} method.
 		 * Do not allow any unhandled exceptions to kill the thread.
-		 * Store them up for later pain.
+		 * Pass them to the exception handler.
 		 * @see ConsumerThreadCoordinator#stop()
 		 */
-		private void execute() {
+		private void consume() {
 			try {
-				this.execute_();
-			} catch (Throwable ex) {
-				ConsumerThreadCoordinator.this.exceptions.add(ex);
+				this.consumer.consume();
+			} catch (RuntimeException ex) {
+				ConsumerThreadCoordinator.this.exceptionHandler.handleException(ex);
 			}
 		}
-
-		/**
-		 * Subclass-implemented behavior: consume stuff.
-		 */
-		private void execute_() {
-			this.consumer.execute();
-		}
-
 	}
 
 
@@ -247,7 +238,6 @@ public class ConsumerThreadCoordinator {
 		/**
 		 * Consume whatever is currently available.
 		 */
-		void execute();
+		void consume();
 	}
-
 }

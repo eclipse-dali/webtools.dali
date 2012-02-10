@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,12 +14,12 @@ import java.util.EventListener;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.common.utility.model.listener.StateChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -28,9 +28,12 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * This extension of {@link AspectAdapter} provides list change support
  * by adapting a subject's state change events to a minimum set
  * of list change events.
+ * 
+ * @param <S> the type of the adapter's subject
+ * @param <E> the type of the adapter's list's elements
  */
 public abstract class ListCurator<S extends Model, E>
-	extends AspectAdapter<S>
+	extends AspectAdapter<S, List<E>>
 	implements ListValueModel<E>
 {
 	/** How the list looked before the last state change */
@@ -50,11 +53,11 @@ public abstract class ListCurator<S extends Model, E>
 	}
 
 	/**
-	 * Construct a curator for the specified subject holder.
-	 * The subject holder cannot be null.
+	 * Construct a curator for the specified subject model.
+	 * The subject model cannot be <code>null</code>.
 	 */
-	protected ListCurator(PropertyValueModel<? extends S> subjectHolder) {
-		super(subjectHolder);
+	protected ListCurator(PropertyValueModel<? extends S> subjectModel) {
+		super(subjectModel);
 		this.record = new ArrayList<E>();
 		this.stateChangeListener = this.buildStateChangeListener();
 	}
@@ -66,15 +69,16 @@ public abstract class ListCurator<S extends Model, E>
 	 * The subject's state has changed, do inventory and report to listeners.
 	 */
 	protected StateChangeListener buildStateChangeListener() {
-		return new StateChangeListener() {
-			public void stateChanged(StateChangeEvent event) {
-				ListCurator.this.submitInventoryReport();
-			}
-			@Override
-			public String toString() {
-				return "state change listener"; //$NON-NLS-1$
-			}
-		};
+		return new SubjectStateChangeListener();
+	}
+
+	protected class SubjectStateChangeListener
+		extends StateChangeAdapter
+	{
+		@Override
+		public void stateChanged(StateChangeEvent event) {
+			ListCurator.this.submitInventoryReport();
+		}
 	}
 
 
@@ -113,8 +117,8 @@ public abstract class ListCurator<S extends Model, E>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected ListIterator<E> getValue() {
-		return this.iterator();
+	protected List<E> getAspectValue() {
+		return this.record;
 	}
 
 	@Override
@@ -136,7 +140,7 @@ public abstract class ListCurator<S extends Model, E>
 	 * The aspect has changed, notify listeners appropriately.
 	 */
 	@Override
-	protected void fireAspectChanged(Object oldValue, Object newValue) {
+	protected void fireAspectChanged(List<E> oldValue, List<E> newValue) {
 		this.fireListChanged(LIST_VALUES, this.record);
 	}
 
@@ -146,7 +150,7 @@ public abstract class ListCurator<S extends Model, E>
 	@Override
 	protected void engageSubject_() {
 		((Model) this.subject).addStateChangeListener(this.stateChangeListener);
-		// synch our list *after* we start listening to the subject,
+		// sync our list *after* we start listening to the subject,
 		// since its value might change when a listener is added
 		CollectionTools.addAll(this.record, this.iteratorForRecord());
 	}
@@ -222,5 +226,4 @@ public abstract class ListCurator<S extends Model, E>
 	public void toString(StringBuilder sb) {
 		sb.append(this.record);
 	}
-
 }

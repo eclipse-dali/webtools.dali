@@ -174,7 +174,8 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 								   final IJPAEditorFeatureProvider fp) {
 		BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
 			public void run() {
-				pu.getJpaProject().updateAndWait();
+				// TODO figure out why this was necessary:
+				// pu.getJpaProject().updateAndWait();
 				final int x = pict.getGraphicsAlgorithm().getX();
 				final int y = pict.getGraphicsAlgorithm().getY();
 				final int width = pict.getGraphicsAlgorithm().getWidth();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
-import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
@@ -23,47 +22,48 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 
 public class OrmXmlItemContentProvider
-	extends AbstractTreeItemContentProvider<OrmPersistentType>
+	extends AbstractItemTreeContentProvider<OrmXml, OrmPersistentType>
 {
-	public OrmXmlItemContentProvider(
-			OrmXml ormXml, DelegatingTreeContentAndLabelProvider contentProvider) {
-		super(ormXml, contentProvider);
+	public OrmXmlItemContentProvider(OrmXml ormXml, Manager manager) {
+		super(ormXml, manager);
 	}
-	
-	@Override
-	public OrmXml getModel() {
-		return (OrmXml) super.getModel();
-	}
-	
-	@Override
+
 	public PersistenceUnit getParent() {
-		return getModel().getPersistenceUnit();
+		return this.item.getPersistenceUnit();
 	}
 	
 	@Override
 	protected CollectionValueModel<OrmPersistentType> buildChildrenModel() {
-		return new ListCollectionValueModelAdapter<OrmPersistentType>(
-		new ListAspectAdapter<EntityMappings, OrmPersistentType>(
-				buildEntityMappingsHolder(),
-				EntityMappings.PERSISTENT_TYPES_LIST) {
-			@Override
-			protected ListIterable<OrmPersistentType> getListIterable() {
-				return subject.getPersistentTypes();
-			}
-			@Override
-			protected int size_() {
-				return subject.getPersistentTypesSize();
-			}
-		});
+		return new ListCollectionValueModelAdapter<OrmPersistentType>(new ChildrenModel(this.item));
 	}
-	
-	protected PropertyValueModel<EntityMappings> buildEntityMappingsHolder() {
-		return new PropertyAspectAdapter<OrmXml, EntityMappings>(
-				OrmXml.ROOT_PROPERTY, getModel()) {
-			@Override
-			protected EntityMappings buildValue_() {
-				return subject.getRoot();
-			}
-		};
+
+	protected static class ChildrenModel
+		extends ListAspectAdapter<EntityMappings, OrmPersistentType>
+	{
+		ChildrenModel(OrmXml ormXml) {
+			super(new EntityMappingsModel(ormXml), EntityMappings.PERSISTENT_TYPES_LIST);
+		}
+
+		@Override
+		protected ListIterable<OrmPersistentType> getListIterable() {
+			return subject.getPersistentTypes();
+		}
+
+		@Override
+		protected int size_() {
+			return subject.getPersistentTypesSize();
+		}
+	}
+
+	protected static class EntityMappingsModel
+		extends PropertyAspectAdapter<OrmXml, EntityMappings>
+	{
+		public EntityMappingsModel(OrmXml subject) {
+			super(OrmXml.ROOT_PROPERTY, subject);
+		}
+		@Override
+		protected EntityMappings buildValue_() {
+			return this.subject.getRoot();
+		}
 	}
 }

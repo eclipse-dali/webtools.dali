@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,8 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.common.core.IResourcePart;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
@@ -113,11 +112,9 @@ public class JaxbValidator
 	}
 	
 	private IMessage adjustMessage(IMessage message) {
-		IAdaptable targetObject = (IAdaptable) message.getTargetObject();
-		IResource targetResource = ((IResourcePart) targetObject.getAdapter(IResourcePart.class)).getResource();
-		message.setTargetObject(targetResource);
+		message.setTargetObject(PlatformTools.getAdapter(message.getTargetObject(), IResource.class));
 		if (message.getLineNumber() == IMessage.LINENO_UNSET) {
-			message.setAttribute(IMarker.LOCATION, " ");
+			message.setAttribute(IMarker.LOCATION, " "); //$NON-NLS-1$
 		}
 		return message;
 	}

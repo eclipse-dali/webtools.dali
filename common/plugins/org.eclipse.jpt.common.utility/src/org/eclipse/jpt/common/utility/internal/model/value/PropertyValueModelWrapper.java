@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
@@ -19,74 +20,91 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * its change notifications. Subclasses must implement the appropriate
  * {@link PropertyValueModel}.
  * <p>
- * Subclasses must implement the following methods:<ul>
- * <li>{@link #valueChanged(PropertyChangeEvent)}<p>
+ * Subclasses must implement one of the following methods:<ul>
+ * <li>{@link #wrappedValueChanged(PropertyChangeEvent)}<p>
+ *     implement this method to propagate the appropriate change notification
+ * <li>{@link #wrappedValueChanged(Object, Object) valueChanged(V, V)}<p>
  *     implement this method to propagate the appropriate change notification
  * </ul>
+ * 
+ * @param <V> the type of the <em>wrapped</em> model's value
  */
 public abstract class PropertyValueModelWrapper<V>
 	extends AbstractPropertyValueModel
 {
-	/** The wrapped property value model. */
-	protected final PropertyValueModel<? extends V> valueHolder;
+	/** The wrapped property value model. Never <code>null</code>. */
+	protected final PropertyValueModel<? extends V> valueModel;
 
-	/** A listener that allows us to synch with changes to the wrapped value holder. */
-	protected final PropertyChangeListener valueChangeListener;
+	/** A listener that allows us to sync with changes to the wrapped value model. */
+	protected final PropertyChangeListener valueListener;
 
 
 	// ********** constructors/initialization **********
 
 	/**
 	 * Construct a property value model with the specified wrapped
-	 * property value model. The value holder is required.
+	 * property value model.
 	 */
-	protected PropertyValueModelWrapper(PropertyValueModel<? extends V> valueHolder) {
+	protected PropertyValueModelWrapper(PropertyValueModel<? extends V> valueModel) {
 		super();
-		if (valueHolder == null) {
+		if (valueModel == null) {
 			throw new NullPointerException();
 		}
-		this.valueHolder = valueHolder;
-		this.valueChangeListener = this.buildValueChangeListener();
+		this.valueModel = valueModel;
+		this.valueListener = this.buildValueListener();
 	}
-	
-	protected PropertyChangeListener buildValueChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				PropertyValueModelWrapper.this.valueChanged(event);
-			}
-		    @Override
-			public String toString() {
-				return "value change listener"; //$NON-NLS-1$
-			}
-		};
-	}
-	
 
-	// ********** behavior **********
-	
+	protected PropertyChangeListener buildValueListener() {
+		return new ValueListener();
+	}
+
+	/* CU private */ class ValueListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			PropertyValueModelWrapper.this.wrappedValueChanged(event);
+		}
+	}
+
+
+	// ********** listen to wrapped value model **********
+
 	/**
 	 * Begin listening to the value holder.
 	 */
 	@Override
 	protected void engageModel() {
-		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.valueChangeListener);
+		this.valueModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.valueListener);
 	}
-	
+
 	/**
 	 * Stop listening to the value holder.
 	 */
 	@Override
 	protected void disengageModel() {
-		this.valueHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.valueChangeListener);
+		this.valueModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.valueListener);
 	}
-	
+
 
 	// ********** property change support **********
 
 	/**
-	 * The value of the wrapped value holder has changed;
+	 * The value of the wrapped value model has changed;
 	 * propagate the change notification appropriately.
+	 * @see #wrappedValueChanged(Object, Object)
 	 */
-	protected abstract void valueChanged(PropertyChangeEvent event);
+	@SuppressWarnings("unchecked")
+	protected void wrappedValueChanged(PropertyChangeEvent event) {
+		this.wrappedValueChanged((V) event.getOldValue(), (V) event.getNewValue());
+	}
 
+	/**
+	 * The value of the wrapped value model has changed;
+	 * propagate the change notification appropriately.
+	 * @see #wrappedValueChanged(PropertyChangeEvent)
+	 */
+	protected void wrappedValueChanged(@SuppressWarnings("unused") V oldValue, @SuppressWarnings("unused") V newValue) {
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
+	}
 }

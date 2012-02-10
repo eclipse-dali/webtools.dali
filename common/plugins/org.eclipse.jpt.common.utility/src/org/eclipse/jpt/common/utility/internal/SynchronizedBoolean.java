@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.utility.internal;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.InterruptibleCommand;
-import org.eclipse.jpt.common.utility.InterruptibleCommandExecutor;
+import org.eclipse.jpt.common.utility.command.InterruptibleCommand;
+import org.eclipse.jpt.common.utility.command.InterruptibleCommandExecutor;
 
 /**
  * This class provides synchronized access to a <code>boolean</code> value.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.InterruptibleCommandExecutor;
  * @see SimpleBooleanReference
  */
 public class SynchronizedBoolean
-	implements InterruptibleCommandExecutor, BooleanReference, Cloneable, Serializable
+	implements InterruptibleCommandExecutor, ModifiableBooleanReference, Cloneable, Serializable
 {
 	/** Backing <code>boolean</code>. */
 	private boolean value;
@@ -597,7 +597,7 @@ public class SynchronizedBoolean
 	 * thread.
 	 */
 	public void execute(InterruptibleCommand command) throws InterruptedException {
-		if (Thread.interrupted()) {
+		if (Thread.currentThread().isInterrupted()) {
 			throw new InterruptedException();
 		}
 		synchronized (this.mutex) {

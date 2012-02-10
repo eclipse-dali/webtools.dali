@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,8 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.Collection;
-
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -32,7 +33,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * that determine the model's value (TRUE or FALSE) when <code>null</code>.
  */
 public class CompositeBooleanPropertyValueModel
-	extends CompositePropertyValueModel<Boolean>
+	extends CompositePropertyValueModel<Boolean, Boolean>
 {
 	/**
 	 * Calculation of the model's value is delegated to this adapter.
@@ -205,6 +206,9 @@ public class CompositeBooleanPropertyValueModel
 	 */
 	public CompositeBooleanPropertyValueModel(Adapter adapter, Boolean defaultValue, PropertyValueModel<Boolean>... array) {
 		super(array);
+		if (adapter == null) {
+			throw new NullPointerException();
+		}
 		this.adapter = adapter;
 		this.defaultValue = defaultValue;
 	}
@@ -227,6 +231,9 @@ public class CompositeBooleanPropertyValueModel
 	 */
 	public <E extends PropertyValueModel<Boolean>> CompositeBooleanPropertyValueModel(Adapter adapter, Boolean defaultValue, Collection<E> collection) {
 		super(collection);
+		if (adapter == null) {
+			throw new NullPointerException();
+		}
 		this.adapter = adapter;
 		this.defaultValue = defaultValue;
 	}
@@ -249,6 +256,9 @@ public class CompositeBooleanPropertyValueModel
 	 */
 	public CompositeBooleanPropertyValueModel(Adapter adapter, Boolean defaultValue, CollectionValueModel<? extends PropertyValueModel<Boolean>> collectionModel) {
 		super(collectionModel);
+		if (adapter == null) {
+			throw new NullPointerException();
+		}
 		this.adapter = adapter;
 		this.defaultValue = defaultValue;
 	}
@@ -257,8 +267,8 @@ public class CompositeBooleanPropertyValueModel
 	// ********** implementation **********
 
 	/**
-	 * Return true if all the contained booleans are true; otherwise return
-	 * false.
+	 * Return the {@link #defaultValue} if the collection is empty;
+	 * otherwise delegate to the {@link #adapter}.
 	 */
 	@Override
 	protected Boolean buildValue() {
@@ -270,18 +280,21 @@ public class CompositeBooleanPropertyValueModel
 	}
 
 	protected Iterable<Boolean> getBooleans() {
-		return new TransformationIterable<PropertyValueModel<Boolean>, Boolean>(this.getCollectionModel()) {
-			@Override
-			protected Boolean transform(PropertyValueModel<Boolean> booleanModel) {
-				return booleanModel.getValue();
-			}
-		};
+		return new TransformationIterable<PropertyValueModel<? extends Boolean>, Boolean>(this.collectionModel, BOOLEAN_TRANSFORMER);
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	protected CollectionValueModel<? extends PropertyValueModel<Boolean>> getCollectionModel() {
-		return (CollectionValueModel<? extends PropertyValueModel<Boolean>>) super.getCollectionModel();
+	protected static final Transformer<PropertyValueModel<? extends Boolean>, Boolean> BOOLEAN_TRANSFORMER = new BooleanTransformer();
+
+	protected static class BooleanTransformer
+		implements Transformer<PropertyValueModel<? extends Boolean>, Boolean>
+	{
+		public Boolean transform(PropertyValueModel<? extends Boolean> booleanModel) {
+			return booleanModel.getValue();
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildSingletonToString(this);
+		}
 	}
 
 
@@ -294,13 +307,14 @@ public class CompositeBooleanPropertyValueModel
 	public interface Adapter {
 		/**
 		 * Return the composite boolean value of the specified collection
-		 * of boolean models.
+		 * of booleans.
 		 */
 		Boolean buildValue(Iterable<Boolean> booleans);
 	}
 
 	/**
-	 * Return true if all the booleans are true; otherwise return false.
+	 * Return <code>true</code> if all the booleans are <code>true</code>;
+	 * otherwise return <code>false</code>.
 	 */
 	public static final Adapter AND_ADAPTER = new Adapter() {
 		public Boolean buildValue(Iterable<Boolean> booleans) {
@@ -318,7 +332,8 @@ public class CompositeBooleanPropertyValueModel
 	};
 
 	/**
-	 * Return false if all the booleans are false; otherwise return true.
+	 * Return <code>false</code> if all the booleans are <code>false</code>;
+	 * otherwise return <code>true</code>.
 	 */
 	public static final Adapter OR_ADAPTER = new Adapter() {
 		public Boolean buildValue(Iterable<Boolean> booleans) {
@@ -334,5 +349,4 @@ public class CompositeBooleanPropertyValueModel
 			return "OR_ADAPTER"; //$NON-NLS-1$
 		}
 	};
-
 }

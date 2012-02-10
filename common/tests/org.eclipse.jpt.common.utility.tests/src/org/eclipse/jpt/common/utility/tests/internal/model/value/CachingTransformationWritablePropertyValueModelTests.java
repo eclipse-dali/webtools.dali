@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,10 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
-
-import org.eclipse.jpt.common.utility.internal.BidiTransformer;
+import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationWritablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
@@ -23,7 +22,9 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
-public class CachingTransformationWritablePropertyValueModelTests extends TestCase {
+public class CachingTransformationWritablePropertyValueModelTests
+	extends TestCase
+{
 	private WritablePropertyValueModel<Person> objectHolder;
 	PropertyChangeEvent event;
 
@@ -38,15 +39,20 @@ public class CachingTransformationWritablePropertyValueModelTests extends TestCa
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.objectHolder = new SimplePropertyValueModel<Person>(new Person("Karen", "Peggy", null));
-		this.transformationObjectHolder = new CachingTransformationWritablePropertyValueModel<Person, Person>(this.objectHolder, this.buildTransformer());
+		this.transformationObjectHolder = new TransformationWritablePropertyValueModel<Person, Person>(this.objectHolder, this.buildTransformer(), this.buildReverseTransformer());
 	}
 
-	private BidiTransformer<Person, Person> buildTransformer() {
-		return new BidiTransformer<Person, Person>() {
+	private Transformer<Person, Person> buildTransformer() {
+		return new Transformer<Person, Person>() {
 			public Person transform(Person p) {
 				return (p == null) ? null : p.getParent();
 			}
-			public Person reverseTransform(Person p) {
+		};
+	}
+
+	private Transformer<Person, Person> buildReverseTransformer() {
+		return new Transformer<Person, Person>() {
+			public Person transform(Person p) {
 				return (p == null) ? null : p.getChild();
 			}
 		};

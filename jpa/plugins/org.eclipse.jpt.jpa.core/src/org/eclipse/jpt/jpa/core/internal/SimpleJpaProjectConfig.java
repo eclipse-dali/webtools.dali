@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,12 +12,16 @@ package org.eclipse.jpt.jpa.core.internal;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 
 /**
  * Straightforward implementation of the JPA project config.
  */
-public class SimpleJpaProjectConfig implements JpaProject2_0.Config {
+public class SimpleJpaProjectConfig
+	implements JpaProject2_0.Config
+{
+	protected JpaProject.Manager jpaProjectManager;
 	protected IProject project;
 	protected JpaPlatform jpaPlatform;
 	protected String connectionProfileName;
@@ -26,8 +30,17 @@ public class SimpleJpaProjectConfig implements JpaProject2_0.Config {
 	protected boolean discoverAnnotatedClasses;
 	protected String metamodelSourceFolderName;
 
+
 	public SimpleJpaProjectConfig() {
 		super();
+	}
+
+	public JpaProject.Manager getJpaProjectManager() {
+		return this.jpaProjectManager;
+	}
+
+	public void setJpaProjectManager(JpaProject.Manager jpaProjectManager) {
+		this.jpaProjectManager = jpaProjectManager;
 	}
 
 	public IProject getProject() {
@@ -90,5 +103,4 @@ public class SimpleJpaProjectConfig implements JpaProject2_0.Config {
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.project.getName());
 	}
-
 }

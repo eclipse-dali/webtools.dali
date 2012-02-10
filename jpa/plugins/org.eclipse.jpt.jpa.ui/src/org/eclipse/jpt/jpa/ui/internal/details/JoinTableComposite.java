@@ -13,12 +13,13 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.StateChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -340,7 +341,7 @@ public class JoinTableComposite
 	
 		@Override
 		protected Boolean buildValue() {
-			return Boolean.valueOf(this.listHolder.size() > 0);
+			return Boolean.valueOf(this.listModel.size() > 0);
 		}
 	
 		public void setValue(Boolean value) {
@@ -350,9 +351,9 @@ public class JoinTableComposite
 
 	
 	private class InverseJoinColumnPaneEnablerHolder 
-		extends CachingTransformationPropertyValueModel<ReadOnlyJoinTable, Boolean>
+		extends TransformationPropertyValueModel<ReadOnlyJoinTable, Boolean>
 	{
-		private StateChangeListener stateChangeListener;
+		private StateChangeListener stateListener;
 		
 		
 		public InverseJoinColumnPaneEnablerHolder() {
@@ -360,44 +361,43 @@ public class JoinTableComposite
 				new ValueListAdapter<ReadOnlyJoinTable>(
 					new ReadOnlyWritablePropertyValueModelWrapper<ReadOnlyJoinTable>(getSubjectHolder()), 
 					ReadOnlyJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST));
-			this.stateChangeListener = buildStateChangeListener();
+			this.stateListener = new StateListener();
+		}
+
+		class StateListener
+			extends StateChangeAdapter
+		{
+			@Override
+			public void stateChanged(StateChangeEvent event) {
+				wrappedValueStateChanged();
+			}
 		}
 		
-		
-		private StateChangeListener buildStateChangeListener() {
-			return new StateChangeListener() {
-				public void stateChanged(StateChangeEvent event) {
-					valueStateChanged();
-				}
-			};
-		}
-		
-		void valueStateChanged() {
-			Object oldValue = this.cachedValue;
-			Object newValue = transformNew(this.valueHolder.getValue());
-			firePropertyChanged(VALUE, oldValue, newValue);
-		}
-		
-		@Override
-		protected Boolean transform(ReadOnlyJoinTable value) {
-			return (value == null) ? Boolean.FALSE : super.transform(value);
+		void wrappedValueStateChanged() {
+			Object old = this.value;
+			this.firePropertyChanged(VALUE, old, this.value = this.transform(this.valueModel.getValue()));
 		}
 		
 		@Override
-		protected Boolean transform_(ReadOnlyJoinTable value) {
-			boolean virtual = JoinTableComposite.this.tableIsVirtual(value);
-			return Boolean.valueOf(! virtual && value.getSpecifiedInverseJoinColumnsSize() > 0);
+		protected Boolean transform(ReadOnlyJoinTable table) {
+			return (table == null) ? Boolean.FALSE : super.transform(table);
+		}
+		
+		@Override
+		protected Boolean transform_(ReadOnlyJoinTable table) {
+			boolean virtual = JoinTableComposite.this.tableIsVirtual(table);
+			return Boolean.valueOf(! virtual && table.getSpecifiedInverseJoinColumnsSize() > 0);
 		}
 		
 		@Override
 		protected void engageModel() {
 			super.engageModel();
-			this.valueHolder.addStateChangeListener(this.stateChangeListener);
+			this.valueModel.addStateChangeListener(this.stateListener);
 		}
 		
 		@Override
 		protected void disengageModel() {
-			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
+			this.valueModel.removeStateChangeListener(this.stateListener);
 			super.disengageModel();
 		}
 	}

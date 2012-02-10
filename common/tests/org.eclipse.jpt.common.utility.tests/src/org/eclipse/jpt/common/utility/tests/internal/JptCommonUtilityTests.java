@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.tests.internal;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.common.utility.tests.internal.command.JptUtilityCommandTests;
 import org.eclipse.jpt.common.utility.tests.internal.enumerations.JptUtilityEnumerationsTests;
 import org.eclipse.jpt.common.utility.tests.internal.iterables.JptUtilityIterablesTests;
 import org.eclipse.jpt.common.utility.tests.internal.iterators.JptUtilityIteratorsTests;
@@ -26,6 +27,7 @@ public class JptCommonUtilityTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCommonUtilityTests.class.getPackage().getName());
 
+		suite.addTest(JptUtilityCommandTests.suite());
 		suite.addTest(JptUtilityEnumerationsTests.suite());
 		suite.addTest(JptUtilityIterablesTests.suite());
 		suite.addTest(JptUtilityIteratorsTests.suite());
@@ -34,7 +36,6 @@ public class JptCommonUtilityTests {
 		suite.addTest(JptUtilitySynchronizersTests.suite());
 
 		suite.addTestSuite(ArrayToolsTests.class);
-		suite.addTestSuite(AsynchronousCommandExecutorTests.class);
 		suite.addTestSuite(BagTests.class);
 		suite.addTestSuite(BidiFilterTests.class);
 		suite.addTestSuite(BidiStringConverterTests.class);
@@ -45,10 +46,6 @@ public class JptCommonUtilityTests {
 		suite.addTestSuite(ClasspathTests.class);
 		suite.addTestSuite(ClassNameTests.class);
 		suite.addTestSuite(CollectionToolsTests.class);
-		suite.addTestSuite(CommandExecutorTests.class);
-		suite.addTestSuite(CommandRunnableTests.class);
-		suite.addTestSuite(CommandTests.class);
-		suite.addTestSuite(CompositeCommandTests.class);
 		suite.addTestSuite(ExceptionHandlerTests.class);
 		suite.addTestSuite(FileToolsTests.class);
 		suite.addTestSuite(FilterTests.class);
@@ -87,5 +84,4 @@ public class JptCommonUtilityTests {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

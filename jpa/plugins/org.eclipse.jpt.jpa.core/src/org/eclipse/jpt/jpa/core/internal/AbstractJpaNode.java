@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTModifiedDeclaration.Adapter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
@@ -100,9 +101,9 @@ public abstract class AbstractJpaNode
 
 	// ********** IAdaptable implementation **********
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object getAdapter(Class adapter) {
-		return Platform.getAdapterManager().getAdapter(this, adapter);
+		return PlatformTools.getAdapter(this, adapter);
 	}
 
 
@@ -116,8 +117,15 @@ public abstract class AbstractJpaNode
 		return this.parent.getResource();
 	}
 
+	/**
+	 * @see AbstractJpaProject#getJpaProject()
+	 */
 	public JpaProject getJpaProject() {
 		return this.parent.getJpaProject();
+	}
+
+	public JpaProject.Manager getJpaProjectManager() {
+		return this.getJpaProject().getManager();
 	}
 
 
@@ -127,7 +135,11 @@ public abstract class AbstractJpaNode
 		return this.getJpaProject().getJavaProject();
 	}
 
-	protected JpaPlatform getJpaPlatform() {
+	/**
+	 * This is <code>public</code> as a convenience because various subclasses
+	 * implement interfaces that require this method.
+	 */
+	public JpaPlatform getJpaPlatform() {
 		return this.getJpaProject().getJpaPlatform();
 	}
 	
@@ -179,6 +191,30 @@ public abstract class AbstractJpaNode
 	protected Catalog resolveDbCatalog(String catalog) {
 		Database database = this.getDatabase();
 		return (database == null) ? null : database.getCatalogForIdentifier(catalog);
+	}
+
+
+	// ********** logging **********
+
+	/**
+	 * Log the specified message.
+	 */
+	protected void log(String msg) {
+		this.getJpaProjectManager().log(msg);
+	}
+
+	/**
+	 * Log the specified exception/error.
+	 */
+	protected void log(Throwable throwable) {
+		this.getJpaProjectManager().log(throwable);
+	}
+
+	/**
+	 * Log the specified message and exception/error.
+	 */
+	protected void log(String msg, Throwable throwable) {
+		this.getJpaProjectManager().log(msg, throwable);
 	}
 
 
@@ -245,8 +281,9 @@ public abstract class AbstractJpaNode
 	 * @param <C> the type of context elements
 	 * @param <R> the type of resource elements
 	 */
-	protected abstract class CollectionContainer<C, R> {
-
+	protected abstract class CollectionContainer<C, R>
+		implements Iterable<C>
+	{
 		protected final Vector<C> contextElements = new Vector<C>();
 
 		protected CollectionContainer() {
@@ -291,6 +328,10 @@ public abstract class AbstractJpaNode
 			return new LiveCloneIterable<C>(this.contextElements);
 		}
 
+		public Iterator<C> iterator() {
+			return new CloneIterator<C>(this.contextElements);
+		}
+
 		/**
 		 * Return the size of the context elements collection
 		 */
@@ -307,26 +348,46 @@ public abstract class AbstractJpaNode
 		}
 
 		/**
-		 * Add the specified context element to the collection ignoring
-		 * the specified index as we only have a collection
+		 * Add the specified context element to the container at the specified
+		 * index.
 		 */
-		protected C addContextElement_(@SuppressWarnings("unused") int index, C contextElement) {
-			AbstractJpaNode.this.addItemToCollection(contextElement, this.contextElements, this.getContextElementsPropertyName());
-			return contextElement;
+		protected abstract C addContextElement_(int index, C element);
+
+		/**
+		 * Add context elements for the specified resource elements at the
+		 * specified index.
+		 */
+		public Iterable<C> addContextElements(int index, Iterable<R> resourceElements) {
+			ArrayList<C> newContextElements = new ArrayList<C>();
+			for (R resourceElement : resourceElements) {
+				newContextElements.add(this.buildContextElement(resourceElement));
+			}
+			return this.addAll(index, newContextElements);
 		}
+
+		/**
+		 * Add the specified context elements to the collection.
+		 */
+		protected abstract Iterable<C> addAll(int index, Iterable<C> elements);
 
 		/**
 		 * Remove the specified context element from the container.
 		 */
-		public void removeContextElement(C element) {
-			AbstractJpaNode.this.removeItemFromCollection(element, this.contextElements, this.getContextElementsPropertyName());
-		}
+		public abstract void removeContextElement(C element);
 
-		@SuppressWarnings("unused") 
-		protected void moveContextElement(int index, C element) {
-			//no-op, not a list
+		/**
+		 * Remove the specified context elements from the container.
+		 */
+		public abstract void removeAll(Iterable<C> elements);
+
+		protected abstract void moveContextElement(int index, C element);
+
+		@Override
+		public String toString() {
+			return this.contextElements.toString();
 		}
 	}
+
 
 	/**
 	 * Adapter used to synchronize a context collection container with its corresponding
@@ -334,9 +395,10 @@ public abstract class AbstractJpaNode
 	 * @param <C> the type of context elements
 	 * @param <R> the type of resource elements
 	 */
-	protected abstract class ContextCollectionContainer<C extends JpaContextNode, R> extends CollectionContainer<C, R> {
-
-		protected ContextCollectionContainer() {
+	protected abstract class AbstractContextCollectionContainer<C extends JpaContextNode, R>
+		extends CollectionContainer<C, R>
+	{
+		protected AbstractContextCollectionContainer() {
 			super();
 		}
 
@@ -417,6 +479,134 @@ public abstract class AbstractJpaNode
 		}
 	}
 
+
+	/**
+	 * Adapter used to synchronize a context collection container with its corresponding
+	 * resource container.
+	 * @param <C> the type of context elements
+	 * @param <R> the type of resource elements
+	 */
+	protected abstract class ContextCollectionContainer<C extends JpaContextNode, R>
+		extends AbstractContextCollectionContainer<C, R>
+	{
+		protected ContextCollectionContainer() {
+			super();
+		}
+
+		@Override
+		protected C addContextElement_(int index, C element) {
+			// ignore the index - not a list
+			AbstractJpaNode.this.addItemToCollection(element, this.contextElements, this.getContextElementsPropertyName());
+			return element;
+		}
+
+		@Override
+		protected Iterable<C> addAll(int index, Iterable<C> elements) {
+			// ignore the index - not a list
+			AbstractJpaNode.this.addItemsToCollection(elements, this.contextElements, this.getContextElementsPropertyName());
+			return elements;
+		}
+
+		@Override
+		public void removeContextElement(C element) {
+			AbstractJpaNode.this.removeItemFromCollection(element, this.contextElements, this.getContextElementsPropertyName());
+		}
+
+		@Override
+		public void removeAll(Iterable<C> elements) {
+			AbstractJpaNode.this.removeItemsFromCollection(elements, this.contextElements, this.getContextElementsPropertyName());
+		}
+
+		@Override
+		protected void moveContextElement(int index, C element) {
+			// NOP - not a list
+		}
+	}
+
+
+	/**
+	 * Adapter used to synchronize a context list container with its corresponding
+	 * resource container.
+	 * @param <C> the type of context elements
+	 * @param <R> the type of resource elements
+	 */
+	protected abstract class ContextListContainer<C extends JpaContextNode, R>
+		extends AbstractContextCollectionContainer<C, R>
+	{
+		protected ContextListContainer() {
+			super();
+		}
+
+		@Override
+		public ListIterable<C> getContextElements() {
+			return new LiveCloneListIterable<C>(this.contextElements);
+		}
+
+		@Override
+		protected abstract ListIterable<R> getResourceElements();
+
+		/**
+		 * Return the index of the specified context element.
+		 */
+		public int indexOfContextElement(C element) {
+			return this.contextElements.indexOf(element);
+		}
+
+		public C getContextElement(int index) {
+			return this.contextElements.elementAt(index);
+		}
+
+		@Override
+		protected C addContextElement_(int index, C element) {
+			AbstractJpaNode.this.addItemToList(index, element, this.contextElements, this.getContextElementsPropertyName());
+			return element;
+		}
+
+		@Override
+		protected Iterable<C> addAll(int index, Iterable<C> elements) {
+			AbstractJpaNode.this.addItemsToList(index, elements, this.contextElements, this.getContextElementsPropertyName());
+			return elements;
+		}
+
+		/**
+		 * Move the context element at the specified target index to the 
+		 * specified source index.
+		 */
+		public void moveContextElement(int targetIndex, int sourceIndex) {
+			AbstractJpaNode.this.moveItemInList(targetIndex, sourceIndex, this.contextElements, this.getContextElementsPropertyName());
+		}
+
+		@Override
+		public void moveContextElement(int index, C element) {
+			AbstractJpaNode.this.moveItemInList(index, element, this.contextElements, this.getContextElementsPropertyName());
+		}
+
+		/**
+		 * clear the list of context elements
+		 */
+		public void clearContextList() {
+			AbstractJpaNode.this.clearList(this.contextElements, getContextElementsPropertyName());
+		}
+
+		/**
+		 * Remove the context element at the specified index from the container.
+		 */
+		public C removeContextElement(int index) {
+			return AbstractJpaNode.this.removeItemFromList(index, this.contextElements, this.getContextElementsPropertyName());
+		}
+
+		@Override
+		public void removeContextElement(C element) {
+			this.removeContextElement(this.indexOfContextElement(element));
+		}
+
+		@Override
+		public void removeAll(Iterable<C> elements) {
+			AbstractJpaNode.this.removeItemsFromList(elements, this.contextElements, this.getContextElementsPropertyName());
+		}
+	}
+
+
 	/**
 	 * Adapter used to synchronize a context list container with its corresponding
 	 * resource container.
@@ -424,8 +614,8 @@ public abstract class AbstractJpaNode
 	 * @param <R> the type of resource elements
 	 */
 	protected abstract class ListContainer<C, R>
-		extends CollectionContainer<C, R> {
-
+		extends CollectionContainer<C, R>
+	{
 		protected ListContainer() {
 			super();
 		}
@@ -441,22 +631,24 @@ public abstract class AbstractJpaNode
 		/**
 		 * Return the index of the specified context element.
 		 */
-		public int indexOfContextElement(C contextElement) {
-			return this.contextElements.indexOf(contextElement);
+		public int indexOfContextElement(C element) {
+			return this.contextElements.indexOf(element);
 		}
 
 		public C getContextElement(int index) {
-			return this.contextElements.elementAt(index);
+			return this.contextElements.get(index);
 		}
 
-		/**
-		 * Add a context element for the specified resource element at the
-		 * specified index.
-		 */
 		@Override
-		protected C addContextElement_(int index, C contextElement) {
-			AbstractJpaNode.this.addItemToList(index, contextElement, this.contextElements, this.getContextElementsPropertyName());
-			return contextElement;
+		protected C addContextElement_(int index, C element) {
+			AbstractJpaNode.this.addItemToList(index, element, this.contextElements, this.getContextElementsPropertyName());
+			return element;
+		}
+
+		@Override
+		protected Iterable<C> addAll(int index, Iterable<C> newContextElements) {
+			AbstractJpaNode.this.addItemsToList(index, newContextElements, this.contextElements, this.getContextElementsPropertyName());
+			return newContextElements;
 		}
 
 		/**
@@ -464,15 +656,17 @@ public abstract class AbstractJpaNode
 		 * specified source index.
 		 */
 		public void moveContextElement(int targetIndex, int sourceIndex) {
-			this.moveContextElement(targetIndex, this.contextElements.get(sourceIndex));
+			AbstractJpaNode.this.moveItemInList(targetIndex, sourceIndex, this.contextElements, this.getContextElementsPropertyName());
 		}
 
-		/**
-		 * Move the specified context element to the specified index.
-		 */
 		@Override
 		public void moveContextElement(int index, C element) {
 			AbstractJpaNode.this.moveItemInList(index, element, this.contextElements, this.getContextElementsPropertyName());
+		}
+
+		@Override
+		public void removeContextElement(C element) {
+			this.removeContextElement(this.indexOfContextElement(element));
 		}
 
 		/**
@@ -480,6 +674,11 @@ public abstract class AbstractJpaNode
 		 */
 		public void removeContextElement(int index) {
 			AbstractJpaNode.this.removeItemFromList(index, this.contextElements, this.getContextElementsPropertyName());
+		}
+
+		@Override
+		public void removeAll(Iterable<C> elements) {
+			AbstractJpaNode.this.removeItemsFromList(elements, this.contextElements, this.getContextElementsPropertyName());
 		}
 
 		public void synchronizeWithResourceModel() {
@@ -501,84 +700,6 @@ public abstract class AbstractJpaNode
 			for ( ; index < this.getContextElementsSize(); ) {
 				this.removeContextElement(index);
 			}
-		}
-	}
-
-	/**
-	 * Adapter used to synchronize a context list container with its corresponding
-	 * resource container.
-	 * @param <C> the type of context elements
-	 * @param <R> the type of resource elements
-	 */
-	protected abstract class ContextListContainer<C extends JpaContextNode, R>
-		extends ContextCollectionContainer<C, R> {
-
-		protected ContextListContainer() {
-			super();
-		}
-
-		@Override
-		public ListIterable<C> getContextElements() {
-			return new LiveCloneListIterable<C>(this.contextElements);
-		}
-
-		@Override
-		protected abstract ListIterable<R> getResourceElements();
-
-		/**
-		 * Return the index of the specified context element.
-		 */
-		public int indexOfContextElement(C contextElement) {
-			return this.contextElements.indexOf(contextElement);
-		}
-
-		public C getContextElement(int index) {
-			return this.contextElements.elementAt(index);
-		}
-
-		/**
-		 * Add a context element for the specified resource element at the
-		 * specified index.
-		 */
-		@Override
-		protected C addContextElement_(int index, C contextElement) {
-			AbstractJpaNode.this.addItemToList(index, contextElement, this.contextElements, this.getContextElementsPropertyName());
-			return contextElement;
-		}
-
-		/**
-		 * Move the context element at the specified target index to the 
-		 * specified source index.
-		 */
-		public void moveContextElement(int targetIndex, int sourceIndex) {
-			this.moveContextElement(targetIndex, this.contextElements.get(sourceIndex));
-		}
-
-		/**
-		 * clear the list of context elements
-		 */
-		public void clearContextList() {
-			AbstractJpaNode.this.clearList(this.contextElements, getContextElementsPropertyName());
-		}
-
-		/**
-		 * Move the specified context element to the specified index.
-		 */
-		@Override
-		public void moveContextElement(int index, C element) {
-			AbstractJpaNode.this.moveItemInList(index, element, this.contextElements, this.getContextElementsPropertyName());
-		}
-
-		/**
-		 * Remove the context element at the specified index from the container.
-		 */
-		public C removeContextElement(int index) {
-			return AbstractJpaNode.this.removeItemFromList(index, this.contextElements, this.getContextElementsPropertyName());
-		}
-
-		@Override
-		public void removeContextElement(C contextElement) {
-			this.removeContextElement(this.indexOfContextElement(contextElement));
 		}
 	}
 }

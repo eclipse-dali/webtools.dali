@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,20 +14,22 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 /**
  * This abstract class provides the infrastructure needed to wrap
  * a model, "lazily" listen to it, and convert
- * its change notifications into property value model change
+ * its change notifications into <em>property</em> value model change
  * notifications.
  * <p>
  * Subclasses must implement:<ul>
  * <li>{@link #buildValue()}<p>
  *     to return the current property value, as derived from the
- *     current model
+ *     current state of the underlying model
  * <li>{@link #engageModel_()}<p>
- *     to start listening to the adapted model
+ *     to start listening to the underlying (adapted) model
  * <li>{@link #disengageModel_()}<p>
- *     to stop listening to the adapted model
+ *     to stop listening to the underlying (adapted) model
  * </ul>
  * Subclasses can call {@link #propertyChanged()} whenever the calculated
  * value of the property changes (as determined by the subclass).
+ * 
+ * @param <V> the type of the model's value
  */
 public abstract class AbstractPropertyValueModelAdapter<V>
 	extends AbstractPropertyValueModel
@@ -39,7 +41,7 @@ public abstract class AbstractPropertyValueModelAdapter<V>
 	 * We need this because the value may be calculated and we may
 	 * not able to derive the "old value" from any fired events.
 	 */
-	protected V value;
+	protected volatile V value;
 
 
 	// ********** constructor/initialization **********
@@ -64,18 +66,18 @@ public abstract class AbstractPropertyValueModelAdapter<V>
 	// ********** behavior **********
 
 	/**
-	 * Start listening to the model and build the value.
+	 * Start listening to the underlying model and build the value.
 	 */
 	@Override
 	protected void engageModel() {
 		this.engageModel_();
-		// synch our value *after* we start listening to the model,
+		// sync our value *after* we start listening to the model,
 		// since the model's value might change when a listener is added
 		this.value = this.buildValue();
 	}
 
 	/**
-	 * Start listening to the model.
+	 * Start listening to the underlying model.
 	 */
 	protected abstract void engageModel_();
 
@@ -86,7 +88,7 @@ public abstract class AbstractPropertyValueModelAdapter<V>
 	protected abstract V buildValue();
 
 	/**
-	 * Stop listening to the model and clear the value.
+	 * Stop listening to the underlying model and clear the value.
 	 */
 	@Override
 	protected void disengageModel() {
@@ -96,13 +98,13 @@ public abstract class AbstractPropertyValueModelAdapter<V>
 	}
 
 	/**
-	 * Stop listening to the model.
+	 * Stop listening to the underlying model.
 	 */
 	protected abstract void disengageModel_();
 
 	/**
 	 * The underlying model changed in some fashion.
-	 * Recalculate the value and notify any listeners.
+	 * Recalculate the model's value and notify listeners.
 	 */
 	protected void propertyChanged() {
 		Object old = this.value;
@@ -113,5 +115,4 @@ public abstract class AbstractPropertyValueModelAdapter<V>
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);
 	}
-
 }

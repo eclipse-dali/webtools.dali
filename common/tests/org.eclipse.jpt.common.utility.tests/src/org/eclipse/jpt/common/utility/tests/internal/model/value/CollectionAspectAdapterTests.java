@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -326,22 +326,22 @@ public class CollectionAspectAdapterTests extends TestCase {
 
 		@Override
 		protected Iterator<String> iterator_() {
-			if (this.collectionNames[0] == TestSubject.NAMES_COLLECTION) {
+			if (this.aspectNames[0] == TestSubject.NAMES_COLLECTION) {
 				return this.subject.names();
 			}
-			if (this.collectionNames[0] == TestSubject.DESCRIPTIONS_COLLECTION) {
+			if (this.aspectNames[0] == TestSubject.DESCRIPTIONS_COLLECTION) {
 				return this.subject.descriptions();
 			}
-			throw new IllegalStateException("invalid aspect name: " + this.collectionNames[0]);
+			throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
 		}
 
 		public void add(String item) {
-			if (this.collectionNames[0] == TestSubject.NAMES_COLLECTION) {
+			if (this.aspectNames[0] == TestSubject.NAMES_COLLECTION) {
 				this.subject.addName(item);
-			} else if (this.collectionNames[0] == TestSubject.DESCRIPTIONS_COLLECTION) {
+			} else if (this.aspectNames[0] == TestSubject.DESCRIPTIONS_COLLECTION) {
 				this.subject.addDescription(item);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.collectionNames[0]);
+				throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
 			}
 		}
 
@@ -352,12 +352,12 @@ public class CollectionAspectAdapterTests extends TestCase {
 		}
 
 		public void remove(Object item) {
-			if (this.collectionNames[0] == TestSubject.NAMES_COLLECTION) {
+			if (this.aspectNames[0] == TestSubject.NAMES_COLLECTION) {
 				this.subject.removeName((String) item);
-			} else if (this.collectionNames[0] == TestSubject.DESCRIPTIONS_COLLECTION) {
+			} else if (this.aspectNames[0] == TestSubject.DESCRIPTIONS_COLLECTION) {
 				this.subject.removeDescription((String) item);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.collectionNames[0]);
+				throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
 			}
 		}
 
@@ -366,7 +366,5 @@ public class CollectionAspectAdapterTests extends TestCase {
 				this.remove(stream.next());
 			}
 		}
-
 	}
-
 }

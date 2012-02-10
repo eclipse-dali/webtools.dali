@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.internal;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.ObjectReference;
+import org.eclipse.jpt.common.utility.ModifiableObjectReference;
 
 /**
  * Provide a container for passing an object that can be changed by the recipient.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.ObjectReference;
  * @see SynchronizedObject
  */
 public class SimpleObjectReference<V>
-	implements ObjectReference<V>, Cloneable, Serializable
+	implements ModifiableObjectReference<V>, Cloneable, Serializable
 {
 	/** Backing value. */
 	private volatile V value;

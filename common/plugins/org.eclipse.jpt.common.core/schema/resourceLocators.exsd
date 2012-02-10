@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.jpt.common.core" id="resourceLocators" name="Resource Locators"/>
       </appinfo>
       <documentation>
-         Used to provide custom (non-java) resource location logic to JPT projects.
+         Used to provide custom (non-Java) resource location logic to JPT projects.
       </documentation>
    </annotation>
 
@@ -120,7 +120,7 @@
       <documentation>
          &lt;br&gt;
 &lt;p&gt;
-The following example is the included simple java resource locator, which is used for simple java projects.  It is of &quot;lowest&quot; priority, since all JPT projects will at their roots be simple java projects.
+The following example is the included simple Java resource locator, which is used for simple Java projects.  It is of &quot;lowest&quot; priority, since all JPT projects will at their roots be simple Java projects.
 &lt;p&gt;
 &lt;pre&gt;
 &lt;extension  
@@ -147,11 +147,11 @@ The following example is the included simple java resource locator, which is use
       </appinfo>
       <documentation>
          &lt;p&gt;
-The contributed resource locator class must implement &lt;code&gt;org.eclipse.jpt.co9mmon.core.resource.ResourceLocator&lt;/code&gt;.
+The contributed resource locator class must implement &lt;code&gt;org.eclipse.jpt.common.core.resource.ResourceLocator&lt;/code&gt;.
 &lt;p&gt;
 The enablement variables include:
 &lt;ul&gt;
-&lt;li&gt;&quot;project&quot; which gives the current IProject.&lt;/li&gt;
+&lt;li&gt;&quot;project&quot; which gives the current &lt;code&gt;IProject&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/p&gt;
       </documentation>

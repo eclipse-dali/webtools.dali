@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.osgi.util.NLS;
  * @version 3.0
  * @since 1.0
  */
+// TODO bjv rename...
 public class JptUiMessages {
 
 	public static String AccessTypeComposite_access;
@@ -110,6 +111,7 @@ public class JptUiMessages {
 	public static String JpaStructureView_linkWithEditorText;
 	public static String JpaStructureView_linkWithEditorTooltip;
 	public static String JpaStructureView_structureNotAvailable;
+	public static String JpaStructureView_structureProviderNotAvailable;
 	public static String JpaStructureView_numItemsSelected;
 	public static String JpqlContentProposalProvider_Description;
 	public static String MappingFileWizard_title;
@@ -150,6 +152,7 @@ public class JptUiMessages {
 	public static String JpaProblemSeveritiesPage_Warning;
 	public static String SelectJpaOrmMappingFileDialog_newButton;
 	public static String SelectJpaOrmMappingFileDialog_toolTip;
+	public static String SynchronizingClasses_TaskName;
 
 
 	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$

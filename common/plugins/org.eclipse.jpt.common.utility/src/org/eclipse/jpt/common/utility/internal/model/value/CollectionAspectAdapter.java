@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
-import java.util.Arrays;
 import java.util.Collection;
-
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.common.utility.model.listener.CollectionChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
@@ -28,12 +27,15 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * <p>
  * The typical subclass will override the following methods (see the descriptions
  * in {@link AspectCollectionValueModelAdapter}):<ul>
- * <li>{@link #getIterable()}
- * <li>{@link #size_()}
+ * <li>{@link #getIterable()} - preferred
+ * <li>{@link #size_()} - semi-preferred
  * <li>{@link #iterator_()}
  * <li>{@link #iterator()}
  * <li>{@link #size()}
  * </ul>
+ * 
+ * @param <S> the type of the adapter's subject
+ * @param <E> the type of the adapter's collection's elements
  */
 public abstract class CollectionAspectAdapter<S extends Model, E>
 	extends AspectCollectionValueModelAdapter<S, E>
@@ -41,47 +43,47 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	/**
 	 * The name of the subject's collections that we use for the value.
 	 */
-	protected final String[] collectionNames;
-		protected static final String[] EMPTY_COLLECTION_NAMES = new String[0];
+	protected final String[] aspectNames;
+		protected static final String[] EMPTY_ASPECT_NAMES = new String[0];
 
 	/** A listener that listens to the subject's collection aspects. */
-	protected final CollectionChangeListener collectionChangeListener;
+	protected final CollectionChangeListener aspectChangeListener;
 
 
 	// ********** constructors **********
 
 	/**
 	 * Construct a collection aspect adapter for the specified subject
-	 * and collection.
+	 * and collection aspect.
 	 */
-	protected CollectionAspectAdapter(String collectionName, S subject) {
-		this(new String[] {collectionName}, subject);
+	protected CollectionAspectAdapter(String aspectName, S subject) {
+		this(new String[] {aspectName}, subject);
 	}
 
 	/**
 	 * Construct a collection aspect adapter for the specified subject
-	 * and collections.
+	 * and collection aspects.
 	 */
-	protected CollectionAspectAdapter(String[] collectionNames, S subject) {
-		this(new StaticPropertyValueModel<S>(subject), collectionNames);
+	protected CollectionAspectAdapter(String[] aspectNames, S subject) {
+		this(new StaticPropertyValueModel<S>(subject), aspectNames);
+	}
+
+	/**
+	 * Construct a collection aspect adapter for the specified subject model
+	 * and collection apects.
+	 */
+	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectModel, String... aspectNames) {
+		super(subjectModel);
+		this.aspectNames = aspectNames;
+		this.aspectChangeListener = this.buildAspectChangeListener();
 	}
 
 	/**
 	 * Construct a collection aspect adapter for the specified subject holder
-	 * and collections.
+	 * and collection aspects.
 	 */
-	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... collectionNames) {
-		super(subjectHolder);
-		this.collectionNames = collectionNames;
-		this.collectionChangeListener = this.buildCollectionChangeListener();
-	}
-
-	/**
-	 * Construct a collection aspect adapter for the specified subject holder
-	 * and collections.
-	 */
-	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> collectionNames) {
-		this(subjectHolder, collectionNames.toArray(new String[collectionNames.size()]));
+	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectModel, Collection<String> aspectNames) {
+		this(subjectModel, aspectNames.toArray(new String[aspectNames.size()]));
 	}
 
 	/**
@@ -90,33 +92,40 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new collection.
 	 */
-	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
-		this(subjectHolder, EMPTY_COLLECTION_NAMES);
+	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectModel) {
+		this(subjectModel, EMPTY_ASPECT_NAMES);
 	}
 
 
 	// ********** initialization **********
 
-	protected CollectionChangeListener buildCollectionChangeListener() {
-		// transform the subject's collection change events into VALUES collection change events
-		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionAddEvent event) {
-				CollectionAspectAdapter.this.itemsAdded(event);
-			}
-			public void itemsRemoved(CollectionRemoveEvent event) {
-				CollectionAspectAdapter.this.itemsRemoved(event);
-			}
-			public void collectionCleared(CollectionClearEvent event) {
-				CollectionAspectAdapter.this.collectionCleared(event);
-			}
-			public void collectionChanged(CollectionChangeEvent event) {
-				CollectionAspectAdapter.this.collectionChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "collection change listener: " + Arrays.asList(CollectionAspectAdapter.this.collectionNames); //$NON-NLS-1$
-			}
-		};
+	protected CollectionChangeListener buildAspectChangeListener() {
+		return new AspectChangeListener();
+	}
+
+	/**
+	 * Transform the subject's collection change events into {@link #VALUES}
+	 * collection change events
+	 */
+	protected class AspectChangeListener
+		extends CollectionChangeAdapter
+	{
+		@Override
+		public void itemsAdded(CollectionAddEvent event) {
+			CollectionAspectAdapter.this.aspectItemsAdded(event);
+		}
+		@Override
+		public void itemsRemoved(CollectionRemoveEvent event) {
+			CollectionAspectAdapter.this.aspectItemsRemoved(event);
+		}
+		@Override
+		public void collectionCleared(CollectionClearEvent event) {
+			CollectionAspectAdapter.this.aspectCollectionCleared(event);
+		}
+		@Override
+		public void collectionChanged(CollectionChangeEvent event) {
+			CollectionAspectAdapter.this.aspectCollectionChanged(event);
+		}
 	}
 
 
@@ -124,35 +133,34 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 
 	@Override
 	protected void engageSubject_() {
-    	for (String collectionName : this.collectionNames) {
-			((Model) this.subject).addCollectionChangeListener(collectionName, this.collectionChangeListener);
+    	for (String collectionName : this.aspectNames) {
+			this.subject.addCollectionChangeListener(collectionName, this.aspectChangeListener);
 		}
 	}
 
 	@Override
 	protected void disengageSubject_() {
-    	for (String collectionName : this.collectionNames) {
-			((Model) this.subject).removeCollectionChangeListener(collectionName, this.collectionChangeListener);
+    	for (String collectionName : this.aspectNames) {
+			this.subject.removeCollectionChangeListener(collectionName, this.aspectChangeListener);
 		}
 	}
 
 
-	// ********** behavior **********
+	// ********** events **********
 
-	protected void itemsAdded(CollectionAddEvent event) {
+	protected void aspectItemsAdded(CollectionAddEvent event) {
 		this.fireItemsAdded(event.clone(this, VALUES));
 	}
 
-	protected void itemsRemoved(CollectionRemoveEvent event) {
+	protected void aspectItemsRemoved(CollectionRemoveEvent event) {
 		this.fireItemsRemoved(event.clone(this, VALUES));
 	}
 
-	protected void collectionCleared(CollectionClearEvent event) {
+	protected void aspectCollectionCleared(CollectionClearEvent event) {
 		this.fireCollectionCleared(event.clone(this, VALUES));
 	}
 
-	protected void collectionChanged(CollectionChangeEvent event) {
+	protected void aspectCollectionChanged(CollectionChangeEvent event) {
 		this.fireCollectionChanged(event.clone(this, VALUES));
 	}
-
 }

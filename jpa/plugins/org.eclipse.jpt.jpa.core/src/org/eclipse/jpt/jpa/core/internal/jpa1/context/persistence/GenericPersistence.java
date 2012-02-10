@@ -10,13 +10,16 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceStructureNodes;
+import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
@@ -82,18 +85,30 @@ public class GenericPersistence
 		return (this.persistenceUnit == null) ? 0 : 1;
 	}
 
+	public PersistenceUnit getPersistenceUnit(int index) {
+		if ((index != 0) || (this.persistenceUnit == null)) {
+			throw this.buildIOOBE(index);
+		}
+		return this.persistenceUnit;
+	}
+
+	protected IndexOutOfBoundsException buildIOOBE(int index) {
+		return new IndexOutOfBoundsException("index: " + index); //$NON-NLS-1$
+	}
+
 	public PersistenceUnit addPersistenceUnit() {
 		return this.addPersistenceUnit(this.getPersistenceUnitsSize());
 	}
 
 	public PersistenceUnit addPersistenceUnit(int index) {
-		if ((index > 0) || (this.persistenceUnit != null)) {
-			throw new IllegalStateException("This implementation does not support multiple persistence units."); //$NON-NLS-1$
+		if ((index != 0) || (this.persistenceUnit != null)) {
+			throw this.buildIOOBE(index);
 		}
 		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		this.persistenceUnit = this.buildPersistenceUnit(xmlPersistenceUnit);
 		this.xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
 		this.fireItemAdded(PERSISTENCE_UNITS_LIST, index, this.persistenceUnit);
+		this.persistenceUnit.setName(this.getJpaProject().getName());  // default to the project name
 		return this.persistenceUnit;
 	}
 
@@ -105,8 +120,8 @@ public class GenericPersistence
 	}
 
 	public void removePersistenceUnit(int index) {
-		if ((index > 0) || (this.persistenceUnit == null)) {
-			throw new IndexOutOfBoundsException("index: " + index); //$NON-NLS-1$
+		if ((index != 0) || (this.persistenceUnit == null)) {
+			throw this.buildIOOBE(index);
 		}
 		PersistenceUnit old = this.persistenceUnit;
 		this.persistenceUnit.dispose();
@@ -164,7 +179,6 @@ public class GenericPersistence
 		return this.getContextNodeFactory().buildPersistenceUnit(this, xmlPersistenceUnit);
 	}
 
-
 	// ********** metamodel **********
 
 	public void initializeMetamodel() {
@@ -173,10 +187,14 @@ public class GenericPersistence
 		}
 	}
 
-	public void synchronizeMetamodel() {
+	public IStatus synchronizeMetamodel(IProgressMonitor monitor) {
 		for (PersistenceUnit pu : this.getPersistenceUnits()) {
-			((PersistenceUnit2_0) pu).synchronizeMetamodel();
+			IStatus status = ((PersistenceUnit2_0) pu).synchronizeMetamodel(monitor);
+			if (status.getSeverity() == IStatus.CANCEL) {
+				return status;  // seems reasonable...
+			}
 		}
+		return Status.OK_STATUS;
 	}
 
 	public void disposeMetamodel() {
@@ -204,7 +222,7 @@ public class GenericPersistence
 		return (PersistenceXml) super.getParent();
 	}
 
-	protected PersistenceXml getPersistenceXml() {
+	public PersistenceXml getPersistenceXml() {
 		return this.getParent();
 	}
 
@@ -216,8 +234,12 @@ public class GenericPersistence
 
 	// ********** JpaStructureNode implementation **********
 
-	public String getId() {
-		return PersistenceStructureNodes.PERSISTENCE_ID;
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
+
+	public Class<Persistence> getType() {
+		return Persistence.class;
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
@@ -297,5 +319,4 @@ public class GenericPersistence
 		}
 		this.persistenceUnit.validate(messages, reporter);
 	}
-
 }

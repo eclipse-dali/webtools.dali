@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,13 +15,13 @@ import org.eclipse.jpt.common.utility.tests.internal.model.value.prefs.JptUtilit
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.JptUtilityModelValueSwingTests;
 
 public class JptUtilityModelValueTests {
-	
+
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptUtilityModelValueTests.class.getPackage().getName());
 
 		suite.addTest(JptUtilityModelValuePrefsTests.suite());
 		suite.addTest(JptUtilityModelValueSwingTests.suite());
-		
+
 		suite.addTestSuite(BufferedWritablePropertyValueModelTests.class);
 		suite.addTestSuite(CachingTransformationPropertyValueModelTests.class);
 		suite.addTestSuite(CachingTransformationWritablePropertyValueModelTests.class);
@@ -32,6 +32,8 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(CompositeCollectionValueModelTests.class);
 		suite.addTestSuite(CompositeListValueModelTests.class);
 		suite.addTestSuite(CompositePropertyValueModelTests.class);
+		suite.addTestSuite(DoublePropertyValueModelTests.class);
+		suite.addTestSuite(DoubleModifiablePropertyValueModelTests.class);
 		suite.addTestSuite(ExtendedListValueModelWrapperTests.class);
 		suite.addTestSuite(FilteringCollectionValueModelTests.class);
 		suite.addTestSuite(FilteringPropertyValueModelTests.class);
@@ -61,7 +63,6 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(TransformationListValueModelTests.class);
 		suite.addTestSuite(TransformationListValueModelTests.TransformerTests.class);
 		suite.addTestSuite(TransformationPropertyValueModelTests.class);
-		suite.addTestSuite(TreeAspectAdapterTests.class);
 		suite.addTestSuite(ValueCollectionAdapterTests.class);
 		suite.addTestSuite(ValueListAdapterTests.class);
 		suite.addTestSuite(ValuePropertyAdapterTests.class);
@@ -69,10 +70,9 @@ public class JptUtilityModelValueTests {
 	
 		return suite;
 	}
-	
+
 	private JptUtilityModelValueTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}
-	
 }

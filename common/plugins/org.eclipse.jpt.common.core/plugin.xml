@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <!--
-	Copyright (c) 2011 Oracle. All rights reserved.
-	This program and the accompanying materials are made available under the
-	terms of the Eclipse Public License v1.0, which accompanies this distribution
-	and is available at http://www.eclipse.org/legal/epl-v10.html.
-	
-	Contributors:
-		Oracle - initial API and implementation
+  Copyright (c) 2011, 2012 Oracle. All rights reserved.
+  This program and the accompanying materials are made available under the
+  terms of the Eclipse Public License v1.0, which accompanies this distribution
+  and is available at http://www.eclipse.org/legal/epl-v10.html.
+
+  Contributors:
+    Oracle - initial API and implementation
  -->
  
 <plugin>
@@ -26,7 +26,29 @@
 		schema="schema/resourceLocators.exsd"/>
 
 
-	<!-- ***** Eclipse core extensions ***** -->
+	<!-- ***** adapters ***** -->
+
+	<extension
+		point="org.eclipse.core.runtime.adapters">
+
+		<!-- IProject -> ProjectResourceLocator -->
+		<factory
+			adaptableType="org.eclipse.core.resources.IProject"
+			class="org.eclipse.jpt.common.core.internal.resource.ProjectAdapterFactory">
+			<adapter type="org.eclipse.jpt.common.core.resource.ProjectResourceLocator"/>
+		</factory>
+
+		<!-- ResourceReference -> IResource -->
+		<factory
+			adaptableType="org.eclipse.jpt.common.core.ResourceReference"
+			class="org.eclipse.jpt.common.core.internal.ResourceReferenceAdapterFactory">
+			<adapter type="org.eclipse.core.resources.IResource"/>
+		</factory>
+
+	</extension>
+	
+	
+	<!-- ***** content types ***** -->
 	
 	<extension
 		point="org.eclipse.core.contenttype.contentTypes">
@@ -54,17 +76,7 @@
 	</extension>
 	
 	
-	<extension
-		point="org.eclipse.core.runtime.adapters">
-		
-		<factory
-			class="org.eclipse.jpt.common.core.internal.ResourceAdapterFactory"
-			adaptableType="org.eclipse.core.resources.IResource">
-			<adapter type="org.eclipse.jpt.common.core.IResourcePart"/>
-		</factory>
-		
-	</extension>
-	
+	<!-- ***** property testers ***** -->
 	
 	<extension 
 		point="org.eclipse.core.expressions.propertyTesters">
@@ -74,10 +86,12 @@
 			type="org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider"
 			namespace="org.eclipse.jpt.common.core"
 			properties="id, extendsId"
-			class="org.eclipse.jpt.common.core.internal.libprov.LibraryProviderPropertyTester"/>
+			class="org.eclipse.jpt.common.core.internal.LibraryProviderPropertyTester"/>
 		
 	</extension>
 	
+	
+	<!-- ***** Dali extensions (eat our own dogfood) ***** -->
 	
 	<extension
 		point="org.eclipse.jpt.common.core.resourceLocators">
@@ -141,6 +155,8 @@
 	</extension>
 	
 	
+	<!-- ***** WTP Library Provider Framework Integration ***** -->
+
 	<extension 
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
 		

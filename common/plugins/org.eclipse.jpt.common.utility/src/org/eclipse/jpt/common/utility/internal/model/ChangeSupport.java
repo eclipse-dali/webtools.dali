@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -72,7 +72,7 @@ import org.eclipse.jpt.common.utility.model.listener.TreeChangeListener;
  * <p>
  * <strong>NB3:</strong> Any listener that is added during the firing of events will <em>not</em> be
  * also notified. This is a bit inconsistent with NB2, but seems reasonable
- * since any added listener should already be in synch with the model.
+ * since any added listener should already be in sync with the model.
  * <p>
  * <strong>NB4:</strong> This class is serializable, but it will only write out listeners that
  * are also serializable while silently leaving behind listeners that are not.

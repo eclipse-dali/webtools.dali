@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,16 +18,14 @@ package org.eclipse.jpt.common.utility.model.value;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @param <T> the type of value held by the model
+ * @param <V> the type of value held by the model
  */
-public interface WritablePropertyValueModel<T>
-	extends PropertyValueModel<T>
+public interface WritablePropertyValueModel<V>
+	extends PropertyValueModel<V>
 {
-
 	/**
 	 * Set the value and fire a property change notification.
 	 * @see PropertyValueModel#VALUE
 	 */
-	void setValue(T value);
-
+	void setValue(V value);
 }

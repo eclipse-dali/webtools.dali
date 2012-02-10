@@ -1,29 +1,30 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2011  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.wizards.orm;
 
-import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.*;
-import static org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.FILE_NAME;
+import static org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT;
+import static org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties.PERSISTENCE_UNIT;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -31,8 +32,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -112,33 +113,40 @@ public class MappingFileWizard extends Wizard
 		if (selection instanceof JpaContextNode) {
 			// may be null if node is above level of persistence unit, but in those cases
 			// null is the expected result
-			try {
-				return ((JpaContextNode) selection).getPersistenceUnit();
-			}
-			catch (Exception e) { /* do nothing, just continue */ }
+			return ((JpaContextNode) selection).getPersistenceUnit();
 		}
-		
-		if (selection instanceof IAdaptable) {
-			JpaContextNode node = (JpaContextNode) ((IAdaptable) selection).getAdapter(JpaContextNode.class);
-			if (node != null) {
-				return node.getPersistenceUnit();
-			}
-		}
-		
-		//also get the persistence unit for a given jpa project selection
-		if (selection instanceof IAdaptable) {
-			JpaProject jpaProject = (JpaProject) ((IAdaptable) selection).getAdapter(JpaProject.class);
-			if (jpaProject != null) {
-				PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
-				if (persistenceXml != null){
-					Persistence persistence = persistenceXml.getPersistence();
-					if (persistence != null && persistence.getPersistenceUnitsSize() > 0) {
-						return persistence.getPersistenceUnits().iterator().next();
-					}
+
+		// also get the persistence unit for a given jpa project selection
+		JpaProject jpaProject = this.getJpaProject(selection);
+		if (jpaProject != null) {
+			PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
+			if (persistenceXml != null){
+				Persistence persistence = persistenceXml.getPersistence();
+				if ((persistence != null) && (persistence.getPersistenceUnitsSize() > 0)) {
+					return persistence.getPersistenceUnit(0);
 				}
 			}
 		}
 		return null;
+	}
+	
+	private JpaProject getJpaProject(Object selection) {
+		IProject project = this.getProject(selection);
+		return (project == null) ? null : this.getJpaProject(project);
+	}
+	
+	private IProject getProject(Object selection) {
+		if (selection instanceof IJavaProject) {
+			return ((IJavaProject) selection).getProject();
+		}
+		if (selection instanceof IProject) {
+			return (IProject) selection;
+		}
+		return null;
+	}
+	
+	private JpaProject getJpaProject(IProject project) {
+		return (JpaProject) project.getAdapter(JpaProject.class);
 	}
 	
 	private IContainer extractContainer(PersistenceUnit pUnit, Object selection) {
@@ -155,27 +163,26 @@ public class MappingFileWizard extends Wizard
 			return getDefaultContainer(((JpaContextNode) selection).getJpaProject().getProject());
 		}
 		
-		if (selection instanceof IAdaptable) {
-			IResource resource = (IResource) ((IAdaptable) selection).getAdapter(IResource.class);
-			if (resource != null) {
-				if (resource instanceof IProject) {
-					return getDefaultContainer((IProject) resource);
-				}
-				else if (resource instanceof IContainer) {
-					return (IContainer) resource;
-				}
+		IResource resource = PlatformTools.getAdapter(selection, IResource.class);
+		if (resource != null) {
+			if (resource instanceof IProject) {
+				return getDefaultContainer((IProject) resource);
 			}
-			JpaContextNode node = (JpaContextNode) ((IAdaptable) selection).getAdapter(JpaContextNode.class);
-			if (node != null) {
-				return getDefaultContainer(node.getJpaProject().getProject());
+			if (resource instanceof IContainer) {
+				return (IContainer) resource;
 			}
+		}
+		JpaContextNode node = PlatformTools.getAdapter(selection, JpaContextNode.class);
+		if (node != null) {
+			return getDefaultContainer(node.getJpaProject().getProject());
 		}
 		return null;
 	}
 	
 	private IContainer getDefaultContainer(IProject project) {
 		if (JpaFacet.isInstalled(project)) {
-			return JptCommonCorePlugin.getResourceLocator(project).getDefaultResourceLocation(project);
+			ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
+			return locator.getDefaultResourceLocation();
 		}
 		return project;
 	}
@@ -349,7 +356,8 @@ public class MappingFileWizard extends Wizard
 			IContainer container = PlatformTools.getContainer(containerPath);
 			IPath filePath = container.getFullPath().append(fileName);
 			IProject project = container.getProject();
-			IPath runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, filePath);
+			ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
+			IPath runtimePath = locator.getRuntimePath(filePath);
 			
 			return runtimePath;
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.common.utility.model.listener.SimpleChangeListener;
+import org.eclipse.jpt.common.utility.model.listener.AbstractChangeListener;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 
 /**
@@ -40,16 +40,16 @@ public class ValueChangeAdapter<V extends Model>
 	// ********** initialization **********
 
 	protected ChangeListener buildValueAspectListener() {
-		return new SimpleChangeListener() {
-			@Override
-			protected void modelChanged(ChangeEvent event) {
-				ValueChangeAdapter.this.valueAspectChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "value change listener"; //$NON-NLS-1$
-			}
-		};
+		return new ValueAspectListener();
+	}
+	
+	protected class ValueAspectListener
+		extends AbstractChangeListener
+	{
+		@Override
+		protected void modelChanged(ChangeEvent event) {
+			ValueChangeAdapter.this.valueAspectChanged(event);
+		}
 	}
 	
 

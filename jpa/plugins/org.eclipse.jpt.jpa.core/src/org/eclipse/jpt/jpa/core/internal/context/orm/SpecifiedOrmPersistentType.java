@@ -53,13 +53,11 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
@@ -1141,8 +1139,12 @@ public abstract class SpecifiedOrmPersistentType
 
 	// ********** JpaStructureNode implementation **********
 
-	public String getId() {
-		return OrmStructureNodes.PERSISTENT_TYPE_ID;
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
+
+	public Class<OrmPersistentType> getType() {
+		return OrmPersistentType.class;
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

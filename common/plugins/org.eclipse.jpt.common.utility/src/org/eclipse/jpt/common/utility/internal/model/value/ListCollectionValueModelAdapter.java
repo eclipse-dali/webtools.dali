@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,12 +27,12 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
  * An adapter that allows us to make a {@link ListValueModel} behave like
  * a read-only {@link CollectionValueModel}, sorta.
  * <p>
- * We keep an internal collection somewhat in synch with the wrapped list.
+ * We keep an internal collection somewhat in sync with the wrapped list.
  * <p>
  * <strong>NB:</strong> Since we only listen to the wrapped list when we have
- * listeners ourselves and we can only stay in synch with the wrapped
+ * listeners ourselves and we can only stay in sync with the wrapped
  * list while we are listening to it, results to various methods
- * (e.g. {@link #size()}, {@link iterator()}) will be unpredictable whenever
+ * (e.g. {@link #size()}, {@link #iterator()}) will be unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
  */
@@ -123,7 +123,7 @@ public class ListCollectionValueModelAdapter<E>
 	@Override
 	protected void engageModel() {
 		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
-		// synch our collection *after* we start listening to the list holder,
+		// sync our collection *after* we start listening to the list model,
 		// since its value might change when a listener is added
 		this.buildCollection();
 	}
@@ -229,5 +229,4 @@ public class ListCollectionValueModelAdapter<E>
 	public void toString(StringBuilder sb) {
 		sb.append(this.collection);
 	}
-
 }

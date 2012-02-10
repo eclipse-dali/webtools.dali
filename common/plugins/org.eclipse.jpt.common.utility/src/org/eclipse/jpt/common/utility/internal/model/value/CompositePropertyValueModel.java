@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,13 +12,13 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-
 import org.eclipse.jpt.common.utility.internal.IdentityHashBag;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -35,22 +35,26 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * </ul>
  * <strong>NB:</strong> The wrapped collection must not contain any duplicates
  * or this class will throw an exception.
+ * 
+ * @param <V> the type of the model's value
+ * @param <E> the type of the wrapped collection value model's
+ * property value model's values
  */
-public abstract class CompositePropertyValueModel<V>
-	extends CollectionPropertyValueModelAdapter<V>
+public abstract class CompositePropertyValueModel<V, E>
+	extends CollectionPropertyValueModelAdapter<V, PropertyValueModel<? extends E>>
 {
 	/**
 	 * Cache the component property value models so we can stop listening to
 	 * them when they are removed from the collection value model.
 	 */
-	protected final IdentityHashBag<PropertyValueModel<?>> componentPVMs = 
-			new IdentityHashBag<PropertyValueModel<?>>();
+	protected final IdentityHashBag<PropertyValueModel<? extends E>> componentPVMs = 
+			new IdentityHashBag<PropertyValueModel<? extends E>>();
 
 	/**
 	 * Listen to every property value model in the collection value model.
 	 * If one changes, we need to re-calculate our value.
 	 */
-	protected final PropertyChangeListener propertyChangeListener;
+	protected final PropertyChangeListener componentListener;
 
 
 	// ********** constructors **********
@@ -59,7 +63,7 @@ public abstract class CompositePropertyValueModel<V>
 	 * Construct a property value model that is a composite of the specified
 	 * property value models.
 	 */
-	public CompositePropertyValueModel(PropertyValueModel<?>... collection) {
+	public CompositePropertyValueModel(PropertyValueModel<? extends E>... collection) {
 		this(Arrays.asList(collection));
 	}
 
@@ -67,32 +71,33 @@ public abstract class CompositePropertyValueModel<V>
 	 * Construct a property value model that is a composite of the specified
 	 * property value models.
 	 */
-	public <E extends PropertyValueModel<?>> CompositePropertyValueModel(Collection<E> collection) {
-		this(new StaticCollectionValueModel<E>(collection));
+	public <P extends PropertyValueModel<? extends E>> CompositePropertyValueModel(Collection<? extends P> collection) {
+		this(new StaticCollectionValueModel<P>(collection));
 	}
 
 	/**
 	 * Construct a property value model that is a composite of the specified
 	 * property value models.
 	 */
-	public CompositePropertyValueModel(CollectionValueModel<? extends PropertyValueModel<?>> collectionModel) {
+	public <P extends PropertyValueModel<? extends E>> CompositePropertyValueModel(CollectionValueModel<P> collectionModel) {
 		super(collectionModel);
-		this.propertyChangeListener = this.buildPropertyChangeListener();
+		this.componentListener = this.buildComponentListener();
 	}
 
 
 	// ********** initialization **********
 
-	protected PropertyChangeListener buildPropertyChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				CompositePropertyValueModel.this.propertyChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "property change listener"; //$NON-NLS-1$
-			}
-		};
+	protected PropertyChangeListener buildComponentListener() {
+		return new ComponentListener();
+	}
+
+	protected class ComponentListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			CompositePropertyValueModel.this.componentChanged(event);
+		}
 	}
 
 
@@ -103,7 +108,7 @@ public abstract class CompositePropertyValueModel<V>
 	 * the performance of building a new value (e.g. some property changes may
 	 * not necessitate the re-calculation of the value).
 	 */
-	protected void propertyChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
+	protected void componentChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
 		this.propertyChanged();
 	}
 
@@ -113,25 +118,25 @@ public abstract class CompositePropertyValueModel<V>
 	@Override
 	protected void engageModel_() {
 		super.engageModel_();
-		this.addComponentPVMs(this.getCollectionModel());
+		this.addComponentPVMs(this.collectionModel);
 	}
 
-	protected <E extends PropertyValueModel<?>> void addComponentPVMs(Iterable<E> pvms) {
-		for (PropertyValueModel<?> each : pvms) {
+	protected <P extends PropertyValueModel<? extends E>> void addComponentPVMs(Iterable<P> pvms) {
+		for (P each : pvms) {
 			this.componentPVMs.add(each);
-			each.addPropertyChangeListener(VALUE, this.propertyChangeListener);
+			each.addPropertyChangeListener(VALUE, this.componentListener);
 		}
 	}
 
 	@Override
 	protected void disengageModel_() {
-		this.removeComponentPVMs(this.getCollectionModel());
+		this.removeComponentPVMs(this.collectionModel);
 		super.disengageModel_();
 	}
 
-	protected <E extends PropertyValueModel<?>> void removeComponentPVMs(Iterable<E> pvms) {
-		for (PropertyValueModel<?> each : pvms) {
-			each.removePropertyChangeListener(VALUE, this.propertyChangeListener);
+	protected <P extends PropertyValueModel<? extends E>> void removeComponentPVMs(Iterable<P> pvms) {
+		for (P each : pvms) {
+			each.removePropertyChangeListener(VALUE, this.componentListener);
 			this.componentPVMs.remove(each);
 		}
 	}
@@ -156,14 +161,14 @@ public abstract class CompositePropertyValueModel<V>
 
 	protected void removeAllComponentPVMs() {
 		// copy the list so we don't eat our own tail
-		ArrayList<PropertyValueModel<?>> copy = new ArrayList<PropertyValueModel<?>>(this.componentPVMs);
+		ArrayList<PropertyValueModel<? extends E>> copy = new ArrayList<PropertyValueModel<? extends E>>(this.componentPVMs);
 		this.removeComponentPVMs(copy);
 	}
 
 	@Override
 	protected void collectionChanged(CollectionChangeEvent event) {
 		this.removeAllComponentPVMs();
-		this.addComponentPVMs(this.getCollectionModel());
+		this.addComponentPVMs(this.collectionModel);
 		super.collectionChanged(event);
 	}
 
@@ -171,28 +176,22 @@ public abstract class CompositePropertyValueModel<V>
 	// ********** convenience methods **********
 
 	/**
-	 * Our constructor accepts only a {@link CollectionValueModel}{@code<? extends }{@link PropertyValueModel}{@code<?>>}.
+	 * Our constructor accepts only a
+	 * {@link CollectionValueModel}{@code<? extends }{@link PropertyValueModel}{@code<? extends E>>}.
 	 */
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected CollectionValueModel<? extends PropertyValueModel<?>> getCollectionModel() {
-		return (CollectionValueModel<? extends PropertyValueModel<?>>) this.collectionModel;
+	protected Iterable<? extends PropertyValueModel<? extends E>> getItems(CollectionAddEvent event) {
+		return (Iterable<? extends PropertyValueModel<? extends E>>) event.getItems();
 	}
 
 	/**
-	 * Our constructor accepts only a {@link CollectionValueModel}{@code<? extends }{@link PropertyValueModel}{@code<?>>}.
+	 * Our constructor accepts only a
+	 * {@link CollectionValueModel}{@code<? extends }{@link PropertyValueModel}{@code<? extends E>>}.
 	 */
+	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<? extends PropertyValueModel<?>> getItems(CollectionAddEvent event) {
-		return (Iterable<? extends PropertyValueModel<?>>) event.getItems();
+	protected Iterable<? extends PropertyValueModel<? extends E>> getItems(CollectionRemoveEvent event) {
+		return (Iterable<? extends PropertyValueModel<? extends E>>) event.getItems();
 	}
-
-	/**
-	 * Our constructor accepts only a {@link CollectionValueModel}{@code<? extends }{@link PropertyValueModel}{@code<?>>}.
-	 */
-	@SuppressWarnings("unchecked")
-	protected Iterable<? extends PropertyValueModel<?>> getItems(CollectionRemoveEvent event) {
-		return (Iterable<? extends PropertyValueModel<?>>) event.getItems();
-	}
-
 }

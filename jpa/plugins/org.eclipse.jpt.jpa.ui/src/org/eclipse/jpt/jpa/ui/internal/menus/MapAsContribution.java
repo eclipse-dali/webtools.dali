@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,6 @@ import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.ui.ISources;
@@ -92,8 +91,9 @@ public abstract class MapAsContribution<T extends JpaStructureNode>
 						return createContributionItem(next);
 					}
 				},
-				new IContributionItem[0]);
+				EMPTY_CONTRIBUTION_ITEM_ARRAY);
 	}
+	protected static final IContributionItem[] EMPTY_CONTRIBUTION_ITEM_ARRAY = new IContributionItem[0];
 	
 
 	protected Comparator<MappingUiDefinition<T, ?>> getDefinitionsComparator() {
@@ -115,8 +115,7 @@ public abstract class MapAsContribution<T extends JpaStructureNode>
 	 * @return The list of registered {@link MappingUiDefinition}s
 	 */
 	protected <U extends T> Iterator<? extends MappingUiDefinition<T, ?>> mappingUiDefinitions(final T node) {
-		JpaPlatform jpaPlatform = node.getJpaProject().getJpaPlatform();
-		JpaPlatformUi jpaPlatformUi = JptJpaUiPlugin.instance().getJpaPlatformUi(jpaPlatform);
+		JpaPlatformUi jpaPlatformUi = (JpaPlatformUi) node.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		
 		Iterator<? extends MappingUiDefinition<T, ?>> sortedMappingUiDefinitions = 
 				CollectionTools.sort(

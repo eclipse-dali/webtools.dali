@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -146,8 +146,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	}
 
 	protected JpaPlatformUi getJpaPlatformUi() {
-		String platformId = this.getJpaProject().getJpaPlatform().getId();
-		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
+		return (JpaPlatformUi) this.getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
 	}
 
 	public void createControl(Composite parent) {
@@ -453,6 +452,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	    PlatformUI.getWorkbench().getHelpSystem().displayHelp( this.helpContextId );
 	}
 	
+	// TODO use JpaProjectManager.execute(Command, ...)
 	protected void performFinish() {
 		boolean modifiedPersistenceXml = false;
 		for (Type type : this.selectedTypes) {
@@ -512,7 +512,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		protected void setMappingKey(String mappingKey) {
 			this.mappingKey = mappingKey;
 		}
-		
+		// TODO modify the context model
 		protected boolean makePersistent() {
 			if (JpaMakePersistentWizardPage.this.isAnnotateInJavaModel()) {
 				PersistenceUnit persistenceUnit = this.getPersistenceUnit();
@@ -524,15 +524,9 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 						return true;
 					}
 				}
-			}
-			else {
-				JpaXmlResource ormXmlResource = getOrmXmlResource();
-				final EntityMappings entityMappings = getEntityMappings();
-				ormXmlResource.modify(new Runnable() {
-					public void run() {
-						entityMappings.addPersistentType(Type.this.mappingKey, Type.this.jdtType.getFullyQualifiedName());
-					}
-				});
+			} else {
+				getEntityMappings().addPersistentType(Type.this.mappingKey, Type.this.jdtType.getFullyQualifiedName());
+				getOrmXmlResource().save();
 			}
 			return false;
 		}

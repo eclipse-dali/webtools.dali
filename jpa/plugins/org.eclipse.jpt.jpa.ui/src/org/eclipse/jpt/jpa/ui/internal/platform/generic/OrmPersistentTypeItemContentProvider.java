@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
@@ -24,59 +23,69 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 
 public class OrmPersistentTypeItemContentProvider
-	extends AbstractTreeItemContentProvider<OrmReadOnlyPersistentAttribute>
+	extends AbstractItemTreeContentProvider<OrmPersistentType, OrmReadOnlyPersistentAttribute>
 {
-	public OrmPersistentTypeItemContentProvider(
-			OrmPersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
-		super(persistentType, contentProvider);
+	public OrmPersistentTypeItemContentProvider(OrmPersistentType persistentType, Manager manager) {
+		super(persistentType, manager);
 	}
-	
-	@Override
-	public OrmPersistentType getModel() {
-		return (OrmPersistentType) super.getModel();
-	}
-	
-	@Override
+
 	public Object getParent() {
-		return getModel().getParent();
+		return this.item.getParent();
 	}
-	
+
 	@Override
 	protected CollectionValueModel<OrmReadOnlyPersistentAttribute> buildChildrenModel() {
 		List<CollectionValueModel<OrmReadOnlyPersistentAttribute>> list = new ArrayList<CollectionValueModel<OrmReadOnlyPersistentAttribute>>(2);
-		list.add(buildSpecifiedPersistentAttributesModel());
-		list.add(buildVirtualPersistentAttributesModel());
+		list.add(this.buildSpecifiedPersistentAttributesModel());
+		list.add(this.buildVirtualPersistentAttributesModel());
 		return new CompositeCollectionValueModel<CollectionValueModel<OrmReadOnlyPersistentAttribute>, OrmReadOnlyPersistentAttribute>(list);
 	}
-	
+
 	protected CollectionValueModel<OrmReadOnlyPersistentAttribute> buildSpecifiedPersistentAttributesModel() {
-		return new ListCollectionValueModelAdapter<OrmReadOnlyPersistentAttribute>(
-		new ListAspectAdapter<OrmPersistentType, OrmReadOnlyPersistentAttribute>(OrmPersistentType.SPECIFIED_ATTRIBUTES_LIST, getModel()) {
-			@Override
-			protected ListIterable<OrmReadOnlyPersistentAttribute> getListIterable() {
-				return new SuperListIterableWrapper<OrmReadOnlyPersistentAttribute>(this.getSpecifiedAttributes());
-			}
-			protected ListIterable<OrmPersistentAttribute> getSpecifiedAttributes() {
-				return this.subject.getSpecifiedAttributes();
-			}
-			@Override
-			protected int size_() {
-				return this.subject.getSpecifiedAttributesSize();
-			}
-		});
+		return new ListCollectionValueModelAdapter<OrmReadOnlyPersistentAttribute>(new SpecifiedPersistentAttributesModel(this.item));
 	}
-	
+
+	protected static class SpecifiedPersistentAttributesModel
+		extends ListAspectAdapter<OrmPersistentType, OrmReadOnlyPersistentAttribute>
+	{
+		SpecifiedPersistentAttributesModel(OrmPersistentType ormPersistentType) {
+			super(OrmPersistentType.SPECIFIED_ATTRIBUTES_LIST, ormPersistentType);
+		}
+
+		@Override
+		protected ListIterable<OrmReadOnlyPersistentAttribute> getListIterable() {
+			return new SuperListIterableWrapper<OrmReadOnlyPersistentAttribute>(this.getSpecifiedAttributes());
+		}
+
+		protected ListIterable<OrmPersistentAttribute> getSpecifiedAttributes() {
+			return this.subject.getSpecifiedAttributes();
+		}
+
+		@Override
+		public int size_() {
+			return this.subject.getSpecifiedAttributesSize();
+		}
+	}
+
 	protected CollectionValueModel<OrmReadOnlyPersistentAttribute> buildVirtualPersistentAttributesModel() {
-		return new ListCollectionValueModelAdapter<OrmReadOnlyPersistentAttribute>(
-		new ListAspectAdapter<OrmPersistentType, OrmReadOnlyPersistentAttribute>(OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST, getModel()) {
-			@Override
-			protected ListIterable<OrmReadOnlyPersistentAttribute> getListIterable() {
-				return this.subject.getVirtualAttributes();
-			}
-			@Override
-			protected int size_() {
-				return this.subject.getVirtualAttributesSize();
-			}
-		});
+		return new ListCollectionValueModelAdapter<OrmReadOnlyPersistentAttribute>(new VirtualPersistentAttributesModel(this.item));
+	}
+
+	protected static class VirtualPersistentAttributesModel
+		extends ListAspectAdapter<OrmPersistentType, OrmReadOnlyPersistentAttribute>
+	{
+		VirtualPersistentAttributesModel(OrmPersistentType ormPersistentType) {
+			super(OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST, ormPersistentType);
+		}
+
+		@Override
+		protected ListIterable<OrmReadOnlyPersistentAttribute> getListIterable() {
+			return this.subject.getVirtualAttributes();
+		}
+
+		@Override
+		public int size_() {
+			return this.subject.getVirtualAttributesSize();
+		}
 	}
 }

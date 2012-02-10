@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -53,7 +51,7 @@ public class FilteringCollectionValueModel<E>
 	private Filter<E> filter;
 
 	/** Cache the items that were accepted by the filter */
-	private final Collection<E> filteredItems = new ArrayList<E>();
+	private final ArrayList<E> filteredItems = new ArrayList<E>();
 
 
 	// ********** constructors **********
@@ -62,16 +60,16 @@ public class FilteringCollectionValueModel<E>
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model and a filter that simply accepts every object.
 	 */
-	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionHolder) {
-		this(collectionHolder, Filter.Null.<E>instance());
+	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionModel) {
+		this(collectionModel, Filter.Transparent.<E>instance());
 	}
 
 	/**
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model and filter.
 	 */
-	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionHolder, Filter<E> filter) {
-		super(collectionHolder);
+	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionModel, Filter<E> filter) {
+		super(collectionModel);
 		this.filter = filter;
 	}
 
@@ -79,16 +77,16 @@ public class FilteringCollectionValueModel<E>
 	 * Construct a collection value model with the specified wrapped
 	 * list value model and a filter that simply accepts every object.
 	 */
-	public FilteringCollectionValueModel(ListValueModel<E> listHolder) {
-		this(new ListCollectionValueModelAdapter<E>(listHolder));
+	public FilteringCollectionValueModel(ListValueModel<? extends E> listModel) {
+		this(new ListCollectionValueModelAdapter<E>(listModel));
 	}
 
 	/**
 	 * Construct a collection value model with the specified wrapped
 	 * list value model and filter.
 	 */
-	public FilteringCollectionValueModel(ListValueModel<E> listHolder, Filter<E> filter) {
-		this(new ListCollectionValueModelAdapter<E>(listHolder), filter);
+	public FilteringCollectionValueModel(ListValueModel<? extends E> listModel, Filter<E> filter) {
+		this(new ListCollectionValueModelAdapter<E>(listModel), filter);
 	}
 
 
@@ -108,7 +106,7 @@ public class FilteringCollectionValueModel<E>
 	@Override
 	protected void engageModel() {
 		super.engageModel();
-		// synch our cache *after* we start listening to the nested collection,
+		// sync our cache *after* we start listening to the nested collection,
 		// since its value might change when a listener is added
 		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder));
 	}
@@ -175,5 +173,4 @@ public class FilteringCollectionValueModel<E>
 	public void toString(StringBuilder sb) {
 		sb.append(this.filteredItems);
 	}
-
 }

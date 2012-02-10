@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,8 +23,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationWritablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -166,10 +164,10 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	}
 	
 	private PropertyValueModel<Boolean> buildOverrideBooleanHolder(PropertyValueModel<? extends ReadOnlyOverride> overrideHolder) {
-		return new CachingTransformationPropertyValueModel<ReadOnlyOverride, Boolean>(overrideHolder) {
+		return new TransformationPropertyValueModel<ReadOnlyOverride, Boolean>(overrideHolder) {
 			@Override
-			protected Boolean transform_(ReadOnlyOverride value) {
-				return Boolean.valueOf(!value.isVirtual());
+			protected Boolean transform_(ReadOnlyOverride v) {
+				return Boolean.valueOf( ! v.isVirtual());
 			}
 		};
 	}
@@ -203,8 +201,8 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	private WritablePropertyValueModel<ReadOnlyAssociationOverride> buildAssociationOverrideHolder() {
 		return new TransformationWritablePropertyValueModel<ReadOnlyOverride, ReadOnlyAssociationOverride>(this.selectedOverrideHolder) {
 			@Override
-			protected ReadOnlyAssociationOverride transform_(ReadOnlyOverride value) {
-				return (value instanceof ReadOnlyAssociationOverride) ? (ReadOnlyAssociationOverride) value : null;
+			protected ReadOnlyAssociationOverride transform_(ReadOnlyOverride v) {
+				return (v instanceof ReadOnlyAssociationOverride) ? (ReadOnlyAssociationOverride) v : null;
 			}
 		};
 	}
@@ -212,8 +210,8 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	private WritablePropertyValueModel<ReadOnlyAttributeOverride> buildAttributeOverrideHolder() {
 		return new TransformationWritablePropertyValueModel<ReadOnlyOverride, ReadOnlyAttributeOverride>(this.selectedOverrideHolder) {
 			@Override
-			protected ReadOnlyAttributeOverride transform_(ReadOnlyOverride value) {
-				return (value instanceof ReadOnlyAttributeOverride) ? (ReadOnlyAttributeOverride) value : null;
+			protected ReadOnlyAttributeOverride transform_(ReadOnlyOverride v) {
+				return (v instanceof ReadOnlyAttributeOverride) ? (ReadOnlyAttributeOverride) v : null;
 			}
 		};
 	}
@@ -254,15 +252,15 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildOverrideVirtualOverrideHolder() {
-		return new CachingTransformationWritablePropertyValueModel<ReadOnlyOverride, Boolean>(this.selectedOverrideHolder) {
+		return new TransformationWritablePropertyValueModel<ReadOnlyOverride, Boolean>(this.selectedOverrideHolder) {
 			@Override
 			public void setValue(Boolean value) {
 				updateOverride(value.booleanValue());
 			}
 			
 			@Override
-			protected Boolean transform_(ReadOnlyOverride value) {
-				return Boolean.valueOf(!value.isVirtual());
+			protected Boolean transform_(ReadOnlyOverride v) {
+				return Boolean.valueOf( ! v.isVirtual());
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,17 +18,15 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.resource.orm.OrmXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.resource.AbstractXmlResourceProvider;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class OrmFileCreationOperation
@@ -73,32 +71,34 @@ public class OrmFileCreationOperation
 	}
 	
 	protected void addMappingFileToPersistenceXml() throws ExecutionException {
-		if (! getDataModel().getBooleanProperty(ADD_TO_PERSISTENCE_UNIT)) {
-			return;
+		if (this.getDataModel().getBooleanProperty(ADD_TO_PERSISTENCE_UNIT)) {
+			this.addMappingFileToPersistenceXml_();
 		}
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(this.file.getProject());
-		JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
-	
-		final PersistenceUnit pUnit = getPersistenceUnit();
-		
-		resource.modify(new Runnable() {
-			public void run() {
-				IPath containerPath = (IPath) getDataModel().getProperty(CONTAINER_PATH);
-				String fileName = getDataModel().getStringProperty(FILE_NAME);
-				IContainer container = PlatformTools.getContainer(containerPath);
-				IPath filePath = container.getFullPath().append(fileName);
-				IProject project = container.getProject();
-				IPath runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, filePath);
-				for (MappingFileRef ref : pUnit.getSpecifiedMappingFileRefs()) {
-					if (runtimePath.equals(ref.getFileName())) {
-						return;
-					}
-				}
-				pUnit.addSpecifiedMappingFileRef(runtimePath.toString());
-			}
-		});
 	}
-	
+
+	protected void addMappingFileToPersistenceXml_() throws ExecutionException {
+		PersistenceUnit pUnit = getPersistenceUnit();
+		
+		IPath containerPath = (IPath) getDataModel().getProperty(CONTAINER_PATH);
+		String fileName = getDataModel().getStringProperty(FILE_NAME);
+		IContainer container = PlatformTools.getContainer(containerPath);
+		IPath filePath = container.getFullPath().append(fileName);
+		IProject project = container.getProject();
+		ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
+		IPath runtimePath = locator.getRuntimePath(filePath);
+		boolean found = false;
+		for (MappingFileRef ref : pUnit.getSpecifiedMappingFileRefs()) {
+			if (runtimePath.equals(ref.getFileName())) {
+				found = true;
+				break;
+			}
+		}
+		if ( ! found) {
+			pUnit.addSpecifiedMappingFileRef(runtimePath.toString());
+		}
+		this.getJpaProject().getPersistenceXmlResource().save();
+	}
+
 	@Override
 	protected AbstractXmlResourceProvider getXmlResourceProvider(IFile file) {
 		return OrmXmlResourceProvider.getXmlResourceProvider(file);

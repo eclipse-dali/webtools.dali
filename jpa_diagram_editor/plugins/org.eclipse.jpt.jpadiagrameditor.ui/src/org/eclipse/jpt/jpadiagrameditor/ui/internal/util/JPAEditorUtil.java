@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2011 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -290,15 +290,11 @@ public class JPAEditorUtil {
 			return null;
     	IType tp = cu.findPrimaryType();
     	if (tp == null)
-    		return null;;
+    		return null;
     	name = tp.getFullyQualifiedName();
 		IJavaProject jp = cu.getJavaProject();
     	JpaProject proj = null;
-		try {
-			proj = JpaArtifactFactory.instance().getJpaProject(jp.getProject());
-		} catch (CoreException e) {
-			JPADiagramEditorPlugin.logError("Cannot obtain the JPA project.", e); //$NON-NLS-1$	
-		}
+		proj = JpaArtifactFactory.instance().getJpaProject(jp.getProject());
 		if (proj == null)
 			return null;
     	PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(proj);
@@ -394,45 +390,38 @@ public class JPAEditorUtil {
     
 	public static void createRegisterEntityInXMLJob(final JpaProject jpaProject, final String classFQN) {
 		final JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
-		resource.modify(new Runnable() {
-			public void run() {
-				XmlPersistence xmlPersistence = (XmlPersistence) resource.getRootObject();
-				EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();
-				XmlPersistenceUnit persistenceUnit = persistenceUnits.get(0); // Multiply persistence unit support
-				boolean registered = false;
-				Iterator<XmlJavaClassRef> it = persistenceUnit.getClasses().iterator();
-				while (it.hasNext()) {
-					String className = it.next().getJavaClass();
-					if (classFQN.equals(className)) {
-						registered = true;
-						break;
-					}
-				}
-				if (!registered) {
-					XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-					classRef.setJavaClass(classFQN);
-			     	persistenceUnit.getClasses().add(classRef);					
-				}
+		XmlPersistence xmlPersistence = (XmlPersistence) resource.getRootObject();
+		EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();
+		XmlPersistenceUnit persistenceUnit = persistenceUnits.get(0); // Multiply persistence unit support
+		boolean registered = false;
+		for (XmlJavaClassRef ref : persistenceUnit.getClasses()) {
+			String className = ref.getJavaClass();
+			if (classFQN.equals(className)) {
+				registered = true;
+				break;
 			}
-		});
+		}
+		if (!registered) {
+			XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+			classRef.setJavaClass(classFQN);
+	     	persistenceUnit.getClasses().add(classRef);					
+		}
+		resource.save();
 	}
     
 	public static void createUnregisterEntityFromXMLJob(final JpaProject jpaProject, final String classFQN) {
-		final JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
-
-		resource.modify(new Runnable() {
-			public void run() {
-				XmlPersistence xmlPersistence = (XmlPersistence) resource.getRootObject();
-				EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();
-				XmlPersistenceUnit persistenceUnit = persistenceUnits.get(0);// Multiply persistence unit support
-				EList<XmlJavaClassRef> cRefs = persistenceUnit.getClasses();
-				for (XmlJavaClassRef cRef : cRefs)
-					if (cRef.getJavaClass().equals(classFQN)) {
-						cRefs.remove(cRef);
-						break;
-					}
+		JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
+		XmlPersistence xmlPersistence = (XmlPersistence) resource.getRootObject();
+		EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();
+		XmlPersistenceUnit persistenceUnit = persistenceUnits.get(0);// Multiply persistence unit support
+		EList<XmlJavaClassRef> cRefs = persistenceUnit.getClasses();
+		for (XmlJavaClassRef ref : cRefs) {
+			if (ref.getJavaClass().equals(classFQN)) {
+				cRefs.remove(ref);
+				break;
 			}
-		});
+		}
+		resource.save();
 	}
 	
 	public static void createImports(ICompilationUnit cu, String typeFQN) {

@@ -1,17 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
+import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -19,10 +20,11 @@ import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmTypeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.structure.OrmResourceModelStructureProvider;
-import org.eclipse.jpt.jpa.ui.structure.JpaStructureProvider;
+import org.eclipse.jpt.jpa.ui.internal.structure.OrmStructureItemContentProviderFactory;
+import org.eclipse.jpt.jpa.ui.internal.structure.OrmStructureItemLabelProviderFactory;
 
-public class OrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefinition
+public class OrmXmlUiDefinition
+	extends AbstractOrmXmlResourceUiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new OrmXmlUiDefinition();
@@ -53,9 +55,15 @@ public class OrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefinition
 		return resourceType.equals(JptJpaCorePlugin.ORM_XML_1_0_RESOURCE_TYPE);
 	}
 	
-	public JpaStructureProvider getStructureProvider() {
-		return OrmResourceModelStructureProvider.instance();
+	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
+		return STRUCTURE_VIEW_FACTORY_PROVIDER;
 	}
+	
+	public static final ItemTreeStateProviderFactoryProvider STRUCTURE_VIEW_FACTORY_PROVIDER =
+			new SimpleItemTreeStateProviderFactoryProvider(
+					OrmStructureItemContentProviderFactory.instance(),
+					OrmStructureItemLabelProviderFactory.instance()
+				);
 	
 	@Override
 	protected void addOrmAttributeMappingUiDefinitionsTo(

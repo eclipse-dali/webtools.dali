@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
-import java.util.Arrays;
 import java.util.Collection;
-
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
@@ -29,79 +28,86 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * <li>{@link #buildValue()}
  * <li>{@link #setValue(Object)}
  * </ul>
+ * 
+ * @param <S> the type of the model's subject
+ * @param <V> the type of the subject's property aspect
  */
 public abstract class PropertyAspectAdapter<S extends Model, V>
 	extends AspectPropertyValueModelAdapter<S, V>
 {
 	/** The name of the subject's properties that we use for the value. */
-	protected final String[] propertyNames;
-		protected static final String[] EMPTY_PROPERTY_NAMES = new String[0];
+	protected final String[] aspectNames;
+		protected static final String[] EMPTY_ASPECT_NAMES = new String[0];
 
 	/** A listener that listens to the appropriate properties of the subject. */
-	protected final PropertyChangeListener propertyChangeListener;
+	protected final PropertyChangeListener aspectChangeListener;
 
 
 	// ********** constructors **********
 
 	/**
 	 * Construct a property aspect adapter for the specified subject
-	 * and property.
+	 * and property aspect.
 	 */
-	protected PropertyAspectAdapter(String propertyName, S subject) {
-		this(new String[] {propertyName}, subject);
+	protected PropertyAspectAdapter(String aspectName, S subject) {
+		this(new String[] {aspectName}, subject);
 	}
 
 	/**
 	 * Construct a property aspect adapter for the specified subject
-	 * and properties.
+	 * and property aspects.
 	 */
-	protected PropertyAspectAdapter(String[] propertyNames, S subject) {
-		this(new StaticPropertyValueModel<S>(subject), propertyNames);
+	protected PropertyAspectAdapter(String[] aspectNames, S subject) {
+		this(new StaticPropertyValueModel<S>(subject), aspectNames);
 	}
 
 	/**
-	 * Construct a property aspect adapter for the specified subject holder
-	 * and properties.
+	 * Construct a property aspect adapter for the specified subject model
+	 * and property aspects.
 	 */
-	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... propertyNames) {
-		super(subjectHolder);
-		this.propertyNames = propertyNames;
-		this.propertyChangeListener = this.buildPropertyChangeListener();
+	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectModel, String... aspectNames) {
+		super(subjectModel);
+		this.aspectNames = aspectNames;
+		this.aspectChangeListener = this.buildAspectChangeListener();
 	}
 
 	/**
-	 * Construct a property aspect adapter for the specified subject holder
-	 * and properties.
+	 * Construct a property aspect adapter for the specified subject model
+	 * and property aspects.
 	 */
-	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> propertyNames) {
-		this(subjectHolder, propertyNames.toArray(new String[propertyNames.size()]));
+	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectModel, Collection<String> aspectNames) {
+		this(subjectModel, aspectNames.toArray(new String[aspectNames.size()]));
 	}
 
 	/**
-	 * Construct a property aspect adapter for an "unchanging" property in
+	 * Construct a property aspect adapter for an "unchanging" property aspect in
 	 * the specified subject. This is useful for a property aspect that does not
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new property. (A {@link TransformationPropertyValueModel} could also be
 	 * used in this situation.)
 	 */
-	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
-		this(subjectHolder, EMPTY_PROPERTY_NAMES);
+	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectModel) {
+		this(subjectModel, EMPTY_ASPECT_NAMES);
 	}
 
 
 	// ********** initialization **********
 
-	protected PropertyChangeListener buildPropertyChangeListener() {
-		// transform the subject's property change events into VALUE property change events
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				PropertyAspectAdapter.this.propertyChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "property change listener: " + Arrays.asList(PropertyAspectAdapter.this.propertyNames); //$NON-NLS-1$
-			}
-		};
+	protected PropertyChangeListener buildAspectChangeListener() {
+		return new AspectChangeListener();
+	}
+
+	/**
+	 * Transform the subject's property change events into
+	 * {@link #VALUE} property change events.
+	 */
+	protected class AspectChangeListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			PropertyAspectAdapter.this.aspectChanged(event);
+		}
 	}
 
 
@@ -109,20 +115,19 @@ public abstract class PropertyAspectAdapter<S extends Model, V>
 
     @Override
 	protected void engageSubject_() {
-    	for (String propertyName : this.propertyNames) {
-			((Model) this.subject).addPropertyChangeListener(propertyName, this.propertyChangeListener);
+    	for (String propertyName : this.aspectNames) {
+			this.subject.addPropertyChangeListener(propertyName, this.aspectChangeListener);
 		}
 	}
 
     @Override
 	protected void disengageSubject_() {
-    	for (String propertyName : this.propertyNames) {
-			((Model) this.subject).removePropertyChangeListener(propertyName, this.propertyChangeListener);
+    	for (String propertyName : this.aspectNames) {
+			this.subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
 		}
 	}
 
-    protected void propertyChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
-		this.propertyChanged();
+    protected void aspectChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
+		this.aspectChanged();
 	}
-
 }

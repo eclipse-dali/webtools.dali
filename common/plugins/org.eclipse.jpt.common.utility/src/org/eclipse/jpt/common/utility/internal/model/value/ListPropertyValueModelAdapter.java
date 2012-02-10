@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
 import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.common.utility.model.listener.ListChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 
@@ -43,10 +44,10 @@ public abstract class ListPropertyValueModelAdapter<T>
 	extends AbstractPropertyValueModelAdapter<T>
 {
 	/** The wrapped list value model. */
-	protected final ListValueModel<?> listHolder;
+	protected final ListValueModel<?> listModel;
 
-	/** A listener that allows us to synch with changes to the wrapped list holder. */
-	protected final ListChangeListener listChangeListener;
+	/** A listener that allows us to sync with changes to the wrapped list model. */
+	protected final ListChangeListener listListener;
 
 
 	// ********** constructor/initialization **********
@@ -55,48 +56,57 @@ public abstract class ListPropertyValueModelAdapter<T>
 	 * Construct a property value model with the specified wrapped
 	 * list value model.
 	 */
-	protected ListPropertyValueModelAdapter(ListValueModel<?> listHolder) {
+	protected ListPropertyValueModelAdapter(ListValueModel<?> listModel) {
 		super();
-		this.listHolder = listHolder;
-		this.listChangeListener = this.buildListChangeListener();
+		if (listModel == null) {
+			throw new NullPointerException();
+		}
+		this.listModel = listModel;
+		this.listListener = this.buildListListener();
 	}
 
-	protected ListChangeListener buildListChangeListener() {
-		return new ListChangeListener() {
-			public void itemsAdded(ListAddEvent event) {
-				ListPropertyValueModelAdapter.this.itemsAdded(event);
-			}		
-			public void itemsRemoved(ListRemoveEvent event) {
-				ListPropertyValueModelAdapter.this.itemsRemoved(event);
-			}
-			public void itemsReplaced(ListReplaceEvent event) {
-				ListPropertyValueModelAdapter.this.itemsReplaced(event);
-			}
-			public void itemsMoved(ListMoveEvent event) {
-				ListPropertyValueModelAdapter.this.itemsMoved(event);
-			}
-			public void listCleared(ListClearEvent event) {
-				ListPropertyValueModelAdapter.this.listCleared(event);
-			}
-			public void listChanged(ListChangeEvent event) {
-				ListPropertyValueModelAdapter.this.listChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "list change listener"; //$NON-NLS-1$
-			}
-		};
+	protected ListChangeListener buildListListener() {
+		return new ListListener();
+	}
+
+	protected class ListListener
+		extends ListChangeAdapter
+	{
+		@Override
+		public void itemsAdded(ListAddEvent event) {
+			ListPropertyValueModelAdapter.this.itemsAdded(event);
+		}		
+		@Override
+		public void itemsRemoved(ListRemoveEvent event) {
+			ListPropertyValueModelAdapter.this.itemsRemoved(event);
+		}
+		@Override
+		public void itemsReplaced(ListReplaceEvent event) {
+			ListPropertyValueModelAdapter.this.itemsReplaced(event);
+		}
+		@Override
+		public void itemsMoved(ListMoveEvent event) {
+			ListPropertyValueModelAdapter.this.itemsMoved(event);
+		}
+		@Override
+		public void listCleared(ListClearEvent event) {
+			ListPropertyValueModelAdapter.this.listCleared(event);
+		}
+		@Override
+		public void listChanged(ListChangeEvent event) {
+			ListPropertyValueModelAdapter.this.listChanged(event);
+		}
 	}
 
 
-	// ********** behavior **********
+	// ********** listener **********
 
 	/**
 	 * Start listening to the list holder.
 	 */
 	@Override
 	protected void engageModel_() {
-		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
+		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this.listListener);
 	}
 
 	/**
@@ -104,11 +114,11 @@ public abstract class ListPropertyValueModelAdapter<T>
 	 */
 	@Override
 	protected void disengageModel_() {
-		this.listHolder.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
+		this.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this.listListener);
 	}
 
 	
-	// ********** collection change support **********
+	// ********** list change support **********
 
 	/**
 	 * Items were added to the wrapped list holder;
@@ -163,5 +173,4 @@ public abstract class ListPropertyValueModelAdapter<T>
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -265,7 +265,7 @@ public class JaxbSchemasPropertiesPage
 				new AddEditSchemaDialog(
 						getShell(),
 						null,
-						this.schemasModel.getValue());
+						this.schemasModel.getAspectValue());
 		
 		// opens the dialog - just returns if the user cancels it
 		if (dialog.open() == Window.CANCEL) {
@@ -280,7 +280,7 @@ public class JaxbSchemasPropertiesPage
 	}
 	
 	private PropertyValueModel<Boolean> buildEditEnabledModel() {
-		return new CollectionPropertyValueModelAdapter<Boolean>(this.schemasSelectionModel) {
+		return new CollectionPropertyValueModelAdapter<Boolean, Schema>(this.schemasSelectionModel) {
 			@Override
 			protected Boolean buildValue() {
 				return Boolean.valueOf(this.collectionModel.size() == 1);
@@ -295,7 +295,7 @@ public class JaxbSchemasPropertiesPage
 				new AddEditSchemaDialog(
 						getShell(),
 						schema,
-						this.schemasModel.getValue());
+						this.schemasModel.getAspectValue());
 		
 		// opens the dialog - just returns if the user cancels it
 		if (dialog.open() == Window.CANCEL) {
@@ -308,7 +308,7 @@ public class JaxbSchemasPropertiesPage
 	}
 	
 	private PropertyValueModel<Boolean> buildRemoveEnabledModel() {
-		return new CollectionPropertyValueModelAdapter<Boolean>(this.schemasSelectionModel) {
+		return new CollectionPropertyValueModelAdapter<Boolean, Schema>(this.schemasSelectionModel) {
 			@Override
 			protected Boolean buildValue() {
 				return Boolean.valueOf(this.collectionModel.size() >= 1);
@@ -347,6 +347,8 @@ public class JaxbSchemasPropertiesPage
 			this.buildOkProgressMonitorDialog().run(true, false, this.buildOkRunnableWithProgress());
 		}
 		catch (InterruptedException ex) {
+			// should *not* happen...
+			Thread.currentThread().interrupt();
 			return false;
 		} 
 		catch (InvocationTargetException ex) {
@@ -409,7 +411,7 @@ public class JaxbSchemasPropertiesPage
 	
 	
 	static class SchemasModel
-			extends AspectAdapter<JaxbProject>
+			extends AspectAdapter<JaxbProject, Collection<Schema>>
 			implements CollectionValueModel<Schema> {
 		
 		/**
@@ -478,7 +480,7 @@ public class JaxbSchemasPropertiesPage
 			if (this.subject != null) {
 				this.schemas.addAll(buildSchemas_());
 			}
-			fireCollectionChanged(VALUES, getValue());
+			fireCollectionChanged(VALUES, getAspectValue());
 		}
 		
 		public Schema addSchema(String namespace, String location) {
@@ -510,8 +512,8 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		@Override
-		protected void fireAspectChanged(Object oldValue, Object newValue) {
-			fireCollectionChanged(VALUES, getValue());
+		protected void fireAspectChanged(Collection<Schema> oldValue, Collection<Schema> newValue) {
+			this.synchronizeCollection(newValue, new ArrayList<Schema>(oldValue), VALUES);
 		}
 		
 		@Override
@@ -537,7 +539,7 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		@Override
-		protected Collection<Schema> getValue() {
+		protected Collection<Schema> getAspectValue() {
 			return CollectionTools.collection(iterator());
 		}
 		

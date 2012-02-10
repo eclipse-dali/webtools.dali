@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -119,7 +119,7 @@ public class PropertyListValueModelAdapter<E>
 	@Override
 	protected void engageModel() {
 		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListener);
-		// synch our value *after* we start listening to the value holder,
+		// sync our value *after* we start listening to the value model,
 		// since its value might change when a listener is added
 		this.value = this.valueHolder.getValue();
 	}
@@ -153,5 +153,4 @@ public class PropertyListValueModelAdapter<E>
 	public void toString(StringBuilder sb) {
 		StringTools.append(sb, this);
 	}
-
 }

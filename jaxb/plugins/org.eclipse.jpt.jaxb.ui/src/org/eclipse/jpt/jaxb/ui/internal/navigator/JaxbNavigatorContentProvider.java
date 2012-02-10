@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2011 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.navigator;
 
 import org.eclipse.core.resources.IProject;
@@ -18,6 +17,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jpt.common.ui.internal.jface.NavigatorContentProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -29,9 +31,6 @@ import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
-import org.eclipse.ui.IMemento;
-import org.eclipse.ui.navigator.ICommonContentExtensionSite;
-import org.eclipse.ui.navigator.ICommonContentProvider;
 
 /**
  * This extension of navigator content provider delegates to the platform UI
@@ -44,10 +43,8 @@ import org.eclipse.ui.navigator.ICommonContentProvider;
  * platform UI implementation.
  */
 public class JaxbNavigatorContentProvider
-		implements ICommonContentProvider {
-	
-	private JaxbNavigatorContentAndLabelProvider delegate;
-	
+	extends NavigatorContentProvider
+{
 	private final CollectionChangeListener jaxbProjectListener;
 	
 	private StructuredViewer viewer;
@@ -63,46 +60,24 @@ public class JaxbNavigatorContentProvider
 		return new JaxbProjectListener();
 	}
 
-	public JaxbNavigatorContentAndLabelProvider getDelegate() {
-		return this.delegate;
+	@Override
+	protected ItemTreeContentProviderFactory buildItemContentProviderFactory() {
+		return new JaxbNavigatorTreeItemContentProviderFactory();
 	}
-	
-	
-	// **************** IContentProvider implementation ************************
-	
-	public void dispose() {
-		JptJaxbCorePlugin.getProjectManager().removeCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
-		if (this.delegate != null) {
-			this.delegate.dispose();
-		}
+
+	@Override
+	protected ItemExtendedLabelProviderFactory buildItemLabelProviderFactory() {
+		return new JaxbNavigatorItemLabelProviderFactory();
 	}
-	
+
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		if (this.delegate != null) {
-			this.delegate.inputChanged(viewer, oldInput, newInput);
-		}
+		super.inputChanged(viewer, oldInput, newInput);
 		this.viewer = (StructuredViewer) viewer;
 	}
 	
-	
-	// **************** IStructuredContentProvider implementation **************
-	
-	public Object[] getElements(Object inputElement) {
-		return getChildren(inputElement);
-	}
-	
-	
-	// **************** ITreeContentProvider implementation ********************
-	
-	public Object getParent(Object element) {
-		if (this.delegate != null) {
-			return this.delegate.getParent(element);
-		}
-		
-		return null;
-	}
-	
-	public boolean hasChildren(Object element) {
+	@Override
+	protected boolean hasChildren_(Object element) {
 		if (element instanceof IAdaptable) {
 			IProject project = (IProject) ((IAdaptable) element).getAdapter(IProject.class);
 			
@@ -117,15 +92,11 @@ public class JaxbNavigatorContentProvider
 				}	
 			}
 		}
-		
-		if (this.delegate != null) {
-			return this.delegate.hasChildren(element);
-		}
-		
 		return false;
 	}
-	
-	public Object[] getChildren(Object parentElement) {
+
+	@Override
+	protected Object[] getChildren_(Object parentElement) {
 		if (parentElement instanceof IAdaptable) {
 			IProject project = (IProject) ((IAdaptable) parentElement).getAdapter(IProject.class);
 			
@@ -142,44 +113,19 @@ public class JaxbNavigatorContentProvider
 				}	
 			}
 		}
-		
-		if (this.delegate != null) {
-			return this.delegate.getChildren(parentElement);
-		}
-			
-		return new Object[0];
+		return null;
 	}
 	
-	
-	// **************** IMementoAware implementation ***************************
-	
-	public void saveState(IMemento memento) {
-		// no op
-	}
-	
-	public void restoreState(IMemento memento) {
-		// no op
-	}
-	
-	
-	// **************** ICommonContentProvider implementation ******************
-	
-	public void init(ICommonContentExtensionSite config) {
-		if (this.delegate == null) {
-			JaxbNavigatorLabelProvider labelProvider = (JaxbNavigatorLabelProvider) config.getExtension().getLabelProvider();
-			if (labelProvider != null && labelProvider.getDelegate() != null) {
-				this.delegate = labelProvider.getDelegate();
-			}
-			else {
-				this.delegate = new JaxbNavigatorContentAndLabelProvider();
-			}
-		}
+	@Override
+	public void dispose() {
+		super.dispose();
+		JptJaxbCorePlugin.getProjectManager().removeCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
 	}
 	
 	
 	// **************** member classes *****************************************
 	
-	private class JaxbProjectListener
+	/* CU private */ class JaxbProjectListener
 		implements CollectionChangeListener
 	{
 		public void collectionChanged(CollectionChangeEvent event) {
@@ -222,9 +168,7 @@ public class JaxbNavigatorContentProvider
 						return Status.OK_STATUS;
 					}
 				};
-				if (project != null) {
-					refreshJob.setRule(project);
-				}
+				refreshJob.setRule(project);
 				refreshJob.schedule();
 			}
 		}

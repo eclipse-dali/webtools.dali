@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -543,7 +543,7 @@ public class Classpath
 	 * @see #classNames()
 	 */
 	public Iterable<String> getClassNames() {
-		return this.getClassNames(Filter.Null.<String>instance());
+		return this.getClassNames(Filter.Transparent.<String>instance());
 	}
 
 	/**
@@ -562,7 +562,7 @@ public class Classpath
 	 * to the specified collection.
 	 */
 	public void addClassNamesTo(Collection<String> classNames) {
-		this.addClassNamesTo(classNames, Filter.Null.<String>instance());
+		this.addClassNamesTo(classNames, Filter.Transparent.<String>instance());
 	}
 
 	/**
@@ -580,7 +580,7 @@ public class Classpath
 	 * Just a bit more performant than {@link #getClassNames()}.
 	 */
 	public Iterator<String> classNames() {
-		return this.classNames(Filter.Null.<String>instance());
+		return this.classNames(Filter.Transparent.<String>instance());
 	}
 
 	/**
@@ -628,7 +628,7 @@ public class Classpath
 	}
 
 
-	// ********** inner class **********
+	// ********** classpath entry **********
 
 	/**
 	 * <code>Entry</code> models a Java classpath entry, which can be either a
@@ -636,7 +636,9 @@ public class Classpath
 	 * similarly, a <code>.zip</code> file). The entry can return the names of
 	 * classes found in it etc.
 	 */
-	public static class Entry implements Serializable {
+	public static class Entry
+		implements Serializable
+	{
 		private final String fileName;
 		private final File file;
 		private final File canonicalFile;
@@ -750,7 +752,7 @@ public class Classpath
 		 * @see #classNames()
 		 */
 		public Iterable<String> getClassNames() {
-			return this.getClassNames(Filter.Null.<String>instance());
+			return this.getClassNames(Filter.Transparent.<String>instance());
 		}
 
 		/**
@@ -769,7 +771,7 @@ public class Classpath
 		 * to the specified collection.
 		 */
 		public void addClassNamesTo(Collection<String> classNames) {
-			this.addClassNamesTo(classNames, Filter.Null.<String>instance());
+			this.addClassNamesTo(classNames, Filter.Transparent.<String>instance());
 		}
 
 		/**
@@ -860,7 +862,7 @@ public class Classpath
 		 * Just a bit more performant than {@link #getClassNames()}.
 		 */
 		public Iterator<String> classNames() {
-			return this.classNames(Filter.Null.<String>instance());
+			return this.classNames(Filter.Transparent.<String>instance());
 		}
 
 		/**
@@ -933,7 +935,5 @@ public class Classpath
 			}
 			return classNames.iterator();
 		}
-
 	}
-
 }

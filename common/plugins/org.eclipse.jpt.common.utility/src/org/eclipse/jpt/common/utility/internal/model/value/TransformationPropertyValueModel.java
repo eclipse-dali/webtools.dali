@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
 /**
@@ -18,19 +17,35 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * {@link PropertyValueModel} and uses a {@link Transformer}
  * to transform the wrapped value before it is returned by {@link #getValue()}.
  * <p>
+ * The transformed value is calculated and cached during initialization and every
+ * time the wrapped value changes. This can be useful when the old value
+ * passed in to {@link #wrappedValueChanged(org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent)}
+ * can no longer be "transformed" because its state is no longer valid.
+ * This caching can also improve time performance in some situations.
+ * <p>
  * As an alternative to building a {@link Transformer},
  * a subclass of <code>TransformationPropertyValueModel</code> can
  * either override {@link #transform_(Object)} or,
- * if something other than null should be returned when the wrapped value
- * is null, override {@link #transform(Object)}.
+ * if something other than <code>null</code> should be returned when the
+ * wrapped value is <code>null</code>, override {@link #transform(Object)}.
  * 
+ * @param <V1> the type of the <em>wrapped</em> model's value
+ * @param <V2> the type of the model's <em>transformed</em> value
  * @see Transformer
  */
-public class TransformationPropertyValueModel<T1, T2>
-	extends PropertyValueModelWrapper<T1>
-	implements PropertyValueModel<T2>
+public class TransformationPropertyValueModel<V1, V2>
+	extends PropertyValueModelWrapper<V1>
+	implements PropertyValueModel<V2>
 {
-	protected final Transformer<T1, T2> transformer;
+	/**
+	 * Cache the transformed value so that during property change event
+	 * notification we do not have to transform the old value. It is possible
+	 * the old value is no longer be valid in the model; as a result,
+	 * transforming it would not be valid.
+	 */
+	protected volatile V2 value;
+
+	protected final Transformer<V1, V2> transformer;
 
 
 	// ********** constructors/initialization **********
@@ -42,103 +57,108 @@ public class TransformationPropertyValueModel<T1, T2>
 	 * {@link #transform_(Object)} or {@link #transform(Object)}
 	 * method instead of building a {@link Transformer}.
 	 */
-	public TransformationPropertyValueModel(PropertyValueModel<? extends T1> valueHolder) {
-		super(valueHolder);
+	public TransformationPropertyValueModel(PropertyValueModel<? extends V1> valueModel) {
+		super(valueModel);
 		this.transformer = this.buildTransformer();
 	}
 
 	/**
 	 * Construct a property value model with the specified nested
-	 * property value model and transformer.
+	 * property value model and transformer. Depending on the nested model,
+	 * the transformer may be required to handle a <code>null</code> value.
 	 */
-	public TransformationPropertyValueModel(PropertyValueModel<? extends T1> valueHolder, Transformer<T1, T2> transformer) {
-		super(valueHolder);
+	public TransformationPropertyValueModel(PropertyValueModel<? extends V1> valueModel, Transformer<V1, V2> transformer) {
+		super(valueModel);
+		if (transformer == null) {
+			throw new NullPointerException();
+		}
 		this.transformer = transformer;
 	}
 
-	protected Transformer<T1, T2> buildTransformer() {
+	protected Transformer<V1, V2> buildTransformer() {
 		return new DefaultTransformer();
 	}
 
 
 	// ********** PropertyValueModel implementation **********
 
-	public T2 getValue() {
-		// transform the object returned by the nested value model before returning it
-		return this.transform(this.valueHolder.getValue());
+	/**
+	 * No need to transform the nested value, simply return the cached value,
+	 * which is already transformed.
+	 */
+	public V2 getValue() {
+		return this.value;
 	}
 
 
 	// ********** PropertyValueModelWrapper implementation **********
 
+	/**
+	 * Propagate the event with transformed values.
+	 */
 	@Override
-	protected void valueChanged(PropertyChangeEvent event) {
-		// transform the values before propagating the change event
-	    @SuppressWarnings("unchecked")
-	    T1 eventOldValue = (T1) event.getOldValue();
-		Object oldValue = this.transformOld(eventOldValue);
-	    @SuppressWarnings("unchecked")
-	    T1 eventNewValue = (T1) event.getNewValue();
-		Object newValue = this.transformNew(eventNewValue);
-		this.firePropertyChanged(VALUE, oldValue, newValue);
+	protected void wrappedValueChanged(V1 oldValue, V1 newValue) {
+		V2 old = this.value;
+		this.firePropertyChanged(VALUE, old, this.value = this.transform(newValue));
 	}
 
 
-	// ********** behavior **********
+	// ********** transformation **********
 
 	/**
 	 * Transform the specified value and return the result.
-	 * This is called by
-	 * {@link #getValue()},
-	 * {@link #transformOld(Object)}, and
-	 * {@link #transformNew(Object)}.
 	 */
-	protected T2 transform(T1 value) {
-		return this.transformer.transform(value);
+	protected V2 transform(V1 v) {
+		return this.transformer.transform(v);
 	}
 
 	/**
-	 * Transform the specified, non-null, value and return the result.
+	 * Transform the specified, non-<code>null</code>, value and return the result.
 	 */
-	protected T2 transform_(@SuppressWarnings("unused") T1 value) {
+	protected V2 transform_(@SuppressWarnings("unused") V1 v) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
-	}
-
-	/**
-	 * Transform the specified old value and return the result.
-	 * By default, call {@link #transform(Object)}.
-	 * This is called by {@link #valueChanged(PropertyChangeEvent)}.
-	 */
-	protected T2 transformOld(T1 value) {
-		return this.transform(value);
-	}
-	
-	/**
-	 * Transform the specified new value and return the result.
-	 * By default, call {@link #transform(Object)}.
-	 * This is called by {@link #valueChanged(PropertyChangeEvent)}.
-	 */
-	protected T2 transformNew(T1 value) {
-		return this.transform(value);
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.getValue());
+		sb.append(this.value);
+	}
+
+
+	// ********** listeners **********
+
+	/**
+	 * We have listeners, transform the nested value and cache the result.
+	 */
+	@Override
+	protected void engageModel() {
+		super.engageModel();
+		this.value = this.transform(this.valueModel.getValue());
+	}
+
+	/**
+	 * We have no more listeners, clear the cached value.
+	 */
+	@Override
+	protected void disengageModel() {
+		this.value = null;
+		super.disengageModel();
 	}
 
 
 	// ********** default transformer **********
 
 	/**
-	 * The default transformer will return null if the wrapped value is null.
-	 * If the wrapped value is not null, it is transformed by a subclass
+	 * The default transformer will return <code>null</code> if the wrapped
+	 * value is <code>null</code>. If the wrapped value is not
+	 * <code>null</code>, it is transformed by a subclass
 	 * implementation of {@link TransformationPropertyValueModel#transform_(Object)}.
 	 */
-	protected class DefaultTransformer implements Transformer<T1, T2> {
-		public T2 transform(T1 value) {
-			return (value == null) ? null : TransformationPropertyValueModel.this.transform_(value);
+	protected class DefaultTransformer
+		implements Transformer<V1, V2>
+	{
+		public V2 transform(V1 v) {
+			return (v == null) ? null : TransformationPropertyValueModel.this.transform_(v);
 		}
 	}
-
 }

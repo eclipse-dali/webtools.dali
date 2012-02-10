@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,47 +10,45 @@
 package org.eclipse.jpt.jpa.ui.internal.commands;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.ui.internal.selection.DefaultJpaSelection;
-import org.eclipse.jpt.jpa.ui.internal.selection.JpaSelectionManager;
-import org.eclipse.jpt.jpa.ui.internal.selection.SelectionManagerFactory;
+import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class AddPersistentAttributeToXmlHandler extends AbstractHandler
+/**
+ * Convert a list of <code>orm.xml</code> <em>virtual</em> attributes to
+ * <em>specified</em>.
+ * This handler is only active if <em>all</em> the selected nodes are
+ * virtual attributes that have some sort of Java mapping (either specified
+ * or default).
+ * <p>
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ */
+public class AddPersistentAttributeToXmlHandler
+	extends AbstractHandler
 {	
-	@SuppressWarnings("unchecked")
-	public Object execute(ExecutionEvent executionEvent) throws ExecutionException {
-		final IWorkbenchWindow window = 
-			HandlerUtil.getActiveWorkbenchWindowChecked(executionEvent);
-		
-		final List<OrmReadOnlyPersistentAttribute> newAttributes = new ArrayList<OrmReadOnlyPersistentAttribute>();
-		
-		IStructuredSelection selection = 
-			(IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(executionEvent);
-		
-		// only applies for multiply selected OrmReadOnlyPersistentAttribute objects in a tree
-		for (OrmReadOnlyPersistentAttribute attribute : (Iterable<OrmReadOnlyPersistentAttribute>) CollectionTools.iterable(selection.iterator())) {
-			newAttributes.add(attribute.convertToSpecified());
-		}
-		
-		if (newAttributes.size() == 1) {
-			window.getShell().getDisplay().asyncExec(
-				new Runnable() {
-					public void run() {
-						JpaSelectionManager selectionManager = SelectionManagerFactory.getSelectionManager(window);
-						selectionManager.select(new DefaultJpaSelection(newAttributes.get(0)), null);
-					}
-				});
-		}
-		
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		this.execute_(event);
 		return null;
+	}
+
+	private void execute_(ExecutionEvent event) throws ExecutionException {
+		ArrayList<OrmReadOnlyPersistentAttribute> specifiedAttributes = new ArrayList<OrmReadOnlyPersistentAttribute>();
+		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
+		for (Object each : selection.toList()) {
+			OrmReadOnlyPersistentAttribute attribute = (OrmReadOnlyPersistentAttribute) each;
+			specifiedAttributes.add(attribute.convertToSpecified());
+		}
+
+		if (specifiedAttributes.size() == 1) {
+			IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+			JpaSelectionManager selectionManager = PlatformTools.getAdapter(window, JpaSelectionManager.class);
+			selectionManager.setSelection(specifiedAttributes.get(0));
+		}
 	}
 }

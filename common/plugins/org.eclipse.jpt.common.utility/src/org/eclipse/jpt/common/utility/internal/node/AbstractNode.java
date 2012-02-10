@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -778,7 +778,7 @@ public abstract class AbstractNode
 	 * Rebuild the "branch" problems and return whether they have
 	 * changed.
 	 * NB: The entire collection of "branch" problems must be re-calculated
-	 * with EVERY "significant" change - we cannot keep it in synch via
+	 * with EVERY "significant" change - we cannot keep it in sync via
 	 * change notifications because if a descendant with problems is
 	 * removed or replaced we will not receive notification that its
 	 * problems were removed from our "branch" problems.
@@ -937,5 +937,4 @@ public abstract class AbstractNode
 	public final String toString() {
 		return super.toString();
 	}
-
 }

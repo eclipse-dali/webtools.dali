@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.refactoring;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.mapping.IResourceChangeDescriptionFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -50,7 +51,7 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 	extends MoveParticipant implements ISharableParticipant {
 
 	/**
-	 * Store the {@link IJavaElements}s to be moved and their corresponding {@link MoveArguments}
+	 * Store the {@link IJavaElement}s to be moved and their corresponding {@link MoveArguments}
 	 */
 	protected final Map<IJavaElement, MoveArguments> originalJavaElements;
 
@@ -107,16 +108,17 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 	@Override
 	public RefactoringStatus checkConditions(IProgressMonitor monitor, CheckConditionsContext context) throws OperationCanceledException {
 		monitor.subTask(JpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
-		JpaProjectManager jpaProjectManager = JptJpaCorePlugin.getJpaProjectManager();
-		if (jpaProjectManager.getJpaProjectsSize() == 0) {
+		Iterable<JpaProject> jpaProjects = this.getJpaProjects();
+		int size = CollectionTools.size(jpaProjects);
+		if (size == 0) {
 			return null;
 		}
-		SubMonitor sm = SubMonitor.convert(monitor, jpaProjectManager.getJpaProjectsSize()*10 + 2);
+		SubMonitor sm = SubMonitor.convert(monitor, size*10 + 2);
 		sm.subTask(this.getCheckConditionsSubTaskName());
 		ResourceChangeChecker checker = (ResourceChangeChecker) context.getChecker(ResourceChangeChecker.class);
 		IResourceChangeDescriptionFactory deltaFactory = checker.getDeltaFactory();
 
-		for (JpaProject jpaProject : jpaProjectManager.getJpaProjects()) {
+		for (JpaProject jpaProject : jpaProjects) {
 			this.createReplaceEdits(sm.newChild(10), jpaProject);
 		}
 		if (sm.isCanceled()) {
@@ -132,6 +134,18 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 		sm.worked(1);
 		
 		return null;
+	}
+
+	protected Iterable<JpaProject> getJpaProjects() throws OperationCanceledException {
+		try {
+			return this.getJpaProjectManager().waitToGetJpaProjects();
+		} catch (InterruptedException ex) {
+			throw new OperationCanceledException(ex.getMessage());
+		}
+	}
+
+	protected JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
 	}
 
 	protected abstract String getCompositeChangeName();
@@ -185,10 +199,10 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 			if (sm.isCanceled()) {
 				throw new OperationCanceledException();
 			}
-			Iterable<ReplaceEdit> mappingFileReplaceEdits = this.createMappingFileReplaceEditsCheckClasspath(mappingFileRef);
-			if (!CollectionTools.isEmpty(mappingFileReplaceEdits)) {
+			Iterable<ReplaceEdit> edits = this.createMappingFileReplaceEditsCheckClasspath(mappingFileRef);
+			if (!CollectionTools.isEmpty(edits)) {
 				IFile file = (IFile) mappingFileRef.getMappingFile().getResource();
-				this.mappingFileReplaceEdits.put(file, mappingFileReplaceEdits);
+				this.mappingFileReplaceEdits.put(file, edits);
 			}
 			sm.worked(1);
 		}

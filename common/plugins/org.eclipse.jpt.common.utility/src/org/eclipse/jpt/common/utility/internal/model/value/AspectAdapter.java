@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
@@ -22,13 +23,17 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  * This abstract extension of {@link AbstractModel} provides a base for adding 
  * change listeners (property change, collection change, list change, tree change)
  * to a subject and converting the subject's change notifications into a single
- * set of change notifications for a common aspect (e.g. <code>VALUE</code>).
+ * set of change notifications for a common aspect
+ * (e.g. {@link PropertyValueModel#VALUE}).
  * <p>
- * The adapter will only listen to the subject (and subject holder) when the
+ * The adapter will only listen to the subject (and subject model) when the
  * adapter itself actually has listeners. This will allow the adapter to be
- * garbage collected when appropriate
+ * garbage collected when appropriate.
+ * 
+ * @param <S> the type of the model's subject
+ * @param <A> the type of the subject's aspect
  */
-public abstract class AspectAdapter<S>
+public abstract class AspectAdapter<S, A>
 	extends AbstractModel
 {
 	/**
@@ -37,21 +42,21 @@ public abstract class AspectAdapter<S>
 	 * We need to hold on to this directly so we can
 	 * disengage it when it changes.
 	 */
-	protected S subject;
+	protected volatile S subject;
 
 	/**
-	 * A value model that holds the subject
+	 * A value model that holds the {@link #subject}
 	 * that holds the aspect and provides change notification.
 	 * This is useful when there are a number of aspect adapters
 	 * that have the same subject and that subject can change.
-	 * All the aspect adapters should share the same subject holder.
+	 * All the aspect adapters can share the same subject model.
 	 * For now, this is can only be set upon construction and is
 	 * immutable.
 	 */
 	protected final PropertyValueModel<? extends S> subjectHolder;
 
-	/** A listener that keeps us in synch with the subject holder. */
-	protected final PropertyChangeListener subjectChangeListener;
+	/** A listener that keeps us in sync with the subject model. */
+	protected final PropertyChangeListener subjectListener;
 
 
 	// ********** constructors **********
@@ -64,16 +69,16 @@ public abstract class AspectAdapter<S>
 	}
 
 	/**
-	 * Construct an aspect adapter for the specified subject holder.
-	 * The subject holder cannot be null.
+	 * Construct an aspect adapter for the specified subject model.
+	 * The subject model cannot be <code>null</code>.
 	 */
-	protected AspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
+	protected AspectAdapter(PropertyValueModel<? extends S> subjectModel) {
 		super();
-		if (subjectHolder == null) {
+		if (subjectModel == null) {
 			throw new NullPointerException();
 		}
-		this.subjectHolder = subjectHolder;
-		this.subjectChangeListener = this.buildSubjectChangeListener();
+		this.subjectHolder = subjectModel;
+		this.subjectListener = this.buildSubjectListener();
 		// the subject is null when we are not listening to it
 		// this will typically result in our value being null
 		this.subject = null;
@@ -87,29 +92,32 @@ public abstract class AspectAdapter<S>
 		return new LocalChangeSupport(this, this.getListenerClass(), this.getListenerAspectName());
 	}
 
-	/**
-	 * The subject holder's value has changed, keep our subject in synch.
-	 */
-	protected PropertyChangeListener buildSubjectChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				AspectAdapter.this.subjectChanged();
-			}
-			@Override
-			public String toString() {
-				return "subject change listener"; //$NON-NLS-1$
-			}
-		};
+	protected PropertyChangeListener buildSubjectListener() {
+		return new SubjectListener();
+	}
+
+	protected class SubjectListener
+		extends PropertyChangeAdapter
+	{
+		/**
+		 * The subject model's value has changed, keep our subject in sync.
+		 */
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			AspectAdapter.this.subjectChanged();
+		}
 	}
 
 
 	// ********** behavior **********
 
 	/**
-	 * The subject has changed. Notify listeners that the value has changed.
+	 * The subject has changed.
+	 * Move our subject listener and
+	 * notify listeners that the value has changed.
 	 */
 	protected synchronized void subjectChanged() {
-		Object oldValue = this.getValue();
+		A old = this.getAspectValue();
 		boolean hasListeners = this.hasListeners();
 		if (hasListeners) {
 			this.disengageSubject();
@@ -117,14 +125,14 @@ public abstract class AspectAdapter<S>
 		this.subject = this.subjectHolder.getValue();
 		if (hasListeners) {
 			this.engageSubject();
-			this.fireAspectChanged(oldValue, this.getValue());
+			this.fireAspectChanged(old, this.getAspectValue());
 		}
 	}
 
 	/**
 	 * Return the aspect's current value.
 	 */
-	protected abstract Object getValue();
+	protected abstract A getAspectValue();
 
 	/**
 	 * Return the class of listener that is interested in the aspect adapter's
@@ -133,9 +141,10 @@ public abstract class AspectAdapter<S>
 	protected abstract Class<? extends EventListener> getListenerClass();
 
 	/**
-	 * Return the name of the aspect adapter's aspect (e.g. VALUE).
+	 * Return the name of the aspect adapter's aspect
+	 * (e.g. {@link PropertyValueModel#VALUE}).
 	 * This is the name of the aspect adapter's single aspect, not the
-	 * name of the subject's aspect the aspect adapter is adapting.
+	 * name of the subject's aspect(s) the aspect adapter is adapting.
 	 */
 	protected abstract String getListenerAspectName();
 
@@ -154,7 +163,25 @@ public abstract class AspectAdapter<S>
 	/**
 	 * The aspect has changed, notify listeners appropriately.
 	 */
-	protected abstract void fireAspectChanged(Object oldValue, Object newValue);
+	protected abstract void fireAspectChanged(A oldValue, A newValue);
+
+
+	// ********** engage/disengage models **********
+
+	/**
+	 * Called by {@link LocalChangeSupport}
+	 */
+	protected void engageModels() {
+		this.engageSubjectHolder();
+		this.engageSubject();
+	}
+
+	protected void engageSubjectHolder() {
+		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectListener);
+		// sync our subject *after* we start listening to the subject holder,
+		// since its value might change when a listener is added
+		this.subject = this.subjectHolder.getValue();
+	}
 
 	protected void engageSubject() {
 		// check for nothing to listen to
@@ -164,9 +191,17 @@ public abstract class AspectAdapter<S>
 	}
 
 	/**
-	 * The subject is not null - add our listener.
+	 * The {@link #subject} is not <code>null</code> - add our listener.
 	 */
 	protected abstract void engageSubject_();
+
+	/**
+	 * Called by {@link LocalChangeSupport}
+	 */
+	protected void disengageModels() {
+		this.disengageSubject();
+		this.disengageSubjectHolder();
+	}
 
 	protected void disengageSubject() {
 		// check for nothing to listen to
@@ -176,31 +211,14 @@ public abstract class AspectAdapter<S>
 	}
 
 	/**
-	 * The subject is not null - remove our listener.
+	 * The {@link #subject} is not <code>null</code> - remove our listener.
 	 */
 	protected abstract void disengageSubject_();
 
-	protected void engageSubjectHolder() {
-		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
-		// synch our subject *after* we start listening to the subject holder,
-		// since its value might change when a listener is added
-		this.subject = this.subjectHolder.getValue();
-	}
-
 	protected void disengageSubjectHolder() {
-		this.subjectHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
+		this.subjectHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectListener);
 		// clear out the subject when we are not listening to its holder
 		this.subject = null;
-	}
-
-	protected void engageModels() {
-		this.engageSubjectHolder();
-		this.engageSubject();
-	}
-
-	protected void disengageModels() {
-		this.disengageSubject();
-		this.disengageSubjectHolder();
 	}
 
 
@@ -215,10 +233,12 @@ public abstract class AspectAdapter<S>
 	 * A relevant listener is a listener of the relevant type and aspect or a
 	 * general-purpose listener.
 	 */
-	protected class LocalChangeSupport extends SingleAspectChangeSupport {
+	protected class LocalChangeSupport
+		extends SingleAspectChangeSupport
+	{
 		private static final long serialVersionUID = 1L;
 
-		public LocalChangeSupport(AspectAdapter<S> source, Class<? extends EventListener> validListenerClass, String validAspectName) {
+		public LocalChangeSupport(AspectAdapter<S, A> source, Class<? extends EventListener> validListenerClass, String validAspectName) {
 			super(source, validListenerClass, validAspectName);
 		}
 
@@ -260,7 +280,5 @@ public abstract class AspectAdapter<S>
 				AspectAdapter.this.disengageModels();
 			}
 		}
-
 	}
-
 }

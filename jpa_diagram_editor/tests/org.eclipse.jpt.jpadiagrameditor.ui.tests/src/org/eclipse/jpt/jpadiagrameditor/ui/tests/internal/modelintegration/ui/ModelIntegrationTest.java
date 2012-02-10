@@ -74,7 +74,7 @@ public class ModelIntegrationTest {
 		entityFile = factory.createEntity(jpaProject, "org.eclipse.Entity1");
 		Thread.sleep(2000);
 		featureProvider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
-		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(getPersistentType(entityFile));
+		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(JPACreateFactory.getPersistentType(entityFile));
 		expect(featureProvider.getCompilationUnit(isA(JavaPersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entityFile)).anyTimes();
 	}
 	
@@ -87,7 +87,7 @@ public class ModelIntegrationTest {
 		ICompilationUnit cu = createCompilationUnitFrom(entityFile); 
 		
 		IJPAEditorUtil ut = EasyMock.createMock(IJPAEditorUtil.class);
-		JavaPersistentType inputJptType = getPersistentType(entityFile);
+		JavaPersistentType inputJptType = (JavaPersistentType) JPACreateFactory.getPersistentType(entityFile);
 		expect(ut.getJPType(cu)).andStubReturn(inputJptType);
 		expect(featureProvider.getJPAEditorUtil()).andStubReturn(ut);
 		Diagram d = EasyMock.createMock(Diagram.class);
@@ -124,7 +124,7 @@ public class ModelIntegrationTest {
 		ICompilationUnit cu = createCompilationUnitFrom(entityFile); 
 		
 		IJPAEditorUtil ut = EasyMock.createMock(IJPAEditorUtil.class);
-		JavaPersistentType inputJptType = getPersistentType(entityFile);
+		JavaPersistentType inputJptType = (JavaPersistentType) JPACreateFactory.getPersistentType(entityFile);
 		expect(ut.getJPType(cu)).andStubReturn(inputJptType);
 		expect(featureProvider.getJPAEditorUtil()).andStubReturn(ut);
 		Diagram d = EasyMock.createMock(Diagram.class);
@@ -196,22 +196,6 @@ public class ModelIntegrationTest {
 //	}
 	
 	
-	
-	public static JavaPersistentType getPersistentType(IFile file){
-		JpaFile jpaFile = JptJpaCorePlugin.getJpaFile(file);
-		for (JpaStructureNode node : getRootNodes(jpaFile)) {
-			JavaPersistentType entity = (JavaPersistentType) node;
-			return entity;
-		}
-		return null;
-	}	
-	
-	private static Iterable<JpaStructureNode> getRootNodes(JpaFile jpaFile) {
-		if(jpaFile == null){
-			return EmptyIterable.instance();
-		}
-		return jpaFile.getRootStructureNodes();
-	}
 	
 	public ICompilationUnit createCompilationUnitFrom(IFile file) {
 		return JavaCore.createCompilationUnitFrom(file);

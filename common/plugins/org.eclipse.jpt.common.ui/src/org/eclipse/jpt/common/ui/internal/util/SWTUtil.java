@@ -18,6 +18,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -35,20 +36,94 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class SWTUtil {
 
 	/**
-	 * Causes the <code>run()</code> method of the given runnable to be invoked
-	 * by the user-interface thread at the next reasonable opportunity. The caller
-	 * of this method continues to run in parallel, and is not notified when the
-	 * runnable has completed.
-	 *
-	 * @param runnable Code to run on the user-interface thread
-	 * @exception org.eclipse.swt.SWTException
-	 * <ul>
-	 * <li>ERROR_DEVICE_DISPOSED - if the receiver has been disposed</li>
-	 * </ul>
-	 * @see #syncExec
+	 * @see Display#asyncExec(Runnable)
+	 * @see #syncExec(Runnable)
+	 * @see #execute(Runnable)
 	 */
 	public static void asyncExec(Runnable runnable) {
 		getStandardDisplay().asyncExec(runnable);
+	}
+
+	/**
+	 * @see Display#syncExec(Runnable)
+	 * @see #asyncExec(Runnable)
+	 * @see #execute(Runnable)
+	 */
+	public static void syncExec(Runnable runnable) {
+		getStandardDisplay().syncExec(runnable);
+	}
+
+	/**
+	 * Execute the specified runnable if the current thread is the UI thread;
+	 * otherwise asynchrounously dispatch the runnable to the UI thread,
+	 * returning immediately. This is useful for event handlers when it is not
+	 * obviously whether the events are fired on the UI thread.
+	 * 
+	 * @see Display#asyncExec(Runnable)
+	 * @see #asyncExec(Runnable)
+	 * @see #syncExec(Runnable)
+	 */
+	public static void execute(Runnable runnable) {
+		Display display = Display.getCurrent();
+		if (display != null) {
+			// the current thread is the UI thread
+			runnable.run();
+		} else {
+			Display.getDefault().asyncExec(runnable);
+		}
+	}
+
+	/**
+	 * Execute the specified runnable if the current thread is the specified
+	 * viewer's thread;
+	 * otherwise asynchrounously dispatch the runnable to the viewer's thread,
+	 * returning immediately. This is useful for event handlers when it is not
+	 * obviously whether the events are fired on the viewer's thread.
+	 * 
+	 * @see #execute(Runnable)
+	 * @see Display#asyncExec(Runnable)
+	 * @see #asyncExec(Runnable)
+	 * @see #syncExec(Runnable)
+	 */
+	public static void execute(Viewer viewer, Runnable runnable) {
+		execute(viewer.getControl(), runnable);
+	}
+
+	/**
+	 * Execute the specified runnable if the current thread is the specified
+	 * control's thread;
+	 * otherwise asynchrounously dispatch the runnable to the control's thread,
+	 * returning immediately. This is useful for event handlers when it is not
+	 * obviously whether the events are fired on the control's thread.
+	 * 
+	 * @see #execute(Runnable)
+	 * @see Display#asyncExec(Runnable)
+	 * @see #asyncExec(Runnable)
+	 * @see #syncExec(Runnable)
+	 */
+	public static void execute(Control control, Runnable runnable) {
+		execute(control.getDisplay(), runnable);
+	}
+
+	/**
+	 * Execute the specified runnable if the current thread is the specified
+	 * display's thread;
+	 * otherwise asynchrounously dispatch the runnable to the display's thread,
+	 * returning immediately. This is useful for event handlers when it is not
+	 * obviously whether the events are fired on the display's thread.
+	 * 
+	 * @see #execute(Runnable)
+	 * @see Display#asyncExec(Runnable)
+	 * @see #asyncExec(Runnable)
+	 * @see #syncExec(Runnable)
+	 */
+	public static void execute(Display display, Runnable runnable) {
+		if (display.getThread() == Thread.currentThread()) {
+			// the current thread is the display's thread
+			runnable.run();
+		} else {
+			display.asyncExec(runnable);
+		}
 	}
 
 	/**
@@ -73,40 +148,26 @@ public class SWTUtil {
 	 * @return The shell, never <code>null</code>
 	 */
 	public static Shell getShell() {
-
 		// Retrieve the active shell, which can be the shell from any window
 		Shell shell = getStandardDisplay().getActiveShell();
+		if (shell != null) {
+			return shell;
+		}
 
 		// No shell could be found, revert back to the active workbench window
-		if (shell == null) {
-			shell = getWorkbench().getActiveWorkbenchWindow().getShell();
-		}
-
-		// Make sure it's never null
-		if (shell == null) {
-			shell = new Shell(getStandardDisplay().getActiveShell());
-		}
-
-		return shell;
+		shell = getWorkbench().getActiveWorkbenchWindow().getShell();
+		return (shell != null) ? shell : new Shell();
 	}
 
 	/**
-	 * Returns the standard display to be used. The method first checks, if the
-	 * thread calling this method has an associated display. If so, this display
-	 * is returned. Otherwise the method returns the default display.
-	 *
-	 * @return The current display if not <code>null</code> otherwise the default
-	 * display is returned
+	 * Return the "standard" {@link Display display}. Return the
+	 * {@link Display#getCurrent() display associated with the current thread}
+	 * if it is present; otherwise return the
+	 * {@link Display#getDefault() default display}.
 	 */
-	public static Display getStandardDisplay()
-	{
+	public static Display getStandardDisplay() {
 		Display display = Display.getCurrent();
-
-		if (display == null) {
-			display = Display.getDefault();
-		}
-
-		return display;
+		return (display != null) ? display : Display.getDefault();
 	}
 
 	public static int getTableHeightHint(Table table, int rows) {
@@ -166,25 +227,13 @@ public class SWTUtil {
 
 
 	/**
-	 * Causes the <code>run()</code> method of the given runnable to be invoked
-	 * by the user-interface thread at the next reasonable opportunity. The
-	 * thread which calls this method is suspended until the runnable completes.
-	 *
-	 * @param runnable code to run on the user-interface thread.
-	 * @see #asyncExec
-	 */
-	public static void syncExec(Runnable runnable) {
-		getStandardDisplay().syncExec(runnable);
-	}
-
-	/**
 	 * Determines if the current thread is the UI event thread.
 	 *
 	 * @return <code>true</code> if it's the UI event thread, <code>false</code>
 	 * otherwise
 	 */
 	public static boolean uiThread() {
-		return getStandardDisplay().getThread() == Thread.currentThread();
+		return Display.getCurrent() != null;
 	}
 
 	/**

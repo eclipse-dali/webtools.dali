@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -31,11 +32,9 @@ import org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.details.JpaDetailsPage;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.navigator.JpaNavigatorProvider;
-import org.eclipse.jpt.jpa.ui.structure.JpaStructureProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -43,54 +42,52 @@ import org.eclipse.swt.widgets.Shell;
 public abstract class BaseJpaPlatformUi
 	implements JpaPlatformUi
 {
-	private final JpaNavigatorProvider navigatorProvider;
+	private final ItemTreeStateProviderFactoryProvider navigatorFactoryProvider;
 	
 	private final JpaPlatformUiProvider platformUiProvider;
 	
 	
 	protected BaseJpaPlatformUi(
-			JpaNavigatorProvider navigatorProvider, JpaPlatformUiProvider platformUiProvider) {
-		
+			ItemTreeStateProviderFactoryProvider navigatorFactoryProvider,
+			JpaPlatformUiProvider platformUiProvider
+	) {
 		super();
-		this.navigatorProvider = navigatorProvider;
+		this.navigatorFactoryProvider = navigatorFactoryProvider;
 		this.platformUiProvider = platformUiProvider;
 	}
 	
 	
 	// ********** navigator provider **********
 	
-	public JpaNavigatorProvider getNavigatorProvider() {
-		return this.navigatorProvider;
+	public ItemTreeStateProviderFactoryProvider getNavigatorFactoryProvider() {
+		return this.navigatorFactoryProvider;
 	}
 	
 	
-	// ********** structure providers **********
+	// ********** structure view factory providers **********
 	
-	public JpaStructureProvider getStructureProvider(JpaFile jpaFile) {
+	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider(JpaFile jpaFile) {
 		JptResourceType resourceType = jpaFile.getResourceModel().getResourceType();
-		return (resourceType == null) ? null : this.getStructureProvider(resourceType);
+		return (resourceType == null) ? null : this.getStructureViewFactoryProvider(resourceType);
 	}
 	
-	protected JpaStructureProvider getStructureProvider(JptResourceType resourceType) {
-		ResourceUiDefinition definition;
+	protected ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider(JptResourceType resourceType) {
 		try {
-			definition = getResourceUiDefinition(resourceType);
-		}
-		catch (IllegalArgumentException iae) {
+			return this.getResourceUiDefinition(resourceType).getStructureViewFactoryProvider();
+		} catch (IllegalArgumentException iae) {
 			JptJpaUiPlugin.log(iae);
 			return null;
 		}
-		return definition.getStructureProvider();
 	}
 	
 	
 	// ********** details providers **********
 	
-	public JpaDetailsPage<? extends JpaStructureNode> buildJpaDetailsPage(
+	public JpaDetailsPageManager<? extends JpaStructureNode> buildJpaDetailsPageManager(
 			Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory) {
 		
 		JpaDetailsProvider jpaDetailsProvider = getDetailsProvider(structureNode);
-		return jpaDetailsProvider == null ? null : jpaDetailsProvider.buildDetailsPage(parent, widgetFactory);
+		return jpaDetailsProvider == null ? null : jpaDetailsProvider.buildDetailsPageManager(parent, widgetFactory);
 	}
 	
 	protected JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {

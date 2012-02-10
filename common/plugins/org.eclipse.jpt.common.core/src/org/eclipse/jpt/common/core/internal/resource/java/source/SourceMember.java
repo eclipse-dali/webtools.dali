@@ -195,7 +195,6 @@ abstract class SourceMember<M extends Member>
 	}
 
 	public boolean isPublicOrProtected() {
-		return isPublic() || isProtected();
+		return this.isPublic() || this.isProtected();
 	}
-
 }

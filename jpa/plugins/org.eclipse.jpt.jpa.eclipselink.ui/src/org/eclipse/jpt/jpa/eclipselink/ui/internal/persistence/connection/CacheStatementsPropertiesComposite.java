@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,10 +66,10 @@ public class CacheStatementsPropertiesComposite<T extends Connection>
 			}
 
 			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
+			protected synchronized void subjectChanged() {
+				Boolean oldValue = this.getValue();
 				super.subjectChanged();
-				Object newValue = this.getValue();
+				Boolean newValue = this.getValue();
 
 				// Make sure the default value is appended to the text
 				if (oldValue == newValue && newValue == null) {

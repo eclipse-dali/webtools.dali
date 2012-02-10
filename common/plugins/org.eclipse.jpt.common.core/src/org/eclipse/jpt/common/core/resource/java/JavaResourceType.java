@@ -51,12 +51,14 @@ public interface JavaResourceType
 		String PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY = "privateNoArgConstructor"; //$NON-NLS-1$
 	
 	/**
-	 * Return whether the type has a public or protected no-arg constructor *or* only the default constructor
+	 * Return whether the type has a public or protected no-arg constructor
+	 * <em>or</em> only the default constructor.
 	 */
 	boolean hasPublicOrProtectedNoArgConstructor();
 
 	/**
-	 * Return whether the type has a public or protected no-arg constructor *or* only the default constructor
+	 * Return whether the type has a public no-arg constructor
+	 * <em>or</em> only the default constructor.
 	 */
 	boolean hasPublicNoArgConstructor();
 		
@@ -73,12 +75,14 @@ public interface JavaResourceType
 	boolean hasAnyAnnotatedMethods();
 
 	/**
-	 * Return whether the type has equals() method
+	 * Return whether the type overrides the
+	 * {@link Object#equals(Object)} method.
 	 */
 	boolean hasEqualsMethod();
 	
 	/**
-	 * Return whether the type has hashCode() method
+	 * Return whether the type overrides the
+	 * {@link Object#hashCode()} method.
 	 */
 	boolean hasHashCodeMethod();
 
@@ -99,5 +103,5 @@ public interface JavaResourceType
 	Iterable<JavaResourceMethod> getMethods();
 		String METHODS_COLLECTION = "methods"; //$NON-NLS-1$
 
-	JavaResourceMethod getMethod(String propertyName);
+	JavaResourceMethod getMethod(String name);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,12 +28,12 @@ import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedWritablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.common.utility.model.listener.SimpleChangeListener;
+import org.eclipse.jpt.common.utility.model.listener.AbstractChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
@@ -42,7 +42,6 @@ import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -53,128 +52,132 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.ui.internal.FacetsPropertyPage;
 
 
 public abstract class JptProjectPropertiesPage
 		extends LibraryFacetPropertyPage {
-	
+
 	protected final WritablePropertyValueModel<IProject> projectModel;
 	protected final BufferedWritablePropertyValueModel.Trigger trigger;
-	
+
 	protected final ChangeListener validationListener;
-	
-	
+
+
 	public JptProjectPropertiesPage() {
 		super();
 
 		this.projectModel = new SimplePropertyValueModel<IProject>();
 		this.trigger = new BufferedWritablePropertyValueModel.Trigger();
-		
-		buildModels();
-		
+
+		this.buildModels();
+
 		this.validationListener = this.buildValidationListener();
 	}
-	
-	
+
+
 	/**
 	 * Build any additional models needed by this page.  The project model has been created at this
 	 * point.
 	 */
 	protected abstract void buildModels();
-	
-	
+
+
 	// ********** convenience methods **********
-	
-	protected static boolean flagIsSet(PropertyValueModel<Boolean> flagModel) {
+
+	public static boolean flagIsSet(PropertyValueModel<Boolean> flagModel) {
 		Boolean flag = flagModel.getValue();
 		return (flag != null) && flag.booleanValue();
 	}
-	
-	
-	// ********** LibraryFacetPropertyPage implementation **********
-	
 
-	
+
+	// ********** LibraryFacetPropertyPage implementation **********
+
 	protected IPropertyChangeListener buildLibraryProviderListener() {
-		return new IPropertyChangeListener() {
-				public void propertyChanged(String property, Object oldValue, Object newValue ) {
-					if (LibraryInstallDelegate.PROP_AVAILABLE_PROVIDERS.equals(property)) {
-						adjustLibraryProviders();
-					}
-				}
-			};
+		return new LibraryProviderListener();
 	}
-	
+
+	protected class LibraryProviderListener
+		implements IPropertyChangeListener
+	{
+		public void propertyChanged(String property, Object oldValue, Object newValue ) {
+			if (LibraryInstallDelegate.PROP_AVAILABLE_PROVIDERS.equals(property)) {
+				JptProjectPropertiesPage.this.adjustLibraryProviders();
+			}
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
+	}
+
 	protected abstract void adjustLibraryProviders();
-	
-	
+
+
 	// ********** page **********
 
 	@Override
 	protected Control createPageContents(Composite parent) {
 		if (this.projectModel.getValue() != null) {
-			disengageListeners();
+			this.disengageListeners();
 		}
-		
-		this.projectModel.setValue(getProject());
-		
+
+		this.projectModel.setValue(this.getProject());
+
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
 		composite.setLayout(layout);
-		
-		createWidgets(composite);
-		
+
+		this.createWidgets(composite);
+
 		Dialog.applyDialogFont(composite);
-		
-		adjustLibraryProviders();
-		
-		engageListeners();
-		updateValidation();
+
+		this.adjustLibraryProviders();
+
+		this.engageListeners();
+		this.updateValidation();
 
 		return composite;
 	}
-	
+
 	/**
 	 * Build specific widgets.  Layout and validation will be taken care of.
 	 */
 	protected abstract void createWidgets(Composite parent);
-	
+
 	protected void engageListeners() {
-		engageValidationListener();
+		this.engageValidationListener();
 	}
-	
+
 	protected void disengageListeners() {
-		disengageValidationListener();
+		this.disengageValidationListener();
 	}
-	
+
 	protected Link buildFacetsPageLink(Composite parent, String text) {
-		Link facetsPageLink = buildLink(parent, text);
-		facetsPageLink.addSelectionListener(buildFacetsPageLinkListener());  // the link will be GCed
+		Link facetsPageLink = this.buildLink(parent, text);
+		facetsPageLink.addSelectionListener(new FacetsPageLinkListener());  // the link will be GCed
 		return facetsPageLink;
 	}
-	
-	private SelectionListener buildFacetsPageLinkListener() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				openProjectFacetsPage();
-			}
-			@Override
-			public String toString() {
-				return "facets page link listener"; //$NON-NLS-1$
-			}
-		};
+
+	/* CU private */ class FacetsPageLinkListener
+		extends SelectionAdapter
+	{
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			JptProjectPropertiesPage.this.openProjectFacetsPage();
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
 	}
-	
+
 	protected void openProjectFacetsPage() {
-		((IWorkbenchPreferenceContainer)getContainer()).openPage(FacetsPropertyPage.ID, null);
+		((IWorkbenchPreferenceContainer)this.getContainer()).openPage(FacetsPropertyPage.ID, null);
 	}
-	
+
 	/**
 	 * Don't allow {@link org.eclipse.jface.preference.PreferencePage#computeSize()}
 	 * to cache the page's size, since the size of the "Library" panel can
@@ -184,18 +187,18 @@ public abstract class JptProjectPropertiesPage
 	public Point computeSize() {
 		return this.doComputeSize();
 	}
-	
-	
+
+
 	// ********** widgets **********
-	
+
 	protected Button buildCheckBox(Composite parent, int horizontalSpan, String text) {
-		return buildButton(parent, horizontalSpan, text, SWT.CHECK);
+		return this.buildButton(parent, horizontalSpan, text, SWT.CHECK);
 	}
-	
+
 	protected Button buildRadioButton(Composite parent, int horizontalSpan, String text) {
-		return buildButton(parent, horizontalSpan, text, SWT.RADIO);
+		return this.buildButton(parent, horizontalSpan, text, SWT.RADIO);
 	}
-	
+
 	protected Button buildButton(Composite parent, int horizontalSpan, String text, int style) {
 		Button button = new Button(parent, SWT.NONE | style);
 		button.setText(text);
@@ -204,11 +207,11 @@ public abstract class JptProjectPropertiesPage
 		button.setLayoutData(gd);
 		return button;
 	}
-	
+
 	protected Combo buildDropDown(Composite parent) {
-		return buildDropDown(parent, 1);
+		return this.buildDropDown(parent, 1);
 	}
-	
+
 	protected Combo buildDropDown(Composite parent, int horizontalSpan) {
 		Combo combo = new Combo(parent, SWT.READ_ONLY);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -216,7 +219,7 @@ public abstract class JptProjectPropertiesPage
 		combo.setLayoutData(gd);
 		return combo;
 	}
-	
+
 	protected Label buildLabel(Composite parent, String text) {
 		Label label = new Label(parent, SWT.LEFT);
 		label.setText(text);
@@ -225,7 +228,7 @@ public abstract class JptProjectPropertiesPage
 		label.setLayoutData(gd);
 		return label;
 	}
-	
+
 	protected Link buildLink(Composite parent, String text) {
 		Link link = new Link(parent, SWT.NONE);
 		GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
@@ -234,8 +237,8 @@ public abstract class JptProjectPropertiesPage
 		link.setText(text);
 		return link;
 	}
-	
-	
+
+
 	// ********** OK/Revert/Apply behavior **********
 
 	@Override
@@ -247,8 +250,10 @@ public abstract class JptProjectPropertiesPage
 			this.buildOkProgressMonitorDialog().run(true, false, this.buildOkRunnableWithProgress());
 		}
 		catch (InterruptedException ex) {
+			// should *not* happen...
+			Thread.currentThread().interrupt();
 			return false;
-		} 
+		}
 		catch (InvocationTargetException ex) {
 			throw new RuntimeException(ex.getTargetException());
 		}
@@ -256,172 +261,189 @@ public abstract class JptProjectPropertiesPage
 		return true;
 	}
 
-	private IRunnableContext buildOkProgressMonitorDialog() {
+	protected IRunnableContext buildOkProgressMonitorDialog() {
 		return new ProgressMonitorDialog(this.getShell());
 	}
 
-	private IRunnableWithProgress buildOkRunnableWithProgress() {
-		return new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				IWorkspace ws = ResourcesPlugin.getWorkspace();
-				try {
-					// the build we execute in #performOk_() locks the workspace root,
-					// so we need to use the workspace root as our scheduling rule here
-					ws.run(
-							buildOkWorkspaceRunnable(),
-							ws.getRoot(),
-							IWorkspace.AVOID_UPDATE,
-							monitor);
-				}
-				catch (CoreException ex) {
-					throw new InvocationTargetException(ex);
-				}
-			}
-		};
+	protected IRunnableWithProgress buildOkRunnableWithProgress() {
+		return new OkRunnableWithProgress();
 	}
-	
-	/* private */ IWorkspaceRunnable buildOkWorkspaceRunnable() {
-		return new IWorkspaceRunnable() {
+
+	protected class OkRunnableWithProgress
+		implements IRunnableWithProgress
+	{
+		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+			IWorkspace ws = ResourcesPlugin.getWorkspace();
+			try {
+				// the build we execute in #performOk_() locks the workspace root,
+				// so we need to use the workspace root as our scheduling rule here
+				ws.run(
+						new OkWorkspaceRunnable(),
+						ws.getRoot(),
+						IWorkspace.AVOID_UPDATE,
+						monitor
+					);
+			} catch (CoreException ex) {
+				throw new InvocationTargetException(ex);
+			}
+		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
+
+		/* class private */ class OkWorkspaceRunnable
+			implements IWorkspaceRunnable
+		{
 			public void run(IProgressMonitor monitor) throws CoreException {
-				performOk_(monitor);
+				JptProjectPropertiesPage.this.performOk_(monitor);
 			}
-		};
+			@Override
+			public String toString() {
+				return StringTools.buildToStringFor(this);
+			}
+		}
 	}
-	
+
+
 	// ********** OK/Revert/Apply behavior **********
-	
-	void performOk_(IProgressMonitor monitor) throws CoreException {
-		if (isBuffering()) {
-			boolean rebuild = projectRebuildRequired();
+
+	/* CU private */ void performOk_(IProgressMonitor monitor) throws CoreException {
+		if (this.isBuffering()) {
+			boolean rebuild = this.projectRebuildRequired();
 			this.trigger.accept();
 			if (rebuild) {
-				rebuildProject();
+				this.rebuildProject();
 			}
 			this.getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 		}
 	}
-	
+
 	protected abstract boolean projectRebuildRequired();
-	
-	protected abstract void rebuildProject();
-	
+
+	protected abstract void rebuildProject() throws CoreException;
+
 	/**
 	 * Return whether any of the models are buffering a change.
 	 */
 	private boolean isBuffering() {
-		for (BufferedWritablePropertyValueModel<?> model : buildBufferedModels()) {
+		for (BufferedWritablePropertyValueModel<?> model : this.buildBufferedModels()) {
 			if (model.isBuffering()) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	protected abstract BufferedWritablePropertyValueModel<?>[] buildBufferedModels();
-	
+
 	@Override
 	protected void performDefaults() {
 		super.performDefaults();
 		this.trigger.reset();
 	}
-	
-	
+
+
 	// ********** dispose **********
-	
+
 	@Override
 	public void dispose() {
-		disengageListeners();
+		this.disengageListeners();
 		super.dispose();
 	}
-	
-	
+
+
 	// ********** validation **********
-	
+
 	private ChangeListener buildValidationListener() {
-		return new SimpleChangeListener() {
-			@Override
-			protected void modelChanged() {
-				validate();
-			}
-			@Override
-			public String toString() {
-				return "validation listener"; //$NON-NLS-1$
-			}
-		};
+		return new ValidationListener();
 	}
-	
+
+	/* CU private */ class ValidationListener
+		extends AbstractChangeListener
+	{
+		@Override
+		protected void modelChanged() {
+			JptProjectPropertiesPage.this.validate();
+		}
+	}
+
 	protected void validate() {
-		if ( ! getControl().isDisposed()) {
-			updateValidation();
+		if ( ! this.getControl().isDisposed()) {
+			this.updateValidation();
 		}
 	}
 
 	private void engageValidationListener() {
-		for (Model model : buildValidationModels()) {
+		for (Model model : this.buildValidationModels()) {
 			model.addChangeListener(this.validationListener);
 		}
 	}
-	
+
 	protected abstract Model[] buildValidationModels();
-	
+
 	private void disengageValidationListener() {
-		for (Model model : buildReverseValidationModels()) {
+		for (Model model : this.buildReverseValidationModels()) {
 			model.removeChangeListener(this.validationListener);
 		}
 	}
-	
+
 	protected Model[] buildReverseValidationModels() {
-		return ArrayTools.reverse(buildValidationModels());
+		return ArrayTools.reverse(this.buildValidationModels());
 	}
 
 	protected static final Integer ERROR_STATUS = Integer.valueOf(IStatus.ERROR);
 	protected static final Integer WARNING_STATUS = Integer.valueOf(IStatus.WARNING);
 	protected static final Integer INFO_STATUS = Integer.valueOf(IStatus.INFO);
 	protected static final Integer OK_STATUS = Integer.valueOf(IStatus.OK);
-	
+
 	protected IStatus buildInfoStatus(String message) {
 		return this.buildStatus(IStatus.INFO, message);
 	}
-	
+
 	protected IStatus buildWarningStatus(String message) {
 		return this.buildStatus(IStatus.WARNING, message);
 	}
-	
+
 	protected IStatus buildErrorStatus(String message) {
 		return this.buildStatus(IStatus.ERROR, message);
 	}
-	
+
 	protected IStatus buildStatus(int severity, String message) {
 		return new Status(severity, JptCommonCorePlugin.PLUGIN_ID, message);
 	}
-	
+
 	@Override
 	protected IStatus performValidation() {
 		HashMap<Integer, ArrayList<IStatus>> statuses = new HashMap<Integer, ArrayList<IStatus>>();
 		statuses.put(ERROR_STATUS, new ArrayList<IStatus>());
 		statuses.put(WARNING_STATUS, new ArrayList<IStatus>());
 		statuses.put(INFO_STATUS, new ArrayList<IStatus>());
-		statuses.put(OK_STATUS, CollectionTools.list(Status.OK_STATUS));
-		
-		performValidation(statuses);
-		
-		if ( ! statuses.get(ERROR_STATUS).isEmpty()) {
-			return statuses.get(ERROR_STATUS).get(0);
-		}
-		else if ( ! statuses.get(WARNING_STATUS).isEmpty()) {
-			return statuses.get(WARNING_STATUS).get(0);
-		}
-		else if ( ! statuses.get(INFO_STATUS).isEmpty()) {
-			return statuses.get(INFO_STATUS).get(0);
-		}
-		else {
-			return statuses.get(OK_STATUS).get(0);
-		}
-	}
-	
-	protected void performValidation(Map<Integer, ArrayList<IStatus>> statuses) {
+		statuses.put(OK_STATUS, new ArrayList<IStatus>());
+
 		/* library provider */
-		IStatus lpStatus = super.performValidation();
-		statuses.get(Integer.valueOf(lpStatus.getSeverity())).add(lpStatus);
+		this.addStatus(super.performValidation(), statuses);
+		this.performValidation(statuses);
+
+		ArrayList<IStatus> list = statuses.get(ERROR_STATUS);
+		if ( ! list.isEmpty()) {
+			return list.get(0);
+		}
+		list = statuses.get(WARNING_STATUS);
+		if ( ! list.isEmpty()) {
+			return list.get(0);
+		}
+		list = statuses.get(INFO_STATUS);
+		if ( ! list.isEmpty()) {
+			return list.get(0);
+		}
+		return Status.OK_STATUS;
+	}
+
+	protected abstract void performValidation(Map<Integer, ArrayList<IStatus>> statuses);
+
+	protected void addStatus(IStatus status, Map<Integer, ArrayList<IStatus>> statuses) {
+		statuses.get(Integer.valueOf(status.getSeverity())).add(status);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -419,22 +419,22 @@ public class ListAspectAdapterTests extends TestCase {
 
 		@Override
 		protected ListIterator<String> listIterator_() {
-			if (this.listNames[0] == TestSubject.NAMES_LIST) {
+			if (this.aspectNames[0] == TestSubject.NAMES_LIST) {
 				return this.subject.names();
-			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
+			} else if (this.aspectNames[0] == TestSubject.DESCRIPTIONS_LIST) {
 				return this.subject.descriptions();
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
+				throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
 			}
 		}
 
 		public void add(int index, Object item) {
-			if (this.listNames[0] == TestSubject.NAMES_LIST) {
+			if (this.aspectNames[0] == TestSubject.NAMES_LIST) {
 				this.subject.addName(index, (String) item);
-			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
+			} else if (this.aspectNames[0] == TestSubject.DESCRIPTIONS_LIST) {
 				this.subject.addDescription(index, (String) item);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
+				throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
 			}
 		}
 
@@ -445,12 +445,12 @@ public class ListAspectAdapterTests extends TestCase {
 		}
 
 		public String remove(int index) {
-			if (this.listNames[0] == TestSubject.NAMES_LIST) {
+			if (this.aspectNames[0] == TestSubject.NAMES_LIST) {
 				return this.subject.removeName(index);
-			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
+			} else if (this.aspectNames[0] == TestSubject.DESCRIPTIONS_LIST) {
 				return this.subject.removeDescription(index);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
+				throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
 			}
 		}
 
@@ -463,14 +463,13 @@ public class ListAspectAdapterTests extends TestCase {
 		}
 
 		public Object replace(int index, Object item) {
-			if (this.listNames[0] == TestSubject.NAMES_LIST) {
+			if (this.aspectNames[0] == TestSubject.NAMES_LIST) {
 				return this.subject.setName(index, (String) item);
-			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
+			} else if (this.aspectNames[0] == TestSubject.DESCRIPTIONS_LIST) {
 				return this.subject.setDescription(index, (String) item);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
+				throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
 			}
 		}
 	}
-
 }

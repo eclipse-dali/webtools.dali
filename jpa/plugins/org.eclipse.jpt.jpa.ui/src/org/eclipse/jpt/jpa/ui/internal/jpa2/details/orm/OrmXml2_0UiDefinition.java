@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -32,11 +33,11 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingUiDefiniti
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmTransientMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmVersionMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXml2_0UiFactory;
-import org.eclipse.jpt.jpa.ui.internal.structure.OrmResourceModelStructureProvider;
-import org.eclipse.jpt.jpa.ui.structure.JpaStructureProvider;
 
-public class OrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
+public class OrmXml2_0UiDefinition
+	extends AbstractOrmXmlResourceUiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new OrmXml2_0UiDefinition();
@@ -67,8 +68,8 @@ public class OrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
 		return resourceType.equals(JptJpaCorePlugin.ORM_XML_2_0_RESOURCE_TYPE);
 	}
 	
-	public JpaStructureProvider getStructureProvider() {
-		return OrmResourceModelStructureProvider.instance();
+	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
+		return OrmXmlUiDefinition.STRUCTURE_VIEW_FACTORY_PROVIDER;
 	}
 	
 	@Override

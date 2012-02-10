@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2010 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2012 by SAP AG, Walldorf and others. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -140,9 +140,13 @@ public class EntityClassWizardPage
 
 	protected JpaProject getTargetJpaProject() {
 		IProject project = getProject();
-		return project != null ? JptJpaCorePlugin.getJpaProject(project) : null;
+		return (project == null) ? null : this.getJpaProject(project);
 	}
 	
+	protected JpaProject getJpaProject(IProject project) {
+		return (JpaProject) project.getAdapter(JpaProject.class);
+	}
+
 	@Override
 	protected ISelectionStatusValidator getContainerDialogSelectionValidator() {
 		return new ISelectionStatusValidator() {
@@ -334,7 +338,7 @@ public class EntityClassWizardPage
 		if (project == null) {
 			return;
 		}
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(project);
+		JpaProject jpaProject = this.getJpaProject(project);
 		ViewerFilter filter = getDialogViewerFilter(jpaProject);
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();

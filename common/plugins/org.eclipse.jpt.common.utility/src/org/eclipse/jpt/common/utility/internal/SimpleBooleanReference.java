@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @see SynchronizedBoolean
  */
 public class SimpleBooleanReference
-	implements BooleanReference, Cloneable, Serializable
+	implements ModifiableBooleanReference, Cloneable, Serializable
 {
 	/** Backing <code>boolean</code>. */
 	protected volatile boolean value;
@@ -98,6 +98,26 @@ public class SimpleBooleanReference
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
 		}
+	}
+
+	/**
+	 * Object identity is critical to boolean references.
+	 * There is no reason for two different boolean references to be
+	 * <em>equal</em>.
+	 * 
+	 * @see #is(boolean)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
+	/**
+	 * @see #equals(Object)
+	 */
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	@Override

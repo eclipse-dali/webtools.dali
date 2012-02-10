@@ -19,7 +19,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertNotNull;
-
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
@@ -30,7 +29,6 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickAddAttributeButtonFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -54,7 +52,6 @@ public class ClickAddFeatureTest {
 	@Before
 	public void setUp() throws Exception {
 		System.setProperty(JPACreateFactory.JPA_JAR_NAME_SYSTEM_PROPERTY, "C:\\lib\\persistence-api-1.0.jar");
-		JptJpaCorePlugin.getJpaProjectManager();
 		factory = JPACreateFactory.instance();
 		jpaProject = factory.createJPAProject(TEST_PROJECT + "_" + System.currentTimeMillis());
 		assertNotNull(jpaProject);

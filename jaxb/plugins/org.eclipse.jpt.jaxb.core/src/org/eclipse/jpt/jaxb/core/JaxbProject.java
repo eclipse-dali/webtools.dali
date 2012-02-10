@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
 import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
@@ -367,20 +367,20 @@ public interface JaxbProject
 	// ********** modifying shared documents **********
 
 	/**
-	 * Set a thread-specific implementation of the {@link CommandExecutor}
+	 * Set a thread-specific implementation of the {@link ExtendedCommandExecutor}
 	 * interface that will be used to execute a command to modify a shared
 	 * document. If necessary, the command executor can be cleared by
 	 * setting it to null.
 	 * This allows background clients to modify documents that are
-	 * already present in the UI. See implementations of {@link CommandExecutor}.
+	 * already present in the UI. See implementations of {@link ExtendedCommandExecutor}.
 	 */
-	void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor);
+	void setThreadLocalModifySharedDocumentCommandExecutor(ExtendedCommandExecutor commandExecutor);
 
 	/**
 	 * Return the project-wide implementation of the
-	 * {@link CommandExecutor} interface.
+	 * {@link ExtendedCommandExecutor} interface.
 	 */
-	CommandExecutor getModifySharedDocumentCommandExecutor();
+	ExtendedCommandExecutor getModifySharedDocumentCommandExecutor();
 
 
 	// ********** construction config **********

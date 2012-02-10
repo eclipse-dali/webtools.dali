@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <!--
-  Copyright (c) 2007, 2011 Oracle. All rights reserved.
+  Copyright (c) 2007, 2012 Oracle. All rights reserved.
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License v1.0, which accompanies this distribution
   and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,12 +12,16 @@
 
 <plugin>
 	
-	<extension-point 
-		id="jpaPlatformUis" 
-		name="%JPA_PLATFORM_UI" 
+	<!-- ***** extension points ***** -->
+
+	<extension-point
+		id="jpaPlatformUis"
+		name="%JPA_PLATFORM_UI"
 		schema="schema/jpaPlatformUis.exsd"/>
 	
 	
+	<!-- ***** expressions ***** -->
+
 	<extension
 		point="org.eclipse.core.expressions.definitions">
 		
@@ -35,29 +39,99 @@
 		</definition>
 		
 	</extension>
-	
-	
+
+
+	<!-- ***** adapters ***** -->
+
 	<extension
 		point="org.eclipse.core.runtime.adapters">
 		
+		<!-- JpaPlatform -> JpaPlatformUi -->
 		<factory
-			adaptableType="org.eclipse.ui.IWorkbenchPart"
-			class="org.eclipse.jpt.jpa.ui.internal.selection.WorkbenchPartAdapterFactory">
-			<adapter type="org.eclipse.jpt.jpa.ui.internal.selection.JpaSelectionParticipant"/>
+			adaptableType="org.eclipse.jpt.jpa.core.JpaPlatform"
+			class="org.eclipse.jpt.jpa.ui.internal.JpaPlatformAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.JpaPlatformUi"/>
 		</factory>
+
+		<!-- IProject
+				-> JpaProjectModel
+				-> JpaRootContextNodeModel
+		-->
+		<factory
+			adaptableType="org.eclipse.core.resources.IProject"
+			class="org.eclipse.jpt.jpa.ui.internal.ProjectAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.JpaProjectModel"/>
+			<adapter type="org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel"/>
+		</factory>
+
+		<!-- IFile -> JpaFileModel -->
+		<factory
+			adaptableType="org.eclipse.core.resources.IFile"
+			class="org.eclipse.jpt.jpa.ui.internal.FileAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.JpaFileModel"/>
+		</factory>
+
+		<!-- JpaFile -> JpaStructureViewFactoryProvider -->
+		<factory
+			adaptableType="org.eclipse.jpt.jpa.core.JpaFile"
+			class="org.eclipse.jpt.jpa.ui.internal.JpaFileAdapterFactory">
+			<adapter type="org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider"/>
+		</factory>
+
+		<!-- JpaStructureNode -> JpaDetailsPageManager.Factory -->
+		<factory
+			adaptableType="org.eclipse.jpt.jpa.core.JpaStructureNode"
+			class="org.eclipse.jpt.jpa.ui.internal.JpaStructureNodeAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager$Factory"/>
+		</factory>
+
+		<!-- IWorkbench -> JpaSelectionManager -->
+		<factory
+			adaptableType="org.eclipse.ui.IWorkbench"
+			class="org.eclipse.jpt.jpa.ui.internal.selection.WorkbenchAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager"/>
+		</factory>
+
+		<!-- IWorkbenchWindow -> JpaSelectionManager -->
+		<factory
+			adaptableType="org.eclipse.ui.IWorkbenchWindow"
+			class="org.eclipse.jpt.jpa.ui.internal.selection.WorkbenchWindowAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager"/>
+		</factory>
+
+		<!-- ITextEditor -> JpaEditorManager -->
+		<factory
+			adaptableType="org.eclipse.ui.texteditor.ITextEditor"
+			class="org.eclipse.jpt.jpa.ui.internal.selection.TextEditorAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.selection.JpaEditorManager"/>
+		</factory>
+
+		<!-- IViewPart -> JpaViewManager.PageManager -->
+		<factory
+			adaptableType="org.eclipse.ui.IViewPart"
+			class="org.eclipse.jpt.jpa.ui.internal.selection.ViewPartAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.selection.JpaViewManager$PageManager"/>
+		</factory>
+
+	</extension>
+
+
+	<!-- ***** property testers ***** -->
+
+	<extension 
+		point="org.eclipse.core.expressions.propertyTesters">
 		
-		<factory
-			adaptableType="org.eclipse.ui.IEditorPart"
-			class="org.eclipse.jpt.jpa.ui.internal.EditorPartAdapterFactory">
-			<adapter type="org.eclipse.jpt.jpa.core.JpaFile"/>
-		</factory>
+		<propertyTester
+			id="org.eclipse.jpt.jpa.ui.propertyTester.jptResourceModel"
+			type="org.eclipse.jpt.common.core.JptResourceModel"
+			namespace="org.eclipse.jpt.jpa.ui"
+			properties="isLatestSupportedVersion, isNotLatestSupportedVersion"
+			class="org.eclipse.jpt.jpa.ui.internal.JptResourceModelPropertyTester"/>
 		
 	</extension>
+
 	
-	
-<!-- =================================================================================== -->
-<!-- Extension: Java Completion Proposal Computer                                        -->
-<!-- =================================================================================== -->
+	<!-- ***** Java/XML completion proposal computers ***** -->
 	
 	<extension
 		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
@@ -74,20 +148,12 @@
 
 	<extension
 		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
-		id="jpaProposalCategory"
-		name="%JpaProposalCategory">
-		<proposalCategory
-			icon="$nl$/icons/full/eview16/jpa_perspective.gif"/>
-	</extension>
-
-	<extension
-		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
 		id="JpaJpqlCompletionProposalComputer">
 
 		<javaCompletionProposalComputer
-        activate="true"
-        categoryId="org.eclipse.jpt.jpa.ui.jpaProposalCategory"
-        class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlJavaCompletionProposalComputer">
+			class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlJavaCompletionProposalComputer"
+			activate="true"
+			categoryId="org.eclipse.jpt.jpa.ui.jpaProposalCategory">
 			<partition type="__dftl_partition_content_type"/>
 			<partition type="__java_string"/>
 		</javaCompletionProposalComputer>
@@ -95,8 +161,8 @@
 	</extension>
 
 	<extension
-       id="org.eclipse.jpt.jpa.ui.xml.jpqlCompletionProposal"
-       point="org.eclipse.wst.sse.ui.completionProposal">
+       point="org.eclipse.wst.sse.ui.completionProposal"
+       id="org.eclipse.jpt.jpa.ui.xml.jpqlCompletionProposal">
 
 		<proposalCategory
 	           icon="$nl$/icons/full/eview16/jpa_perspective.gif"
@@ -116,6 +182,18 @@
 
 	</extension>	
 
+	<extension
+		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
+		id="jpaProposalCategory"
+		name="%JpaProposalCategory">
+
+		<proposalCategory
+			icon="$nl$/icons/full/eview16/jpa_perspective.gif"/>
+
+	</extension>
+
+
+	<!-- ***** Dali extensions (eat our own dogfood) ***** -->
 
 	<extension
 		point="org.eclipse.jpt.jpa.ui.jpaPlatformUis">
@@ -133,6 +211,8 @@
 	</extension>
   	
 	
+	<!-- ***** action sets ***** -->
+
 	<extension
 		point="org.eclipse.ui.actionSets">
 		
@@ -154,6 +234,8 @@
 	</extension>
 	
 	
+	<!-- ***** commands ***** -->
+
 	<extension
 		point="org.eclipse.ui.commands">
 		
@@ -232,9 +314,7 @@
 	</extension>
 	
 	
-<!-- =================================================================================== -->
-<!-- Extension: Persistence Editor                                                  -->
-<!-- =================================================================================== -->
+	<!-- ***** persitence.xml editor ***** -->
 	
 	<extension 
 		point="org.eclipse.ui.editors">
@@ -250,9 +330,11 @@
 		</editor>
 		
  	</extension>
- 	
- 	
- 	<extension
+
+
+	<!-- ***** handlers ***** -->
+
+	<extension
 		point="org.eclipse.ui.handlers">
 		
 		<handler
@@ -261,17 +343,11 @@
 			<enabledWhen>
 				<iterate>
 					<or>
-						<adapt
-							type="org.eclipse.jpt.jpa.core.context.XmlFile">
-							<test
-								property="org.eclipse.jpt.jpa.core.isLatestSupportedVersion"
-								value="false"/>
+						<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
+							<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
 						</adapt>
-						<adapt
-							type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource">
-							<test
-								property="org.eclipse.jpt.jpa.core.isLatestSupportedVersion"
-								value="false"/>
+						<adapt type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource">
+							<test property="org.eclipse.jpt.jpa.ui.isNotLatestSupportedVersion"/>
 						</adapt>
 					</or>
 				</iterate>
@@ -323,8 +399,8 @@
 				<iterate>
 					<and>
 						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
-						<test property="org.eclipse.jpt.jpa.core.isVirtual" value="true"/>
-						<test property="org.eclipse.jpt.jpa.core.isMapped" value="true"/>
+						<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
+						<test property="org.eclipse.jpt.jpa.core.isMapped"/>
 					</and>
 				</iterate>
 			</enabledWhen>
@@ -342,7 +418,7 @@
 				<iterate>
 					<and>
 						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
-						<test property="org.eclipse.jpt.jpa.core.isVirtual" value="true"/>
+						<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
 					</and>
 				</iterate>
 			</enabledWhen>
@@ -360,7 +436,7 @@
 				<iterate>
 					<and>
 						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
-						<test property="org.eclipse.jpt.jpa.core.isVirtual" value="false"/>
+						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
 					</and>
 				</iterate>
 			</enabledWhen>
@@ -391,7 +467,7 @@
 				<iterate>
 					<and>
 						<instanceof value="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"/>
-						<test property="org.eclipse.jpt.jpa.core.isVirtual" value="false"/>
+						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
 					</and>
 				</iterate>
 			</enabledWhen>
@@ -400,6 +476,8 @@
  	</extension>
  	
  	
+	<!-- ***** menus ***** -->
+
  	<extension
 		point="org.eclipse.ui.menus">
 		
@@ -409,7 +487,8 @@
 			
 			<!-- "JPA Tools" submenu for 
 				- anything that adapts to JpaXmlResource (IFile objects, mostly)
-				- anything that adapts to IProject and has a JPA facet -->
+				- anything that adapts to IProject and has a JPA facet
+			-->
 			<menu
 				id="org.eclipse.jpt.jpa.ui.menu.JpaTools"
 				label="%jpaMenuName">
@@ -418,23 +497,19 @@
 						variable="selection">
 						<iterate ifEmpty="false">
 							<or>
-								<adapt
-									type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource"/>
-								<adapt
-									type="org.eclipse.core.resources.IProject">
+								<adapt type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource"/>
+								<adapt type="org.eclipse.core.resources.IProject">
 									<test
-										property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+										property="org.eclipse.wst.common.project.facet.core.projectFacet"
 										value="jpt.jpa"/>
 								</adapt>
 								<and>
-	        						<adapt
-	              						type="org.eclipse.core.resources.IResource">
+	        						<adapt type="org.eclipse.core.resources.IResource">
 										<test
-											property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+											property="org.eclipse.wst.common.project.facet.core.projectFacet"
 											value="jpt.jpa"/>
         							</adapt>
-        							<adapt
-        								type="org.eclipse.jdt.core.IJavaElement"/>
+        							<adapt type="org.eclipse.jdt.core.IJavaElement"/>
 								</and>
 							</or>
 						</iterate>
@@ -449,11 +524,8 @@
 					<with
 						variable="selection">
 						<iterate ifEmpty="false">
-							<adapt
-								type="org.eclipse.jpt.jpa.core.context.XmlFile">
-								<test
-									property="org.eclipse.jpt.jpa.core.isLatestSupportedVersion"
-									value="false"/>
+							<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
+								<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
 							</adapt>
 						</iterate>
 					</with>
@@ -470,11 +542,8 @@
 					<with
 						variable="selection">
 						<iterate ifEmpty="false">
-							<adapt
-								type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource">
-								<test
-									property="org.eclipse.jpt.jpa.core.isLatestSupportedVersion"
-									value="false"/>
+							<adapt type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource">
+								<test property="org.eclipse.jpt.jpa.ui.isNotLatestSupportedVersion"/>
 							</adapt>
 						</iterate>
 					</with>
@@ -510,6 +579,7 @@
 		<!-- contributions to objects in the JPA structure view -->
 		<menuContribution
 			locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
+
 			<command
 				commandId="org.eclipse.jpt.jpa.ui.entityMappingsAddPersistentClass">
 				<visibleWhen>
@@ -540,7 +610,7 @@
 						<iterate ifEmpty="false">
 							<and>
 								<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
-								<test property="org.eclipse.jpt.jpa.core.isVirtual" value="true"/>
+								<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
 							</and>
 						</iterate>
 					</with>
@@ -554,7 +624,7 @@
 						<iterate ifEmpty="false">
 							<and>
 								<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
-								<test property="org.eclipse.jpt.jpa.core.isVirtual" value="true"/>
+								<test property="org.eclipse.jpt.jpa.core.isVirtual"/>
 							</and>
 						</iterate>
 					</with>
@@ -568,7 +638,7 @@
 						<iterate ifEmpty="false">
 							<and>
 								<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
-								<test property="org.eclipse.jpt.jpa.core.isVirtual" value="false"/>
+								<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
 							</and>
 						</iterate>
 					</with>
@@ -603,7 +673,7 @@
 						<iterate ifEmpty="false">
 							<and>
 								<instanceof value="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"/>
-								<test property="org.eclipse.jpt.jpa.core.isVirtual" value="false"/>
+								<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
 							</and>
 						</iterate>
 					</with>
@@ -619,6 +689,8 @@
  	</extension>
 	
 	
+	<!-- ***** Project Explorer contribution ***** -->
+
 	<extension
 		point="org.eclipse.ui.navigator.viewer">
 		
@@ -632,6 +704,8 @@
 	</extension>
 	
 	
+	<!-- ***** navigator content ***** -->
+
 	<extension
 		point="org.eclipse.ui.navigator.navigatorContent">
 		
@@ -643,26 +717,23 @@
 			icon="icons/full/obj16/jpa-content.gif"
 			activeByDefault="true"
 			contentProvider="org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorContentProvider"
-			labelProvider="org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorLabelProvider">
+			labelProvider="org.eclipse.jpt.common.ui.internal.jface.NavigatorLabelProvider">
 			
 			<triggerPoints>
 				<or>
-					<instanceof
-						value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
-					<and>
-						<adapt type="org.eclipse.core.resources.IProject"> 
-							<test 
-								forcePluginActivation="true"
-								property="org.eclipse.wst.common.project.facet.core.projectFacet"
-								value="jpt.jpa" />
-						</adapt>
-					</and>
+					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
+					<instanceof value="org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel"/>
+					<adapt type="org.eclipse.core.resources.IProject"> 
+						<test 
+							property="org.eclipse.wst.common.project.facet.core.projectFacet"
+							value="jpt.jpa"
+							forcePluginActivation="true"/>
+					</adapt>
 				</or>
 			</triggerPoints>
 			
 			<possibleChildren>
-				<instanceof
-					value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
+				<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
 			</possibleChildren>
 			
 			<actionProvider
@@ -670,8 +741,7 @@
 				id="org.eclipse.jpt.jpa.ui.jpaActionProvider">
 				<enablement>
 					<and>
-						<instanceof
-							value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
 					</and>
 				</enablement>
 			</actionProvider>
@@ -683,18 +753,15 @@
 				<enablement>
 					<and>
 						<or>
-							<instanceof
-								value="org.eclipse.core.resources.IProject"/>
-							<instanceof
-								value="org.eclipse.jdt.core.IPackageFragment"/>
-							<instanceof
-								value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+							<instanceof value="org.eclipse.core.resources.IProject"/>
+							<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+							<instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
 						</or>
 						<adapt type="org.eclipse.core.resources.IResource">
 							<test 
-								forcePluginActivation="true"
 								property="org.eclipse.wst.common.project.facet.core.projectFacet"
-								value="jpt.jpa" />
+								value="jpt.jpa"
+								forcePluginActivation="true"/>
 						</adapt>
 					</and>
 				</enablement>
@@ -714,20 +781,18 @@
 						</or>
 						<adapt type="org.eclipse.core.resources.IResource">
 							<test 
-								forcePluginActivation="true"
 								property="org.eclipse.wst.common.project.facet.core.projectFacet"
-								value="jpt.jpa" />
+								value="jpt.jpa"
+								forcePluginActivation="true"/>
 						</adapt>
 					</and>
 				</enablement>
 			</commonWizard>
 			
 			<!--
-			
 			<commonSorter
 				id="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter"
 				class="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter" />
-			
 			-->
 			
 			<commonWizard
@@ -737,18 +802,15 @@
 				<enablement>
 					<and>
 						<or>
-							<instanceof
-								value="org.eclipse.core.resources.IProject"/>
-							<instanceof
-								value="org.eclipse.jdt.core.IPackageFragment"/>
-							<instanceof
-								value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+							<instanceof value="org.eclipse.core.resources.IProject"/>
+							<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+							<instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
 						</or>
 						<adapt type="org.eclipse.core.resources.IResource">
 							<test 
-								forcePluginActivation="true"
 								property="org.eclipse.wst.common.project.facet.core.projectFacet"
-								value="jpt.jpa" />
+								value="jpt.jpa"
+								forcePluginActivation="true"/>
 						</adapt>
 					</and>
 				</enablement>
@@ -759,6 +821,8 @@
 	</extension>
 	
 	
+	<!-- ***** "New Dialog" wizards ***** -->
+
 	<extension
 		point="org.eclipse.ui.newWizards">
 		
@@ -818,10 +882,8 @@
 	</extension>
 	
 		
-<!-- =================================================================================== -->
-<!-- Extension: Persistence Perspective                                                  -->
-<!-- =================================================================================== -->
-	
+	<!-- ***** JPA Perspective ***** -->
+
 	<extension
 		point="org.eclipse.ui.perspectives">
 		
@@ -832,6 +894,7 @@
 			name="%jpaPerspective">
 			<description>%jpaPerspectiveDescription</description>
 		</perspective>
+
 	</extension>
 	
 	
@@ -889,6 +952,8 @@
 	</extension>
 	
 	
+	<!-- ***** pop-up menus ***** -->
+
 	<extension
 		point="org.eclipse.ui.popupMenus">
 		
@@ -897,8 +962,11 @@
 			objectClass="org.eclipse.core.resources.IProject"
 			adaptable="true">
 			
+			<!-- ignore the warning - see bug 247250 -->
 			<enablement>
-				<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa"/>
+				<test
+					property="org.eclipse.wst.common.project.facet.core.projectFacet"
+					value="jpt.jpa"/>
 			</enablement>
 			
 			<action
@@ -937,6 +1005,7 @@
          			</or>
       			</enablement>
    			</action>
+
 		</objectContribution>
 
 		<objectContribution
@@ -967,6 +1036,8 @@
 	</extension>
 	
 	
+	<!-- ***** preferences ***** -->
+
 	<extension
 		point="org.eclipse.ui.preferencePages">
 		
@@ -990,7 +1061,20 @@
 		
 	</extension>
 	
+
+	<extension
+		point="org.eclipse.core.runtime.preferences"
+		id="org.eclipse.jpt.jpa.ui">
+
+		<initializer
+			class="org.eclipse.jpt.jpa.ui.internal.prefs.JpaUiPreferenceInitializer">
+		</initializer>
+
+	</extension>
+ 	
 	
+	<!-- ***** JPA project properties pages ***** -->
+
 	<extension
 		point="org.eclipse.ui.propertyPages">
 		
@@ -1001,9 +1085,9 @@
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
 					<test 
-						forcePluginActivation="true"
 						property="org.eclipse.wst.common.project.facet.core.projectFacet"
-						value="jpt.jpa"/>
+						value="jpt.jpa"
+						forcePluginActivation="true"/>
 				</adapt>
 			</enabledWhen>
 		</page>
@@ -1016,9 +1100,9 @@
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
 					<test
-						forcePluginActivation="true"
 						property="org.eclipse.wst.common.project.facet.core.projectFacet"
-						value="jpt.jpa"/>
+						value="jpt.jpa"
+						forcePluginActivation="true"/>
 				</adapt>
 			</enabledWhen>
 		</page>
@@ -1026,6 +1110,8 @@
 	</extension>
 	
 	
+	<!-- ***** views ***** -->
+
 	<extension
 		point="org.eclipse.ui.views">
 		
@@ -1036,7 +1122,7 @@
 		<view
 	        id="org.eclipse.jpt.ui.jpaStructureView"
 	        category="org.eclipse.jpt.jpa.ui"
-	        class="org.eclipse.jpt.jpa.ui.internal.views.structure.JpaStructureView"
+	        class="org.eclipse.jpt.jpa.ui.internal.views.JpaStructureView"
 	        icon="icons/full/eview16/jpa_structure.gif"
 	        name="%jpaStructure"/>
 			
@@ -1050,6 +1136,8 @@
 	</extension>	
 	
 	
+	<!-- ***** WTP facet framework ***** -->
+
 	<extension
 		point="org.eclipse.wst.common.project.facet.ui.images">
 		
@@ -1070,12 +1158,5 @@
 		</wizard-pages>
 		
 	</extension>
- <extension
-       id="org.eclipse.jpt.jpa.ui"
-       point="org.eclipse.core.runtime.preferences">
-    <initializer
-          class="org.eclipse.jpt.jpa.ui.internal.prefs.JpaUiPreferenceInitializer">
-    </initializer>
- </extension>
- 	
+
 </plugin>

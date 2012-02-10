@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2011 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,16 +50,15 @@ import org.eclipse.jdt.ui.refactoring.RenameSupport;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -447,7 +446,6 @@ public class JpaArtifactFactory {
 		ICompilationUnit cu = fp.getCompilationUnit(jpt);
 		try {
 			JpaProject jpaProject = jpt.getJpaProject();
-			jpaProject.updateAndWait();
 			JPAEditorUtil.discardWorkingCopy(cu);
 			cu.delete(true, new NullProgressMonitor());
 			return true;			
@@ -1363,7 +1361,6 @@ public class JpaArtifactFactory {
 	*/
 		
 	public JavaPersistentType getJPT(String name, PersistenceUnit pu) {
-		pu.getJpaProject().updateAndWait();
 		JavaPersistentType jpt = (JavaPersistentType) pu.getPersistentType(name);
 		int cnt = 0;
 		while ((jpt == null) && (cnt < MAX_NUM_OF_ITERATIONS)) {
@@ -2229,8 +2226,8 @@ public class JpaArtifactFactory {
 		return relTypeName;
 	}
 		
-	public JpaProject getJpaProject(IProject project) throws CoreException {
-		return JptJpaCorePlugin.getJpaProject(project);
+	public JpaProject getJpaProject(IProject project) {
+		return (JpaProject) project.getAdapter(JpaProject.class);
 	}
 	
 	public String getIdType(JavaPersistentType jpt) {

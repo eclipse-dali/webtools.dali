@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsDetailsPage;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.PersistenceUnitMetadataComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0ProjectFlagModel;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0FlagTransformer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -132,7 +132,7 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 			JpaHelpContextIds.ENTITY_ORM_DELIMITED_IDENTIFIERS
 		);
 
-		SWTTools.controlVisibleState(new Jpa2_0ProjectFlagModel<OrmPersistenceUnitMetadata>(this.getSubjectHolder()), diCheckBox);
+		SWTTools.controlVisibleState(Jpa2_0FlagTransformer.convertToFlagModel(this.getSubjectHolder()), diCheckBox);
 
 
 		// Tenant discriminator columns group pane

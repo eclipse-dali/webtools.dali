@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,15 +11,8 @@ package org.eclipse.jpt.jpa.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
-import org.eclipse.jpt.common.utility.Command;
-import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
-import org.eclipse.jpt.common.utility.internal.synchronizers.SynchronousSynchronizer;
-import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
-import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -31,9 +24,9 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  * controlled by building a data model and passing it into the constructor.
  */
 @SuppressWarnings("nls")
-public class TestJpaProject extends TestJavaProject {
-	final JpaProject jpaProject;
-
+public class TestJpaProject
+	extends TestJavaProject
+{
 	public static final String JPA_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
 	public static final String ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.eclipselink.jar";
 
@@ -72,38 +65,7 @@ public class TestJpaProject extends TestJavaProject {
 		if (eclipseLinkJarName() != null) {
 			this.addJar(eclipseLinkJarName());
 		}
-		this.jpaProject = JptJpaCorePlugin.getJpaProject(this.getProject());
-		this.jpaProject.setDiscoversAnnotatedClasses(true);
-		this.jpaProject.setContextModelSynchronizer(this.buildSynchronousContextModelSynchronizer());
-		this.jpaProject.setUpdateSynchronizer(this.buildSynchronousUpdateSynchronizer());
-	}
-
-	protected Synchronizer buildSynchronousContextModelSynchronizer() {
-		return new SynchronousSynchronizer(this.buildSynchronousContextModelSynchronizerCommand());
-	}
-
-	protected Command buildSynchronousContextModelSynchronizerCommand() {
-		return new SynchronousContextModelSynchronizerCommand();
-	}
-
-	protected class SynchronousContextModelSynchronizerCommand implements Command {
-		public void execute() {
-			TestJpaProject.this.jpaProject.synchronizeContextModel(new NullProgressMonitor());
-		}
-	}
-
-	protected CallbackSynchronizer buildSynchronousUpdateSynchronizer() {
-		return new CallbackSynchronousSynchronizer(this.buildSynchronousUpdateSynchronizerCommand());
-	}
-
-	protected Command buildSynchronousUpdateSynchronizerCommand() {
-		return new SynchronousUpdateSynchronizerCommand();
-	}
-
-	protected class SynchronousUpdateSynchronizerCommand implements Command {
-		public void execute() {
-			TestJpaProject.this.jpaProject.update(new NullProgressMonitor());
-		}
+		this.getJpaProject().setDiscoversAnnotatedClasses(true);
 	}
 
 	public static String jpaJarName() {
@@ -122,7 +84,18 @@ public class TestJpaProject extends TestJavaProject {
 	// ********** public methods **********
 
 	public JpaProject getJpaProject() {
-		return this.jpaProject;
+		try {
+			return this.getJpaProject_();
+		} catch (InterruptedException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
+	private JpaProject getJpaProject_() throws InterruptedException {
+		return this.getJpaProjectReference().getValue();
+	}
+
+	private JpaProject.Reference getJpaProjectReference() {
+		return (JpaProject.Reference) this.getProject().getAdapter(JpaProject.Reference.class);
+	}
 }

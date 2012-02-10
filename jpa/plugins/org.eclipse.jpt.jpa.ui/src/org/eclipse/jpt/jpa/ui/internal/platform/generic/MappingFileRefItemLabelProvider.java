@@ -1,71 +1,66 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
-import org.eclipse.jpt.common.ui.internal.jface.AbstractItemLabelProvider;
-import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.swt.graphics.Image;
 
-public class MappingFileRefItemLabelProvider extends AbstractItemLabelProvider
+public class MappingFileRefItemLabelProvider
+	extends AbstractItemExtendedLabelProvider<MappingFileRef>
 {
-	public MappingFileRefItemLabelProvider(
-			MappingFileRef mappingFileRef, DelegatingContentAndLabelProvider labelProvider) {
-		super(mappingFileRef, labelProvider);
+	protected final Image image;
+
+	public MappingFileRefItemLabelProvider(MappingFileRef mappingFileRef, ItemLabelProvider.Manager manager) {
+		super(mappingFileRef, manager);
+		this.image = this.buildImage();
 	}
 	
 	@Override
-	public MappingFileRef getModel() {
-		return (MappingFileRef) super.getModel();
+	public Image getImage() {
+		return this.image;
 	}
-	
-	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		Image image;
-		if (getModel().isImplied()) {
-			image = JptUiIcons.ghost(JptUiIcons.MAPPING_FILE_REF);
-		}
-		else {
-			 image = JptJpaUiPlugin.getImage(JptUiIcons.MAPPING_FILE_REF);
-		}
-		return new StaticPropertyValueModel<Image>(image);
+
+	protected Image buildImage() {
+		return this.item.isImplied() ?
+				JptUiIcons.ghost(JptUiIcons.MAPPING_FILE_REF) :
+			 	JptJpaUiPlugin.getImage(JptUiIcons.MAPPING_FILE_REF);
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<MappingFileRef, String>(MappingFileRef.FILE_NAME_PROPERTY, getModel()) {
-			 @Override
-			protected String buildValue_() {
-				return this.subject.getFileName();
-			}
-		};
+		return new TextModel(this.item);
+	}
+
+	protected static class TextModel
+		extends PropertyAspectAdapter<MappingFileRef, String>
+	{
+		public TextModel(MappingFileRef subject) {
+			super(MappingFileRef.FILE_NAME_PROPERTY, subject);
+		}
+		@Override
+		protected String buildValue_() {
+			return this.subject.getFileName();
+		}
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new PropertyAspectAdapter<MappingFileRef, String>(MappingFileRef.FILE_NAME_PROPERTY, getModel()) {
-			@Override
-			protected String buildValue_() {
-				StringBuilder sb = new StringBuilder();
-				sb.append(this.subject.getPersistenceUnit().getName());
-				sb.append("/\"");  //$NON-NLS-1$
-				sb.append(this.subject.getFileName());
-				sb.append("\" - "); //$NON-NLS-1$
-				sb.append(this.subject.getResource().getFullPath().makeRelative());
-				return sb.toString();
-			}
-		};
+		return PersistenceUnitItemLabelProvider.buildQuotedComponentDescriptionModel(
+					this.item,
+					this.textModel
+				);
 	}
 }

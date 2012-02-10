@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,22 +59,22 @@ public class PropertyAspectAdapterTests extends TestCase {
 			// this is not a aspect adapter - the value is determined by the aspect name
 			@Override
 			protected String buildValue_() {
-				if (this.propertyNames[0] == TestSubject.NAME_PROPERTY) {
+				if (this.aspectNames[0] == TestSubject.NAME_PROPERTY) {
 					return this.subject.getName();
-				} else if (this.propertyNames[0] == TestSubject.DESCRIPTION_PROPERTY) {
+				} else if (this.aspectNames[0] == TestSubject.DESCRIPTION_PROPERTY) {
 					return this.subject.getDescription();
 				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.propertyNames[0]);
+					throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
 				}
 			}
 			@Override
 			protected void setValue_(String value) {
-				if (this.propertyNames[0] == TestSubject.NAME_PROPERTY) {
+				if (this.aspectNames[0] == TestSubject.NAME_PROPERTY) {
 					this.subject.setName(value);
-				} else if (this.propertyNames[0] == TestSubject.DESCRIPTION_PROPERTY) {
+				} else if (this.aspectNames[0] == TestSubject.DESCRIPTION_PROPERTY) {
 					this.subject.setDescription(value);
 				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.propertyNames[0]);
+					throw new IllegalStateException("invalid aspect name: " + this.aspectNames[0]);
 				}
 			}
 		};
@@ -340,5 +340,4 @@ public class PropertyAspectAdapterTests extends TestCase {
 			this.firePropertyChanged(DESCRIPTION_PROPERTY, old, description);
 		}
 	}
-
 }

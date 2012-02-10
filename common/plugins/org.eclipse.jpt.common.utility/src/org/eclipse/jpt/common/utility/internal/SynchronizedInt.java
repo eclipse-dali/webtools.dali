@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.internal;
 
 import java.io.Serializable;
 
-import org.eclipse.jpt.common.utility.Command;
+import org.eclipse.jpt.common.utility.command.Command;
 
 /**
  * This class provides synchronized access to an <code>int</code>.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.Command;
  * @see SimpleIntReference
  */
 public class SynchronizedInt
-	implements IntReference, Cloneable, Serializable
+	implements ModifiableIntReference, Cloneable, Serializable
 {
 	/** Backing <code>int</code>. */
 	private int value;
@@ -869,7 +869,7 @@ public class SynchronizedInt
 	 * thread.
 	 */
 	public void execute(Command command) throws InterruptedException {
-		if (Thread.interrupted()) {
+		if (Thread.currentThread().isInterrupted()) {
 			throw new InterruptedException();
 		}
 		synchronized (this.mutex) {
@@ -880,7 +880,7 @@ public class SynchronizedInt
 
 	// ********** Comparable implementation **********
 
-	public int compareTo(ReadOnlyIntReference ref) {
+	public int compareTo(IntReference ref) {
 		int thisValue = this.getValue();
 		int otherValue = ref.getValue();
 		return (thisValue < otherValue) ? -1 : ((thisValue == otherValue) ? 0 : 1);

@@ -44,7 +44,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
-import org.eclipse.jpt.jpa.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
@@ -185,8 +184,12 @@ public abstract class AbstractEntityMappings
 
 	// ********** JpaStructureNode implementation **********
 
-	public String getId() {
-		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
+
+	public Class<EntityMappings> getType() {
+		return EntityMappings.class;
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

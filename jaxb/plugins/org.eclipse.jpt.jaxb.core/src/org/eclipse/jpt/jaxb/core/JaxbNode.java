@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jpt.common.core.IResourcePart;
+import org.eclipse.jpt.common.core.ResourceReference;
 import org.eclipse.jpt.common.utility.model.Model;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.model.Model;
  * @since 3.0
  */
 public interface JaxbNode
-	extends Model, IAdaptable, IResourcePart
+	extends Model, IAdaptable, ResourceReference
 {
 	/**
 	 * Return the JAXB project the node belongs to.

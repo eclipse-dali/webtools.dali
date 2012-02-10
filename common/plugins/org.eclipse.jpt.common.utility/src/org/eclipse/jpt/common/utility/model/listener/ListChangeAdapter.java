@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.model.listener;
 
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -25,11 +26,9 @@ import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class ListChangeAdapter implements ListChangeListener {
-
-	/**
-	 * Default constructor.
-	 */
+public class ListChangeAdapter
+	implements ListChangeListener
+{
 	public ListChangeAdapter() {
 		super();
 	}
@@ -58,4 +57,8 @@ public class ListChangeAdapter implements ListChangeListener {
 		// do nothing
 	}
 
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this);
+	}
 }

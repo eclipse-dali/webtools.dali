@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,10 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.BidiTransformer;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
@@ -39,7 +38,7 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.objectHolder = new SimplePropertyValueModel<Person>(new Person("Karen", "Peggy", null));
-		this.transformationObjectHolder = new CachingTransformationPropertyValueModel<Person, Person>(this.objectHolder, this.buildTransformer());
+		this.transformationObjectHolder = new TransformationPropertyValueModel<Person, Person>(this.objectHolder, this.buildTransformer());
 	}
 
 	private BidiTransformer<Person, Person> buildTransformer() {
@@ -192,8 +191,9 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 	}
 
 	
-	class Person extends AbstractModel {
-
+	class Person
+		extends AbstractModel
+	{
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 		
@@ -235,7 +235,5 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 		public Person getChild() {
 			return this.child;
 		}
-
 	}
-
 }

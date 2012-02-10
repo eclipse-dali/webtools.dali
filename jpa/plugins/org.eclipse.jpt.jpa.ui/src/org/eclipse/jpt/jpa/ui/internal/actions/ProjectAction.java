@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.actions;
 
-import java.util.Iterator;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.ui.IObjectActionDelegate;
@@ -25,8 +23,9 @@ import org.eclipse.ui.IWorkbenchPart;
 /**
  * Override any of the #execute() methods.
  */
-public abstract class ProjectAction implements IObjectActionDelegate {
-
+public abstract class ProjectAction
+	implements IObjectActionDelegate
+{
 	private ISelection currentSelection;
     
 
@@ -51,8 +50,8 @@ public abstract class ProjectAction implements IObjectActionDelegate {
 	
 	public void run(IAction action) {
 		if (this.currentSelection instanceof IStructuredSelection) {
-			for (Iterator stream = ((IStructuredSelection) this.currentSelection).iterator(); stream.hasNext(); ) {
-				this.execute(stream.next());
+			for (Object each : ((IStructuredSelection) this.currentSelection).toArray()) {
+				this.execute(each);
 			}
 		}
 	}
@@ -75,20 +74,19 @@ public abstract class ProjectAction implements IObjectActionDelegate {
 	}
 
 	protected JpaPlatformUi getJpaPlatformUi(JpaProject project) {
-		String coreJpaPlatformId = project.getJpaPlatform().getId();
-        return JpaPlatformUiRegistry.instance().getJpaPlatformUi(coreJpaPlatformId); 
+        return (JpaPlatformUi) project.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 	}
-	
+
 	protected void execute(IProject project) {
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(project);
-		if (jpaProject == null) {
-			return;
+		JpaProject jpaProject = this.getJpaProject(project);
+		if (jpaProject != null) {
+			this.execute(jpaProject);
 		}
-		this.execute(jpaProject);
 	}
 
-	protected void execute(JpaProject project) {
-		throw new UnsupportedOperationException();
+	protected JpaProject getJpaProject(IProject project) {
+		return (JpaProject) project.getAdapter(JpaProject.class);
 	}
 
+	protected abstract void execute(JpaProject project);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -19,6 +21,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -163,6 +166,10 @@ public class GenericPersistenceXml
 		return this.getJpaFile(this.xmlResource.getFile());
 	}
 
+	public boolean isLatestSupportedVersion() {
+		return XmlFile_.isLatestSupportedVersion(this);
+	}
+
 
 	// ********** metamodel **********
 
@@ -172,10 +179,10 @@ public class GenericPersistenceXml
 		}
 	}
 
-	public void synchronizeMetamodel() {
-		if (this.persistence != null) {
-			((Persistence2_0) this.persistence).synchronizeMetamodel();
-		}
+	public IStatus synchronizeMetamodel(IProgressMonitor monitor) {
+		return (this.persistence != null) ?
+				((Persistence2_0) this.persistence).synchronizeMetamodel(monitor) :
+				Status.OK_STATUS;
 	}
 
 	public void disposeMetamodel() {
@@ -187,9 +194,12 @@ public class GenericPersistenceXml
 
 	// ********** JpaStructureNode implementation **********
 
-	public String getId() {
-		// isn't actually displayed, so needs no details page
-		return null;
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
+
+	public Class<PersistenceXml> getType() {
+		return PersistenceXml.class;
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

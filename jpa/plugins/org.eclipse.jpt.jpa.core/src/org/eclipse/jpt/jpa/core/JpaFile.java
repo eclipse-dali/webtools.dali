@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,18 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 /**
  * A JPA Project contains JPA files for all files in the project that
  * are relevant to the JPA spec.
- * 
+ * <p>
+ * To retrieve the JPA file corresponding to an Eclipse file:
+ * <pre>
+ * IFile file = (IFile) ResourcesPlugin.getWorkspace().getRoot().findMember("Foo.java");
+ * JpaFile jpaFile = (JpaFile) file.getAdapter(JpaFile.class);
+ * </pre>
+ * This is a non-blocking call; and as a result it will return <code>null</code>
+ * if the JPA file or its JPA project is currently under construction. Use a
+ * {@link Reference JPA file reference} to retrieve a JPA file in a blocking
+ * fashion that will return a JPA file once it and its JPA project have been
+ * constructed.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,6 +36,9 @@ import org.eclipse.jpt.common.core.JptResourceModel;
  * 
  * @version 2.2
  * @since 2.0
+ * 
+ * @see Reference
+ * @see org.eclipse.jpt.jpa.core.internal.FileAdapterFactory
  */
 public interface JpaFile
 	extends JpaNode
@@ -95,4 +109,25 @@ public interface JpaFile
 	 */
 	JpaStructureNode getStructureNode(int textOffset);
 
+
+	// ********** reference **********
+
+	/**
+	 * Standard adapter for retrieving a {@link JpaFile JPA file}:
+	 * <pre>
+	 * IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("Foo Project");
+	 * IFile file = project.getFile("plugin.xml");
+	 * JpaFile.Reference jpaFileRef = (JpaFile.Reference) file.getAdapter(JpaFile.Reference.class);
+	 * JpaFile jpaFile = jpaFileRef.getValue();
+	 * </pre>
+	 * @see org.eclipse.jpt.jpa.core.internal.FileAdapterFactory
+	 */
+	interface Reference {
+		/**
+		 * Return the JPA file corresponding to the reference's Eclipse file,
+		 * or <code>null</code> if unable to associate the specified file with a
+		 * JPA file. This method can be long-running.
+		 */
+		JpaFile getValue() throws InterruptedException;
+	}
 }

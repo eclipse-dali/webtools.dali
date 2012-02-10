@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,15 @@ import org.eclipse.jpt.common.core.JptCommonCorePlugin;
  * A collection of utilities for dealing with the Eclipse platform API.
  */
 public class PlatformTools {
-	
+	/**
+	 * Add some Generic Goodness to the method signature.
+	 * @see org.eclipse.core.runtime.IAdapterManager#getAdapter(Object, Class)
+	 */
+	@SuppressWarnings("unchecked")
+	public static <A> A getAdapter(Object o, Class<A> adapterType) {
+		return (A) Platform.getAdapterManager().getAdapter(o, adapterType);
+	}
+
 	/**
 	 * Return the {@link IContainer} with the workspace relative "full" path
 	 */
@@ -66,7 +74,7 @@ public class PlatformTools {
 			fileContents = file.getContents();
 		} catch (CoreException ex) {
 			// seems like we can ignore any exception that might occur here;
-			// e.g. we get a FNFE if the workspace is out of synch with the O/S file system
+			// e.g. we get a FNFE if the workspace is out of sync with the O/S file system
 			// JptCorePlugin.log(ex);
 
 			// look for content type based on the file name only(?)
@@ -104,5 +112,4 @@ public class PlatformTools {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

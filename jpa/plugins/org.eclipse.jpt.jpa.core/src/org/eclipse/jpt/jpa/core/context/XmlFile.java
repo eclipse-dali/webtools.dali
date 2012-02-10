@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 
@@ -31,4 +32,31 @@ public interface XmlFile
 	 * Return the resource model object
 	 */
 	JpaXmlResource getXmlResource();
+
+	/**
+	 * Return whether the XML file's version is the latest supported by its
+	 * JPA platform.
+	 */
+	boolean isLatestSupportedVersion();
+
+
+	/**
+	 * Common implementations.
+	 */
+	class XmlFile_ {
+
+		/**
+		 * @see #isLatestSupportedVersion()
+		 */
+		public static boolean isLatestSupportedVersion(XmlFile xmlFile) {
+			String xmlFileVersion = xmlFile.getXmlResource().getVersion();
+			String latestVersion = xmlFile.getJpaProject().getJpaPlatform().getMostRecentSupportedResourceType(xmlFile.getXmlResource().getContentType()).getVersion();
+			return Tools.valuesAreEqual(xmlFileVersion, latestVersion);
+		}
+
+		private XmlFile_() {
+			super();
+			throw new UnsupportedOperationException();
+		}
+	}
 }

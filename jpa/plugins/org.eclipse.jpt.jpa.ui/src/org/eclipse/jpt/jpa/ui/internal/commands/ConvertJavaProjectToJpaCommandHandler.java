@@ -1,15 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.commands;
 
-import static org.eclipse.wst.common.project.facet.core.util.internal.FileUtil.*;
+import static org.eclipse.wst.common.project.facet.core.util.internal.FileUtil.FILE_DOT_PROJECT;
+import static org.eclipse.wst.common.project.facet.core.util.internal.FileUtil.validateEdit;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -18,14 +19,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
@@ -39,8 +40,12 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.internal.FacetedProjectNature;
 import org.eclipse.wst.common.project.facet.ui.ModifyFacetedProjectWizard;
 
+/**
+ * See org.eclipse.jpt.jpa.ui/plugin.xml
+ */
 public class ConvertJavaProjectToJpaCommandHandler
-		extends AbstractHandler {
+	extends AbstractHandler
+{
 	
 	public Object execute(ExecutionEvent event)
 			throws ExecutionException {
@@ -50,7 +55,7 @@ public class ConvertJavaProjectToJpaCommandHandler
 		
 		if (currentSelection instanceof IStructuredSelection) {
 			Object element = ((IStructuredSelection) currentSelection).getFirstElement();
-			project = (IProject) Platform.getAdapterManager().getAdapter(element, IProject.class);
+			project = PlatformTools.getAdapter(element, IProject.class);
 		} 
 		
 		if (project == null) {
@@ -86,14 +91,16 @@ public class ConvertJavaProjectToJpaCommandHandler
 						= new ModifyFacetedProjectWizard(runnable.getFacetedProjectWorkingCopy());
 				WizardDialog dialog = new WizardDialog(shell, wizard);
 				
-				if (dialog.open() == Dialog.CANCEL) {
+				if (dialog.open() == Window.CANCEL) {
 					throw new InterruptedException();
 				}
 			}
-			catch (InvocationTargetException e) {
-				JptJpaUiPlugin.log(e);
+			catch (InvocationTargetException ex) {
+				JptJpaUiPlugin.log(ex);
 			}
-			catch(InterruptedException e) {
+			catch(InterruptedException ex) {
+				Thread.currentThread().interrupt();
+				JptJpaUiPlugin.log(ex);
 				removeFacetNature(project);
 			}
 		}

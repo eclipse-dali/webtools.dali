@@ -19,9 +19,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
-
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -149,7 +147,6 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	//reconnect since we disconnected in preGenerate();
 	//ensure the project is fully updated before validating - bug 277236
 	protected void reconnect() {
-		getJpaProject().updateAndWait();
 		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp != null) {
 			cp.connect();
@@ -157,10 +154,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	}
 
 	protected void validateProject() {
-		IProject project = this.getJpaProject().getProject();
-		ValidateJob job = new ValidateJob(project);
-		job.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(project));
-		job.schedule();
+		new ValidateJob(this.jpaProject.getProject()).schedule();
 	}
 
 	// ********** ClasspathEntry **********
@@ -305,28 +299,24 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	/**
 	 * Performs validation after tables have been generated
 	 */
-	private class ValidateJob extends Job 
+	/* CU private */ class ValidateJob
+		extends Job 
 	{	
-		private IProject project;
+		private final IProject[] projects;
 		
-		
-		public ValidateJob(IProject project) {
+		ValidateJob(IProject project) {
 			super(JptCoreMessages.VALIDATE_JOB);
-			this.project = project;
+			this.projects = new IProject[] {project};
 		}
-		
 		
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			IStatus status = Status.OK_STATUS;
 			try {
-				ValidationFramework.getDefault().validate(
-					new IProject[] {this.project}, true, false, monitor);
+				ValidationFramework.getDefault().validate(this.projects, true, false, monitor);
+			} catch (CoreException ex) {
+				throw new RuntimeException(ex);
 			}
-			catch (CoreException ce) {
-				status = Status.CANCEL_STATUS;
-			}
-			return status;
+			return Status.OK_STATUS;
 		}
 	}
 	
@@ -356,16 +346,11 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	// ********** Queries **********
 	
 	protected JpaPlatform getPlatform() {
-		return this.getJpaProject().getJpaPlatform();
+		return this.jpaProject.getJpaPlatform();
 	}
-	
-	protected JpaProject getJpaProject() {
-		return this.jpaProject;
-	}
-	
 	
 	protected ConnectionProfile getConnectionProfile() {
-		return this.getJpaProject().getConnectionProfile();
+		return this.jpaProject.getConnectionProfile();
 	}
 	
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.mapping.IResourceChangeDescriptionFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -110,16 +111,17 @@ public abstract class AbstractJpaDeleteTypeParticipant
 		//since the progress bar will hang if a large JPA project is being loaded, 
 		//we can at least set the subtask and report no progress. Only happens first time getJpaProjectManager() is called.
 		monitor.subTask(JpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
-		JpaProjectManager jpaProjectManager = JptJpaCorePlugin.getJpaProjectManager();
-		if (jpaProjectManager.getJpaProjectsSize() == 0) {
+		Iterable<JpaProject> jpaProjects = this.getJpaProjects();
+		int size = CollectionTools.size(jpaProjects);
+		if (size == 0) {
 			return null;
 		}
-		SubMonitor sm = SubMonitor.convert(monitor, jpaProjectManager.getJpaProjectsSize()*10 + 2);
+		SubMonitor sm = SubMonitor.convert(monitor, size*10 + 2);
 		sm.subTask(this.getCheckConditionsSubTaskName());
 		ResourceChangeChecker checker = (ResourceChangeChecker) context.getChecker(ResourceChangeChecker.class);
 		IResourceChangeDescriptionFactory deltaFactory = checker.getDeltaFactory();
 		
-		for (JpaProject jpaProject : jpaProjectManager.getJpaProjects()) {
+		for (JpaProject jpaProject : jpaProjects) {
 			this.createDeleteEdits(sm.newChild(10), jpaProject);
 		}
 		if (sm.isCanceled()) {
@@ -135,6 +137,18 @@ public abstract class AbstractJpaDeleteTypeParticipant
 		sm.worked(1);
 		
 		return null;
+	}
+
+	protected Iterable<JpaProject> getJpaProjects() throws OperationCanceledException {
+		try {
+			return this.getJpaProjectManager().waitToGetJpaProjects();
+		} catch (InterruptedException ex) {
+			throw new OperationCanceledException(ex.getMessage());
+		}
+	}
+
+	protected JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
 	}
 
 	/**
@@ -181,9 +195,9 @@ public abstract class AbstractJpaDeleteTypeParticipant
 			return;
 		}
 		SubMonitor sm = SubMonitor.convert(monitor, 1 + persistenceUnit.getMappingFileRefsSize());
-		Iterable<DeleteEdit> persistenceXmlDeleteEdits = this.createPersistenceXmlDeleteEdits(persistenceUnit);
-		if (!CollectionTools.isEmpty(persistenceXmlDeleteEdits)) {
-			this.persistenceXmlDeleteEdits.put(jpaProject.getPersistenceXmlResource().getFile(), persistenceXmlDeleteEdits);
+		Iterable<DeleteEdit> edits = this.createPersistenceXmlDeleteEdits(persistenceUnit);
+		if (!CollectionTools.isEmpty(edits)) {
+			this.persistenceXmlDeleteEdits.put(jpaProject.getPersistenceXmlResource().getFile(), edits);
 		}
 		sm.worked(1);
 		for (MappingFileRef mappingFileRef : persistenceUnit.getMappingFileRefs()) {

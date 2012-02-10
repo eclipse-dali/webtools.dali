@@ -49,7 +49,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
@@ -892,8 +891,12 @@ public abstract class AbstractJavaPersistentType
 
 	// ********** JpaStructureNode implementation **********
 
-	public String getId() {
-		return JavaStructureNodes.PERSISTENT_TYPE_ID;
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
+
+	public Class<JavaPersistentType> getType() {
+		return JavaPersistentType.class;
 	}
 
 	// it would be nice if the we passed in an astRoot here, but then we
@@ -915,9 +918,9 @@ public abstract class AbstractJavaPersistentType
 	protected boolean contains(int offset, CompilationUnit astRoot) {
 		TextRange fullTextRange = this.resourceType.getTextRange(astRoot);
 		// 'fullTextRange' will be null if the type no longer exists in the java;
-		// the context model can be out of synch with the resource model
+		// the context model can be out of sync with the resource model
 		// when a selection event occurs before the context model has a
-		// chance to synch with the resource model via the update thread
+		// chance to sync with the resource model via the update thread
 		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
 	}
 

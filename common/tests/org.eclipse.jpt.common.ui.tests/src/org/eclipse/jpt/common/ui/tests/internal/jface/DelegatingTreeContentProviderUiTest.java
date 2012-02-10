@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,11 +26,10 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
-import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
+import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
@@ -111,7 +110,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	private void buildControlTreePanel(Composite parent) {
 		controlTree = buildTreePanel(
 				parent, "Control tree",
-				new DelegatingTreeContentAndLabelProvider(new ControlTreeItemContentProviderFactory()),
+				new ItemTreeStateProviderManager(new ControlTreeItemContentProviderFactory()),
 				new LabelProvider());
 		controlTree.addSelectionChangedListener(buildTreeSelectionChangedListener());
 		selectedNode.addPropertyChangeListener(
@@ -127,7 +126,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	private void buildViewTreePanel(Composite parent) {
 		viewTree = buildTreePanel(
 				parent, "View tree",
-				new DelegatingTreeContentAndLabelProvider(new ViewTreeItemContentProviderFactory()),
+				new ItemTreeStateProviderManager(new ViewItemTreeContentProviderFactory()),
 				new LabelProvider());
 	}
 
@@ -287,70 +286,62 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 
 
 	static abstract class AbstractTreeItemContentProviderFactory
-		implements TreeItemContentProviderFactory
+		implements ItemTreeContentProviderFactory
 	{
-		public TreeItemContentProvider buildItemContentProvider(
-			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
-			return new GenericTreeItemContentProvider(
-				(TreeNode) item, (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider);
+		public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
+			return new GenericItemTreeContentProvider((TreeNode) item, manager);
 		}
 	}
 
 
-	static class ControlTreeItemContentProviderFactory extends AbstractTreeItemContentProviderFactory
+	static class ControlTreeItemContentProviderFactory
+		extends AbstractTreeItemContentProviderFactory
 	{
-
+		// nothing
 	}
 
 
-	static class ViewTreeItemContentProviderFactory
+	static class ViewItemTreeContentProviderFactory
 		extends AbstractTreeItemContentProviderFactory
 	{
 		@Override
-		public TreeItemContentProvider buildItemContentProvider(
-				Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
+		public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
 			if (item instanceof Parent) {
-				return new ViewTreeParentItemContentProvider(
-						(Parent) item, (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider);
+				return new ViewParentItemTreeContentProvider((Parent) item, manager);
 			}
-			return super.buildItemContentProvider(item, contentAndLabelProvider);
+			return super.buildProvider(item, manager);
 		}
 	}
 
 
-	static class GenericTreeItemContentProvider extends AbstractTreeItemContentProvider<TreeNode>
+	static class GenericItemTreeContentProvider
+		extends AbstractItemTreeContentProvider<TreeNode, TreeNode>
 	{
-		public GenericTreeItemContentProvider(
-				TreeNode treeNode, DelegatingTreeContentAndLabelProvider treeContentAndLabelProvider) {
-			super(treeNode, treeContentAndLabelProvider);
+		public GenericItemTreeContentProvider(TreeNode treeNode, ItemTreeContentProvider.Manager manager) {
+			super(treeNode, manager);
 		}
 
-		protected TreeNode treeNode() {
-			return (TreeNode) getModel();
-		}
-
-		@Override
 		public TreeNode getParent() {
-			return treeNode().parent();
+			return this.item.parent();
 		}
 
 		@Override
 		protected CollectionValueModel<TreeNode> buildChildrenModel() {
 			return new ListCollectionValueModelAdapter<TreeNode>(
-			new ListAspectAdapter<TreeNode, TreeNode>(TreeNode.CHILDREN_LIST, treeNode()) {
+			new ListAspectAdapter<TreeNode, TreeNode>(TreeNode.CHILDREN_LIST, this.item) {
 				@Override
 				protected ListIterator<TreeNode> listIterator_() {
-					return treeNode().children();
+					return this.subject.children();
 				}
 			});
 		}
 	}
 
-	static class ViewTreeParentItemContentProvider extends GenericTreeItemContentProvider
+	static class ViewParentItemTreeContentProvider
+		extends GenericItemTreeContentProvider
 	{
-		public ViewTreeParentItemContentProvider(
-				TreeNode treeNode, DelegatingTreeContentAndLabelProvider treeContentAndLabelProvider) {
-			super(treeNode, treeContentAndLabelProvider);
+		public ViewParentItemTreeContentProvider(TreeNode treeNode, ItemTreeContentProvider.Manager manager) {
+			super(treeNode, manager);
 		}
 
 		@Override

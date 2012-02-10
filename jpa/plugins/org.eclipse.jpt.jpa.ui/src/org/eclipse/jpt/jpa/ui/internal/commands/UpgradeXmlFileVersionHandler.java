@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,17 +12,21 @@ package org.eclipse.jpt.jpa.ui.internal.commands;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaRootEObject;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class UpgradeXmlFileVersionHandler extends AbstractHandler
+/**
+ * See org.eclipse.jpt.jpa.ui/plugin.xml
+ */
+public class UpgradeXmlFileVersionHandler
+	extends AbstractHandler
 {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection 
@@ -35,11 +39,9 @@ public class UpgradeXmlFileVersionHandler extends AbstractHandler
 	}
 
 	protected void upgradeXmlFileVersion(Object selectedObject) {
-		JpaXmlResource xmlResource = 
-			(JpaXmlResource) Platform.getAdapterManager().getAdapter(selectedObject, JpaXmlResource.class);
+		JpaXmlResource xmlResource = PlatformTools.getAdapter(selectedObject, JpaXmlResource.class);
 		if (xmlResource == null) {
-			XmlFile xmlFile = 
-				(XmlFile) Platform.getAdapterManager().getAdapter(selectedObject, XmlFile.class);
+			XmlFile xmlFile = PlatformTools.getAdapter(selectedObject, XmlFile.class);
 			if (xmlFile != null) {
 				xmlResource = xmlFile.getXmlResource();
 			}
@@ -48,16 +50,15 @@ public class UpgradeXmlFileVersionHandler extends AbstractHandler
 			return;
 		}
 
-		final JpaRootEObject root = xmlResource.getRootObject();
+		JpaRootEObject root = xmlResource.getRootObject();
 		IContentType contentType = xmlResource.getContentType();
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(xmlResource.getProject());
-		final String newVersion = jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(contentType).getVersion();
+		JpaProject jpaProject = this.getJpaProject(xmlResource.getFile().getProject());
+		String newVersion = jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(contentType).getVersion();
+		root.setVersion(newVersion);
+		xmlResource.save();
+	}
 
-		xmlResource.modify(
-			new Runnable() {
-				public void run() {
-					root.setVersion(newVersion);
-				}
-			});
+	private JpaProject getJpaProject(IProject project) {
+		return (JpaProject) project.getAdapter(JpaProject.class);
 	}
 }

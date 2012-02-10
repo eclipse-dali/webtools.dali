@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,15 @@
 package org.eclipse.jpt.jpa.core;
 
 /**
- * This interface is to be implemented by a JPA vendor to build a
- * {@link JpaPlatform}.
+ * This interface is to be implemented by a JPA vendor to extend Dali by
+ * building a {@link JpaPlatform}.
  * <p>
- * See the <code>org.eclipse.jpt.jpa.core.jpaPlatforms</code> extension point.
+ * See the  extension point
+ * <code>org.eclipse.jpt.jpa.core.jpaPlatforms</code>
+ * in
+ * <code>org.eclipse.jpt.jpa.core/plugin.xml</code>
+ * and
+ * <code>org.eclipse.jpt.jpa.core/schema/jpaPlatforms.exsd</code>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

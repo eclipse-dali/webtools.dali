@@ -23,6 +23,10 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -61,6 +65,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
@@ -69,7 +74,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
@@ -271,8 +275,12 @@ public abstract class AbstractPersistenceUnit
 
 	// ********** JpaStructureNode implementation **********
 
-	public String getId() {
-		return PersistenceStructureNodes.PERSISTENCE_UNIT_ID;
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
+
+	public Class<PersistenceUnit> getType() {
+		return PersistenceUnit.class;
 	}
 
 	public TextRange getSelectionTextRange() {
@@ -759,6 +767,20 @@ public abstract class AbstractPersistenceUnit
 		return classRef;
 	}
 
+	protected Iterable<ClassRef> addSpecifiedClassRefs(Iterable<String> classNames) {
+		return this.addSpecifiedClassRefs(this.getSpecifiedClassRefsSize(), classNames);
+	}
+
+	protected Iterable<ClassRef> addSpecifiedClassRefs(int index, Iterable<String> classNames) {
+		ArrayList<XmlJavaClassRef> xmlClassRefs = new ArrayList<XmlJavaClassRef>();
+		for (String className : classNames) {
+			xmlClassRefs.add(this.buildXmlJavaClassRef(className));
+		}
+		Iterable<ClassRef> classRefs = this.specifiedClassRefContainer.addContextElements(index, xmlClassRefs);
+		this.xmlPersistenceUnit.getClasses().addAll(index, xmlClassRefs);
+		return classRefs;
+	}
+
 	protected XmlJavaClassRef buildXmlJavaClassRef(String className) {
 		XmlJavaClassRef ref = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		ref.setJavaClass(className);
@@ -783,6 +805,18 @@ public abstract class AbstractPersistenceUnit
 	 */
 	protected void removeSpecifiedClassRef_(int index) {
 		this.specifiedClassRefContainer.removeContextElement(index).dispose();
+	}
+
+	protected void removeSpecifiedClassRefs(Iterable<ClassRef> classRefs) {
+		ArrayList<XmlJavaClassRef> xmlClassRefs = new ArrayList<XmlJavaClassRef>();
+		for (ClassRef classRef : classRefs) {
+			xmlClassRefs.add(classRef.getXmlClassRef());
+		}
+		this.specifiedClassRefContainer.removeAll(classRefs);
+		for (ClassRef classRef : classRefs) {
+			classRef.dispose();
+		}
+		this.xmlPersistenceUnit.getClasses().removeAll(xmlClassRefs);
 	}
 
 	protected void syncSpecifiedClassRefs() {
@@ -856,7 +890,7 @@ public abstract class AbstractPersistenceUnit
 	/**
 	 * Return the names of all the Java classes in the JPA project that are
 	 * mapped (i.e. have the appropriate annotation etc.) but not specified
-	 * in the persistence unit.
+	 * in the persistence unit or any of its mapping files.
 	 */
 	protected Iterable<String> getImpliedClassNames_() {
 		return new FilteringIterable<String>(this.getJpaProject().getMappedJavaSourceClassNames()) {
@@ -1918,6 +1952,62 @@ public abstract class AbstractPersistenceUnit
 	}
 
 
+	// ********** synchronize classes **********
+
+	public void synchronizeClasses(IProgressMonitor monitor) {
+		SubMonitor sm = SubMonitor.convert(monitor, 3);
+
+		// calculate the refs to remove and add
+		HashSet<String> newTypeNames = CollectionTools.set(this.getJpaProject().getMappedJavaSourceClassNames());
+		ArrayList<ClassRef> deadClassRefs = new ArrayList<ClassRef>();
+		HashSet<String> mappingFileTypeNames = this.getMappingFileTypeNames();
+
+		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
+			JavaPersistentType specifiedJPT = classRef.getJavaPersistentType();
+			if (specifiedJPT == null) {
+				// Java type cannot be resolved
+				deadClassRefs.add(classRef);
+			} else {
+				String specifiedName = specifiedJPT.getName();
+				if ( ! newTypeNames.remove(specifiedName)) {
+					// Java type is not annotated
+					deadClassRefs.add(classRef);
+				} else if (mappingFileTypeNames.contains(specifiedName)) {
+					// type is also listed in a mapping file
+					deadClassRefs.add(classRef);
+				}
+			}
+		}
+		if (sm.isCanceled()) {
+			return;
+		}
+		sm.worked(1);
+
+		this.removeSpecifiedClassRefs(deadClassRefs);
+		if (sm.isCanceled()) {
+			return;
+		}
+		sm.worked(1);
+
+		this.addSpecifiedClassRefs(newTypeNames);
+		sm.worked(1);
+	}
+
+	/**
+	 * Return the names of all the types specified in the persistence unit's
+	 * mapping files.
+	 */
+	protected HashSet<String> getMappingFileTypeNames() {
+		HashSet<String> result = new HashSet<String>();
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			for (PersistentType persistentType : mappingFileRef.getPersistentTypes()) {
+				result.add(persistentType.getName());
+			}
+		}
+		return result;
+	}
+
+
 	// ********** misc **********
 
 	public XmlPersistenceUnit getXmlPersistenceUnit() {
@@ -2539,7 +2629,8 @@ public abstract class AbstractPersistenceUnit
 	/**
 	 * Not the prettiest code....
 	 */
-	public void synchronizeMetamodel() {
+	// TODO check monitor for cancel
+	public IStatus synchronizeMetamodel(IProgressMonitor monitor) {
 		// gather up the persistent unit's types, eliminating duplicates;
 		// if we have persistent types with the same name in multiple locations,
 		// the last one we encounter wins (i.e. the classes in the orm.xml take
@@ -2643,6 +2734,7 @@ public abstract class AbstractPersistenceUnit
 		for (MetamodelSourceType topLevelType : topLevelTypes) {
 			topLevelType.synchronizeMetamodel(memberTypeTree);
 		}
+		return Status.OK_STATUS;
 	}
 
 	protected MetamodelSourceType selectSourceType(Iterable<MetamodelSourceType> types, String typeName) {

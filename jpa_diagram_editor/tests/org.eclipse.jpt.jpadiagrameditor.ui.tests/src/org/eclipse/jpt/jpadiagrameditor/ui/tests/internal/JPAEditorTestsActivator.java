@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.jpa.core.JpaProjectManager;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.osgi.framework.BundleContext;
 
 public class JPAEditorTestsActivator extends Plugin {
@@ -29,19 +33,19 @@ public class JPAEditorTestsActivator extends Plugin {
 	// The shared instance
 	private static JPAEditorTestsActivator plugin;
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
+		ReflectionTools.executeMethod(jpaProjectManager, "executeCommandsSynchronously"); //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
+	protected JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
+	}
+
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);

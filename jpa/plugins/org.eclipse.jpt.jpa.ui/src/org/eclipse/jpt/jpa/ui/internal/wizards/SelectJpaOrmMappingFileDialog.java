@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileWizard;
@@ -96,7 +96,7 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 		} else {
 			resourcePath = ((IFile) element).getFullPath();
 		}
-		String runtimePath = JptCommonCorePlugin.getResourceLocator(this.project).getRuntimePath(this.project, resourcePath).toOSString();
+		String runtimePath = this.getProjectResourceLocator().getRuntimePath(resourcePath).toOSString();
 		return runtimePath.replace(File.separatorChar, '/');
 	}
 
@@ -122,8 +122,12 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 			//these are disabled if the tree is empty when the dialog is created.
 			this.messageLabel.setEnabled(true);
 			this.treeWidget.setEnabled(true);
-			IFile file = JptCommonCorePlugin.getPlatformFile(this.project, path);
+			IFile file = this.getProjectResourceLocator().getPlatformFile(path);
 			getTreeViewer().setSelection(new StructuredSelection(file), true);
 		}
+	}
+
+	protected ProjectResourceLocator getProjectResourceLocator() {
+		return (ProjectResourceLocator) this.project.getAdapter(ProjectResourceLocator.class);
 	}
 }

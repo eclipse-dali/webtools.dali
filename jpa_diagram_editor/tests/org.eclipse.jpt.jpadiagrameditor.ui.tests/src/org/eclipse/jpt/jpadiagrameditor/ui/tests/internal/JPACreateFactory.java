@@ -46,7 +46,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -122,7 +121,7 @@ public class JPACreateFactory {
 			addJar(javaProject, eclipseLinkJarName());
 		}
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		jpaProject = JptJpaCorePlugin.getJpaProject(project);
+		jpaProject = this.getJpaProject(project);
 		int cnt = 0;
 		while ((jpaProject == null) && (cnt < 1000)){
 			try {
@@ -130,7 +129,7 @@ public class JPACreateFactory {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			jpaProject = JptJpaCorePlugin.getJpaProject(project);
+			jpaProject = this.getJpaProject(project);
 			cnt++;
 		}
 		jpaProject.setDiscoversAnnotatedClasses(true);
@@ -138,6 +137,10 @@ public class JPACreateFactory {
 		return jpaProject;
 	}
 	
+	private JpaProject getJpaProject(IProject p) {
+		return (JpaProject) p.getAdapter(JpaProject.class);
+	}
+
 	public static String eclipseLinkJarName() {
 		return getSystemProperty(ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY);
 	}
@@ -539,7 +542,7 @@ public class JPACreateFactory {
 	}
 	
 	public static PersistentType getPersistentType(IFile file){
-		JpaFile jpaFile = JptJpaCorePlugin.getJpaFile(file);
+		JpaFile jpaFile = getJpaFile(file);
 		for (JpaStructureNode node : getRootNodes(jpaFile)) {
 			PersistentType entity = (PersistentType) node;
 			return entity;
@@ -556,7 +559,7 @@ public class JPACreateFactory {
 	
 	public static Set<ReadOnlyPersistentAttribute> getEntityFields(IFile file){
 		Set<ReadOnlyPersistentAttribute> result = new HashSet<ReadOnlyPersistentAttribute>();
-		JpaFile jpaFile = JptJpaCorePlugin.getJpaFile(file);
+		JpaFile jpaFile = getJpaFile(file);
 		if(jpaFile == null){
 			return result;
 		}
@@ -567,6 +570,10 @@ public class JPACreateFactory {
 			}
 		}
 		return result;
+	}
+
+	private static JpaFile getJpaFile(IFile file) {
+		return (JpaFile) file.getAdapter(JpaFile.class);
 	}
 	
 	public void addAttributes(IFile entity, String attName, String attType, String annotation, String attActName, boolean isCollection){

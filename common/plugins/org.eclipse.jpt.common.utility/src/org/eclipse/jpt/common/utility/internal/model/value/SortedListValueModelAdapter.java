@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,8 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 
 /**
  * An adapter that allows us to make a {@link CollectionValueModel}
- * (or {@link ListValueModel}) behave like a {@link ListValueModel}
+ * (or {@link org.eclipse.jpt.common.utility.model.value.ListValueModel ListValueModel})
+ * behave like a {@link org.eclipse.jpt.common.utility.model.value.ListValueModel ListValueModel}
  * that keeps its contents sorted and notifies listeners appropriately.
  * <p>
  * The {@link Comparator} can be changed at any time; allowing the same
@@ -29,7 +30,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
  * wants to sort a list of files first by name, then by date, then by size).
  * <p>
  * <strong>NB:</strong> Since we only listen to the wrapped collection when we have
- * listeners ourselves and we can only stay in synch with the wrapped
+ * listeners ourselves and we can only stay in sync with the wrapped
  * collection while we are listening to it, results to various methods
  * (e.g. {@link #size()}, {@link #get(int)}) will be
  * unpredictable whenever
@@ -121,5 +122,4 @@ public class SortedListValueModelAdapter<E>
 			this.fireItemsReplaced(LIST_VALUES, diffRange.start, sortedItems, unsortedItems);
 		}
 	}
-
 }

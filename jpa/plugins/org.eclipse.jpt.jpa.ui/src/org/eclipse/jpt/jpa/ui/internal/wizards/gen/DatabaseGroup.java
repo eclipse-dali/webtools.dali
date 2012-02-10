@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ResourceManager;
@@ -46,7 +45,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
 /**
@@ -61,7 +59,7 @@ public class DatabaseGroup
 	private final JpaProject jpaProject;
 	private final Set<Listener> listeners = Collections.synchronizedSet(new HashSet<Listener>());
 
-	// these are kept in synch with the selection
+	// these are kept in sync with the selection
 	private ConnectionProfile selectedConnectionProfile;
 	
 	private Schema selectedSchema;
@@ -367,7 +365,7 @@ public class DatabaseGroup
 	 *     - the connection was closed (never happens?)
 	 * we need to update the schema stuff and the reconnect link
 	 */
-	private void connectionChanged() {
+	/* CU private */ void connectionChanged() {
 		Schema old = this.selectedSchema;
 		this.selectedSchema = this.getDefaultSchema();
 		if(this.selectedSchema != old) {
@@ -439,29 +437,29 @@ public class DatabaseGroup
 	}
 
 	private ConnectionListener buildConnectionListener() {
-		return new ConnectionAdapter() {
-			@Override
-			public void opened(ConnectionProfile cp) {
-				this.connectionChanged();
-			}
-			@Override  // this probably won't ever get called...
-			public void closed(ConnectionProfile cp) {
-				this.connectionChanged();
-			}
-			private void connectionChanged() {
-				Display.getDefault().asyncExec(
-					new Runnable() {
-						public void run() {
-							DatabaseGroup.this.connectionChanged();
-						}
+		return new LocalConnectionListener();
+	}
+
+	class LocalConnectionListener
+		extends ConnectionAdapter
+	{
+		@Override
+		public void opened(ConnectionProfile cp) {
+			this.connectionChanged();
+		}
+		@Override  // this probably won't ever get called...
+		public void closed(ConnectionProfile cp) {
+			this.connectionChanged();
+		}
+		private void connectionChanged() {
+			org.eclipse.jpt.common.ui.internal.util.SWTUtil.asyncExec(
+				new Runnable() {
+					public void run() {
+						DatabaseGroup.this.connectionChanged();
 					}
-				);
-			}
-			@Override
-			public String toString() {
-				return "DatabaseConnectionWizardPage connection listener"; //$NON-NLS-1$
-			}
-		};
+				}
+			);
+		}
 	}
 
 	// ********** listeners **********

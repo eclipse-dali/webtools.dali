@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,19 +21,19 @@ public class FilterTests extends TestCase {
 	}
 
 	public void testNullFilter() {
-		Filter<String> filter = Filter.Null.instance();
+		Filter<String> filter = Filter.Transparent.instance();
 		assertTrue(filter.accept(""));
 		assertTrue(filter.accept("foo"));
 		assertTrue(filter.accept("bar"));
 	}
 
 	public void testNullFilter_toString() {
-		Filter<String> filter = Filter.Null.instance();
+		Filter<String> filter = Filter.Transparent.instance();
 		assertNotNull(filter.toString());
 	}
 
 	public void testNullFilter_serialization() throws Exception {
-		Filter<String> filter = Filter.Null.instance();
+		Filter<String> filter = Filter.Transparent.instance();
 		assertSame(filter, TestTools.serialize(filter));
 	}
 
@@ -75,5 +75,4 @@ public class FilterTests extends TestCase {
 		Filter<String> filter = Filter.Disabled.instance();
 		assertSame(filter, TestTools.serialize(filter));
 	}
-
 }

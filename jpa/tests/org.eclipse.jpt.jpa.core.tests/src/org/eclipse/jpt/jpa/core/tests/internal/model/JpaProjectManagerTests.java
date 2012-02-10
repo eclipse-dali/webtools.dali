@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,22 +20,26 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestPlatformProject;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 @SuppressWarnings("nls")
-public class JpaProjectManagerTests extends TestCase {
-
+public class JpaProjectManagerTests
+	extends TestCase
+{
 	/** carriage return */
 	public static final String CR = System.getProperty("line.separator");
 
-	protected TestFacetedProject testProject;
+	private TestFacetedProject testProjectHarness;
+
+
 	public JpaProjectManagerTests(String name) {
 		super(name);
 	}
@@ -46,17 +50,20 @@ public class JpaProjectManagerTests extends TestCase {
 		if (this.debug()) {
 			this.printName();
 		}
-		this.testProject = this.buildTestProject();
+		this.testProjectHarness = this.buildTestProjectHarness();
 	}
 
 	private boolean debug() {
-		Boolean debug = (Boolean) ReflectionTools.getStaticFieldValue(this.getGenericJpaProjectManagerClass(), "DEBUG");
-		return debug.booleanValue();
+		return TestTools.debug(this.getGenericJpaProjectManagerClass());
 	}
 
 	// GenericJpaProjectManager is package-private
 	private Class<?> getGenericJpaProjectManagerClass() {
-		return JptJpaCorePlugin.getJpaProjectManager().getClass();
+		return this.getJpaProjectManager().getClass();
+	}
+
+	protected JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
 	}
 
 	private void printName() {
@@ -77,16 +84,40 @@ public class JpaProjectManagerTests extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		this.testProject.getProject().delete(true, true, null);
-		this.testProject = null;
+		this.testProjectHarness.getProject().delete(true, true, null);
+		this.testProjectHarness = null;
 		super.tearDown();
+	}
+
+	private JpaProject getJpaProject() {
+		return this.getJpaProject(this.getProject());
+	}
+
+	private JpaProject getJpaProject(IProject project) {
+		try {
+			return this.getJpaProject_(project);
+		} catch (InterruptedException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	private JpaProject getJpaProject_(IProject project) throws InterruptedException {
+		return this.getJpaProjectReference(project).getValue();
+	}
+
+	private JpaProject.Reference getJpaProjectReference(IProject project) {
+		return (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
+	}
+
+	private IProject getProject() {
+		return this.testProjectHarness.getProject();
 	}
 
 	/** 
 	 * Builds a project with the java and utility facets installed, and with
 	 * pre-existing entities added.
 	 */
-	private TestFacetedProject buildTestProject() throws Exception {
+	private TestFacetedProject buildTestProjectHarness() throws Exception {
 		TestJavaProject tjp = TestJavaProject.buildJavaProject(this.getClass().getSimpleName(), true);
 		tjp.createCompilationUnit("test.pkg", "TestEntity.java", "@Entity public class TestEntity {}");
 		tjp.createCompilationUnit("test.pkg", "TestEntity2.java", "@Entity public class TestEntity2 {}");
@@ -101,99 +132,94 @@ public class JpaProjectManagerTests extends TestCase {
 	 * make sure the DEBUG constants are 'false' before checking in the code
 	 */
 	public void testDEBUG() {
-		this.verifyDEBUG(this.getGenericJpaProjectManagerClass());
+		TestTools.assertFalseDEBUG(this.getGenericJpaProjectManagerClass());
 	}
 
-	private void verifyDEBUG(Class<?> clazz) {
-		assertFalse("Recompile with \"DEBUG = false\": " + clazz.getName(),
-				((Boolean) ReflectionTools.getStaticFieldValue(clazz, "DEBUG")).booleanValue());
-	}
-	
 	public void testJpaProjectManager() {
-		assertNotNull(JptJpaCorePlugin.getJpaProjectManager());
+		assertNotNull(this.getJpaProjectManager());
 	}
 	
-	protected IDataModel buildJpaConfigDataModel() {
+	private IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());
 		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
 	}
 
 	public void testProjectCloseReopen() throws Exception {
-		this.testProject.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		this.testProjectHarness.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
+		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
 
-		this.testProject.getProject().close(null);
-		assertFalse("Project is not closed", this.testProject.getProject().isOpen());
-		jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		this.testProjectHarness.getProject().close(null);
+		assertFalse("Project is not closed", this.testProjectHarness.getProject().isOpen());
+		jpaProject = this.getJpaProject();
 		assertNull("JpaProject is not null", jpaProject);
 
-		this.testProject.getProject().open(null);
-		assertTrue(this.testProject.getProject().isOpen());
-		jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		this.testProjectHarness.getProject().open(null);
+		assertTrue(this.testProjectHarness.getProject().isOpen());
+		jpaProject = this.getJpaProject();
 		assertNotNull("JpaProject is null", jpaProject);
 		assertEquals(4, jpaProject.getJpaFilesSize());
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity2.java")));
 
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/persistence.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/orm.xml")));
 	}
 
 	public void testProjectDeleteReimport() throws Exception {
-		this.testProject.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		this.testProjectHarness.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
+		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
-		assertEquals(1, JptJpaCorePlugin.getJpaProjectManager().getJpaProjectsSize());
+		assertEquals(1, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
 
-		this.testProject.getProject().delete(false, true, null);
-		jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		this.testProjectHarness.getProject().delete(false, true, null);
+		jpaProject = this.getJpaProject();
 		assertNull(jpaProject);
-		assertEquals(0, JptJpaCorePlugin.getJpaProjectManager().getJpaProjectsSize());
+		assertEquals(0, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
 		assertEquals(0, ResourcesPlugin.getWorkspace().getRoot().getProjects().length);
 
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(this.testProject.getProject().getName());
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(this.testProjectHarness.getProject().getName());
 		project.create(null);
 		assertEquals(1, ResourcesPlugin.getWorkspace().getRoot().getProjects().length);
 		project.open(null);
 
 		assertTrue(project.isOpen());
 		assertTrue(JpaFacet.isInstalled(project));
-		jpaProject = JptJpaCorePlugin.getJpaProject(project);
+		jpaProject = this.getJpaProject(project);
 		assertNotNull(jpaProject);
 		assertEquals(4, jpaProject.getJpaFilesSize());
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity2.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/persistence.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/orm.xml")));
 	}
 
 	public void testFacetInstallUninstall() throws Exception {
-		assertNull(JptJpaCorePlugin.getJpaProject(this.testProject.getProject()));
+		assertNull(this.getJpaProject());
 
-		this.testProject.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
-		assertEquals(1, JptJpaCorePlugin.getJpaProjectManager().getJpaProjectsSize());
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		this.testProjectHarness.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
+		assertEquals(1, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
+		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
 		assertEquals(4, jpaProject.getJpaFilesSize());
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity2.java")));
 
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/persistence.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/orm.xml")));
 
-		this.testProject.uninstallFacet(JpaFacet.ID, "1.0");
-		assertEquals(0, JptJpaCorePlugin.getJpaProjectManager().getJpaProjectsSize());
-		jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		this.testProjectHarness.uninstallFacet(JpaFacet.ID, "1.0");
+		assertEquals(0, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
+		jpaProject = this.getJpaProject();
 		assertNull(jpaProject);
 	}
 
 	public void testEditFacetSettingsFileAddThenRemoveJpaFacet() throws Exception {
-		assertNull(JptJpaCorePlugin.getJpaProject(this.testProject.getProject()));
+		assertNull(this.getJpaProject());
 
 		// add the JPA facet by modifying the facet settings file directly
-		IFile facetSettingsFile = this.getFile(this.testProject, ".settings/org.eclipse.wst.common.project.facet.core.xml");
+		IFile facetSettingsFile = this.getFile(this.testProjectHarness, ".settings/org.eclipse.wst.common.project.facet.core.xml");
 		InputStream inStream = new BufferedInputStream(facetSettingsFile.getContents());
 		int fileSize = inStream.available();
 		byte[] buf = new byte[fileSize];
@@ -207,31 +233,31 @@ public class JpaProjectManagerTests extends TestCase {
 
 		facetSettingsFile.setContents(new ByteArrayInputStream(newDocument.getBytes()), false, false, null);
 
-		assertEquals(1, JptJpaCorePlugin.getJpaProjectManager().getJpaProjectsSize());
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		assertEquals(1, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
+		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
 		// persistence.xml and orm.xml do not get created in this situation (?)
 		assertEquals(2, jpaProject.getJpaFilesSize());
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity2.java")));
 //		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
 //		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
 
 
 		// now remove the JPA facet
 		facetSettingsFile.setContents(new ByteArrayInputStream(oldDocument.getBytes()), false, false, null);
-		assertEquals(0, JptJpaCorePlugin.getJpaProjectManager().getJpaProjectsSize());
-		jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		assertEquals(0, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
+		jpaProject = this.getJpaProject();
 		assertNull(jpaProject);
 	}
 	
 	public void testEditFacetSettingsFileRemoveThenAddJpaFacet() throws Exception {
-		this.testProject.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		this.testProjectHarness.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
+		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
 
 		// remove the JPA facet by modifying the facet settings file directly
-		IFile facetSettingsFile = this.getFile(this.testProject, ".settings/org.eclipse.wst.common.project.facet.core.xml");
+		IFile facetSettingsFile = this.getFile(this.testProjectHarness, ".settings/org.eclipse.wst.common.project.facet.core.xml");
 		InputStream inStream = new BufferedInputStream(facetSettingsFile.getContents());
 		int fileSize = inStream.available();
 		byte[] buf = new byte[fileSize];
@@ -244,19 +270,19 @@ public class JpaProjectManagerTests extends TestCase {
 		String newDocument = oldDocument.replaceAll(oldString, newString);
 
 		facetSettingsFile.setContents(new ByteArrayInputStream(newDocument.getBytes()), false, false, null);
-		assertEquals(0, JptJpaCorePlugin.getJpaProjectManager().getJpaProjectsSize());
-		jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		assertEquals(0, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
+		jpaProject = this.getJpaProject();
 		assertNull(jpaProject);
 
 		// now add the JPA facet back
 		facetSettingsFile.setContents(new ByteArrayInputStream(oldDocument.getBytes()), false, false, null);
-		assertEquals(1, JptJpaCorePlugin.getJpaProjectManager().getJpaProjectsSize());
-		jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
+		assertEquals(1, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
+		jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
 		assertEquals(4, jpaProject.getJpaFilesSize());
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
-		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/test/pkg/TestEntity2.java")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/persistence.xml")));
+		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/orm.xml")));
 	}
 }

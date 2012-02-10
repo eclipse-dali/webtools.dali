@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import java.util.List;
-
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -30,14 +29,13 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public interface JpaRootContextNode
 	extends JpaContextNode
 {
-
 	// ********** persistence.xml **********
 
 	/**
 	 * String constant associated with changes to the persistence XML property
 	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener)
 	 */
-	public final static String PERSISTENCE_XML_PROPERTY = "persistenceXml"; //$NON-NLS-1$
+	String PERSISTENCE_XML_PROPERTY = "persistenceXml"; //$NON-NLS-1$
 
 	/** 
 	 * Return the content represented by the <code>persistence.xml</code>
@@ -53,5 +51,4 @@ public interface JpaRootContextNode
 	 * Add validation messages to the specified list.
 	 */
 	public void validate(List<IMessage> messages, IReporter reporter);
-
 }

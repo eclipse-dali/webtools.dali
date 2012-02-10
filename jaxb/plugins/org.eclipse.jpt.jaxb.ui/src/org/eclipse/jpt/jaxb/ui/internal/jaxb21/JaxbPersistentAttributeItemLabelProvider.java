@@ -1,18 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
-import org.eclipse.jpt.common.ui.internal.jface.AbstractItemLabelProvider;
-import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.ui.internal.JaxbMappingImageHelper;
@@ -20,45 +19,57 @@ import org.eclipse.swt.graphics.Image;
 
 
 public class JaxbPersistentAttributeItemLabelProvider
-		 extends AbstractItemLabelProvider {
+	extends AbstractItemExtendedLabelProvider<JaxbPersistentAttribute>
+{
+	protected final String text;
+	protected final String description;
 	
-	public JaxbPersistentAttributeItemLabelProvider(
-		JaxbPersistentAttribute attribute, DelegatingContentAndLabelProvider labelProvider) {
-		
-		super(attribute, labelProvider);
-	}
-	
-	
-	@Override
-	public JaxbPersistentAttribute getModel() {
-		return (JaxbPersistentAttribute) super.getModel();
+	public JaxbPersistentAttributeItemLabelProvider(JaxbPersistentAttribute attribute, ItemLabelProvider.Manager manager) {
+		super(attribute, manager);
+		this.text = this.buildText();
+		this.description = this.buildDescription();
 	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
-		return new PropertyAspectAdapter<JaxbPersistentAttribute, Image>(
-				new String[] {JaxbPersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY, JaxbPersistentAttribute.MAPPING_PROPERTY}, 
-				getModel()) {
+		return new PropertyAspectAdapter<JaxbPersistentAttribute, Image>(IMAGE_ASPECT_NAMES, this.item) {
 			@Override
 			protected Image buildValue_() {
-				return JaxbMappingImageHelper.imageForAttributeMapping(this.subject.getMappingKey());
+				return JaxbPersistentAttributeItemLabelProvider.this.buildImage(this.subject.getMappingKey());
 			}
 		};
 	}
-	
+
+	protected Image buildImage(String mappingKey) {
+		return JaxbMappingImageHelper.imageForAttributeMapping(mappingKey);
+	}
+
+	protected static final String[] IMAGE_ASPECT_NAMES = new String[] {
+		JaxbPersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY,
+		JaxbPersistentAttribute.MAPPING_PROPERTY
+	};
+
 	@Override
-	protected PropertyValueModel<String> buildTextModel() {
+	public String getText() {
+		return this.text;
+	}
+
+	protected String buildText() {
 		StringBuffer sb = new StringBuffer();
-		if (getModel().isInherited()) {
-			sb.append(getModel().getDeclaringJavaResourceType().getName());
+		if (this.item.isInherited()) {
+			sb.append(this.item.getDeclaringJavaResourceType().getName());
 			sb.append('.');
 		}
-		sb.append(getModel().getName());
-		return new StaticPropertyValueModel<String>(sb.toString());
+		sb.append(this.item.getName());
+		return sb.toString();
 	}
 	
 	@Override
-	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new StaticPropertyValueModel<String>(getModel().getName());
+	public String getDescription() {
+		return this.description;
+	}
+	
+	protected String buildDescription() {
+		return this.item.getName();
 	}
 }

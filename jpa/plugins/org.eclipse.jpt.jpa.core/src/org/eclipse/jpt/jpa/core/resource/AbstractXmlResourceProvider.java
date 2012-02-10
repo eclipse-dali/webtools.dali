@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,6 +38,7 @@ import org.eclipse.jem.util.emf.workbench.FlexibleProjectResourceSet;
 import org.eclipse.jem.util.emf.workbench.IEMFContextContributor;
 import org.eclipse.jem.util.emf.workbench.ProjectResourceSet;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
@@ -98,13 +99,16 @@ public abstract class AbstractXmlResourceProvider
 			resourceUri = URI.createPlatformResourceURI(resourcePath.toString(), false);
 		}
 		else {
-			IPath absolutePath = 
-				JptCommonCorePlugin.getResourceLocator(this.project).getResourcePath(this.project, resourcePath);
+			IPath absolutePath = this.getProjectResourceLocator().getResourcePath(resourcePath);
 			resourceUri = URI.createPlatformResourceURI(absolutePath.toString(), false);
 		}
 		
 		URIConverter uriConverter = getResourceSet().getURIConverter();
 		return uriConverter.normalize(resourceUri);
+	}
+	
+	protected ProjectResourceLocator getProjectResourceLocator() {
+		return (ProjectResourceLocator) this.project.getAdapter(ProjectResourceLocator.class);
 	}
 	
 	/**

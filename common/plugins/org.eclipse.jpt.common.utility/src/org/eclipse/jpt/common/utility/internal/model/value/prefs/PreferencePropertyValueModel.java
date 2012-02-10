@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,7 +44,7 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  * rely on that event to keep our internally cached value in synch.
  */
 public class PreferencePropertyValueModel<P>
-	extends AspectAdapter<Preferences>
+	extends AspectAdapter<Preferences, P>
 	implements WritablePropertyValueModel<P>
 {
 	/** The key to the preference we use for the value. */
@@ -179,7 +179,6 @@ public class PreferencePropertyValueModel<P>
 	/**
 	 * Return the cached (converted) value.
 	 */
-	@Override
 	public synchronized P getValue() {
 		return this.value;
 	}
@@ -206,6 +205,11 @@ public class PreferencePropertyValueModel<P>
 
 
 	// ********** AspectAdapter implementation **********
+
+	@Override
+	protected synchronized P getAspectValue() {
+		return this.value;
+	}
 
 	@Override
 	protected Class<? extends EventListener> getListenerClass() {
@@ -342,5 +346,4 @@ public class PreferencePropertyValueModel<P>
 		this.value = this.buildValue();
 		this.fireAspectChanged(old, this.value);
 	}
-
 }

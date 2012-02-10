@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -90,7 +90,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * collection value model. Use this constructor if<ul>
 	 * <li> the wrapped collection value model already contains other
 	 *       collection value models, or
-	 * <li> you want to override {@link #transform(E1)}
+	 * <li> you want to override {@link #transform(Object) transform(E1)}
 	 *       instead of building a {@link Transformer}
 	 * </ul>
 	 */
@@ -114,7 +114,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * list value model. Use this constructor if<ul>
 	 * <li> the wrapped collection value model already contains other
 	 *       collection value models, or
-	 * <li> you want to override {@link #transform(E1)}
+	 * <li> you want to override {@link #transform(Object) transform(E1)}
 	 *       instead of building a {@link Transformer}
 	 * </ul>
 	 */
@@ -135,7 +135,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * collection. Use this constructor if<ul>
 	 * <li> the wrapped collection value model already contains other
 	 *       collection value models, or
-	 * <li> you want to override {@link #transform(E1)}
+	 * <li> you want to override {@link #transform(Object) transform(E1)}
 	 *       instead of building a {@link Transformer}
 	 * </ul>
 	 */
@@ -156,7 +156,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * collection. Use this constructor if<ul>
 	 * <li> the wrapped collection value model already contains other
 	 *       collection value models, or
-	 * <li> you want to override {@link #transform(E1)}
+	 * <li> you want to override {@link #transform(Object) transform(E1)}
 	 *       instead of building a {@link Transformer}
 	 * </ul>
 	 */
@@ -222,7 +222,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	@Override
 	protected void engageModel() {
 		super.engageModel();
-		// synch our cache *after* we start listening to the wrapped collection,
+		// sync our cache *after* we start listening to the wrapped collection,
 		// since its value might change when a listener is added
 		this.addAllComponentSources();
 	}

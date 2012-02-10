@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.operations;
 
 
-import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.FILE_NAME;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -26,7 +27,6 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -75,11 +75,28 @@ public abstract class AbstractJpaFileCreationOperation
 	
 	protected JpaProject getJpaProject() throws ExecutionException {
 		IProject project = getProject();
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(project);
+		JpaProject jpaProject = this.getJpaProject(project);
 		if (jpaProject == null) {
 			throw new ExecutionException("Project does not have JPA facet"); //$NON-NLS-1$
 		}
 		return jpaProject;
+	}
+	
+	protected JpaProject getJpaProject(IProject project) throws ExecutionException {
+		try {
+			return this.getJpaProject_(project);
+		} catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
+			throw new ExecutionException(null, ex);
+		}
+	}
+	
+	protected JpaProject getJpaProject_(IProject project) throws InterruptedException {
+		return this.getJpaProjectReference(project).getValue();
+	}
+	
+	protected JpaProject.Reference getJpaProjectReference(IProject project) {
+		return (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
 	}
 	
 	/**

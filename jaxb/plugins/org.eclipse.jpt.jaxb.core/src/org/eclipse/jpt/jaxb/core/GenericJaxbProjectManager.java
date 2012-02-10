@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,14 +33,15 @@ import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.utility.CallbackJobSynchronizer;
-import org.eclipse.jpt.common.core.internal.utility.JobCommand;
 import org.eclipse.jpt.common.core.internal.utility.JobSynchronizer;
-import org.eclipse.jpt.common.utility.Command;
-import org.eclipse.jpt.common.utility.internal.AsynchronousCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.SimpleCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.StatefulCommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.JobCommand;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.common.utility.internal.command.AsynchronousExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.SimpleStatefulExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
@@ -139,7 +140,23 @@ class GenericJaxbProjectManager
 	 * Determine how Resource and Java change events are
 	 * handled (i.e. synchronously or asynchronously).
 	 */
-	private volatile StatefulCommandExecutor eventHandler = new AsynchronousCommandExecutor(JptCommonCoreMessages.DALI_EVENT_HANDLER_THREAD_NAME);
+	private volatile StatefulCommandExecutor eventHandler =
+			new AsynchronousExtendedCommandExecutor(
+					JptCommonCoreMessages.DALI_EVENT_HANDLER_THREAD_NAME,
+					new LocalExceptionHandler()
+				);
+
+	/* CU private */ class LocalExceptionHandler
+		implements ExceptionHandler
+	{
+		public void handleException(Throwable t) {
+			JptJaxbCorePlugin.log(t);
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
+	}
 
 	/**
 	 * Listen for<ul>
@@ -263,7 +280,11 @@ class GenericJaxbProjectManager
 		JavaCore.removeElementChangedListener(this.javaElementChangeListener);
 		FacetedProjectFramework.removeListener(this.facetedProjectListener);
 		this.getWorkspace().removeResourceChangeListener(this.resourceChangeListener);
-		this.eventHandler.stop();
+		try {
+			this.eventHandler.stop();
+		} catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
 		this.clearJaxbProjects();
 	}
 
@@ -673,9 +694,9 @@ class GenericJaxbProjectManager
 
 	/**
 	 * This method is called (via reflection) when the test plug-in is loaded.
-	 * @see JptCoreTestsPlugin#start(BundleContext)
+	 * @see JptJaxbCoreTestsPlugin#start(BundleContext)
 	 */
-	public void handleEventsSynchronously() {
+	public void handleEventsSynchronously() throws InterruptedException {
 		try {
 			this.lock.acquire();
 			this.handleEventsSynchronously_();
@@ -684,9 +705,9 @@ class GenericJaxbProjectManager
 		}
 	}
 
-	private void handleEventsSynchronously_() {
+	private void handleEventsSynchronously_() throws InterruptedException {
 		this.eventHandler.stop();
-		this.eventHandler = new SimpleCommandExecutor();
+		this.eventHandler = new SimpleStatefulExtendedCommandExecutor();
 		this.eventHandler.start();
 	}
 

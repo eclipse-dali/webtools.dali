@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -146,7 +146,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 		IFile file = getCorrespondingResource(compilationUnit);
 		if (file == null) return Collections.emptyList();
 
-		JpaFile jpaFile = JptJpaCorePlugin.getJpaFile(file);
+		JpaFile jpaFile = (JpaFile) file.getAdapter(JpaFile.class);
 		if (jpaFile == null) return Collections.emptyList();
 
 		monitor.worked(80);

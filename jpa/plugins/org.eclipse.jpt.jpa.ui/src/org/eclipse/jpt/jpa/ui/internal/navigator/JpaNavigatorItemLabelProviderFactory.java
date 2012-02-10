@@ -1,75 +1,79 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.navigator;
 
 import java.util.HashMap;
-import java.util.Map;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
-import org.eclipse.jpt.jpa.ui.navigator.JpaNavigatorProvider;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
 
+/**
+ * @see JpaNavigatorItemContentProviderFactory
+ */
 public class JpaNavigatorItemLabelProviderFactory
-	implements ItemLabelProviderFactory
+	implements ItemExtendedLabelProviderFactory
 {
 	/**
-	 * Exactly *one* of these factories is created for each view that utilizes it.  
-	 * Therefore, as we delegate to the platform UI for each project, we should 
-	 * maintain the same multiplicity.  That is, if there is a delegate for each 
-	 * platform UI, we should maintain *one* delegate for each view.
-	 * 
-	 * Key: platform id,  Value: delegate content provider factory
+	 * Delegate factories, keyed by JPA platform.
 	 */
-	private final Map<String, ItemLabelProviderFactory> delegates;
-	
-	
+	private final HashMap<JpaPlatform, ItemExtendedLabelProviderFactory> delegates = new HashMap<JpaPlatform, ItemExtendedLabelProviderFactory>();
+
+
 	public JpaNavigatorItemLabelProviderFactory() {
 		super();
-		this.delegates = new HashMap<String, ItemLabelProviderFactory>();
 	}
-	
-	public ItemLabelProvider buildItemLabelProvider(Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
-		ItemLabelProviderFactory delegate = getDelegate(item);
-		if (delegate != null) {
-			return delegate.buildItemLabelProvider(item, contentAndLabelProvider);
+
+	public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
+		if (item instanceof JpaRootContextNodeModel) {
+			return this.buildRootContextNodeModelProvider((JpaRootContextNodeModel) item, manager);
 		}
-		return null;
+		ItemExtendedLabelProviderFactory delegate = this.getDelegate(item);
+		return (delegate == null) ? null : delegate.buildProvider(item, manager);
 	}
-	
-	
-	private ItemLabelProviderFactory getDelegate(Object element) {
-		if (! (element instanceof IAdaptable)) {
-			return null;
+
+	protected ItemExtendedLabelProvider buildRootContextNodeModelProvider(JpaRootContextNodeModel item, ItemExtendedLabelProvider.Manager manager) {
+		return new RootContextNodeModelItemLabelProvider(item, manager);
+	}
+
+	private ItemExtendedLabelProviderFactory getDelegate(Object item) {
+		return (item instanceof JpaContextNode) ? this.getDelegate((JpaContextNode) item) : null;
+	}
+
+	private synchronized ItemExtendedLabelProviderFactory getDelegate(JpaContextNode item) {
+		JpaPlatform jpaPlatform = item.getJpaProject().getJpaPlatform();
+		ItemExtendedLabelProviderFactory delegate = this.delegates.get(jpaPlatform);
+		if (delegate == null) {
+			if ( ! this.delegates.containsKey(jpaPlatform)) {  // null is an allowed value
+				delegate = this.buildDelegate(jpaPlatform);
+				this.delegates.put(jpaPlatform, delegate);
+			}
 		}
-		
-		JpaContextNode contextNode = (JpaContextNode) ((IAdaptable) element).getAdapter(JpaContextNode.class);
-		
-		if (contextNode == null) {
-			return null;
-		}
-		
-		JpaPlatform platform = contextNode.getJpaProject().getJpaPlatform();
-		String platformId = platform.getId();
-		if (delegates.containsKey(platformId)) {
-			return delegates.get(platformId);
-		}
-		JpaNavigatorProvider navigatorProvider = JptJpaUiPlugin.instance().getJpaNavigatorProvider(platform);
-		ItemLabelProviderFactory delegate = null;
-		if (navigatorProvider != null) {
-			delegate = navigatorProvider.getItemLabelProviderFactory();
-		}
-		delegates.put(platformId, delegate);
 		return delegate;
+	}
+
+	private ItemExtendedLabelProviderFactory buildDelegate(JpaPlatform jpaPlatform) {
+		JpaPlatformUi platformUI = (JpaPlatformUi) jpaPlatform.getAdapter(JpaPlatformUi.class);
+		if (platformUI == null) {
+			return null;
+		}
+		ItemTreeStateProviderFactoryProvider factoryProvider = platformUI.getNavigatorFactoryProvider();
+		return (factoryProvider == null) ? null : factoryProvider.getItemLabelProviderFactory();
+	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this);
 	}
 }

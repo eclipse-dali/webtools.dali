@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,9 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
@@ -197,6 +200,11 @@ public class GenericRootContextNode
 		return null;
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.jpaProject.getName());
+	}
+
 
 	// ********** metamodel **********
 
@@ -206,10 +214,10 @@ public class GenericRootContextNode
 		}
 	}
 
-	public void synchronizeMetamodel() {
-		if (this.persistenceXml != null) {
-			((PersistenceXml2_0) this.persistenceXml).synchronizeMetamodel();
-		}
+	public IStatus synchronizeMetamodel(IProgressMonitor monitor) {
+		return (this.persistenceXml != null) ?
+				((PersistenceXml2_0) this.persistenceXml).synchronizeMetamodel(monitor) :
+				Status.OK_STATUS;
 	}
 
 	public void disposeMetamodel() {
@@ -316,5 +324,4 @@ public class GenericRootContextNode
 			}
 		}
 	}
-
 }

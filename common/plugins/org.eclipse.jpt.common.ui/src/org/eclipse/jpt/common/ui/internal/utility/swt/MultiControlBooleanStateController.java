@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,12 @@
 package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import java.util.HashSet;
-
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.common.utility.model.listener.CollectionChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -75,55 +75,59 @@ final class MultiControlBooleanStateController
 	// ********** initialization **********
 
 	private CollectionChangeListener buildControlsListener() {
-		return new CollectionChangeListener() {
-			@SuppressWarnings("unchecked")
-			public void itemsAdded(CollectionAddEvent event) {
-				MultiControlBooleanStateController.this.addControls((Iterable<? extends Control>) event.getItems());
-			}
-			@SuppressWarnings("unchecked")
-			public void itemsRemoved(CollectionRemoveEvent event) {
-				MultiControlBooleanStateController.this.removeControls((Iterable<? extends Control>) event.getItems());
-			}
-			public void collectionCleared(CollectionClearEvent event) {
-				MultiControlBooleanStateController.this.clearControls();
-			}
-			@SuppressWarnings("unchecked")
-			public void collectionChanged(CollectionChangeEvent event) {
-				MultiControlBooleanStateController.this.clearControls();
-				MultiControlBooleanStateController.this.addControls((Iterable<? extends Control>) event.getCollection());
-			}
-			@Override
-			public String toString() {
-				return "controls listener"; //$NON-NLS-1$
-			}
-		};
+		return new ControlsListener();
+	}
+
+	/* CU private */ class ControlsListener
+		extends CollectionChangeAdapter
+	{
+		@Override
+		@SuppressWarnings("unchecked")
+		public void itemsAdded(CollectionAddEvent event) {
+			MultiControlBooleanStateController.this.addControls((Iterable<? extends Control>) event.getItems());
+		}
+		@Override
+		@SuppressWarnings("unchecked")
+		public void itemsRemoved(CollectionRemoveEvent event) {
+			MultiControlBooleanStateController.this.removeControls((Iterable<? extends Control>) event.getItems());
+		}
+		@Override
+		public void collectionCleared(CollectionClearEvent event) {
+			MultiControlBooleanStateController.this.clearControls();
+		}
+		@Override
+		@SuppressWarnings("unchecked")
+		public void collectionChanged(CollectionChangeEvent event) {
+			MultiControlBooleanStateController.this.clearControls();
+			MultiControlBooleanStateController.this.addControls((Iterable<? extends Control>) event.getCollection());
+		}
 	}
 
 
 	// ********** controls **********
 
 	@Override
-	void setControlState(boolean b) {
+	void setControlState(boolean controlState) {
 		for (Control control : this.controls) {
-			this.setControlState(control, b);
+			this.setControlState(control, controlState);
 		}
 	}
 
 	/* CU private */ void addControls(Iterable<? extends Control> controls_) {
-		boolean b = this.getBooleanValue();
 		for (Control control : controls_) {
-			this.addControl(control, b);
+			this.addControl(control);
 		}
 	}
 
-	private void addControl(Control control, boolean b) {
+	private void addControl(Control control) {
 		if (this.controls.isEmpty()) {
 			this.engageBooleanModel();
 			this.controlsModel.addCollectionChangeListener(CollectionValueModel.VALUES, this.controlsListener);
 		}
 		if (this.controls.add(control)) {
 			this.engageControl(control);
-			this.setControlState(control, b);
+			// wait until the models are engaged to get the boolean value... :-)
+			this.setControlState(control, this.getBooleanValue());
 		} else {
 			throw new IllegalArgumentException("duplicate control: " + control); //$NON-NLS-1$
 		}
@@ -153,5 +157,4 @@ final class MultiControlBooleanStateController
 		super.controlDisposed(control);
 		this.removeControl(control);
 	}
-
 }

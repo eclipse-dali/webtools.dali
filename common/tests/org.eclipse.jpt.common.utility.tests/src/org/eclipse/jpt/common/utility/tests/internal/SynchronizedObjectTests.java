@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -187,7 +187,7 @@ public class SynchronizedObjectTests
 		return new Command() {
 			public void execute(final SynchronizedObject<Object> sObject) throws InterruptedException {
 				sObject.execute(
-					new org.eclipse.jpt.common.utility.Command() {
+					new org.eclipse.jpt.common.utility.command.Command() {
 						public void execute() {
 							// pretend to perform some long initialization process
 							try {
@@ -235,5 +235,4 @@ public class SynchronizedObjectTests
 	private interface Command {
 		void execute(SynchronizedObject<Object> so) throws InterruptedException;
 	}
-
 }

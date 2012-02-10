@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,9 @@
 package org.eclipse.jpt.jpa.core.jpa2;
 
 import java.io.Serializable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -24,7 +27,8 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
  * When a JPA project is first created (e.g. when the user adds the JPA
  * Facet to a Faceted project or when a workspace containing a JPA project is
  * opened), if it is configured to generate the
- * Canonical Metamodel (i.e. its metamodel source folder is non-null), it will
+ * Canonical Metamodel (i.e. its metamodel source folder is non-
+ * <code>null</code>), it will
  * first discover what metamodel classes are already present in the metamodel
  * source folder. Any class appropriately annotated with
  * <code>javax.persistence.metamodel.StaticMetamodel</code>
@@ -39,7 +43,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
  * Metamodel is cleared from the context model, but the generated source files are
  * left in place.
  * </li><li>
- * When a JPA project's metamodel source folder is set to a non-null value,
+ * When a JPA project's metamodel source folder is set to a non-<code>null</code> value,
  * like when a JPA project is first created, the resulting Canonical Metamodel
  * will be merged with whatever is already present in the folder.
  * </li></ul>
@@ -54,7 +58,6 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
  * @since 2.3
  */
 public interface MetamodelSynchronizer {
-
 	/**
 	 * The value used to tag a generated type:
 	 * <pre>
@@ -65,7 +68,7 @@ public interface MetamodelSynchronizer {
 
 	void initializeMetamodel();
 
-	void synchronizeMetamodel();
+	IStatus synchronizeMetamodel(IProgressMonitor progressMonitor);
 
 	void disposeMetamodel();
 
@@ -74,34 +77,44 @@ public interface MetamodelSynchronizer {
 	 * Singleton implementation of the metamodel synchronizer interface that
 	 * does nothing. (Not sure we need this....)
 	 */
-	final class Null implements MetamodelSynchronizer, Serializable {
+	final class Null
+		implements MetamodelSynchronizer, Serializable
+	{
 		public static final MetamodelSynchronizer INSTANCE = new Null();
+
 		public static MetamodelSynchronizer instance() {
 			return INSTANCE;
 		}
+
 		// ensure single instance
 		private Null() {
 			super();
 		}
+
 		public void initializeMetamodel() {
 			// do nothing
 		}
-		public void synchronizeMetamodel() {
-			// do nothing
+
+		public IStatus synchronizeMetamodel(IProgressMonitor monitor) {
+			return Status.OK_STATUS;
 		}
+
 		public void disposeMetamodel() {
 			// do nothing
 		}
+
 		@Override
 		public String toString() {
-			return "MetamodelSynchronizer.Null";  //$NON-NLS-1$
+			return StringTools.buildSingletonToString(this);
 		}
+
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
 			// replace this object with the singleton
 			return INSTANCE;
 		}
 	}
+
 
 	final class MetamodelTools {
 
@@ -172,6 +185,5 @@ public interface MetamodelSynchronizer {
 			}
 			return false;
 		}
-
 	}
 }

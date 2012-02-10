@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,20 +10,33 @@
 package org.eclipse.jpt.common.utility;
 
 /**
- * Provide a container for passing an object that can be changed by the recipient.
+ * Provide a container for holding an object that cannot be changed.
+ * 
+ * @see ModifiableObjectReference
  */
-public interface ObjectReference<V>
-	extends ReadOnlyObjectReference<V>
-{
+public interface ObjectReference<V> {
 	/**
-	 * Set the value.
-	 * Return the previous value.
+	 * Return the current value.
 	 */
-	V setValue(V value);
+	V getValue();
 
 	/**
-	 * Set the value to <code>null</code>.
-	 * Return the previous value.
+	 * Return whether the current value is equal to the specified value.
 	 */
-	V setNull();
+	boolean valueEquals(Object object);
+
+	/**
+	 * Return whether the current value is not equal to the specified value.
+	 */
+	boolean valueNotEqual(Object object);
+
+	/**
+	 * Return whether the current value is <code>null</code>.
+	 */
+	boolean isNull();
+
+	/**
+	 * Return whether the current value is not <code>null</code>.
+	 */
+	boolean isNotNull();
 }

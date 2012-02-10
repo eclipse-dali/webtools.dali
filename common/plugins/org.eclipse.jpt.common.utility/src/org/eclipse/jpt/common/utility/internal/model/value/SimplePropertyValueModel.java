@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,27 +16,30 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 
 /**
- * Implementation of {@link WritablePropertyValueModel} that simply holds on to an
- * object and uses it as the value.
+ * Implementation of {@link WritablePropertyValueModel} that simply holds on to
+ * an object, uses it as the value, and fires the appropriate event when the
+ * value changes.
+ * 
+ * @param <V> the type of the model's value
  */
-public class SimplePropertyValueModel<T>
+public class SimplePropertyValueModel<V>
 	extends AbstractModel
-	implements WritablePropertyValueModel<T>
+	implements WritablePropertyValueModel<V>
 {
 	/** The value. */
-	protected T value;
+	protected V value;
 
 
 	/**
 	 * Construct a property value model for the specified value.
 	 */
-	public SimplePropertyValueModel(T value) {
+	public SimplePropertyValueModel(V value) {
 		super();
 		this.value = value;
 	}
 
 	/**
-	 * Construct a property value model with a starting value of null.
+	 * Construct a property value model with a value of <code>null</code>.
 	 */
 	public SimplePropertyValueModel() {
 		this(null);
@@ -48,12 +51,12 @@ public class SimplePropertyValueModel<T>
 	}
 
 
-	public T getValue() {
+	public V getValue() {
 		return this.value;
 	}
 
-	public void setValue(T value) {
-		T old = this.value;
+	public void setValue(V value) {
+		V old = this.value;
 		this.value = value;
 		this.firePropertyChanged(VALUE, old, value);
 	}
@@ -62,5 +65,4 @@ public class SimplePropertyValueModel<T>
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);
 	}
-
 }

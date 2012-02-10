@@ -100,8 +100,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * @return The UI platform of the JPT plug-in
 	 */
 	protected JpaPlatformUi getJpaPlatformUi() {
-		String platformId = getSubject().getJpaProject().getJpaPlatform().getId();
-		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
+        return (JpaPlatformUi) getSubject().getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
 	}
 
 	/**

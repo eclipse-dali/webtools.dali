@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,20 +15,21 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.EventListener;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 
 /**
  * Maintain a thread-safe list of listeners that does not allow adding
  * duplicate listeners or removing non-listeners.
+ * 
+ * @parm <L> the type of listeners held by the list
  */
-public class ListenerList<L extends EventListener>
+public class ListenerList<L>
 	implements Serializable
 {
 	/**
-	 * We can mark this volatile and not synchronize the read methods because
-	 * we never change the <em>contents</em> of the array.
+	 * We can mark this <code>volatile</code> and not synchronize the read
+	 * methods because we never change the <em>contents</em> of the array.
 	 */
 	private transient volatile L[] listeners;
 
@@ -167,5 +168,4 @@ public class ListenerList<L extends EventListener>
 			this.listeners = ArrayTools.add(this.listeners, (L) o);
 		}
 	}
-
 }

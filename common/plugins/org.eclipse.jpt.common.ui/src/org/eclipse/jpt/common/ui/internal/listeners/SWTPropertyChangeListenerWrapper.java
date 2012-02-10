@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.listeners;
 
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another property change listener and forward events to it on the SWT
@@ -37,46 +38,39 @@ public class SWTPropertyChangeListenerWrapper
 	}
 
 	public void propertyChanged(PropertyChangeEvent event) {
-		if (this.isExecutingOnUIThread()) {
-			this.propertyChanged_(event);
-		} else {
-			this.executeOnUIThread(this.buildPropertyChangedRunnable(event));
+		this.execute(new PropertyChangedRunnable(event));
+	}
+
+	/* CU private */ class PropertyChangedRunnable
+		extends RunnableAdapter
+	{
+		private final PropertyChangeEvent event;
+		PropertyChangedRunnable(PropertyChangeEvent event) {
+			super();
+			this.event = event;
 		}
-	}
-
-	private Runnable buildPropertyChangedRunnable(final PropertyChangeEvent event) {
-		return new Runnable() {
-			public void run() {
-				SWTPropertyChangeListenerWrapper.this.propertyChanged_(event);
-			}
-			@Override
-			public String toString() {
-				return "property changed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private boolean isExecutingOnUIThread() {
-		return Display.getCurrent() != null;
-	}
-
-	/**
-	 * {@link Display#asyncExec(Runnable)} seems to work OK;
-	 * but using {@link Display#syncExec(Runnable)} can somtimes make things
-	 * more predictable when debugging, at the risk of deadlocks.
-	 */
-	private void executeOnUIThread(Runnable r) {
-		Display.getDefault().asyncExec(r);
-//		Display.getDefault().syncExec(r);
+		@Override
+		public void run() {
+			SWTPropertyChangeListenerWrapper.this.propertyChanged_(this.event);
+		}
 	}
 
 	void propertyChanged_(PropertyChangeEvent event) {
 		this.listener.propertyChanged(event);
 	}
 
-	@Override
-	public String toString() {
-		return "SWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
+	/**
+	 * {@link SWTUtil#execute(Runnable)} seems to work OK;
+	 * but using {@link SWTUtil#syncExec(Runnable)} can somtimes make things
+	 * more predictable when debugging, at the risk of deadlocks.
+	 */
+	private void execute(Runnable r) {
+		SWTUtil.execute(r);
+//		SWTUtil.syncExec(r);
 	}
 
+	@Override
+	public String toString() {
+		return "SWT(" + this.listener + ')'; //$NON-NLS-1$
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,13 +23,18 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 2.0
  */
-public class PropertySheetWidgetFactory extends FormWidgetFactory {
+public class PropertySheetWidgetFactory
+	extends FormWidgetFactory
+{
+	/**
+	 * Creates a new <code>PropertySheetWidgetFactory</code>.
+	 */
+	public PropertySheetWidgetFactory() {
+		this(new TabbedPropertySheetWidgetFactory());
+	}
 
 	/**
 	 * Creates a new <code>PropertySheetWidgetFactory</code>.
-	 *
-	 * @param widgetFactory The actual factory responsible for creating the new
-	 * widgets
 	 */
 	public PropertySheetWidgetFactory(TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(widgetFactory);

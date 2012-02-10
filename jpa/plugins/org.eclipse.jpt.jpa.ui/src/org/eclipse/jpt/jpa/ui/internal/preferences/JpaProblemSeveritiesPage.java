@@ -831,6 +831,8 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 			this.buildOkProgressMonitorDialog().run(true, false, this.buildOkRunnableWithProgress());
 		}
 		catch (InterruptedException ex) {
+			// should *not* happen...
+			Thread.currentThread().interrupt();
 			return false;
 		}
 		catch (InvocationTargetException ex) {

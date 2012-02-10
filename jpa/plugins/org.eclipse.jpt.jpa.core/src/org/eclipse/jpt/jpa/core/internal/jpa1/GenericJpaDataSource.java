@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -93,7 +93,7 @@ public class GenericJpaDataSource
 		String old = this.connectionProfileName;
 		this.connectionProfileName = name;
 		if (this.firePropertyChanged(CONNECTION_PROFILE_NAME_PROPERTY, old, name)) {
-			 // synch the connection profile when the name changes
+			 // sync the connection profile when the name changes
 			this.setConnectionProfile(this.buildConnectionProfile(name));
 			JptJpaCorePlugin.setConnectionProfileName(this.getJpaProject().getProject(), name);
 		}
@@ -201,7 +201,7 @@ public class GenericJpaDataSource
 				return;
 			}
 			// the connection profile will already have the new name,
-			// we just need to synch the name held by the data source
+			// we just need to sync the name held by the data source
 			if (newName.equals(GenericJpaDataSource.this.connectionProfile.getName())) {
 				GenericJpaDataSource.this.setConnectionProfileName(newName);
 			}

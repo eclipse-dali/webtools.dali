@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,9 +15,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.operations.AbstractJptFileCreationDataModelProvider;
-import org.eclipse.jpt.common.core.resource.ResourceLocator;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
@@ -91,9 +90,8 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 				IStatus.ERROR, JptJpaCorePlugin.PLUGIN_ID,
 				JptCoreMessages.VALIDATE_PROJECT_IMPROPER_PLATFORM);
 		}
-		ResourceLocator resourceLocator = JptCommonCorePlugin.getResourceLocator(project);
-		if (resourceLocator != null /* should never be null, but there might be crazy circumstances */
-				&& ! resourceLocator.acceptResourceLocation(project, container)) {
+		ProjectResourceLocator resourceLocator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
+		if ( ! resourceLocator.resourceLocationIsValid(container)) {
 			return new Status(
 				IStatus.WARNING, JptJpaCorePlugin.PLUGIN_ID,
 				JptCoreMessages.VALIDATE_CONTAINER_QUESTIONABLE);
@@ -138,7 +136,20 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	}
 	
 	protected JpaProject getJpaProject(IProject project) {
-		return (project == null) ? null : JptJpaCorePlugin.getJpaProject(project);
+		return (project == null) ? null : this.getJpaProject_(project);
+	}
+	
+	protected JpaProject getJpaProject_(IProject project) {
+		try {
+			return this.getJpaProjectReference(project).getValue();
+		} catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
+			return null;
+		}
+	}
+	
+	protected JpaProject.Reference getJpaProjectReference(IProject project) {
+		return ((JpaProject.Reference) project.getAdapter(JpaProject.Reference.class));
 	}
 	
 	protected String getJpaFacetVersion(IProject project) throws CoreException {
@@ -147,7 +158,7 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	}
 	
 	protected boolean hasSupportedPlatform(IProject project) {
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(project);
+		JpaProject jpaProject = this.getJpaProject(project);
 		return (jpaProject != null) && isSupportedPlatformId(jpaProject.getJpaPlatform().getId());
 	}
 	

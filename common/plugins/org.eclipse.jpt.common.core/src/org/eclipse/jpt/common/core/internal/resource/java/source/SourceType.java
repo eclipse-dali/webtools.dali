@@ -281,7 +281,7 @@ final class SourceType
 	}
 	
 	public boolean hasPublicNoArgConstructor() {
-		Iterable<JavaResourceMethod> constructors = getConstructors();
+		Iterable<JavaResourceMethod> constructors = this.getConstructors();
 		if (CollectionTools.size(constructors) == 0) {
 			return true;
 		}
@@ -294,10 +294,10 @@ final class SourceType
 	}
 
 	protected Iterable<JavaResourceMethod> getConstructors() {
-		return new FilteringIterable<JavaResourceMethod>(getMethods()) {
+		return new FilteringIterable<JavaResourceMethod>(this.getMethods()) {
 			@Override
-			protected boolean accept(JavaResourceMethod o) {
-				return o.isConstructor();
+			protected boolean accept(JavaResourceMethod method) {
+				return method.isConstructor();
 			}
 		};
 	}
@@ -578,7 +578,7 @@ final class SourceType
 	// Both requirements are validated by the compiler so they are excluded here
 	public boolean hasEqualsMethod() {
 		for (JavaResourceMethod method : this.getMethods()) {
-			if (StringTools.stringsAreEqual(method.getMethodName(), "equals")
+			if (StringTools.stringsAreEqual(method.getMethodName(), "equals") //$NON-NLS-1$
 					&& method.getParametersSize() == 1
 					&& StringTools.stringsAreEqual(method.getParameterTypeName(0), Object.class.getName())) {
 				return true;
@@ -593,7 +593,7 @@ final class SourceType
 	// Both requirements are validated by the compiler so they are excluded here
 	public boolean hasHashCodeMethod() {
 		for (JavaResourceMethod method : this.getMethods()) {
-			if (StringTools.stringsAreEqual(method.getMethodName(), "hashCode")
+			if (StringTools.stringsAreEqual(method.getMethodName(), "hashCode") //$NON-NLS-1$
 					&& method.getParametersSize() == 0) {
 				return true;
 			}

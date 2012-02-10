@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourcePackageIn
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 
 /**
  * Java package-info.java source code
@@ -51,21 +50,26 @@ public class JavaPackageInfoResourceModelProvider
 	public JavaResourceCompilationUnit buildResourceModel(JpaProject jpaProject, IFile file) {
 		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(file);
 		try {
-			if (compilationUnit.getPackageDeclarations().length > 0){
-				return new SourcePackageInfoCompilationUnit(
-						compilationUnit,
-						jpaProject.getJpaPlatform().getAnnotationProvider(),
-						jpaProject.getJpaPlatform().getAnnotationEditFormatter(),
-						jpaProject.getModifySharedDocumentCommandExecutor());
+			if (compilationUnit.getPackageDeclarations().length == 0){
+				//ignore package-info placed in default package as
+				//it doesn't have package declaration and can't hold annotations
+				return null;
 			} 
-			//ignore package-info placed in default package as
-			//it doesn't have package declaration and can't hold annotations
-			return null;
-		} catch (JavaModelException e) {
-			JptJpaCorePlugin.log(e);
+		} catch (JavaModelException ex) {
+			jpaProject.getManager().log(ex);
 			// Ignore -- project is in a bad state. This will get recalled if necessary
 			return null;
 		}
+		return new SourcePackageInfoCompilationUnit(
+				compilationUnit,
+				jpaProject.getJpaPlatform().getAnnotationProvider(),
+				jpaProject.getJpaPlatform().getAnnotationEditFormatter(),
+				jpaProject.getManager().getModifySharedDocumentCommandExecutor()
+			);
 	}
 
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 }

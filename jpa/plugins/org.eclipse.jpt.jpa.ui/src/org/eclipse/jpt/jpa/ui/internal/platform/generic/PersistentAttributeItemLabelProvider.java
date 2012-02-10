@@ -1,17 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.common.ui.internal.jface.AbstractItemLabelProvider;
-import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -20,61 +19,60 @@ import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.swt.graphics.Image;
 
 public class PersistentAttributeItemLabelProvider
-	extends AbstractItemLabelProvider
+	extends AbstractItemExtendedLabelProvider<ReadOnlyPersistentAttribute>
 {
-	public PersistentAttributeItemLabelProvider(
-			ReadOnlyPersistentAttribute persistentAttribute, DelegatingContentAndLabelProvider labelProvider) {
-		super(persistentAttribute, labelProvider);
+	public PersistentAttributeItemLabelProvider(ReadOnlyPersistentAttribute persistentAttribute, ItemLabelProvider.Manager manager) {
+		super(persistentAttribute, manager);
 	}
-	
-	@Override
-	public ReadOnlyPersistentAttribute getModel() {
-		return (ReadOnlyPersistentAttribute) super.getModel();
-	}
-	
+
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
-		return new PropertyAspectAdapter<ReadOnlyPersistentAttribute, Image>(
-				new String[] {ReadOnlyPersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY, ReadOnlyPersistentAttribute.MAPPING_PROPERTY}, 
-				getModel()) {
-			@Override
-			protected Image buildValue_() {
-				if (getModel().isVirtual()) {
-					return JptUiIcons.ghost(JpaMappingImageHelper.iconKeyForAttributeMapping(this.subject.getMappingKey()));
-				}
-				return JpaMappingImageHelper.imageForAttributeMapping(this.subject.getMappingKey());
-			}
-		};
+		return new ImageModel(this.item);
 	}
-	
+
+	protected static class ImageModel
+		extends PropertyAspectAdapter<ReadOnlyPersistentAttribute, Image>
+	{
+		public ImageModel(ReadOnlyPersistentAttribute subject) {
+			super(ReadOnlyPersistentAttribute.MAPPING_PROPERTY, subject);
+		}
+		@Override
+		protected Image buildValue_() {
+			String mappingKey = this.subject.getMappingKey();
+			return this.subject.isVirtual() ?
+					JptUiIcons.ghost(JpaMappingImageHelper.iconKeyForAttributeMapping(mappingKey)) :
+					JpaMappingImageHelper.imageForAttributeMapping(mappingKey);
+		}
+	}
+
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<ReadOnlyPersistentAttribute, String>(ReadOnlyPersistentAttribute.NAME_PROPERTY, getModel()) {
-			@Override
-			protected String buildValue_() {
-				return this.subject.getName();
-			}
-		};
+		return new TextModel(this.item);
 	}
-	
+
+	protected static class TextModel
+		extends PropertyAspectAdapter<ReadOnlyPersistentAttribute, String>
+	{
+		public TextModel(ReadOnlyPersistentAttribute subject) {
+			super(ReadOnlyPersistentAttribute.NAME_PROPERTY, subject);
+		}
+		@Override
+		protected String buildValue_() {
+			return this.subject.getName();
+		}
+	}
+
 	@Override
+	@SuppressWarnings("unchecked")
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new PropertyAspectAdapter<ReadOnlyPersistentAttribute, String>(ReadOnlyPersistentAttribute.NAME_PROPERTY, getModel()) {
-			@Override
-			protected String buildValue_() {
-				StringBuilder sb = new StringBuilder();
-				sb.append(this.subject.getPersistenceUnit().getName());
-				sb.append('/');
-				sb.append(this.subject.getOwningPersistentType().getName());
-				sb.append('/');
-				sb.append(this.subject.getName());
-				IResource resource = this.subject.getResource();
-				if (resource != null) {
-					sb.append(" - "); //$NON-NLS-1$
-					sb.append(resource.getFullPath().makeRelative());
-				}
-				return sb.toString();
-			}
-		};
+		return PersistenceUnitItemLabelProvider.buildNonQuotedComponentDescriptionModel(
+					this.item,
+					this.buildTypeTextModel(),
+					this.textModel
+				);
+	}
+
+	protected PropertyValueModel<String> buildTypeTextModel() {
+		return new PersistentTypeItemLabelProvider.TextModel(this.item.getOwningPersistentType());
 	}
 }

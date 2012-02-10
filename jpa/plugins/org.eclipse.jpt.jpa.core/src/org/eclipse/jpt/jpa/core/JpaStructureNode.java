@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,19 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.model.Model;
 
 
 /**
- * Implement this interface for objects that appear in the Structure view
- * This is used by JpaSelection to determine selection in the editor.
- * Details pages are also provided for each JpaStructureNode.
- * 
- * I did not implement JpaContextNode and I'm not even sure we should implement
- * JpaNode.  It is possibly someone could want a structure node that is
- * not actually a contextNode in the model.//TODO
- * 
+ * Interface implemented by any object to appear in the JPA Structure view
+ * and JPA Details View. This interface is also used by the JPA Selection
+ * Managers.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -32,33 +31,106 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 2.0
  */
 public interface JpaStructureNode
-	extends JpaNode
+	extends Model, IAdaptable
 {
 	/**
-	 * Return the structure node at the given offset.
+	 * Return the structure node at the specified offset in the structure node's
+	 * corresponding text file.
 	 */
 	JpaStructureNode getStructureNode(int textOffset);
-	
+
 	/**
 	 * Return the text range to be used to select text in the editor
-	 * corresponding to this node.
+	 * corresponding to the structure node.
 	 */
 	TextRange getSelectionTextRange();
-	
+
 	/**
-	 * Return a unique identifier for all of this class of structure nodes
+	 * Return the structure node's context type.
+	 * Type used to identify a JPA structure node's type with respect to the
+	 * structure node's context
+	 * (i.e. its type in the scope of the JPA platform that created the
+	 * structure node and the structure node's resource).
+	 * 
+	 * @see #getJpaPlatform()
+	 * @see #getResourceType()
+	 * @see #getType()
 	 */
-	String getId();
-	
+	ContextType getContextType();
+
 	/**
-	 * Return the content type of the structure node's resource.
-	 * This is used to find the appropriate ui provider for building composites 
+	 * Return the structure node's JPA platform.
+	 * This is used to find the appropriate UI platform for building the
+	 * structure node's JPA Details Page.
+	 */
+	JpaPlatform getJpaPlatform();
+
+	/**
+	 * Return the structure node's resource type.
+	 * This is used to find the appropriate UI provider for building the
+	 * structure node's JPA Details Page.
 	 */
 	JptResourceType getResourceType();
 
 	/**
-	 * Dispose of this structureNode and dispose of child structureNodes.
-	 * Typically this would be used to update the JpaFile rootStructureNodes.
+	 * Return the structure node's type.
+	 * This is used to find the appropriate UI provider for building the
+	 * structure node's JPA Details Page.
+	 */
+	Class<? extends JpaStructureNode> getType();
+
+	/**
+	 * Dispose the structure node and its children.
+	 * Typically this would be used to update the structure node's
+	 * JPA file's root structure nodes.
 	 */
 	void dispose();
+
+
+	/**
+	 * Type used to identify a JPA structure node's type with respect to the
+	 * structure node's context
+	 * (i.e. its type in the scope of the JPA platform that created the
+	 * structure node and the structure node's resource).
+	 */
+	final class ContextType {
+		private final JpaStructureNode node;
+
+		public ContextType(JpaStructureNode node) {
+			super();
+			if (node == null) {
+				throw new NullPointerException();
+			}
+			this.node = node;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == this) {
+				return true;
+			}
+			if ((obj == null) || (obj.getClass() != this.getClass())) {
+				return false;
+			}
+			ContextType other = (ContextType) obj;
+			return this.node.getJpaPlatform().equals(other.node.getJpaPlatform()) &&
+					this.node.getResourceType().equals(other.node.getResourceType()) &&
+					this.node.getType().equals(other.node.getType());
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int hash = 17;
+			hash = hash * prime + this.node.getJpaPlatform().hashCode();
+			hash = hash * prime + this.node.getResourceType().hashCode();
+			hash = hash * prime + this.node.getType().hashCode();
+			return hash;
+		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.node);
+		}
+	}
 }

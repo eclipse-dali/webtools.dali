@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,22 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.utility;
 
-import org.eclipse.jpt.common.utility.Command;
-import org.eclipse.jpt.common.utility.CommandExecutor;
-import org.eclipse.jpt.common.utility.internal.CommandRunnable;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 
 /**
- * This implementation of CommandExecutor can be used by a non-UI
- * thread to synchronously modify a JPA project with any objects associated
- * with documents that are currently displayed in the UI.
+ * This command executor synchronously executes a {@link Command command}
+ * on the UI thread.
+ * <p>
+ * This command executor allows a non-UI process to modify any objects
+ * associated with documents that are currently displayed in the UI.
  */
 public final class SynchronousUiCommandExecutor
-	implements CommandExecutor
+	extends AbstractUiCommandExecutor
 {
-	public static final CommandExecutor INSTANCE = new SynchronousUiCommandExecutor();
+	public static final ExtendedCommandExecutor INSTANCE = new SynchronousUiCommandExecutor();
 
-	public static CommandExecutor instance() {
+	public static ExtendedCommandExecutor instance() {
 		return INSTANCE;
 	}
 
@@ -34,16 +35,10 @@ public final class SynchronousUiCommandExecutor
 	}
 
 	public void execute(Command command) {
-		this.getDisplay().syncExec(this.buildRunnable(command));
+		SWTUtil.syncExec(this.buildRunnable(command));
 	}
 
-	private Runnable buildRunnable(Command command) {
-		return new CommandRunnable(command);
+	public void waitToExecute(Command command) {
+		this.execute(command);
 	}
-
-	private Display getDisplay() {
-		Display display = Display.getCurrent();
-		return (display != null) ? display : Display.getDefault();
-	}
-
 }

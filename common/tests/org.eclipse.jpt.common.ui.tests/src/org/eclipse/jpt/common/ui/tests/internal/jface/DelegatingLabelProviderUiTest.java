@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,23 +23,20 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.jface.AbstractItemLabelProvider;
-import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
+import org.eclipse.jpt.common.ui.internal.jface.StaticItemTreeContentProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
-import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
-import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
+import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.common.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -104,8 +101,8 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		
 		tree = new TreeViewer(panel, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		tree.getTree().setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-		DelegatingContentAndLabelProvider contentAndLabelProvider = 
-			new DelegatingTreeContentAndLabelProvider(
+		TreeStateProvider contentAndLabelProvider = 
+			new ItemTreeStateProviderManager(
 				new VehicleContentProviderFactory(),
 				new VehicleLabelProviderFactory());
 		tree.setContentProvider(contentAndLabelProvider);
@@ -305,103 +302,69 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 	
 	
 	private static class VehicleContentProviderFactory
-		implements TreeItemContentProviderFactory
+		implements ItemTreeContentProviderFactory
 	{
-		public TreeItemContentProvider buildItemContentProvider(Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
+		public ItemTreeContentProvider buildProvider(Object item, ItemTreeContentProvider.Manager manager) {
 			if (item instanceof Root) {
-				return new RootContentProvider(
-					(Root) item, (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider);
+				return this.buildRootProvider((Root) item);
 			}
-			return new VehicleContentProvider(
-				(Vehicle) item, (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider);
+			return this.buildVehicleProvider((Vehicle) item);
 		}
-	}
-	
-	
-	private static class RootContentProvider extends AbstractTreeItemContentProvider<Vehicle>
-	{
-		public RootContentProvider(Root item, DelegatingTreeContentAndLabelProvider contentAndLabelProvider) {
-			super(item, contentAndLabelProvider);
+		protected ItemTreeContentProvider buildRootProvider(Root item) {
+			return new StaticItemTreeContentProvider(null, item.vehicles());
 		}
-		
-		@Override
-		public Root getModel() {
-			return (Root) super.getModel();
-		}
-		
-		@Override
-		public Object getParent() {
-			return null;
-		}
-		
-		@Override
-		protected CollectionValueModel<Vehicle> buildChildrenModel() {
-			return new StaticCollectionValueModel<Vehicle>(this.getModel().vehicles());
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private static class VehicleContentProvider extends AbstractTreeItemContentProvider
-	{
-		public VehicleContentProvider(Vehicle item, DelegatingTreeContentAndLabelProvider contentAndLabelProvider) {
-			super(item, contentAndLabelProvider);
-		}
-		
-		@Override
-		public Vehicle getModel() {
-			return (Vehicle) super.getModel();
-		}
-		
-		@Override
-		public Object getParent() {
-			return getModel().parent();
-		}
-		
-		@Override
-		protected CollectionValueModel buildChildrenModel() {
-			return new NullCollectionValueModel();
+		protected ItemTreeContentProvider buildVehicleProvider(Vehicle item) {
+			return new StaticItemTreeContentProvider(item.parent());
 		}
 	}
 	
 	
 	private static class VehicleLabelProviderFactory
-		implements ItemLabelProviderFactory
+		implements ItemExtendedLabelProviderFactory
 	{
-		public ItemLabelProvider buildItemLabelProvider(Object element, DelegatingContentAndLabelProvider labelProvider) {
-			return new VehicleLabelProvider((Vehicle) element, labelProvider);
+		public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
+			return new VehicleLabelProvider((Vehicle) item, manager);
 		}
 	}
 	
 	
-	private static class VehicleLabelProvider extends AbstractItemLabelProvider
+	private static class VehicleLabelProvider
+		extends AbstractItemExtendedLabelProvider<Vehicle>
 	{
-		public VehicleLabelProvider(Vehicle vehicle, DelegatingContentAndLabelProvider labelProvider) {
-			super(vehicle, labelProvider);
+		public VehicleLabelProvider(Vehicle vehicle, ItemLabelProvider.Manager manager) {
+			super(vehicle, manager);
 		}
 		
 		@Override
 		protected PropertyValueModel<Image> buildImageModel() {
-			return new PropertyAspectAdapter<Vehicle, Image>(
-					new StaticPropertyValueModel<Vehicle>((Vehicle) getModel()), 
-					Vehicle.COLOR_PROPERTY, Vehicle.GREYED_PROPERTY, Vehicle.TRANSLUCENT_PROPERTY) {
+			return new PropertyAspectAdapter<Vehicle, Image>(IMAGE_ASPECT_NAMES, this.item) {
 				@Override
 				protected Image buildValue_() {
 					return subject.image();
 				}
 			};
 		}
+		private static final String[] IMAGE_ASPECT_NAMES =
+				new String[] {
+					Vehicle.COLOR_PROPERTY,
+					Vehicle.GREYED_PROPERTY,
+					Vehicle.TRANSLUCENT_PROPERTY
+				};
 		
 		@Override
 		protected PropertyValueModel<String> buildTextModel() {
-			return new PropertyAspectAdapter<Vehicle, String>(
-					new StaticPropertyValueModel<Vehicle>((Vehicle) getModel()), 
-					Vehicle.VEHICLE_TYPE_PROPERTY, Vehicle.COLOR_PROPERTY) {
+			return new PropertyAspectAdapter<Vehicle, String>(TEXT_ASPECT_NAMES, this.item) {
 				@Override
 				protected String buildValue_() {
 					return subject.color().description() + ' ' + subject.vehicleType().description();
 				}
 			};
 		}
+		private static final String[] TEXT_ASPECT_NAMES =
+				new String[] {
+					Vehicle.VEHICLE_TYPE_PROPERTY,
+					Vehicle.COLOR_PROPERTY
+				};
 		
 		@Override
 		protected PropertyValueModel<String> buildDescriptionModel() {

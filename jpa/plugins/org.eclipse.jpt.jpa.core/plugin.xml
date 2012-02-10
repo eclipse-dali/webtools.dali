@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <!--
-	Copyright (c) 2007, 2011 Oracle. All rights reserved.
-	This program and the accompanying materials are made available under the
-	terms of the Eclipse Public License v1.0, which accompanies this distribution
-	and is available at http://www.eclipse.org/legal/epl-v10.html.
-	
-	Contributors:
-		Oracle - initial API and implementation
+  Copyright (c) 2007, 2012 Oracle. All rights reserved.
+  This program and the accompanying materials are made available under the
+  terms of the Eclipse Public License v1.0, which accompanies this distribution
+  and is available at http://www.eclipse.org/legal/epl-v10.html.
+
+  Contributors:
+    Oracle - initial API and implementation
  -->
 
 <plugin>
@@ -18,10 +18,68 @@
 		id="jpaPlatforms"
 		name="%JPA_PLATFORM"
 		schema="schema/jpaPlatforms.exsd"/>
-	
-	
-	<!-- ***** Eclipse core extensions ***** -->
-	
+
+
+	<!-- ***** adapters ***** -->
+
+	<extension
+		point="org.eclipse.core.runtime.adapters">
+
+		<!-- IWorkspace -> JpaProjectManager -->
+		<factory
+			adaptableType="org.eclipse.core.resources.IWorkspace"
+			class="org.eclipse.jpt.jpa.core.internal.WorkspaceAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.core.JpaProjectManager"/>
+		</factory>
+
+		<!-- IProject
+				-> JpaProject.Reference
+				-> JpaProject
+		-->
+		<factory
+			adaptableType="org.eclipse.core.resources.IProject"
+			class="org.eclipse.jpt.jpa.core.internal.ProjectAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.core.JpaProject$Reference"/>
+			<adapter type="org.eclipse.jpt.jpa.core.JpaProject"/>
+		</factory>
+
+		<!-- IFile
+				-> JpaFile.Reference
+				-> JpaFile
+		-->
+		<factory
+			adaptableType="org.eclipse.core.resources.IFile"
+			class="org.eclipse.jpt.jpa.core.internal.FileAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.core.JpaFile$Reference"/>
+			<adapter type="org.eclipse.jpt.jpa.core.JpaFile"/>
+		</factory>
+
+		<!-- IResource -> JpaPlatformDescription -->
+		<factory
+			adaptableType="org.eclipse.core.resources.IResource"
+			class="org.eclipse.jpt.jpa.core.internal.platform.ResourceAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"/>
+		</factory>
+
+		<!-- IJavaElement -> JpaPlatformDescription -->
+		<factory
+			adaptableType="org.eclipse.jdt.core.IJavaElement"
+			class="org.eclipse.jpt.jpa.core.internal.platform.JavaElementAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"/>
+		</factory>
+
+		<!-- JpaLibraryProviderInstallOperationConfig -> JpaPlatformDescription -->
+		<factory
+			adaptableType="org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig"
+			class="org.eclipse.jpt.jpa.core.internal.libprov.JpaLibraryProviderInstallOperationConfigAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"/>
+		</factory>
+
+	</extension>
+
+
+	<!-- ***** content types ***** -->
+
 	<extension
 		point="org.eclipse.core.contenttype.contentTypes">
 		
@@ -82,87 +140,39 @@
 		</content-type>
 		
 	</extension>
-	
-	
+
+
+	<!-- ***** property testers ***** -->
+
 	<extension 
 		point="org.eclipse.core.expressions.propertyTesters">
-		
+
 		<propertyTester
 			id="org.eclipse.jpt.jpa.core.propertyTester.persistentAttribute"
 			type="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"
 			namespace="org.eclipse.jpt.jpa.core"
-			properties="isMapped, isVirtual"
+			properties="isMapped, isNotMapped, isVirtual, isNotVirtual"
 			class="org.eclipse.jpt.jpa.core.internal.context.PersistentAttributePropertyTester"/>
-		
-		<propertyTester
-			id="org.eclipse.jpt.jpa.core.propertyTester.platformResource"
-			type="org.eclipse.core.resources.IResource"
-			namespace="org.eclipse.jpt.jpa.core"
-			properties="jpaPlatform, jpaPlatformGroup"
-			class="org.eclipse.jpt.jpa.core.internal.JpaPlatformTester"/>
-		
-		<propertyTester
-			id="org.eclipse.jpt.jpa.core.propertyTester.javaElement"
-			type="org.eclipse.jdt.core.IJavaElement"
-			namespace="org.eclipse.jpt.jpa.core"
-			properties="jpaPlatform, jpaPlatformGroup"
-			class="org.eclipse.jpt.jpa.core.internal.JpaPlatformTester"/>
-		
+
 		<propertyTester
 			id="org.eclipse.jpt.jpa.core.propertyTester.jpaPlatformDescription"
 			type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"
 			namespace="org.eclipse.jpt.jpa.core"
 			properties="jpaPlatform, jpaPlatformGroup"
-			class="org.eclipse.jpt.jpa.core.internal.JpaPlatformTester"/>
-			
-		<propertyTester
-			id="org.eclipse.jpt.jpa.core.propertyTester.jpaLibraryProviderConfig"
-			type="org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig"
-			namespace="org.eclipse.jpt.jpa.core"
-			properties="jpaPlatform, jpaPlatformGroup"
-			class="org.eclipse.jpt.jpa.core.internal.JpaPlatformTester"/>
-		
-		<propertyTester
-			id="org.eclipse.jpt.jpa.core.propertyTester.xmlResource"
-			type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource"
-			namespace="org.eclipse.jpt.jpa.core"
-			properties="isLatestSupportedVersion"
-			class="org.eclipse.jpt.jpa.core.internal.resource.xml.JpaXmlResourcePropertyTester"/>
-		
+			class="org.eclipse.jpt.jpa.core.internal.platform.JpaPlatformTester"/>
+
 		<propertyTester
 			id="org.eclipse.jpt.jpa.core.propertyTester.xmlFile"
 			type="org.eclipse.jpt.jpa.core.context.XmlFile"
 			namespace="org.eclipse.jpt.jpa.core"
-			properties="isLatestSupportedVersion"
-			class="org.eclipse.jpt.jpa.core.internal.resource.xml.JpaXmlResourcePropertyTester"/>
-		
+			properties="isLatestSupportedVersion, isNotLatestSupportedVersion"
+			class="org.eclipse.jpt.jpa.core.internal.context.XmlFilePropertyTester"/>
+
 	</extension>
-	
-	
-	<extension
-		point="org.eclipse.core.runtime.adapters">
-		
-		<factory
-			class="org.eclipse.jpt.jpa.core.internal.ProjectAdapterFactory"
-			adaptableType="org.eclipse.core.resources.IProject">
-			<adapter type="org.eclipse.jpt.jpa.core.JpaProject"/>
-		</factory>
-		
-		<factory
-			class="org.eclipse.jpt.jpa.core.internal.ProjectAdapterFactory"
-			adaptableType="org.eclipse.jdt.core.IJavaProject">
-			<adapter type="org.eclipse.jpt.jpa.core.JpaProject"/>
-		</factory>
-		
-		<factory
-			class="org.eclipse.jpt.jpa.core.internal.resource.xml.JpaXmlResourceAdapterFactory"
-			adaptableType="org.eclipse.core.resources.IFile">
-			<adapter type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource"/>
-		</factory>
-		
-	</extension>
-	
-	
+
+
+	<!-- ***** preferences ***** -->
+
 	<extension
 		point="org.eclipse.core.runtime.preferences">
 		
@@ -170,9 +180,31 @@
 			class="org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferenceInitializer"/>
 		
 	</extension>
-	
-	
-	<!-- ***** JPT extensions (eat our own dogfood) ***** -->
+
+
+	<!-- ***** markers ***** -->
+	<!--
+	***	Do NOT qualify the marker id with "org.eclipse.jpt.jpa.core".
+	*** See bug 252891.
+	-->
+
+	<extension
+		point="org.eclipse.core.resources.markers"
+		id="jpaProblemMarker" 
+		name="%JPA_PROBLEM">
+
+		<persistent value="true"/>
+		
+		<!-- Can't use text marker until we have specific models for each input type (XML, java)
+		<super type="org.eclipse.core.resources.textmarker"/>
+		-->
+		
+		<super type="org.eclipse.wst.validation.problemmarker2"/>
+		<super type="org.eclipse.jdt.core.problem"/>
+	</extension>
+
+
+	<!-- ***** Dali extensions (eat our own dogfood) ***** -->
 
 	<extension
 		point="org.eclipse.jpt.jpa.core.jpaPlatforms">
@@ -208,7 +240,8 @@
 			class="org.eclipse.jpt.jpa.core.internal.libval.GenericJpaUserLibraryValidator">
 			<enablement>
 				<with variable="libraryProvider">
-					<test property="org.eclipse.jpt.common.core.extendsId" value="jpa-user-library-provider"/>
+					<test property="org.eclipse.jpt.common.core.extendsId"
+						value="jpa-user-library-provider"/>
 				</with>
 			</enablement>
 		</libraryValidator>
@@ -218,21 +251,17 @@
 			class="org.eclipse.jpt.jpa.core.internal.libval.GenericEclipseLinkBundlesLibraryValidator">
 			<enablement>
 				<with variable="libraryProvider">
-					<test property="org.eclipse.jpt.common.core.extendsId" value="eclipselink-bundles-library-provider"/>
+					<test property="org.eclipse.jpt.common.core.extendsId"
+						value="eclipselink-bundles-library-provider"/>
 				</with>
 			</enablement>
 		</libraryValidator>
 		
 	</extension>
-	
-		
-	
-	<!--
-	******************************************
-	* Library Provider Framework Integration *
-	******************************************
-	-->
-	
+
+
+	<!-- ***** WTP Library Provider Framework Integration ***** -->
+
 	<extension
 		point="org.eclipse.jst.common.project.facet.core.legacyLibraryProviderDetectors">
 		
@@ -319,7 +348,7 @@
 		</provider>
 		
 		<!-- 
-			All osgi library providers that point to eclipselink bundles extend this.
+			All OSGi library providers that point to EclipseLink bundles extend this.
 			It exists purely as an identifier for library validation.
 		 -->
 		<provider
@@ -405,7 +434,7 @@
 	</extension>
 	
 	
-	<!-- ***** WTP extensions ***** -->
+	<!-- ***** WTP resource factories ***** -->
 
 	<extension
 		point="org.eclipse.wst.common.modulecore.resourceFactories">
@@ -429,6 +458,8 @@
 	</extension>
 	
 	
+	<!-- ***** WTP facet framework ***** -->
+
 	<extension
 		point="org.eclipse.wst.common.project.facet.core.facets">
 		
@@ -502,6 +533,9 @@
 		
 	</extension>
 	
+
+	<!-- ***** WTP validation framework ***** -->
+
 	<extension
 		point="org.eclipse.wst.validation.validatorV2"
 		id="jpaValidator"
@@ -528,26 +562,8 @@
 	</extension>
 	
 	
-	<!-- =================================================================================== -->
-	<!-- Extension: JPA Problem Marker                                                       -->
-	<!-- **** Do NOT qualify the marker id with org.eclipse.jpt.jpa.core, see bug 252891 		 -->
-	<!-- =================================================================================== -->
-	<extension
-		point="org.eclipse.core.resources.markers"
-		id="jpaProblemMarker" 
-		name="%JPA_PROBLEM">
+	<!-- ***** refactoring ***** -->
 
-		<persistent value="true"/>
-		
-		<!-- Can't use text marker until we have specific models for each input type (XML, java)
-		<super type="org.eclipse.core.resources.textmarker"/>
-		-->
-		
-		<super type="org.eclipse.wst.validation.problemmarker2"/>
-		<super type="org.eclipse.jdt.core.problem"/>
-	</extension>
-	
-	
  	<extension
  		point="org.eclipse.ltk.core.refactoring.deleteParticipants">
     	
@@ -610,10 +626,11 @@
         	</enablement>
      	</moveParticipant>
   	</extension>
-  	
-  	
+
+
     <extension
         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+
         <renameParticipant
     		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenameTypeParticipant"
     		id="org.eclipse.jpt.jpa.core.ltk.jpaRenameTypeParticipant"
@@ -624,6 +641,7 @@
     			</with>
     		</enablement>
         </renameParticipant>
+
         <renameParticipant
     		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenamePackageParticipant"
     		id="org.eclipse.jpt.jpa.core.ltk.jpaRenamePackageParticipant"
@@ -634,6 +652,7 @@
     			</with>
     		</enablement>
         </renameParticipant>
+
         <renameParticipant
     		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenameFolderParticipant"
     		id="org.eclipse.jpt.jpa.core.ltk.jpaRenameFolderParticipant"
@@ -644,6 +663,7 @@
     			</with>
     		</enablement>
         </renameParticipant>
+
         <renameParticipant
     		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaRenameMappingFileParticipant"
     		id="org.eclipse.jpt.jpa.core.ltk.jpaRenameMappingFileParticipant"
@@ -661,8 +681,11 @@
         	</enablement>
         </renameParticipant>
     </extension>
+
+
     <extension
         point="org.eclipse.ltk.core.refactoring.moveParticipants">
+
         <moveParticipant
     		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaMoveMappingFileParticipant"
     		id="org.eclipse.jpt.jpa.core.ltk.jpaMoveMappingFileParticipant"
@@ -679,7 +702,8 @@
 	           	</with>
         	</enablement>
         </moveParticipant>
-         <moveParticipant
+
+        <moveParticipant
     		class="org.eclipse.jpt.jpa.core.internal.refactoring.JpaMoveFolderParticipant"
     		id="org.eclipse.jpt.jpa.core.ltk.jpaMoveFolderParticipant"
     		name="%JPA_MOVE_FOLDER_PARTICIPANT_NAME">

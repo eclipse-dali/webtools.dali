@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,22 +17,27 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
 /**
- * This abstract class provides the infrastructure for "lazily" adding listeners
- * to an underlying model as necessary. Subclasses will need to engage and
- * disegage the underlying model and fire the appropriate property change
- * events. Subclasses must implement the appropriate {@link PropertyValueModel}.
+ * This abstract class provides the infrastructure for "lazily" adding/removing
+ * listeners to/from an underlying model as <em>property</em> change
+ * listeners are added to/removed from itself.
+ * Subclasses will need to engage and disengage the underlying model
+ * appropriately and fire the appropriate <em>property</em>
+ * change events.
+ * <p>
+ * Subclasses must implement the appropriate {@link PropertyValueModel}.
  * <p>
  * Subclasses must implement the following methods:<ul>
  * <li>{@link #engageModel()}<p>
- *     implement this method to add the appropriate listener to the underlying model
+ *     implement this method to add the appropriate listener(s) to the
+ *     underlying model
  * <li>{@link #disengageModel()}<p>
- *     implement this method to remove the appropriate listener from the underlying model
+ *     implement this method to remove the appropriate listener(s) from the
+ *     underlying model
  * </ul>
  */
 public abstract class AbstractPropertyValueModel
 	extends AbstractModel
 {
-
 	// ********** constructor/initialization **********
 
 	protected AbstractPropertyValueModel() {
@@ -45,7 +50,7 @@ public abstract class AbstractPropertyValueModel
 	}
 
 
-	// ********** extend change support **********
+	// ********** listeners **********
 
 	/**
 	 * Extend to start listening to the underlying model if necessary.
@@ -91,9 +96,6 @@ public abstract class AbstractPropertyValueModel
 		}
 	}
 
-
-	// ********** queries **********
-
 	/**
 	 * Return whether the model has no property value listeners.
 	 */
@@ -109,7 +111,7 @@ public abstract class AbstractPropertyValueModel
 	}
 
 
-	// ********** behavior **********
+	// ********** subclass implementation **********
 
 	/**
 	 * Engage the underlying model.
@@ -120,5 +122,4 @@ public abstract class AbstractPropertyValueModel
 	 * Stop listening to the underlying model.
 	 */
 	protected abstract void disengageModel();
-
 }

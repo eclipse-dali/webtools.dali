@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
@@ -19,10 +16,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorManager;
-import org.eclipse.jpt.common.core.internal.resource.ResourceLocatorManager;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
-import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.osgi.framework.BundleContext;
 
 public class JptCommonCorePlugin
@@ -82,22 +77,6 @@ public class JptCommonCorePlugin
 		return Platform.getContentTypeManager().getContentType(contentType);
 	}
 	
-	public static ResourceLocator getResourceLocator(IProject project) {
-		return ResourceLocatorManager.instance().getResourceLocator(project);
-	}
-	
-	public static IFile getPlatformFile(IProject project, IPath runtimePath) {
-		ResourceLocator resourceLocator = getResourceLocator(project);
-		if (resourceLocator == null) {
-			return null;
-		}
-		IPath sourcePath = resourceLocator.getResourcePath(project, runtimePath);
-		if (sourcePath == null) {
-			return null;
-		}
-		return project.getWorkspace().getRoot().getFile(sourcePath);
-	}
-
 	public static Iterable<LibraryValidator> getLibraryValidators(
 			JptLibraryProviderInstallOperationConfig config) {
 		return LibraryValidatorManager.instance().getLibraryValidators(config);
@@ -108,7 +87,7 @@ public class JptCommonCorePlugin
 	private static JptCommonCorePlugin INSTANCE;
 
 	/**
-	 * Return the singleton jpt common core plug-in.
+	 * Return the singleton Dali common core plug-in.
 	 */
 	public static JptCommonCorePlugin instance() {
 		return INSTANCE;
@@ -116,13 +95,6 @@ public class JptCommonCorePlugin
 
 
 	// ********** public static methods **********
-
-	/**
-	 * Log the specified status.
-	 */
-	public static void log(IStatus status) {
-        INSTANCE.getLog().log(status);
-    }
 
 	/**
 	 * Log the specified message.
@@ -144,6 +116,13 @@ public class JptCommonCorePlugin
 	public static void log(String msg, Throwable throwable) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, msg, throwable));
 	}
+
+	/**
+	 * Log the specified status.
+	 */
+	public static void log(IStatus status) {
+        INSTANCE.getLog().log(status);
+    }
 
 
 	// ********** plug-in implementation **********
@@ -169,6 +148,5 @@ public class JptCommonCorePlugin
 		super.stop(context);
 		// nothing yet...		
 	}
-
 }
 

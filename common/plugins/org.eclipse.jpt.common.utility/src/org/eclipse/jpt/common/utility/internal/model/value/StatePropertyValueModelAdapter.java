@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.StateChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 
 /**
@@ -35,8 +36,8 @@ public abstract class StatePropertyValueModelAdapter<T>
 	/** The wrapped model. */
 	protected final Model model;
 
-	/** A listener that allows us to synch with changes to the wrapped model. */
-	protected final StateChangeListener stateChangeListener;
+	/** A listener that allows us to sync with changes to the wrapped model. */
+	protected final StateChangeListener stateListener;
 
 
 	// ********** constructor/initialization **********
@@ -46,31 +47,35 @@ public abstract class StatePropertyValueModelAdapter<T>
 	 */
 	protected StatePropertyValueModelAdapter(Model model) {
 		super();
+		if (model == null) {
+			throw new NullPointerException();
+		}
 		this.model = model;
-		this.stateChangeListener = this.buildStateChangeListener();
+		this.stateListener = this.buildStateListener();
 	}
 
-	protected StateChangeListener buildStateChangeListener() {
-		return new StateChangeListener() {
-			public void stateChanged(StateChangeEvent event) {
-				StatePropertyValueModelAdapter.this.stateChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "state change listener"; //$NON-NLS-1$
-			}
-		};
+	protected StateChangeListener buildStateListener() {
+		return new StateListener();
+	}
+
+	protected class StateListener
+		extends StateChangeAdapter
+	{
+		@Override
+		public void stateChanged(StateChangeEvent event) {
+			StatePropertyValueModelAdapter.this.stateChanged(event);
+		}
 	}
 
 
-	// ********** behavior **********
+	// ********** listener **********
 
 	/**
 	 * Start listening to the model.
 	 */
 	@Override
 	protected void engageModel_() {
-		this.model.addStateChangeListener(this.stateChangeListener);
+		this.model.addStateChangeListener(this.stateListener);
 	}
 
 	/**
@@ -78,7 +83,7 @@ public abstract class StatePropertyValueModelAdapter<T>
 	 */
 	@Override
 	protected void disengageModel_() {
-		this.model.removeStateChangeListener(this.stateChangeListener);
+		this.model.removeStateChangeListener(this.stateListener);
 	}
 
 	
@@ -92,5 +97,4 @@ public abstract class StatePropertyValueModelAdapter<T>
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -86,8 +85,12 @@ public abstract class AbstractJarFileRef
 
 	// ********** JpaStructureNode implementation **********
 
-	public String getId() {
-		return PersistenceStructureNodes.JAR_FILE_REF_ID;
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
+
+	public Class<JarFileRef> getType() {
+		return JarFileRef.class;
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

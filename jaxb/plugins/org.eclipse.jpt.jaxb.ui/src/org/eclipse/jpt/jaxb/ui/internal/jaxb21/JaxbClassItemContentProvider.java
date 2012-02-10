@@ -1,16 +1,15 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
-import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -23,22 +22,16 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 
 
 public class JaxbClassItemContentProvider
-		extends AbstractTreeItemContentProvider<JaxbPersistentAttribute> {
+	extends AbstractItemTreeContentProvider<JaxbClass, JaxbPersistentAttribute>
+{
 	
-	public JaxbClassItemContentProvider(
-			JaxbClass jaxbClass, DelegatingTreeContentAndLabelProvider contentProvider) {
-		super(jaxbClass, contentProvider);
+	public JaxbClassItemContentProvider(JaxbClass jaxbClass, Manager manager) {
+		super(jaxbClass, manager);
 	}
 	
 	
-	@Override
-	public JaxbClass getModel() {
-		return (JaxbClass) super.getModel();
-	}
-	
-	@Override
 	public JaxbContextRoot getParent() {
-		return (JaxbContextRoot) getModel().getParent();
+		return (JaxbContextRoot) this.item.getParent();
 	}
 	
 	@Override
@@ -50,7 +43,7 @@ public class JaxbClassItemContentProvider
 	}
 	
 	protected PropertyValueModel<JaxbClassMapping> buildMappingModel() {
-		return new PropertyAspectAdapter<JaxbClass, JaxbClassMapping>(JaxbClass.MAPPING_PROPERTY, getModel()) {
+		return new PropertyAspectAdapter<JaxbClass, JaxbClassMapping>(JaxbClass.MAPPING_PROPERTY, this.item) {
 			@Override
 			protected JaxbClassMapping buildValue_() {
 				return this.subject.getMapping();

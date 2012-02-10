@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,11 +58,14 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  *     override this method only if returning an empty array when the
  *     subject is null is unacceptable
  * </ul>
- * To notify listeners, subclasses can call {@link #listChanged()}
+ * To notify listeners, subclasses can call {@link #aspectChanged()}
  * whenever the aspect has changed.
+ * 
+ * @param <S> the type of the model's subject
+ * @param <E> the type of the subject's list aspect's elements
  */
 public abstract class AspectListValueModelAdapter<S, E>
-	extends AspectAdapter<S>
+	extends AspectAdapter<S, List<E>>
 	implements ListValueModel<E>
 {
 	private static final Object[] EMPTY_ARRAY = new Object[0];
@@ -74,8 +77,8 @@ public abstract class AspectListValueModelAdapter<S, E>
 	 * Construct a list value model adapter for an aspect of the
 	 * specified subject.
 	 */
-	protected AspectListValueModelAdapter(PropertyValueModel<? extends S> subjectHolder) {
-		super(subjectHolder);
+	protected AspectListValueModelAdapter(PropertyValueModel<? extends S> subjectModel) {
+		super(subjectModel);
 	}
 
 
@@ -97,7 +100,8 @@ public abstract class AspectListValueModelAdapter<S, E>
 
 	/**
 	 * Return the elements of the subject's list aspect.
-	 * At this point we can be sure the subject is not null.
+	 * At this point we can be sure the {@link #subject} is
+	 * <em>not</em> <code>null</code>.
 	 * @see #listIterator()
 	 */
 	protected ListIterator<E> listIterator_() {
@@ -106,7 +110,8 @@ public abstract class AspectListValueModelAdapter<S, E>
 
 	/**
 	 * Return the elements of the subject's list aspect.
-	 * At this point we can be sure the subject is not null.
+	 * At this point we can be sure the {@link #subject} is
+	 * <em>not</em> <code>null</code>.
 	 * @see #listIterator_()
 	 */
 	protected ListIterable<E> getListIterable() {
@@ -129,7 +134,8 @@ public abstract class AspectListValueModelAdapter<S, E>
 
 	/**
 	 * Return the size of the subject's list aspect.
-	 * At this point we can be sure the subject is not null.
+	 * At this point we can be sure the {@link #subject} is
+	 * <em>not</em> <code>null</code>.
 	 * @see #size()
 	 */
 	protected int size_() {
@@ -156,7 +162,7 @@ public abstract class AspectListValueModelAdapter<S, E>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected List<E> getValue() {
+	protected List<E> getAspectValue() {
 		return this.buildValueList();
 	}
 
@@ -176,12 +182,11 @@ public abstract class AspectListValueModelAdapter<S, E>
 	}
 
 	@Override
-	protected void fireAspectChanged(Object oldValue, Object newValue) {
-		@SuppressWarnings("unchecked") List<E> newList = (List<E>) newValue;
-		this.fireListChanged(LIST_VALUES, newList);
+	protected void fireAspectChanged(List<E> oldValue, List<E> newValue) {
+		this.fireListChanged(LIST_VALUES, newValue);
 	}
 
-	protected void listChanged() {
+	protected void aspectChanged() {
 		this.fireListChanged(LIST_VALUES, this.buildValueList());
 	}
 
@@ -193,5 +198,4 @@ public abstract class AspectListValueModelAdapter<S, E>
 	public void toString(StringBuilder sb) {
 		sb.append(this.buildValueList());
 	}
-
 }

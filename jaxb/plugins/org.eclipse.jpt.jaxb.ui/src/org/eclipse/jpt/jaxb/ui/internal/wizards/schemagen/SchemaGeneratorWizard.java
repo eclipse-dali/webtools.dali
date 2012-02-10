@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2011 Oracle. All rights reserved.
+* Copyright (c) 2010, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -140,7 +140,7 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
     }
 
     private IJavaProject getJavaProjectFrom(IProject project) {
-		IJavaProject javaProject = (IJavaProject)((IJavaElement)((IAdaptable)project).getAdapter(IJavaElement.class));
+		IJavaProject javaProject = ((IJavaElement) project.getAdapter(IJavaElement.class)).getJavaProject();
 		if(javaProject == null) {
 			throw new RuntimeException("Not a Java Project");  //$NON-NLS-1$
 		}

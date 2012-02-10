@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,17 +37,17 @@ public interface Filter<T> {
 	 * Singleton implementation of the filter interface that accepts all the
 	 * objects (i.e. it does no filtering).
 	 */
-	final class Null<S>
+	final class Transparent<S>
 		implements Filter<S>, Serializable
 	{
 		@SuppressWarnings("rawtypes")
-		public static final Filter INSTANCE = new Null();
+		public static final Filter INSTANCE = new Transparent();
 		@SuppressWarnings("unchecked")
 		public static <R> Filter<R> instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
-		private Null() {
+		private Transparent() {
 			super();
 		}
 		// nothing is filtered - everything is accepted

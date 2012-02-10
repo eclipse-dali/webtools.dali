@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,12 @@
 package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.swt.DisposeAdapter;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
@@ -89,29 +93,31 @@ abstract class BooleanStateController {
 	}
 
 	private PropertyChangeListener buildBooleanChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				BooleanStateController.this.booleanChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "boolean listener"; //$NON-NLS-1$
-			}
-		};
+		return new BooleanChangeListener();
+	}
+
+	/* CU private */ class BooleanChangeListener
+		extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			BooleanStateController.this.booleanChanged(event);
+		}
 	}
 
 	private DisposeListener buildControlDisposeListener() {
-		return new DisposeListener() {
-			public void widgetDisposed(DisposeEvent event) {
-				// the control is not yet "disposed" when we receive this event
-				// so we can still remove our listener
-				BooleanStateController.this.controlDisposed((Control) event.widget);
-			}
-			@Override
-			public String toString() {
-				return "control dispose listener"; //$NON-NLS-1$
-			}
-		};
+		return new ControlDisposeListener();
+	}
+
+	/* CU private */ class ControlDisposeListener
+		extends DisposeAdapter
+	{
+		@Override
+		public void widgetDisposed(DisposeEvent event) {
+			// the control is not yet "disposed" when we receive this event
+			// so we can still remove our listener
+			BooleanStateController.this.controlDisposed((Control) event.widget);
+		}
 	}
 
 
@@ -154,15 +160,35 @@ abstract class BooleanStateController {
 		control.removeDisposeListener(this.controlDisposeListener);
 	}
 
-	private void setControlState(Boolean b) {
-		this.setControlState(this.booleanValue(b));
+	private void setControlState(Boolean controlState) {
+		this.setControlState(this.booleanValue(controlState));
 	}
 
-	abstract void setControlState(boolean b);
+	abstract void setControlState(boolean controlState);
 
-	void setControlState(Control control, boolean b) {
+	void setControlState(Control control, boolean controlState) {
+		SWTUtil.execute(new SetControlStateRunnable(control, controlState));
+	}
+
+	/* CU private */ class SetControlStateRunnable
+		extends RunnableAdapter
+	{
+		private final Control control;
+		private final boolean controlState;
+		SetControlStateRunnable(Control control, boolean controlState) {
+			super();
+			this.control = control;
+			this.controlState = controlState;
+		}
+		@Override
+		public void run() {
+			BooleanStateController.this.setControlState_(this.control, this.controlState);
+		}
+	}
+
+	/* CU private */ void setControlState_(Control control, boolean controlState) {
 		if ( ! control.isDisposed()) {
-			this.adapter.setState(control, b);
+			this.adapter.setState(control, controlState);
 		}
 	}
 
@@ -182,7 +208,6 @@ abstract class BooleanStateController {
 	// ********** adapter interface **********
 
 	interface Adapter {
-		void setState(Control control, boolean b);
+		void setState(Control control, boolean controlState);
 	}
-
 }

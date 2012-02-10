@@ -17,7 +17,6 @@ package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.modelintegration.util
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -26,7 +25,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.BasicInternalEList;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.preferences.JPAEditorPreferenceInitializer;
@@ -77,7 +75,6 @@ public class ModelIntegrationUtilTest {
 		
 		JPADiagramEditorPlugin p = new JPADiagramEditorPlugin();
 		p.start(bc);
-		JptJpaCorePlugin.getJpaProjectManager();
 		
 		IPreferenceStore store = JPADiagramEditorPlugin.getDefault().getPreferenceStore();
 		store.putValue(JPAEditorPreferenceInitializer.PROPERTY_DIAGRAM_FOLDER, "diagrams");

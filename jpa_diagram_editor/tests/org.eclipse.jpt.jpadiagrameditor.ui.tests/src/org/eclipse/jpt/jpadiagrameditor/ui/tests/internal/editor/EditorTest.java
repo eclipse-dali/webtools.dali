@@ -15,22 +15,18 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.editor;
 
-import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertNotNull;
-
 import org.easymock.EasyMock;
 import org.eclipse.gef.EditPart;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.ui.internal.selection.JpaSelection;
-import org.eclipse.jpt.jpa.ui.internal.selection.JpaSelectionManager;
-import org.eclipse.jpt.jpa.ui.internal.selection.JpaSelectionParticipant;
+import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -94,8 +90,7 @@ public class EditorTest {
 		// test
 		JpaSelectionManager manager = EasyMock
 				.createMock(JpaSelectionManager.class);
-		manager.select(isA(JpaSelection.class),
-				(JpaSelectionParticipant) eq(null));
+		manager.setSelection(isA(JpaStructureNode.class));
 		replay(manager);
 
 		JPADiagramEditor.ISelectionManagerFactory factory = EasyMock

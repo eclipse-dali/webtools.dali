@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -310,7 +310,7 @@ public class SynchronizedIntTests
 		return new Command() {
 			public void execute(final SynchronizedInt sInt) throws InterruptedException {
 				sInt.execute(
-					new org.eclipse.jpt.common.utility.Command() {
+					new org.eclipse.jpt.common.utility.command.Command() {
 						public void execute() {
 							// pretend to perform some long initialization process
 							try {
@@ -358,5 +358,4 @@ public class SynchronizedIntTests
 	private interface Command {
 		void execute(SynchronizedInt sInt) throws InterruptedException;
 	}
-
 }

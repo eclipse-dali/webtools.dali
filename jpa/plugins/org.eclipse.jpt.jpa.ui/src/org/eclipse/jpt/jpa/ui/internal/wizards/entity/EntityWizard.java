@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2010 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2012 by SAP AG, Walldorf and others. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,15 +11,17 @@
  ***********************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.wizards.entity;
 
-import static org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties.*;
+import static org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties.OPEN_IN_EDITOR;
+import static org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties.PROJECT;
+import static org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties.QUALIFIED_CLASS_NAME;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
@@ -157,19 +159,17 @@ public class EntityWizard
 			return ((JpaContextNode) selectedObj).getJpaProject().getProject().getName();
 		}
 		
-		if (selectedObj instanceof IAdaptable) {
-			IResource resource = (IResource) ((IAdaptable) selectedObj).getAdapter(IResource.class);
-			if (resource != null) {
-				return resource.getProject().getName();
-			}
-			IJavaElement javaElement = (IJavaElement) ((IAdaptable) selectedObj).getAdapter(IJavaElement.class);
-			if (javaElement != null) {
-				return javaElement.getJavaProject().getProject().getName();
-			}
-			JpaContextNode node = (JpaContextNode) ((IAdaptable) selectedObj).getAdapter(JpaContextNode.class);
-			if (node != null) {
-				return node.getJpaProject().getProject().getName();
-			}
+		IResource resource = PlatformTools.getAdapter(selectedObj, IResource.class);
+		if (resource != null) {
+			return resource.getProject().getName();
+		}
+		IJavaElement javaElement = PlatformTools.getAdapter(selectedObj, IJavaElement.class);
+		if (javaElement != null) {
+			return javaElement.getJavaProject().getProject().getName();
+		}
+		JpaContextNode node = PlatformTools.getAdapter(selectedObj, JpaContextNode.class);
+		if (node != null) {
+			return node.getJpaProject().getProject().getName();
 		}
 		return null;
 	}

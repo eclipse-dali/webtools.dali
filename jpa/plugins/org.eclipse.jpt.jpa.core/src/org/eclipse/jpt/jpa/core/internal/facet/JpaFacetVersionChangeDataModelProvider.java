@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.facet;
 
 import org.eclipse.core.resources.IProject;
@@ -16,13 +15,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 
 public class JpaFacetVersionChangeDataModelProvider
 	extends JpaFacetDataModelProvider
-	implements JpaFacetDataModelProperties
 {
 	protected static final IStatus PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION_STATUS = 
 			buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION);
@@ -41,8 +38,20 @@ public class JpaFacetVersionChangeDataModelProvider
 	}
 	
 	protected JpaProject getJpaProject() {
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(getProjectName());
-		return JptJpaCorePlugin.getJpaProject(project);
+		try {
+			return this.getJpaProjectReference().getValue();
+		} catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
+			return null;
+		}
+	}
+
+	protected JpaProject.Reference getJpaProjectReference() {
+		return (JpaProject.Reference) this.getProject().getAdapter(JpaProject.Reference.class);
+	}
+
+	protected IProject getProject() {
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(this.getProjectName());
 	}
 	
 	
@@ -60,7 +69,11 @@ public class JpaFacetVersionChangeDataModelProvider
 	
 	@Override
 	protected Boolean getDefaultUserWantsToOverrideDefaultCatalog() {
-		return getJpaProject().getUserOverrideDefaultCatalog() != null;
+		return Boolean.valueOf(this.getDefaultUserWantsToOverrideDefaultCatalog_());
+	}
+	
+	protected boolean getDefaultUserWantsToOverrideDefaultCatalog_() {
+		return this.getJpaProject().getUserOverrideDefaultCatalog() != null;
 	}
 	
 	@Override
@@ -70,7 +83,11 @@ public class JpaFacetVersionChangeDataModelProvider
 	
 	@Override
 	protected Boolean getDefaultUserWantsToOverrideDefaultSchema() {
-		return getJpaProject().getUserOverrideDefaultSchema() != null;
+		return Boolean.valueOf(this.getDefaultUserWantsToOverrideDefaultSchema_());
+	}
+	
+	protected boolean getDefaultUserWantsToOverrideDefaultSchema_() {
+		return this.getJpaProject().getUserOverrideDefaultSchema() != null;
 	}
 	
 	@Override
@@ -80,6 +97,10 @@ public class JpaFacetVersionChangeDataModelProvider
 	
 	@Override
 	protected Boolean getDefaultDiscoverAnnotatedClasses() {
+		return Boolean.valueOf(this.getDefaultDiscoverAnnotatedClasses_());
+	}
+	
+	protected boolean getDefaultDiscoverAnnotatedClasses_() {
 		return getJpaProject().discoversAnnotatedClasses();
 	}
 	
@@ -91,7 +112,7 @@ public class JpaFacetVersionChangeDataModelProvider
 		// add existing platform to list of choices
 		Iterable<JpaPlatformDescription> validPlatformDescs = super.buildValidPlatformDescriptions();
 		if (! CollectionTools.contains(validPlatformDescs, getDefaultPlatform())) {
-			validPlatformDescs = new CompositeIterable(getDefaultPlatform(), validPlatformDescs);
+			validPlatformDescs = new CompositeIterable<JpaPlatformDescription>(getDefaultPlatform(), validPlatformDescs);
 		}
 		return validPlatformDescs;
 	}

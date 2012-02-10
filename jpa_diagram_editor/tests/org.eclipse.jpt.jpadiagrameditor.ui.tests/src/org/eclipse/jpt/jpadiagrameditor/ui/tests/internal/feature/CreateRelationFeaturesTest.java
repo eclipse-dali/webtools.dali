@@ -549,22 +549,6 @@ public class CreateRelationFeaturesTest {
 	}
 	
 	
-	public static JavaPersistentType getPersistentType(IFile file){
-		JpaFile jpaFile = JptJpaCorePlugin.getJpaFile(file);
-		for (JpaStructureNode node : getRootNodes(jpaFile)) {
-			JavaPersistentType entity = (JavaPersistentType) node;
-			return entity;
-		}
-		return null;
-	}	
-	
-	private static Iterable<JpaStructureNode> getRootNodes(JpaFile jpaFile) {
-		if(jpaFile == null){
-			return EmptyIterable.instance();
-		}
-		return jpaFile.getRootStructureNodes();
-	}
-	
 	public ICompilationUnit createCompilationUnitFrom(IFile file) {
 		return JavaCore.createCompilationUnitFrom(file);
 	}

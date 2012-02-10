@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,14 +30,15 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 
 /**
  * JPA Java code-completion proposal computer
  */
-public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposalComputer {
-
+public class JpaJavaCompletionProposalComputer
+	implements IJavaCompletionProposalComputer
+{
 	public JpaJavaCompletionProposalComputer() {
 		super();
 	}
@@ -46,11 +47,10 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 		// do nothing
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		return (context instanceof JavaContentAssistInvocationContext) ?
-					this.computeCompletionProposals((JavaContentAssistInvocationContext) context)
-				:
+					this.computeCompletionProposals((JavaContentAssistInvocationContext) context) :
 					Collections.emptyList();
 	}
 
@@ -88,8 +88,8 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 	private List<ICompletionProposal> computeCompletionProposals(JavaContentAssistInvocationContext context) {
 		try {
 			return this.computeCompletionProposals_(context);
-		} catch (Exception ex) {
-			// JptJpaCorePlugin.log(ex);  // don't log "expected" exceptions (?)
+		} catch (RuntimeException ex) {
+			// JptJpaUiPlugin.log(ex);  // don't log "expected" exceptions (?)
 			return Collections.emptyList();
 		}
 	}
@@ -105,7 +105,7 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 			return Collections.emptyList();
 		}
 
-		JpaFile jpaFile = JptJpaCorePlugin.getJpaFile(file);
+		JpaFile jpaFile = this.getJpaFile(file);
 		if (jpaFile == null) {
 			return Collections.emptyList();
 		}
@@ -120,7 +120,7 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 		// the context's "token" is really a sort of "prefix" - it does NOT
 		// correspond to the "start" and "end" we get below... 
 		char[] prefix = cc.getToken();
-		Filter<String> filter = ((prefix == null) ? Filter.Null.<String>instance() : new IgnoreCasePrefixFilter(prefix));
+		Filter<String> filter = this.buildPrefixFilter(prefix);
 		// the token "start" is the offset of the token's first character
 		int tokenStart = cc.getTokenStart();
 		// the token "end" is the offset of the token's last character (yuk)
@@ -153,12 +153,16 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 		try {
 			return (IFile) cu.getCorrespondingResource();
 		} catch (JavaModelException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaUiPlugin.log(ex);
 			return null;
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	private JpaFile getJpaFile(IFile file) {
+		return (JpaFile) file.getAdapter(JpaFile.class);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		return Collections.emptyList();
 	}
@@ -171,15 +175,22 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 		// do nothing
 	}
 
-	private static class IgnoreCasePrefixFilter implements Filter<String> {
-		private final char[] prefix;
-		IgnoreCasePrefixFilter(char[] prefix) {
-			super();
-			this.prefix = prefix;
-		}
-		public boolean accept(String s) {
-			return StringTools.stringStartsWithIgnoreCase(s.toCharArray(), this.prefix);
-		}
+	private Filter<String> buildPrefixFilter(char[] prefix) {
+		return (prefix == null) ?
+				Filter.Transparent.<String>instance() :
+				new IgnoreCasePrefixFilter(prefix);
 	}
 
+	private static class IgnoreCasePrefixFilter
+		implements Filter<String>
+	{
+		private final String prefix;
+		IgnoreCasePrefixFilter(char[] prefix) {
+			super();
+			this.prefix = new String(prefix);
+		}
+		public boolean accept(String s) {
+			return StringTools.stringStartsWithIgnoreCase(s, this.prefix);
+		}
+	}
 }

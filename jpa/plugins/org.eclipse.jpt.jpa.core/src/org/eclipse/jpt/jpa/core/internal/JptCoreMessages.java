@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,9 +14,21 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Localized messages used by Dali core.
  */
+// TODO bjv rename...
 public class JptCoreMessages {
 
 	public static String NONE;
+
+	public static String BUILD_JPA_PROJECTS_JOB_NAME;
+	public static String GET_JPA_PROJECTS_JOB_NAME;
+	public static String GET_JPA_PROJECT_JOB_NAME;
+	public static String REBUILD_JPA_PROJECT_JOB_NAME;
+	public static String BUILD_VALIDATION_MESSAGES_JOB_NAME;
+	public static String PROJECT_CHANGE_EVENT_HANDLER_JOB_NAME;
+	public static String PROJECT_POST_CLEAN_BUILD_EVENT_HANDLER_JOB_NAME;
+	public static String FACET_FILE_CHANGE_EVENT_HANDLER_JOB_NAME;
+	public static String JAVA_CHANGE_EVENT_HANDLER_JOB_NAME;
+
 	public static String VALIDATE_JOB;
 	public static String VALIDATE_PROJECT_NOT_JPA;
 	public static String VALIDATE_PROJECT_IMPROPER_PLATFORM;
@@ -38,8 +50,6 @@ public class JptCoreMessages {
 	public static String VALIDATE_RUNTIME_NOT_SPECIFIED;
 	public static String VALIDATE_RUNTIME_DOES_NOT_SUPPORT_EJB_30;
 	public static String VALIDATE_LIBRARY_NOT_SPECIFIED;
-	public static String SYNCHRONIZE_CLASSES_JOB;
-	public static String SYNCHRONIZING_CLASSES_TASK;
 	public static String INVALID_PERSISTENCE_XML_CONTENT;
 	public static String ERROR_SYNCHRONIZING_CLASSES_COULD_NOT_VALIDATE;
 	public static String ERROR_WRITING_FILE;
@@ -51,6 +61,7 @@ public class JptCoreMessages {
 	public static String REGISTRY_FAILED_INSTANTIATION;
 	public static String CONTEXT_MODEL_SYNC_JOB_NAME;
 	public static String UPDATE_JOB_NAME;
+	public static String METAMODEL_SYNC_JOB_NAME;
 	public static String PLATFORM_ID_DOES_NOT_EXIST;
 	public static String PREFERENCES_FLUSH_JOB_NAME;
 	public static String OSGI_BUNDLES_LIBRARY_VALIDATOR__BUNDLE_NOT_FOUND;
@@ -65,5 +76,4 @@ public class JptCoreMessages {
 	private JptCoreMessages() {
 		throw new UnsupportedOperationException();
 	}
-
 }

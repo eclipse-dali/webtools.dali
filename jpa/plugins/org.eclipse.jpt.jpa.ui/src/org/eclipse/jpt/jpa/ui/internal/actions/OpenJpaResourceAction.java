@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2011  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.actions;
 
 import org.eclipse.core.resources.IFile;
@@ -15,13 +14,12 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.selection.DefaultJpaSelection;
-import org.eclipse.jpt.jpa.ui.internal.selection.JpaSelectionManager;
-import org.eclipse.jpt.jpa.ui.internal.selection.SelectionManagerFactory;
+import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IWorkbenchPage;
@@ -30,9 +28,14 @@ import org.eclipse.ui.actions.BaseSelectionListenerAction;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 
+/**
+ * The selection will be a JPA context node.
+ * <p>
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ */
 public class OpenJpaResourceAction
-		extends BaseSelectionListenerAction {
-	
+	extends BaseSelectionListenerAction
+{
 	private JpaContextNode selectedNode;
 	
 	
@@ -43,7 +46,7 @@ public class OpenJpaResourceAction
 	
 	@Override
 	public boolean updateSelection(IStructuredSelection s) {
-		selectedNode = null;
+		this.selectedNode = null;
 		
 		if (! super.updateSelection(s)) {
 			return false;
@@ -57,27 +60,25 @@ public class OpenJpaResourceAction
 			return false;
 		}
 		
-		selectedNode = (JpaContextNode) s.getFirstElement();
+		this.selectedNode = (JpaContextNode) s.getFirstElement();
 
 		return true;
 	}
 	
 	@Override
 	public void run() {
-		if (! isEnabled()) {
-			return;
+		if (this.isEnabled()) {
+			this.run_();
 		}
-		
-		IResource resource = selectedNode.getResource();
-		
-		if (resource != null && resource.exists() && resource.getType() == IResource.FILE) {
-			openEditor((IFile) resource);
-				
-			
-			if (selectedNode instanceof JpaStructureNode) {
-				JpaSelectionManager selectionManager =
-					SelectionManagerFactory.getSelectionManager(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				selectionManager.select(new DefaultJpaSelection((JpaStructureNode) selectedNode), null);
+	}
+	
+	private void run_() {
+		IResource resource = this.selectedNode.getResource();
+		if ((resource != null) && resource.exists() && (resource.getType() == IResource.FILE)) {
+			this.openEditor((IFile) resource);
+			if (this.selectedNode instanceof JpaStructureNode) {
+				JpaSelectionManager selectionManager = PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaSelectionManager.class);
+				selectionManager.setSelection((JpaStructureNode) this.selectedNode);
 			}
 		}
 	}

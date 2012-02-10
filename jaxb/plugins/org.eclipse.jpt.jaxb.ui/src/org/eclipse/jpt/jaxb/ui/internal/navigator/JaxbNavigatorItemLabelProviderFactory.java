@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,16 +12,15 @@ package org.eclipse.jpt.jaxb.ui.internal.navigator;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
-import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 
 public class JaxbNavigatorItemLabelProviderFactory
-		implements ItemLabelProviderFactory {
+		implements ItemExtendedLabelProviderFactory {
 	
 	/**
 	 * Exactly *one* of these factories is created for each view that utilizes it.  
@@ -31,24 +30,23 @@ public class JaxbNavigatorItemLabelProviderFactory
 	 * 
 	 * Key: platform description,  Value: delegate content provider factory
 	 */
-	private final Map<JaxbPlatformDescription, ItemLabelProviderFactory> delegates;
+	private final Map<JaxbPlatformDescription, ItemExtendedLabelProviderFactory> delegates = new HashMap<JaxbPlatformDescription, ItemExtendedLabelProviderFactory>();
 	
 	
 	public JaxbNavigatorItemLabelProviderFactory() {
 		super();
-		this.delegates = new HashMap<JaxbPlatformDescription, ItemLabelProviderFactory>();
 	}
 	
-	public ItemLabelProvider buildItemLabelProvider(Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
-		ItemLabelProviderFactory delegate = getDelegate(item);
+	public ItemExtendedLabelProvider buildProvider(Object item, ItemExtendedLabelProvider.Manager manager) {
+		ItemExtendedLabelProviderFactory delegate = getDelegate(item);
 		if (delegate != null) {
-			return delegate.buildItemLabelProvider(item, contentAndLabelProvider);
+			return delegate.buildProvider(item, manager);
 		}
 		return null;
 	}
 	
 	
-	private ItemLabelProviderFactory getDelegate(Object element) {
+	private ItemExtendedLabelProviderFactory getDelegate(Object element) {
 		if (! (element instanceof IAdaptable)) {
 			return null;
 		}
@@ -64,7 +62,7 @@ public class JaxbNavigatorItemLabelProviderFactory
 			return delegates.get(platformDesc);
 		}
 		JaxbPlatformUi platformUi = JptJaxbUiPlugin.getJaxbPlatformUiManager().getJaxbPlatformUi(platformDesc);
-		ItemLabelProviderFactory delegate = 
+		ItemExtendedLabelProviderFactory delegate = 
 				(platformUi == null) ? null : platformUi.getNavigatorUi().getItemLabelProviderFactory();
 		delegates.put(platformDesc, delegate);
 		return delegate;

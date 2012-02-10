@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -24,13 +24,15 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -46,7 +48,9 @@ import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.common.core.resource.ResourceLocator;
+import org.eclipse.jpt.common.core.internal.utility.command.NotifyingRepeatingJobCommandWrapper;
+import org.eclipse.jpt.common.core.internal.utility.command.RepeatingJobCommandWrapper;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -54,13 +58,14 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
-import org.eclipse.jpt.common.utility.Command;
-import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.JobCommand;
+import org.eclipse.jpt.common.core.utility.command.JobCommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.NotifyingRepeatingJobCommand;
+import org.eclipse.jpt.common.core.utility.command.RepeatingJobCommand;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.ThreadLocalCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -68,10 +73,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
-import org.eclipse.jpt.common.utility.internal.synchronizers.SynchronousSynchronizer;
-import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
-import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -94,6 +95,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderFramework;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -103,22 +105,27 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * JPA project. Holds all the JPA stuff.
- *
+ * <p>
  * The JPA platform provides the hooks for vendor-specific stuff.
- *
+ * <p>
  * The JPA files are the "resource" model (i.e. objects that correspond directly
  * to Eclipse resources; e.g. Java source code files, XML files, JAR files).
- *
- * The root context node is the "context"model (i.e. objects that attempt to
+ * <p>
+ * The root context node is the "context" model (i.e. objects that attempt to
  * model the JPA spec, using the "resource" model as an adapter to the Eclipse
  * resources).
- *
+ * <p>
  * The data source is an adapter to the DTP meta-data model.
  */
 public abstract class AbstractJpaProject
 	extends AbstractJpaNode
 	implements JpaProject2_0
 {
+	/**
+	 * The JPA project manager.
+	 */
+	protected final Manager manager;
+
 	/**
 	 * The Eclipse project corresponding to the JPA project.
 	 */
@@ -161,35 +168,20 @@ public abstract class AbstractJpaProject
 	protected final JpaRootContextNode rootContextNode;
 
 	/**
-	 * A pluggable synchronizer that keeps the JPA
-	 * project's context model synchronized with its resource model, either
-	 * synchronously or asynchronously (or not at all). A synchronous synchronizer
-	 * is the default. For performance reasons, a UI should
-	 * immediately change this to an asynchronous synchronizer. A synchronous
-	 * synchronizer can be used when the project is being manipulated by a "batch"
-	 * (or non-UI) client (e.g. when testing "synchronization"). A null updater
-	 * can used during tests that do not care whether "synchronization" occur.
-	 * Clients will need to explicitly configure the synchronizer if they require
-	 * an asynchronous synchronizer.
+	 * A repeating command that keeps the JPA project's context model
+	 * synchronized with its resource model, either synchronously or
+	 * asynchronously (or not at all), depending on the JPA project manager.
 	 */
-	protected volatile Synchronizer contextModelSynchronizer;
+	protected volatile RepeatingJobCommand synchronizeContextModelCommand;
 	protected volatile boolean synchronizingContextModel = false;
 
 	/**
 	 * A pluggable synchronizer that "updates" the JPA project, either
-	 * synchronously or asynchronously (or not at all). A synchronous updater
-	 * is the default, allowing a newly-constructed JPA project to be "updated"
-	 * upon return from the constructor. For performance reasons, a UI should
-	 * immediately change this to an asynchronous updater. A synchronous
-	 * updater can be used when the project is being manipulated by a "batch"
-	 * (or non-UI) client (e.g. when testing the "update" behavior). A null
-	 * updater can used during tests that do not care whether "synchronization"
-	 * occur.
-	 * Clients will need to explicitly configure the updater if they require
-	 * an asynchronous updater.
+	 * synchronously or asynchronously (or not at all), depending on the JPA
+	 * project manager.
 	 */
-	protected volatile CallbackSynchronizer updateSynchronizer;
-	protected final CallbackSynchronizer.Listener updateSynchronizerListener;
+	protected volatile NotifyingRepeatingJobCommand updateCommand;
+	protected final NotifyingRepeatingJobCommand.Listener updateCommandListener;
 
 	/**
 	 * The data source that wraps the DTP model.
@@ -216,11 +208,6 @@ public abstract class AbstractJpaProject
 	protected volatile boolean discoversAnnotatedClasses;
 
 	/**
-	 * Support for modifying documents shared with the UI.
-	 */
-	protected final ThreadLocalCommandExecutor modifySharedDocumentCommandExecutor;
-
-	/**
 	 * The name of the Java project source folder that holds the generated
 	 * metamodel. If the name is <code>null</code> the metamodel is not
 	 * generated.
@@ -232,17 +219,18 @@ public abstract class AbstractJpaProject
 
 	protected AbstractJpaProject(JpaProject.Config config) {
 		super(null);  // JPA project is the root of the containment tree
-		if ((config.getProject() == null) || (config.getJpaPlatform() == null)) {
+		if ((config.getJpaProjectManager() == null) || (config.getProject() == null) || (config.getJpaPlatform() == null)) {
 			throw new NullPointerException();
 		}
+		this.manager = config.getJpaProjectManager();
 		this.project = config.getProject();
+		this.synchronizeContextModelCommand = this.buildSynchronizeContextModelCommand();
+		this.updateCommand = this.buildTempUpdateCommand();  // temporary command
 		this.jpaPlatform = config.getJpaPlatform();
 		this.dataSource = this.getJpaFactory().buildJpaDataSource(this, config.getConnectionProfileName());
 		this.userOverrideDefaultCatalog = config.getUserOverrideDefaultCatalog();
 		this.userOverrideDefaultSchema = config.getUserOverrideDefaultSchema();
 		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
-
-		this.modifySharedDocumentCommandExecutor = this.buildModifySharedDocumentCommandExecutor();
 
 		this.resourceModelListener = this.buildResourceModelListener();
 		// build the JPA files corresponding to the Eclipse project's files
@@ -260,12 +248,8 @@ public abstract class AbstractJpaProject
 
 		this.rootContextNode = this.buildRootContextNode();
 
-		// there *shouldn't* be any changes to the resource model...
-		this.setContextModelSynchronizer_(this.buildSynchronousContextModelSynchronizer());
-
-		this.updateSynchronizerListener = this.buildUpdateSynchronizerListener();
-		// "update" the project before returning
-		this.setUpdateSynchronizer_(this.buildSynchronousUpdateSynchronizer());
+		this.updateCommandListener = this.buildUpdateCommandListener();
+		this.initializeContextModel();
 
 		// start listening to this cache once the context model has been built
 		// and all the external types are faulted in
@@ -290,6 +274,31 @@ public abstract class AbstractJpaProject
 		return this.getJpaFactory().buildRootContextNode(this);
 	}
 
+	/**
+	 * Execute a synchronous <em>sync</em> and <em>update</em> before returning
+	 * from the constructor.
+	 */
+	protected void initializeContextModel() {
+		// there *shouldn't* be any changes to the resource model yet...
+		this.synchronizeContextModelCommand.start();
+
+		// perform a synchronous update...
+		this.updateCommand.start();
+		this.update();
+		try {
+			this.updateCommand.stop();
+		} catch (InterruptedException ex) {
+			// the initial update is synchronous, so this shouldn't happen...
+			// but let our thread know it was interrupted during a wait
+			Thread.currentThread().interrupt();
+		}
+
+		// ...then delegate further updates to the JPA project manager
+		this.updateCommand = this.buildUpdateCommand();
+		this.updateCommand.addListener(this.updateCommandListener);
+		this.updateCommand.start();
+	}
+
 
 	// ********** initial resource proxy visitor **********
 
@@ -297,7 +306,9 @@ public abstract class AbstractJpaProject
 		return new InitialResourceProxyVisitor();
 	}
 
-	protected class InitialResourceProxyVisitor implements IResourceProxyVisitor {
+	protected class InitialResourceProxyVisitor
+		implements IResourceProxyVisitor
+	{
 		protected InitialResourceProxyVisitor() {
 			super();
 		}
@@ -325,6 +336,10 @@ public abstract class AbstractJpaProject
 					return false;  // no children
 			}
 		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+		}
 	}
 
 
@@ -348,6 +363,10 @@ public abstract class AbstractJpaProject
 	@Override
 	public JpaProject getJpaProject() {
 		return this;
+	}
+
+	public Manager getManager() {
+		return this.manager;
 	}
 
 	public String getName() {
@@ -582,10 +601,13 @@ public abstract class AbstractJpaProject
 	}
 
 	protected boolean fileResourceLocationIsValid(IFile file) {
-		ResourceLocator resourceLocator = JptCommonCorePlugin.getResourceLocator(this.getProject());
-		return resourceLocator.acceptResourceLocation(this.getProject(), file.getParent());
+		return this.getProjectResourceLocator().resourceLocationIsValid(file.getParent());
 	}
 
+	protected ProjectResourceLocator getProjectResourceLocator() {
+		return (ProjectResourceLocator) this.project.getAdapter(ProjectResourceLocator.class);
+	}
+	
 	/**
 	 * Log any developer exceptions and don't build a JPA file rather
 	 * than completely failing to build the JPA Project.
@@ -594,7 +616,7 @@ public abstract class AbstractJpaProject
 		try {
 			return this.getJpaPlatform().buildJpaFile(this, file);
 		} catch (Exception ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.log("Error building JPA file: " + file.getFullPath(), ex); //$NON-NLS-1$
 			return null;
 		}
 	}
@@ -709,7 +731,7 @@ public abstract class AbstractJpaProject
 					jdtCompilationUnit,
 					this.jpaPlatform.getAnnotationProvider(),
 					this.jpaPlatform.getAnnotationEditFormatter(),
-					this.modifySharedDocumentCommandExecutor
+					this.manager.getModifySharedDocumentCommandExecutor()
 				);
 	}
 
@@ -739,7 +761,7 @@ public abstract class AbstractJpaProject
 	// ********** utility **********
 
 	public IFile getPlatformFile(IPath runtimePath) {
-		return JptCommonCorePlugin.getPlatformFile(this.project, runtimePath);
+		return this.getProjectResourceLocator().getPlatformFile(runtimePath);
 	}
 
 
@@ -767,7 +789,7 @@ public abstract class AbstractJpaProject
 	 */
 	protected JptResourceModel getResourceModel(IPath runtimePath, IContentType contentType) {
 		IFile file = this.getPlatformFile(runtimePath);
-		return (file != null && file.exists()) ? this.getResourceModel(file, contentType) :  null;
+		return ((file != null) && file.exists()) ? this.getResourceModel(file, contentType) :  null;
 	}
 
 	/**
@@ -832,13 +854,13 @@ public abstract class AbstractJpaProject
 		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalAnnotatedSourceJavaResourceTypes()) {
 			@Override
 			protected boolean accept(JavaResourceAbstractType jraType) {
-				return jraType.isAnnotatedWith(getTypeMappingAnnotations());
+				return jraType.isAnnotatedWith(AbstractJpaProject.this.getTypeMappingAnnotations());
 			}
 		};
 	}
 
 	public Iterable<String> getTypeMappingAnnotations() {
-		return new TransformationIterable<JavaTypeMappingDefinition, String>(getJpaPlatform().getJavaTypeMappingDefinitions()) {
+		return new TransformationIterable<JavaTypeMappingDefinition, String>(this.getJpaPlatform().getJavaTypeMappingDefinitions()) {
 			@Override
 			protected String transform(JavaTypeMappingDefinition o) {
 				return o.getAnnotationName();
@@ -902,8 +924,8 @@ public abstract class AbstractJpaProject
 	}
 
 	public JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind) {
-		JavaResourceAbstractType resourceType = getJavaResourceType(typeName);
-		if (resourceType == null || resourceType.getKind() != kind) {
+		JavaResourceAbstractType resourceType = this.getJavaResourceType(typeName);
+		if ((resourceType == null) || (resourceType.getKind() != kind)) {
 			return null;
 		}
 		return resourceType;
@@ -982,7 +1004,7 @@ public abstract class AbstractJpaProject
 	// TODO
 	public JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(String jarFileName) {
 //		return this.getJarResourcePackageFragmentRoot(this.convertToPlatformFile(jarFileName));
-		return this.getJavaResourcePackageFragmentRoot(this.getProject().getFile(jarFileName));
+		return this.getJavaResourcePackageFragmentRoot(this.project.getFile(jarFileName));
 	}
 
 	protected JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(IFile jarFile) {
@@ -1072,12 +1094,75 @@ public abstract class AbstractJpaProject
 	/**
 	 * Synchronize the metamodel for 2.0-compatible JPA projects.
 	 */
-	public void synchronizeMetamodel() {
+	public IStatus synchronizeMetamodel(IProgressMonitor monitor) {
 		if (this.isJpa2_0Compatible()) {
 			if (this.metamodelSourceFolderName != null) {
-				((JpaRootContextNode2_0) this.rootContextNode).synchronizeMetamodel();
+				this.scheduleSynchronizeMetamodelJob();
 			}
 		}
+		return Status.OK_STATUS;
+	}
+
+	/**
+	 * We dispatch a job even when the JPA project manager is "synchronous"
+	 * because we will synchronously execute an update when we receive a
+	 * resource change event that is fired when a file is changed; and we
+	 * cannot modify another file in response to a file change because the
+	 * rules are incompatible. For example, if the <code>persistence.xml</code>
+	 * file changes, we will receive a resource change event while the
+	 * <code>persistence.xml</code> file is locked. We will not be able to
+	 * lock and modify the necessary metamodel source files under this lock.
+	 */
+	protected void scheduleSynchronizeMetamodelJob() {
+		this.buildSynchronizeMetamodelJob().schedule();
+	}
+
+	protected Job buildSynchronizeMetamodelJob() {
+		Job job = this.buildSynchronizeMetamodelJob_();
+		// lock the project so we are synchronized with the JPA project manager
+		job.setRule(this.project);
+		return job;
+	}
+
+	protected Job buildSynchronizeMetamodelJob_() {
+		return new SynchronizeMetamodelJob(this.buildSynchronizeMetamodelJobName());
+	}
+
+	protected String buildSynchronizeMetamodelJobName() {
+		return NLS.bind(JptCoreMessages.METAMODEL_SYNC_JOB_NAME, this.getName());
+	}
+
+	/**
+	 * Use a {@link WorkspaceJob} to
+	 * suppress the resource change events until we are finished synchronizing
+	 * the metamodel.
+	 */
+	protected class SynchronizeMetamodelJob
+		extends WorkspaceJob
+	{
+		protected SynchronizeMetamodelJob(String name) {
+			super(name);
+		}
+		@Override
+		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+			return AbstractJpaProject.this.synchronizeMetamodel_(monitor);
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+		}
+	}
+
+	/**
+	 * Called by the {@link SynchronizeMetamodelJob#runInWorkspace(IProgressMonitor)}.
+	 * <p>
+	 * Now that we have the appropriate resource locks, acquire the JPA project
+	 * manager lock. This is a hack to get around the Eclipse restriction
+	 * that prevents us from acquiring incompatible locks/scheduling rules; at
+	 * the risk of deadlocks(!).
+	 */
+	protected IStatus synchronizeMetamodel_(IProgressMonitor monitor) {
+		return ((JpaRootContextNode2_0) this.rootContextNode).synchronizeMetamodel(monitor);
 	}
 
 	public void disposeMetamodel() {
@@ -1091,7 +1176,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected IFolder getMetaModelSourceFolder() {
-		return this.getProject().getFolder(this.metamodelSourceFolderName);
+		return this.project.getFolder(this.metamodelSourceFolderName);
 	}
 
 	/**
@@ -1288,15 +1373,13 @@ public abstract class AbstractJpaProject
 	 */
 	protected boolean jpaFileIsAlive(JpaFile jpaFile) {
 		IFile file = jpaFile.getFile();
-		if (! file.exists()) {
+		if ( ! file.exists()) {
 			return false;
 		}
-		if (fileIsJavaRelated(file)) {
-			return getJavaProject().isOnClasspath(file);
+		if (this.fileIsJavaRelated(file)) {
+			return this.getJavaProject().isOnClasspath(file);
 		}
-		else {
-			return fileResourceLocationIsValid(file);
-		}
+		return this.fileResourceLocationIsValid(file);
 	}
 
 	/**
@@ -1363,6 +1446,12 @@ public abstract class AbstractJpaProject
 	}
 
 	protected boolean javaCompilationUnitDeltaIsRelevant(IJavaElementDelta delta) {
+		// ignore Java notification for ADDED or REMOVED;
+		// these are handled via resource notification
+		if (delta.getKind() != IJavaElementDelta.CHANGED) {
+			return false;
+		}
+
 		// ignore changes to/from primary working copy - no content has changed;
 		// and make sure there are no other flags set that indicate *both* a
 		// change to/from primary working copy *and* content has changed
@@ -1370,9 +1459,24 @@ public abstract class AbstractJpaProject
 			return false;
 		}
 
-		// ignore java notification for ADDED or REMOVED;
-		// these are handled via resource notification
-		return delta.getKind() == IJavaElementDelta.CHANGED;
+		// ignore when the compilation unit's resource is deleted;
+		// because the AST parser will log an exception for the missing file
+		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_RESOURCE)) {
+			ICompilationUnit compilationUnit = (ICompilationUnit) delta.getElement();
+			if ( ! this.compilationUnitResourceExists(compilationUnit)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	protected boolean compilationUnitResourceExists(ICompilationUnit compilationUnit) {
+		try {
+			return compilationUnit.getCorrespondingResource().exists();
+		} catch (JavaModelException ex) {
+			return false;
+		}
 	}
 
 
@@ -1403,11 +1507,11 @@ public abstract class AbstractJpaProject
 
 	protected void validateLibraryProvider_(List<IMessage> messages) throws CoreException {
 		Map<String, Object> enablementVariables = new HashMap<String, Object>();
-		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, getJpaPlatform().getId());
-		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, getJpaPlatform().getDescription());
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, this.getJpaPlatform().getId());
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, this.getJpaPlatform().getDescription());
 
-		ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(getProject(), JpaFacet.FACET);
-		IFacetedProject facetedProject = ProjectFacetsManager.create(getProject());
+		ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(this.project, JpaFacet.FACET);
+		IFacetedProject facetedProject = ProjectFacetsManager.create(this.project);
 		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JpaFacet.FACET);
 		if ( ! libraryProvider.isEnabledFor(facetedProject, facetVersion, enablementVariables)) {
 			messages.add(
@@ -1460,9 +1564,9 @@ public abstract class AbstractJpaProject
 	// ********** dispose **********
 
 	public void dispose() {
-		this.contextModelSynchronizer.stop();
-		this.updateSynchronizer.stop();
-		this.updateSynchronizer.removeListener(this.updateSynchronizerListener);
+		this.stopCommand(this.synchronizeContextModelCommand);
+		this.stopCommand(this.updateCommand);
+		this.updateCommand.removeListener(this.updateCommandListener);
 		this.dataSource.dispose();
 		// the XML resources are held indefinitely by the WTP translator framework,
 		// so we better remove our listener or the JPA project will not be GCed
@@ -1471,20 +1575,29 @@ public abstract class AbstractJpaProject
 		}
 	}
 
+	protected void stopCommand(RepeatingJobCommand command) {
+		try {
+			command.stop();
+		} catch (InterruptedException ex) {
+			// allow the dispose to complete;
+			// but let our thread know it was interrupted during a wait
+			Thread.currentThread().interrupt();
+		}
+	}
+
 
 	// ********** resource model listener **********
 
 	protected JptResourceModelListener buildResourceModelListener() {
-		return new DefaultResourceModelListener();
+		return new ResourceModelListener();
 	}
 
-	protected class DefaultResourceModelListener
+	protected class ResourceModelListener
 		implements JptResourceModelListener
 	{
-		protected DefaultResourceModelListener() {
+		protected ResourceModelListener() {
 			super();
 		}
-
 		public void resourceModelChanged(JptResourceModel jpaResourceModel) {
 //			String msg = Thread.currentThread() + " resource model change: " + jpaResourceModel;
 //			System.out.println(msg);
@@ -1502,8 +1615,17 @@ public abstract class AbstractJpaProject
 			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
 			AbstractJpaProject.this.removeJpaFile(file);
 		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+		}
 	}
 
+	/**
+	 * Called from {@link ResourceModelListener#resourceModelChanged(JptResourceModel)}.
+	 */
+	// TODO pass down the resource model (for a possible optimization?)
 	protected void synchronizeContextModel(@SuppressWarnings("unused") JptResourceModel jpaResourceModel) {
 		this.synchronizeContextModel();
 	}
@@ -1513,7 +1635,7 @@ public abstract class AbstractJpaProject
 
 	// TODO need to do the same thing for external projects and compilation units
 	public void projectChanged(IResourceDelta delta) {
-		if (delta.getResource().equals(this.getProject())) {
+		if (delta.getResource().equals(this.project)) {
 			this.internalProjectChanged(delta);
 		} else {
 			this.externalProjectChanged(delta);
@@ -1521,10 +1643,6 @@ public abstract class AbstractJpaProject
 	}
 
 	protected void internalProjectChanged(IResourceDelta delta) {
-		if (delta.getKind() == IResourceDelta.REMOVED) {
-			this.setContextModelSynchronizer(Synchronizer.Null.instance());
-			this.setUpdateSynchronizer(CallbackSynchronizer.Null.instance());
-		}
 		ResourceDeltaVisitor resourceDeltaVisitor = this.buildInternalResourceDeltaVisitor();
 		resourceDeltaVisitor.visitDelta(delta);
 		// at this point, if we have added and/or removed JpaFiles, an "update" will have been triggered;
@@ -1540,13 +1658,19 @@ public abstract class AbstractJpaProject
 		return new InternalResourceDeltaVisitor();
 	}
 
-	protected class InternalResourceDeltaVisitor extends ResourceDeltaVisitor {
+	protected class InternalResourceDeltaVisitor
+		extends ResourceDeltaVisitor
+	{
 		protected InternalResourceDeltaVisitor() {
 			super();
 		}
 		@Override
 		public boolean fileChangeIsSignificant(IFile file, int deltaKind) {
 			return AbstractJpaProject.this.synchronizeJpaFiles(file, deltaKind);
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -1576,7 +1700,7 @@ public abstract class AbstractJpaProject
 	protected boolean checkForChangedFileContent(IFile file) {
 		JpaFile jpaFile = this.getJpaFile(file);
 		if (jpaFile == null) {
-			// the file might have changed its content to something that we are interested in
+			// the file might have changed its content to something significant to Dali
 			return this.addJpaFile(file);
 		}
 
@@ -1585,7 +1709,7 @@ public abstract class AbstractJpaProject
 			return false;
 		}
 
-		// the content type changed, we need to build a new JPA file
+		// the content type changed, we need to remove the old JPA file and build a new one
 		// (e.g. the schema of an orm.xml file changed from JPA to EclipseLink)
 		this.removeJpaFile(jpaFile);
 		this.addJpaFile(file);
@@ -1616,13 +1740,19 @@ public abstract class AbstractJpaProject
 		return new ExternalResourceDeltaVisitor();
 	}
 
-	protected class ExternalResourceDeltaVisitor extends ResourceDeltaVisitor {
+	protected class ExternalResourceDeltaVisitor
+		extends ResourceDeltaVisitor
+	{
 		protected ExternalResourceDeltaVisitor() {
 			super();
 		}
 		@Override
 		public boolean fileChangeIsSignificant(IFile file, int deltaKind) {
 			return AbstractJpaProject.this.synchronizeExternalFiles(file, deltaKind);
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -1688,7 +1818,9 @@ public abstract class AbstractJpaProject
 	/**
 	 * add or remove a JPA file for every [appropriate] file encountered by the visitor
 	 */
-	protected abstract class ResourceDeltaVisitor implements IResourceDeltaVisitor {
+	protected abstract class ResourceDeltaVisitor
+		implements IResourceDeltaVisitor
+	{
 		protected boolean encounteredSignificantChange = false;
 
 		protected ResourceDeltaVisitor() {
@@ -1738,114 +1870,115 @@ public abstract class AbstractJpaProject
 			return this.encounteredSignificantChange;
 		}
 
-	}
-
-
-	// ********** support for modifying documents shared with the UI **********
-
-	public void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor) {
-		this.modifySharedDocumentCommandExecutor.set(commandExecutor);
-	}
-
-	public CommandExecutor getModifySharedDocumentCommandExecutor() {
-		return this.modifySharedDocumentCommandExecutor;
-	}
-
-	protected ThreadLocalCommandExecutor buildModifySharedDocumentCommandExecutor() {
-		return new ThreadLocalCommandExecutor();
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+		}
 	}
 
 
 	// ********** synchronize context model with resource model **********
 
-	public Synchronizer getContextModelSynchronizer() {
-		return this.contextModelSynchronizer;
+	protected RepeatingJobCommand buildSynchronizeContextModelCommand() {
+		return new RepeatingJobCommandWrapper(
+					this.buildSynchronizeContextModelJobCommand(),
+					this.buildStartSynchronizeContextModelJobCommandExecutor(),
+					this.manager.getExceptionHandler()
+				);
 	}
 
-	public void setContextModelSynchronizer(Synchronizer synchronizer) {
-		if (synchronizer == null) {
-			throw new NullPointerException();
-		}
-		this.contextModelSynchronizer.stop();
-		this.setContextModelSynchronizer_(synchronizer);
+	protected JobCommand buildSynchronizeContextModelJobCommand() {
+		return new SynchronizeContextModelJobCommand();
 	}
 
-	protected void setContextModelSynchronizer_(Synchronizer synchronizer) {
-		this.contextModelSynchronizer = synchronizer;
-		this.contextModelSynchronizer.start();
+	protected JobCommandExecutor buildStartSynchronizeContextModelJobCommandExecutor() {
+		return new ManagerJobCommandExecutor(this.buildSynchronizeContextModelJobName());
+	}
+
+	protected String buildSynchronizeContextModelJobName() {
+		return NLS.bind(JptCoreMessages.CONTEXT_MODEL_SYNC_JOB_NAME, this.getName());
 	}
 
 	/**
-	 * Delegate to the context model synchronizer so clients can configure how
-	 * synchronizations occur.
+	 * The JPA project's resource model has changed; synchronize the JPA
+	 * project's context model with it. This method is typically called when the
+	 * resource model state has changed when it is synchronized with its
+	 * underlying Eclipse resource as the result of an Eclipse resource change
+	 * event. This method can also be called when a client (e.g. a JUnit test
+	 * case) has manipulated the resource model via its API (as opposed to
+	 * modifying the underlying Eclipse resource directly) and needs the context
+	 * model to be synchronized accordingly (since manipulating the resource
+	 * model via its API will not trigger this method). Whether the context
+	 * model is synchronously (or asynchronously) depends on the JPA project
+	 * manager.
 	 */
 	public void synchronizeContextModel() {
-		this.synchronizingContextModel = true;
-		this.contextModelSynchronizer.synchronize();
-		this.synchronizingContextModel = false;
+		try {
+			this.synchronizingContextModel = true;
+			this.synchronizeContextModelCommand.execute(null);  // this progress monitor is ignored
+		} finally {
+			this.synchronizingContextModel = false;
+		}
 
 		// There are some changes to the resource model that will not change
 		// the existing context model and trigger an update (e.g. adding an
 		// @Entity annotation when the JPA project is automatically
 		// discovering annotated classes); so we explicitly execute an update
 		// here to discover those changes.
+		// TODO change sync so it will *always* trigger an update?
 		this.update();
 	}
 
+	protected class SynchronizeContextModelJobCommand
+		implements JobCommand
+	{
+		public IStatus execute(IProgressMonitor monitor) {
+			return AbstractJpaProject.this.synchronizeContextModel(monitor);
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+		}
+	}
+
 	/**
-	 * Called by the context model synchronizer.
+	 * Called by the {@link SynchronizeContextModelJobCommand#execute(IProgressMonitor)}.
 	 */
-	public IStatus synchronizeContextModel(IProgressMonitor monitor) {
+	// TODO pass the monitor down
+	protected IStatus synchronizeContextModel(@SuppressWarnings("unused") IProgressMonitor monitor) {
 		this.rootContextNode.synchronizeWithResourceModel();
 		return Status.OK_STATUS;
 	}
 
-	public void synchronizeContextModelAndWait() {
-		Synchronizer temp = this.contextModelSynchronizer;
-		this.setContextModelSynchronizer(this.buildSynchronousContextModelSynchronizer());
-		this.synchronizeContextModel();
-		this.setContextModelSynchronizer(temp);
+
+	// ********** JPA project "update" **********
+
+	/**
+	 * The first update is executed synchronously during construction.
+	 * Once that is complete, we delegate to the JPA project manager.
+	 */
+	protected NotifyingRepeatingJobCommand buildTempUpdateCommand() {
+		return new NotifyingRepeatingJobCommandWrapper(this.buildUpdateJobCommand(), this.manager.getExceptionHandler());
 	}
 
-
-	// ********** default context model synchronizer (synchronous) **********
-
-	protected Synchronizer buildSynchronousContextModelSynchronizer() {
-		return new SynchronousSynchronizer(this.buildSynchronousContextModelSynchronizerCommand());
+	protected NotifyingRepeatingJobCommand buildUpdateCommand() {
+		return new NotifyingRepeatingJobCommandWrapper(
+					this.buildUpdateJobCommand(),
+					this.buildStartUpdateJobCommandExecutor(),
+					this.manager.getExceptionHandler()
+				);
 	}
 
-	protected Command buildSynchronousContextModelSynchronizerCommand() {
-		return new SynchronousContextModelSynchronizerCommand();
+	protected JobCommand buildUpdateJobCommand() {
+		return new UpdateJobCommand();
 	}
 
-	protected class SynchronousContextModelSynchronizerCommand
-		implements Command
-	{
-		public void execute() {
-			AbstractJpaProject.this.synchronizeContextModel(new NullProgressMonitor());
-		}
+	protected JobCommandExecutor buildStartUpdateJobCommandExecutor() {
+		return new ManagerJobCommandExecutor(this.buildUpdateJobName());
 	}
 
-
-	// ********** project "update" **********
-
-	public CallbackSynchronizer getUpdateSynchronizer() {
-		return this.updateSynchronizer;
-	}
-
-	public void setUpdateSynchronizer(CallbackSynchronizer synchronizer) {
-		if (synchronizer == null) {
-			throw new NullPointerException();
-		}
-		this.updateSynchronizer.stop();
-		this.updateSynchronizer.removeListener(this.updateSynchronizerListener);
-		this.setUpdateSynchronizer_(synchronizer);
-	}
-
-	protected void setUpdateSynchronizer_(CallbackSynchronizer synchronizer) {
-		this.updateSynchronizer = synchronizer;
-		this.updateSynchronizer.addListener(this.updateSynchronizerListener);
-		this.updateSynchronizer.start();
+	protected String buildUpdateJobName() {
+		return NLS.bind(JptCoreMessages.UPDATE_JOB_NAME, this.getName());
 	}
 
 	@Override
@@ -1858,7 +1991,7 @@ public abstract class AbstractJpaProject
 	 * The JPA project's state has changed, "update" those parts of the
 	 * JPA project that are dependent on other parts of the JPA project.
 	 * <p>
-	 * Delegate to the update synchronizer so clients can configure how
+	 * Delegate to the JPA project manager so clients can configure how
 	 * updates occur.
 	 * <p>
 	 * Ignore any <em>updates</em> that occur while we are synchronizing
@@ -1867,70 +2000,100 @@ public abstract class AbstractJpaProject
 	 * only useful for synchronous <em>syncs</em> and <em>updates</em>; since
 	 * the job scheduling rules will prevent the <em>sync</em> and
 	 * <em>update</em> jobs from running concurrently.
-	 *
-	 * @see #updateAndWait()
 	 */
 	protected void update() {
 		if ( ! this.synchronizingContextModel) {
-			this.updateSynchronizer.synchronize();
+			this.updateCommand.execute(null);  // this progress monitor is ignored
+		}
+	}
+
+	protected class UpdateJobCommand
+		implements JobCommand
+	{
+		public IStatus execute(IProgressMonitor monitor) {
+			return AbstractJpaProject.this.update(monitor);
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
 		}
 	}
 
 	/**
-	 * Called by the update synchronizer.
+	 * Called by the {@link UpdateJobCommand#execute(IProgressMonitor)}.
 	 */
-	public IStatus update(IProgressMonitor monitor) {
+	// TODO pass the monitor down
+	protected IStatus update(@SuppressWarnings("unused") IProgressMonitor monitor) {
 		this.rootContextNode.update();
 		return Status.OK_STATUS;
 	}
 
-	/**
-	 * This is the callback used by the update synchronizer to notify the JPA
-	 * project that the "update" has quiesced (i.e. the "update" has completed
-	 * and there are no outstanding requests for further "updates").
-	 */
- 	public void updateQuiesced() {
-		this.synchronizeMetamodel();
+
+	// ********** update command listener **********
+
+	protected NotifyingRepeatingJobCommand.Listener buildUpdateCommandListener() {
+		return new UpdateCommandListener();
 	}
 
-	public void updateAndWait() {
-		CallbackSynchronizer temp = this.updateSynchronizer;
-		this.setUpdateSynchronizer(this.buildSynchronousUpdateSynchronizer());
-		this.update();
-		this.setUpdateSynchronizer(temp);
-	}
-
-
-	// ********** default update synchronizer (synchronous) **********
-
-	protected CallbackSynchronizer buildSynchronousUpdateSynchronizer() {
-		return new CallbackSynchronousSynchronizer(this.buildSynchronousUpdateSynchronizerCommand());
-	}
-
-	protected Command buildSynchronousUpdateSynchronizerCommand() {
-		return new SynchronousUpdateSynchronizerCommand();
-	}
-
-	protected class SynchronousUpdateSynchronizerCommand
-		implements Command
+	protected class UpdateCommandListener
+		implements NotifyingRepeatingJobCommand.Listener
 	{
-		public void execute() {
-			AbstractJpaProject.this.update(new NullProgressMonitor());
+		public IStatus executionQuiesced(JobCommand command, IProgressMonitor monitor) {
+			return AbstractJpaProject.this.updateQuiesced(monitor);
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
 		}
 	}
 
-
-	// ********** update synchronizer listener **********
-
-	protected CallbackSynchronizer.Listener buildUpdateSynchronizerListener() {
-		return new UpdateSynchronizerListener();
+	/**
+	 * This is the callback used by the update command to notify the JPA
+	 * project that the "update" has quiesced (i.e. the "update" has completed
+	 * and there are no outstanding requests for further "updates").
+	 * Called by {@link UpdateCommandListener#executionQuiesced(JobCommand, IProgressMonitor)}.
+	 */
+ 	protected IStatus updateQuiesced(IProgressMonitor monitor) {
+		return this.synchronizeMetamodel(monitor);
 	}
 
-	protected class UpdateSynchronizerListener
-		implements CallbackSynchronizer.Listener
+
+	// ********** job command executor **********
+
+ 	/**
+	 * Delegate execution to the JPA project manager, which will determine
+	 * whether commands are executed synchronously or asynchronously.
+	 * 
+	 * @see #buildStartSynchronizeContextModelJobCommandExecutor()
+	 * @see #buildStartUpdateJobCommandExecutor()
+	 */
+	protected class ManagerJobCommandExecutor
+		implements JobCommandExecutor
 	{
-		public void synchronizationQuiesced(CallbackSynchronizer synchronizer) {
-			AbstractJpaProject.this.updateQuiesced();
+		protected final String defaultJobName;
+		protected ManagerJobCommandExecutor(String defaultJobName) {
+			super();
+			if (defaultJobName == null) {
+				throw new NullPointerException();
+			}
+			this.defaultJobName = defaultJobName;
+		}
+		/**
+		 * This should be the only method called on this executor....
+		 */
+		public void execute(JobCommand command) {
+			this.execute(command, this.defaultJobName);
+		}
+		public void execute(JobCommand command, String jobName) {
+			AbstractJpaProject.this.manager.execute(command, jobName, AbstractJpaProject.this);
+		}
+		public void execute(JobCommand command, String jobName, ISchedulingRule schedulingRule) {
+			// the JPA project manager will supply the scheduling rule
+			this.execute(command, jobName);
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.defaultJobName);
 		}
 	}
 }

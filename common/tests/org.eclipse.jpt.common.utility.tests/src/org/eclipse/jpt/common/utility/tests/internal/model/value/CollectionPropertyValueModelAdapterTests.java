@@ -189,7 +189,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	 * otherwise the value is false
 	 */
 	static class LocalAdapter
-		extends CollectionPropertyValueModelAdapter<Boolean>
+		extends CollectionPropertyValueModelAdapter<Boolean, String>
 		implements WritablePropertyValueModel<Boolean>
 	{
 		private String item;
@@ -234,7 +234,5 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		private boolean booleanValueOf(Object b) {
 			return (b == null) ? false : ((Boolean) b).booleanValue();
 		}
-
 	}
-
 }

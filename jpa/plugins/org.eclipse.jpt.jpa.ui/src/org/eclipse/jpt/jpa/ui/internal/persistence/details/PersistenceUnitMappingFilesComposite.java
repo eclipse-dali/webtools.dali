@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -119,7 +119,8 @@ public abstract class PersistenceUnitMappingFilesComposite
 			for (Object result : dialog.getResult()) {
 				IFile file = (IFile) result;
 				IProject project = file.getProject();
-				IPath runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, file.getFullPath());
+				ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
+				IPath runtimePath = locator.getRuntimePath(file.getFullPath());
 				String fileName = runtimePath.toPortableString();
 				if (mappingFileRefExists(fileName)) {
 					continue;

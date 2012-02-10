@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,8 +20,7 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.resource.ResourceLocator;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
@@ -133,11 +132,11 @@ public class JpaFacetInstallDelegate
 	}
 	
 	protected IPath defaultResourceLocation(IProject project) {
-		ResourceLocator resourceLocator = JptCommonCorePlugin.getResourceLocator(project);
+		ProjectResourceLocator resourceLocator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
 		if (resourceLocator == null) {
-			JptJpaCorePlugin.log("No resource locator for project");
+			JptJpaCorePlugin.log("No resource locator for project: " + project); //$NON-NLS-1$
 			return null;
 		}
-		return resourceLocator.getDefaultResourceLocation(project).getFullPath();
+		return resourceLocator.getDefaultResourceLocation().getFullPath();
 	}
 }

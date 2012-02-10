@@ -1,11 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.jaxbindex;
 
@@ -13,131 +13,79 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.internal.resource.AbstractJaxbFileResourceModel;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 
-
+/**
+ * JAXB index
+ */
 public class JaxbIndexResourceImpl
-		implements JaxbIndexResource {
-	
-	protected final ListenerList<JptResourceModelListener> resourceModelListenerList =
-			new ListenerList<JptResourceModelListener>(JptResourceModelListener.class);
-	
-	
-	protected IFile file;
-	
-	protected String packageName;
-	
-	protected final List<String> classNames = new Vector<String>();
-	
-	
+	extends AbstractJaxbFileResourceModel<Vector<String>>
+	implements JaxbIndexResource
+{
 	public JaxbIndexResourceImpl(IFile file) {
-		super();
-		if (file == null) {
-			throw new IllegalArgumentException("file cannot be null");
-		}
-		this.file = file;
-		this.packageName = buildPackageName();
-		buildClassNames();
+		super(file);
 	}
-	
-	
-	protected String buildPackageName() {
-		IJavaElement javaElement = JavaCore.create(this.file.getParent());
-		if (javaElement != null && javaElement.getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
-			return ((IPackageFragment) javaElement).getElementName();
-		}
-		return null;
+
+	@Override
+	protected Vector<String> buildState() {
+		return new Vector<String>();
 	}
-	
-	private void buildClassNames() {
-		InputStream stream = null;
-		
-		try {
-			stream = file.getContents();
-		}
-		catch (CoreException ce) {
-			JptJaxbCorePlugin.log(ce);
-			return;
-		}
-		
-		if (stream != null) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			try {
-				String line = reader.readLine();
-				while (line != null) {
-					String className = line.trim();
-					this.classNames.add(className);
-					line = reader.readLine();
-				}
-			}
-			catch (Exception ex) {
-				JptJaxbCorePlugin.log(ex);
-			}
-			finally {
-				try {
-					reader.close();
-				}
-				catch (IOException ioe) {
-					JptJaxbCorePlugin.log(ioe);
-				}
-			}
+
+	@Override
+	protected void reload() {
+		this.state.clear();
+		super.reload();
+	}
+
+	@Override
+	protected void load(InputStream stream) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		String line = reader.readLine();
+		while (line != null) {
+			this.state.add(line.trim());
+			line = reader.readLine();
 		}
 	}
-	
-	public String getPackageName() {
-		return this.packageName;
-	}
-	
+
 	public Iterable<String> getFullyQualifiedClassNames() {
-		String packageName = getPackageName();
-		final String packagePrefix = StringTools.stringIsEmpty(packageName) ? "" : packageName + ".";
+		return (this.packageName == null) ?
+				this.getSimpleClassNames() :
+				this.getPrefixedClassNames();
+	}
+
+	protected Iterable<String> getSimpleClassNames() {
+		return new SnapshotCloneIterable<String>(this.state);
+	}
+
+	protected Iterable<String> getPrefixedClassNames() {
 		return new TransformationIterable<String, String>(
-				new SnapshotCloneIterable<String>(this.classNames)) {
-			@Override
-			protected String transform(String shortClassName) {
-				return packagePrefix + shortClassName;
-			}
-		};
+					this.getSimpleClassNames(),
+					new PrefixTransformer(this.packageName + '.')
+				);
 	}
-	
-	void update() {
-		this.classNames.clear();
-		buildClassNames();
-		resourceModelChanged();
+
+	protected class PrefixTransformer
+		implements Transformer<String, String>
+	{
+		protected final String prefix;
+		protected PrefixTransformer(String prefix) {
+			super();
+			this.prefix = prefix;
+		}
+		public String transform(String string) {
+			return this.prefix + string;
+		}
 	}
-	
-	
-	// ********** JptResourceModel implementation **********
-	
+
 	public JptResourceType getResourceType() {
 		return JptJaxbCorePlugin.JAXB_INDEX_RESOURCE_TYPE;
-	}
-	
-	public void addResourceModelListener(JptResourceModelListener listener) {
-		this.resourceModelListenerList.add(listener);
-	}
-	
-	public void removeResourceModelListener(JptResourceModelListener listener) {
-		this.resourceModelListenerList.remove(listener);
-	}
-	
-	protected void resourceModelChanged() {
-		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
-			listener.resourceModelChanged(this);
-		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,7 +36,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
  * wants to sort a list of files first by name, then by date, then by size).
  * <p>
  * <strong>NB:</strong> Since we only listen to the wrapped collection when we have
- * listeners ourselves and we can only stay in synch with the wrapped
+ * listeners ourselves and we can only stay in sync with the wrapped
  * collection while we are listening to it, results to various methods
  * (e.g. {@link #size()}, {@link #get(int)}) will be unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
@@ -121,7 +121,7 @@ public class SortedListValueModelWrapper<E>
     @Override
 	protected void engageModel() {
 		super.engageModel();
-		// synch the sorted list *after* we start listening to the wrapped list holder,
+		// sync the sorted list *after* we start listening to the wrapped list model,
 		// since its value might change when a listener is added
 		this.buildSortedList();
 	}
@@ -246,5 +246,4 @@ public class SortedListValueModelWrapper<E>
 	public void toString(StringBuilder sb) {
 		sb.append(this.sortedList);
 	}
-
 }

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2011 SAP AG.
+ * Copyright (c) 2005, 2011 SAP AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,15 +18,13 @@ package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.relation;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-
 import java.util.Iterator;
 import java.util.Properties;
-
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -36,12 +34,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -69,7 +63,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-@SuppressWarnings({ "unused" })
+@SuppressWarnings({ "unused", "nls" })
 public class CreateRelationsTest {
 
 	private IJPAEditorFeatureProvider featureProvider;
@@ -89,15 +83,13 @@ public class CreateRelationsTest {
 	@Before
 	public void setUp() throws Exception {
 		
-		JptJpaCorePlugin.getJpaProjectManager();
 		factory = JPACreateFactory.instance();
 		jpaProject = factory.createJPAProject(TEST_PROJECT + "_" + System.currentTimeMillis());
 		assertNotNull(jpaProject);
 		
 		IFile entity = factory.createEntity(jpaProject, "org.eclipse.Entity1");
-		Thread.sleep(2000);
 		featureProvider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
-		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(getPersistentType(entity));
+		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(JPACreateFactory.getPersistentType(entity));
 		expect(featureProvider.getCompilationUnit(isA(JavaPersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entity)).anyTimes();
 		
 		assertNotNull(jpaProject);	
@@ -113,13 +105,6 @@ public class CreateRelationsTest {
 		
 		
 		t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
-		int c = 0;
-		while ((t1 == null) && (c < MAX_NUM_OF_ITERATIONS)) {
-			jpaProject.update(null);
-			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
-			c++;
-		}
 		
 		expect(featureProvider.getPictogramElementForBusinessObject(t1)).andStubReturn(isA(Shape.class));
 		cu1 = JavaCore.createCompilationUnitFrom(customerFile);
@@ -131,13 +116,6 @@ public class CreateRelationsTest {
 
 		
 		t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
-		c = 0;
-		while ((t2 == null) && (c < MAX_NUM_OF_ITERATIONS)) {
-			jpaProject.update(null);			
-			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
-			c++;
-		}
 		
 		expect(featureProvider.getPictogramElementForBusinessObject(t2)).andStubReturn(isA(Shape.class));
 		cu2 = JavaCore.createCompilationUnitFrom(addressFile);
@@ -155,25 +133,9 @@ public class CreateRelationsTest {
 		IFile entity20 = factory.createEntity(jpa20Project,	"org.eclipse.Entity1");
 		Thread.sleep(2000);
 		featureProvider20 = EasyMock.createMock(IJPAEditorFeatureProvider.class);
-		expect(featureProvider20.getBusinessObjectForPictogramElement(null)).andReturn(getPersistentType(entity20));
+		expect(featureProvider20.getBusinessObjectForPictogramElement(null)).andReturn(JPACreateFactory.getPersistentType(entity20));
 		expect(featureProvider20.getCompilationUnit(isA(JavaPersistentType.class)))
 				.andReturn(JavaCore.createCompilationUnitFrom(entity20)).anyTimes();
-	}
-	
-	public static JavaPersistentType getPersistentType(IFile file){
-		JpaFile jpaFile = JptJpaCorePlugin.getJpaFile(file);
-		for (JpaStructureNode node: getRootNodes(jpaFile)) {
-			JavaPersistentType entity = (JavaPersistentType) node;
-			return entity;
-		}
-		return null;
-	}	
-	
-	private static Iterable<JpaStructureNode> getRootNodes(JpaFile jpaFile) {
-		if(jpaFile == null){
-			return EmptyIterable.instance();
-		}
-		return jpaFile.getRootStructureNodes();
 	}
 	
 	public ICompilationUnit createCompilationUnitFrom(IFile file) {
@@ -339,13 +301,6 @@ public class CreateRelationsTest {
 			assertNotNull(customerType);
 					
 			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, customerType.getQualifiedName());
-			int c = 0;
-			while ((t1 == null) && (c < MAX_NUM_OF_ITERATIONS)) {
-				Thread.sleep(200);
-				jpa20Project.update(null);
-				t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, customerType.getQualifiedName());
-				c++;
-			}
 					
 			expect(featureProvider20.getPictogramElementForBusinessObject(t1)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu1 = JavaCore.createCompilationUnitFrom(customerFile);
@@ -357,12 +312,7 @@ public class CreateRelationsTest {
 	
 			
 			JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, addressType.getQualifiedName());
-			while ((t2 == null) && (c < MAX_NUM_OF_ITERATIONS)) {
-				Thread.sleep(200);
-				jpa20Project.update(null);
-				t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, addressType.getQualifiedName());
-				c++;
-			}
+
 			expect(featureProvider20.getPictogramElementForBusinessObject(t2)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu2 = JavaCore.createCompilationUnitFrom(addressFile);
 			expect(featureProvider20.getCompilationUnit(t2)).andStubReturn(cu2);
@@ -417,13 +367,6 @@ public class CreateRelationsTest {
 			assertNotNull(employeeType);
 					
 			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, employeeType.getQualifiedName());
-			int c = 0;
-			while ((t1 == null) && (c < MAX_NUM_OF_ITERATIONS)) {
-				Thread.sleep(200);
-				jpa20Project.update(null);
-				t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, employeeType.getQualifiedName());
-				c++;
-			}
 					
 			expect(featureProvider20.getPictogramElementForBusinessObject(t1)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu1 = JavaCore.createCompilationUnitFrom(employeeFile);
@@ -435,12 +378,7 @@ public class CreateRelationsTest {
 	
 			
 			JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, projectType.getQualifiedName());
-			while ((t2 == null) && (c < MAX_NUM_OF_ITERATIONS)) {
-				Thread.sleep(200);
-				jpa20Project.update(null);
-				t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, projectType.getQualifiedName());
-				c++;
-			}
+
 			expect(featureProvider20.getPictogramElementForBusinessObject(t2)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu2 = JavaCore.createCompilationUnitFrom(projectFile);
 			expect(featureProvider20.getCompilationUnit(t2)).andStubReturn(cu2);
@@ -488,13 +426,6 @@ public class CreateRelationsTest {
 			
 					
 			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, employeeType.getQualifiedName());
-			int c = 0;
-			while ((t1 == null) && (c < MAX_NUM_OF_ITERATIONS)) {
-				Thread.sleep(200);
-				jpa20Project.update(null);
-				t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, employeeType.getQualifiedName());
-				c++;
-			}
 					
 			expect(featureProvider20.getPictogramElementForBusinessObject(t1)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu1 = JavaCore.createCompilationUnitFrom(employeeFile);
@@ -503,14 +434,6 @@ public class CreateRelationsTest {
 			
 			Embeddable emb = JpaArtifactFactory.instance().getPersistenceUnit(t1).getEmbeddable("com.test.EmployeerId");
 			Iterator<AttributeMapping> embIt = emb.getAllAttributeMappings().iterator();
-			int c1 = 0;
-			while ((embIt.hasNext() == false) && (c1 < MAX_NUM_OF_ITERATIONS)) {
-				Thread.sleep(200);
-				jpa20Project.update(null);
-				emb.update();
-				embIt = emb.getAllAttributeMappings().iterator();
-				c1++;
-			}
 							
 			assertTrue(projectFile.exists());
 			JavaResourceAbstractType projectType = jpa20Project.getJavaResourceType("com.Person");
@@ -518,12 +441,6 @@ public class CreateRelationsTest {
 	
 			
 			JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, projectType.getQualifiedName());
-			while ((t2 == null) && (c < MAX_NUM_OF_ITERATIONS)) {
-				Thread.sleep(200);
-				jpa20Project.update(null);
-				t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, projectType.getQualifiedName());
-				c++;
-			}
 			
 			expect(featureProvider20.getPictogramElementForBusinessObject(t2)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu2 = JavaCore.createCompilationUnitFrom(projectFile);

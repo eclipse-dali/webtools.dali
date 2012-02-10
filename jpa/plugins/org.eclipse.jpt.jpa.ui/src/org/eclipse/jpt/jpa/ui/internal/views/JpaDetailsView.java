@@ -1,190 +1,318 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.views;
 
 import java.util.HashMap;
-import java.util.Map;
-import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.internal.widgets.PropertySheetWidgetFactory;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
-import org.eclipse.jpt.jpa.ui.details.JpaDetailsPage;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
-import org.eclipse.jpt.jpa.ui.internal.selection.JpaSelection;
+import org.eclipse.jpt.jpa.ui.selection.JpaViewManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.part.PageBook;
+import org.eclipse.ui.part.ViewPart;
 
 /**
- * The JPA view that shows the details of a structure node
+ * The JPA details view has a page book that displays the JPA details page
+ * corresponding to the current JPA selection. The JPA details only listens to
+ * the JPA selection; it will never change the JPA selection.
+ * <p>
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
  *
- * @version 2.2
+ * @version 3.0
  * @since 1.0
  */
-public class JpaDetailsView extends AbstractJpaView
+public class JpaDetailsView
+	extends ViewPart
 {
 	/**
-	 * The current <code>JpaDetailsPage</code> that was retrieve based on the
-	 * current selection.
+	 * The factory used by the details view and its page managers
+	 * to create the their widgets.
 	 */
-	private JpaDetailsPage<JpaStructureNode> currentPage;
+	private final PropertySheetWidgetFactory widgetFactory = new PropertySheetWidgetFactory();
 
 	/**
-	 * The current selection used to show the right <code>IJpaDetailsPage</code>.
+	 * The scrolled form that holds the {@link #pageBook page book}.
+	 * We need to force it to reflow whenever we change the page book's
+	 * current page.
 	 */
-	private JpaSelection currentSelection;
-
-	//TODO this is crap, a Map of Maps of Maps. Needs to be done differently, the factory/platform should handle caching instead
-	// key1 platform id
-	// key2 JpaResourceType
-	// key3 structure node type
-	// value Composite page
-	private Map<String, Map<JptResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>> detailsPages;
+	private volatile ScrolledForm scrolledForm;
 
 	/**
-	 * Creates a new <code>JpaDetailsView</code>.
+	 * The container of all the details pages.
 	 */
+	private volatile PageBook pageBook;
+
+	/**
+	 * The page displayed by the {@link #pageBook page book}
+	 * when nothing can be shown.
+	 */
+	private volatile Control defaultPage;
+
+	/**
+	 * The current JPA details page manager that was built based on the
+	 * current JPA selection.
+	 */
+	private volatile JpaDetailsPageManager<? extends JpaStructureNode> currentPageManager;
+
+	/**
+	 * The manager is created when the view's control is
+	 * {@link #createPartControl(Composite) created}
+	 * and disposed, if necessary, when the view is
+	 * {@link #dispose() disposed}.
+	 */
+	private volatile Manager manager;
+
+	/**
+	 * Listen for changes to the JPA selection.
+	 */
+	private final PropertyChangeListener jpaSelectionListener = new JpaSelectionListener();
+
+	/**
+	 * Cache of JPA details page managers
+	 * keyed by JPA structure node context type.
+	 */
+	private final HashMap<JpaStructureNode.ContextType, JpaDetailsPageManager<? extends JpaStructureNode>> pageManagers =
+			new HashMap<JpaStructureNode.ContextType, JpaDetailsPageManager<? extends JpaStructureNode>>();
+
+
 	public JpaDetailsView() {
-		super(JptUiMessages.JpaDetailsView_viewNotAvailable);
+		super();
 	}
 
 	@Override
-	protected void initialize() {
-		super.initialize();
+	public void createPartControl(Composite parent) {
+		this.scrolledForm = this.widgetFactory.getWidgetFactory().createScrolledForm(parent);
+		JptJpaUiPlugin.instance().controlAffectsJavaSource(this.scrolledForm);
+		this.scrolledForm.getBody().setLayout(new GridLayout());
 
-		this.currentSelection = JpaSelection.NULL_SELECTION;
-		this.detailsPages = new HashMap<String, Map<JptResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>>();
+		this.pageBook = new PageBook(this.scrolledForm.getBody(), SWT.NONE);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		this.pageBook.setLayoutData(gridData);
+
+		this.defaultPage = this.buildDefaultPage();
+		this.pageBook.showPage(this.defaultPage);
+
+		this.manager = this.buildManager();
+		this.manager.getJpaSelectionModel().addPropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
+		this.setJpaSelection(this.manager.getJpaSelectionModel().getValue());
 	}
 
-	private JpaPlatformUi getJpaPlatformUi(JpaStructureNode structureNode) {
-		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
-		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
+	private Control buildDefaultPage() {
+		Composite composite = this.widgetFactory.createComposite(this.pageBook);
+		composite.setLayout(new FillLayout(SWT.VERTICAL));
+		this.widgetFactory.createLabel(composite, JptUiMessages.JpaDetailsView_viewNotAvailable);
+		return composite;
 	}
 
-	public JpaSelection getSelection() {
-		return this.currentSelection;
+	private Manager buildManager() {
+		return new Manager(this.getPageManager());
 	}
-	
-	private JpaDetailsPage<? extends JpaStructureNode> getDetailsPage(JpaStructureNode structureNode) {
-		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
-		if (this.detailsPages.containsKey(platformId)) {
-			Map<JptResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
-			Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(structureNode.getResourceType());
-			if (contentTypeDetailsPages != null) {
-				JpaDetailsPage<? extends JpaStructureNode> page =  contentTypeDetailsPages.get(structureNode.getId());
-				if (page != null) {
-					if (page.getControl().isDisposed()) {
-						platformDetailsPages.remove(structureNode.getId());
-					} else {
-						return page;
+
+	/**
+	 * Go to the singleton in the sky.
+	 * <p>
+	 * <strong>NB:</strong> This will trigger the creation of the appropriate
+	 * page manager if it does not already exist.
+	 */
+	private JpaViewManager.PageManager getPageManager() {
+		return (JpaViewManager.PageManager) this.getAdapter(JpaViewManager.PageManager.class);
+	}
+
+
+	// ********** JPA selection **********
+
+	/* CU private */ class JpaSelectionListener
+			extends PropertyChangeAdapter
+	{
+		@Override
+		public void propertyChanged(PropertyChangeEvent event) {
+			JpaDetailsView.this.setJpaSelection((JpaStructureNode) event.getNewValue());
+		}
+	}
+
+	/* CU private */ void setJpaSelection(JpaStructureNode node) {
+		boolean pageChange = false;
+		if (node == null) {
+			if (this.currentPageManager == null) {  // null => null
+				// do nothing
+			} else {  // node => null
+				try {
+					this.currentPageManager.setSubject(null);
+				} catch (RuntimeException ex) {
+					JptJpaUiPlugin.log(ex);
+				}
+				this.currentPageManager = null;
+				pageChange = true;
+			}
+		} else {
+			if (this.currentPageManager == null) {  // null => node
+				this.currentPageManager = this.getPageManager(node);
+				if (this.currentPageManager != null) {
+					try {
+						this.currentPageManager.setSubject(node);
+						pageChange = true;
+					} catch (RuntimeException ex) {
+						JptJpaUiPlugin.log(ex);
+						this.currentPageManager = null;  // leave default page
+					}
+				}
+			} else {  // node => node
+				JpaDetailsPageManager<? extends JpaStructureNode> pageManager = this.getPageManager(node);
+				if (pageManager != this.currentPageManager) {
+					try {
+						this.currentPageManager.setSubject(null);
+					} catch (RuntimeException ex) {
+						JptJpaUiPlugin.log(ex);
+					}
+					this.currentPageManager = pageManager;
+					pageChange = true;
+				}
+				if (this.currentPageManager != null) {
+					try {
+						this.currentPageManager.setSubject(node);
+					} catch (RuntimeException ex) {
+						JptJpaUiPlugin.log(ex);
+						this.currentPageManager = null;  // show default page
+						pageChange = true;
 					}
 				}
 			}
 		}
-		return buildDetailsPage(structureNode);
+
+		if (pageChange) {
+			this.pageBook.showPage(this.getCurrentPage());
+			this.scrolledForm.reflow(true);  // true => flush cache
+		}
 	}
 
-	private JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(JpaStructureNode structureNode) {
-		JpaPlatformUi jpaPlatformUi = getJpaPlatformUi(structureNode);
-		
-		Composite container = getWidgetFactory().createComposite(getPageBook());
-		container.setLayout(new FillLayout(SWT.HORIZONTAL));
-
-		JpaDetailsPage<? extends JpaStructureNode> page = jpaPlatformUi.buildJpaDetailsPage(container, structureNode, getWidgetFactory());
-		if (page == null) {
-			return null;
-		}
-
-		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
-		Map<JptResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
-		if (platformDetailsPages == null) {
-			platformDetailsPages = new HashMap<JptResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>();
-			this.detailsPages.put(platformId, platformDetailsPages);
-		}
-		JptResourceType resourceType = structureNode.getResourceType();
-		Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(resourceType);
-		if (contentTypeDetailsPages == null) {
-			contentTypeDetailsPages = new HashMap<String, JpaDetailsPage<? extends JpaStructureNode>>();
-			platformDetailsPages.put(resourceType, contentTypeDetailsPages);
-		}
-		contentTypeDetailsPages.put(structureNode.getId(), page);
-
-		return page;
+	private Control getCurrentPage() {
+		return (this.currentPageManager != null) ? this.currentPageManager.getPage() : this.defaultPage;
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void select(JpaSelection jpaSelection) {
-		if (jpaSelection.equals(this.currentSelection)) {
-			return;
-		}
 
-		this.currentSelection = jpaSelection;
-		if (jpaSelection == JpaSelection.NULL_SELECTION) {
-			if (this.currentPage != null) {
-				this.currentPage.setSubject(null);
-				this.setCurrentPage(null);
-			}
-			return;
-		}
-		JpaStructureNode newNode = jpaSelection.getSelectedNode();
-		JpaDetailsPage<JpaStructureNode> newPage = (JpaDetailsPage<JpaStructureNode>) getDetailsPage(newNode);
-		if (this.currentPage != null && this.currentPage != newPage){
-			try {
-				this.currentPage.setSubject(null);
-			} catch (Exception e) {
-				JptJpaUiPlugin.log(e);
-			}
-		}
-		if (newPage != null) {
-			try {
-				newPage.setSubject(newNode);
-			} catch (Exception e) {
-				newPage = null;// Show error page
-				JptJpaUiPlugin.log(e);
-			}
-		}
-		setCurrentPage(newPage);
-	}
+	// ********** page managers **********
 
 	/**
-	 * Changes the current page and shows the given page.
-	 *
-	 * @param newPage The new page to display
+	 * @see org.eclipse.jpt.jpa.core.JpaStructureNode.ContextType
 	 */
-	private void setCurrentPage(JpaDetailsPage<JpaStructureNode> newPage) {
-		this.currentPage = newPage;
+	private JpaDetailsPageManager<? extends JpaStructureNode> getPageManager(JpaStructureNode node) {
+		JpaStructureNode.ContextType nodeType = node.getContextType();
+		JpaDetailsPageManager<? extends JpaStructureNode> pageManager = this.pageManagers.get(nodeType);
+		if (pageManager == null) {
+			pageManager = this.buildPageManager(node);
+			if (pageManager != null) {
+				this.pageManagers.put(nodeType, pageManager);
+			}
+		}
+		return pageManager;
+	}
 
-		// Show new page
-		if (newPage == null) {
-			showDefaultPage();
-		}
-		else {
-			showPage(newPage.getControl());
-		}
+	private JpaDetailsPageManager<? extends JpaStructureNode> buildPageManager(JpaStructureNode node) {
+		return this.getJpaDetailsPageManagerFactory(node).buildPageManager(this.pageBook, this.widgetFactory);
+	}
+
+	private JpaDetailsPageManager.Factory getJpaDetailsPageManagerFactory(JpaStructureNode node) {
+		return (JpaDetailsPageManager.Factory) node.getAdapter(JpaDetailsPageManager.Factory.class);
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	public void setFocus() {
+		this.pageBook.setFocus();
 	}
 
 	@Override
 	public void dispose() {
-		for (Map<JptResourceType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> resourceTypeMap : this.detailsPages.values()) {
-			for (Map<String, JpaDetailsPage<? extends JpaStructureNode>> detailsPageMap : resourceTypeMap.values()) {
-				for (JpaDetailsPage<? extends JpaStructureNode> detailsPage : detailsPageMap.values()) {
-					detailsPage.dispose();
-				}
-			}
+		if (this.manager != null) {
+			this.dispose_();
 		}
-		this.detailsPages.clear();
-
-		this.currentSelection = JpaSelection.NULL_SELECTION;
-		this.currentPage = null;
-
 		super.dispose();
+	}
+
+	private void dispose_() {
+		this.manager.getJpaSelectionModel().removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
+		this.manager.dispose();
+
+		if (this.currentPageManager != null) {
+			this.currentPageManager.setSubject(null);
+			this.currentPageManager = null;
+		}
+		for (JpaDetailsPageManager<? extends JpaStructureNode> detailsPage : this.pageManagers.values()) {
+			detailsPage.dispose();
+		}
+		this.pageManagers.clear();
+	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this);
+	}
+
+
+	// ********** JPA view manager **********
+
+	/**
+	 * Adapter to the view's page manager.
+	 */
+	/* CU private */ class Manager
+		implements JpaViewManager
+	{
+		/**
+		 * The manager for the structure view's workbench page.
+		 */
+		private final JpaViewManager.PageManager pageManager;
+
+
+		Manager(JpaViewManager.PageManager pageManager) {
+			super();
+			if (pageManager == null) {
+				throw new NullPointerException();  // shouldn't happen...
+			}
+			this.pageManager = pageManager;
+			this.pageManager.addViewManager(this);
+		}
+
+		public IViewPart getView() {
+			return JpaDetailsView.this;
+		}
+
+		WritablePropertyValueModel<JpaStructureNode> getJpaSelectionModel() {
+			return this.pageManager.getJpaSelectionModel();
+		}
+
+		void dispose() {
+			this.pageManager.removeViewManager(this);
+		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
 	}
 }

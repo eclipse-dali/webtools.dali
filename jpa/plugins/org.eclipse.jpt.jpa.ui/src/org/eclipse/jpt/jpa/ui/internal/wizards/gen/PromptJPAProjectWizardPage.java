@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,13 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -23,7 +21,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -89,7 +87,7 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 			TableItem item =  projTable.getItem(projTable.getSelectionIndex());
 			String projName = item.getText(0);
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
-			JpaProject jpaProj = JptJpaCorePlugin.getJpaProject( project );
+			JpaProject jpaProj = this.getJpaProject( project );
 			((GenerateEntitiesFromSchemaWizard)getWizard()).setJpaProject(jpaProj);
 			validate();
 		}
@@ -100,7 +98,7 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 		List<String> projNames = new ArrayList<String>();
 		for ( IProject project : projects )
 		{
-			JpaProject jpaProj = JptJpaCorePlugin.getJpaProject( project );
+			JpaProject jpaProj = this.getJpaProject( project );
 			if ( jpaProj != null ) {
 				projNames.add(project.getName());
 			}
@@ -108,6 +106,10 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 		projTableViewer.setInput(projNames);
 	}
 	
+	private JpaProject getJpaProject(IProject project) {
+		return (JpaProject) project.getAdapter(JpaProject.class);
+	}
+
 	private void validate() {
 		if (projTable.getSelectionIndex() != -1)
 			setPageComplete(true);

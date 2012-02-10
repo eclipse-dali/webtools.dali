@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.tests.internal;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.ExceptionHandler;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
 
 public class ExceptionHandlerTests extends TestCase {
 
@@ -29,8 +29,8 @@ public class ExceptionHandlerTests extends TestCase {
 		assertNotNull(exceptionHandler.toString());
 	}
 
-	public void testRuntimeExceptionHandler() {
-		Exception npe = new NullPointerException();
+	public void testRuntimeExceptionHandler1() {
+		Exception npe = new Exception();
 		ExceptionHandler exceptionHandler = ExceptionHandler.Runtime.instance();
 		boolean exCaught = false;
 		try {
@@ -38,6 +38,20 @@ public class ExceptionHandlerTests extends TestCase {
 			fail();
 		} catch (RuntimeException ex) {
 			assertSame(npe, ex.getCause());
+			exCaught = true;
+		}
+		assertTrue(exCaught);
+	}
+
+	public void testRuntimeExceptionHandler2() {
+		Exception npe = new NullPointerException();
+		ExceptionHandler exceptionHandler = ExceptionHandler.Runtime.instance();
+		boolean exCaught = false;
+		try {
+			exceptionHandler.handleException(npe);
+			fail();
+		} catch (RuntimeException ex) {
+			assertSame(npe, ex);
 			exCaught = true;
 		}
 		assertTrue(exCaught);

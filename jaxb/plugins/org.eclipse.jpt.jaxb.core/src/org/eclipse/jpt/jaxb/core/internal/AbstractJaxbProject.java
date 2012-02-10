@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,17 +38,17 @@ import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.common.core.resource.ResourceLocator;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
-import org.eclipse.jpt.common.utility.Command;
-import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.ThreadLocalCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -182,7 +182,7 @@ public abstract class AbstractJaxbProject
 	/**
 	 * Support for modifying documents shared with the UI.
 	 */
-	protected final ThreadLocalCommandExecutor modifySharedDocumentCommandExecutor;
+	protected final ThreadLocalExtendedCommandExecutor modifySharedDocumentCommandExecutor;
 
 
 	// ********** constructor/initialization **********
@@ -230,8 +230,8 @@ public abstract class AbstractJaxbProject
 		return this.project;
 	}
 
-	protected ThreadLocalCommandExecutor buildModifySharedDocumentCommandExecutor() {
-		return new ThreadLocalCommandExecutor();
+	protected ThreadLocalExtendedCommandExecutor buildModifySharedDocumentCommandExecutor() {
+		return new ThreadLocalExtendedCommandExecutor();
 	}
 
 	protected InitialResourceProxyVisitor buildInitialResourceProxyVisitor() {
@@ -390,7 +390,7 @@ public abstract class AbstractJaxbProject
 				return null;
 			}
 		}
-		else if (! isInAcceptableResourceLocation(file)) {
+		else if (! fileResourceLocationIsValid(file)) {
 			return null;  
 		}
 
@@ -420,9 +420,12 @@ public abstract class AbstractJaxbProject
 	}
 	
 	/* (non-java resource) file is in acceptable resource location */
-	protected boolean isInAcceptableResourceLocation(IFile file) {
-		ResourceLocator resourceLocator = JptCommonCorePlugin.getResourceLocator(getProject());
-		return resourceLocator.acceptResourceLocation(getProject(), file.getParent());
+	protected boolean fileResourceLocationIsValid(IFile file) {
+		return this.getProjectResourceLocator().resourceLocationIsValid(file.getParent());
+	}
+
+	protected ProjectResourceLocator getProjectResourceLocator() {
+		return (ProjectResourceLocator) this.project.getAdapter(ProjectResourceLocator.class);
 	}
 	
 	/**
@@ -1465,11 +1468,11 @@ public abstract class AbstractJaxbProject
 
 	// ********** support for modifying documents shared with the UI **********
 
-	public void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor) {
+	public void setThreadLocalModifySharedDocumentCommandExecutor(ExtendedCommandExecutor commandExecutor) {
 		this.modifySharedDocumentCommandExecutor.set(commandExecutor);
 	}
 
-	public CommandExecutor getModifySharedDocumentCommandExecutor() {
+	public ExtendedCommandExecutor getModifySharedDocumentCommandExecutor() {
 		return this.modifySharedDocumentCommandExecutor;
 	}
 

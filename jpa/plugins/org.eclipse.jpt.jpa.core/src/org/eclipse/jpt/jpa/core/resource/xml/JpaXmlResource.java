@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,7 @@ package org.eclipse.jpt.jpa.core.resource.xml;
 
 import java.io.IOException;
 import java.util.Collections;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.content.IContentType;
@@ -235,19 +233,10 @@ public class JpaXmlResource
 		return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileName));
 	}
 	
-	public IProject getProject() {
-		return this.getFile().getProject();
-	}
-	
-	public void modify(Runnable runnable) {
+	public void save() {
 		try {
-			runnable.run();
-			try {
-				save(Collections.EMPTY_MAP);
-			} catch (IOException ex) {
-				JptJpaCorePlugin.log(ex);
-			}
-		} catch (Exception ex) {
+			this.save(Collections.EMPTY_MAP);
+		} catch (IOException ex) {
 			JptJpaCorePlugin.log(ex);
 		}
 	}

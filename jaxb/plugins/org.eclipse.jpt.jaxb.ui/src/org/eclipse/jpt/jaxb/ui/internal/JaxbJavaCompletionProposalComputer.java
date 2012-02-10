@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012 Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -120,7 +120,7 @@ public class JaxbJavaCompletionProposalComputer
 		// the context's "token" is really a sort of "prefix" - it does NOT
 		// correspond to the "start" and "end" we get below... 
 		char[] prefix = cc.getToken();
-		Filter<String> filter = ((prefix == null) ? Filter.Null.<String>instance() : new IgnoreCasePrefixFilter(prefix));
+		Filter<String> filter = ((prefix == null) ? Filter.Transparent.<String>instance() : new IgnoreCasePrefixFilter(prefix));
 		// the token "start" is the offset of the token's first character
 		int tokenStart = cc.getTokenStart();
 		// the token "end" is the offset of the token's last character (yuk)

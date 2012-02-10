@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -71,7 +71,7 @@ public class SetCollectionValueModel<E>
 	@Override
 	protected void engageModel() {
 		super.engageModel();
-		// synch our cache *after* we start listening to the nested collection,
+		// sync our cache *after* we start listening to the nested collection,
 		// since its value might change when a listener is added
 		CollectionTools.addAll(this.bag, this.collectionHolder);
 	}
@@ -130,5 +130,4 @@ public class SetCollectionValueModel<E>
 	public void toString(StringBuilder sb) {
 		StringTools.append(sb, this);
 	}
-
 }

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2010 SAP AG.
+ * Copyright (c) 2005, 2012 SAP AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,12 +44,11 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.internal.selection.DefaultJpaSelection;
-import org.eclipse.jpt.jpa.ui.internal.selection.JpaSelectionManager;
-import org.eclipse.jpt.jpa.ui.internal.selection.SelectionManagerFactory;
+import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui.JPADiagramEditorInput;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
@@ -286,8 +284,7 @@ public class JPADiagramEditor extends DiagramEditor {
 								(PictogramElement) m);
 				if ((bo == null) || (!(bo instanceof JpaStructureNode)))
 					return;
-				selectionManager.select(new DefaultJpaSelection(
-						(JpaStructureNode) bo), null);
+				selectionManager.setSelection((JpaStructureNode) bo);
 				return;
 			}
 		}
@@ -306,7 +303,7 @@ public class JPADiagramEditor extends DiagramEditor {
 			ISelectionManagerFactory {
 
 		public JpaSelectionManager getSelectionManager(IWorkbenchWindow window) {
-			return SelectionManagerFactory.getSelectionManager(window);
+			return PlatformTools.getAdapter(window, JpaSelectionManager.class);
 		}
 
 	}

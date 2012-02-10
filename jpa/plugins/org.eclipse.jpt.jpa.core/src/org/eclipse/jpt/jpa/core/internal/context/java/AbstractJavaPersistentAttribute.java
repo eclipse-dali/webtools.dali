@@ -35,7 +35,6 @@ import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefiniti
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
@@ -437,8 +436,12 @@ public abstract class AbstractJavaPersistentAttribute
 
 	// ********** JpaStructureNode implementation **********
 
-	public String getId() {
-		return JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID;
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
+
+	public Class<JavaPersistentAttribute> getType() {
+		return JavaPersistentAttribute.class;
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
@@ -591,9 +594,9 @@ public abstract class AbstractJavaPersistentAttribute
 	public boolean contains(int offset, CompilationUnit astRoot) {
 		TextRange fullTextRange = this.getResourceAttribute().getTextRange(astRoot);
 		// 'fullTextRange' will be null if the attribute no longer exists in the java;
-		// the context model can be out of synch with the resource model
+		// the context model can be out of sync with the resource model
 		// when a selection event occurs before the context model has a
-		// chance to synch with the resource model via the update thread
+		// chance to sync with the resource model via the update thread
 		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
  * An adapter that allows us to transform a {@link ListValueModel}
  * (or adapted {@link CollectionValueModel}) into a read-only {@link ListValueModel}
  * whose items are tranformations of the items in the wrapped
- * {@link ListValueModel}. It will keep its contents in synch with
+ * {@link ListValueModel}. It will keep its contents in sync with
  * the contents of the wrapped {@link ListValueModel} and notifies its
  * listeners of any changes.
  * <p>
@@ -43,7 +43,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
  * wrapped item is <code>null</code>, override {@link #transformItem(Object)}.
  * <p>
  * <strong>NB:</strong> Since we only listen to the wrapped list when we have
- * listeners ourselves and we can only stay in synch with the wrapped
+ * listeners ourselves and we can only stay in sync with the wrapped
  * list while we are listening to it, results to various methods
  * (e.g. {@link #size()}, {@link #get(int)}) will be unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
@@ -139,7 +139,7 @@ public class TransformationListValueModel<E1, E2>
     @Override
 	protected void engageModel() {
 		super.engageModel();
-		// synch the transformed list *after* we start listening to the list holder,
+		// sync the transformed list *after* we start listening to the list model,
 		// since its value might change when a listener is added
 		this.transformedList.addAll(this.transformItems(this.listHolder));
 	}
@@ -305,5 +305,4 @@ public class TransformationListValueModel<E1, E2>
 			return (item == null) ? null : TransformationListValueModel.this.transformItem_(item);
 		}
 	}
-
 }

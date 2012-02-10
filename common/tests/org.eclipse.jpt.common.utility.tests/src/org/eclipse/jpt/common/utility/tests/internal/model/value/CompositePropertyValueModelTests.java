@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -57,20 +57,15 @@ public class CompositePropertyValueModelTests extends TestCase {
 		this.compositePVM = this.buildCompositePVM(cvm);
 	}
 
-	private <T extends PropertyValueModel<?>> PropertyValueModel<Integer> buildCompositePVM(CollectionValueModel<T> pvms) {
-		return new CompositePropertyValueModel<Integer>(pvms) {
+	private <T extends PropertyValueModel<Integer>> PropertyValueModel<Integer> buildCompositePVM(CollectionValueModel<T> pvms) {
+		return new CompositePropertyValueModel<Integer, Integer>(pvms) {
 			@Override
 			protected Integer buildValue() {
 				int sum = 0;
-				for (PropertyValueModel<Integer> each : this.getCollectionModel()) {
+				for (PropertyValueModel<? extends Integer> each : this.collectionModel) {
 					sum += each.getValue().intValue();
 				}
 				return Integer.valueOf(sum);
-			}
-			@Override
-			@SuppressWarnings("unchecked")
-			protected CollectionValueModel<PropertyValueModel<Integer>> getCollectionModel() {
-				return (CollectionValueModel<PropertyValueModel<Integer>>) super.getCollectionModel();
 			}
 		};
 	}
@@ -195,5 +190,4 @@ public class CompositePropertyValueModelTests extends TestCase {
 		assertEquals(Integer.valueOf(oldValue), this.event.getOldValue());
 		assertEquals(Integer.valueOf(newValue), this.event.getNewValue());
 	}
-
 }

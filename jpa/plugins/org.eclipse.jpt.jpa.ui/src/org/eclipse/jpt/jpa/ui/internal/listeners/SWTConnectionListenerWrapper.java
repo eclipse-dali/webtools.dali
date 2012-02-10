@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.listeners;
 
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
@@ -18,7 +20,6 @@ import org.eclipse.jpt.jpa.db.ForeignKey;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Sequence;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another connection listener and forward events to it on the SWT
@@ -39,310 +40,298 @@ public class SWTConnectionListenerWrapper
 	}
 
 	public void opened(ConnectionProfile profile) {
-		if (this.isExecutingOnUIThread()) {
-			this.opened_(profile);
-		} else {
-			this.executeOnUIThread(this.buildOpenedRunnable(profile));
+		this.execute(new OpenedRunnable(profile));
+	}
+
+	/* CU private */ class OpenedRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		OpenedRunnable(ConnectionProfile profile) {
+			super();
+			this.profile = profile;
 		}
-	}
-
-	public void modified(ConnectionProfile profile) {
-		if (this.isExecutingOnUIThread()) {
-			this.modified_(profile);
-		} else {
-			this.executeOnUIThread(this.buildModifiedRunnable(profile));
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.opened_(this.profile);
 		}
-	}
-
-	public boolean okToClose(ConnectionProfile profile) {
-		if (this.isExecutingOnUIThread()) {
-			return this.okToClose_(profile);
-		}
-		this.executeOnUIThread(this.buildOkToCloseRunnable(profile));
-		return true;
-	}
-
-	public void aboutToClose(ConnectionProfile profile) {
-		if (this.isExecutingOnUIThread()) {
-			this.aboutToClose_(profile);
-		} else {
-			this.executeOnUIThread(this.buildAboutToCloseRunnable(profile));
-		}
-	}
-
-	public void closed(ConnectionProfile profile) {
-		if (this.isExecutingOnUIThread()) {
-			this.closed_(profile);
-		} else {
-			this.executeOnUIThread(this.buildClosedRunnable(profile));
-		}
-	}
-
-	public void databaseChanged(ConnectionProfile profile, Database database) {
-		if (this.isExecutingOnUIThread()) {
-			this.databaseChanged_(profile, database);
-		} else {
-			this.executeOnUIThread(this.buildDatabaseChangedRunnable(profile, database));
-		}
-	}
-
-	public void catalogChanged(ConnectionProfile profile, Catalog catalog) {
-		if (this.isExecutingOnUIThread()) {
-			this.catalogChanged_(profile, catalog);
-		} else {
-			this.executeOnUIThread(this.buildCatalogChangedRunnable(profile, catalog));
-		}
-	}
-
-	public void schemaChanged(ConnectionProfile profile, Schema schema) {
-		if (this.isExecutingOnUIThread()) {
-			this.schemaChanged_(profile, schema);
-		} else {
-			this.executeOnUIThread(this.buildSchemaChangedRunnable(profile, schema));
-		}
-	}
-
-	public void sequenceChanged(ConnectionProfile profile, Sequence sequence) {
-		if (this.isExecutingOnUIThread()) {
-			this.sequenceChanged_(profile, sequence);
-		} else {
-			this.executeOnUIThread(this.buildSequenceChangedRunnable(profile, sequence));
-		}
-	}
-
-	public void tableChanged(ConnectionProfile profile, Table table) {
-		if (this.isExecutingOnUIThread()) {
-			this.tableChanged_(profile, table);
-		} else {
-			this.executeOnUIThread(this.buildTableChangedRunnable(profile, table));
-		}
-	}
-
-	public void columnChanged(ConnectionProfile profile, Column column) {
-		if (this.isExecutingOnUIThread()) {
-			this.columnChanged_(profile, column);
-		} else {
-			this.executeOnUIThread(this.buildColumnChangedRunnable(profile, column));
-		}
-	}
-
-	public void foreignKeyChanged(ConnectionProfile profile, ForeignKey foreignKey) {
-		if (this.isExecutingOnUIThread()) {
-			this.foreignKeyChanged_(profile, foreignKey);
-		} else {
-			this.executeOnUIThread(this.buildForeignKeyChangedRunnable(profile, foreignKey));
-		}
-	}
-
-	private Runnable buildOpenedRunnable(final ConnectionProfile profile) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.opened_(profile);
-			}
-			@Override
-			public String toString() {
-				return "opened runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildModifiedRunnable(final ConnectionProfile profile) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.modified_(profile);
-			}
-			@Override
-			public String toString() {
-				return "modified runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildOkToCloseRunnable(final ConnectionProfile profile) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.okToClose_(profile);
-			}
-			@Override
-			public String toString() {
-				return "OK to close runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildAboutToCloseRunnable(final ConnectionProfile profile) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.aboutToClose_(profile);
-			}
-			@Override
-			public String toString() {
-				return "about to close runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildClosedRunnable(final ConnectionProfile profile) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.closed_(profile);
-			}
-			@Override
-			public String toString() {
-				return "closed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildDatabaseChangedRunnable(final ConnectionProfile profile, final Database database) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.databaseChanged_(profile, database);
-			}
-			@Override
-			public String toString() {
-				return "database changed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildCatalogChangedRunnable(final ConnectionProfile profile, final Catalog catalog) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.catalogChanged_(profile, catalog);
-			}
-			@Override
-			public String toString() {
-				return "catalog changed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildSchemaChangedRunnable(final ConnectionProfile profile, final Schema schema) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.schemaChanged_(profile, schema);
-			}
-			@Override
-			public String toString() {
-				return "schema changed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildSequenceChangedRunnable(final ConnectionProfile profile, final Sequence sequence) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.sequenceChanged_(profile, sequence);
-			}
-			@Override
-			public String toString() {
-				return "sequence changed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildTableChangedRunnable(final ConnectionProfile profile, final Table table) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.tableChanged_(profile, table);
-			}
-			@Override
-			public String toString() {
-				return "table changed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildColumnChangedRunnable(final ConnectionProfile profile, final Column column) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.columnChanged_(profile, column);
-			}
-			@Override
-			public String toString() {
-				return "column changed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildForeignKeyChangedRunnable(final ConnectionProfile profile, final ForeignKey foreignKey) {
-		return new Runnable() {
-			public void run() {
-				SWTConnectionListenerWrapper.this.foreignKeyChanged_(profile, foreignKey);
-			}
-			@Override
-			public String toString() {
-				return "foreign key changed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private boolean isExecutingOnUIThread() {
-		return Display.getCurrent() != null;
-	}
-
-	/**
-	 * {@link Display#asyncExec(Runnable)} seems to work OK;
-	 * but using {@link Display#syncExec(Runnable)} can somtimes make things
-	 * more predictable when debugging, at the risk of deadlocks.
-	 */
-	private void executeOnUIThread(Runnable r) {
-		Display.getDefault().asyncExec(r);
-//		Display.getDefault().syncExec(r);
 	}
 
 	void opened_(ConnectionProfile profile) {
 		this.listener.opened(profile);
 	}
 
+	public void modified(ConnectionProfile profile) {
+		this.execute(new ModifiedRunnable(profile));
+	}
+
+	/* CU private */ class ModifiedRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		ModifiedRunnable(ConnectionProfile profile) {
+			super();
+			this.profile = profile;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.modified_(this.profile);
+		}
+	}
+
 	void modified_(ConnectionProfile profile) {
 		this.listener.modified(profile);
+	}
+
+	public boolean okToClose(ConnectionProfile profile) {
+		OkToCloseRunnable r = new OkToCloseRunnable(profile);
+		this.execute(r);
+		return r.result;  // result is unpredictable...
+	}
+
+	/* CU private */ class OkToCloseRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		volatile boolean result = true;
+		OkToCloseRunnable(ConnectionProfile profile) {
+			super();
+			this.profile = profile;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.okToClose_(this.profile);
+		}
 	}
 
 	boolean okToClose_(ConnectionProfile profile) {
 		return this.listener.okToClose(profile);
 	}
 
+	public void aboutToClose(ConnectionProfile profile) {
+		this.execute(new AboutToCloseRunnable(profile));
+	}
+
+	/* CU private */ class AboutToCloseRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		AboutToCloseRunnable(ConnectionProfile profile) {
+			super();
+			this.profile = profile;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.aboutToClose_(this.profile);
+		}
+	}
+
 	void aboutToClose_(ConnectionProfile profile) {
 		this.listener.aboutToClose(profile);
+	}
+
+	public void closed(ConnectionProfile profile) {
+		this.execute(new ClosedRunnable(profile));
+	}
+
+	/* CU private */ class ClosedRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		ClosedRunnable(ConnectionProfile profile) {
+			super();
+			this.profile = profile;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.closed_(this.profile);
+		}
 	}
 
 	void closed_(ConnectionProfile profile) {
 		this.listener.closed(profile);
 	}
 
+	public void databaseChanged(ConnectionProfile profile, Database database) {
+		this.execute(new DatabaseChangedRunnable(profile, database));
+	}
+
+	/* CU private */ class DatabaseChangedRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		private final Database database;
+		DatabaseChangedRunnable(ConnectionProfile profile, Database database) {
+			super();
+			this.profile = profile;
+			this.database = database;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.databaseChanged_(this.profile, this.database);
+		}
+	}
+
 	void databaseChanged_(ConnectionProfile profile, Database database) {
 		this.listener.databaseChanged(profile, database);
+	}
+
+	public void catalogChanged(ConnectionProfile profile, Catalog catalog) {
+		this.execute(new CatalogChangedRunnable(profile, catalog));
+	}
+
+	/* CU private */ class CatalogChangedRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		private final Catalog catalog;
+		CatalogChangedRunnable(ConnectionProfile profile, Catalog catalog) {
+			super();
+			this.profile = profile;
+			this.catalog = catalog;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.catalogChanged_(this.profile, this.catalog);
+		}
 	}
 
 	void catalogChanged_(ConnectionProfile profile, Catalog catalog) {
 		this.listener.catalogChanged(profile, catalog);
 	}
 
+	public void schemaChanged(ConnectionProfile profile, Schema schema) {
+		this.execute(new SchemaChangedRunnable(profile, schema));
+	}
+
+	/* CU private */ class SchemaChangedRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		private final Schema schema;
+		SchemaChangedRunnable(ConnectionProfile profile, Schema schema) {
+			super();
+			this.profile = profile;
+			this.schema = schema;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.schemaChanged_(this.profile, this.schema);
+		}
+	}
+
 	void schemaChanged_(ConnectionProfile profile, Schema schema) {
 		this.listener.schemaChanged(profile, schema);
+	}
+
+	public void sequenceChanged(ConnectionProfile profile, Sequence sequence) {
+		this.execute(new SequenceChangedRunnable(profile, sequence));
+	}
+
+	/* CU private */ class SequenceChangedRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		private final Sequence sequence;
+		SequenceChangedRunnable(ConnectionProfile profile, Sequence sequence) {
+			super();
+			this.profile = profile;
+			this.sequence = sequence;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.sequenceChanged_(this.profile, this.sequence);
+		}
 	}
 
 	void sequenceChanged_(ConnectionProfile profile, Sequence sequence) {
 		this.listener.sequenceChanged(profile, sequence);
 	}
 
+	public void tableChanged(ConnectionProfile profile, Table table) {
+		this.execute(new TableChangedRunnable(profile, table));
+	}
+
+	/* CU private */ class TableChangedRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		private final Table table;
+		TableChangedRunnable(ConnectionProfile profile, Table table) {
+			super();
+			this.profile = profile;
+			this.table = table;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.tableChanged_(this.profile, this.table);
+		}
+	}
+
 	void tableChanged_(ConnectionProfile profile, Table table) {
 		this.listener.tableChanged(profile, table);
+	}
+
+	public void columnChanged(ConnectionProfile profile, Column column) {
+		this.execute(new ColumnChangedRunnable(profile, column));
+	}
+
+	/* CU private */ class ColumnChangedRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		private final Column column;
+		ColumnChangedRunnable(ConnectionProfile profile, Column column) {
+			super();
+			this.profile = profile;
+			this.column = column;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.columnChanged_(this.profile, this.column);
+		}
 	}
 
 	void columnChanged_(ConnectionProfile profile, Column column) {
 		this.listener.columnChanged(profile, column);
 	}
 
+	public void foreignKeyChanged(ConnectionProfile profile, ForeignKey foreignKey) {
+		this.execute(new ForeignKeyChangedRunnable(profile, foreignKey));
+	}
+
+	/* CU private */ class ForeignKeyChangedRunnable
+		extends RunnableAdapter
+	{
+		private final ConnectionProfile profile;
+		private final ForeignKey foreignKey;
+		ForeignKeyChangedRunnable(ConnectionProfile profile, ForeignKey foreignKey) {
+			super();
+			this.profile = profile;
+			this.foreignKey = foreignKey;
+		}
+		@Override
+		public void run() {
+			SWTConnectionListenerWrapper.this.foreignKeyChanged_(this.profile, this.foreignKey);
+		}
+	}
+
 	void foreignKeyChanged_(ConnectionProfile profile, ForeignKey foreignKey) {
 		this.listener.foreignKeyChanged(profile, foreignKey);
 	}
 
-	@Override
-	public String toString() {
-		return "SWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
+	/**
+	 * {@link SWTUtil#execute(Runnable)} seems to work OK;
+	 * but using {@link SWTUtil#syncExec(Runnable)} can somtimes make things
+	 * more predictable when debugging, at the risk of deadlocks.
+	 */
+	private void execute(Runnable r) {
+		SWTUtil.execute(r);
+//		SWTUtil.syncExec(r);
 	}
 
+	@Override
+	public String toString() {
+		return "SWT(" + this.listener + ')'; //$NON-NLS-1$
+	}
 }

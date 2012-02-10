@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.structure.EclipseLinkOrmResourceModelStructureProvider;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmTypeMappingUiDefinition;
@@ -33,8 +33,8 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingUiDefiniti
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmTransientMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmVersionMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmElementCollectionMapping2_0UiDefinition;
-import org.eclipse.jpt.jpa.ui.structure.JpaStructureProvider;
 
 public class EclipseLinkOrmXml2_0UiDefinition
 	extends AbstractOrmXmlResourceUiDefinition
@@ -68,8 +68,8 @@ public class EclipseLinkOrmXml2_0UiDefinition
 		return resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_0_RESOURCE_TYPE);
 	}
 	
-	public JpaStructureProvider getStructureProvider() {
-		return EclipseLinkOrmResourceModelStructureProvider.instance();
+	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
+		return OrmXmlUiDefinition.STRUCTURE_VIEW_FACTORY_PROVIDER;
 	}
 	
 	@Override

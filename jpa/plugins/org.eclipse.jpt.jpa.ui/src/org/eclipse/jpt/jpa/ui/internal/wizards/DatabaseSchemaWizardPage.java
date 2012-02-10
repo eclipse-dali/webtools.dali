@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.EventListener;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -135,7 +136,7 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 	 */
 	class DatabaseGroup {
 
-		// these are kept in synch with the selection
+		// these are kept in sync with the selection
 		private Schema selectedSchema;
 
 		private final Combo schemaComboBox;
@@ -351,29 +352,29 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 		}
 
 		private ConnectionListener buildConnectionListener() {
-			return new ConnectionAdapter() {
-				@Override
-				public void opened(ConnectionProfile cp) {
-					this.connectionChanged();
-				}
-				@Override  // this probably won't ever get called...
-				public void closed(ConnectionProfile cp) {
-					this.connectionChanged();
-				}
-				private void connectionChanged() {
-					Display.getDefault().asyncExec(
-						new Runnable() {
-							public void run() {
-								DatabaseGroup.this.connectionChanged();
-							}
+			return new LocalConnectionListener();
+		}
+
+		class LocalConnectionListener
+			extends ConnectionAdapter
+		{
+			@Override
+			public void opened(ConnectionProfile cp) {
+				this.connectionChanged();
+			}
+			@Override  // this probably won't ever get called...
+			public void closed(ConnectionProfile cp) {
+				this.connectionChanged();
+			}
+			private void connectionChanged() {
+				SWTUtil.asyncExec(
+					new Runnable() {
+						public void run() {
+							DatabaseGroup.this.connectionChanged();
 						}
-					);
-				}
-				@Override
-				public String toString() {
-					return "DatabaseSchemaWizardPage connection listener"; //$NON-NLS-1$
-				}
-			};
+					}
+				);
+			}
 		}
 
 		private SelectionListener buildAddJpaProjectConnectionLinkListener() {

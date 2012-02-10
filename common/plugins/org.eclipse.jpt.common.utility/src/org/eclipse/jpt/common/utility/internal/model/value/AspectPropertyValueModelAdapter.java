@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,11 +41,14 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  *     override this method only if something must be done when the subject
  *     is <code>null</code> (e.g. throw an exception)
  * </ul>
- * To notify listeners, subclasses can call {@link #propertyChanged()}
+ * To notify listeners, subclasses can call {@link #aspectChanged()}
  * whenever the aspect has changed.
+ * 
+ * @param <S> the type of the model's subject
+ * @param <V> the type of the subject's property aspect
  */
 public abstract class AspectPropertyValueModelAdapter<S, V>
-	extends AspectAdapter<S>
+	extends AspectAdapter<S, V>
 	implements WritablePropertyValueModel<V>
 {
 	/**
@@ -55,17 +58,18 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	 * not be in the property change event fired by the subject,
 	 * especially when dealing with multiple aspects.
 	 */
-	protected V value;
+	protected volatile V value;
 
 
-	// ********** constructors **********
+	// ********** constructor **********
 
 	/**
 	 * Construct a property value model adapter for an aspect of the
 	 * specified subject.
+	 * The subject model cannot be <code>null</code>.
 	 */
-	protected AspectPropertyValueModelAdapter(PropertyValueModel<? extends S> subjectHolder) {
-		super(subjectHolder);
+	protected AspectPropertyValueModelAdapter(PropertyValueModel<? extends S> subjectModel) {
+		super(subjectModel);
 		// our value is null when we are not listening to the subject
 		this.value = null;
 	}
@@ -76,7 +80,6 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	/**
 	 * Return the value of the subject's aspect.
 	 */
-	@Override
 	public final V getValue() {
 		return this.value;
 	}
@@ -95,7 +98,8 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 
 	/**
 	 * Set the value of the subject's aspect.
-	 * At this point we can be sure the subject is not null.
+	 * At this point we can be sure the {@link #subject} is
+	 * <em>not</em> <code>null</code>.
 	 * @see #setValue(Object)
 	 */
 	protected void setValue_(@SuppressWarnings("unused") V value) {
@@ -104,6 +108,11 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 
 
 	// ********** AspectAdapter implementation **********
+
+	@Override
+	protected V getAspectValue() {
+		return this.value;
+	}
 
 	@Override
 	protected Class<? extends EventListener> getListenerClass() {
@@ -121,14 +130,14 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	}
 
     @Override
-	protected void fireAspectChanged(Object oldValue, Object newValue) {
+	protected void fireAspectChanged(V oldValue, V newValue) {
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 
     @Override
 	protected void engageSubject() {
 		super.engageSubject();
-		// synch our value *after* we start listening to the subject,
+		// sync our value *after* we start listening to the subject,
 		// since its value might change when a listener is added
 		this.value = this.buildValue();
 	}
@@ -145,7 +154,7 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 
 	/**
 	 * Return the aspect's value.
-	 * At this point the subject may be null.
+	 * At this point the subject may be <code>null</code>.
 	 */
 	protected V buildValue() {
 		return (this.subject == null) ? null : this.buildValue_();
@@ -153,7 +162,8 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 
 	/**
 	 * Return the value of the subject's aspect.
-	 * At this point we can be sure the subject is not null.
+	 * At this point we can be sure the {@link #subject} is
+	 * <em>not</em> <code>null</code>.
 	 * @see #buildValue()
 	 */
 	protected V buildValue_() {
@@ -164,15 +174,13 @@ public abstract class AspectPropertyValueModelAdapter<S, V>
 	 * This method can be called by subclasses whenever the subject's aspect
 	 * has changed; listeners will be notified appropriately.
 	 */
-	protected void propertyChanged() {
+	protected void aspectChanged() {
 		V old = this.value;
-		this.value = this.buildValue();
-		this.fireAspectChanged(old, this.value);
+		this.fireAspectChanged(old, this.value = this.buildValue());
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);
 	}
-
 }

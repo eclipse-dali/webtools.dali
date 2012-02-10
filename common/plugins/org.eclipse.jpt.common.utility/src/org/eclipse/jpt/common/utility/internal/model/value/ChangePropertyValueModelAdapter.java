@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.common.utility.model.listener.SimpleChangeListener;
+import org.eclipse.jpt.common.utility.model.listener.AbstractChangeListener;
 
 /**
  * This abstract class provides the infrastructure needed to wrap
@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.listener.SimpleChangeListener;
  * its change notifications into property value model change
  * notifications.
  * <p>
- * Subclasses must override:<ul>
+ * Subclasses must implement:<ul>
  * <li>{@link #buildValue()}<p>
  *     to return the current property value, as derived from the
  *     current model
@@ -37,8 +37,8 @@ public abstract class ChangePropertyValueModelAdapter<T>
 	/** The wrapped model. */
 	protected final Model model;
 
-	/** A listener that allows us to synch with changes to the wrapped collection holder. */
-	protected final ChangeListener changeListener;
+	/** A listener that allows us to sync with changes to the wrapped collection model. */
+	protected final ChangeListener modelListener;
 
 
 	// ********** constructor/initialization **********
@@ -48,21 +48,24 @@ public abstract class ChangePropertyValueModelAdapter<T>
 	 */
 	protected ChangePropertyValueModelAdapter(Model model) {
 		super();
+		if (model == null) {
+			throw new NullPointerException();
+		}
 		this.model = model;
-		this.changeListener = this.buildChangeListener();
+		this.modelListener = this.buildChangeListener();
 	}
 
 	protected ChangeListener buildChangeListener() {
-		return new SimpleChangeListener() {
-			@Override
-			protected void modelChanged(ChangeEvent event) {
-				ChangePropertyValueModelAdapter.this.modelChanged(event);
-			}
-			@Override
-			public String toString() {
-				return "change listener command"; //$NON-NLS-1$
-			}
-		};
+		return new ModelListener();
+	}
+
+	protected class ModelListener
+		extends AbstractChangeListener
+	{
+		@Override
+		protected void modelChanged(ChangeEvent event) {
+			ChangePropertyValueModelAdapter.this.modelChanged(event);
+		}
 	}
 
 
@@ -73,7 +76,7 @@ public abstract class ChangePropertyValueModelAdapter<T>
 	 */
 	@Override
 	protected void engageModel_() {
-		this.model.addChangeListener(this.changeListener);
+		this.model.addChangeListener(this.modelListener);
 	}
 
 	/**
@@ -81,7 +84,7 @@ public abstract class ChangePropertyValueModelAdapter<T>
 	 */
 	@Override
 	protected void disengageModel_() {
-		this.model.removeChangeListener(this.changeListener);
+		this.model.removeChangeListener(this.modelListener);
 	}
 
 	
@@ -95,5 +98,4 @@ public abstract class ChangePropertyValueModelAdapter<T>
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
-
 }

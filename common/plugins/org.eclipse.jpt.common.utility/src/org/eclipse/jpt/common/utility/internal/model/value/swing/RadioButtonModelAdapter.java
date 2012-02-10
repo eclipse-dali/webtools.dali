@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,27 +9,28 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value.swing;
 
-import org.eclipse.jpt.common.utility.internal.BidiFilter;
-import org.eclipse.jpt.common.utility.internal.BidiTransformer;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringWritablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 
 /**
- * This javax.swing.ButtonModel can be used to keep a listener
- * (e.g. a JRadioButton) in synch with a (typically shared)
- * PropertyValueModel that holds one value out of a set of values.
- * 
- * NOTE: Do *not* use this model with a ButtonGroup, since the
+ * This {@link javax.swing.ButtonModel} can be used to keep a listener
+ * (e.g. a {@link javax.swing.JRadioButton}) in synch with a (typically shared)
+ * {@link org.eclipse.jpt.common.utility.model.value.PropertyValueModel}
+ * that holds one value out of a set of values.
+ * <p>
+ * <strong>NB:</strong> Do <em>not</em> use this model with a
+ * {@link javax.swing.ButtonGroup}, since the
  * shared value holder and the wrappers built by this adapter will
  * keep the appropriate radio button checked. Also, this allows
  * us to uncheck all the radio buttons in a group when the shared
- * value is null.
+ * value is <code>null</code>.
  */
 public class RadioButtonModelAdapter
 	extends ToggleButtonModelAdapter
 {
-
 	// ********** constructors **********
 
 	/**
@@ -60,8 +61,8 @@ public class RadioButtonModelAdapter
 	 * value to the button value.
 	 */
 	public static WritablePropertyValueModel<Boolean> buildBooleanHolder(WritablePropertyValueModel<Object> valueHolder, Object buttonValue) {
-		WritablePropertyValueModel<Object> filteringPVM = new FilteringWritablePropertyValueModel<Object>(valueHolder, new RadioButtonFilter(buttonValue));
-		return new TransformationWritablePropertyValueModel<Object, Boolean>(filteringPVM, new RadioButtonTransformer(buttonValue));
+		WritablePropertyValueModel<Object> filteringPVM = new FilteringWritablePropertyValueModel<Object>(valueHolder, Filter.Transparent.instance(), new SetRadioButtonFilter(buttonValue));
+		return new TransformationWritablePropertyValueModel<Object, Boolean>(filteringPVM, new RadioButtonTransformer(buttonValue), new ReverseRadioButtonTransformer(buttonValue));
 	}
 
 
@@ -85,42 +86,41 @@ public class RadioButtonModelAdapter
 	}
 
 
-	// ********** inner classes **********
+	// ********** filters **********
 
 	/**
 	 * This filter will only pass through a new value to the wrapped
-	 * value holder when it matches the configured button value.
+	 * value model when it matches the configured button value.
 	 */
-	public static class RadioButtonFilter implements BidiFilter<Object> {
+	public static class SetRadioButtonFilter
+		implements Filter<Object>
+	{
 		private Object buttonValue;
 
-		public RadioButtonFilter(Object buttonValue) {
+		public SetRadioButtonFilter(Object buttonValue) {
 			super();
 			this.buttonValue = buttonValue;
-		}
-
-		/**
-		 * always return the wrapped value
-		 */
-		public boolean accept(Object value) {
-			return true;
 		}
 
 		/**
 		 * pass through the value to the wrapped property value model
 		 * *only* when it matches our button value
 		 */
-		public boolean reverseAccept(Object value) {
+		public boolean accept(Object value) {
 			return (value != null) && value.equals(this.buttonValue);
 		}
-
 	}
 
+
+	// ********** transformers **********
+
 	/**
-	 * This transformer will convert the wrapped value to Boolean.TRUE
+	 * This transformer will convert a value to {@link Boolean#TRUE}
 	 * when it matches the configured button value.
 	 */
-	public static class RadioButtonTransformer implements BidiTransformer<Object, Boolean> {
+	public static class RadioButtonTransformer
+		implements Transformer<Object, Boolean>
+	{
 		private Object buttonValue;
 
 		public RadioButtonTransformer(Object buttonValue) {
@@ -129,23 +129,37 @@ public class RadioButtonModelAdapter
 		}
 
 		/**
-		 * if the wrapped value matches our button value return true,
-		 * if it is some other value return false;
-		 * but if it is null simply pass it through because it will cause the
-		 * button model's default value to be used
+		 * If the specified value matches the button value return {@link Boolean#TRUE},
+		 * if it is some other value return {@link Boolean#FALSE};
+		 * but if it is <code>null</code> simply pass it through because it will
+		 * cause the button model's default value to be used
 		 */
 		public Boolean transform(Object value) {
 			return (value == null) ? null : Boolean.valueOf(value.equals(this.buttonValue));
 		}
-
-		/**
-		 * if the new value is true, pass through the our button value;
-		 * otherwise pass through null
-		 */
-		public Object reverseTransform(Boolean value) {
-			return (value.booleanValue()) ? this.buttonValue : null;
-		}
-
 	}
 
+	/**
+	 * This transformer will convert {@link Boolean#TRUE} to the configured
+	 * button value and {@link Boolean#FALSE} to <code>null</code>.
+	 */
+	public static class ReverseRadioButtonTransformer
+		implements Transformer<Boolean, Object>
+	{
+		private Object buttonValue;
+
+		public ReverseRadioButtonTransformer(Object buttonValue) {
+			super();
+			this.buttonValue = buttonValue;
+		}
+
+		/**
+		 * If the specified value is {@link Boolean#TRUE},
+		 * pass through the our button value;
+		 * otherwise pass through <code>null</code>.
+		 */
+		public Object transform (Boolean value) {
+			return (value.booleanValue()) ? this.buttonValue : null;
+		}
+	}
 }

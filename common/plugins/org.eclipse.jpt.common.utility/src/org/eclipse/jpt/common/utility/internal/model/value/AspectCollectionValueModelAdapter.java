@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,22 +48,22 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
  *     override this method only if returning a zero when the
  *     subject is null is unacceptable
  * </ul>
- * To notify listeners, subclasses can call {@link #collectionChanged()}
+ * To notify listeners, subclasses can call {@link #aspectChanged()}
  * whenever the aspect has changed.
+ * 
+ * @param <S> the type of the model's subject
+ * @param <E> the type of the subject's collection aspect's elements
  */
 public abstract class AspectCollectionValueModelAdapter<S, E>
-	extends AspectAdapter<S>
+	extends AspectAdapter<S, Collection<E>>
 	implements CollectionValueModel<E>
 {
-
-	// ********** constructors **********
-
 	/**
 	 * Construct a collection value model adapter for an aspect of the
 	 * specified subject.
 	 */
-	protected AspectCollectionValueModelAdapter(PropertyValueModel<? extends S> subjectHolder) {
-		super(subjectHolder);
+	protected AspectCollectionValueModelAdapter(PropertyValueModel<? extends S> subjectModel) {
+		super(subjectModel);
 	}
 
 
@@ -78,7 +78,8 @@ public abstract class AspectCollectionValueModelAdapter<S, E>
 
 	/**
 	 * Return the elements of the subject's collection aspect.
-	 * At this point we can be sure the subject is not null.
+	 * At this point we can be sure the {@link #subject} is
+	 * <em>not</em> <code>null</code>.
 	 * @see #iterator()
 	 */
 	protected Iterator<E> iterator_() {
@@ -87,7 +88,8 @@ public abstract class AspectCollectionValueModelAdapter<S, E>
 
 	/**
 	 * Return the elements of the subject's collection aspect.
-	 * At this point we can be sure the subject is not null.
+	 * At this point we can be sure the {@link #subject} is
+	 * <em>not</em> <code>null</code>.
 	 * @see #iterator_()
 	 */
 	protected Iterable<E> getIterable() {
@@ -103,7 +105,8 @@ public abstract class AspectCollectionValueModelAdapter<S, E>
 
 	/**
 	 * Return the size of the subject's collection aspect.
-	 * At this point we can be sure the subject is not null.
+	 * At this point we can be sure the {@link #subject} is
+	 * <em>not</em> <code>null</code>.
 	 * @see #size()
 	 */
 	protected int size_() {
@@ -114,7 +117,7 @@ public abstract class AspectCollectionValueModelAdapter<S, E>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected Object getValue() {
+	protected Collection<E> getAspectValue() {
 		return this.buildValueCollection();
 	}
 
@@ -134,12 +137,11 @@ public abstract class AspectCollectionValueModelAdapter<S, E>
 	}
 
 	@Override
-	protected void fireAspectChanged(Object oldValue, Object newValue) {
-		@SuppressWarnings("unchecked") Collection<E> newCollection = (Collection<E>) newValue;
-		this.fireCollectionChanged(VALUES, newCollection);
+	protected void fireAspectChanged(Collection<E> oldValue, Collection<E> newValue) {
+		this.fireCollectionChanged(VALUES, newValue);
 	}
 
-	protected void collectionChanged() {
+	protected void aspectChanged() {
 		this.fireCollectionChanged(VALUES, this.buildValueCollection());
 	}
 
@@ -151,5 +153,4 @@ public abstract class AspectCollectionValueModelAdapter<S, E>
 	public void toString(StringBuilder sb) {
 		sb.append(this.buildValueCollection());
 	}
-
 }

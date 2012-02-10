@@ -391,7 +391,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 
 		protected boolean buildValue_() {
 			ReadOnlySecondaryTable table = getSubject();
-			return (table != null) && ! table.isVirtual() && listHolder.size() > 0;
+			return (table != null) && ! table.isVirtual() && listModel.size() > 0;
 		}
 
 		public void setValue(Boolean value) {

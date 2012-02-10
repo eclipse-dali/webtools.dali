@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,6 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -229,8 +228,12 @@ public class GenericClassRef
 
 	// ********** JpaStructureNode implementation **********
 
-	public String getId() {
-		return PersistenceStructureNodes.CLASS_REF_ID;
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
+
+	public Class<ClassRef> getType() {
+		return ClassRef.class;
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.editors;
 
 import java.util.ListIterator;
-
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
@@ -24,7 +24,6 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.FormWidgetFactory;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -34,7 +33,6 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -65,13 +63,12 @@ import org.eclipse.wst.sse.ui.StructuredTextEditor;
  * The pages shown before the XML source editor are retrieved from the
  * <code>JpaUiFactory</code>.
  *
- * @see JpaUiFactory
- *
  * @version 2.3
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public class PersistenceEditor extends FormEditor
+public class PersistenceEditor
+	extends FormEditor
 {
 	/**
 	 * The XML text editor.
@@ -89,7 +86,7 @@ public class PersistenceEditor extends FormEditor
 	 */
 	private WidgetFactory widgetFactory;
 
-	private final ResourceManager resourceManager;
+	final ResourceManager resourceManager;
 
 	/**
 	 * Creates a new <code>PersistenceEditor</code>.
@@ -99,20 +96,16 @@ public class PersistenceEditor extends FormEditor
 		this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
 		initialize();
 	}
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	public Object getAdapter(Class adapterClass) {
-		Object adapter = super.getAdapter(adapterClass);
-		if (adapter == null) {
-			adapter = editor.getAdapter(adapterClass);
-		}
-		return adapter;
-	}
 
 	/**
-	 * {@inheritDoc}
+	 * Delegate to the {@link #editor} if necessary.
 	 */
+	@Override
+	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapterClass) {
+		Object adapter = super.getAdapter(adapterClass);
+		return (adapter != null) ? adapter : this.editor.getAdapter(adapterClass);
+	}
+
 	@Override
 	protected void addPages() {
 		addPersistenceUnitPages();
@@ -140,19 +133,18 @@ public class PersistenceEditor extends FormEditor
 		if (resourceType == null) {
 			return;  // might not ever get here... (if we have a p.xml, it probably has a resource type...)
 		}
-		String platformId = jpaProject.getJpaPlatform().getId();
-		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
+		JpaPlatformUi jpaPlatformUI = (JpaPlatformUi) jpaProject.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		PersistenceXmlResourceUiDefinition definition = 
 			(PersistenceXmlResourceUiDefinition) jpaPlatformUI.getResourceUiDefinition(resourceType);
 
-		ListIterator<JpaPageComposite> pages = definition.buildPersistenceUnitComposites(
+		ListIterator<JpaPageComposite> puPages = definition.buildPersistenceUnitComposites(
 			buildPersistenceUnitHolder(),
 			getContainer(),
 			this.widgetFactory
 		);
 
-		while (pages.hasNext()) {
-			JpaPageComposite page = pages.next();
+		while (puPages.hasNext()) {
+			JpaPageComposite page = puPages.next();
 
 			try {
 				FormPage formPage = new Page(page);
@@ -184,10 +176,10 @@ public class PersistenceEditor extends FormEditor
 	}
 
 	private PropertyValueModel<JpaProject> buildJpaProjectHolder() {
-		return new CachingTransformationPropertyValueModel<IFileEditorInput, JpaProject>(this.editorInputHolder) {
+		return new TransformationPropertyValueModel<IFileEditorInput, JpaProject>(this.editorInputHolder) {
 			@Override
 			protected JpaProject transform_(IFileEditorInput fileEditorInput) {
-				return JptJpaCorePlugin.getJpaProject(fileEditorInput.getFile().getProject());
+				return PersistenceEditor.this.getJpaProject(fileEditorInput.getFile().getProject());
 			}
 		};
 	}
@@ -205,7 +197,7 @@ public class PersistenceEditor extends FormEditor
 		return new ListPropertyValueModelAdapter<PersistenceUnit>(buildPersistenceUnitListHolder()) {
 			@Override
 			protected PersistenceUnit buildValue() {
-				return listHolder.size() > 0 ? (PersistenceUnit) listHolder.get(0) : null;
+				return listModel.size() > 0 ? (PersistenceUnit) listModel.get(0) : null;
 			}
 		};
 	}
@@ -262,6 +254,7 @@ public class PersistenceEditor extends FormEditor
 
 	@Override
 	public void doSaveAs() {
+		// do nothing
 	}
 
 	@Override
@@ -299,15 +292,20 @@ public class PersistenceEditor extends FormEditor
 	 * @return The JPA project
 	 */
 	protected JpaProject getJpaProject() {
-		return JptJpaCorePlugin.getJpaProject(getEditorInput().getFile().getProject());
+		return this.getJpaProject(getEditorInput().getFile().getProject());
+	}
+
+	protected JpaProject getJpaProject(IProject project) {
+		return (JpaProject) project.getAdapter(JpaProject.class);
 	}
 
 	/**
 	 * This extension over <code>FormPage</code> simply complete the layout by
 	 * using the <code>JpaPageComposite</code>'s control as its form content.
 	 */
-	private class Page extends FormPage {
-
+	class Page
+		extends FormPage
+	{
 		/**
 		 * The wrapped page that actually contains the widgets to show with this
 		 * form page.
@@ -321,7 +319,7 @@ public class PersistenceEditor extends FormEditor
 		 *
 		 * @param page The wrapped <code>JpaPageComposite</code>
 		 */
-		private Page(JpaPageComposite page) {
+		Page(JpaPageComposite page) {
 
 			super(PersistenceEditor.this,
 			      page.getClass().getName(),
@@ -413,9 +411,10 @@ public class PersistenceEditor extends FormEditor
 			}
 		}
 
-		private class HelpAction extends Action {
-
-			private final String helpID;
+		private class HelpAction
+			extends Action
+		{
+			final String helpID;
 
 			HelpAction(String helpID) {
 				super(JptUiPersistenceMessages.PersistenceEditor_page_help,

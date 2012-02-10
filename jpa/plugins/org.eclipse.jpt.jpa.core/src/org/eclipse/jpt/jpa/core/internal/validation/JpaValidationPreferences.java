@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.internal.validation;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.jpt.common.core.IResourcePart;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.osgi.service.prefs.BackingStoreException;
@@ -48,33 +48,38 @@ public class JpaValidationPreferences {
 		
 		if (problemPreference == null){
 			return NO_SEVERITY_PREFERENCE;
-		} else if (problemPreference.equals(ERROR)){
+		}
+		if (problemPreference.equals(ERROR)){
 			return IMessage.HIGH_SEVERITY;
-		} else if (problemPreference.equals(WARNING)){
+		}
+		if (problemPreference.equals(WARNING)){
 			return IMessage.NORMAL_SEVERITY;
-		} else if (problemPreference.equals(INFO)){
+		}
+		if (problemPreference.equals(INFO)){
 			return IMessage.LOW_SEVERITY;
 		}
 		return NO_SEVERITY_PREFERENCE;
 	}
 
 	private static IProject getProject(Object targetObject) {
-		IAdaptable target = (IAdaptable)targetObject;
-		IResource resource = ((IResourcePart) target.getAdapter(IResourcePart.class)).getResource();
-		IProject project = resource.getProject();
-		return project;
+		IResource resource = PlatformTools.getAdapter(targetObject, IResource.class);
+		return (resource == null) ? null : resource.getProject();
 	}
 
 	/**
-	 * Returns whether or not this problem should be ignored based on project or
-	 * workspace preferences
+	 * Return whether the specified problem should <em>not</em> be ignored based
+	 * on project or workspace preferences.
 	 */
-	public static boolean isProblemIgnored(IProject project, String messageId){
-		String problemPreference = getPreference(project, messageId);
-		if (problemPreference != null && problemPreference.equals(IGNORE)){
-			return true;
-		}
-		return false;
+	public static boolean problemIsNotIgnored(IProject project, String messageId) {
+		return ! problemIsIgnored(project, messageId);
+	}
+
+	/**
+	 * Return whether the specified problem should be ignored based on project or
+	 * workspace preferences.
+	 */
+	public static boolean problemIsIgnored(IProject project, String messageId) {
+		return Tools.valuesAreEqual(getPreference(project, messageId), IGNORE);
 	}
 
 	private static String getPreference(IProject project, String messageId) {

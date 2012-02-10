@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 20124 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -92,7 +92,7 @@ public class CompositeListValueModel<E1, E2>
 	 * list value model. Use this constructor if<ul>
 	 * <li> the wrapped list value model already contains other
 	 *       list value models, or
-	 * <li> you want to override {@link #transform(E1)}
+	 * <li> you want to override {@link #transform(Object) transform(E1)}
 	 *       instead of building a {@link Transformer}
 	 * </ul>
 	 */
@@ -116,7 +116,7 @@ public class CompositeListValueModel<E1, E2>
 	 * list. Use this constructor if<ul>
 	 * <li> the wrapped list value model already contains other
 	 *       list value models, or
-	 * <li> you want to override {@link #transform(E1)}
+	 * <li> you want to override {@link #transform(Object) transform(E1)}
 	 *       instead of building a {@link Transformer}
 	 * </ul>
 	 */
@@ -137,7 +137,7 @@ public class CompositeListValueModel<E1, E2>
 	 * list. Use this constructor if<ul>
 	 * <li> the wrapped list value model already contains other
 	 *       list value models, or
-	 * <li> you want to override {@link #transform(E1)}
+	 * <li> you want to override {@link #transform(Object) transform(E1)}
 	 *       instead of building a {@link Transformer}
 	 * </ul>
 	 */
@@ -231,7 +231,7 @@ public class CompositeListValueModel<E1, E2>
 	@Override
 	protected void engageModel() {
 		super.engageModel();
-		// synch our cache *after* we start listening to the wrapped list,
+		// sync our cache *after* we start listening to the wrapped list,
 		// since its value might change when a listener is added
 		this.addComponentSources(0, this.listHolder, this.listHolder.size(), false);  // false = do not fire event
 	}
@@ -679,5 +679,4 @@ public class CompositeListValueModel<E1, E2>
 	protected ListValueModel<E2> getComponentLVM(ListEvent event) {
 		return (ListValueModel<E2>) event.getSource();
 	}
-
 }

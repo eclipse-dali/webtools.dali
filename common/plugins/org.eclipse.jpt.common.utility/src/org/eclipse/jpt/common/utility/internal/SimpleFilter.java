@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,47 +15,48 @@ import org.eclipse.jpt.common.utility.Filter;
 /**
  * Simple, abstract implementation of <code>Filter</code>
  * that holds on to a criterion object that can be used in the
- * <code>accept(Object)</code> or <code>reject(Object)</code>
+ * {@link #accept(Object) accept} or {@link #reject(Object) reject}
  * methods. Subclasses can override either of these methods,
  * depending on which is easier to implement. Note that at least
  * one of these methods <em>must</em> be overridden or
  * an infinite loop will occur. If both of them are overridden,
- * only the <code>accept(Object)</code> method will be used.
+ * only the {@link #accept(Object) accept} method will be used.
  * <p>
- * Simplifies the implementation of straightforward inner classes.
+ * This class simplifies the implementation of straightforward inner classes.
  * Here is an example of a filter that can be used by a
- * <code>FilteringIterator</code> to return only those strings
- * in the nested iterator start with "prefix":
+ * {@link org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable 
+ * FilteringIterable} to return only those strings
+ * in the nested iterable that start with <code>"prefix"</code>:
  * <pre>
- *	Filter<String> filter = new SimpleFilter<String>("prefix") {
- *		public boolean accept(String o) {
- *			return o.startsWith((String) criterion);
- *		}
- *	};
+ * Filter<String> filter = new SimpleFilter<String, String>("prefix") {
+ *     public boolean accept(String string) {
+ *         return string.startsWith(criterion);
+ *     }
+ * };
  * </pre>
  */
-public abstract class SimpleFilter<T, S>
+public abstract class SimpleFilter<T, C>
 	implements Filter<T>, Cloneable, Serializable
 {
-	protected final S criterion;
+	protected final C criterion;
 
 	private static final long serialVersionUID = 1L;
 
 
 	/**
-	 * More useful constructor. The specified criterion can
-	 * be used by a subclass to "accept" or "reject" objects.
-	 */
-	protected SimpleFilter(S criterion) {
-		super();
-		this.criterion = criterion;
-	}
-
-	/**
-	 * Construct a simple filter with a null criterion
+	 * Construct a simple filter with a <code>null</code> criterion
 	 */
 	protected SimpleFilter() {
 		this(null);
+	}
+
+	/**
+	 * More useful constructor. The specified criterion can
+	 * be used by a subclass to "accept" or "reject" objects.
+	 */
+	protected SimpleFilter(C criterion) {
+		super();
+		this.criterion = criterion;
 	}
 
 	/**
@@ -74,11 +75,19 @@ public abstract class SimpleFilter<T, S>
 		return ! this.reject(o);
 	}
 
+	/**
+	 * Return the filter's criterion.
+	 */
+	public C getCriterion() {
+		return this.criterion;
+	}
+
 	@Override
-	@SuppressWarnings("unchecked")
-	public SimpleFilter<T, S> clone() {
+	public SimpleFilter<T, C> clone() {
 		try {
-			return (SimpleFilter<T, S>) super.clone();
+			@SuppressWarnings("unchecked")
+			SimpleFilter<T, C> clone = (SimpleFilter<T, C>) super.clone();
+			return clone;
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
 		}
@@ -90,8 +99,7 @@ public abstract class SimpleFilter<T, S>
 			return false;
 		}
 		SimpleFilter<?, ?> other = (SimpleFilter<?, ?>) o;
-		return (this.criterion == null) ?
-			(other.criterion == null) : this.criterion.equals(other.criterion);
+		return Tools.valuesAreEqual(this.criterion, other.criterion);
 	}
 
 	@Override
@@ -103,5 +111,4 @@ public abstract class SimpleFilter<T, S>
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.criterion);
 	}
-
 }

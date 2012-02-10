@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2010 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2012 by SAP AG, Walldorf and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,6 @@ import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
@@ -456,12 +455,15 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	
 	protected JpaProject getTargetJpaProject() {
 		IProject project = getTargetProject();
-		if (project != null && JpaFacet.isInstalled(project)) {
-			return JptJpaCorePlugin.getJpaProject(project);
-		}
-		return null;
+		return ((project != null) && JpaFacet.isInstalled(project)) ?
+				this.getJpaProject(project) :
+				null;
 	}
 	
+	protected JpaProject getJpaProject(IProject project) {
+		return (JpaProject) project.getAdapter(JpaProject.class);
+	}
+
 	protected IContainer getJavaSourceContainer() {
 		String containerFullPath = getStringProperty(SOURCE_FOLDER);
 		JpaProject jpaProject = getTargetJpaProject();

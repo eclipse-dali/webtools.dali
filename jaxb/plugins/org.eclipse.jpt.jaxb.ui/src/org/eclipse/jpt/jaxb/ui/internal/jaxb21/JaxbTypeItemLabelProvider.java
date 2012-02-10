@@ -1,46 +1,50 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011 Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
-import org.eclipse.jpt.common.ui.internal.jface.AbstractItemLabelProvider;
-import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 
 
-public abstract class JaxbTypeItemLabelProvider
-		extends AbstractItemLabelProvider {
+public abstract class JaxbTypeItemLabelProvider<I extends JaxbType>
+	extends AbstractItemExtendedLabelProvider<I>
+{
+	protected final String text;
+	protected final String description;
 	
-	protected JaxbTypeItemLabelProvider(
-			JaxbType jaxbType, DelegatingContentAndLabelProvider labelProvider) {
-		
-		super(jaxbType, labelProvider);
-	}
-	
-	@Override
-	public JaxbType getModel() {
-		return (JaxbType) super.getModel();
+	protected JaxbTypeItemLabelProvider(I jaxbType, ItemLabelProvider.Manager manager) {
+		super(jaxbType, manager);
+		this.text = this.buildText();
+		this.description = this.buildDescription();
 	}
 
 	@Override
-	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(getModel().getTypeQualifiedName());
+	public String getText() {
+		return this.text;
+	}
+
+	protected String buildText() {
+		return this.item.getTypeQualifiedName();
 	}
 	
 	@Override
-	protected PropertyValueModel<String> buildDescriptionModel() {
+	public String getDescription() {
+		return this.description;
+	}
+	
+	protected String buildDescription() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getModel().getFullyQualifiedName());
+		sb.append(this.item.getFullyQualifiedName());
 		sb.append(" - ");  //$NON-NLS-1$
-		sb.append(getModel().getResource().getFullPath().makeRelative());
-		return new StaticPropertyValueModel<String>(sb.toString());
+		sb.append(this.item.getResource().getFullPath().makeRelative());
+		return sb.toString();
 	}
 }

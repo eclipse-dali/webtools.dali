@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.mapping.IResourceChangeDescriptionFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -22,7 +23,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -50,7 +51,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 
 /**
- * Participant in the move refactoring of {@link IFolders}s.
+ * Participant in the move refactoring of {@link IFolder}s.
  * Any mapping file references in the persistence.xml will be updated to reflect the new location.
  */
 public class JpaMoveFolderParticipant
@@ -116,16 +117,17 @@ public class JpaMoveFolderParticipant
 		//since the progress bar will hang if a large JPA project is being loaded, 
 		//we can at least set the subtask and report no progress. Only happens first time getJpaProjectManager() is called.
 		monitor.subTask(JpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
-		JpaProjectManager jpaProjectManager = JptJpaCorePlugin.getJpaProjectManager();
-		if (jpaProjectManager.getJpaProjectsSize() == 0) {
+		Iterable<JpaProject> jpaProjects = this.getJpaProjects();
+		int size = CollectionTools.size(jpaProjects);
+		if (size == 0) {
 			return null;
 		}
-		SubMonitor sm = SubMonitor.convert(monitor, jpaProjectManager.getJpaProjectsSize()*10 + 1);
+		SubMonitor sm = SubMonitor.convert(monitor, size*10 + 1);
 		sm.subTask(JpaCoreRefactoringMessages.JPA_MOVE_FOLDER_REFACTORING_SUB_TASK_NAME);
 		ResourceChangeChecker checker = (ResourceChangeChecker) context.getChecker(ResourceChangeChecker.class);
 		IResourceChangeDescriptionFactory deltaFactory = checker.getDeltaFactory();
 
-		for (JpaProject jpaProject : JptJpaCorePlugin.getJpaProjectManager().getJpaProjects()) {
+		for (JpaProject jpaProject : jpaProjects) {
 			this.createReplaceEdits(jpaProject);
 			sm.worked(10);
 		}
@@ -138,6 +140,18 @@ public class JpaMoveFolderParticipant
 		sm.worked(1);
 	
 		return null;
+	}
+
+	protected Iterable<JpaProject> getJpaProjects() throws OperationCanceledException {
+		try {
+			return this.getJpaProjectManager().waitToGetJpaProjects();
+		} catch (InterruptedException ex) {
+			throw new OperationCanceledException(ex.getMessage());
+		}
+	}
+
+	protected JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
 	}
 
 	protected void createReplaceEdits(JpaProject jpaProject) throws OperationCanceledException {
@@ -194,7 +208,8 @@ public class JpaMoveFolderParticipant
 	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEdits(PersistenceUnit persistenceUnit, IFolder folder, IContainer destination) {
 		IProject project = destination.getProject();
 		IPath fullPath = destination.getFullPath().append(folder.getName());
-		IPath runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
+		ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
+		IPath runtimePath = locator.getRuntimePath(fullPath);
 		return persistenceUnit.createMoveFolderEdits(folder, runtimePath);
 	}
 	

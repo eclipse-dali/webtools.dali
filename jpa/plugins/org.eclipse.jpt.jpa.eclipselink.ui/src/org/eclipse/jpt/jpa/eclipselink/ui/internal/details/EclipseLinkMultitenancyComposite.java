@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -312,7 +311,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 
 		@Override
 		protected Boolean buildValue() {
-			return Boolean.valueOf(this.listHolder.size() > 0);
+			return Boolean.valueOf(this.listModel.size() > 0);
 		}
 
 		public void setValue(Boolean value) {
@@ -346,56 +345,54 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		}
 	}
 
-	private class TenantDiscriminatorColumnPaneEnablerHolder 
-		extends CachingTransformationPropertyValueModel<EclipseLinkMultitenancy2_3, Boolean>
+	/* CU private */ class TenantDiscriminatorColumnPaneEnablerHolder 
+		extends TransformationPropertyValueModel<EclipseLinkMultitenancy2_3, Boolean>
 	{
 		private StateChangeListener stateChangeListener;
 
-
-		public TenantDiscriminatorColumnPaneEnablerHolder() {
+		TenantDiscriminatorColumnPaneEnablerHolder() {
 			super(
 				new ValueListAdapter<EclipseLinkMultitenancy2_3>(
 					new ReadOnlyWritablePropertyValueModelWrapper<EclipseLinkMultitenancy2_3>(getSubjectHolder()), 
-					EclipseLinkMultitenancy2_3.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST));
-			this.stateChangeListener = buildStateChangeListener();
+					EclipseLinkMultitenancy2_3.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST
+				)
+			);
+			this.stateChangeListener = this.buildStateChangeListener();
 		}
 
 		private StateChangeListener buildStateChangeListener() {
 			return new StateChangeListener() {
 				public void stateChanged(StateChangeEvent event) {
-					valueStateChanged();
+					TenantDiscriminatorColumnPaneEnablerHolder.this.valueStateChanged();
 				}
 			};
 		}
 
 		void valueStateChanged() {
-			Object oldValue = this.cachedValue;
-			Object newValue = transformNew(this.valueHolder.getValue());
-			firePropertyChanged(VALUE, oldValue, newValue);
+			Object old = this.value;
+			this.value = this.transform(this.valueModel.getValue());
+			this.firePropertyChanged(VALUE, old, this.value);
 		}
 
 		@Override
-		protected Boolean transform(EclipseLinkMultitenancy2_3 value) {
-			if (value == null) {
-				return Boolean.FALSE;
-			}
-			return super.transform(value);
+		protected Boolean transform(EclipseLinkMultitenancy2_3 v) {
+			return (v == null) ? Boolean.FALSE : super.transform(v);
 		}
 
 		@Override
-		protected Boolean transform_(EclipseLinkMultitenancy2_3 value) {
-			return Boolean.valueOf(value.getSpecifiedTenantDiscriminatorColumnsSize() > 0);
+		protected Boolean transform_(EclipseLinkMultitenancy2_3 v) {
+			return Boolean.valueOf(v.getSpecifiedTenantDiscriminatorColumnsSize() > 0);
 		}
 
 		@Override
 		protected void engageModel() {
 			super.engageModel();
-			this.valueHolder.addStateChangeListener(this.stateChangeListener);
+			this.valueModel.addStateChangeListener(this.stateChangeListener);
 		}
 
 		@Override
 		protected void disengageModel() {
-			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
+			this.valueModel.removeStateChangeListener(this.stateChangeListener);
 			super.disengageModel();
 		}
 	}

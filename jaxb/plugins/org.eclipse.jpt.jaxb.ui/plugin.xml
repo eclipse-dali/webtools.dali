@@ -122,7 +122,7 @@
 			icon="icons/full/obj16/jaxb_content.gif"
 			activeByDefault="true"
 			contentProvider="org.eclipse.jpt.jaxb.ui.internal.navigator.JaxbNavigatorContentProvider"
-			labelProvider="org.eclipse.jpt.jaxb.ui.internal.navigator.JaxbNavigatorLabelProvider">
+			labelProvider="org.eclipse.jpt.common.ui.internal.jface.NavigatorLabelProvider">
 			
 			<triggerPoints>
 				<or>

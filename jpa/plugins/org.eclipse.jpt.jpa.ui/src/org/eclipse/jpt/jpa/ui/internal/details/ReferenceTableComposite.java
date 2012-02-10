@@ -14,10 +14,10 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
@@ -354,7 +354,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 	
 		@Override
 		protected Boolean buildValue() {
-			return Boolean.valueOf(this.listHolder.size() > 0);
+			return Boolean.valueOf(this.listModel.size() > 0);
 		}
 	
 		public void setValue(Boolean value) {
@@ -363,17 +363,19 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 	}
 
 	
-	private class JoinColumnPaneEnablerHolder 
-		extends CachingTransformationPropertyValueModel<T, Boolean> 
+	/* CU private */ class JoinColumnPaneEnablerHolder 
+		extends TransformationPropertyValueModel<T, Boolean> 
 	{
 		private StateChangeListener stateChangeListener;
 		
 		
-		public JoinColumnPaneEnablerHolder() {
+		JoinColumnPaneEnablerHolder() {
 			super(
 				new ValueListAdapter<T>(
 					new ReadOnlyWritablePropertyValueModelWrapper<T>(getSubjectHolder()), 
-					ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST));
+					ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST
+				)
+			);
 			this.stateChangeListener = buildStateChangeListener();
 		}
 		
@@ -381,40 +383,36 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		private StateChangeListener buildStateChangeListener() {
 			return new StateChangeListener() {
 				public void stateChanged(StateChangeEvent event) {
-					valueStateChanged();
+					JoinColumnPaneEnablerHolder.this.valueStateChanged();
 				}
 			};
 		}
 		
 		void valueStateChanged() {
-			Object oldValue = this.cachedValue;
-			Object newValue = transformNew(this.valueHolder.getValue());
-			firePropertyChanged(VALUE, oldValue, newValue);
+			Object old = this.value;
+			this.firePropertyChanged(VALUE, old, this.value = this.transform(this.valueModel.getValue()));
 		}
 		
 		@Override
-		protected Boolean transform(T value) {
-			if (value == null) {
-				return Boolean.FALSE;
-			}
-			return super.transform(value);
+		protected Boolean transform(T v) {
+			return (v == null) ? Boolean.FALSE : super.transform(v);
 		}
 		
 		@Override
-		protected Boolean transform_(T value) {
-			boolean virtual = ReferenceTableComposite.this.tableIsVirtual(value);
-			return Boolean.valueOf(! virtual && value.getSpecifiedJoinColumnsSize() > 0);
+		protected Boolean transform_(T v) {
+			boolean virtual = ReferenceTableComposite.this.tableIsVirtual(v);
+			return Boolean.valueOf(! virtual && v.getSpecifiedJoinColumnsSize() > 0);
 		}
 		
 		@Override
 		protected void engageModel() {
 			super.engageModel();
-			this.valueHolder.addStateChangeListener(this.stateChangeListener);
+			this.valueModel.addStateChangeListener(this.stateChangeListener);
 		}
 		
 		@Override
 		protected void disengageModel() {
-			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
+			this.valueModel.removeStateChangeListener(this.stateChangeListener);
 			super.disengageModel();
 		}
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,13 +11,13 @@
 package org.eclipse.jpt.jpa.ui.internal.wizards;
 
 import java.util.List;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -48,7 +48,8 @@ public class JpaMakePersistentWizard extends Wizard {
 	public void addPages() {
 		setForcePreviousAndNextButtons(true);
 
-		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(this.selectedTypes.get(0).getResource().getProject());
+		IProject project = this.selectedTypes.get(0).getResource().getProject();
+		JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
 		this.makePersistentWizardPage = new JpaMakePersistentWizardPage(jpaProject, this.selectedTypes, HELP_CONTEXT_ID);
 		this.addPage(this.makePersistentWizardPage);
 		return;

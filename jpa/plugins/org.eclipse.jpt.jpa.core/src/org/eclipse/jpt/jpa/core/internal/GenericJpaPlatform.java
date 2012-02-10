@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -81,6 +82,11 @@ public class GenericJpaPlatform
 
 	public Version getJpaVersion() {
 		return this.jpaVersion;
+	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, this.id);
 	}
 
 
@@ -198,6 +204,14 @@ public class GenericJpaPlatform
 
 	public JpaPlatformVariation getJpaVariation() {
 		return this.jpaVariation;
+	}
+
+
+	// ********** adapter **********
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Object getAdapter(Class adapter) {
+		return PlatformTools.getAdapter(this, adapter);
 	}
 
 

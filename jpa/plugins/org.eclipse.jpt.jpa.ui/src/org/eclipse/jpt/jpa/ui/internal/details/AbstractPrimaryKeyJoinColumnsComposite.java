@@ -321,7 +321,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 
 		@Override
 		protected Boolean buildValue() {
-			return listHolder.size() > 0;
+			return listModel.size() > 0;
 		}
 
 		public void setValue(Boolean value) {

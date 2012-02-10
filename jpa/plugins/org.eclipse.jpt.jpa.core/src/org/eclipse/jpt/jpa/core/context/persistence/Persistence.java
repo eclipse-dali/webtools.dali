@@ -35,57 +35,63 @@ public interface Persistence
 	 * Return the resource model object associated with this context model object
 	 */
 	XmlPersistence getXmlPersistence();
-	
+
 	/**
 	 * Covariant override.
 	 */
 	PersistenceXml getParent();
-	
 
-	// **************** persistence units **************************************
-	
+	PersistenceXml getPersistenceXml();
+
+
+	// ********** persistence units **********
+
 	/**
 	 * String constant associated with changes to the persistence units list
 	 */
 	String PERSISTENCE_UNITS_LIST = "persistenceUnits"; //$NON-NLS-1$
-	
+
 	/**
 	 * Return the persistence element's persistence units.
 	 */
 	ListIterable<PersistenceUnit> getPersistenceUnits();
-	
+
 	/**
 	 * Return the number of persistence units.
 	 */
 	int getPersistenceUnitsSize();
-	
+
+	/**
+	 * Return the persistence unit at the specified index.
+	 */
+	PersistenceUnit getPersistenceUnit(int index);
+
 	/**
 	 * Add a persistence unit and return it.
 	 */
 	PersistenceUnit addPersistenceUnit();
-	
+
 	/**
 	 * Add a persistence unit at the specified index and return it.
 	 */
 	PersistenceUnit addPersistenceUnit(int index);
-	
+
 	/**
 	 * Remove the specified persistence unit from the persistence node.
 	 */
 	void removePersistenceUnit(PersistenceUnit persistenceUnit);
-	
+
 	/**
 	 * Remove the persistence unit at the specified index from the persistence node.
 	 */
 	void removePersistenceUnit(int index);
-	
-	
-	// **************** text range *********************************************
-	
+
+
+	// ********** text range **********
+
 	/**
 	 * Return whether the text representation of this persistence contains
 	 * the specified text offset.
 	 */
 	boolean containsOffset(int textOffset);
-	
 }

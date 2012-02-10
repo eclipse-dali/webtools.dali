@@ -19,13 +19,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -45,7 +43,6 @@ public class CreateDeleteEntity {
 
 	@Before
 	public void setUp() throws Exception {
-		JptJpaCorePlugin.getJpaProjectManager();
 		factory = JPACreateFactory.instance();
 		jpaProject = factory.createJPAProject(TEST_PROJECT + "_" + System.currentTimeMillis());
 		assertNotNull(jpaProject);
@@ -107,12 +104,10 @@ public class CreateDeleteEntity {
 //		updater = new SynchronousJpaProjectUpdater(jpaProject);
 //		updater.start();
 		jpaProject.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		JptJpaCorePlugin.rebuildJpaProject(jpaProject.getProject());
 		persistenceType = jpaProject.getJavaResourceType("com.Entity1");
 		c = 0;
 		while ((persistenceType != null) && (c < 250)) {
 			Thread.sleep(500);
-			jpaProject = JptJpaCorePlugin.getJpaProject(jpaProject.getProject());
 			persistenceType = jpaProject.getJavaResourceType("com.Entity1");
 			c++;
 		}

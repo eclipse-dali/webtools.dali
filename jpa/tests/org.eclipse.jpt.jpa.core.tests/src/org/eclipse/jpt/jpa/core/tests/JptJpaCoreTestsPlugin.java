@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.tests;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
@@ -24,8 +25,7 @@ import org.osgi.framework.BundleContext;
 @SuppressWarnings("nls")
 public class JptJpaCoreTestsPlugin
 	extends Plugin
-{
-	
+{	
 	private static JptJpaCoreTestsPlugin INSTANCE;
 
 	public static JptJpaCoreTestsPlugin instance() {
@@ -48,14 +48,18 @@ public class JptJpaCoreTestsPlugin
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		JpaProjectManager jpaProjectManager = JptJpaCorePlugin.getJpaProjectManager();
-		ReflectionTools.executeMethod(jpaProjectManager, "handleEventsSynchronously");
+		JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
+		ReflectionTools.executeMethod(jpaProjectManager, "executeCommandsSynchronously");
+		ReflectionTools.setFieldValue(jpaProjectManager, "test", Boolean.TRUE);
 		ReflectionTools.executeStaticMethod(JptJpaCorePlugin.class, "doNotFlushPreferences");
+	}
+
+	private JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 	}
-
 }

@@ -13,8 +13,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
@@ -22,9 +20,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
-import org.eclipse.jpt.common.utility.CommandExecutor;
-import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
-import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
+import org.eclipse.jpt.common.core.utility.command.JobCommand;
+import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -35,13 +33,24 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * A JPA project is associated with an Eclipse project (and its corresponding
- * Java project). It holds the <em>resource</em> model that corresponds to the 
+ * A JPA project is associated with an {@link IProject Eclipse project}
+ * (and its corresponding  {@link IJavaProject Java project}).
+ * It holds the <em>resource</em> model that corresponds to the 
  * various JPA-related resources (the <code>persistence.xml</code> file, its
  * mapping files [<code>orm.xml</code>], and the Java source files). It also
  * holds the <em>context</em> model that represents
  * the JPA metadata, as derived from spec-defined defaults, Java source code
  * annotations, and XML descriptors.
+ * <p>
+ * To retrieve the JPA project corresponding to an Eclipse project:
+ * <pre>
+ * IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("Foo Project");
+ * JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
+ * </pre>
+ * This is a non-blocking call; and as a result it will return <code>null</code>
+ * if the JPA project is currently under construction. Use a {@link
+ * Reference JPA project reference} to retrieve a JPA project in a blocking
+ * fashion that will return a JPA project once it has been constructed.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -51,12 +60,20 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * 
  * @version 3.0
  * @since 2.0
+ * 
+ * @see Reference
+ * @see org.eclipse.jpt.jpa.core.internal.ProjectAdapterFactory
  */
 public interface JpaProject
 	extends JpaNode
 {
 
 	// ********** general **********
+
+	/**
+	 * Return the JPA project manager.
+	 */
+	Manager getManager();
 
 	/**
 	 * Return the JPA project's name, which is the same as the associated
@@ -246,86 +263,12 @@ public interface JpaProject
 	// ********** synchronize context model with resource model **********
 
 	/**
-	 * Return the synchronizer that will synchronize the context model with
-	 * the resource model whenever the resource model changes.
-	 */
-	Synchronizer getContextModelSynchronizer();
-
-	/**
-	 * Set the synchronizer that will keep the context model synchronized with
-	 * the resource model whenever the resource model changes.
-	 * Before setting the synchronizer, clients should save the current
-	 * synchronizer so it can be restored later.
-	 * 
-	 * @see #getContextModelSynchronizer()
-	 */
-	void setContextModelSynchronizer(Synchronizer synchronizer);
-
-	/**
-	 * The JPA project's resource model has changed; synchronize the JPA
-	 * project's context model with it. This method is typically called when the
-	 * resource model state has changed when it is synchronized with its
-	 * underlying Eclipse resource as the result of an Eclipse resource change
-	 * event. This method can also be called when a client (e.g. a JUnit test
-	 * case) has manipulated the resource model via its API (as opposed to
-	 * modifying the underlying Eclipse resource directly) and needs the context
-	 * model to be synchronized accordingly (since manipulating the resource
-	 * model via its API will not trigger this method). Whether the context
-	 * model is synchronously (or asynchronously) depends on the current context
-	 * model synchronizer.
-	 * 
-	 * @see #synchronizeContextModelAndWait()
+	 * Should only be used by [incorrectly written] tests....
+	 * [The tests would be more valid if they modified the source code
+	 * directly allowing resource/Java change events to <em>synchronize</em>
+	 * the context model....]
 	 */
 	void synchronizeContextModel();
-
-	/**
-	 * Force the JPA project's context model to synchronize with it resource
-	 * model <em>synchronously</em>.
-	 * 
-	 * @see #synchronizeContextModel()
-	 * @see #updateAndWait()
-	 */
-	void synchronizeContextModelAndWait();
-
-	/**
-	 * This is the callback used by the context model synchronizer to perform
-	 * the actual "synchronize".
-	 */
-	IStatus synchronizeContextModel(IProgressMonitor monitor);
-
-
-	// ********** project "update" **********
-
-	/**
-	 * Return the synchronizer that will update the context model whenever
-	 * it has any changes. This allows any intra-JPA project dependencies to
-	 * be updated.
-	 */
-	CallbackSynchronizer getUpdateSynchronizer();
-
-	/**
-	 * Set the synchronizer that will update the context model whenever
-	 * it has any changes. This allows any intra-JPA project dependencies to
-	 * be updated.
-	 * Before setting the update synchronizer, clients should save the current
-	 * synchronizer so it can be restored later.
-	 * 
-	 * @see #getUpdateSynchronizer()
-	 */
-	void setUpdateSynchronizer(CallbackSynchronizer synchronizer);
-
-	/**
-	 * Force the JPA project to "update" <em>synchronously</em>.
-	 * 
-	 * @see #synchronizeContextModelAndWait()
-	 */
-	void updateAndWait();
-
-	/**
-	 * This is the callback used by the update synchronizer to perform the
-	 * actual "update".
-	 */
-	IStatus update(IProgressMonitor monitor);
 
 
 	// ********** utility **********
@@ -490,23 +433,58 @@ public interface JpaProject
 	void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses);
 
 
-	// ********** modifying shared documents **********
+	// ********** manager **********
 
 	/**
-	 * Set a thread-specific implementation of the {@link CommandExecutor}
-	 * interface that will be used to execute a command to modify a shared
-	 * document. If necessary, the command executor can be cleared by
-	 * setting it to <code>null</code>.
-	 * This allows background clients to modify documents that are
-	 * already present in the UI. See implementations of {@link CommandExecutor}.
+	 * The JPA project manager provides behavior to be used by all the JPA
+	 * projects
 	 */
-	void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor);
+	interface Manager {
 
-	/**
-	 * Return the project-wide implementation of the
-	 * {@link CommandExecutor} interface.
-	 */
-	CommandExecutor getModifySharedDocumentCommandExecutor();
+		// ********** commands **********
+
+		/**
+		 * Execute the specified command, possibly asynchronously, synchronizing
+		 * with all the other stuff manipulating the JPA projects
+		 * (e.g. resource change events).
+		 * If, once the command comes up for execution, the specified JPA project
+		 * is no longer present, the command will <em>not</em> be executed by the
+		 * JPA project manager.
+		 */
+		void execute(JobCommand command, String jobName, JpaProject jpaProject);
+
+
+		// ********** modifying shared documents **********
+
+		/**
+		 * Return the project-wide implementation of the
+		 * {@link ExtendedCommandExecutor} interface.
+		 */
+		ExtendedCommandExecutor getModifySharedDocumentCommandExecutor();
+
+
+		// ********** logging **********
+
+		/**
+		 * Log the specified message.
+		 */
+		void log(String msg);
+
+		/**
+		 * Log the specified exception/error.
+		 */
+		void log(Throwable throwable);
+
+		/**
+		 * Log the specified message and exception/error.
+		 */
+		void log(String msg, Throwable throwable);
+
+		/**
+		 * Return an exception handler that can be used by the JPA model.
+		 */
+		ExceptionHandler getExceptionHandler();
+	}
 
 
 	// ********** construction config **********
@@ -514,8 +492,12 @@ public interface JpaProject
 	/**
 	 * The settings used to construct a JPA project.
 	 */
-	interface Config
-	{
+	interface Config {
+		/**
+		 * Return the JPA platform to be associated with the new JPA project.
+		 */
+		Manager getJpaProjectManager();
+
 		/**
 		 * Return the Eclipse project to be associated with the new JPA project.
 		 */
@@ -552,5 +534,44 @@ public interface JpaProject
 		 * classes.
 		 */
 		boolean discoverAnnotatedClasses();
+	}
+
+
+	// ********** reference **********
+
+	/**
+	 * Standard adapter for "synchronously" retrieving a
+	 * {@link JpaProject JPA project}
+	 * (i.e. if necessary, wait for the JPA project to be constructed;
+	 * thus the {@link InterruptedException}):
+	 * <pre>
+	 * IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("Foo Project");
+	 * JpaProject.Reference jpaProjectRef = (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
+	 * JpaProject jpaProject = jpaProjectRef.getValue();
+	 * </pre>
+	 * @see org.eclipse.jpt.jpa.core.internal.ProjectAdapterFactory
+	 */
+	interface Reference {
+		/**
+		 * Return the JPA project corresponding to the reference's Eclipse project.
+		 * Return <code>null</code> if unable to associate the Eclipse
+		 * project with a JPA project. This method can be long-running.
+		 */
+		JpaProject getValue() throws InterruptedException;
+
+		/**
+		 * The JPA settings associated with the reference's Eclipse project
+		 * have changed in such a way as to require the associated
+		 * JPA project to be completely rebuilt
+		 * (e.g. when the user changes a project's JPA platform).
+		 * Return the new JPA project.
+		 */
+		JpaProject rebuild() throws InterruptedException;
+
+		/**
+		 * Build the JPA validation messages for the reference's
+		 * Eclipse project.
+		 */
+		Iterable<IMessage> buildValidationMessages(IReporter reporter) throws InterruptedException;
 	}
 }

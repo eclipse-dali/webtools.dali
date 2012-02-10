@@ -68,27 +68,11 @@ public class CreateRelationAttributesTest {
 		IFile entity = factory.createEntity(jpaProject, "org.eclipse.Entity1");
 		Thread.sleep(2000);
 		featureProvider = EasyMock.createMock(IJPAEditorFeatureProvider.class);
-		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(getPersistentType(entity));
+		expect(featureProvider.getBusinessObjectForPictogramElement(null)).andReturn(JPACreateFactory.getPersistentType(entity));
 		expect(featureProvider.getCompilationUnit(isA(JavaPersistentType.class))).andReturn(JavaCore.createCompilationUnitFrom(entity)).anyTimes();
 		replay(featureProvider);
 	}
 		
-	public static PersistentType getPersistentType(IFile file){
-		JpaFile jpaFile = JptJpaCorePlugin.getJpaFile(file);
-		for (JpaStructureNode node : getRootNodes(jpaFile)) {
-			PersistentType entity = (PersistentType) node;
-			return entity;
-		}
-		return null;
-	}	
-	
-	private static Iterable<JpaStructureNode> getRootNodes(JpaFile jpaFile) {
-		if(jpaFile == null){
-			return EmptyIterable.instance();
-		}
-		return jpaFile.getRootStructureNodes();
-	}
-	
 	public ICompilationUnit createCompilationUnitFrom(IFile file) {
 		ICompilationUnit cu = JavaCore.createCompilationUnitFrom(file);
 		if (!cu.isWorkingCopy())

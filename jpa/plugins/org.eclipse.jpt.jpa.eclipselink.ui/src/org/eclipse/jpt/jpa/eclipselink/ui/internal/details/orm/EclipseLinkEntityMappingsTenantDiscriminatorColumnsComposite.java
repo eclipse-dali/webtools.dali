@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2011 Oracle. All rights reserved.
+* Copyright (c) 2011, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,10 +12,10 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
@@ -158,7 +158,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 
 		@Override
 		protected Boolean buildValue() {
-			return Boolean.valueOf(this.listHolder.size() > 0);
+			return Boolean.valueOf(this.listModel.size() > 0);
 		}
 
 		public void setValue(Boolean value) {
@@ -192,55 +192,54 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		}
 	}
 
-	private class TenantDiscriminatorColumnPaneEnablerHolder 
-		extends CachingTransformationPropertyValueModel<EntityMappings, Boolean>
+	/* CU private */ class TenantDiscriminatorColumnPaneEnablerHolder 
+		extends TransformationPropertyValueModel<EntityMappings, Boolean>
 	{
 		private StateChangeListener stateChangeListener;
 
-		public TenantDiscriminatorColumnPaneEnablerHolder() {
+		TenantDiscriminatorColumnPaneEnablerHolder() {
 			super(
 				new ValueListAdapter<EntityMappings>(
 					new ReadOnlyWritablePropertyValueModelWrapper<EntityMappings>(getSubjectHolder()), 
-					EclipseLinkEntityMappings.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST));
-			this.stateChangeListener = buildStateChangeListener();
+					EclipseLinkEntityMappings.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST
+				)
+			);
+			this.stateChangeListener = this.buildStateChangeListener();
 		}
 
 		private StateChangeListener buildStateChangeListener() {
 			return new StateChangeListener() {
 				public void stateChanged(StateChangeEvent event) {
-					valueStateChanged();
+					TenantDiscriminatorColumnPaneEnablerHolder.this.valueStateChanged();
 				}
 			};
 		}
 
 		void valueStateChanged() {
-			Object oldValue = this.cachedValue;
-			Object newValue = transformNew(this.valueHolder.getValue());
-			firePropertyChanged(VALUE, oldValue, newValue);
+			Object old = this.value;
+			this.value = this.transform(this.valueModel.getValue());
+			firePropertyChanged(VALUE, old, this.value);
 		}
 
 		@Override
-		protected Boolean transform(EntityMappings value) {
-			if (value == null) {
-				return Boolean.FALSE;
-			}
-			return super.transform(value);
+		protected Boolean transform(EntityMappings v) {
+			return (v == null)  ? Boolean.FALSE : super.transform(v);
 		}
 
 		@Override
-		protected Boolean transform_(EntityMappings value) {
-			return Boolean.valueOf(((EclipseLinkEntityMappings) value).getSpecifiedTenantDiscriminatorColumnsSize() > 0);
+		protected Boolean transform_(EntityMappings v) {
+			return Boolean.valueOf(((EclipseLinkEntityMappings) v).getSpecifiedTenantDiscriminatorColumnsSize() > 0);
 		}
 
 		@Override
 		protected void engageModel() {
 			super.engageModel();
-			this.valueHolder.addStateChangeListener(this.stateChangeListener);
+			this.valueModel.addStateChangeListener(this.stateChangeListener);
 		}
 
 		@Override
 		protected void disengageModel() {
-			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
+			this.valueModel.removeStateChangeListener(this.stateChangeListener);
 			super.disengageModel();
 		}
 	}

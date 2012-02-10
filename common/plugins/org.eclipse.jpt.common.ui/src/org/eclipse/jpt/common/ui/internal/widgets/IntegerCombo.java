@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -127,31 +127,25 @@ public abstract class IntegerCombo<T extends Model>
 			);
 	}
 	
-	private String getDefaultValueString() {
+	/* CU private */ String getDefaultValueString() {
 		return this.defaultValueHolder.getValue();
 	}
 
 	protected WritablePropertyValueModel<String> buildSelectedItemStringHolder() {
 		return new TransformationWritablePropertyValueModel<Integer, String>(buildSelectedItemHolder()) {
 			@Override
-			protected String transform(Integer value) {
-				return value == null ? 
-						getDefaultValueString()
-					: 
-						value.toString();
+			protected String transform(Integer v) {
+				return (v == null) ? getDefaultValueString() : v.toString();
 			}
 			
 			@Override
-			protected Integer reverseTransform_(String value) {
-				int intLength;
+			protected Integer reverseTransform_(String v) {
 				try {
-					intLength = Integer.parseInt(value);
-				}
-				catch (NumberFormatException e) {
-					//if the default is selected from the combo, set length to null
+					return Integer.valueOf(v);
+				} catch (NumberFormatException ex) {
+					// if the default is selected from the combo, set length to null
 					return null;
 				}
-				return Integer.valueOf(intLength);
 			}
 		};
 	}
@@ -184,5 +178,4 @@ public abstract class IntegerCombo<T extends Model>
 			e.doit = false;
 		}
 	}
-
 }

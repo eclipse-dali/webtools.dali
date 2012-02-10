@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.core;
+
+import org.eclipse.core.resources.IFile;
 
 /**
  * Listeners are notified whenever anything in the JPT resource model changes.
@@ -22,12 +24,17 @@ package org.eclipse.jpt.common.core;
  * @since 2.2
  */
 public interface JptResourceModel {
-
 	/**
-	 * Return the resource type of the model.  This may potentially change.
-	 * Return null if it cannot be determined, the content type or version is null.
+	 * Return the model's resource type. This can change.
+	 * Return <code>null</code> if the resource type cannot be determined,
+	 * the content type is <code>null</code> or the version is <code>null</code>.
 	 */
 	JptResourceType getResourceType();
+
+	/**
+	 * Return the model's file.
+	 */
+	IFile getFile();
 
 	/**
 	 * Changes to the resource model result in events.
@@ -40,5 +47,4 @@ public interface JptResourceModel {
 	 * @see #addResourceModelListener(JptResourceModelListener)
 	 */
 	void removeResourceModelListener(JptResourceModelListener listener);
-
 }

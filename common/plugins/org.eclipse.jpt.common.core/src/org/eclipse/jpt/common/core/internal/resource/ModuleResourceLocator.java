@@ -1,11 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource;
 
@@ -17,63 +17,71 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
 
 public class ModuleResourceLocator
-		extends SimpleJavaResourceLocator {
-	
+	extends SimpleJavaResourceLocator
+{
 	/**
-	 * Return the folder representing the "META-INF" runtime location
+	 * Return the folder representing the <code>META-INF</code> runtime location.
 	 */
 	@Override
 	public IContainer getDefaultResourceLocation(IProject project) {
-		IVirtualComponent component = ComponentCore.createComponent(project);
-		return component.getRootFolder().getFolder(META_INF_PATH).getUnderlyingFolder();
+		return this.getRootFolder(project).getFolder(META_INF_PATH).getUnderlyingFolder();
 	}
 	
 	@Override
 	public IPath getResourcePath(IProject project, IPath runtimePath) {
-		IVirtualComponent component = ComponentCore.createComponent(project);
-		return component.getRootFolder().getFile(runtimePath).getWorkspaceRelativePath();
+		return this.getRootFolder(project).getFile(runtimePath).getWorkspaceRelativePath();
 	}
 	
 	@Override
 	public IPath getRuntimePath(IProject project, IPath resourcePath) {
+		IVirtualFolder rootFolder = this.getRootFolder(project);
 		IFile file = PlatformTools.getFile(resourcePath);
-		IVirtualComponent component = ComponentCore.createComponent(project);
-		IVirtualFolder root = component.getRootFolder();
-		IVirtualFile vFile = findVirtualFile(root, file);
+		IVirtualFile vFile = this.getVirtualFile(rootFolder, file);
 		if (vFile != null) {
 			return vFile.getRuntimePath().makeRelative();
 		}
-		// couldn't find it.  try the super-case
+		// couldn't find it - try the super-case
 		return super.getRuntimePath(project, resourcePath);
 	}
 	
-	private IVirtualFile findVirtualFile(IVirtualFolder vFolder, IFile file) {
+	protected IVirtualFile getVirtualFile(IVirtualFolder vFolder, IFile file) {
 		try {
-			for (IVirtualResource vResource : vFolder.members()) {
-				if (vResource.getType() == IVirtualResource.FILE) {
-					IVirtualFile vFile = (IVirtualFile) vResource;
-					if (file.equals(vFile.getUnderlyingResource())) {
-						return vFile;
-					}
-				}
-				else if (vResource.getType() == IVirtualResource.FOLDER) {
-					IVirtualFile vFile = findVirtualFile((IVirtualFolder) vResource, file);
-					if (vFile != null) {
-						return vFile;
-					}
-				}
+			return this.getVirtualFile_(vFolder, file);
+		} catch (CoreException ex) {
+			JptCommonCorePlugin.log(ex);
+			return null;
+		}
+	}
+
+	protected IVirtualFile getVirtualFile_(IVirtualFolder vFolder, IFile file) throws CoreException {
+		for (IVirtualResource vResource : vFolder.members()) {
+			IVirtualFile vFile = this.getVirtualFile(vResource, file);
+			if (vFile != null) {
+				return vFile;
 			}
 		}
-		catch (CoreException ce) {
-			// fall through
-			JptCommonCorePlugin.log(ce);
-		}
 		return null;
+	}
+
+	protected IVirtualFile getVirtualFile(IVirtualResource vResource, IFile file) throws CoreException {
+		switch (vResource.getType()) {
+			case IVirtualResource.FILE:
+				IVirtualFile vFile = (IVirtualFile) vResource;
+				return file.equals(vFile.getUnderlyingResource()) ? vFile : null;
+			case IVirtualResource.FOLDER:
+				// recurse
+				return this.getVirtualFile_((IVirtualFolder) vResource, file);
+			default:
+				return null;
+		}
+	}
+
+	protected IVirtualFolder getRootFolder(IProject project) {
+		return ComponentCore.createComponent(project).getRootFolder();
 	}
 }

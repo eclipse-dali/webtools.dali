@@ -36,7 +36,7 @@ abstract class BinaryMember
 	private boolean transient_;  // 'transient' is a reserved word
 	private boolean public_;  // 'public' is a reserved word
 	private boolean static_;  // 'static' is a reserved word
-	boolean protected_; // 'protected' is a reserved word
+	private boolean protected_; // 'protected' is a reserved word
 
 
 	// ********** construction/initialization **********
@@ -273,7 +273,7 @@ abstract class BinaryMember
 	}
 	
 	public boolean isPublicOrProtected() {
-		return isPublic() || isProtected();
+		return this.isPublic() || this.isProtected();
 	}
 	
 	// ********** IMember adapter **********

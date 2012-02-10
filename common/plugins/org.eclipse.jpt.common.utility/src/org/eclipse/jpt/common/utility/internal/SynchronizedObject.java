@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.utility.internal;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.Command;
-import org.eclipse.jpt.common.utility.ObjectReference;
+import org.eclipse.jpt.common.utility.ModifiableObjectReference;
+import org.eclipse.jpt.common.utility.command.Command;
 
 /**
  * This class provides synchronized access to an object of type <code>V</code>.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.ObjectReference;
  * @see SimpleObjectReference
  */
 public class SynchronizedObject<V>
-	implements ObjectReference<V>, Cloneable, Serializable
+	implements ModifiableObjectReference<V>, Cloneable, Serializable
 {
 	/** Backing value. */
 	private V value;
@@ -434,7 +434,7 @@ public class SynchronizedObject<V>
 	 * thread.
 	 */
 	public void execute(Command command) throws InterruptedException {
-		if (Thread.interrupted()) {
+		if (Thread.currentThread().isInterrupted()) {
 			throw new InterruptedException();
 		}
 		synchronized (this.mutex) {

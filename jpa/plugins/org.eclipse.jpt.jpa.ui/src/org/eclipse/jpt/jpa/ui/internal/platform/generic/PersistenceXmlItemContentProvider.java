@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
-import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
@@ -22,39 +21,48 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 
 public class PersistenceXmlItemContentProvider
-	extends AbstractTreeItemContentProvider<PersistenceUnit>
+	extends AbstractItemTreeContentProvider<PersistenceXml, PersistenceUnit>
 {
-	public PersistenceXmlItemContentProvider(
-			PersistenceXml persistenceXml, DelegatingTreeContentAndLabelProvider contentProvider) {
-		super(persistenceXml, contentProvider);
+	public PersistenceXmlItemContentProvider(PersistenceXml persistenceXml, Manager manager) {
+		super(persistenceXml, manager);
 	}
 	
-	@Override
-	public PersistenceXml getModel() {
-		return (PersistenceXml) super.getModel();
-	}
-	
-	@Override
 	public JpaRootContextNode getParent() {
-		return (JpaRootContextNode) getModel().getParent();
+		return (JpaRootContextNode) this.item.getParent();
 	}
 	
 	@Override
 	protected CollectionValueModel<PersistenceUnit> buildChildrenModel() {
-		return new ListCollectionValueModelAdapter<PersistenceUnit>(
-		new ListAspectAdapter<Persistence, PersistenceUnit>(
-				new PropertyAspectAdapter<PersistenceXml, Persistence>(
-						PersistenceXml.PERSISTENCE_PROPERTY, getModel()) {
-					@Override
-					protected Persistence buildValue_() {
-						return subject.getPersistence();
-					}
-				},
-				Persistence.PERSISTENCE_UNITS_LIST) {
-			@Override
-			protected ListIterable<PersistenceUnit> getListIterable() {
-				return subject.getPersistenceUnits();
-			}
-		});
+		return new ListCollectionValueModelAdapter<PersistenceUnit>(new ChildrenModel(this.item));
+	}
+
+	protected static class ChildrenModel
+		extends ListAspectAdapter<Persistence, PersistenceUnit>
+	{
+		ChildrenModel(PersistenceXml subject) {
+			super(new PersistenceModel(subject), Persistence.PERSISTENCE_UNITS_LIST);
+		}
+
+		@Override
+		protected ListIterable<PersistenceUnit> getListIterable() {
+			return subject.getPersistenceUnits();
+		}
+
+		@Override
+		protected int size_() {
+			return subject.getPersistenceUnitsSize();
+		}
+	}
+
+	protected static class PersistenceModel
+		extends PropertyAspectAdapter<PersistenceXml, Persistence>
+	{
+		public PersistenceModel(PersistenceXml subject) {
+			super(PersistenceXml.PERSISTENCE_PROPERTY, subject);
+		}
+		@Override
+		protected Persistence buildValue_() {
+			return this.subject.getPersistence();
+		}
 	}
 }

@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.context.persistence;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -725,6 +726,13 @@ public interface PersistenceUnit
 	 * the given text offset
 	 */
 	boolean containsOffset(int textOffset);
+
+	/**
+	 * Synchronize the persistence unit's list of specified classes with the
+	 * types in the project currently annotated.
+	 */
+	void synchronizeClasses(IProgressMonitor monitor);
+
 
 	// ********** validation **********
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,9 +15,10 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.details.JpaDetailsPage;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * The base class for the details view.
@@ -29,25 +30,23 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
 	extends Pane<T>
-	implements JpaDetailsPage<T>
+	implements JpaDetailsPageManager<T>
 {
-	/**
-	 * Creates a new <code>BaseJpaDetailsPage</code>.
-	 *
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
 	protected AbstractJpaDetailsPage(Composite parent, WidgetFactory widgetFactory) {
 		super(new SimplePropertyValueModel<T>(), parent, widgetFactory);
 	}
 
-	protected JpaPlatformUi getJpaPlatformUi() {
-		String platformId = getSubject().getJpaProject().getJpaPlatform().getId();
-		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
+	public Control getPage() {
+		return this.getControl();
 	}
 
-	public final void setSubject(T subject) {
+	protected JpaPlatformUi getJpaPlatformUi() {
+        return (JpaPlatformUi) getSubject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public final void setSubject(Object subject) {
 		WritablePropertyValueModel<T> subjectHolder = (WritablePropertyValueModel<T>) getSubjectHolder();
-		subjectHolder.setValue(subject);
+		subjectHolder.setValue((T) subject);
 	}
 }
