@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
@@ -67,15 +68,16 @@ public class PersistentAttributeMapAsComposite
 			}
 
 			public String getMappingText() {
-				String mappingKey = getMappingKey();
+				AttributeMapping mapping = getSubject().getMapping();
+				String mappingKey = mapping.getKey();
 
 				if (mappingKey == null) {
 					return JptUiDetailsMessages.MapAsComposite_changeMappingType;
 				}
 
-				return getSubject().getMapping().isDefault() ?
-						getDefaultDefinition(getSubject().getDefaultMappingKey()).getLinkLabel() :
-						getMappingUiDefinition(mappingKey).getLinkLabel();
+				return mapping.isDefault() ? 
+                              getDefaultDefinition(mappingKey).getLinkLabel() : 
+                              getMappingUiDefinition(mappingKey).getLinkLabel();
 			}
 			
 			public void morphMapping(MappingUiDefinition definition) {
