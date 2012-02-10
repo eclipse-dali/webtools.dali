@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -409,7 +409,7 @@ final class DTPConnectionProfileWrapper
 
 		// off-line or inactive => live
 		public void opened(ConnectEvent event) {
-			// do not build the database here - it is built on-demand
+			// do *not* build the database here - it is built on-demand;
 			// forward event to listeners
 			for (ConnectionListener listener : this.listenerList.getListeners()) {
 				listener.opened(DTPConnectionProfileWrapper.this);
@@ -431,25 +431,27 @@ final class DTPConnectionProfileWrapper
 
 		public boolean okToClose(ConnectEvent event) {
 			// forward event to listeners
+			boolean result = true;
 			for (ConnectionListener listener : this.listenerList.getListeners()) {
-				if ( ! listener.okToClose(DTPConnectionProfileWrapper.this)) {
-					return false;
-				}
+				result &= listener.okToClose(DTPConnectionProfileWrapper.this);
 			}
-			return true;
+			return result;
 		}
 
+		// live or off-line => inactive
 		public void aboutToClose(ConnectEvent event) {
 			// forward event to listeners
 			for (ConnectionListener listener : this.listenerList.getListeners()) {
 				listener.aboutToClose(DTPConnectionProfileWrapper.this);
 			}
+			// clear the database *before* the DTP connection is closed
+			// but after we notify our listeners of the "about to close";
+			// otherwise we leave ourselves open to hitting a closed database
+			DTPConnectionProfileWrapper.this.clearDatabase();
 		}
 
 		// live or off-line => inactive
 		public void closed(ConnectEvent event) {
-			// clear the database
-			DTPConnectionProfileWrapper.this.clearDatabase();
 			// forward event to listeners
 			for (ConnectionListener listener : this.listenerList.getListeners()) {
 				listener.closed(DTPConnectionProfileWrapper.this);
@@ -468,23 +470,23 @@ final class DTPConnectionProfileWrapper
 		
 		// live => off-line
 		public void aboutToDetach(ConnectEvent event) {
-			// convert the event to a "close" event;
+			// convert the event to an "about to close" event;
 			// we are "closing" the live connection
-			this.closed(event);
+			this.aboutToClose(event);
 		}
 
 		// inactive or live => off-line
 		public void workingOffline(ConnectEvent event) {
-			// convert the event to an "open" event;
+			// convert the event to an "opened" event;
 			// we are "opening" the off-line connection
 			this.opened(event);
 		}
 
 		// off-line => live
 		public void aboutToAttach(ConnectEvent event) {
-			// convert the event to an "close" event;
+			// convert the event to an "about to close" event;
 			// we are "closing" the off-line connection
-			this.closed(event);
+			this.aboutToClose(event);
 		}
 
 
