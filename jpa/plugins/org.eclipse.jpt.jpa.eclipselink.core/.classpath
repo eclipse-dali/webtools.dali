@@ -8,8 +8,12 @@
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/jpa/eclipselink/core/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/jpa/core/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/core/**"/>
-			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/utility/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/wst/**"/>
+			<accessrule kind="nonaccessible" pattern="org/eclipse/jpt/common/utility/model/value/**"/>
+			<accessrule kind="nonaccessible" pattern="org/eclipse/jpt/common/utility/internal/model/listener/awt/**"/>
+			<accessrule kind="nonaccessible" pattern="org/eclipse/jpt/common/utility/internal/model/value/**"/>
+			<accessrule kind="nonaccessible" pattern="org/eclipse/jpt/common/utility/internal/swing/**"/>
+			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/utility/**"/>
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
