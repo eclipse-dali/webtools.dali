@@ -181,9 +181,10 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		newClassWizardPage.init(selection);
 		newClassWizardPage.setSuperClass(getSuperclassName(), true);
 		newClassWizardPage.setSuperInterfaces(getSuperInterfaceNames(), true);
-		if (!StringTools.stringIsEmpty(getClassName())) {
-			newClassWizardPage.setTypeName(ClassName.getSimpleName(getClassName()), true);
-			String packageName = ClassName.getPackageName(getClassName());
+		String qualifiedClassName = this.getFullyQualifiedClassName();
+		if (!StringTools.stringIsEmpty(qualifiedClassName)) {
+			newClassWizardPage.setTypeName(ClassName.getSimpleName(qualifiedClassName), true);
+			String packageName = ClassName.getPackageName(qualifiedClassName);
 			newClassWizardPage.setPackageFragment(getFirstJavaSourceFolder().getPackageFragment(packageName), true);
 		}
 		NewClassCreationWizard wizard = new NewClassCreationWizard(newClassWizardPage, false);
