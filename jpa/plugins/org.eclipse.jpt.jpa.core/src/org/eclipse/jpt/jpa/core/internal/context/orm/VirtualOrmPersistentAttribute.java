@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.FieldAccessor;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
@@ -278,10 +277,6 @@ public class VirtualOrmPersistentAttribute
 
 	public boolean isVirtual() {
 		return true;
-	}
-
-	public OrmReadOnlyPersistentAttribute convertToVirtual() {
-		throw new UnsupportedOperationException();
 	}
 
 	public OrmPersistentAttribute convertToSpecified() {
