@@ -1155,11 +1155,6 @@ public abstract class AbstractJpaProject
 
 	/**
 	 * Called by the {@link SynchronizeMetamodelJob#runInWorkspace(IProgressMonitor)}.
-	 * <p>
-	 * Now that we have the appropriate resource locks, acquire the JPA project
-	 * manager lock. This is a hack to get around the Eclipse restriction
-	 * that prevents us from acquiring incompatible locks/scheduling rules; at
-	 * the risk of deadlocks(!).
 	 */
 	protected IStatus synchronizeMetamodel_(IProgressMonitor monitor) {
 		return ((JpaRootContextNode2_0) this.rootContextNode).synchronizeMetamodel(monitor);
