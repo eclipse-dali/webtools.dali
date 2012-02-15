@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,8 +12,12 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -21,71 +25,90 @@ public class DefaultEclipseLinkJpaValidationMessages {
 
 	private static String[] DEFAULT_PARMS = new String[0];
 	private static TextRange DEFAULT_TEXT_RANGE = TextRange.Empty.instance();
-	
-	public static IMessage buildMessage(
-			int severity, String messageId, Object targetObject) {
-		return buildMessage(severity, messageId, DEFAULT_PARMS, targetObject);
+
+	public static IMessage buildMessage(int defaultSeverity, String messageId, JpaNode targetObject) {
+		return buildMessage(defaultSeverity, messageId, targetObject.getResource());
 	}
-	
-	public static IMessage buildMessage(
-			int severity, String messageId, String[] parms, Object targetObject) {
-		return buildMessage(severity, messageId, parms, targetObject, DEFAULT_TEXT_RANGE);
+
+	public static IMessage buildMessage(int defaultSeverity, String messageId, IResource targetObject) {
+		return buildMessage(defaultSeverity, messageId, DEFAULT_PARMS, targetObject);
 	}
-	
-	public static IMessage buildMessage(
-			int severity, String messageId, Object targetObject, TextRange textRange) {
-		return buildMessage(severity, messageId, DEFAULT_PARMS, targetObject, textRange);
+
+	public static IMessage buildMessage(int defaultSeverity, String messageId, String[] parms, JpaNode targetObject) {
+		return buildMessage(defaultSeverity, messageId, parms, targetObject.getResource());
 	}
-	
-	public static IMessage buildMessage(
-			int severity, String messageId, String[] parms, Object targetObject, TextRange textRange) {
-		IMessage message = new EclipseLinkMessage(EclipseLinkJpaValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
-		message.setMarkerId(JptJpaCorePlugin.VALIDATION_MARKER_ID); //TODO do we need an 'EclipseLink JPA' problem marker?
-		if (textRange == null) {
-			//log an exception and then continue without setting location information
-			//At least the user will still get the validation message and will
-			//be able to see other validation messages with valid textRanges
-			JptJpaCorePlugin.log(new IllegalArgumentException("Null text range for message ID: " + messageId)); //$NON-NLS-1$
-		}
-		else {
-			message.setLineNo(textRange.getLineNumber());
-			message.setOffset(textRange.getOffset());
-			message.setLength(textRange.getLength());
-		}
-		return message;
+
+	public static IMessage buildMessage(int defaultSeverity, String messageId, String[] parms, IResource targetObject) {
+		return buildMessage(defaultSeverity, messageId, parms, targetObject, DEFAULT_TEXT_RANGE);
 	}
-	
-	
+
+	public static IMessage buildMessage(int defaultSeverity, String messageId, JpaNode targetObject, TextRange textRange) {
+		return buildMessage(defaultSeverity, messageId, targetObject.getResource(), textRange);
+	}
+
+	public static IMessage buildMessage(int defaultSeverity, String messageId, IResource targetObject, TextRange textRange) {
+		return buildMessage(defaultSeverity, messageId, DEFAULT_PARMS, targetObject, textRange);
+	}
+
+	public static IMessage buildMessage(int defaultSeverity, String messageId, String[] parms, JpaNode targetObject, TextRange textRange) {
+		return buildMessage(defaultSeverity, messageId, parms, targetObject.getResource(), textRange);
+	}
+
+	public static IMessage buildMessage(int defaultSeverity, String messageId, String[] parms, IResource targetObject, TextRange textRange) {
+		return DefaultJpaValidationMessages.buildMessage(defaultSeverity, messageId, parms, targetObject, textRange, MESSAGE_FACTORY);
+	}
+
+
 	private DefaultEclipseLinkJpaValidationMessages() {
 		super();
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Used so that we can find the resource bundle using this classLoader.
-	 * Otherwise the wst validation message attempts to use the ClassLoader
-	 * of JpaValidator which is in the org.eclipse.jpt.jpa.core plugin.
-	 * 
-	 * Another way we could potentially solve this is to have a separate
-	 * EclispeLinkJpaValidator and set up the extension points so that
-	 * it only runs against jpaProjects with the EclispeLinkPlatform
-	 * while JpaValidator runs against jpaProjects with the GenericPlatform.
-	 * I am unsure if this is possible
-	 */
-	private static class EclipseLinkMessage extends Message {
-		public EclipseLinkMessage(String aBundleName, int aSeverity, String anId, String[] aParams, Object aTargetObject) {
-			super(aBundleName, aSeverity, anId, aParams, aTargetObject);
+
+	private static final DefaultJpaValidationMessages.MessageFactory MESSAGE_FACTORY = new EclipseLinkMessageFactory();
+
+	/* CU private */ static class EclipseLinkMessageFactory
+		implements DefaultJpaValidationMessages.MessageFactory
+	{
+		public IMessage buildMessage(int severity, String messageId, String[] parms, IResource targetObject) {
+			// TODO check for preference override
+//			int prefSeverity = JpaValidationPreferences.getProblemSeverityPreference(targetObject, messageId);
+//			if (prefSeverity != JpaValidationPreferences.NO_SEVERITY_PREFERENCE){
+//				severity = prefSeverity;
+//			}
+			IMessage message = new EclipseLinkMessage(EclipseLinkJpaValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
+			// TODO "EclipseLink JPA" validation marker?
+			message.setMarkerId(JptJpaCorePlugin.VALIDATION_MARKER_ID);
+			return message;
 		}
-		
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
+	}
+
+	/**
+	 * We have to build this message so {@link Message} uses the right class
+	 * loader to retrieve the message bundles.
+	 * <p>
+	 * Another way we could potentially solve this is to have a separate
+	 * EclispeLink JPA validator and set up the extension points so that
+	 * it only runs against JPA projects with the EclispeLink platform....
+	 */
+	/* CU private */ static class EclipseLinkMessage
+		extends Message
+	{
+		EclipseLinkMessage(String bundleName, int severity, String id, String[] params, Object target) {
+			super(bundleName, severity, id, params, target);
+		}
+
 		@Override
 		public ResourceBundle getBundle(Locale locale, ClassLoader classLoader) {
-			ResourceBundle bundle = null;
 			try {
-				bundle = ResourceBundle.getBundle(getBundleName(), locale, getClass().getClassLoader());
-			} catch (MissingResourceException e) {
+				return super.getBundle(locale, this.getClass().getClassLoader());
+			} catch (MissingResourceException ex) {
 				return super.getBundle(locale, classLoader);
 			}
-			return bundle;
 		}
 	}
 }

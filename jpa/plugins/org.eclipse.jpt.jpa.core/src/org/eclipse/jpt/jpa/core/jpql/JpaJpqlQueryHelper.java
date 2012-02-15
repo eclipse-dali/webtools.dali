@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -14,6 +14,7 @@
 package org.eclipse.jpt.jpa.core.jpql;
 
 import java.util.List;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -156,7 +157,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 
 		// Now create the message
 		IMessage message = DefaultJpaValidationMessages.buildMessage(
-			severity(namedQuery),
+			severity(namedQuery.getResource()),
 			problem.getMessageKey(),
 			problem.getMessageArguments(),
 			namedQuery,
@@ -180,7 +181,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 
 	protected int getValidationPreference(NamedQuery namedQuery) {
 		return JpaValidationPreferences.getProblemSeverityPreference(
-			namedQuery,
+			namedQuery.getResource(),
 			JpaValidationMessages.JPQL_QUERY_VALIDATION
 		);
 	}
@@ -210,7 +211,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	 * problem
 	 * @return The global severity for validating JPQL queries
 	 */
-	protected int severity(Object targetObject) {
+	protected int severity(IResource targetObject) {
 		return JpaValidationPreferences.getProblemSeverityPreference(
 			targetObject,
 			JpaValidationMessages.JPQL_QUERY_VALIDATION

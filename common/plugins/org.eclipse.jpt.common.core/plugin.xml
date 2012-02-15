@@ -38,13 +38,6 @@
 			<adapter type="org.eclipse.jpt.common.core.resource.ProjectResourceLocator"/>
 		</factory>
 
-		<!-- ResourceReference -> IResource -->
-		<factory
-			adaptableType="org.eclipse.jpt.common.core.ResourceReference"
-			class="org.eclipse.jpt.common.core.internal.ResourceReferenceAdapterFactory">
-			<adapter type="org.eclipse.core.resources.IResource"/>
-		</factory>
-
 	</extension>
 	
 	

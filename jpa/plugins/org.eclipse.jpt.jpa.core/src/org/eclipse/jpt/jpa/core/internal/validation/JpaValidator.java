@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.wst.validation.AbstractValidator;
@@ -91,8 +90,8 @@ public class JpaValidator
 		this.clearMarkers(project);
 		for (IMessage message : messages) {
 			// check preferences for IGNORE
-			if (JpaValidationPreferences.problemIsNotIgnored(project, message.getId())){
-				reporter.addMessage(this, this.adjustMessage(message));
+			if (JpaValidationPreferences.problemIsNotIgnored(project, message.getId())) {
+				reporter.addMessage(this, message);
 			}
 		}
 	}
@@ -112,13 +111,5 @@ public class JpaValidator
 
 	private JpaProject.Reference getJpaProjectReference(IProject project) {
 		return (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
-	}
-
-	private IMessage adjustMessage(IMessage message) {
-		message.setTargetObject(PlatformTools.getAdapter(message.getTargetObject(), IResource.class));
-		if (message.getLineNumber() == IMessage.LINENO_UNSET) {
-			message.setAttribute(IMarker.LOCATION, " "); //$NON-NLS-1$
-		}
-		return message;
 	}
 }

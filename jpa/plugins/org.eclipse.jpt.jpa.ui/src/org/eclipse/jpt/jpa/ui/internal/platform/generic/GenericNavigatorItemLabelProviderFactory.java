@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.common.core.ResourceReference;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
@@ -91,12 +91,12 @@ public class GenericNavigatorItemLabelProviderFactory
 		return this.buildResourceItemLabelProvider(item, JptUiIcons.JAR_FILE);
 	}
 
-	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(ResourceReference ref) {
-		return this.buildResourceItemLabelProvider(ref.getResource());
+	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(JpaNode node) {
+		return this.buildResourceItemLabelProvider(node.getResource());
 	}
 
-	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(ResourceReference ref, String imageKey) {
-		return this.buildResourceItemLabelProvider(ref.getResource(), imageKey);
+	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(JpaNode node, String imageKey) {
+		return this.buildResourceItemLabelProvider(node.getResource(), imageKey);
 	}
 
 	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(IResource resource) {

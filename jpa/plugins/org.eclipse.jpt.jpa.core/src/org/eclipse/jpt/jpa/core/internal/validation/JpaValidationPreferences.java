@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.validation;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -42,9 +41,8 @@ public class JpaValidationPreferences {
 	 * include information on whether the problem is ignored.  See isProblemIgnored.
 	 * @return an IMessage severity level
 	 */
-	public static int getProblemSeverityPreference(Object targetObject, String messageId) {
-		IProject project = getProject(targetObject);
-		String problemPreference = getPreference(project, messageId);
+	public static int getProblemSeverityPreference(IResource targetObject, String messageId) {
+		String problemPreference = getPreference(targetObject.getProject(), messageId);
 		
 		if (problemPreference == null){
 			return NO_SEVERITY_PREFERENCE;
@@ -59,11 +57,6 @@ public class JpaValidationPreferences {
 			return IMessage.LOW_SEVERITY;
 		}
 		return NO_SEVERITY_PREFERENCE;
-	}
-
-	private static IProject getProject(Object targetObject) {
-		IResource resource = PlatformTools.getAdapter(targetObject, IResource.class);
-		return (resource == null) ? null : resource.getProject();
 	}
 
 	/**

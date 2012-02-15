@@ -168,6 +168,13 @@
 			properties="isLatestSupportedVersion, isNotLatestSupportedVersion"
 			class="org.eclipse.jpt.jpa.core.internal.context.XmlFilePropertyTester"/>
 
+		<propertyTester
+			id="org.eclipse.jpt.jpa.ui.propertyTester.jptResourceModel"
+			type="org.eclipse.jpt.common.core.JptResourceModel"
+			namespace="org.eclipse.jpt.jpa.core"
+			properties="isLatestSupportedVersion, isNotLatestSupportedVersion"
+			class="org.eclipse.jpt.jpa.core.internal.JptResourceModelPropertyTester"/>
+
 	</extension>
 
 

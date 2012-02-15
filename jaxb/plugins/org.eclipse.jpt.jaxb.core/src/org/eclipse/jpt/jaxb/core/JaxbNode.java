@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jpt.common.core.ResourceReference;
 import org.eclipse.jpt.common.utility.model.Model;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.model.Model;
  * @since 3.0
  */
 public interface JaxbNode
-	extends Model, IAdaptable, ResourceReference
+	extends Model, IAdaptable
 {
 	/**
 	 * Return the JAXB project the node belongs to.
@@ -40,4 +40,9 @@ public interface JaxbNode
 	JaxbNode getParent();
 
 	void stateChanged();
+
+	/**
+	 * Return the node's resource, typically for validation messages.
+	 */
+	IResource getResource();
 }

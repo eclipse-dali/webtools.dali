@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
@@ -34,29 +33,30 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 public class JaxbValidator
 		extends AbstractValidator
 		implements IValidator {
-	
+
 	public JaxbValidator() {
 		super();
 	}
-	
-	
+
+
 	// ********** IValidator implementation **********
-	
+
 	public void validate(IValidationContext context, IReporter reporter) {
-		validate(reporter, project(context));
+		this.validate(reporter, ((IProjectValidationContext) context).getProject());
 	}
-	
+
 	public void cleanup(IReporter reporter) {
 		// nothing to do
 	}
-	
-	
-	// **************** AbstractValidator impl *********************************
-	
+
+
+	// ********** AbstractValidator implementation **********
+
 	@Override
 	public ValidationResult validate(IResource resource, int kind, ValidationState state, IProgressMonitor monitor) {
-		if (resource.getType() != IResource.FILE)
+		if (resource.getType() != IResource.FILE) {
 			return null;
+		}
 		ValidationResult result = new ValidationResult();
 		IReporter reporter = result.getReporter(monitor);
 		IProject project = resource.getProject();
@@ -65,15 +65,15 @@ public class JaxbValidator
 		this.validate(reporter, project);
 		return result;
 	}
-	
-	
-	// **************** internal conv. *****************************************
+
+
+	// ********** internal **********
+
 	private void clearMarkers(IProject project) {
 		try {
-			clearMarkers_(project);
-		}
-		catch (CoreException ce) {
-			JptJaxbCorePlugin.log(ce);
+			this.clearMarkers_(project);
+		} catch (CoreException ex) {
+			JptJaxbCorePlugin.log(ex);
 		}
 	}
 
@@ -83,23 +83,18 @@ public class JaxbValidator
 			marker.delete();
 		}
 	}
-	
+
 	private void validate(IReporter reporter, IProject project) {
-		for (IMessage message : this.getValidationMessages(reporter, project)) {
-			// check to see if the message should be ignored based on preferences
-			// TODO JAXB validation preferences
-//			if (!JpaValidationPreferences.isProblemIgnored(project, message.getId())){
-				reporter.addMessage(this, adjustMessage(message));
+		for (IMessage message : this.buildValidationMessages(reporter, project)) {
+			// TODO check preferences for IGNORE
+//			if (JpaValidationPreferences.problemIsNotIgnored(project, message.getId())) {
+				reporter.addMessage(this, message);
 //			}
-			
+
 		}
 	}
-	
-	private IProject project(IValidationContext context) {
-		return ((IProjectValidationContext) context).getProject();
-	}
-	
-	private Iterable<IMessage> getValidationMessages(IReporter reporter, IProject project) {
+
+	private Iterable<IMessage> buildValidationMessages(IReporter reporter, IProject project) {
 		JaxbProject jaxbProject = JptJaxbCorePlugin.getJaxbProject(project);
 		if (jaxbProject != null) {
 			return jaxbProject.getValidationMessages(reporter);
@@ -109,13 +104,5 @@ public class JaxbValidator
 						IMessage.HIGH_SEVERITY,
 						JaxbValidationMessages.NO_JAXB_PROJECT,
 						project));
-	}
-	
-	private IMessage adjustMessage(IMessage message) {
-		message.setTargetObject(PlatformTools.getAdapter(message.getTargetObject(), IResource.class));
-		if (message.getLineNumber() == IMessage.LINENO_UNSET) {
-			message.setAttribute(IMarker.LOCATION, " "); //$NON-NLS-1$
-		}
-		return message;
 	}
 }

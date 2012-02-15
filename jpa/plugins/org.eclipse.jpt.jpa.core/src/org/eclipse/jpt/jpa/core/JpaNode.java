@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jpt.common.core.ResourceReference;
 import org.eclipse.jpt.common.utility.model.Model;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.model.Model;
  * @since 2.0
  */
 public interface JpaNode
-	extends Model, IAdaptable, ResourceReference
+	extends Model, IAdaptable
 {
 	/**
 	 * Return the JPA project manager.
@@ -55,4 +55,9 @@ public interface JpaNode
 	 * @see org.eclipse.jpt.common.utility.model.listener.StateChangeListener
 	 */
 	void stateChanged();
+
+	/**
+	 * Return the node's resource, typically for validation messages.
+	 */
+	IResource getResource();
 }
