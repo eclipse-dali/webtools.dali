@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui.internal;
+package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 
 /**
  * Property tester for {@link JptResourceModel}.
- * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>
  */
 public class JptResourceModelPropertyTester
 	extends PropertyTester

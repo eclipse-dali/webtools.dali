@@ -71,13 +71,6 @@
 			<adapter type="org.eclipse.jpt.jpa.ui.JpaFileModel"/>
 		</factory>
 
-		<!-- JpaFile -> JpaStructureViewFactoryProvider -->
-		<factory
-			adaptableType="org.eclipse.jpt.jpa.core.JpaFile"
-			class="org.eclipse.jpt.jpa.ui.internal.JpaFileAdapterFactory">
-			<adapter type="org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider"/>
-		</factory>
-
 		<!-- JpaStructureNode -> JpaDetailsPageManager.Factory -->
 		<factory
 			adaptableType="org.eclipse.jpt.jpa.core.JpaStructureNode"
@@ -116,21 +109,6 @@
 	</extension>
 
 
-	<!-- ***** property testers ***** -->
-
-	<extension 
-		point="org.eclipse.core.expressions.propertyTesters">
-		
-		<propertyTester
-			id="org.eclipse.jpt.jpa.ui.propertyTester.jptResourceModel"
-			type="org.eclipse.jpt.common.core.JptResourceModel"
-			namespace="org.eclipse.jpt.jpa.ui"
-			properties="isLatestSupportedVersion, isNotLatestSupportedVersion"
-			class="org.eclipse.jpt.jpa.ui.internal.JptResourceModelPropertyTester"/>
-		
-	</extension>
-
-	
 	<!-- ***** Java/XML completion proposal computers ***** -->
 	
 	<extension
@@ -347,7 +325,7 @@
 							<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
 						</adapt>
 						<adapt type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource">
-							<test property="org.eclipse.jpt.jpa.ui.isNotLatestSupportedVersion"/>
+							<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
 						</adapt>
 					</or>
 				</iterate>
@@ -543,7 +521,7 @@
 						variable="selection">
 						<iterate ifEmpty="false">
 							<adapt type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource">
-								<test property="org.eclipse.jpt.jpa.ui.isNotLatestSupportedVersion"/>
+								<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
 							</adapt>
 						</iterate>
 					</with>
