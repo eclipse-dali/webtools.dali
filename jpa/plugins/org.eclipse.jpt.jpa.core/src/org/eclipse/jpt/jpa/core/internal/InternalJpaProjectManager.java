@@ -26,7 +26,6 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -147,6 +146,11 @@ public class InternalJpaProjectManager
 	implements JpaProjectManager, JpaProject.Manager
 {
 	/**
+	 * The workspace the JPA project manager corresponds to.
+	 */
+	private final IWorkspace workspace;
+
+	/**
 	 * Determine how commands (Resource and Java change events etc.) are
 	 * handled (i.e. synchronously or asynchronously).
 	 * The default command executor executes commands asynchronously via
@@ -251,8 +255,9 @@ public class InternalJpaProjectManager
 	 * Internal: Called <em>only</em> by the
 	 * {@link JptJpaCorePlugin#getJpaProjectManager_(IWorkspace) Dali plug-in}.
 	 */
-	public InternalJpaProjectManager() {
+	public InternalJpaProjectManager(IWorkspace workspace) {
 		super();
+		this.workspace = workspace;
 		this.exceptionHandler = this.buildExceptionHandler();
 	}
 
@@ -276,7 +281,7 @@ public class InternalJpaProjectManager
 		try {
 			this.commandExecutor = this.buildAsynchronousCommandExecutor();
 			this.buildJpaProjects();
-			this.getWorkspace().addResourceChangeListener(this.resourceChangeListener, RESOURCE_CHANGE_EVENT_TYPES);
+			this.workspace.addResourceChangeListener(this.resourceChangeListener, RESOURCE_CHANGE_EVENT_TYPES);
 			JavaCore.addElementChangedListener(this.javaElementChangeListener, JAVA_CHANGE_EVENT_TYPES);
 		} catch (RuntimeException ex) {
 			this.log(ex);
@@ -292,7 +297,7 @@ public class InternalJpaProjectManager
 	public void stop() {
 		debug("*** JPA project manager STOP ***"); //$NON-NLS-1$
 		JavaCore.removeElementChangedListener(this.javaElementChangeListener);
-		this.getWorkspace().removeResourceChangeListener(this.resourceChangeListener);
+		this.workspace.removeResourceChangeListener(this.resourceChangeListener);
 		this.clearJpaProjects();
 		// if the current executor is async, commands can continue to execute
 		// after we replace it here, but there will be no JPA projects for them to process...
@@ -852,11 +857,7 @@ public class InternalJpaProjectManager
 	// ********** misc **********
 
 	private IWorkspaceRoot getWorkspaceRoot() {
-		return this.getWorkspace().getRoot();
-	}
-
-	private IWorkspace getWorkspace() {
-		return ResourcesPlugin.getWorkspace();
+		return this.workspace.getRoot();
 	}
 
 	private ISchedulingRule getCurrentRule() {
@@ -1010,7 +1011,7 @@ public class InternalJpaProjectManager
 		}
 
 		public IStatus execute(IProgressMonitor monitor) {
-			InternalJpaProjectManager.this.execute_(this.jobCommand, monitor, jpaProject);
+			InternalJpaProjectManager.this.execute_(this.jobCommand, monitor, this.jpaProject);
 			return Status.OK_STATUS;
 		}
 

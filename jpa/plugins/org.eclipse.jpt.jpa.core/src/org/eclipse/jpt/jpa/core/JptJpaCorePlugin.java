@@ -763,15 +763,15 @@ public class JptJpaCorePlugin
 	private synchronized InternalJpaProjectManager getJpaProjectManager_(IWorkspace workspace) {
 		InternalJpaProjectManager jpaProjectManager = this.jpaProjectManagers.get(workspace);
 		if (this.active && (jpaProjectManager == null)) {
-			jpaProjectManager = this.buildJpaProjectManager();
+			jpaProjectManager = this.buildJpaProjectManager(workspace);
 			jpaProjectManager.start();
 			this.jpaProjectManagers.put(workspace, jpaProjectManager);
 		}
 		return jpaProjectManager;
 	}
 
-	private InternalJpaProjectManager buildJpaProjectManager() {
-		return new InternalJpaProjectManager();
+	private InternalJpaProjectManager buildJpaProjectManager(IWorkspace workspace) {
+		return new InternalJpaProjectManager(workspace);
 	}
 
 	/**
