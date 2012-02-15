@@ -39,6 +39,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
 import org.eclipse.osgi.util.NLS;
@@ -244,14 +245,22 @@ public class JpaStructurePage
 		if (jpaFile == null) {
 			this.setTreeViewerMessage(JptUiMessages.JpaStructureView_structureNotAvailable);
 		} else {
-			ItemTreeStateProviderFactoryProvider sp = (ItemTreeStateProviderFactoryProvider) jpaFile.getAdapter(ItemTreeStateProviderFactoryProvider.class);
-			if (sp == null) {
+			ItemTreeStateProviderFactoryProvider factoryProvider = this.getFactoryProvider(jpaFile);
+			if (factoryProvider == null) {
 				this.setTreeViewerMessage(this.buildMissingStructureProviderMessage(jpaFile));
 			} else {
-				this.setTreeViewerJpaFile(jpaFile, sp);
+				this.setTreeViewerJpaFile(jpaFile, factoryProvider);
 				this.setTreeViewerJpaSelection_(this.getEditorJpaSelection());
 			}
 		}
+	}
+
+	private ItemTreeStateProviderFactoryProvider getFactoryProvider(JpaFile jpaFile) {
+		return this.getPlatformUi(jpaFile).getStructureViewFactoryProvider(jpaFile);
+	}
+
+	private JpaPlatformUi getPlatformUi(JpaFile jpaFile) {
+		return (JpaPlatformUi) jpaFile.getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
 	}
 
 	private String buildMissingStructureProviderMessage(JpaFile jpaFile) {
@@ -261,17 +270,17 @@ public class JpaStructurePage
 		return NLS.bind(JptUiMessages.JpaStructureView_structureProviderNotAvailable, contentType, version);
 	}
 
-	private void setTreeViewerJpaFile(JpaFile jpaFile, ItemTreeStateProviderFactoryProvider sp) {
-		TreeStateProvider provider = this.buildStateProvider(sp);
+	private void setTreeViewerJpaFile(JpaFile jpaFile, ItemTreeStateProviderFactoryProvider factoryProvider) {
+		TreeStateProvider provider = this.buildStateProvider(factoryProvider);
 		this.treeViewer.setContentProvider(provider);
 		this.treeViewer.setLabelProvider(provider);
 		this.treeViewer.setInput(jpaFile);
 	}
 
-	private TreeStateProvider buildStateProvider(ItemTreeStateProviderFactoryProvider structureProvider) {
+	private TreeStateProvider buildStateProvider(ItemTreeStateProviderFactoryProvider factoryProvider) {
 		return new ItemTreeStateProviderManager(
-				structureProvider.getItemContentProviderFactory(),
-				structureProvider.getItemLabelProviderFactory()
+				factoryProvider.getItemContentProviderFactory(),
+				factoryProvider.getItemLabelProviderFactory()
 			);
 	}
 
