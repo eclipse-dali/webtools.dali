@@ -31,23 +31,23 @@ public class JpaPlatformTester
 		return false;
 	}
 	
-	private boolean test(JpaPlatformDescription platform, String property, Object expectedValue) {
+	private boolean test(JpaPlatformDescription platformDescription, String property, Object expectedValue) {
 		if (property.equals(JPA_PLATFORM)) {
-			JpaPlatformDescription expected = this.getJpaPlatform(expectedValue);
-			return Tools.valuesAreEqual(platform, expected);
+			JpaPlatformDescription expected = this.getJpaPlatformDescription((String) expectedValue);
+			return Tools.valuesAreEqual(platformDescription, expected);
 		}
 		if (property.equals(JPA_PLATFORM_GROUP)) {
-			JpaPlatformGroupDescription expected = this.getJpaPlatformGroup(expectedValue);
-			return Tools.valuesAreEqual(platform.getGroup(), expected);
+			JpaPlatformGroupDescription expected = this.getJpaPlatformGroupDescription((String) expectedValue);
+			return Tools.valuesAreEqual(platformDescription.getGroup(), expected);
 		}
 		return false;
 	}
 
-	private JpaPlatformDescription getJpaPlatform(Object id) {
-		return JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform((String) id);
+	private JpaPlatformDescription getJpaPlatformDescription(String id) {
+		return JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform(id);
 	}
 
-	private JpaPlatformGroupDescription getJpaPlatformGroup(Object id) {
-		return JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatformGroup((String) id);
+	private JpaPlatformGroupDescription getJpaPlatformGroupDescription(String id) {
+		return JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatformGroup(id);
 	}
 }
