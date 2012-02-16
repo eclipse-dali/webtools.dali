@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -94,6 +95,9 @@ public abstract class JpaMapping implements IMapping {
 	}
 
 	protected Iterable<ITypeDeclaration> buildGenericTypeDeclarations(JavaResourceAttribute resource) {
+		if (resource == null) {
+			return EmptyIterable.instance();
+		}
 		return new TransformationIterable<String, ITypeDeclaration>(resource.getTypeTypeArgumentNames()) {
 			@Override
 			protected ITypeDeclaration transform(String next) {
