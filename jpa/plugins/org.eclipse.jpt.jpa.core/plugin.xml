@@ -46,12 +46,14 @@
 		<!-- IFile
 				-> JpaFile.Reference
 				-> JpaFile
+				-> JpaXmlResource
 		-->
 		<factory
 			adaptableType="org.eclipse.core.resources.IFile"
 			class="org.eclipse.jpt.jpa.core.internal.FileAdapterFactory">
 			<adapter type="org.eclipse.jpt.jpa.core.JpaFile$Reference"/>
 			<adapter type="org.eclipse.jpt.jpa.core.JpaFile"/>
+			<adapter type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource"/>
 		</factory>
 
 		<!-- IResource -> JpaPlatformDescription -->
