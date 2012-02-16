@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterab
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -328,10 +327,6 @@ public class GenericOrmVirtualJoinTable
 			return this.getRelationship().getTypeMapping();
 		}
 
-		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
-			return GenericOrmVirtualJoinTable.this.defaultJoinColumn == joinColumn;
-		}
-
 		public int getJoinColumnsSize() {
 			return GenericOrmVirtualJoinTable.this.getJoinColumnsSize();
 		}
@@ -376,10 +371,6 @@ public class GenericOrmVirtualJoinTable
 		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity relationshipTarget = this.getRelationshipTarget();
 			return (relationshipTarget == null) ? null : relationshipTarget.getPrimaryDbTable();
-		}
-
-		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
-			return GenericOrmVirtualJoinTable.this.defaultInverseJoinColumn == joinColumn;
 		}
 
 		public int getJoinColumnsSize() {

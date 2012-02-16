@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterab
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
@@ -354,10 +353,6 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 
 		public Table getReferencedColumnDbTable() {
 			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this.getReferencedColumnDbTable();
-		}
-
-		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
-			return false;
 		}
 
 		public int getJoinColumnsSize() {

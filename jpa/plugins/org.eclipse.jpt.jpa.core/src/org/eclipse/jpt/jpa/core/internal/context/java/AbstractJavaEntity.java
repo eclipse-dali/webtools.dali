@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1364,7 +1364,7 @@ public abstract class AbstractJavaEntity
 		if (this.specifiedDiscriminatorColumnIsAllowed && ! this.discriminatorColumnIsUndefined) {
 			this.discriminatorColumn.validate(messages, reporter, astRoot);
 		}
-		else if (this.discriminatorColumn.isResourceSpecified()) {
+		else if (!this.discriminatorColumn.isVirtual()) {
 			if (this.isDescendant()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -1629,10 +1629,6 @@ public abstract class AbstractJavaEntity
 
 		public int getJoinColumnsSize() {
 			return AbstractJavaEntity.this.getPrimaryKeyJoinColumnsSize();
-		}
-
-		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
-			return AbstractJavaEntity.this.defaultPrimaryKeyJoinColumn == joinColumn;
 		}
 
 		public String getDefaultColumnName(ReadOnlyNamedColumn column) {

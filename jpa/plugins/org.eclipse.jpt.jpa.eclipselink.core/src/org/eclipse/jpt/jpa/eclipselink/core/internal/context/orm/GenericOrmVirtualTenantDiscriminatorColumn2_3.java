@@ -67,11 +67,6 @@ public class GenericOrmVirtualTenantDiscriminatorColumn2_3
 		return this.overriddenColumn;
 	}
 
-	@Override
-	public boolean isVirtual() {
-		return true;
-	}
-
 
 	// ********** table **********
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
@@ -266,11 +265,9 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 
 	// ********** misc **********
 
-	/**
-	 * This is used by the subclasses that implement {@link ReadOnlyBaseJoinColumn#isVirtual()}.
-	 */
+
 	public boolean isVirtual() {
-		return false;
+		return !this.getColumnAnnotation().isSpecified();
 	}
 
 	protected void initializeFrom(ReadOnlyNamedColumn oldColumn) {

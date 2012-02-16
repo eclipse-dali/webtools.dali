@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualNamedColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
@@ -172,9 +171,6 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 		return (XmlContextNode) super.getParent();
 	}
 
-	/**
-	 * This is used by the subclasses that implement {@link ReadOnlyBaseJoinColumn#isVirtual()}.
-	 */
 	public boolean isVirtual() {
 		return true;
 	}

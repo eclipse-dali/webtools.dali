@@ -40,7 +40,6 @@ import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
@@ -998,7 +997,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected void validateMapKeyClass(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.getPersistentAttribute().getJpaContainerDefinition().isMap()) {
+		if (this.isJpa2_0Compatible() && this.getPersistentAttribute().getJpaContainerDefinition().isMap()) {
 			this.validateMapKeyClass_(messages, astRoot);
 		}
 	}
@@ -1198,10 +1197,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 		public Table getReferencedColumnDbTable() {
 			return AbstractJavaMultiRelationshipMapping.this.getResolvedMapKeyEntity().getPrimaryDbTable();
-		}
-
-		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
-			return AbstractJavaMultiRelationshipMapping.this.defaultMapKeyJoinColumn == joinColumn;
 		}
 
 		public int getJoinColumnsSize() {

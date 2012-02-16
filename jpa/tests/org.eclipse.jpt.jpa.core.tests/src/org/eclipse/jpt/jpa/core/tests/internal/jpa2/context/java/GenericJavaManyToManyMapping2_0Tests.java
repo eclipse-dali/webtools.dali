@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1941,11 +1941,11 @@ public class GenericJavaManyToManyMapping2_0Tests
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
 
-		assertTrue(manyToManyMapping.getDefaultMapKeyJoinColumn().isDefault());
+		assertTrue(manyToManyMapping.getDefaultMapKeyJoinColumn().isVirtual());
 
 		manyToManyMapping.addSpecifiedMapKeyJoinColumn(0);
 		JoinColumn specifiedJoinColumn = manyToManyMapping.getSpecifiedMapKeyJoinColumns().iterator().next();
-		assertFalse(specifiedJoinColumn.isDefault());
+		assertFalse(specifiedJoinColumn.isVirtual());
 
 		assertNull(manyToManyMapping.getDefaultMapKeyJoinColumn());
 	}

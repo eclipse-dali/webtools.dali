@@ -39,7 +39,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
@@ -993,9 +992,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected void validateMapKeyClass(List<IMessage> messages) {
+		if (this.isJpa2_0Compatible()) {
 		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
-		if ((javaAttribute != null) && javaAttribute.getJpaContainerDefinition().isMap()) {
-			this.validateMapKeyClass_(messages);
+			if ((javaAttribute != null) && javaAttribute.getJpaContainerDefinition().isMap()) {
+				this.validateMapKeyClass_(messages);
+			}
 		}
 	}
 
@@ -1197,10 +1198,6 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 		public Table getReferencedColumnDbTable() {
 			return AbstractOrmMultiRelationshipMapping.this.getResolvedMapKeyEntity().getPrimaryDbTable();
-		}
-
-		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
-			return AbstractOrmMultiRelationshipMapping.this.defaultMapKeyJoinColumn == joinColumn;
 		}
 
 		public int getJoinColumnsSize() {

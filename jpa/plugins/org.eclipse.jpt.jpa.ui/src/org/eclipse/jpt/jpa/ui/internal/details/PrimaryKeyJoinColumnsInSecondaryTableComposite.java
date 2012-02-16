@@ -147,7 +147,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 
 	String buildJoinColumnLabel(ReadOnlyPrimaryKeyJoinColumn joinColumn) {
 
-		if (joinColumn.isDefault()) {
+		if (joinColumn.isVirtual()) {
 			return NLS.bind(
 				JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault,
 				joinColumn.getName(),

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,7 +59,6 @@ public interface ReadOnlyNamedColumn
 	String getColumnDefinition();
 		String COLUMN_DEFINITION_PROPERTY = "columnDefinition"; //$NON-NLS-1$
 
-
 	// ********** database stuff **********
 
 	/**
@@ -71,6 +70,15 @@ public interface ReadOnlyNamedColumn
 	 * Return whether the column is found on the datasource.
 	 */
 	boolean isResolved();
+
+
+	// ********** misc **********
+
+	/**
+	 * Return whether the column has a textual representation
+	 * in its underlying resource.
+	 */
+	boolean isVirtual();
 
 
 	// ********** owner **********

@@ -1654,11 +1654,11 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertTrue(getJavaEntity().getDefaultPrimaryKeyJoinColumn().isDefault());
+		assertTrue(getJavaEntity().getDefaultPrimaryKeyJoinColumn().isVirtual());
 
 		getJavaEntity().addSpecifiedPrimaryKeyJoinColumn(0);
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator().next();
-		assertFalse(specifiedPkJoinColumn.isDefault());
+		assertFalse(specifiedPkJoinColumn.isVirtual());
 		
 		assertNull(getJavaEntity().getDefaultPrimaryKeyJoinColumn());
 	}

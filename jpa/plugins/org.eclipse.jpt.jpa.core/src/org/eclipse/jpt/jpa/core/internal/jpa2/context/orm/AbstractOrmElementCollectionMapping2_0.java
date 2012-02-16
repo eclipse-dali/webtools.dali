@@ -45,7 +45,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
@@ -1884,10 +1883,6 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			return AbstractOrmElementCollectionMapping2_0.this.getResolvedMapKeyEntity().getPrimaryDbTable();
-		}
-
-		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
-			return AbstractOrmElementCollectionMapping2_0.this.defaultMapKeyJoinColumn == joinColumn;
 		}
 
 		public int getJoinColumnsSize() {

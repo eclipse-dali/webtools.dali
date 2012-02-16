@@ -59,10 +59,6 @@ public class GenericJavaVirtualJoinColumn
 		return this.overriddenColumn;
 	}
 
-	public boolean isDefault() {
-		return this.owner.joinColumnIsDefault(this);
-	}
-
 
 	// ********** referenced column name **********
 
@@ -112,13 +108,6 @@ public class GenericJavaVirtualJoinColumn
 
 	public boolean referencedColumnIsResolved() {
 		return this.getReferencedDbColumn() != null;
-	}
-
-
-	// ********** misc **********
-
-	public boolean isVirtual() {
-		return true;
 	}
 
 
