@@ -9,16 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.AccessType;
+import java.util.List;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentType;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessMethodsHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * <code>eclipselink-orm.xml</code> persistent type:<ul>
@@ -41,12 +46,20 @@ public class OrmEclipseLinkPersistentType
 	protected String specifiedSetMethod;
 	protected String defaultSetMethod;
 
+	protected boolean dynamic;
+		public static final String DYNAMIC_PROPERTY = "dynamic"; //$NON-NLS-1$
 
 	public OrmEclipseLinkPersistentType(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent, xmlTypeMapping);
 		this.specifiedGetMethod = this.buildSpecifiedGetMethod();
 		this.specifiedSetMethod = this.buildSpecifiedSetMethod();
 	}
+
+	@Override
+	protected XmlTypeMapping getXmlTypeMapping() {
+		return (XmlTypeMapping) super.getXmlTypeMapping();
+	}
+
 
 	// ********** synchronize/update **********
 
@@ -62,8 +75,84 @@ public class OrmEclipseLinkPersistentType
 		super.update();
 		this.setDefaultGetMethod(this.buildDefaultGetMethod());
 		this.setDefaultSetMethod(this.buildDefaultSetMethod());
+		this.setDynamic(this.buildDynamic());
 	}
 
+
+	//*************** dynamic *****************
+
+	public boolean isDynamic() {
+		return this.dynamic;
+	}
+
+	protected void setDynamic(boolean dynamic) {
+		boolean old = this.dynamic;
+		this.dynamic = dynamic;
+		if (this.firePropertyChanged(DYNAMIC_PROPERTY, old, this.dynamic)) {
+			// clear out the Java persistent type here, it will be rebuilt during "update"
+			if (this.javaPersistentType != null) {
+				this.javaPersistentType.dispose();
+				this.setJavaPersistentType(null);
+			}
+		}
+	}
+
+	//Base the dynamic state only on the JavaResourceType being null.
+	//Otherwise, the accces type affects the hierarchy
+	//and then the hierarchy affects the access type and we get stuck in an update.
+	//Validation will check that virtual access is set if it is dynamic.
+	protected boolean buildDynamic() {
+		return this.resolveJavaResourceType() == null;
+	}
+
+	protected boolean isVirtualAccess() {
+		return this.getAccess() == EclipseLinkAccessType.VIRTUAL;
+	}
+
+	@Override
+	protected JavaPersistentType buildJavaPersistentType() {
+		if (this.isDynamic()) {
+			return this.buildVirtualJavaPersistentType();
+		}
+		return super.buildJavaPersistentType();
+	}
+
+	protected JavaPersistentType buildVirtualJavaPersistentType() {
+		return new VirtualJavaPersistentType(this, this.getXmlTypeMapping());
+	}
+
+
+	@Override
+	public PersistentType getOverriddenPersistentType() {
+		if (this.isDynamic()) {
+			return null;
+		}
+		return super.getOverriddenPersistentType();
+	}
+
+//	//TODO should we throw an exception if there is a default attribute with this name? or even a specified attribute
+//	public OrmPersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType) {
+//		// force the creation of an empty xml attribute container beforehand or it will trigger
+//		// a sync and, if we do this after adding the attribute, clear out our context attributes
+//		Attributes xmlAttributes = this.getXmlAttributesForUpdate();
+//		this.getXmlTypeMapping().setAttributes(xmlAttributes);  // possibly a NOP
+//
+//		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
+//		XmlAttributeMapping xmlMapping = (XmlAttributeMapping) md.buildResourceMapping(this.getResourceNodeFactory());
+//		xmlMapping.setName(attributeName);
+//		xmlMapping.setTypeName(attributeType);
+//		if (getAccess() != EclipseLinkAccessType.VIRTUAL) {
+//			xmlMapping.setAccess(EclipseLinkAccessType.VIRTUAL.getOrmAccessType());
+//		}
+//
+//		OrmPersistentAttribute specifiedAttribute = this.buildSpecifiedAttribute(xmlMapping);
+//		// we need to add the attribute to the right spot in the list - stupid spec...
+//		int specifiedIndex = this.getSpecifiedAttributeInsertionIndex(specifiedAttribute);
+//		this.addItemToList(specifiedIndex, specifiedAttribute, this.specifiedAttributes, SPECIFIED_ATTRIBUTES_LIST);
+//		specifiedAttribute.getMapping().addXmlAttributeMappingTo(xmlAttributes);
+//
+//		return specifiedAttribute;
+//	}
 
 	//*************** get method *****************
 
@@ -74,21 +163,6 @@ public class OrmEclipseLinkPersistentType
 
 	public String getDefaultGetMethod() {
 		return this.defaultGetMethod;
-	}
-	@Override
-	protected AccessType buildDefaultAccess() {
-		if ( ! this.mapping.isMetadataComplete()) {
-			if (this.javaPersistentType != null) {
-				if (this.javaPersistentTypeHasSpecifiedAccess()) {
-					return this.javaPersistentType.getAccess();
-				}
-				if (this.superPersistentType != null) {
-					return this.superPersistentType.getAccess();
-				}
-			}
-		}
-		AccessType access = this.getMappingFileRoot().getAccess();
-		return (access != null) ? access : AccessType.FIELD;  // default to FIELD if no specified access found
 	}
 
 	//TODO get the default get method from the java VirtualAccessMethods annotation and from the super type
@@ -184,9 +258,7 @@ public class OrmEclipseLinkPersistentType
 	//*************** XML access methods *****************
 
 	protected XmlAccessMethodsHolder getXmlAccessMethodsHolder() {
-		//or do we only build an OrmEclipseLinkPersistentType for 2.1++ projects
-		//TODO KFB instanceof check here or platform check? this will result in a CCE for pre El 2.1 projects
-		return (XmlAccessMethodsHolder) this.getXmlTypeMapping();
+		return this.getXmlTypeMapping();
 	}
 
 	protected XmlAccessMethods getXmlAccessMethods() {
@@ -223,6 +295,21 @@ public class OrmEclipseLinkPersistentType
 	@Override
 	protected EclipseLinkEntityMappings getEntityMappings() {
 		return (EclipseLinkEntityMappings) super.getEntityMappings();
+	}
+
+	@Override
+	protected void validateClass(List<IMessage> messages) {
+		if (this.isDynamic() && !this.isVirtualAccess()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
+					new String[] {this.getName()},
+					this,
+					this.mapping.getClassTextRange()
+				)
+			);
+		}
 	}
 
 }

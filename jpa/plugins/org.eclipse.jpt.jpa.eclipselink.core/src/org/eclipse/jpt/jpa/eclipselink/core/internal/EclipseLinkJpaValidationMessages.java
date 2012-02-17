@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -107,4 +107,5 @@ public interface EclipseLinkJpaValidationMessages {
 	public static final String MULTITENANT_VPD_NOT_SUPPORTED_ON_NON_ORACLE_DATABASE_PLATFORM = "MULTITENANT_VPD_NOT_SUPPORTED_ON_NON_ORACLE_DATABASE_PLATFORM";
 	public static final String MULTITENANT_VPD_INCLUDE_CRITERIA_WILL_BE_IGNORED = "MULTITENANT_VPD_INCLUDE_CRITERIA_WILL_BE_IGNORED";
 
+	public static final String VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED = "VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED";
 }

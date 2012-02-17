@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,7 +42,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLin
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkMappedSuperclassImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkOneToOneMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkPersistentAttribute;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.SpecifiedJavaEclipseLinkPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVersionMapping;
@@ -67,17 +67,17 @@ public class EclipseLinkJpaFactory
 
 	@Override
 	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, Accessor accessor) {
-		return new JavaEclipseLinkPersistentAttribute(parent, accessor);
+		return new SpecifiedJavaEclipseLinkPersistentAttribute(parent, accessor);
 	}
 
 	@Override
 	public JavaPersistentAttribute buildJavaPersistentField(PersistentType parent, JavaResourceField resourceField) {
-		return new JavaEclipseLinkPersistentAttribute(parent, resourceField);
+		return new SpecifiedJavaEclipseLinkPersistentAttribute(parent, resourceField);
 	}
 
 	@Override
 	public JavaPersistentAttribute buildJavaPersistentProperty(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
-		return new JavaEclipseLinkPersistentAttribute(parent, resourceGetter, resourceSetter);
+		return new SpecifiedJavaEclipseLinkPersistentAttribute(parent, resourceGetter, resourceSetter);
 	}
 
 	@Override

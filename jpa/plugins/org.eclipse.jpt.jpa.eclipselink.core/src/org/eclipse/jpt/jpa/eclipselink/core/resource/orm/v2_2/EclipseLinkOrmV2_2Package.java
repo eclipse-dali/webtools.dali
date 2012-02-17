@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -615,22 +615,13 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	public static final int XML_EMBEDDABLE_22__ASSOCIATION_OVERRIDES = OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Parent Class</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDABLE_22__PARENT_CLASS = OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Xml Embeddable 22</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDABLE_22_FEATURE_COUNT = OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER_FEATURE_COUNT + 2;
+	public static final int XML_EMBEDDABLE_22_FEATURE_COUNT = OrmPackage.XML_ATTRIBUTE_OVERRIDE_CONTAINER_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
@@ -3096,20 +3087,6 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlEmbeddable_2_2#getParentClass <em>Parent Class</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Parent Class</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlEmbeddable_2_2#getParentClass()
-	 * @see #getXmlEmbeddable_2_2()
-	 * @generated
-	 */
-	public EAttribute getXmlEmbeddable_2_2_ParentClass()
-	{
-		return (EAttribute)xmlEmbeddable_2_2EClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlId_2_2 <em>Xml Id 22</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3559,7 +3536,6 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		createEAttribute(xmlElementCollection_2_2EClass, XML_ELEMENT_COLLECTION_22__NONCACHEABLE);
 
 		xmlEmbeddable_2_2EClass = createEClass(XML_EMBEDDABLE_22);
-		createEAttribute(xmlEmbeddable_2_2EClass, XML_EMBEDDABLE_22__PARENT_CLASS);
 
 		xmlEntity_2_2EClass = createEClass(XML_ENTITY_22);
 		createEReference(xmlEntity_2_2EClass, XML_ENTITY_22__ADDITIONAL_CRITERIA);
@@ -3730,7 +3706,6 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		initEAttribute(getXmlElementCollection_2_2_Noncacheable(), theXMLTypePackage.getBoolean(), "noncacheable", null, 0, 1, XmlElementCollection_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEmbeddable_2_2EClass, XmlEmbeddable_2_2.class, "XmlEmbeddable_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlEmbeddable_2_2_ParentClass(), theXMLTypePackage.getString(), "parentClass", null, 0, 1, XmlEmbeddable_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntity_2_2EClass, XmlEntity_2_2.class, "XmlEntity_2_2", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlEntity_2_2_AdditionalCriteria(), this.getXmlAdditionalCriteria_2_2(), null, "additionalCriteria", null, 0, 1, XmlEntity_2_2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -4387,14 +4362,6 @@ public class EclipseLinkOrmV2_2Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_EMBEDDABLE_22 = eINSTANCE.getXmlEmbeddable_2_2();
-
-		/**
-		 * The meta object literal for the '<em><b>Parent Class</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_EMBEDDABLE_22__PARENT_CLASS = eINSTANCE.getXmlEmbeddable_2_2_ParentClass();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlId_2_2 <em>Xml Id 22</em>}' class.

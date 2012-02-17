@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,6 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkDynamicTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
@@ -66,6 +67,8 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected final OrmQueryContainer queryContainer;
 
+	protected String parentClass;
+
 	public OrmEclipseLinkMappedSuperclassImpl(OrmPersistentType parent, XmlMappedSuperclass xmlMappedSuperclass) {
 		super(parent, xmlMappedSuperclass);
 		this.caching = this.buildCaching();
@@ -75,6 +78,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.customizer = this.buildCustomizer();
 		this.multitenancy = this.buildMultitenancy();
 		this.queryContainer = this.buildQueryContainer();
+		this.parentClass = xmlMappedSuperclass.getParentClass();
 	}
 
 
@@ -90,6 +94,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.customizer.synchronizeWithResourceModel();
 		this.multitenancy.synchronizeWithResourceModel();
 		this.queryContainer.synchronizeWithResourceModel();
+		this.setParentClass(this.xmlTypeMapping.getParentClass());
 	}
 
 	@Override
@@ -224,6 +229,24 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	}
 
 
+	// ********** parent class **********
+
+	public String getParentClass() {
+		return this.parentClass;
+	}
+
+	public void setParentClass(String parentClass) {
+		this.setParentClass_(parentClass);
+		this.xmlTypeMapping.setParentClass(parentClass);
+	}
+
+	protected void setParentClass_(String parentClass) {
+		String old = this.parentClass;
+		this.parentClass = parentClass;
+		this.firePropertyChanged(PARENT_CLASS_PROPERTY, old, parentClass);
+	}
+
+
 	// ********** misc **********
 
 	@Override
@@ -234,6 +257,11 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	@Override
 	public JavaEclipseLinkMappedSuperclass getJavaTypeMappingForDefaults() {
 		return (JavaEclipseLinkMappedSuperclass) super.getJavaTypeMappingForDefaults();
+	}
+
+	@Override
+	public OrmEclipseLinkPersistentType getPersistentType() {
+		return (OrmEclipseLinkPersistentType) super.getPersistentType();
 	}
 
 	public boolean usesPrimaryKeyColumns() {
@@ -345,6 +373,13 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	@Override
 	protected JptValidator buildTypeMappingValidator() {
+		if (this.isDynamicType()) {
+			return new EclipseLinkDynamicTypeMappingValidator(this);
+		}
 		return new EclipseLinkMappedSuperclassValidator(this, this.getJavaResourceType(), this.buildTextRangeResolver());
+	}
+
+	protected boolean isDynamicType() {
+		return this.getPersistentType().isDynamic();
 	}
 }

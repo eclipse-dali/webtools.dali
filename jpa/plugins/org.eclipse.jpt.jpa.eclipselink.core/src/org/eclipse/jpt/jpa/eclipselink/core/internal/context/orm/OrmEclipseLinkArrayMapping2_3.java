@@ -46,6 +46,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+//TODO canonical metamodel generation, need to override getMetamodelTypeName() and use the target-class element
 public class OrmEclipseLinkArrayMapping2_3
 	extends AbstractOrmAttributeMapping<XmlArray>
 	implements

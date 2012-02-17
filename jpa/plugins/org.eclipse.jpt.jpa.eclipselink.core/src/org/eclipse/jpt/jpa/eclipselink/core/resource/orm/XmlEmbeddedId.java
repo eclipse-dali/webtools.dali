@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -224,6 +224,10 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 			properties = new EObjectContainmentEList<XmlProperty>(XmlProperty.class, this, EclipseLinkOrmPackage.XML_EMBEDDED_ID__PROPERTIES);
 		}
 		return properties;
+	}
+
+	public String getTypeName() {
+		return this.getAttributeType();
 	}
 
 	/**

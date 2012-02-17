@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,6 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkDynamicTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -48,12 +49,15 @@ public class OrmEclipseLinkEmbeddableImpl
 
 	protected final OrmEclipseLinkCustomizer customizer;
 
+	protected String parentClass;
+
 
 	public OrmEclipseLinkEmbeddableImpl(OrmPersistentType parent, XmlEmbeddable xmlEmbeddable) {
 		super(parent, xmlEmbeddable);
 		this.converterContainer = this.buildConverterContainer();
 		this.changeTracking = this.buildChangeTracking();
 		this.customizer = this.buildCustomizer();
+		this.parentClass = xmlEmbeddable.getParentClass();
 	}
 
 
@@ -65,6 +69,7 @@ public class OrmEclipseLinkEmbeddableImpl
 		this.converterContainer.synchronizeWithResourceModel();
 		this.changeTracking.synchronizeWithResourceModel();
 		this.customizer.synchronizeWithResourceModel();
+		this.setParentClass(this.xmlTypeMapping.getParentClass());
 	}
 
 	@Override
@@ -136,6 +141,24 @@ public class OrmEclipseLinkEmbeddableImpl
 	}
 
 
+	// ********** parent class **********
+
+	public String getParentClass() {
+		return this.parentClass;
+	}
+
+	public void setParentClass(String parentClass) {
+		this.setParentClass_(parentClass);
+		this.xmlTypeMapping.setParentClass(parentClass);
+	}
+
+	protected void setParentClass_(String parentClass) {
+		String old = this.parentClass;
+		this.parentClass = parentClass;
+		this.firePropertyChanged(PARENT_CLASS_PROPERTY, old, parentClass);
+	}
+
+
 	// ********** misc **********
 
 	@Override
@@ -146,6 +169,11 @@ public class OrmEclipseLinkEmbeddableImpl
 	@Override
 	public JavaEclipseLinkEmbeddable getJavaTypeMappingForDefaults() {
 		return (JavaEclipseLinkEmbeddable) super.getJavaTypeMappingForDefaults();
+	}
+
+	@Override
+	public OrmEclipseLinkPersistentType getPersistentType() {
+		return (OrmEclipseLinkPersistentType) super.getPersistentType();
 	}
 
 	public boolean usesPrimaryKeyColumns() {
@@ -226,6 +254,13 @@ public class OrmEclipseLinkEmbeddableImpl
 
 	@Override
 	protected JptValidator buildTypeMappingValidator() {
+		if (this.isDynamicType()) {
+			return new EclipseLinkDynamicTypeMappingValidator(this);
+		}
 		return new EclipseLinkTypeMappingValidator(this, getJavaResourceType(), buildTextRangeResolver());
+	}
+
+	protected boolean isDynamicType() {
+		return this.getPersistentType().isDynamic();
 	}
 }

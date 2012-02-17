@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1901,13 +1901,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_EMBEDDABLE__ACCESS_METHODS = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 0;
 	/**
+	 * The feature id for the '<em><b>Parent Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__PARENT_CLASS = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 1;
+	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDABLE__ATTRIBUTE_OVERRIDES = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 1;
+	public static final int XML_EMBEDDABLE__ATTRIBUTE_OVERRIDES = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 2;
 	/**
 	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1915,15 +1923,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDABLE__ASSOCIATION_OVERRIDES = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 2;
-	/**
-	 * The feature id for the '<em><b>Parent Class</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDABLE__PARENT_CLASS = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 3;
+	public static final int XML_EMBEDDABLE__ASSOCIATION_OVERRIDES = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 3;
 	/**
 	 * The feature id for the '<em><b>Plsql Records</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -2440,53 +2440,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ENTITY__ENTITY_LISTENERS = OrmPackage.XML_ENTITY__ENTITY_LISTENERS;
 	/**
-	 * The feature id for the '<em><b>Primary Key</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__PRIMARY_KEY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 0;
-	/**
-	 * The feature id for the '<em><b>Cache Interceptor</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__CACHE_INTERCEPTOR = OrmPackage.XML_ENTITY_FEATURE_COUNT + 1;
-	/**
-	 * The feature id for the '<em><b>Query Redirectors</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__QUERY_REDIRECTORS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 2;
-	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__ACCESS_METHODS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 3;
-	/**
-	 * The feature id for the '<em><b>Fetch Groups</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__FETCH_GROUPS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 4;
-	/**
-	 * The feature id for the '<em><b>Class Extractor</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__CLASS_EXTRACTOR = OrmPackage.XML_ENTITY_FEATURE_COUNT + 5;
+	public static final int XML_ENTITY__ACCESS_METHODS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Parent Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2494,7 +2454,47 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__PARENT_CLASS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 6;
+	public static final int XML_ENTITY__PARENT_CLASS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 1;
+	/**
+	 * The feature id for the '<em><b>Primary Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__PRIMARY_KEY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 2;
+	/**
+	 * The feature id for the '<em><b>Cache Interceptor</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__CACHE_INTERCEPTOR = OrmPackage.XML_ENTITY_FEATURE_COUNT + 3;
+	/**
+	 * The feature id for the '<em><b>Query Redirectors</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__QUERY_REDIRECTORS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 4;
+	/**
+	 * The feature id for the '<em><b>Fetch Groups</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__FETCH_GROUPS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 5;
+	/**
+	 * The feature id for the '<em><b>Class Extractor</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__CLASS_EXTRACTOR = OrmPackage.XML_ENTITY_FEATURE_COUNT + 6;
 	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -3476,7 +3476,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVariableOneToOne()
 	 * @generated
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE = 86;
+	public static final int XML_VARIABLE_ONE_TO_ONE = 87;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion <em>Xml Version</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3485,7 +3485,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int XML_VERSION = 87;
+	public static final int XML_VERSION = 88;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlHashPartitioning <em>Xml Hash Partitioning</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -4408,117 +4408,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS = OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS;
 	/**
-	 * The feature id for the '<em><b>Primary Key</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__PRIMARY_KEY = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 0;
-	/**
-	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__CACHEABLE = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 1;
-	/**
-	 * The feature id for the '<em><b>Cache Interceptor</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 2;
-	/**
-	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__ASSOCIATION_OVERRIDES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 3;
-	/**
-	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__ATTRIBUTE_OVERRIDES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 4;
-	/**
-	 * The feature id for the '<em><b>Fetch Groups</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__FETCH_GROUPS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 5;
-	/**
-	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 6;
-	/**
-	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__TABLE_GENERATOR = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 7;
-	/**
-	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__NAMED_QUERIES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 8;
-	/**
-	 * The feature id for the '<em><b>Named Native Queries</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__NAMED_NATIVE_QUERIES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 9;
-	/**
-	 * The feature id for the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 10;
-	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__ACCESS_METHODS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 11;
-	/**
-	 * The feature id for the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 12;
-	/**
-	 * The feature id for the '<em><b>Query Redirectors</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 13;
+	public static final int XML_MAPPED_SUPERCLASS__ACCESS_METHODS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Parent Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4526,7 +4422,111 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__PARENT_CLASS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 14;
+	public static final int XML_MAPPED_SUPERCLASS__PARENT_CLASS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 1;
+	/**
+	 * The feature id for the '<em><b>Primary Key</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__PRIMARY_KEY = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 2;
+	/**
+	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__CACHEABLE = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 3;
+	/**
+	 * The feature id for the '<em><b>Cache Interceptor</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 4;
+	/**
+	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__ASSOCIATION_OVERRIDES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 5;
+	/**
+	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__ATTRIBUTE_OVERRIDES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 6;
+	/**
+	 * The feature id for the '<em><b>Fetch Groups</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__FETCH_GROUPS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 7;
+	/**
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__SEQUENCE_GENERATOR = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 8;
+	/**
+	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__TABLE_GENERATOR = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 9;
+	/**
+	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__NAMED_QUERIES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 10;
+	/**
+	 * The feature id for the '<em><b>Named Native Queries</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__NAMED_NATIVE_QUERIES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 11;
+	/**
+	 * The feature id for the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 12;
+	/**
+	 * The feature id for the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 13;
+	/**
+	 * The feature id for the '<em><b>Query Redirectors</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 14;
 	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -6839,6 +6839,79 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_TYPE_CONVERTER_FEATURE_COUNT = XML_NAMED_CONVERTER_FEATURE_COUNT + 2;
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping <em>Xml Type Mapping</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeMapping()
+	 * @generated
+	 */
+	public static final int XML_TYPE_MAPPING = 84;
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING__ACCESS = OrmPackage.XML_TYPE_MAPPING__ACCESS;
+	/**
+	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING__CLASS_NAME = OrmPackage.XML_TYPE_MAPPING__CLASS_NAME;
+	/**
+	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING__METADATA_COMPLETE = OrmPackage.XML_TYPE_MAPPING__METADATA_COMPLETE;
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING__DESCRIPTION = OrmPackage.XML_TYPE_MAPPING__DESCRIPTION;
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING__ATTRIBUTES = OrmPackage.XML_TYPE_MAPPING__ATTRIBUTES;
+	/**
+	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING__ACCESS_METHODS = OrmPackage.XML_TYPE_MAPPING_FEATURE_COUNT + 0;
+	/**
+	 * The feature id for the '<em><b>Parent Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING__PARENT_CLASS = OrmPackage.XML_TYPE_MAPPING_FEATURE_COUNT + 1;
+	/**
+	 * The number of structural features of the '<em>Xml Type Mapping</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING_FEATURE_COUNT = OrmPackage.XML_TYPE_MAPPING_FEATURE_COUNT + 2;
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlUnionPartitioning <em>Xml Union Partitioning</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6846,7 +6919,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlUnionPartitioning()
 	 * @generated
 	 */
-	public static final int XML_UNION_PARTITIONING = 84;
+	public static final int XML_UNION_PARTITIONING = 85;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6871,7 +6944,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlValuePartitioning()
 	 * @generated
 	 */
-	public static final int XML_VALUE_PARTITIONING = 85;
+	public static final int XML_VALUE_PARTITIONING = 86;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -7001,13 +7074,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_VARIABLE_ONE_TO_ONE__NON_CACHEABLE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
 	/**
+	 * The feature id for the '<em><b>Target Interface</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
+	/**
 	 * The number of structural features of the '<em>Xml Variable One To One</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
+	public static final int XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 13;
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -7152,7 +7233,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheCoordinationType()
 	 * @generated
 	 */
-	public static final int CACHE_COORDINATION_TYPE = 88;
+	public static final int CACHE_COORDINATION_TYPE = 89;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.CacheType <em>Cache Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7161,7 +7242,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheType()
 	 * @generated
 	 */
-	public static final int CACHE_TYPE = 89;
+	public static final int CACHE_TYPE = 90;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlChangeTrackingType <em>Xml Change Tracking Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7170,7 +7251,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingType()
 	 * @generated
 	 */
-	public static final int XML_CHANGE_TRACKING_TYPE = 90;
+	public static final int XML_CHANGE_TRACKING_TYPE = 91;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlDirection <em>Xml Direction</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7179,7 +7260,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlDirection()
 	 * @generated
 	 */
-	public static final int XML_DIRECTION = 91;
+	public static final int XML_DIRECTION = 92;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.ExistenceType <em>Existence Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7188,7 +7269,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getExistenceType()
 	 * @generated
 	 */
-	public static final int EXISTENCE_TYPE = 92;
+	public static final int EXISTENCE_TYPE = 93;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlJoinFetchType <em>Xml Join Fetch Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7197,7 +7278,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH_TYPE = 93;
+	public static final int XML_JOIN_FETCH_TYPE = 94;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOptimisticLockingType <em>Xml Optimistic Locking Type</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -7206,7 +7287,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOptimisticLockingType()
 	 * @generated
 	 */
-	public static final int XML_OPTIMISTIC_LOCKING_TYPE = 94;
+	public static final int XML_OPTIMISTIC_LOCKING_TYPE = 95;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7663,6 +7744,12 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlTypeConverterEClass = null;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlTypeMappingEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10073,6 +10160,19 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping <em>Xml Type Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Type Mapping</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping
+	 * @generated
+	 */
+	public EClass getXmlTypeMapping()
+	{
+		return xmlTypeMappingEClass;
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne <em>Xml Variable One To One</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10083,6 +10183,20 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public EClass getXmlVariableOneToOne()
 	{
 		return xmlVariableOneToOneEClass;
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne#getTargetInterface <em>Target Interface</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Target Interface</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne#getTargetInterface()
+	 * @see #getXmlVariableOneToOne()
+	 * @generated
+	 */
+	public EAttribute getXmlVariableOneToOne_TargetInterface()
+	{
+		return (EAttribute)xmlVariableOneToOneEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -10606,11 +10720,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		createEAttribute(xmlTypeConverterEClass, XML_TYPE_CONVERTER__DATA_TYPE);
 		createEAttribute(xmlTypeConverterEClass, XML_TYPE_CONVERTER__OBJECT_TYPE);
 
+		xmlTypeMappingEClass = createEClass(XML_TYPE_MAPPING);
+
 		xmlUnionPartitioningEClass = createEClass(XML_UNION_PARTITIONING);
 
 		xmlValuePartitioningEClass = createEClass(XML_VALUE_PARTITIONING);
 
 		xmlVariableOneToOneEClass = createEClass(XML_VARIABLE_ONE_TO_ONE);
+		createEAttribute(xmlVariableOneToOneEClass, XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE);
 
 		xmlVersionEClass = createEClass(XML_VERSION);
 
@@ -10711,7 +10828,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlElementCollectionEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlElementCollection_2_3());
 		xmlElementCollectionEClass.getESuperTypes().add(theEclipseLinkOrmV2_4Package.getXmlElementCollection_2_4());
 		xmlEmbeddableEClass.getESuperTypes().add(theOrmPackage.getXmlEmbeddable());
-		xmlEmbeddableEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlEmbeddable_2_1());
+		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlTypeMapping());
 		xmlEmbeddableEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlEmbeddable_2_2());
 		xmlEmbeddableEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlEmbeddable_2_3());
 		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlCustomizerHolder());
@@ -10725,6 +10842,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlEmbeddedIdEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlEmbeddedId_2_1());
 		xmlEmbeddedIdEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlEntityEClass.getESuperTypes().add(theOrmPackage.getXmlEntity());
+		xmlEntityEClass.getESuperTypes().add(this.getXmlTypeMapping());
 		xmlEntityEClass.getESuperTypes().add(theEclipseLinkOrmV1_1Package.getXmlEntity_1_1());
 		xmlEntityEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlEntity_2_0());
 		xmlEntityEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlEntity_2_1());
@@ -10770,6 +10888,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlManyToOneEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlManyToOneEClass.getESuperTypes().add(this.getXmlJoinFetch());
 		xmlMappedSuperclassEClass.getESuperTypes().add(theOrmPackage.getXmlMappedSuperclass());
+		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlTypeMapping());
 		xmlMappedSuperclassEClass.getESuperTypes().add(theEclipseLinkOrmV1_1Package.getXmlMappedSuperclass_1_1());
 		xmlMappedSuperclassEClass.getESuperTypes().add(theEclipseLinkOrmV2_0Package.getXmlMappedSuperclass_2_0());
 		xmlMappedSuperclassEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlMappedSuperclass_2_1());
@@ -10838,6 +10957,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlTransientEClass.getESuperTypes().add(theOrmPackage.getXmlTransient());
 		xmlTransientEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlTypeConverterEClass.getESuperTypes().add(this.getXmlNamedConverter());
+		xmlTypeMappingEClass.getESuperTypes().add(theOrmPackage.getXmlTypeMapping());
+		xmlTypeMappingEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlTypeMapping_2_1());
 		xmlUnionPartitioningEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlUnionPartitioning_2_2());
 		xmlValuePartitioningEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlValuePartitioning_2_2());
 		xmlVariableOneToOneEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
@@ -10864,6 +10985,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEClass(xmlArrayEClass, XmlArray.class, "XmlArray", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlAttributeMappingEClass, XmlAttributeMapping.class, "XmlAttributeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		addEOperation(xmlAttributeMappingEClass, theXMLTypePackage.getString(), "getTypeName", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(attributesEClass, Attributes.class, "Attributes", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAttributes_BasicCollections(), this.getXmlBasicCollection(), null, "basicCollections", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -11107,11 +11230,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEAttribute(getXmlTypeConverter_DataType(), theXMLTypePackage.getString(), "dataType", null, 0, 1, XmlTypeConverter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlTypeConverter_ObjectType(), theXMLTypePackage.getString(), "objectType", null, 0, 1, XmlTypeConverter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(xmlTypeMappingEClass, XmlTypeMapping.class, "XmlTypeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(xmlUnionPartitioningEClass, XmlUnionPartitioning.class, "XmlUnionPartitioning", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlValuePartitioningEClass, XmlValuePartitioning.class, "XmlValuePartitioning", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlVariableOneToOneEClass, XmlVariableOneToOne.class, "XmlVariableOneToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlVariableOneToOne_TargetInterface(), theXMLTypePackage.getString(), "targetInterface", null, 0, 1, XmlVariableOneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlVersionEClass, XmlVersion.class, "XmlVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -12634,6 +12760,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EAttribute XML_TYPE_CONVERTER__OBJECT_TYPE = eINSTANCE.getXmlTypeConverter_ObjectType();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping <em>Xml Type Mapping</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeMapping()
+		 * @generated
+		 */
+		public static final EClass XML_TYPE_MAPPING = eINSTANCE.getXmlTypeMapping();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne <em>Xml Variable One To One</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -12642,6 +12778,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_VARIABLE_ONE_TO_ONE = eINSTANCE.getXmlVariableOneToOne();
+
+		/**
+		 * The meta object literal for the '<em><b>Target Interface</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE = eINSTANCE.getXmlVariableOneToOne_TargetInterface();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion <em>Xml Version</em>}' class.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,6 +48,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlFetchGroupContainer_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlMappedSuperclass_2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTypeMapping_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlAdditionalCriteria_2_2;
@@ -105,8 +106,38 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass implements XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0, XmlMappedSuperclass_2_1, XmlMappedSuperclass_2_2, XmlMappedSuperclass_2_3, XmlMappedSuperclass_2_4, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConverterContainer, XmlPropertyContainer
+public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass implements XmlTypeMapping, XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0, XmlMappedSuperclass_2_1, XmlMappedSuperclass_2_2, XmlMappedSuperclass_2_3, XmlMappedSuperclass_2_4, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConverterContainer, XmlPropertyContainer
 {
+	/**
+	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccessMethods()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlAccessMethods accessMethods;
+
+	/**
+	 * The default value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParentClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String PARENT_CLASS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParentClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected String parentClass = PARENT_CLASS_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -228,16 +259,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	protected EList<XmlNamedStoredProcedureQuery> namedStoredProcedureQueries;
 
 	/**
-	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccessMethods()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlAccessMethods accessMethods;
-
-	/**
 	 * The cached value of the '{@link #getSqlResultSetMappings() <em>Sql Result Set Mappings</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -256,26 +277,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @ordered
 	 */
 	protected XmlQueryRedirectors queryRedirectors;
-
-	/**
-	 * The default value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getParentClass()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String PARENT_CLASS_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getParentClass()
-	 * @generated
-	 * @ordered
-	 */
-	protected String parentClass = PARENT_CLASS_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getPartitioning() <em>Partitioning</em>}' containment reference.
@@ -1829,7 +1830,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parent Class</em>' attribute.
 	 * @see #setParentClass(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_1_ParentClass()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeMapping_2_1_ParentClass()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -2709,6 +2710,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS:
+				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
 				return basicSetPrimaryKey(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INTERCEPTOR:
@@ -2729,8 +2732,6 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES:
 				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS:
-				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS:
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
@@ -2805,6 +2806,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS:
+				return getAccessMethods();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
+				return getParentClass();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
 				return getPrimaryKey();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
@@ -2827,14 +2832,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return getNamedNativeQueries();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES:
 				return getNamedStoredProcedureQueries();
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS:
-				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS:
 				return getSqlResultSetMappings();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
 				return getQueryRedirectors();
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
-				return getParentClass();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARTITIONING:
 				return getPartitioning();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__REPLICATION_PARTITIONING:
@@ -2914,6 +2915,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
+				setParentClass((String)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
 				setPrimaryKey((XmlPrimaryKey)newValue);
 				return;
@@ -2953,18 +2960,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				getNamedStoredProcedureQueries().clear();
 				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery>)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS:
-				setAccessMethods((XmlAccessMethods)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
 				getSqlResultSetMappings().addAll((Collection<? extends SqlResultSetMapping>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
 				setQueryRedirectors((XmlQueryRedirectors)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
-				setParentClass((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARTITIONING:
 				setPartitioning((XmlPartitioning_2_2)newValue);
@@ -3086,6 +3087,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
+				setParentClass(PARENT_CLASS_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
 				setPrimaryKey((XmlPrimaryKey)null);
 				return;
@@ -3119,17 +3126,11 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES:
 				getNamedStoredProcedureQueries().clear();
 				return;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS:
-				setAccessMethods((XmlAccessMethods)null);
-				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
 				setQueryRedirectors((XmlQueryRedirectors)null);
-				return;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
-				setParentClass(PARENT_CLASS_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARTITIONING:
 				setPartitioning((XmlPartitioning_2_2)null);
@@ -3241,6 +3242,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS:
+				return accessMethods != null;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
+				return PARENT_CLASS_EDEFAULT == null ? parentClass != null : !PARENT_CLASS_EDEFAULT.equals(parentClass);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PRIMARY_KEY:
 				return primaryKey != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHEABLE:
@@ -3263,14 +3268,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_STORED_PROCEDURE_QUERIES:
 				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS:
-				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS:
 				return sqlResultSetMappings != null && !sqlResultSetMappings.isEmpty();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
 				return queryRedirectors != null;
-			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
-				return PARENT_CLASS_EDEFAULT == null ? parentClass != null : !PARENT_CLASS_EDEFAULT.equals(parentClass);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARTITIONING:
 				return partitioning != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__REPLICATION_PARTITIONING:
@@ -3347,6 +3348,29 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS: return EclipseLinkOrmV2_1Package.XML_TYPE_MAPPING_21__PARENT_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlMappedSuperclass_1_1.class)
 		{
 			switch (derivedFeatureID)
@@ -3421,21 +3445,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlAccessMethodsHolder.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlMappedSuperclass_2_1.class)
 		{
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS: return EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__SQL_RESULT_SET_MAPPINGS;
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS: return EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__QUERY_REDIRECTORS;
-				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS: return EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__PARENT_CLASS;
 				default: return -1;
 			}
 		}
@@ -3554,6 +3569,29 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_TYPE_MAPPING_21__PARENT_CLASS: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlMappedSuperclass_1_1.class)
 		{
 			switch (baseFeatureID)
@@ -3628,21 +3666,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlAccessMethodsHolder.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ACCESS_METHODS;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlMappedSuperclass_2_1.class)
 		{
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__SQL_RESULT_SET_MAPPINGS: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS;
 				case EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__QUERY_REDIRECTORS: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS;
-				case EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__PARENT_CLASS: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS;
 				default: return -1;
 			}
 		}
@@ -3764,10 +3793,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (cacheable: ");
-		result.append(cacheable);
-		result.append(", parentClass: ");
+		result.append(" (parentClass: ");
 		result.append(parentClass);
+		result.append(", cacheable: ");
+		result.append(cacheable);
 		result.append(", partitioned: ");
 		result.append(partitioned);
 		result.append(", readOnly: ");
@@ -3979,7 +4008,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	}
 
 	protected static Translator buildParentClassTranslator() {
-		return new Translator(EclipseLink2_1.PARENT_CLASS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlMappedSuperclass_2_1_ParentClass(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_1.PARENT_CLASS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlTypeMapping_2_1_ParentClass(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildAdditionalCriteriaTranslator() {

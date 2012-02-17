@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNodeFactory;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap;
@@ -40,6 +40,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTransformation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion;
 
@@ -56,12 +57,12 @@ public class EclipseLinkOrmXmlContextNodeFactory
 	
 	@Override
 	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping resourceMapping) {
-		return new OrmEclipseLinkPersistentAttribute(parent, resourceMapping);
+		return new OrmEclipseLinkPersistentAttribute(parent, (XmlAttributeMapping) resourceMapping);
 	}
 
 	@Override
-	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
-		return new OrmEclipseLinkPersistentType(parent, resourceMapping);
+	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping resourceMapping) {
+		return new OrmEclipseLinkPersistentType(parent, (XmlTypeMapping) resourceMapping);
 	}
 
 	@Override

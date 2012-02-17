@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,4 +31,12 @@ public interface XmlAttributeMapping
 	extends org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping, 
 			XmlAccessMethodsHolder, XmlPropertyContainer
 {
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	String getTypeName();
 } // XmlAttributeMapping

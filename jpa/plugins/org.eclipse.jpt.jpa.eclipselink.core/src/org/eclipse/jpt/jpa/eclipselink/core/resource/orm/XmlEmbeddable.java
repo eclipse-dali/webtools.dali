@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,9 +28,9 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddable_2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTypeMapping_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlEmbeddable_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
@@ -69,7 +69,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable implements XmlEmbeddable_2_1, XmlEmbeddable_2_2, XmlEmbeddable_2_3, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConverterContainer, XmlPropertyContainer
+public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable implements XmlTypeMapping, XmlEmbeddable_2_2, XmlEmbeddable_2_3, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConverterContainer, XmlPropertyContainer
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -80,26 +80,6 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @ordered
 	 */
 	protected XmlAccessMethods accessMethods;
-
-	/**
-	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlAttributeOverride> attributeOverrides;
-
-	/**
-	 * The cached value of the '{@link #getAssociationOverrides() <em>Association Overrides</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAssociationOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlAssociationOverride> associationOverrides;
 
 	/**
 	 * The default value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
@@ -120,6 +100,26 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @ordered
 	 */
 	protected String parentClass = PARENT_CLASS_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAttributeOverride> attributeOverrides;
+
+	/**
+	 * The cached value of the '{@link #getAssociationOverrides() <em>Association Overrides</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAssociationOverrides()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlAssociationOverride> associationOverrides;
 
 	/**
 	 * The cached value of the '{@link #getPlsqlRecords() <em>Plsql Records</em>}' containment reference list.
@@ -408,7 +408,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parent Class</em>' attribute.
 	 * @see #setParentClass(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_2_2_ParentClass()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeMapping_2_1_ParentClass()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -1047,12 +1047,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		{
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS:
 				return getAccessMethods();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
+				return getParentClass();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ATTRIBUTE_OVERRIDES:
 				return getAttributeOverrides();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ASSOCIATION_OVERRIDES:
 				return getAssociationOverrides();
-			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
-				return getParentClass();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS:
 				return getPlsqlRecords();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES:
@@ -1099,6 +1099,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
+				setParentClass((String)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
@@ -1106,9 +1109,6 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ASSOCIATION_OVERRIDES:
 				getAssociationOverrides().clear();
 				getAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
-				setParentClass((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS:
 				getPlsqlRecords().clear();
@@ -1176,14 +1176,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
+				setParentClass(PARENT_CLASS_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ASSOCIATION_OVERRIDES:
 				getAssociationOverrides().clear();
-				return;
-			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
-				setParentClass(PARENT_CLASS_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS:
 				getPlsqlRecords().clear();
@@ -1243,12 +1243,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		{
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS:
 				return accessMethods != null;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
+				return PARENT_CLASS_EDEFAULT == null ? parentClass != null : !PARENT_CLASS_EDEFAULT.equals(parentClass);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ATTRIBUTE_OVERRIDES:
 				return attributeOverrides != null && !attributeOverrides.isEmpty();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ASSOCIATION_OVERRIDES:
 				return associationOverrides != null && !associationOverrides.isEmpty();
-			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS:
-				return PARENT_CLASS_EDEFAULT == null ? parentClass != null : !PARENT_CLASS_EDEFAULT.equals(parentClass);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS:
 				return plsqlRecords != null && !plsqlRecords.isEmpty();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES:
@@ -1297,7 +1297,15 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlEmbeddable_2_1.class)
+		if (baseClass == XmlTypeMapping_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS: return EclipseLinkOrmV2_1Package.XML_TYPE_MAPPING_21__PARENT_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping.class)
 		{
 			switch (derivedFeatureID)
 			{
@@ -1324,7 +1332,6 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS: return EclipseLinkOrmV2_2Package.XML_EMBEDDABLE_22__PARENT_CLASS;
 				default: return -1;
 			}
 		}
@@ -1392,7 +1399,15 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlEmbeddable_2_1.class)
+		if (baseClass == XmlTypeMapping_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_TYPE_MAPPING_21__PARENT_CLASS: return EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping.class)
 		{
 			switch (baseFeatureID)
 			{
@@ -1419,7 +1434,6 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmV2_2Package.XML_EMBEDDABLE_22__PARENT_CLASS: return EclipseLinkOrmPackage.XML_EMBEDDABLE__PARENT_CLASS;
 				default: return -1;
 			}
 		}
@@ -1576,7 +1590,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	}
 
 	protected static Translator buildParentClassTranslator() {
-		return new Translator(EclipseLink2_2.PARENT_CLASS, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEmbeddable_2_2_ParentClass(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_2.PARENT_CLASS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlTypeMapping_2_1_ParentClass(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildAttributeOverrideTranslator() {

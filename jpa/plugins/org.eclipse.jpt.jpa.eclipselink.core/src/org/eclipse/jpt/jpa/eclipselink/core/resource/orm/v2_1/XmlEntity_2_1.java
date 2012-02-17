@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
+ *  Copyright (c) 2010, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -12,7 +12,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1;
 
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,7 +31,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEntity_2_1#getClassExtractor <em>Class Extractor</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEntity_2_1#getParentClass <em>Parent Class</em>}</li>
  * </ul>
  * </p>
  *
@@ -40,7 +38,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlEntity_2_1 extends XmlAccessMethodsHolder, XmlFetchGroupContainer_2_1
+public interface XmlEntity_2_1 extends XmlTypeMapping_2_1, XmlFetchGroupContainer_2_1
 {
 	/**
 	 * Returns the value of the '<em><b>Class Extractor</b></em>' containment reference.
@@ -67,31 +65,5 @@ public interface XmlEntity_2_1 extends XmlAccessMethodsHolder, XmlFetchGroupCont
 	 * @generated
 	 */
 	void setClassExtractor(XmlClassReference value);
-
-	/**
-	 * Returns the value of the '<em><b>Parent Class</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Parent Class</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Parent Class</em>' attribute.
-	 * @see #setParentClass(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlEntity_2_1_ParentClass()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	String getParentClass();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEntity_2_1#getParentClass <em>Parent Class</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Parent Class</em>' attribute.
-	 * @see #getParentClass()
-	 * @generated
-	 */
-	void setParentClass(String value);
 
 } // XmlEntity_2_1

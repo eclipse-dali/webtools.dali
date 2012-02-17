@@ -223,7 +223,10 @@ public abstract class SpecifiedOrmPersistentAttribute
 
 	protected JavaPersistentAttribute getCachedJavaAttribute() {
 		JavaResourceType javaResourceType = this.getOwningPersistentTypeJavaType().getJavaResourceType();
-		if (getAccess() == AccessType.FIELD) {
+		if (javaResourceType == null) {
+			return null; 
+		}
+		else if (getAccess() == AccessType.FIELD) {
 			JavaResourceField javaResourceField = this.getJavaResourceField(javaResourceType);
 			if (javaResourceField == null) {
 				// nothing in the resource inheritance hierarchy matches our name *and* access type
@@ -236,7 +239,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 				}
 			}
 		}
-		if (getAccess() == AccessType.PROPERTY) {
+		else if (getAccess() == AccessType.PROPERTY) {
 			JavaResourceMethod javaResourceGetter = this.getJavaResourceGetter(javaResourceType);
 			JavaResourceMethod javaResourceSetter = javaResourceGetter == null ? null : AbstractJavaPersistentType.getValidSiblingSetMethod(javaResourceGetter, javaResourceType.getMethods());
 			if (javaResourceGetter == null && javaResourceSetter == null) {
@@ -261,6 +264,9 @@ public abstract class SpecifiedOrmPersistentAttribute
 	 * hierarchy.
 	 */
 	protected JavaResourceField getJavaResourceField(JavaResourceType javaResourceType) {
+		if (javaResourceType == null) {//checking null here, had a VIRTUAL hierarchy, change AbstractModel to FIELD access, is there another way??
+			return null; 
+		}
 		for (JavaResourceField javaResourceField : this.getJavaResourceFields(javaResourceType)) {
 			if (javaResourceField.getName().equals(this.getName())) {
 				return javaResourceField;
@@ -354,9 +360,17 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 	protected void setDefaultAccess(AccessType access) {
-		AccessType old = this.defaultAccess;
+		AccessType oldAccess = this.getAccess();
+		AccessType oldDefaultAccess = this.defaultAccess;
 		this.defaultAccess = access;
-		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, access);
+		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, oldDefaultAccess, access);
+		if (oldAccess != this.getAccess()) {
+			//clear out the cached 'javaAttribute' is the access has changed, it will no longer apply
+			if (this.cachedJavaPersistentAttribute != null) {
+				this.setJavaPersistentAttribute(null);
+				this.cachedJavaPersistentAttribute = null;
+			}
+		}
 	}
 
 	protected AccessType buildDefaultAccess() {
@@ -373,9 +387,17 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 	protected void setSpecifiedAccess_(AccessType access) {
-		AccessType old = this.specifiedAccess;
+		AccessType oldAccess = this.getAccess();
+		AccessType oldSpecifiedAccess = this.specifiedAccess;
 		this.specifiedAccess = access;
-		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldSpecifiedAccess, access);
+		if (oldAccess != this.getAccess()) {
+			//clear out the cached 'javaAttribute' is the access has changed, it will no longer apply
+			if (this.cachedJavaPersistentAttribute != null) {
+				this.setJavaPersistentAttribute(null);
+				this.cachedJavaPersistentAttribute = null;
+			}
+		}
 	}
 
 	protected AccessType buildSpecifiedAccess() {
@@ -393,15 +415,15 @@ public abstract class SpecifiedOrmPersistentAttribute
 		return false;
 	}
 
-	public OrmReadOnlyPersistentAttribute convertToVirtual() {
-		return this.getOwningPersistentType().convertAttributeToVirtual(this);
+	public OrmReadOnlyPersistentAttribute removeFromXml() {
+		return this.getOwningPersistentType().removeAttributeFromXml(this);
 	}
 
-	public OrmPersistentAttribute convertToSpecified() {
+	public OrmPersistentAttribute addToXml() {
 		throw new UnsupportedOperationException();
 	}
 
-	public OrmPersistentAttribute convertToSpecified(String mappingKey) {
+	public OrmPersistentAttribute addToXml(String mappingKey) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
 
 /**
- * EclipseLink type mapping
+ * EclipseLink ORM type mapping
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -30,4 +31,22 @@ public interface EclipseLinkOrmTypeMapping
 	EclipseLinkJavaTypeMapping getJavaTypeMapping();
 
 	EclipseLinkJavaTypeMapping getJavaTypeMappingForDefaults();
+
+
+	// ********** parent class **********
+
+	/**
+	 * <strong>NB:</strong> This may be a partial name to be prefixed by the
+	 * entity mappings's package value.
+	 * 
+	 * @see EntityMappings#getPackage()
+	 */
+	String getParentClass();
+
+	/**
+	 * @see #getParentClass()
+	 */
+	void setParentClass(String parentClass);
+		String PARENT_CLASS_PROPERTY = "parentClass"; //$NON-NLS-1$
+
 }

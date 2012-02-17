@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,6 +38,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkDynamicTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkClassExtractorAnnotation2_1;
@@ -68,6 +69,8 @@ public class OrmEclipseLinkEntityImpl
 
 	protected final OrmEclipseLinkMultitenancy2_3 multitenancy;
 
+	protected String parentClass;
+
 
 	public OrmEclipseLinkEntityImpl(OrmPersistentType parent, XmlEntity xmlEntity) {
 		super(parent, xmlEntity);
@@ -77,6 +80,7 @@ public class OrmEclipseLinkEntityImpl
 		this.changeTracking = this.buildChangeTracking();
 		this.customizer = this.buildCustomizer();
 		this.multitenancy = this.buildMultitenancy();
+		this.parentClass = xmlEntity.getParentClass();
 	}
 
 
@@ -91,6 +95,7 @@ public class OrmEclipseLinkEntityImpl
 		this.changeTracking.synchronizeWithResourceModel();
 		this.customizer.synchronizeWithResourceModel();
 		this.multitenancy.synchronizeWithResourceModel();
+		this.setParentClass_(this.xmlTypeMapping.getParentClass());
 	}
 
 	@Override
@@ -212,6 +217,24 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 
+	// ********** parent class **********
+
+	public String getParentClass() {
+		return this.parentClass;
+	}
+
+	public void setParentClass(String parentClass) {
+		this.setParentClass_(parentClass);
+		this.xmlTypeMapping.setParentClass(parentClass);
+	}
+
+	protected void setParentClass_(String parentClass) {
+		String old = this.parentClass;
+		this.parentClass = parentClass;
+		this.firePropertyChanged(PARENT_CLASS_PROPERTY, old, parentClass);
+	}
+
+
 	// ********** misc **********
 
 	@Override
@@ -222,6 +245,11 @@ public class OrmEclipseLinkEntityImpl
 	@Override
 	public JavaEclipseLinkEntity getJavaTypeMappingForDefaults() {
 		return (JavaEclipseLinkEntity) super.getJavaTypeMappingForDefaults();
+	}
+
+	@Override
+	public OrmEclipseLinkPersistentType getPersistentType() {
+		return (OrmEclipseLinkPersistentType) super.getPersistentType();
 	}
 
 	public boolean usesPrimaryKeyColumns() {
@@ -398,6 +426,13 @@ public class OrmEclipseLinkEntityImpl
 
 	@Override
 	protected JptValidator buildTypeMappingValidator() {
+		if (this.isDynamicType()) {
+			return new EclipseLinkDynamicTypeMappingValidator(this);
+		}
 		return new EclipseLinkTypeMappingValidator(this, getJavaResourceType(), buildTextRangeResolver());
+	}
+
+	protected boolean isDynamicType() {
+		return this.getPersistentType().isDynamic();
 	}
 }

@@ -33,6 +33,11 @@ public class GenericJavaNullAttributeMapping
 	protected String getAnnotationName() {
 		return null;
 	}
+
+	@Override
+	protected Annotation getAnnotation_() {
+		return null;
+	}
 	
 
 	// ********** metamodel **********  

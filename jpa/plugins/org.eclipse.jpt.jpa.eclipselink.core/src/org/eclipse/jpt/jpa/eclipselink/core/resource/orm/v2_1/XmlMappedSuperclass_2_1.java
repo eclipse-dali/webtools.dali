@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
+ *  Copyright (c) 2010, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -17,7 +17,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQueryContainer;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryRedirectors;
 
 /**
@@ -39,7 +38,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryRedirectors;
  * <ul>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlMappedSuperclass_2_1#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}</li>
  *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlMappedSuperclass_2_1#getQueryRedirectors <em>Query Redirectors</em>}</li>
- *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlMappedSuperclass_2_1#getParentClass <em>Parent Class</em>}</li>
  * </ul>
  * </p>
  *
@@ -47,7 +45,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryRedirectors;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlMappedSuperclass_2_1 extends XmlAssociationOverrideContainer, XmlAttributeOverrideContainer, XmlFetchGroupContainer_2_1, XmlGeneratorContainer, XmlQueryContainer, org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryContainer, XmlAccessMethodsHolder
+public interface XmlMappedSuperclass_2_1 extends XmlAssociationOverrideContainer, XmlAttributeOverrideContainer, XmlFetchGroupContainer_2_1, XmlGeneratorContainer, XmlQueryContainer, org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryContainer, XmlTypeMapping_2_1
 {
 	/**
 	 * Returns the value of the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
@@ -90,31 +88,5 @@ public interface XmlMappedSuperclass_2_1 extends XmlAssociationOverrideContainer
 	 * @generated
 	 */
 	void setQueryRedirectors(XmlQueryRedirectors value);
-
-	/**
-	 * Returns the value of the '<em><b>Parent Class</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Parent Class</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Parent Class</em>' attribute.
-	 * @see #setParentClass(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlMappedSuperclass_2_1_ParentClass()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	String getParentClass();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlMappedSuperclass_2_1#getParentClass <em>Parent Class</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Parent Class</em>' attribute.
-	 * @see #getParentClass()
-	 * @generated
-	 */
-	void setParentClass(String value);
 
 } // XmlMappedSuperclass_2_1

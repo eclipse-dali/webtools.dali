@@ -238,6 +238,7 @@ public class JavaEclipseLinkArrayMapping2_3
 
 	@Override
 	public String getMetamodelTypeName() {
+		//TODO should get this from targetClass
 		String targetTypeName = this.getPersistentAttribute().getMultiReferenceTargetTypeName();
 		return (targetTypeName != null) ? targetTypeName : MetamodelField.DEFAULT_TYPE_NAME;
 	}

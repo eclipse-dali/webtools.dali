@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,24 +19,26 @@ import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkPersistentAttributeValidator;
 
 /**
  * EclipseLink Java persistent attribute
  */
-public class JavaEclipseLinkPersistentAttribute
+public class SpecifiedJavaEclipseLinkPersistentAttribute
 	extends AbstractJavaPersistentAttribute
+	implements JavaEclipseLinkPersistentAttribute
 {
 
-	public JavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
+	public SpecifiedJavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
 		super(parent,resourceField);
 	}
 
-	public JavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+	public SpecifiedJavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		super(parent, resourceGetter, resourceSetter);
 	}
 
-	public JavaEclipseLinkPersistentAttribute(PersistentType parent, Accessor accessor) {
+	public SpecifiedJavaEclipseLinkPersistentAttribute(PersistentType parent, Accessor accessor) {
 		super(parent, accessor);
 	}
 
@@ -72,8 +74,6 @@ public class JavaEclipseLinkPersistentAttribute
 		return this.getResourceAttribute().typeIsSubTypeOf(DATE_TYPE_NAME)
 				|| this.getResourceAttribute().typeIsSubTypeOf(CALENDAR_TYPE_NAME);
 	}
-	protected static final String DATE_TYPE_NAME = java.util.Date.class.getName();
-	protected static final String CALENDAR_TYPE_NAME = java.util.Calendar.class.getName();
 
 	public boolean typeIsSerializable() {
 		return this.getResourceAttribute().typeIsVariablePrimitive()

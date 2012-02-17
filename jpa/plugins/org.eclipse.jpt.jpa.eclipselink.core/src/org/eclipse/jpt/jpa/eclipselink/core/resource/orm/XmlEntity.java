@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2011  Oracle. 
+ *  Copyright (c) 2008, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -37,6 +37,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEntity_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlFetchGroupContainer_2_1;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTypeMapping_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlAdditionalCriteria_2_2;
@@ -96,8 +97,38 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity implements XmlEntity_1_1, XmlEntity_2_0, XmlEntity_2_1, XmlEntity_2_2, XmlEntity_2_3, XmlEntity_2_4, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConverterContainer, XmlQueryContainer, XmlPropertyContainer
+public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity implements XmlTypeMapping, XmlEntity_1_1, XmlEntity_2_0, XmlEntity_2_1, XmlEntity_2_2, XmlEntity_2_3, XmlEntity_2_4, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConverterContainer, XmlQueryContainer, XmlPropertyContainer
 {
+	/**
+	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccessMethods()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlAccessMethods accessMethods;
+
+	/**
+	 * The default value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParentClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String PARENT_CLASS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParentClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected String parentClass = PARENT_CLASS_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -129,16 +160,6 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	protected XmlQueryRedirectors queryRedirectors;
 
 	/**
-	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccessMethods()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlAccessMethods accessMethods;
-
-	/**
 	 * The cached value of the '{@link #getFetchGroups() <em>Fetch Groups</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -157,26 +178,6 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	 * @ordered
 	 */
 	protected XmlClassReference classExtractor;
-
-	/**
-	 * The default value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getParentClass()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String PARENT_CLASS_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getParentClass()
-	 * @generated
-	 * @ordered
-	 */
-	protected String parentClass = PARENT_CLASS_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getPartitioning() <em>Partitioning</em>}' containment reference.
@@ -1570,7 +1571,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parent Class</em>' attribute.
 	 * @see #setParentClass(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_1_ParentClass()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTypeMapping_2_1_ParentClass()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -2605,14 +2606,14 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
+				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
 				return basicSetPrimaryKey(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
 				return basicSetCacheInterceptor(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				return basicSetQueryRedirectors(null, msgs);
-			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
-				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
 				return ((InternalEList<?>)getFetchGroups()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
@@ -2693,20 +2694,20 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
+				return getAccessMethods();
+			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
+				return getParentClass();
 			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
 				return getPrimaryKey();
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
 				return getCacheInterceptor();
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				return getQueryRedirectors();
-			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
-				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
 				return getFetchGroups();
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
 				return getClassExtractor();
-			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
-				return getParentClass();
 			case EclipseLinkOrmPackage.XML_ENTITY__PARTITIONING:
 				return getPartitioning();
 			case EclipseLinkOrmPackage.XML_ENTITY__REPLICATION_PARTITIONING:
@@ -2794,6 +2795,12 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
+				setParentClass((String)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
 				setPrimaryKey((XmlPrimaryKey)newValue);
 				return;
@@ -2803,18 +2810,12 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				setQueryRedirectors((XmlQueryRedirectors)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
-				setAccessMethods((XmlAccessMethods)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
 				getFetchGroups().clear();
 				getFetchGroups().addAll((Collection<? extends XmlFetchGroup>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
 				setClassExtractor((XmlClassReference)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
-				setParentClass((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__PARTITIONING:
 				setPartitioning((XmlPartitioning_2_2)newValue);
@@ -2949,6 +2950,12 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
+				setParentClass(PARENT_CLASS_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
 				setPrimaryKey((XmlPrimaryKey)null);
 				return;
@@ -2958,17 +2965,11 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				setQueryRedirectors((XmlQueryRedirectors)null);
 				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
-				setAccessMethods((XmlAccessMethods)null);
-				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
 				getFetchGroups().clear();
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
 				setClassExtractor((XmlClassReference)null);
-				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
-				setParentClass(PARENT_CLASS_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__PARTITIONING:
 				setPartitioning((XmlPartitioning_2_2)null);
@@ -3092,20 +3093,20 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
+				return accessMethods != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
+				return PARENT_CLASS_EDEFAULT == null ? parentClass != null : !PARENT_CLASS_EDEFAULT.equals(parentClass);
 			case EclipseLinkOrmPackage.XML_ENTITY__PRIMARY_KEY:
 				return primaryKey != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR:
 				return cacheInterceptor != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				return queryRedirectors != null;
-			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
-				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
 				return fetchGroups != null && !fetchGroups.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
 				return classExtractor != null;
-			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
-				return PARENT_CLASS_EDEFAULT == null ? parentClass != null : !PARENT_CLASS_EDEFAULT.equals(parentClass);
 			case EclipseLinkOrmPackage.XML_ENTITY__PARTITIONING:
 				return partitioning != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__REPLICATION_PARTITIONING:
@@ -3190,6 +3191,29 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS: return EclipseLinkOrmV2_1Package.XML_TYPE_MAPPING_21__PARENT_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlEntity_1_1.class)
 		{
 			switch (derivedFeatureID)
@@ -3207,14 +3231,6 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlAccessMethodsHolder.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlFetchGroupContainer_2_1.class)
 		{
 			switch (derivedFeatureID)
@@ -3228,7 +3244,6 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR: return EclipseLinkOrmV2_1Package.XML_ENTITY_21__CLASS_EXTRACTOR;
-				case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS: return EclipseLinkOrmV2_1Package.XML_ENTITY_21__PARENT_CLASS;
 				default: return -1;
 			}
 		}
@@ -3358,6 +3373,29 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_TYPE_MAPPING_21__PARENT_CLASS: return EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlTypeMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlEntity_1_1.class)
 		{
 			switch (baseFeatureID)
@@ -3375,14 +3413,6 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlAccessMethodsHolder.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlFetchGroupContainer_2_1.class)
 		{
 			switch (baseFeatureID)
@@ -3396,7 +3426,6 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmV2_1Package.XML_ENTITY_21__CLASS_EXTRACTOR: return EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR;
-				case EclipseLinkOrmV2_1Package.XML_ENTITY_21__PARENT_CLASS: return EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS;
 				default: return -1;
 			}
 		}
@@ -3730,7 +3759,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	}
 
 	protected static Translator buildParentClassTranslator() {
-		return new Translator(EclipseLink2_1.PARENT_CLASS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlEntity_2_1_ParentClass(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_1.PARENT_CLASS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlTypeMapping_2_1_ParentClass(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildAdditionalCriteriaTranslator() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved. This
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -127,4 +127,5 @@ public interface EclipseLink
 	String TYPE_CONVERTER__OBJECT_TYPE = "object-type"; //$NON-NLS-1$
 		
 	String VARIABLE_ONE_TO_ONE = "variable-one-to-one";  //$NON-NLS-1$
+		String VARIABLE_ONE_TO_ONE__TARGET_INTERFACE = "target-interface";  //$NON-NLS-1$
 }

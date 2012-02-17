@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -51,6 +51,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * 
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne#getTargetInterface <em>Target Interface</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVariableOneToOne()
  * @model kind="class"
@@ -197,6 +203,26 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 	 * @ordered
 	 */
 	protected boolean nonCacheable = NON_CACHEABLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getTargetInterface() <em>Target Interface</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTargetInterface()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TARGET_INTERFACE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getTargetInterface() <em>Target Interface</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTargetInterface()
+	 * @generated
+	 * @ordered
+	 */
+	protected String targetInterface = TARGET_INTERFACE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -853,6 +879,45 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Target Interface</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Target Interface</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Target Interface</em>' attribute.
+	 * @see #setTargetInterface(String)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVariableOneToOne_TargetInterface()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getTargetInterface()
+	{
+		return targetInterface;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne#getTargetInterface <em>Target Interface</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Target Interface</em>' attribute.
+	 * @see #getTargetInterface()
+	 * @generated
+	 */
+	public void setTargetInterface(String newTargetInterface)
+	{
+		String oldTargetInterface = targetInterface;
+		targetInterface = newTargetInterface;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE, oldTargetInterface, targetInterface));
+	}
+
+	public String getTypeName() {
+		return this.getTargetInterface();
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -920,6 +985,8 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 				return getPartitioned();
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__NON_CACHEABLE:
 				return isNonCacheable();
+			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE:
+				return getTargetInterface();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -972,6 +1039,9 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__NON_CACHEABLE:
 				setNonCacheable((Boolean)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE:
+				setTargetInterface((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1022,6 +1092,9 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__NON_CACHEABLE:
 				setNonCacheable(NON_CACHEABLE_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE:
+				setTargetInterface(TARGET_INTERFACE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1060,6 +1133,8 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 				return PARTITIONED_EDEFAULT == null ? partitioned != null : !PARTITIONED_EDEFAULT.equals(partitioned);
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__NON_CACHEABLE:
 				return nonCacheable != NON_CACHEABLE_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE:
+				return TARGET_INTERFACE_EDEFAULT == null ? targetInterface != null : !TARGET_INTERFACE_EDEFAULT.equals(targetInterface);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1195,6 +1270,8 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 		result.append(partitioned);
 		result.append(", nonCacheable: ");
 		result.append(nonCacheable);
+		result.append(", targetInterface: ");
+		result.append(targetInterface);
 		result.append(')');
 		return result.toString();
 	}
@@ -1213,7 +1290,14 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildNameTranslator(),
+			buildTargetInterfaceTranslator(),
 			buildAccessTranslator(),
 		};
 	}
+	// ********** translators **********
+	
+	protected static Translator buildTargetInterfaceTranslator() {
+		return new Translator(EclipseLink.VARIABLE_ONE_TO_ONE__TARGET_INTERFACE, EclipseLinkOrmPackage.eINSTANCE.getXmlVariableOneToOne_TargetInterface(), Translator.DOM_ATTRIBUTE);
+	}
+
 }
