@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,7 +41,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
@@ -55,7 +54,6 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
-import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlElementCollection_2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
@@ -294,13 +292,14 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testUpdateName() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertEquals("oneToOneMapping", ormElementCollectionMapping.getName());
-		assertEquals("oneToOneMapping", elementCollection.getName());
+		assertEquals("id", ormElementCollectionMapping.getName());
+		assertEquals("id", elementCollection.getName());
 				
 		//set name in the resource model, verify context model updated
 		elementCollection.setName("newName");
@@ -314,13 +313,14 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testModifyName() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertEquals("oneToOneMapping", ormElementCollectionMapping.getName());
-		assertEquals("oneToOneMapping", elementCollection.getName());
+		assertEquals("id", ormElementCollectionMapping.getName());
+		assertEquals("id", elementCollection.getName());
 				
 		//set name in the context model, verify resource model updated
 		ormElementCollectionMapping.setName("newName");
@@ -339,12 +339,12 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "foo");
-		assertEquals(3, ormPersistentType.getVirtualAttributesSize());
+		ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
-		
+		ormElementCollectionMapping.setName("foo");
 		assertEquals("foo", ormElementCollectionMapping.getName());
 
 		assertNull(ormElementCollectionMapping.getSpecifiedFetch());
@@ -358,15 +358,15 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		
 		ElementCollectionMapping2_0 virtualElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		assertEquals("address", virtualElementCollectionMapping.getName());
 		assertEquals(FetchType.EAGER, virtualElementCollectionMapping.getSpecifiedFetch());
 		assertEquals("String", virtualElementCollectionMapping.getSpecifiedTargetClass());
 		
-		ormPersistentAttribute = ormPersistentAttribute.convertToSpecified();
+		ormPersistentAttribute = ormPersistentAttribute.addToXml();
 		OrmElementCollectionMapping2_0 specifiedElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();	
 		assertEquals("address", specifiedElementCollectionMapping.getName());
 		assertEquals(null, specifiedElementCollectionMapping.getSpecifiedFetch());
@@ -382,12 +382,12 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
+		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 		
-		ormPersistentAttribute.convertToSpecified(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.addToXml(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();	
@@ -402,8 +402,8 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 
-		ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "address");
-		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
+		ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
@@ -415,8 +415,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	
 	
 	public void testMorphToIdMapping() throws Exception {
+		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		assertFalse(elementCollectionMapping.isDefault());
@@ -427,12 +428,13 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof IdMapping);
-		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
+		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		assertFalse(elementCollectionMapping.isDefault());
@@ -443,12 +445,13 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof VersionMapping);
-		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
+		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		assertFalse(elementCollectionMapping.isDefault());
@@ -459,12 +462,13 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof TransientMapping);
-		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testMorphToEmbeddedMapping() throws Exception {
+		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		assertFalse(elementCollectionMapping.isDefault());
@@ -475,12 +479,13 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedMapping);
-		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testMorphToEmbeddedIdMapping() throws Exception {
+		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		assertFalse(elementCollectionMapping.isDefault());
@@ -491,12 +496,13 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedIdMapping);
-		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testMorphToManyToManyMapping() throws Exception {
+		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		assertFalse(elementCollectionMapping.isDefault());
@@ -507,13 +513,14 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToManyMapping);
-		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 //		assertEquals(FetchType.EAGER, ((ManyToManyMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
 	}
 	
 	public void testMorphToOneToManyMapping() throws Exception {
+		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		assertFalse(elementCollectionMapping.isDefault());
@@ -524,13 +531,14 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToManyMapping);
-		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 //		assertEquals(FetchType.EAGER, ((OneToManyMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
 	}
 	
 	public void testMorphToManyToOneMapping() throws Exception {
+		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		assertFalse(elementCollectionMapping.isDefault());
@@ -541,13 +549,14 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToOneMapping);
-		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 //		assertEquals(FetchType.EAGER, ((ManyToOneMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
 	}
 	
 	public void testMorphToBasicMapping() throws Exception {
+		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOne");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		assertFalse(elementCollectionMapping.isDefault());
@@ -558,13 +567,14 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof BasicMapping);
-		assertEquals("oneToOne", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 //TODO	assertEquals(FetchType.EAGER, ((IBasicMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
 	}
 	
 	public void testUpdateSpecifiedFetch() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -587,8 +597,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testModifySpecifiedFetch() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -611,8 +622,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}	
 	
 	public void testUpdateSpecifiedTargetClass() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -631,8 +643,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testModifySpecifiedTargetClass() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -657,7 +670,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "test.Address");
 
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");	
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 
 		assertEquals(ElementCollectionMapping2_0.Type.EMBEDDABLE_TYPE, elementCollectionMapping.getValueType());
@@ -669,7 +682,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "test.Address");
 
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");	
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 
 		assertEquals(ElementCollectionMapping2_0.Type.BASIC_TYPE, elementCollectionMapping.getValueType());
@@ -681,7 +694,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "test.Address");
 		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 
 		assertEquals(ElementCollectionMapping2_0.Type.NO_TYPE, elementCollectionMapping.getValueType());
@@ -696,7 +709,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "test.Address");
 
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");	
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 
 		assertEquals(ElementCollectionMapping2_0.Type.BASIC_TYPE, elementCollectionMapping.getValueType());
@@ -704,33 +717,34 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	
 	
 	public void testUpdateMapKey() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
-		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		XmlOneToMany oneToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		ElementCollectionMapping2_0 ormElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertNull(ormOneToManyMapping.getSpecifiedMapKey());
-		assertNull(oneToMany.getMapKey());
+		assertNull(ormElementCollectionMapping.getSpecifiedMapKey());
+		assertNull(elementCollection.getMapKey());
 		
 		//set mapKey in the resource model, verify context model does not change
-		oneToMany.setMapKey(OrmFactory.eINSTANCE.createMapKey());
-		assertNull(ormOneToManyMapping.getSpecifiedMapKey());
-		assertNotNull(oneToMany.getMapKey());
+		elementCollection.setMapKey(OrmFactory.eINSTANCE.createMapKey());
+		assertNull(ormElementCollectionMapping.getSpecifiedMapKey());
+		assertNotNull(elementCollection.getMapKey());
 				
 		//set mapKey name in the resource model, verify context model updated
-		oneToMany.getMapKey().setName("myMapKey");
-		assertEquals("myMapKey", ormOneToManyMapping.getSpecifiedMapKey());
-		assertEquals("myMapKey", oneToMany.getMapKey().getName());
+		elementCollection.getMapKey().setName("myMapKey");
+		assertEquals("myMapKey", ormElementCollectionMapping.getSpecifiedMapKey());
+		assertEquals("myMapKey", elementCollection.getMapKey().getName());
 		
 		//set mapKey name to null in the resource model
-		oneToMany.getMapKey().setName(null);
-		assertNull(ormOneToManyMapping.getSpecifiedMapKey());
-		assertNull(oneToMany.getMapKey().getName());
+		elementCollection.getMapKey().setName(null);
+		assertNull(ormElementCollectionMapping.getSpecifiedMapKey());
+		assertNull(elementCollection.getMapKey().getName());
 		
-		oneToMany.getMapKey().setName("myMapKey");
-		oneToMany.setMapKey(null);
-		assertNull(ormOneToManyMapping.getSpecifiedMapKey());
-		assertNull(oneToMany.getMapKey());
+		elementCollection.getMapKey().setName("myMapKey");
+		elementCollection.setMapKey(null);
+		assertNull(ormElementCollectionMapping.getSpecifiedMapKey());
+		assertNull(elementCollection.getMapKey());
 	}
 	
 	public void testUpdateVirtualMapKey() throws Exception {
@@ -769,23 +783,24 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testModifyMapKey() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
-		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		XmlOneToMany xmlOneToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		ElementCollectionMapping2_0 ormElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		XmlElementCollection_2_0 xmlElementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
-		assertNull(ormOneToManyMapping.getSpecifiedMapKey());
-		assertNull(xmlOneToMany.getMapKey());
+		assertNull(ormElementCollectionMapping.getSpecifiedMapKey());
+		assertNull(xmlElementCollection.getMapKey());
 					
 		//set mapKey  in the context model, verify resource model updated
-		ormOneToManyMapping.setSpecifiedMapKey("myMapKey");
-		assertEquals("myMapKey", ormOneToManyMapping.getSpecifiedMapKey());
-		assertEquals("myMapKey", xmlOneToMany.getMapKey().getName());
+		ormElementCollectionMapping.setSpecifiedMapKey("myMapKey");
+		assertEquals("myMapKey", ormElementCollectionMapping.getSpecifiedMapKey());
+		assertEquals("myMapKey", xmlElementCollection.getMapKey().getName());
 	
 		//set mapKey to null in the context model
-		ormOneToManyMapping.setSpecifiedMapKey(null);
-		assertNull(ormOneToManyMapping.getSpecifiedMapKey());
-		assertTrue(ormOneToManyMapping.isPkMapKey());
+		ormElementCollectionMapping.setSpecifiedMapKey(null);
+		assertNull(ormElementCollectionMapping.getSpecifiedMapKey());
+		assertTrue(ormElementCollectionMapping.isPkMapKey());
 	}
 	
 	public void testCandidateMapKeyNames() throws Exception {
@@ -832,7 +847,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals("zip", mapKeyNames.next());
 		assertFalse(mapKeyNames.hasNext());
 		
-		ormPersistentType.getAttributeNamed("addresses").convertToSpecified();
+		ormPersistentType.getAttributeNamed("addresses").addToXml();
 		virtualElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentType.getAttributeNamed("addresses").getMapping();
 		mapKeyNames = virtualElementCollectionMapping.getCandidateMapKeyNames().iterator();
 		assertEquals(false, mapKeyNames.hasNext());
@@ -852,8 +867,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testUpdateMapKeyClass() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -904,8 +920,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testModifyMapKeyClass() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection elementCollection = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -926,7 +943,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	public void testOrderColumnDefaults() throws Exception {
 		createTestEntityWithGenericBasicElementCollectionMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 
 		Orderable2_0 orderable = (Orderable2_0) elementCollectionMapping.getOrderable();
@@ -949,7 +966,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	public void testVirtualOrderColumn() throws Exception {
 		createTestEntityWithGenericBasicElementCollectionMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 
 		Orderable2_0 orderable = (Orderable2_0) elementCollectionMapping.getOrderable();
@@ -962,7 +979,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		assertEquals(false, orderable.isOrderColumnOrdering());
 		assertEquals(true, orderable.isNoOrdering());
 
-		ormPersistentAttribute.convertToVirtual();		
+		ormPersistentAttribute.removeFromXml();		
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("addresses");
 		ElementCollectionMapping2_0 virtualCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute2.getMapping();
 		orderable = (Orderable2_0) virtualCollectionMapping.getOrderable();
@@ -1032,7 +1049,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		createTestEntityWithGenericBasicElementCollectionMapping();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 
 		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
 		OrmColumn ormColumn = addressesVirtualMapping.getValueColumn();
@@ -1078,7 +1095,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		//virtual attribute in orm.xml, java attribute has no Column annotation
-		OrmReadOnlyPersistentAttribute addressesPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		OrmReadOnlyPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
 		Column virtualColumn = addressesVirtualMapping.getValueColumn();
 		
@@ -1095,8 +1112,8 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		javaElementCollectionMapping.getValueColumn().setSpecifiedTable("JAVA_TABLE");	
 		assertEquals("JAVA_TABLE", virtualColumn.getTable());
 		
-		//make name persistent attribute not virtual
-		addressesPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		//make name persistent attribute not default
+		addressesPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
 		virtualColumn = addressesVirtualMapping.getValueColumn();
 		assertNull(virtualColumn.getSpecifiedTable());
@@ -1104,8 +1121,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 
 	public void testMoveSpecifiedAttributeOverride() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		OrmAttributeOverrideContainer attributeOverrideContainer = ormElementCollectionMapping.getValueAttributeOverrideContainer();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
@@ -1143,8 +1161,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testUpdateAttributeOverrides() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		OrmAttributeOverrideContainer attributeOverrideContainer = ormElementCollectionMapping.getValueAttributeOverrideContainer();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
@@ -1198,16 +1217,19 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "foo");
-		assertEquals(3, ormPersistentType.getVirtualAttributesSize());
+		ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
+		ormElementCollectionMapping.setName("foo");
 		OrmAttributeOverrideContainer attributeOverrideContainer = ormElementCollectionMapping.getValueAttributeOverrideContainer();
 		
 		assertEquals("foo", ormElementCollectionMapping.getName());
 
 		
+		assertNull(ormElementCollectionMapping.getSpecifiedFetch());
+		assertEquals(FetchType.LAZY, ormElementCollectionMapping.getFetch());
 		assertFalse(attributeOverrideContainer.getSpecifiedOverrides().iterator().hasNext());
 		assertFalse(attributeOverrideContainer.getVirtualOverrides().iterator().hasNext());
 	}
@@ -1284,7 +1306,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		
 		
 		//embedded mapping is specified, virtual attribute overrides should exist
-		persistentType.getAttributeNamed("addresses").convertToSpecified();
+		persistentType.getAttributeNamed("addresses").addToXml();
 		elementCollectionMapping = (OrmElementCollectionMapping2_0) persistentType.getAttributeNamed("addresses").getMapping();
 		attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
 		assertEquals(4, attributeOverrideContainer.getOverridesSize());
@@ -1383,7 +1405,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		createTestEntityWithValidMapElementCollectionMapping();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 
 		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
 		Column ormColumn = addressesVirtualMapping.getMapKeyColumn();
@@ -1429,7 +1451,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
 		//virtual attribute in orm.xml, java attribute has no Column annotation
-		OrmReadOnlyPersistentAttribute addressesPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		OrmReadOnlyPersistentAttribute addressesPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
 		Column virtualColumn = addressesVirtualMapping.getMapKeyColumn();
 		
@@ -1446,8 +1468,8 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedTable("JAVA_TABLE");	
 		assertEquals("JAVA_TABLE", virtualColumn.getTable());
 
-		//make name persistent attribute not virtual
-		addressesPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
+		//make name persistent attribute not default
+		addressesPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
 		virtualColumn = addressesVirtualMapping.getMapKeyColumn();
 		assertNull(virtualColumn.getSpecifiedTable());
@@ -1463,8 +1485,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testUpdateSpecifiedEnumerated() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -1487,8 +1510,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testModifySpecifiedEnumerated() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -1512,8 +1536,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testUpdateSpecifiedTemporal() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -1540,8 +1565,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testModifySpecifiedTemporal() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -1565,8 +1591,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 
 	public void testAddSpecifiedMapKeyJoinColumn() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		ElementCollectionMapping2_0 ormElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 		
@@ -1600,8 +1627,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testRemoveSpecifiedMapKeyJoinColumn() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		ElementCollectionMapping2_0 ormElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 
@@ -1625,8 +1653,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 	
 	public void testMoveSpecifiedMapKeyJoinColumn() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		ElementCollectionMapping2_0 ormElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 
@@ -1660,8 +1689,9 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	}
 
 	public void testUpdateMapKeyJoinColumns() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "elementCollectionMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		ElementCollectionMapping2_0 ormElementCollectionMapping = (ElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 		XmlElementCollection_2_0 elementCollectionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getElementCollections().get(0);
 	

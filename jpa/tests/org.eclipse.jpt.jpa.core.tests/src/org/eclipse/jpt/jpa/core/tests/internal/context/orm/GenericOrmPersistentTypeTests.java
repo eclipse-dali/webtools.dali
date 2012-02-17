@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -164,135 +164,63 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals("model.Foo3", getXmlEntityMappings().getEmbeddables().get(1).getClassName());
 	}
 	
-	public void testAddSpecifiedPersistentAttribute() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
-	
-		XmlEntity entity = getXmlEntityMappings().getEntities().get(0);
-		XmlBasic basic = entity.getAttributes().getBasics().get(0);
-		assertEquals("basicAttribute", basic.getName());
-		
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
-	
-		XmlEmbedded embedded = entity.getAttributes().getEmbeddeds().get(0);
-		assertEquals("embeddedAttribute", embedded.getName());
-		
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
-	
-		XmlTransient transientResource = entity.getAttributes().getTransients().get(0);
-		assertEquals("transientAttribute", transientResource.getName());
-
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
-	
-		XmlVersion version = entity.getAttributes().getVersions().get(0);
-		assertEquals("versionAttribute", version.getName());
-
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
-	
-		XmlId id = entity.getAttributes().getIds().get(0);
-		assertEquals("idAttribute", id.getName());
-		
-		
-		Iterator<OrmPersistentAttribute> persistentAttributes = entityPersistentType.getSpecifiedAttributes().iterator();
-		assertEquals("idAttribute", persistentAttributes.next().getName());
-		assertEquals("basicAttribute", persistentAttributes.next().getName());
-		assertEquals("versionAttribute", persistentAttributes.next().getName());
-		assertEquals("embeddedAttribute", persistentAttributes.next().getName());
-		assertEquals("transientAttribute", persistentAttributes.next().getName());
-		assertFalse(persistentAttributes.hasNext());
-	}
-	
-	public void testRemoveSpecifiedPersistentAttribute() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
-	
-		XmlEntity entity = getXmlEntityMappings().getEntities().get(0);
-		assertEquals("basicAttribute",  entity.getAttributes().getBasics().get(0).getName());
-		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
-		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
-		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
-		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
-		
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("basicAttribute")).convertToVirtual();
-		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
-		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
-		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
-		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
-		
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("embeddedAttribute")).convertToVirtual();
-		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
-		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
-		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
-		
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("versionAttribute")).convertToVirtual();
-		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
-		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
-		
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("idAttribute")).convertToVirtual();
-		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
-		
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("transientAttribute")).convertToVirtual();
-		assertNull(entity.getAttributes());
-	}
-	
 	public void testRemoveId() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		createTestType();
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		entityPersistentType.addAttributeToXml(entityPersistentType.getAttributeNamed("id"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		XmlEntity entity = getXmlEntityMappings().getEntities().get(0);
 		
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
-		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
+		assertEquals("id",  entity.getAttributes().getIds().get(0).getName());
 
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("idAttribute")).convertToVirtual();
+		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
 		assertNull(entity.getAttributes());
 	}
 	
 	public void testRemoveBasic() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		createTestType();
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		entityPersistentType.addAttributeToXml(entityPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		XmlEntity entity = getXmlEntityMappings().getEntities().get(0);
 		
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
-		assertEquals("basicAttribute",  entity.getAttributes().getBasics().get(0).getName());
+		assertEquals("id",  entity.getAttributes().getBasics().get(0).getName());
 
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("basicAttribute")).convertToVirtual();
+		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
 		assertNull(entity.getAttributes());
 	}
 	
 	public void testRemoveVersion() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		createTestType();
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		entityPersistentType.addAttributeToXml(entityPersistentType.getAttributeNamed("id"), MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		XmlEntity entity = getXmlEntityMappings().getEntities().get(0);
 		
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
-		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
+		assertEquals("id",  entity.getAttributes().getVersions().get(0).getName());
 
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("versionAttribute")).convertToVirtual();
+		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
 		assertNull(entity.getAttributes());
 	}
 	
 	public void testRemoveEmbedded() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		createTestType();
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		entityPersistentType.addAttributeToXml(entityPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		XmlEntity entity = getXmlEntityMappings().getEntities().get(0);
 		
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
-		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
+		assertEquals("id",  entity.getAttributes().getEmbeddeds().get(0).getName());
 
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("embeddedAttribute")).convertToVirtual();
+		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
 		assertNull(entity.getAttributes());
 	}
 	
 	public void testRemoveTransient() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		createTestType();
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		entityPersistentType.addAttributeToXml(entityPersistentType.getAttributeNamed("id"), MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		XmlEntity entity = getXmlEntityMappings().getEntities().get(0);
 		
-		entityPersistentType.addSpecifiedAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
-		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
+		assertEquals("id",  entity.getAttributes().getTransients().get(0).getName());
 
-		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("transientAttribute")).convertToVirtual();
+		((OrmPersistentAttribute) entityPersistentType.getAttributeNamed("id")).removeFromXml();
 		assertNull(entity.getAttributes());
 	}
 
@@ -548,8 +476,6 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertFalse(entityPersistentType.getAttributes().iterator().hasNext());
 		assertNotNull(entity.getAttributes());
 	}
-	
-	
 
 	public void testInheritedAttributesResolve() throws Exception {
 		createModelType();
@@ -558,9 +484,11 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		OrmPersistentType employeePersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_EMPLOYEE_TYPE_NAME);
 
 		
-		employeePersistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
-		employeePersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "name");
-		OrmPersistentAttribute startDateAttribute = employeePersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "startDate");
+		OrmPersistentAttribute attribute = employeePersistentType.addAttributeToXml(employeePersistentType.getAttributeNamed("startDate"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		attribute.getMapping().setName("id");
+		attribute = employeePersistentType.addAttributeToXml(employeePersistentType.getAttributeNamed("startDate"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		attribute.getMapping().setName("name");
+		OrmPersistentAttribute startDateAttribute = employeePersistentType.addAttributeToXml(employeePersistentType.getAttributeNamed("startDate"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		((OrmBasicMapping) startDateAttribute.getMapping()).setConverter(TemporalConverter.class);
 		((TemporalConverter) ((OrmBasicMapping) startDateAttribute.getMapping()).getConverter()).setTemporalType(TemporalType.DATE);
 		

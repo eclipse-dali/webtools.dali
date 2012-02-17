@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -53,9 +53,8 @@ public class EclipseLink1_1OrmTransientMappingTests
 		assertTrue(persistentAttribute.isVirtual());
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		
-		ormPersistentType.addSpecifiedAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "id");
+		persistentAttribute = ormPersistentType.addAttributeToXml(persistentAttribute, MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 
-		persistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(persistentAttribute.isVirtual());
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMapping().getKey());

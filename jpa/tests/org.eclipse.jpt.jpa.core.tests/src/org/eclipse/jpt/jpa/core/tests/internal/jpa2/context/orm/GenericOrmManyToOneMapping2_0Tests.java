@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -76,7 +76,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
-			each.convertToSpecified();
+			each.addToXml();
 		}
 	}
 	
@@ -101,7 +101,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
-			each.convertToSpecified();
+			each.addToXml();
 		}
 	}
 	
@@ -145,7 +145,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		for (OrmReadOnlyPersistentAttribute each : ormPersistentType.getAttributes()) {
-			each.convertToSpecified();
+			each.addToXml();
 		}
 	}
 		
@@ -482,7 +482,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "address");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		OrmManyToOneMapping2_0 ormManyToOneMapping = (OrmManyToOneMapping2_0) ormPersistentAttribute.getMapping();
 		((ManyToOneRelationship2_0) ormManyToOneMapping.getRelationship()).setStrategyToJoinTable();
 		OrmJoinTable ormJoinTable = ((OrmManyToOneRelationship2_0) ormManyToOneMapping.getRelationship()).getJoinTableStrategy().getJoinTable();
@@ -514,7 +514,7 @@ public class GenericOrmManyToOneMapping2_0Tests
 
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		//remove m-m mapping from the orm.xml file
-		ormPersistentAttribute.convertToVirtual();
+		ormPersistentAttribute.removeFromXml();
 		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
 		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		ManyToOneMapping2_0 virtualManyToOneMapping = (ManyToOneMapping2_0) virtualPersistentAttribute.getMapping();
@@ -612,8 +612,8 @@ public class GenericOrmManyToOneMapping2_0Tests
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
-		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
+		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 
 		ManyToOneMapping virtualManyToOneMapping = (ManyToOneMapping) virtualPersistentAttribute.getMapping();	
 		assertEquals("address", virtualManyToOneMapping.getName());
@@ -647,13 +647,13 @@ public class GenericOrmManyToOneMapping2_0Tests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
+		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
 		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, virtualPersistentAttribute.getMappingKey());
 		assertTrue(virtualPersistentAttribute.isVirtual());
 
-		virtualPersistentAttribute.convertToSpecified(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		virtualPersistentAttribute.addToXml(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		OrmPersistentAttribute ormPersistentAttribute= ormPersistentType.getSpecifiedAttributes().iterator().next();
 
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();	

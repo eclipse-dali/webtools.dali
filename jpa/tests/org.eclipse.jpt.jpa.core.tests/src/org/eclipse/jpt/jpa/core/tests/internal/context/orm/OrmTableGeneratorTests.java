@@ -599,7 +599,7 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 //		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 //		assertFalse(uniqueConstraints.hasNext());
 		
-		OrmIdMapping ormIdMapping = (OrmIdMapping) virtualAttribute.convertToSpecified().getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) virtualAttribute.addToXml().getMapping();
 	
 		OrmTableGenerator ormTableGenerator2 = ormIdMapping.getGeneratorContainer().addTableGenerator();
 		ormTableGenerator2.setName("TABLE_GENERATOR");

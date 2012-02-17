@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -99,23 +99,23 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		assertEquals("id", ormPersistentAttribute.getName());
 		assertTrue(ormPersistentAttribute.isVirtual());
-		ormPersistentAttribute.convertToSpecified();
+		ormPersistentAttribute.addToXml();
 		
-		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(1, ormPersistentType.getDefaultAttributesSize());
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
 		
-		ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
-		ormPersistentAttribute.convertToSpecified();
+		ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		ormPersistentAttribute.addToXml();
 		
-		assertEquals(0, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(0, ormPersistentType.getDefaultAttributesSize());
 		assertEquals(2, ormPersistentType.getSpecifiedAttributesSize());
 		Iterator<OrmPersistentAttribute> specifiedAttributes = ormPersistentType.getSpecifiedAttributes().iterator();
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
@@ -131,16 +131,16 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		createTestTypeNullAttributeMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(3, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(3, ormPersistentType.getDefaultAttributesSize());
 		
 		//take a virtual mapping with a mapping type and make it specified
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		assertEquals("address", ormPersistentAttribute.getName());
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertNull(ormPersistentAttribute.getMapping().getKey());
-		ormPersistentAttribute.convertToSpecified(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.addToXml(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
-		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());
@@ -148,10 +148,10 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof GenericOrmOneToOneMapping);
 		
 		
-		ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
-		ormPersistentAttribute.convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
+		ormPersistentAttribute.addToXml(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		
-		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(1, ormPersistentType.getDefaultAttributesSize());
 		assertEquals(2, ormPersistentType.getSpecifiedAttributesSize());
 		Iterator<OrmPersistentAttribute> specifiedAttributes = ormPersistentType.getSpecifiedAttributes().iterator();
 		
@@ -169,27 +169,27 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		
-		ormPersistentType.getVirtualAttributes().iterator().next().convertToSpecified();
-		ormPersistentType.getVirtualAttributes().iterator().next().convertToSpecified();
+		ormPersistentType.getDefaultAttributes().iterator().next().addToXml();
+		ormPersistentType.getDefaultAttributes().iterator().next().addToXml();
 
-		assertEquals(0, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(0, ormPersistentType.getDefaultAttributesSize());
 		assertEquals(2, ormPersistentType.getSpecifiedAttributesSize());
 		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
 		
-		specifiedOrmPersistentAttribute.convertToVirtual();
-		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
+		specifiedOrmPersistentAttribute.removeFromXml();
+		assertEquals(1, ormPersistentType.getDefaultAttributesSize());
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		
 		specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
-		specifiedOrmPersistentAttribute.convertToVirtual();
-		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
+		specifiedOrmPersistentAttribute.removeFromXml();
+		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		assertEquals(0, ormPersistentType.getSpecifiedAttributesSize());
 		
-		Iterator<OrmReadOnlyPersistentAttribute> virtualAttributes = ormPersistentType.getVirtualAttributes().iterator();
+		Iterator<OrmReadOnlyPersistentAttribute> virtualAttributes = ormPersistentType.getDefaultAttributes().iterator();
 		OrmReadOnlyPersistentAttribute virtualAttribute = virtualAttributes.next();		
 		assertEquals("id", virtualAttribute.getName());
 		virtualAttribute = virtualAttributes.next();		
@@ -200,23 +200,23 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		createTestType();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		
-		ormPersistentType.getVirtualAttributes().iterator().next().convertToSpecified();
-		ormPersistentType.getVirtualAttributes().iterator().next().convertToSpecified();
+		ormPersistentType.getDefaultAttributes().iterator().next().addToXml();
+		ormPersistentType.getDefaultAttributes().iterator().next().addToXml();
 
 		
 		ormPersistentType.getSpecifiedAttributes().iterator().next().getMapping().setName("noJavaAttribute");
-		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
+		assertEquals(1, ormPersistentType.getDefaultAttributesSize());
 		assertEquals(2, ormPersistentType.getSpecifiedAttributesSize());
 		
 		
 		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
-		specifiedOrmPersistentAttribute.convertToVirtual();
-		assertEquals(1, ormPersistentType.getVirtualAttributesSize());
+		specifiedOrmPersistentAttribute.removeFromXml();
+		assertEquals(1, ormPersistentType.getDefaultAttributesSize());
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		
-		assertEquals("id", ormPersistentType.getVirtualAttributes().iterator().next().getName());
+		assertEquals("id", ormPersistentType.getDefaultAttributes().iterator().next().getName());
 		assertEquals("name", ormPersistentType.getSpecifiedAttributes().iterator().next().getName());
 	}
 	
@@ -224,7 +224,7 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityIdMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		assertEquals("id", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 		assertEquals("FOO", ((IdMapping) ormPersistentAttribute.getMapping()).getColumn().getName());
@@ -242,7 +242,7 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		createTestEntityOneToOneMapping();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		assertEquals("address", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 		
@@ -273,7 +273,7 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		
 		//specified orm attribute, access type matches java : FIELD, name matches java
 		//javaPersistentAttribute should be == to java context model object
-		ormPersistentAttribute.convertToSpecified();
+		ormPersistentAttribute.addToXml();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(ormPersistentAttribute.isVirtual());
 		assertEquals(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
@@ -282,7 +282,7 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		//virtual orm attribute, java access type FIELD, orm access type PROPERTY, name matches java
 		//verify both the property java resource attribute and the field java resource attribute are used in orm
 		//because the field is annotated and property is specified
-		((OrmPersistentAttribute) ormPersistentAttribute).convertToVirtual();
+		((OrmPersistentAttribute) ormPersistentAttribute).removeFromXml();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");		
 		ormPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
 		ListIterator<OrmReadOnlyPersistentAttribute> attributes = ormPersistentType.getAttributes().iterator();
@@ -302,7 +302,7 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		
 		ormPersistentType.setSpecifiedAccess(null);//default access will be field
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");		
-		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentAttribute.convertToSpecified();
+		OrmPersistentAttribute ormPersistentAttribute2 = ormPersistentAttribute.addToXml();
 		ormPersistentAttribute2.getMapping().setName("id2");
 		assertEquals(null, ormPersistentAttribute2.getJavaPersistentAttribute());
 		

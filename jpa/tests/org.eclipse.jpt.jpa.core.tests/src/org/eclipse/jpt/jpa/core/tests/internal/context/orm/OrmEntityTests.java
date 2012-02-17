@@ -1483,7 +1483,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType childPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
 		childPersistentType.getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		
-		persistentType.getAttributeNamed("id").convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		persistentType.getAttributeNamed("id").addToXml(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		
 		((OrmEntity) persistentType.getMapping()).setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		
@@ -1763,7 +1763,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("name", virtualOverride.getName());
 		
-		persistentType2.getAttributeNamed("basic").convertToSpecified();
+		persistentType2.getAttributeNamed("basic").addToXml();
 		OrmBasicMapping basicMapping = (OrmBasicMapping) persistentType2.getAttributeNamed("basic").getMapping();
 		basicMapping.getColumn().setSpecifiedName("MY_NAME");
 		basicMapping.getColumn().setSpecifiedTable("BAR");
@@ -1875,7 +1875,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity childEntity = (OrmEntity) childType.getMapping();	
 		OrmAttributeOverrideContainer childOverrideContainer = childEntity.getAttributeOverrideContainer();
 		OrmReadOnlyAttributeOverride attributeOverride = childOverrideContainer.getVirtualOverrides().iterator().next();
-		((OrmReadOnlyPersistentAttribute) childType.getSuperPersistentType().getAttributeNamed("id")).convertToSpecified();
+		((OrmReadOnlyPersistentAttribute) childType.getSuperPersistentType().getAttributeNamed("id")).addToXml();
 		BasicMapping basicMapping = (BasicMapping) ((OrmReadOnlyPersistentAttribute) childType.getSuperPersistentType().getAttributeNamed("id")).getMapping();
 		basicMapping.getColumn().setSpecifiedName("MY_COLUMN");
 		basicMapping.getColumn().setSpecifiedTable("BAR");
@@ -1977,7 +1977,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(CHILD_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
 		
 		
-		abstractPersistentType.getAttributeNamed("id").convertToSpecified();
+		abstractPersistentType.getAttributeNamed("id").addToXml();
 		BasicMapping idMapping = (OrmBasicMapping) abstractPersistentType.getAttributeNamed("id").getMapping();
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.getColumn().setSpecifiedTable("BAR");
@@ -2172,7 +2172,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals("manyToOne", virtualOverride.getName());
 		assertEquals(null, joiningStrategy.getJoinColumns().iterator().next().getSpecifiedName());
 		
-		persistentType2.getAttributeNamed("manyToOne").convertToSpecified();
+		persistentType2.getAttributeNamed("manyToOne").addToXml();
 		OrmManyToOneMapping manyToOneMapping = (OrmManyToOneMapping) persistentType2.getAttributeNamed("manyToOne").getMapping();
 		OrmJoinColumn joinColumn = manyToOneMapping.getRelationship().getJoinColumnStrategy().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("MY_NAME");
@@ -2709,7 +2709,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType subPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
 		OrmEntity childXmlEntity = (OrmEntity) subPersistentType.getMapping();
 		
-		superPersistentType.getAttributeNamed("id").convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		superPersistentType.getAttributeNamed("id").addToXml(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("id", childXmlEntity.getPrimaryKeyColumnName());
 		
 		((OrmIdMapping) superPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("MY_ID");

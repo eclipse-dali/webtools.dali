@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -535,7 +535,7 @@ public class EclipseLink2_0OrmEntityTests
 
 		OrmMappedSuperclass mappedSuperclass = (OrmMappedSuperclass) ormEntity.getPersistentType().getSuperPersistentType().getMapping();
 		
-		mappedSuperclass.getPersistentType().getAttributeNamed("id").convertToSpecified();
+		mappedSuperclass.getPersistentType().getAttributeNamed("id").addToXml();
 		BasicMapping idMapping = (BasicMapping) mappedSuperclass.getPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.getColumn().setSpecifiedTable("BAR");
@@ -581,7 +581,7 @@ public class EclipseLink2_0OrmEntityTests
 
 		OrmEntity superclass = (OrmEntity) ormEntity.getParentEntity();
 		
-		superclass.getPersistentType().getAttributeNamed("id").convertToSpecified();
+		superclass.getPersistentType().getAttributeNamed("id").addToXml();
 		BasicMapping idMapping = (BasicMapping) superclass.getPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.getColumn().setSpecifiedTable("BAR");
@@ -1388,7 +1388,7 @@ public class EclipseLink2_0OrmEntityTests
 		assertEquals(0, virtualAttributeOverride.getColumn().getScale());
 
 		
-		zipCodePersistentType.getAttributeNamed("plusfour").convertToSpecified();
+		zipCodePersistentType.getAttributeNamed("plusfour").addToXml();
 		BasicMapping plusFourMapping = (BasicMapping) zipCodePersistentType.getAttributeNamed("plusfour").getMapping();
 		plusFourMapping.getColumn().setSpecifiedName("BLAH");
 		plusFourMapping.getColumn().setSpecifiedTable("BLAH_TABLE");
@@ -1417,7 +1417,7 @@ public class EclipseLink2_0OrmEntityTests
 		assertEquals(7, virtualAttributeOverride.getColumn().getScale());
 		
 		//set an attribute override on Address.zipCode embedded mapping
-		addressPersistentType.getAttributeNamed("zipCode").convertToSpecified();
+		addressPersistentType.getAttributeNamed("zipCode").addToXml();
 		AttributeOverride specifiedAttributeOverride = ((VirtualAttributeOverride) ((EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
 		specifiedAttributeOverride.getColumn().setSpecifiedName("BLAH_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setSpecifiedTable("BLAH_TABLE_OVERRIDE");
@@ -1498,7 +1498,7 @@ public class EclipseLink2_0OrmEntityTests
 		assertEquals(0, virtualAttributeOverride.getColumn().getScale());
 
 		
-		zipCodePersistentType.getAttributeNamed("plusfour").convertToSpecified();
+		zipCodePersistentType.getAttributeNamed("plusfour").addToXml();
 		BasicMapping plusFourMapping = (BasicMapping) zipCodePersistentType.getAttributeNamed("plusfour").getMapping();
 		plusFourMapping.getColumn().setSpecifiedName("BLAH");
 		plusFourMapping.getColumn().setSpecifiedTable("BLAH_TABLE");
@@ -1527,7 +1527,7 @@ public class EclipseLink2_0OrmEntityTests
 		assertEquals(7, virtualAttributeOverride.getColumn().getScale());
 		
 		//set an attribute override on Address.zipCode embedded mapping
-		addressPersistentType.getAttributeNamed("zipCode").convertToSpecified();
+		addressPersistentType.getAttributeNamed("zipCode").addToXml();
 		AttributeOverride specifiedAttributeOverride = ((VirtualAttributeOverride) ((EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
 		specifiedAttributeOverride.getColumn().setSpecifiedName("BLAH_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setSpecifiedTable("BLAH_TABLE_OVERRIDE");

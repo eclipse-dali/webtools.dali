@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -129,7 +129,7 @@ public class EclipseLink1_1OrmPersistentTypeTests
 		
 		
 		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
-		ormPersistentAttribute.convertToSpecified();
+		ormPersistentAttribute.addToXml();
 		assertEquals(AccessType.FIELD, ormPersistentType.getAccess());
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 		assertEquals(null, javaPersistentType.getSpecifiedAccess());

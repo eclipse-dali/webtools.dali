@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
@@ -66,8 +67,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -98,8 +100,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -121,8 +124,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateColumnDefinition() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -153,8 +157,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifyColumnDefinition() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -176,8 +181,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedTable() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -208,8 +214,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedTable() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -231,8 +238,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedNullable() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -263,8 +271,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedNullable() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -286,8 +295,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedUpdatable() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -318,8 +328,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedUpdatable() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -341,8 +352,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedInsertable() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -373,8 +385,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedInsertable() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -396,8 +409,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedUnique() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -428,8 +442,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedUnique() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -451,8 +466,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedLength() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -483,8 +499,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedLength() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -506,8 +523,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedPrecision() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -538,8 +556,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedPrecision() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -561,8 +580,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedScale() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -593,8 +613,9 @@ public class OrmColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedScale() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
@@ -619,7 +640,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		createTestEntity();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		Iterator<OrmReadOnlyPersistentAttribute> attributes = ormPersistentType.getVirtualAttributes().iterator();
+		Iterator<OrmReadOnlyPersistentAttribute> attributes = ormPersistentType.getDefaultAttributes().iterator();
 		attributes.next();	
 		
 		//virtual attribute in orm.xml, java attribute has no Column annotation
@@ -633,9 +654,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertTrue(virtualColumn.isUpdatable());
 		assertTrue(virtualColumn.isNullable());
 		assertFalse(virtualColumn.isUnique());
-		assertEquals(Column.DEFAULT_LENGTH, virtualColumn.getLength());
-		assertEquals(Column.DEFAULT_PRECISION, virtualColumn.getPrecision());
-		assertEquals(Column.DEFAULT_SCALE, virtualColumn.getScale());
+		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, virtualColumn.getLength());
+		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, virtualColumn.getPrecision());
+		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, virtualColumn.getScale());
 	
 		//set Column annotation in Java
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("name").getMapping();
@@ -678,9 +699,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertTrue(virtualColumn.isUpdatable());
 		assertTrue(virtualColumn.isNullable());
 		assertFalse(virtualColumn.isUnique());
-		assertEquals(Column.DEFAULT_LENGTH, virtualColumn.getLength());
-		assertEquals(Column.DEFAULT_PRECISION, virtualColumn.getPrecision());
-		assertEquals(Column.DEFAULT_SCALE, virtualColumn.getScale());
+		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, virtualColumn.getLength());
+		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, virtualColumn.getPrecision());
+		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, virtualColumn.getScale());
 	
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.FALSE);
@@ -693,9 +714,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertTrue(virtualColumn.isUpdatable());
 		assertTrue(virtualColumn.isNullable());
 		assertFalse(virtualColumn.isUnique());
-		assertEquals(Column.DEFAULT_LENGTH, virtualColumn.getLength());
-		assertEquals(Column.DEFAULT_PRECISION, virtualColumn.getPrecision());
-		assertEquals(Column.DEFAULT_SCALE, virtualColumn.getScale());
+		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, virtualColumn.getLength());
+		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, virtualColumn.getPrecision());
+		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, virtualColumn.getScale());
 	
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
 		nameVirtualMapping = (BasicMapping) namePersistentAttribute.getMapping();		
@@ -707,9 +728,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertTrue(virtualColumn.isUpdatable());
 		assertTrue(virtualColumn.isNullable());
 		assertFalse(virtualColumn.isUnique());
-		assertEquals(Column.DEFAULT_LENGTH, virtualColumn.getLength());
-		assertEquals(Column.DEFAULT_PRECISION, virtualColumn.getPrecision());
-		assertEquals(Column.DEFAULT_SCALE, virtualColumn.getScale());
+		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, virtualColumn.getLength());
+		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, virtualColumn.getPrecision());
+		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, virtualColumn.getScale());
 		
 		//set metadata-complete false, orm.xml virtual column gets setting from java annotation
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
@@ -731,7 +752,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		createTestEntity();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute namePersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "name");
+		OrmPersistentAttribute namePersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("name"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 
 		OrmBasicMapping nameVirtualMapping = (OrmBasicMapping) namePersistentAttribute.getMapping();		
 		OrmColumn ormColumn = nameVirtualMapping.getColumn();
@@ -757,9 +778,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
 		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
-		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
-		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedTable());
 		assertNull(ormColumn.getColumnDefinition());
@@ -794,8 +815,8 @@ public class OrmColumnTests extends ContextModelTestCase
 		virtualColumn = nameVirtualMapping.getColumn();
 		assertEquals("JAVA_TABLE", virtualColumn.getTable());
 		
-		//make name persistent attribute not virtual
-		nameOrmAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "name");
+		//make name persistent attribute not default
+		nameOrmAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("name"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		BasicMapping nameSpecifiedMapping = (OrmBasicMapping) nameOrmAttribute.getMapping();	
 		Column specifiedColumn = nameSpecifiedMapping.getColumn();
 		assertNull(specifiedColumn.getSpecifiedTable());

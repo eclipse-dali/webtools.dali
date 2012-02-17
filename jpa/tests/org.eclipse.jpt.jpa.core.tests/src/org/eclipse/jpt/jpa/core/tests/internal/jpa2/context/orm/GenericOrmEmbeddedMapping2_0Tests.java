@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -352,13 +352,14 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 	}
 
 	public void testUpdateName() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		
-		assertEquals("embeddedMapping", ormEmbeddedMapping.getName());
-		assertEquals("embeddedMapping", embeddedResource.getName());
+		assertEquals("id", ormEmbeddedMapping.getName());
+		assertEquals("id", embeddedResource.getName());
 				
 		//set name in the resource model, verify context model updated
 		embeddedResource.setName("newName");
@@ -372,13 +373,14 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 	}
 	
 	public void testModifyName() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		
-		assertEquals("embeddedMapping", ormEmbeddedMapping.getName());
-		assertEquals("embeddedMapping", embeddedResource.getName());
+		assertEquals("id", ormEmbeddedMapping.getName());
+		assertEquals("id", embeddedResource.getName());
 				
 		//set name in the context model, verify resource model updated
 		ormEmbeddedMapping.setName("newName");
@@ -452,8 +454,9 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 //	}
 	
 	public void testMoveSpecifiedAttributeOverride() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();
 		OrmAttributeOverrideContainer attributeOverrideContainer = ormEmbeddedMapping.getAttributeOverrideContainer();
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
@@ -491,8 +494,9 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 	}
 	
 	public void testUpdateAttributeOverrides() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();
 		OrmAttributeOverrideContainer attributeOverrideContainer = ormEmbeddedMapping.getAttributeOverrideContainer();
 		XmlEmbedded embeddedResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
@@ -547,11 +551,12 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "foo");
-		assertEquals(3, ormPersistentType.getVirtualAttributesSize());
+		ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();
+		ormEmbeddedMapping.setName("foo");
 		OrmAttributeOverrideContainer attributeOverrideContainer = ormEmbeddedMapping.getAttributeOverrideContainer();
 		
 		assertEquals("foo", ormEmbeddedMapping.getName());
@@ -630,7 +635,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		
 		//embedded mapping is specified, virtual attribute overrides should exist
-		persistentType.getAttributeNamed("address").convertToSpecified();
+		persistentType.getAttributeNamed("address").addToXml();
 		embeddedMapping = (OrmEmbeddedMapping) persistentType.getAttributeNamed("address").getMapping();
 		attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		assertEquals(4, attributeOverrideContainer.getOverridesSize());
@@ -681,8 +686,8 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		
 		EmbeddedMapping virtualEmbeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();	
 		AttributeOverrideContainer attributeOverrideContainer = virtualEmbeddedMapping.getAttributeOverrideContainer();
@@ -722,8 +727,8 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals(3, ormPersistentType.getVirtualAttributesSize());		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		assertEquals(3, ormPersistentType.getDefaultAttributesSize());		
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		
 		EmbeddedMapping virtualEmbeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", virtualEmbeddedMapping.getName());
@@ -770,8 +775,8 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 
-		ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "address");
-		assertEquals(2, ormPersistentType.getVirtualAttributesSize());
+		ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("address"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();
@@ -817,7 +822,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 	public void testEmbeddedMorphToIdMapping() throws Exception {
 		createTestEntityEmbeddedMappingAttributeOverrides();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
@@ -832,13 +837,13 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof IdMapping);
-		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedMorphToVersionMapping() throws Exception {
 		createTestEntityEmbeddedMappingAttributeOverrides();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
@@ -853,13 +858,13 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof VersionMapping);
-		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedMorphToTransientMapping() throws Exception {
 		createTestEntityEmbeddedMappingAttributeOverrides();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
@@ -874,13 +879,13 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof TransientMapping);
-		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedMorphToBasicMapping() throws Exception {
 		createTestEntityEmbeddedMappingAttributeOverrides();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
@@ -895,13 +900,13 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof BasicMapping);
-		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedMorphToEmbeddedIdMapping() throws Exception {
 		createTestEntityEmbeddedMappingAttributeOverrides();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
@@ -916,7 +921,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
-		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 		attributeOverride = ((EmbeddedIdMapping) ormPersistentAttribute.getMapping()).getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next();
 		assertEquals("override", attributeOverride.getName());
 		assertEquals("OVERRIDE_COLUMN", attributeOverride.getColumn().getSpecifiedName());
@@ -925,7 +930,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 	public void testEmbeddedMorphToOneToOneMapping() throws Exception {
 		createTestEntityEmbeddedMappingAttributeOverrides();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
@@ -940,13 +945,13 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToOneMapping);
-		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedMorphToOneToManyMapping() throws Exception {
 		createTestEntityEmbeddedMappingAttributeOverrides();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
@@ -961,13 +966,13 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToManyMapping);
-		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedMorphToManyToOneMapping() throws Exception {
 		createTestEntityEmbeddedMappingAttributeOverrides();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
@@ -982,13 +987,13 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(1, ormPersistentType.getSpecifiedAttributesSize());
 		assertEquals(ormPersistentAttribute, ormPersistentType.getSpecifiedAttributes().iterator().next());
 		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToOneMapping);
-		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedMorphToManyToManyMapping() throws Exception {
 		createTestEntityEmbeddedMappingAttributeOverrides();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
@@ -1001,7 +1006,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToManyMapping);
-		assertEquals("embedded", ormPersistentAttribute.getMapping().getName());
+		assertEquals("id", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	
@@ -1013,7 +1018,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 
 		OrmAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
@@ -1082,7 +1087,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		AssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 		
@@ -1147,7 +1152,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		AssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
@@ -1173,7 +1178,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		AssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 		
@@ -1193,7 +1198,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		AssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
@@ -1221,7 +1226,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		AssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
@@ -1242,7 +1247,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		OrmAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
@@ -1265,7 +1270,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		OrmAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
@@ -1299,7 +1304,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		AssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
@@ -1336,7 +1341,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		AssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
@@ -1395,7 +1400,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		OrmAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
@@ -1428,7 +1433,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME_ + "Address");
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "myEmbedded");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("myEmbedded"), MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) ormPersistentAttribute.getMapping();
 		AssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
@@ -1566,7 +1571,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(1, overrideContainer.getVirtualOverridesSize());
 		
 		
-		ormPersistentAttribute.convertToVirtual();
+		ormPersistentAttribute.removeFromXml();
 		EmbeddedMapping2_0 virtualEmbeddedMapping = (EmbeddedMapping2_0) ormPersistentType.getAttributeNamed("myEmbedded").getMapping();
 		overrideContainer = virtualEmbeddedMapping.getAssociationOverrideContainer();
 		AssociationOverride associationOverride = overrideContainer.getSpecifiedOverrides().iterator().next();
@@ -1606,7 +1611,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		OrmPersistentType addressPersistentType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		OrmPersistentType zipCodePersistentType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".ZipCode");
 
-		customerPersistentType.getAttributeNamed("address").convertToSpecified();
+		customerPersistentType.getAttributeNamed("address").addToXml();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) customerPersistentType.getAttributeNamed("address").getMapping();
 		AttributeOverrideContainer attributeOverrideContainer = embeddedMapping.getAttributeOverrideContainer();
 		
@@ -1636,7 +1641,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(0, virtualAttributeOverride.getColumn().getScale());
 
 		
-		addressPersistentType.getAttributeNamed("zipCode").convertToSpecified();
+		addressPersistentType.getAttributeNamed("zipCode").addToXml();
 		EmbeddedMapping nestedEmbeddedMapping = (EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping();
 		AttributeOverrideContainer nestedAttributeOverrideContainer = nestedEmbeddedMapping.getAttributeOverrideContainer();
 		assertEquals(2, nestedAttributeOverrideContainer.getVirtualOverridesSize());
@@ -1646,7 +1651,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("plusfour", virtualAttributeOverride.getName());
 		
-		zipCodePersistentType.getAttributeNamed("plusfour").convertToSpecified();
+		zipCodePersistentType.getAttributeNamed("plusfour").addToXml();
 		BasicMapping plusFourMapping = (BasicMapping) zipCodePersistentType.getAttributeNamed("plusfour").getMapping();
 		plusFourMapping.getColumn().setSpecifiedName("BLAH");
 		plusFourMapping.getColumn().setSpecifiedTable("BLAH_TABLE");

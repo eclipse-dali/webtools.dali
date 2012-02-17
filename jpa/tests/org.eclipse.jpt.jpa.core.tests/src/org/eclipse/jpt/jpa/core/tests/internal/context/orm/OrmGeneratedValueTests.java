@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,8 +63,9 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		OrmGeneratedValue ormGeneratedValue = ormIdMapping.addGeneratedValue();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
@@ -82,8 +83,9 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		createTestType();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		OrmGeneratedValue ormGeneratedValue = ormIdMapping.addGeneratedValue();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
@@ -104,7 +106,7 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 		createTestEntity();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		OrmReadOnlyPersistentAttribute ormIdAttribute = ormPersistentType.getVirtualAttributes().iterator().next();
+		OrmReadOnlyPersistentAttribute ormIdAttribute = ormPersistentType.getDefaultAttributes().iterator().next();
 		IdMapping ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
 		assertEquals(null, ormIdMapping.getGeneratedValue());
 		
@@ -118,14 +120,14 @@ import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 		assertEquals("Foo", javaGeneratedValue.getSpecifiedGenerator());
 		assertEquals(GenerationType.SEQUENCE, javaGeneratedValue.getSpecifiedStrategy());
 		
-		ormIdAttribute.convertToSpecified();
+		ormIdAttribute.addToXml();
 		ormIdAttribute = ormPersistentType.getSpecifiedAttributes().iterator().next();
 		ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
 		assertEquals(null, ormIdMapping.getGeneratedValue());
 		assertEquals("Foo", javaGeneratedValue.getSpecifiedGenerator());
 		assertEquals(GenerationType.SEQUENCE, javaGeneratedValue.getSpecifiedStrategy());
 		
-		((OrmPersistentAttribute) ormIdAttribute).convertToVirtual();
+		((OrmPersistentAttribute) ormIdAttribute).removeFromXml();
 		ormIdAttribute = ormPersistentType.getAttributeNamed("id");
 		ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
 		assertEquals("Foo", ormIdMapping.getGeneratedValue().getSpecifiedGenerator());
