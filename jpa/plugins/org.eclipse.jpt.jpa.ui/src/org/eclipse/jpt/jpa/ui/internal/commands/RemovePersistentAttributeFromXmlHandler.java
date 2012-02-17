@@ -42,7 +42,7 @@ public class RemovePersistentAttributeFromXmlHandler
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		for (Object each : selection.toList()) {
 			OrmPersistentAttribute attribute = (OrmPersistentAttribute) each;
-			OrmReadOnlyPersistentAttribute newAttribute = attribute.convertToVirtual();
+			OrmReadOnlyPersistentAttribute newAttribute = attribute.removeFromXml();
 			if (newAttribute != null) {
 				virtualAttributes.add(newAttribute);
 			}

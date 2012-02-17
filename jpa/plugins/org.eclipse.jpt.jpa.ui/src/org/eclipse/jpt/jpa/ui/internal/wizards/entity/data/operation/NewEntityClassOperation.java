@@ -464,7 +464,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			this.updateTypeMapping(persistentType.getMapping());
 
 			for (String fieldName : this.model.getPKFields()) {
-				persistentType.getAttributeNamed(fieldName).convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+				persistentType.getAttributeNamed(fieldName).addToXml(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 			}
 
 			persistentType.setSpecifiedAccess(this.getModelAccessType());

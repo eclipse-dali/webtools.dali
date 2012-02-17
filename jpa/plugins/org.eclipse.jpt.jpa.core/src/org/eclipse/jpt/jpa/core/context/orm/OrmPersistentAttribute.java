@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,17 +37,17 @@ public interface OrmPersistentAttribute
 	OrmAttributeMapping getMapping();
 
 	/**
-	 * Convert the (currently specified) attribute to a virtual attribute.
-	 * The attribute will be removed
-	 * from the list of specified attributes
-	 * and removed from the <code>orm.xml</code> file. Return the new attribute.
+	 * Remove the attribute from the <code>orm.xml</code> file and the
+	 * list of specified attributes. The attribute must currently be specified 
+	 * (return false from isVirtual()).
+	 * Return the new virtual attribute, if it exists.
 	 * Return <code>null</code> if the attribute does not correspond to an
 	 * attribute in the Java persistent type.
 	 * <p>
 	 * @see #isVirtual()
 	 * @see #setMappingKey(String)
 	 */
-	OrmReadOnlyPersistentAttribute convertToVirtual();
+	OrmReadOnlyPersistentAttribute removeFromXml();
 
 	OrmAttributeMapping setMappingKey(String key);
 

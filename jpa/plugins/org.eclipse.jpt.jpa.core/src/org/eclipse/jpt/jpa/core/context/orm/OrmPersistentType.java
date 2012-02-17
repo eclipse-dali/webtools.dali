@@ -27,7 +27,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.0
+ * @version 3.2
  * @since 2.0
  */
 public interface OrmPersistentType
@@ -41,9 +41,9 @@ public interface OrmPersistentType
 
 	/**
 	 * Return a combination of the persistent type's <em>specified</em> and
-	 * <em>virtual</em> attributes. The <em>specified</em> attributes are those
+	 * <em>default</em> attributes. The <em>specified</em> attributes are those
 	 * explicitly listed in the <code>orm.xml</code> file; while the
-	 * <em>virtual</em> attributes are those derived from the corresponding
+	 * <em>default</em> attributes are those derived from the corresponding
 	 * Java persistent type.
 	 */
 	ListIterable<OrmReadOnlyPersistentAttribute> getAttributes();
@@ -65,69 +65,64 @@ public interface OrmPersistentType
 	 */
 	int getSpecifiedAttributesSize();
 
-	// TODO this is currently only used by tests; remove it and change tests to use
-	// OrmReadOnlyPersistenAttribute.convertToSpecified(String mappingKey)
-	OrmPersistentAttribute addSpecifiedAttribute(String mappingKey, String attributeName);
 
-// TODO bjv rename to 'defaultAttributes'
 	// ********** default attributes **********
 
-	String VIRTUAL_ATTRIBUTES_LIST = "virtualAttributes"; //$NON-NLS-1$
+	String DEFAULT_ATTRIBUTES_LIST = "defaultAttributes"; //$NON-NLS-1$
 
 	/**
-	 * Return virtual <code>orm.xml</code> persistent attributes. These
+	 * Return default <code>orm.xml</code> persistent attributes. These
 	 * are attributes that exist in the corresponding Java class, but are not
 	 * specified in the <code>orm.xml</code>.
 	 */
-	ListIterable<OrmReadOnlyPersistentAttribute> getVirtualAttributes();
+	ListIterable<OrmReadOnlyPersistentAttribute> getDefaultAttributes();
 
 	/**
-	 * Return the number of virtual <code>orm.xml</code> persistent attributes.
-	 * @see #getVirtualAttributes()
+	 * Return the number of default <code>orm.xml</code> persistent attributes.
+	 * @see #getDefaultAttributes()
 	 */
-	int getVirtualAttributesSize();
+	int getDefaultAttributesSize();
 
 	/**
-	 * Convert the specified attribute to a virtual attribute. Remove the
-	 * attribute from the type's list of specified attributes
-	 * and remove it from the <code>orm.xml</code> file. Return the new
-	 * (virtual) attribute.
+	 * Remove attribute from the type's list of specified attributes
+	 * and remove it from the <code>orm.xml</code> file. 
+	 * Return the new (virtual) attribute, if it exists.
 	 * Return <code>null</code> if the specified attribute does not correspond
 	 * to an attribute in the Java persistent type.
 	 * <p>
-	 * Throw an {@link IllegalArgumentException} if the attribute is already
-	 * virtual.
+	 * Throw an {@link IllegalArgumentException} if the attribute is virtual
 	 *
-	 * @see OrmPersistentAttribute#convertToVirtual()
+	 * @see OrmPersistentAttribute#removeFromXml()
+	 * @see PersistentAttribute#isVirtual()
 	 */
-	OrmReadOnlyPersistentAttribute convertAttributeToVirtual(OrmPersistentAttribute specifiedAttribute);
+	OrmReadOnlyPersistentAttribute removeAttributeFromXml(OrmPersistentAttribute specifiedAttribute);
 
 	/**
 	 * Add the specified persistent attribute to the <code>orm.xml</code>.
 	 * The attribute will be added to the <code>orm.xml</code> and moved
-	 * from the list of virtual attributes to the list
+	 * from the list of default attributes to the list
 	 * of specified attributes. It will keep the same mapping it had, either
 	 * specified in a Java annotation or the default.
 	 * <p>
 	 * Throw an {@link IllegalArgumentException} if the attribute is already
 	 * specified.
 	 *
-	 * @see OrmPersistentAttribute#convertToSpecified()
+	 * @see OrmPersistentAttribute#addToXml()
 	 */
-	OrmPersistentAttribute convertAttributeToSpecified(OrmReadOnlyPersistentAttribute virtualAttribute);
+	OrmPersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute virtualAttribute);
 
 	/**
 	 * Add the specified persistent attribute to the <code>orm.xml</code> with
 	 * the specified mapping. The attribute will be added to the
-	 * <code>orm.xml</code> and moved from the list of virtual attributes to
+	 * <code>orm.xml</code> and moved from the list of default attributes to
 	 * the list of specified attributes.
 	 * <p>
 	 * Throw an {@link IllegalArgumentException} if the attribute is already
 	 * specified.
 	 *
-	 * @see OrmPersistentAttribute#convertToSpecified(String)
+	 * @see OrmPersistentAttribute#addToXml(String)
 	 */
-	OrmPersistentAttribute convertAttributeToSpecified(OrmReadOnlyPersistentAttribute virtualAttribute, String mappingKey);
+	OrmPersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute virtualAttribute, String mappingKey);
 
 
 	// ********** mapping morphing **********

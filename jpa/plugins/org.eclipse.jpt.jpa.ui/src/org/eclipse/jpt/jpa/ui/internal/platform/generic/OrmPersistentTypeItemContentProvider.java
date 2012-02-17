@@ -37,7 +37,7 @@ public class OrmPersistentTypeItemContentProvider
 	protected CollectionValueModel<OrmReadOnlyPersistentAttribute> buildChildrenModel() {
 		List<CollectionValueModel<OrmReadOnlyPersistentAttribute>> list = new ArrayList<CollectionValueModel<OrmReadOnlyPersistentAttribute>>(2);
 		list.add(this.buildSpecifiedPersistentAttributesModel());
-		list.add(this.buildVirtualPersistentAttributesModel());
+		list.add(this.buildDefaultPersistentAttributesModel());
 		return new CompositeCollectionValueModel<CollectionValueModel<OrmReadOnlyPersistentAttribute>, OrmReadOnlyPersistentAttribute>(list);
 	}
 
@@ -67,25 +67,25 @@ public class OrmPersistentTypeItemContentProvider
 		}
 	}
 
-	protected CollectionValueModel<OrmReadOnlyPersistentAttribute> buildVirtualPersistentAttributesModel() {
-		return new ListCollectionValueModelAdapter<OrmReadOnlyPersistentAttribute>(new VirtualPersistentAttributesModel(this.item));
+	protected CollectionValueModel<OrmReadOnlyPersistentAttribute> buildDefaultPersistentAttributesModel() {
+		return new ListCollectionValueModelAdapter<OrmReadOnlyPersistentAttribute>(new DefaultPersistentAttributesModel(this.item));
 	}
 
-	protected static class VirtualPersistentAttributesModel
+	protected static class DefaultPersistentAttributesModel
 		extends ListAspectAdapter<OrmPersistentType, OrmReadOnlyPersistentAttribute>
 	{
-		VirtualPersistentAttributesModel(OrmPersistentType ormPersistentType) {
-			super(OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST, ormPersistentType);
+		DefaultPersistentAttributesModel(OrmPersistentType ormPersistentType) {
+			super(OrmPersistentType.DEFAULT_ATTRIBUTES_LIST, ormPersistentType);
 		}
 
 		@Override
 		protected ListIterable<OrmReadOnlyPersistentAttribute> getListIterable() {
-			return this.subject.getVirtualAttributes();
+			return this.subject.getDefaultAttributes();
 		}
 
 		@Override
 		public int size_() {
-			return this.subject.getVirtualAttributesSize();
+			return this.subject.getDefaultAttributesSize();
 		}
 	}
 }

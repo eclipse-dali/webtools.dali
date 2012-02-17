@@ -279,15 +279,15 @@ public class VirtualOrmPersistentAttribute
 		return true;
 	}
 
-	public OrmPersistentAttribute convertToSpecified() {
+	public OrmPersistentAttribute addToXml() {
 		if (this.mapping.getKey() == null) {
 			throw new IllegalStateException("Use convertToSpecified(String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
-		return this.getOwningPersistentType().convertAttributeToSpecified(this);
+		return this.getOwningPersistentType().addAttributeToXml(this);
 	}
 
-	public OrmPersistentAttribute convertToSpecified(String mappingKey) {
-		return this.getOwningPersistentType().convertAttributeToSpecified(this, mappingKey);
+	public OrmPersistentAttribute addToXml(String mappingKey) {
+		return this.getOwningPersistentType().addAttributeToXml(this, mappingKey);
 	}
 
 

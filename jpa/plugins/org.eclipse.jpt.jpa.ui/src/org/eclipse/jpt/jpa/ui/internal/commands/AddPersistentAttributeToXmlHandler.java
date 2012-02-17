@@ -42,7 +42,7 @@ public class AddPersistentAttributeToXmlHandler
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		for (Object each : selection.toList()) {
 			OrmReadOnlyPersistentAttribute attribute = (OrmReadOnlyPersistentAttribute) each;
-			specifiedAttributes.add(attribute.convertToSpecified());
+			specifiedAttributes.add(attribute.addToXml());
 		}
 
 		if (specifiedAttributes.size() == 1) {

@@ -98,7 +98,7 @@ public abstract class SpecifiedOrmPersistentType
 	protected final Vector<OrmPersistentAttribute> specifiedAttributes = new Vector<OrmPersistentAttribute>();
 	protected final SpecifiedAttributeContainerAdapter specifiedAttributeContainerAdapter = new SpecifiedAttributeContainerAdapter();
 
-	protected final Vector<OrmReadOnlyPersistentAttribute> virtualAttributes = new Vector<OrmReadOnlyPersistentAttribute>();
+	protected final Vector<OrmReadOnlyPersistentAttribute> defaultAttributes = new Vector<OrmReadOnlyPersistentAttribute>();
 
 	protected PersistentType superPersistentType;
 
@@ -110,7 +110,8 @@ public abstract class SpecifiedOrmPersistentType
 	protected SpecifiedOrmPersistentType(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent);
 		this.mapping = this.buildMapping(xmlTypeMapping);
-		// 'name' is resolved in the update
+		//initialize 'name' (if qualified, this will be the name), it will be resolved in the update
+		this.name = this.getMappingClassName(); 
 		// 'javaPersistentType' is resolved in the update
 		this.specifiedAccess = this.buildSpecifiedAccess();
 		this.defaultAccess = AccessType.FIELD;  // keep this non-null
@@ -128,7 +129,7 @@ public abstract class SpecifiedOrmPersistentType
 		this.syncJavaPersistentType();
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.syncSpecifiedAttributes();
-		this.synchronizeNodesWithResourceModel(this.getVirtualAttributes());
+		this.synchronizeNodesWithResourceModel(this.getDefaultAttributes());
 	}
 
 	@Override
@@ -139,7 +140,7 @@ public abstract class SpecifiedOrmPersistentType
 		this.updateJavaPersistentType();
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.updateNodes(this.getSpecifiedAttributes());
-		this.updateVirtualAttributes();
+		this.updateDefaultAttributes();
 		this.setSuperPersistentType(this.buildSuperPersistentType());
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
 	}
@@ -210,11 +211,6 @@ public abstract class SpecifiedOrmPersistentType
 		String className = this.getName();
 		return StringTools.stringIsEmpty(className) ? null : ClassName.getSimpleName(className);
 	}
-//
-//	public String getTypeQualifiedName() {
-//		
-//		this.mapping.getClass()
-//	}
 
 	protected String getMappingClassName() {
 		return this.mapping.getClass_();
@@ -337,9 +333,9 @@ public abstract class SpecifiedOrmPersistentType
 				if (this.javaPersistentTypeHasSpecifiedAccess()) {
 					return this.javaPersistentType.getAccess();
 				}
-				if (this.superPersistentType != null) {
-					return this.superPersistentType.getAccess();
-				}
+			}
+			if (this.superPersistentType != null) {
+				return this.superPersistentType.getAccess();
 			}
 		}
 		AccessType access = this.getMappingFileRoot().getAccess();
@@ -367,11 +363,11 @@ public abstract class SpecifiedOrmPersistentType
 
 	@SuppressWarnings("unchecked")
 	public ListIterable<OrmReadOnlyPersistentAttribute> getAttributes() {
-		return new CompositeListIterable<OrmReadOnlyPersistentAttribute>(this.getReadOnlySpecifiedAttributes(), this.getVirtualAttributes());
+		return new CompositeListIterable<OrmReadOnlyPersistentAttribute>(this.getReadOnlySpecifiedAttributes(), this.getDefaultAttributes());
 	}
 
 	public int getAttributesSize() {
-		return this.getSpecifiedAttributesSize() + this.getVirtualAttributesSize();
+		return this.getSpecifiedAttributesSize() + this.getDefaultAttributesSize();
 	}
 
 	public Iterable<String> getAttributeNames() {
@@ -429,31 +425,31 @@ public abstract class SpecifiedOrmPersistentType
 
 	// ********** attribute conversions **********
 
-	public OrmPersistentAttribute convertAttributeToSpecified(OrmReadOnlyPersistentAttribute virtualAttribute) {
-		return this.convertAttributeToSpecified(virtualAttribute, virtualAttribute.getMappingKey());
+	public OrmPersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute defaultAttribute) {
+		return this.addAttributeToXml(defaultAttribute, defaultAttribute.getMappingKey());
 	}
 
-	public OrmPersistentAttribute convertAttributeToSpecified(OrmReadOnlyPersistentAttribute virtualAttribute, String mappingKey) {
-		if ( ! virtualAttribute.isVirtual()) {
-			throw new IllegalArgumentException("Attribute is already specified: " + virtualAttribute); //$NON-NLS-1$
+	public OrmPersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute defaultAttribute, String mappingKey) {
+		if ( ! defaultAttribute.isVirtual()) {
+			throw new IllegalArgumentException("Attribute is already specified: " + defaultAttribute); //$NON-NLS-1$
 		}
 		if (mappingKey == null) {
-			// this typically happens when the virtual attribute does not have a mapping
+			// this typically happens when the default attribute does not have a mapping
 			throw new IllegalArgumentException("Use convertAttributeToSpecified(OrmReadOnlyPersistentAttribute, String) instead and specify a mapping key"); //$NON-NLS-1$
 		}
-		return this.convertAttributeToSpecified_(virtualAttribute, mappingKey);
+		return this.convertAttributeToSpecified_(defaultAttribute, mappingKey);
 	}
 
 	/**
-	 * <em>Silently</em> remove the virtual attribute and add specified
+	 * <em>Silently</em> remove the default attribute and add specified
 	 * attribute before triggering an <em>update</em> or the dangling
-	 * virtual attribute will be removed preemptively.
+	 * default attribute will be removed preemptively.
 	 */
-	protected OrmPersistentAttribute convertAttributeToSpecified_(OrmReadOnlyPersistentAttribute virtualAttribute, String mappingKey) {
-		// silently remove the virtual attribute
-		int virtualIndex = this.virtualAttributes.indexOf(virtualAttribute);
-		this.virtualAttributes.remove(virtualIndex);
-		virtualAttribute.dispose();
+	protected OrmPersistentAttribute convertAttributeToSpecified_(OrmReadOnlyPersistentAttribute defaultAttribute, String mappingKey) {
+		// silently remove the default attribute
+		int defaultIndex = this.defaultAttributes.indexOf(defaultAttribute);
+		this.defaultAttributes.remove(defaultIndex);
+		defaultAttribute.dispose();
 
 		// silently add the specified attribute
 		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
@@ -465,11 +461,11 @@ public abstract class SpecifiedOrmPersistentType
 		this.specifiedAttributes.add(specifiedIndex, specifiedAttribute);
 
 		// this will trigger the initial update;
-		// no changes to either collection (virtual or specified) should be detected at this point
-		specifiedAttribute.getMapping().setName(virtualAttribute.getName());
+		// no changes to either collection (default or specified) should be detected at this point
+		specifiedAttribute.getMapping().setName(defaultAttribute.getName());
 
 		// fire the list change events
-		this.fireItemRemoved(VIRTUAL_ATTRIBUTES_LIST, virtualIndex, virtualAttribute);
+		this.fireItemRemoved(DEFAULT_ATTRIBUTES_LIST, defaultIndex, defaultAttribute);
 		this.fireItemAdded(SPECIFIED_ATTRIBUTES_LIST, specifiedIndex, specifiedAttribute);
 
 		// it should be safe to update the XML now
@@ -479,36 +475,10 @@ public abstract class SpecifiedOrmPersistentType
 		this.getXmlTypeMapping().setAttributes(xmlAttributes);
 
 		// copy over the specified access(?)
-		AccessType oldAccess = virtualAttribute.getJavaPersistentAttribute().getSpecifiedAccess();
+		AccessType oldAccess = defaultAttribute.getJavaPersistentAttribute().getSpecifiedAccess();
 		if (oldAccess != null) {
 			specifiedAttribute.setSpecifiedAccess(oldAccess);
 		}
-		return specifiedAttribute;
-	}
-
-	// TODO this is used only by our tests...
-	// we cannot delegate to getAttributeNamed(String).convertToSpecified()
-	// because the tests use this method to add "orphan" xml attributes (that
-	// do not have a corresponding java attribute :( )
-	public OrmPersistentAttribute addSpecifiedAttribute(String mappingKey, String attributeName) {
-		// force the creation of an empty xml attribute container beforehand or it will trigger
-		// a sync and, if we do this after adding the attribute, clear out our context attributes
-		Attributes xmlAttributes = this.getXmlAttributesForUpdate();
-		this.getXmlTypeMapping().setAttributes(xmlAttributes);  // possibly a NOP
-
-		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
-		XmlAttributeMapping xmlMapping = md.buildResourceMapping(this.getResourceNodeFactory());
-
-		OrmPersistentAttribute specifiedAttribute = this.buildSpecifiedAttribute(xmlMapping);
-		// we need to add the attribute to the right spot in the list - stupid spec...
-		int specifiedIndex = this.getSpecifiedAttributeInsertionIndex(specifiedAttribute);
-		// the virtual attributes list should remain unchanged since the specified attribute has no name
-		this.addItemToList(specifiedIndex, specifiedAttribute, this.specifiedAttributes, SPECIFIED_ATTRIBUTES_LIST);
-		specifiedAttribute.getMapping().addXmlAttributeMappingTo(xmlAttributes);
-
-		// this will trigger the update of the virtual attributes list
-		specifiedAttribute.getMapping().setName(attributeName);
-
 		return specifiedAttribute;
 	}
 
@@ -530,17 +500,17 @@ public abstract class SpecifiedOrmPersistentType
 		};
 
 	/**
-	 * <em>Silently</em> add the new virtual attribute before removing the
+	 * <em>Silently</em> add the new default attribute before removing the
 	 * specified attribute, or the <em>update</em> will discover the missing
-	 * virtual attribute and add it preemptively.
+	 * default attribute and add it preemptively.
 	 */
-	public OrmReadOnlyPersistentAttribute convertAttributeToVirtual(OrmPersistentAttribute specifiedAttribute) {
+	public OrmReadOnlyPersistentAttribute removeAttributeFromXml(OrmPersistentAttribute specifiedAttribute) {
 		if (specifiedAttribute.isVirtual()) {
-			throw new IllegalArgumentException("Attribute is already virtual: " + specifiedAttribute); //$NON-NLS-1$
+			throw new IllegalArgumentException("Attribute is not specified: " + specifiedAttribute); //$NON-NLS-1$
 		}
 
-		int virtualIndex = this.virtualAttributes.size();
-		OrmReadOnlyPersistentAttribute virtualAttribute = null;
+		int defaultIndex = this.defaultAttributes.size();
+		OrmReadOnlyPersistentAttribute defaultAttribute = null;
 		// make sure the corresponding resource Java attribute actually exists in the *current* type;
 		// do *not* take the context Java attribute directly from the specified ORM
 		// attribute we are converting since it may have come from a superclass;
@@ -549,9 +519,9 @@ public abstract class SpecifiedOrmPersistentType
 		if (specifiedAttribute.getJavaResourceAttribute() != null) {
 			if (specifiedAttribute.getJavaResourceAttribute().getKind() == Kind.FIELD) {
 				JavaResourceField javaResourceField = (JavaResourceField) specifiedAttribute.getJavaResourceAttribute();
-				if (this.javaResourceFieldWillBeVirtual(javaResourceField, specifiedAttribute)) {
-					virtualAttribute = this.buildVirtualAttribute(javaResourceField);
-					this.virtualAttributes.add(virtualIndex, virtualAttribute);
+				if (this.javaResourceFieldWillBeDefault(javaResourceField, specifiedAttribute)) {
+					defaultAttribute = this.buildDefaultAttribute(javaResourceField);
+					this.defaultAttributes.add(defaultIndex, defaultAttribute);
 				}
 			}
 			else {
@@ -559,41 +529,41 @@ public abstract class SpecifiedOrmPersistentType
 				JavaResourceMethod resourceGetter = propertyAccessor.getResourceGetter();
 				JavaResourceMethod resourceSetter = propertyAccessor.getResourceSetter();
 				
-				if (this.javaResourcePropertyWillBeVirtual(resourceGetter, resourceSetter, specifiedAttribute)) {
-					virtualAttribute = this.buildVirtualAttribute(resourceGetter, resourceSetter);
-					this.virtualAttributes.add(virtualIndex, virtualAttribute);
+				if (this.javaResourcePropertyWillBeDefault(resourceGetter, resourceSetter, specifiedAttribute)) {
+					defaultAttribute = this.buildVirtualAttribute(resourceGetter, resourceSetter);
+					this.defaultAttributes.add(defaultIndex, defaultAttribute);
 				}		
 			}
 		}
 
 		this.removeSpecifiedAttribute(specifiedAttribute);  // trigger update
 
-		if (virtualAttribute != null) {
-			this.fireItemAdded(VIRTUAL_ATTRIBUTES_LIST, virtualIndex, virtualAttribute);
+		if (defaultAttribute != null) {
+			this.fireItemAdded(DEFAULT_ATTRIBUTES_LIST, defaultIndex, defaultAttribute);
 		}
-		return virtualAttribute;
+		return defaultAttribute;
 	}
 
 	/**
 	 * Return whether the specified Java resource attribute will be a
-	 * <em>virtual</em> attribute when the specified specified attribute is
+	 * <em>default</em> attribute when the specified specified attribute is
 	 * removed from the type. The Java resource attribute must be among the
 	 * valid Java resource attributes and it must not correspond to any of the
 	 * remaining specified attributes.
 	 */
-	protected boolean javaResourceFieldWillBeVirtual(JavaResourceField javaResourceField, OrmPersistentAttribute specifiedAttributeToBeRemoved) {
+	protected boolean javaResourceFieldWillBeDefault(JavaResourceField javaResourceField, OrmPersistentAttribute specifiedAttributeToBeRemoved) {
 		return CollectionTools.contains(this.getJavaResourceFields(), javaResourceField) &&
 				(this.getSpecifiedAttributeFor(javaResourceField, specifiedAttributeToBeRemoved) == null);
 	}
 
 	/**
 	 * Return whether the specified Java resource attribute will be a
-	 * <em>virtual</em> attribute when the specified specified attribute is
+	 * <em>default</em> attribute when the specified specified attribute is
 	 * removed from the type. The Java resource attribute must be among the
 	 * valid Java resource attributes and it must not correspond to any of the
 	 * remaining specified attributes.
 	 */
-	protected boolean javaResourcePropertyWillBeVirtual(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter, OrmPersistentAttribute specifiedAttributeToBeRemoved) {
+	protected boolean javaResourcePropertyWillBeDefault(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter, OrmPersistentAttribute specifiedAttributeToBeRemoved) {
 		return CollectionTools.contains(this.getJavaResourceMethods(), javaResourceGetter) &&
 				CollectionTools.contains(this.getJavaResourceMethods(), javaResourceSetter) &&
 				(this.getSpecifiedAttributeFor(javaResourceGetter, javaResourceSetter, specifiedAttributeToBeRemoved) == null);
@@ -724,14 +694,14 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 
-	// ********** virtual attributes **********
+	// ********** default attributes **********
 
-	public ListIterable<OrmReadOnlyPersistentAttribute> getVirtualAttributes() {
-		return new LiveCloneListIterable<OrmReadOnlyPersistentAttribute>(this.virtualAttributes);
+	public ListIterable<OrmReadOnlyPersistentAttribute> getDefaultAttributes() {
+		return new LiveCloneListIterable<OrmReadOnlyPersistentAttribute>(this.defaultAttributes);
 	}
 
-	public int getVirtualAttributesSize() {
-		return this.virtualAttributes.size();
+	public int getDefaultAttributesSize() {
+		return this.defaultAttributes.size();
 	}
 
 	/**
@@ -739,12 +709,12 @@ public abstract class SpecifiedOrmPersistentType
 	 * the list of resource attributes is determined by the access type
 	 * which can be controlled in a number of different places....
 	 */
-	protected void updateVirtualAttributes() {
-		if (getVirtualJavaAccess() == AccessType.FIELD) {
-			this.syncFieldAccessVirtualAttributes();
+	protected void updateDefaultAttributes() {
+		if (getDefaultJavaAccess() == AccessType.FIELD) {
+			this.syncFieldAccessDefaultAttributes();
 		}
-		else if (getVirtualJavaAccess() == AccessType.PROPERTY) {
-			this.syncPropertyAccessVirtualAttributes();
+		else if (getDefaultJavaAccess() == AccessType.PROPERTY) {
+			this.syncPropertyAccessDefaultAttributes();
 		}
 	}
 
@@ -753,17 +723,17 @@ public abstract class SpecifiedOrmPersistentType
 	 * 1. all non-transient, non-static fields
 	 * 2. all annotated methods(getters/setters)
 	 */
-	private void syncFieldAccessVirtualAttributes() {
-		HashSet<OrmReadOnlyPersistentAttribute> contextAttributes = CollectionTools.set(this.getVirtualAttributes());
+	private void syncFieldAccessDefaultAttributes() {
+		HashSet<OrmReadOnlyPersistentAttribute> contextAttributes = CollectionTools.set(this.getDefaultAttributes());
 
-		this.syncFieldVirtualAttributes(contextAttributes, buildNonTransientNonStaticResourceFieldsFilter());
+		this.syncFieldDefaultAttributes(contextAttributes, buildNonTransientNonStaticResourceFieldsFilter());
 		if (!getMapping().isMetadataComplete()) {
-			this.syncAnnotatedPropertyVirtualAttributes(contextAttributes);
+			this.syncAnnotatedPropertyDefaultAttributes(contextAttributes);
 		}
 
 		// remove any leftover context attributes
 		for (OrmReadOnlyPersistentAttribute contextAttribute : contextAttributes) {
-			this.removeVirtualAttribute(contextAttribute);
+			this.removeDefaultAttribute(contextAttribute);
 		}
 	}
 
@@ -773,18 +743,18 @@ public abstract class SpecifiedOrmPersistentType
 	 * 2. all annotated fields
 	 * 3. all annotated methods getters/setters that don't have a matching pair
 	 */
-	private void syncPropertyAccessVirtualAttributes() {
-		HashSet<OrmReadOnlyPersistentAttribute> contextAttributes = CollectionTools.set(this.getVirtualAttributes());
+	private void syncPropertyAccessDefaultAttributes() {
+		HashSet<OrmReadOnlyPersistentAttribute> contextAttributes = CollectionTools.set(this.getDefaultAttributes());
 
 		if (!getMapping().isMetadataComplete()) {
-			this.syncFieldVirtualAttributes(contextAttributes, AbstractJavaPersistentType.ANNOTATED_RESOURCE_FIELDS_FILTER);
+			this.syncFieldDefaultAttributes(contextAttributes, AbstractJavaPersistentType.ANNOTATED_RESOURCE_FIELDS_FILTER);
 		}
 
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getJavaResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getJavaResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
 			JavaResourceMethod setterMethod = AbstractJavaPersistentType.getValidSiblingSetMethod(getterMethod, resourceMethods);
-			if (javaResourcePropertyIsVirtual(getterMethod, setterMethod)) {
+			if (javaResourcePropertyIsDefault(getterMethod, setterMethod)) {
 				if (AbstractJavaPersistentType.methodsArePersistableProperties(getterMethod, setterMethod)) {
 					boolean match = false;
 					for (Iterator<OrmReadOnlyPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
@@ -797,27 +767,27 @@ public abstract class SpecifiedOrmPersistentType
 						}
 					}
 					if (!match) {
-						this.addVirtualAttribute(getVirtualAttributesSize(), this.buildVirtualAttribute(getterMethod, setterMethod));
+						this.addDefaultAttribute(getDefaultAttributesSize(), this.buildVirtualAttribute(getterMethod, setterMethod));
 					}
 				}
 			}
 			resourceMethods.remove(getterMethod);
 			resourceMethods.remove(setterMethod);
 		}
-		this.syncRemainingResourceVirtualMethods(contextAttributes, resourceMethods);
+		this.syncRemainingResourceDefaultMethods(contextAttributes, resourceMethods);
 
 		// remove any leftover context attributes
 		for (OrmReadOnlyPersistentAttribute contextAttribute : contextAttributes) {
-			this.removeVirtualAttribute(contextAttribute);
+			this.removeDefaultAttribute(contextAttribute);
 		}
 	}
 
-	private void syncAnnotatedPropertyVirtualAttributes(HashSet<OrmReadOnlyPersistentAttribute> contextAttributes) {
+	private void syncAnnotatedPropertyDefaultAttributes(HashSet<OrmReadOnlyPersistentAttribute> contextAttributes) {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getJavaResourceMethods());
 		//iterate through all resource methods searching for persistable getters
 		for (JavaResourceMethod getterMethod : this.getJavaResourceMethods(buildPersistablePropertyGetterMethodsFilter())) {
 			JavaResourceMethod setterMethod = AbstractJavaPersistentType.getValidSiblingSetMethod(getterMethod, resourceMethods);
-			if (javaResourcePropertyIsVirtual(getterMethod, setterMethod)) {
+			if (javaResourcePropertyIsDefault(getterMethod, setterMethod)) {
 				if (getterMethod.isAnnotated() || (setterMethod != null && setterMethod.isAnnotated())) {
 					boolean match = false;
 					for (Iterator<OrmReadOnlyPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
@@ -830,18 +800,18 @@ public abstract class SpecifiedOrmPersistentType
 						}
 					}
 					if (!match) {
-						this.addVirtualAttribute(getVirtualAttributesSize(), this.buildVirtualAttribute(getterMethod, setterMethod));
+						this.addDefaultAttribute(getDefaultAttributesSize(), this.buildVirtualAttribute(getterMethod, setterMethod));
 					}
 				}
 			}
 			resourceMethods.remove(getterMethod);
 			resourceMethods.remove(setterMethod);
 		}
-		this.syncRemainingResourceVirtualMethods(contextAttributes, resourceMethods);
+		this.syncRemainingResourceDefaultMethods(contextAttributes, resourceMethods);
 	}
 
-	private void syncFieldVirtualAttributes(HashSet<OrmReadOnlyPersistentAttribute> contextAttributes, Filter<JavaResourceField> filter) {
-		for (JavaResourceField resourceField : this.getVirtualJavaResourceFields(filter)) {
+	private void syncFieldDefaultAttributes(HashSet<OrmReadOnlyPersistentAttribute> contextAttributes, Filter<JavaResourceField> filter) {
+		for (JavaResourceField resourceField : this.getDefaultJavaResourceFields(filter)) {
 			boolean match = false;
 			for (Iterator<OrmReadOnlyPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext(); ) {
 				OrmReadOnlyPersistentAttribute contextAttribute = stream.next();
@@ -856,12 +826,12 @@ public abstract class SpecifiedOrmPersistentType
 				// added elements are sync'ed during construction or will be
 				// updated during the next "update" (which is triggered by
 				// their addition to the model)
-				this.addVirtualAttribute(this.getVirtualAttributesSize(), this.buildVirtualAttribute(resourceField));
+				this.addDefaultAttribute(this.getDefaultAttributesSize(), this.buildDefaultAttribute(resourceField));
 			}
 		}
 	}
 
-	private void syncRemainingResourceVirtualMethods(HashSet<OrmReadOnlyPersistentAttribute> contextAttributes, Collection<JavaResourceMethod> resourceMethods) {
+	private void syncRemainingResourceDefaultMethods(HashSet<OrmReadOnlyPersistentAttribute> contextAttributes, Collection<JavaResourceMethod> resourceMethods) {
 		//iterate through remaining resource methods and search for those that are annotated.
 		//all getter methods will already be used.
 		for (JavaResourceMethod resourceMethod : resourceMethods) {
@@ -878,7 +848,7 @@ public abstract class SpecifiedOrmPersistentType
 					}
 				}
 				if (!match) {
-					this.addVirtualAttribute(getVirtualAttributesSize(), this.buildVirtualAttribute(null, resourceMethod));
+					this.addDefaultAttribute(getDefaultAttributesSize(), this.buildVirtualAttribute(null, resourceMethod));
 				}
 			}
 		}
@@ -889,11 +859,11 @@ public abstract class SpecifiedOrmPersistentType
 	 * corresponding <code>orm.xml</code> mapping currently
 	 * specified in the <code>orm.xml</code> persistent type.
 	 */
-	protected Iterable<JavaResourceField> getVirtualJavaResourceFields() {
+	protected Iterable<JavaResourceField> getDefaultJavaResourceFields() {
 		return new FilteringIterable<JavaResourceField>(this.getJavaResourceFields()) {
 				@Override
 				protected boolean accept(JavaResourceField javaResourceField) {
-					return SpecifiedOrmPersistentType.this.javaResourceFieldIsVirtual(javaResourceField);
+					return SpecifiedOrmPersistentType.this.javaResourceFieldIsDefault(javaResourceField);
 				}
 			};
 	}
@@ -906,8 +876,8 @@ public abstract class SpecifiedOrmPersistentType
 		return javaResourceType.getFields();
 	}
 
-	protected Iterable<JavaResourceField> getVirtualJavaResourceFields(Filter<JavaResourceField> filter) {
-		return new FilteringIterable<JavaResourceField>(getVirtualJavaResourceFields(), filter);
+	protected Iterable<JavaResourceField> getDefaultJavaResourceFields(Filter<JavaResourceField> filter) {
+		return new FilteringIterable<JavaResourceField>(getDefaultJavaResourceFields(), filter);
 	}
 
 	protected Iterable<JavaResourceMethod> getJavaResourceMethods(Filter<JavaResourceMethod> filter) {
@@ -940,9 +910,9 @@ public abstract class SpecifiedOrmPersistentType
 
 	/**
 	 * Return the access type that determines which Java attributes are to be
-	 * used for the <code>orm.xml</code> type's <em>virtual</em> attributes.
+	 * used for the <code>orm.xml</code> type's <em>default</em> attributes.
 	 */
-	protected AccessType getVirtualJavaAccess() {
+	protected AccessType getDefaultJavaAccess() {
 		if (this.specifiedAccess != null) {
 			return this.specifiedAccess;
 		}
@@ -953,7 +923,7 @@ public abstract class SpecifiedOrmPersistentType
 		return (javaAccess != null) ? javaAccess : this.defaultAccess;
 	}
 
-	protected boolean javaResourceFieldIsVirtual(JavaResourceField javaResourceField) {
+	protected boolean javaResourceFieldIsDefault(JavaResourceField javaResourceField) {
 		return this.getSpecifiedAttributeFor(javaResourceField) == null;
 	}
 
@@ -979,7 +949,7 @@ public abstract class SpecifiedOrmPersistentType
 		return null;
 	}
 
-	protected boolean javaResourcePropertyIsVirtual(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
+	protected boolean javaResourcePropertyIsDefault(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
 		return this.getSpecifiedAttributeFor(javaResourceGetter, javaResourceSetter) == null;
 	}
 
@@ -1005,15 +975,15 @@ public abstract class SpecifiedOrmPersistentType
 		return null;
 	}
 
-	protected void moveVirtualAttribute(int index, OrmReadOnlyPersistentAttribute virtualAttribute) {
-		this.moveItemInList(index, virtualAttribute, this.virtualAttributes, VIRTUAL_ATTRIBUTES_LIST);
+	protected void moveDefaultAttribute(int index, OrmReadOnlyPersistentAttribute defaultAttribute) {
+		this.moveItemInList(index, defaultAttribute, this.defaultAttributes, DEFAULT_ATTRIBUTES_LIST);
 	}
 
-	protected void addVirtualAttribute(int index, OrmReadOnlyPersistentAttribute virtualAttribute) {
-		this.addItemToList(index, virtualAttribute, this.virtualAttributes, VIRTUAL_ATTRIBUTES_LIST);
+	protected void addDefaultAttribute(int index, OrmReadOnlyPersistentAttribute defaultAttribute) {
+		this.addItemToList(index, defaultAttribute, this.defaultAttributes, DEFAULT_ATTRIBUTES_LIST);
 	}
 
-	protected OrmReadOnlyPersistentAttribute buildVirtualAttribute(JavaResourceField javaResourceField) {
+	protected OrmReadOnlyPersistentAttribute buildDefaultAttribute(JavaResourceField javaResourceField) {
 		return this.getContextNodeFactory().buildVirtualOrmPersistentField(this, javaResourceField);
 	}
 
@@ -1021,9 +991,9 @@ public abstract class SpecifiedOrmPersistentType
 		return this.getContextNodeFactory().buildVirtualOrmPersistentProperty(this, javaResourceGetter, javaResourceSetter);
 	}
 
-	protected void removeVirtualAttribute(OrmReadOnlyPersistentAttribute virtualAttribute) {
-		virtualAttribute.dispose();
-		this.removeItemFromList(virtualAttribute, this.virtualAttributes, VIRTUAL_ATTRIBUTES_LIST);
+	protected void removeDefaultAttribute(OrmReadOnlyPersistentAttribute defaultAttribute) {
+		defaultAttribute.dispose();
+		this.removeItemFromList(defaultAttribute, this.defaultAttributes, DEFAULT_ATTRIBUTES_LIST);
 	}
 
 
@@ -1164,8 +1134,8 @@ public abstract class SpecifiedOrmPersistentType
 		if (this.javaPersistentType != null) {
 			this.javaPersistentType.dispose();
 		}
-		for (OrmReadOnlyPersistentAttribute virtualAttribute : this.getVirtualAttributes()) {
-			virtualAttribute.dispose();
+		for (OrmReadOnlyPersistentAttribute defaultAttribute : this.getDefaultAttributes()) {
+			defaultAttribute.dispose();
 		}
 	}
 
