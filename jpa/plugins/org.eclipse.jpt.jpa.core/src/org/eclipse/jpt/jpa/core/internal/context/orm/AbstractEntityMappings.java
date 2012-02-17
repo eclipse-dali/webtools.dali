@@ -598,15 +598,16 @@ public abstract class AbstractEntityMappings
 	public OrmPersistentType addPersistentType(String mappingKey, String className) {
 		OrmTypeMappingDefinition md = this.getMappingFileDefinition().getTypeMappingDefinition(mappingKey);
 		XmlTypeMapping xmlTypeMapping = md.buildResourceMapping(this.getResourceNodeFactory());
+
+		// adds short name if package name is relevant
+		className = this.normalizeClassName(className);
+		xmlTypeMapping.setClassName(className);
+
 		OrmPersistentType persistentType = this.buildPersistentType(xmlTypeMapping);
 		int index = this.calculateInsertionIndex(persistentType);
 		this.addItemToList(index, persistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 
 		persistentType.getMapping().addXmlTypeMappingTo(this.xmlEntityMappings);
-
-		// adds short name if package name is relevant
-		className = this.normalizeClassName(className);
-		persistentType.getMapping().setClass(className);
 
 		return persistentType;
 	}
