@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.util;
 
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.util.OpenStrategy;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -38,6 +39,7 @@ public class SWTUtil {
 	/**
 	 * @see Display#asyncExec(Runnable)
 	 * @see #syncExec(Runnable)
+	 * @see #timerExec(int, Runnable)
 	 * @see #execute(Runnable)
 	 */
 	public static void asyncExec(Runnable runnable) {
@@ -47,10 +49,30 @@ public class SWTUtil {
 	/**
 	 * @see Display#syncExec(Runnable)
 	 * @see #asyncExec(Runnable)
+	 * @see #timerExec(int, Runnable)
 	 * @see #execute(Runnable)
 	 */
 	public static void syncExec(Runnable runnable) {
 		getStandardDisplay().syncExec(runnable);
+	}
+
+	/**
+	 * Use the standard delay.
+	 * @see OpenStrategy#getPostSelectionDelay()
+	 * @see #timerExec(int, Runnable)
+	 */
+	public static void delayedExec(Runnable runnable) {
+		timerExec(OpenStrategy.getPostSelectionDelay(), runnable);
+	}
+
+	/**
+	 * @see Display#timerExec(int, Runnable)
+	 * @see #asyncExec(Runnable)
+	 * @see #syncExec(Runnable)
+	 * @see #execute(Runnable)
+	 */
+	public static void timerExec(int milliseconds, Runnable runnable) {
+		getStandardDisplay().timerExec(milliseconds, runnable);
 	}
 
 	/**
@@ -62,6 +84,7 @@ public class SWTUtil {
 	 * @see Display#asyncExec(Runnable)
 	 * @see #asyncExec(Runnable)
 	 * @see #syncExec(Runnable)
+	 * @see #timerExec(int, Runnable)
 	 */
 	public static void execute(Runnable runnable) {
 		Display display = Display.getCurrent();
@@ -84,6 +107,7 @@ public class SWTUtil {
 	 * @see Display#asyncExec(Runnable)
 	 * @see #asyncExec(Runnable)
 	 * @see #syncExec(Runnable)
+	 * @see #timerExec(int, Runnable)
 	 */
 	public static void execute(Viewer viewer, Runnable runnable) {
 		execute(viewer.getControl(), runnable);
@@ -100,6 +124,7 @@ public class SWTUtil {
 	 * @see Display#asyncExec(Runnable)
 	 * @see #asyncExec(Runnable)
 	 * @see #syncExec(Runnable)
+	 * @see #timerExec(int, Runnable)
 	 */
 	public static void execute(Control control, Runnable runnable) {
 		execute(control.getDisplay(), runnable);
@@ -116,6 +141,7 @@ public class SWTUtil {
 	 * @see Display#asyncExec(Runnable)
 	 * @see #asyncExec(Runnable)
 	 * @see #syncExec(Runnable)
+	 * @see #timerExec(int, Runnable)
 	 */
 	public static void execute(Display display, Runnable runnable) {
 		if (display.getThread() == Thread.currentThread()) {

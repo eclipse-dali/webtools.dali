@@ -17,7 +17,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.IEditorDescriptor;
@@ -30,48 +29,39 @@ import org.eclipse.ui.part.FileEditorInput;
 
 /**
  * The selection will be a JPA context node.
- * <p>
- * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ * @see org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorActionProvider
  */
 public class OpenJpaResourceAction
 	extends BaseSelectionListenerAction
 {
 	private JpaContextNode selectedNode;
-	
-	
+
+
 	public OpenJpaResourceAction() {
-		super("Open");   //$NON-NLS-1$
+		super(JptUiMessages.OpenJpaResourceAction_open);
 	}
-	
-	
+
 	@Override
 	public boolean updateSelection(IStructuredSelection s) {
 		this.selectedNode = null;
-		
-		if (! super.updateSelection(s)) {
-			return false;
-		}
-		
-		if (s.size() != 1) {
-			return false;
-		}
-		
-		if (s.getFirstElement() instanceof JpaRootContextNode) {
-			return false;
-		}
-		
-		this.selectedNode = (JpaContextNode) s.getFirstElement();
-
-		return true;
+		return super.updateSelection(s) && this.updateSelection_(s);
 	}
-	
+
+	private boolean updateSelection_(IStructuredSelection s) {
+		if (s.size() == 1) {
+			this.selectedNode = (JpaContextNode) s.getFirstElement();
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void run() {
 		if (this.isEnabled()) {
 			this.run_();
 		}
 	}
-	
+
 	private void run_() {
 		IResource resource = this.selectedNode.getResource();
 		if ((resource != null) && resource.exists() && (resource.getType() == IResource.FILE)) {
@@ -82,7 +72,7 @@ public class OpenJpaResourceAction
 			}
 		}
 	}
-	
+
 	protected void openEditor(IFile file) {
 		IEditorRegistry registry = PlatformUI.getWorkbench().getEditorRegistry();
 		IContentType contentType = IDE.getContentType(file);
@@ -90,14 +80,14 @@ public class OpenJpaResourceAction
 		if (editorDescriptor == null) {
 			return;  // no editor associated...
 		}
-		
+
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		
+
 		try {
 			page.openEditor(new FileEditorInput(file), editorDescriptor.getId());
-		} 
+		}
 		catch (Exception e) {
-			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptUiMessages.Error_openingEditor, e.getMessage());
+			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptUiMessages.OpenJpaResourceAction_error, e.getMessage());
 		}
 	}
 }

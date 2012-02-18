@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2011  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.navigator;
 
 import org.eclipse.jface.action.IMenuManager;
@@ -20,47 +19,51 @@ import org.eclipse.ui.navigator.ICommonActionConstants;
 import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 import org.eclipse.ui.navigator.ICommonMenuConstants;
 
+/**
+ * The selection will be a JPA context node.
+ * <p>
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ */
 public class JpaNavigatorActionProvider
-		extends CommonActionProvider {
-	
+	extends CommonActionProvider
+{
 	private OpenJpaResourceAction openAction;
-	
-	
+
+
 	public JpaNavigatorActionProvider() {
 		super();
 	}
-	
-	
+
 	@Override
-	public void init(ICommonActionExtensionSite aConfig) {
-		openAction = new OpenJpaResourceAction();
+	public void init(ICommonActionExtensionSite config) {
+		this.openAction = new OpenJpaResourceAction();
 	}
-	
+
 	@Override
-	public void setContext(ActionContext aContext) {
-		if (aContext != null && aContext.getSelection() instanceof IStructuredSelection) {
-			IStructuredSelection selection = (IStructuredSelection) aContext.getSelection();
-			openAction.selectionChanged(selection);
+	public void setContext(ActionContext context) {
+		if ((context != null) && (context.getSelection() instanceof IStructuredSelection)) {
+			IStructuredSelection selection = (IStructuredSelection) context.getSelection();
+			this.openAction.selectionChanged(selection);
 		}
-		
-		super.setContext(aContext);
+		super.setContext(context);
 	}
-	
+
 	@Override
-	public void fillActionBars(IActionBars theActionBars) {
-		if (openAction.isEnabled()) {
-			theActionBars.setGlobalActionHandler(ICommonActionConstants.OPEN, openAction);
+	public void fillActionBars(IActionBars actionBars) {
+		if (this.openAction.isEnabled()) {
+			actionBars.setGlobalActionHandler(ICommonActionConstants.OPEN, this.openAction);
 		}
 	}
-	
+
 	@Override
-	public void fillContextMenu(IMenuManager aMenu) {
-		if (getContext() == null || getContext().getSelection().isEmpty()) {
+	public void fillContextMenu(IMenuManager menuManager) {
+		ActionContext context = this.getContext();
+		if ((context == null) || context.getSelection().isEmpty()) {
 			return;
 		}
-		
-		if (openAction.isEnabled()) {
-			aMenu.insertAfter(ICommonMenuConstants.GROUP_OPEN, openAction);
+
+		if (this.openAction.isEnabled()) {
+			menuManager.insertAfter(ICommonMenuConstants.GROUP_OPEN, this.openAction);
 		}
 	}
 }

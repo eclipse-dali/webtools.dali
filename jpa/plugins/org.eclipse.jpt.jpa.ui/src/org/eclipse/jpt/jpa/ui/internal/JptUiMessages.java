@@ -48,7 +48,8 @@ public class JptUiMessages {
 	public static String DatabaseSchemaWizardPage_schema;
 	public static String DatabaseSchemaWizardPage_connectionInfo;
 	public static String DatabaseSchemaWizardPage_schemaInfo;
-	public static String Error_openingEditor;
+	public static String OpenJpaResourceAction_open;
+	public static String OpenJpaResourceAction_error;
 	public static String General_browse;
 	public static String General_revert;
 	public static String General_deselectAll;
