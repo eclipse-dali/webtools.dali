@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyCha
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * This javax.swing.text.Document can be used to keep a DocumentListener
@@ -53,7 +53,7 @@ public class DocumentAdapter
 	protected final CombinedListener delegateListener;
 
 	/** A value model on the underlying model string. */
-	protected final WritablePropertyValueModel<String> stringHolder;
+	protected final ModifiablePropertyValueModel<String> stringHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying model string. */
 	protected transient PropertyChangeListener stringListener;
@@ -70,7 +70,7 @@ public class DocumentAdapter
 	 * Constructor - the string holder is required.
 	 * Wrap the specified document.
 	 */
-	public DocumentAdapter(WritablePropertyValueModel<String> stringHolder, Document delegate) {
+	public DocumentAdapter(ModifiablePropertyValueModel<String> stringHolder, Document delegate) {
 		super();
 		if (stringHolder == null || delegate == null) {
 			throw new NullPointerException();
@@ -87,7 +87,7 @@ public class DocumentAdapter
 	 * Constructor - the string holder is required.
 	 * Wrap a plain document.
 	 */
-	public DocumentAdapter(WritablePropertyValueModel<String> stringHolder) {
+	public DocumentAdapter(ModifiablePropertyValueModel<String> stringHolder) {
 		this(stringHolder, new PlainDocument());
 	}
 

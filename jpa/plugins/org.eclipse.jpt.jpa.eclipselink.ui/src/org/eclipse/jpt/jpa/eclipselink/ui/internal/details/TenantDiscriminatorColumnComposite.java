@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
@@ -326,7 +326,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 			}
 
 			@Override
-			protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 				return new PropertyAspectAdapter<ReadOnlyTenantDiscriminatorColumn2_3, Integer>(getSubjectHolder(), ReadOnlyNamedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
@@ -342,7 +342,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> discriminatorColumnHolder) {
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> discriminatorColumnHolder) {
 		return new PropertyAspectAdapter<ReadOnlyTenantDiscriminatorColumn2_3, String>(discriminatorColumnHolder, ReadOnlyNamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -358,7 +358,7 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 		};
 	}
 
-	WritablePropertyValueModel<Boolean> buildPrimaryKeyHolder() {
+	ModifiablePropertyValueModel<Boolean> buildPrimaryKeyHolder() {
 		return new PropertyAspectAdapter<ReadOnlyTenantDiscriminatorColumn2_3, Boolean>(getSubjectHolder(), ReadOnlyTenantDiscriminatorColumn2_3.SPECIFIED_PRIMARY_KEY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
@@ -91,7 +91,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		return this.persistenceUnitDefaultsHolder;
 	}
 
-	protected WritablePropertyValueModel<Boolean> buildCascadePersistHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildCascadePersistHolder() {
 		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -176,7 +176,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		};
 	}
 
-	protected WritablePropertyValueModel<Boolean> buildXmlMappingMetadataCompleteHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildXmlMappingMetadataCompleteHolder() {
 		return new PropertyAspectAdapter<OrmPersistenceUnitMetadata, Boolean>(getSubjectHolder(), OrmPersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -190,7 +190,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		};
 	}
 
-	protected WritablePropertyValueModel<Boolean> buildDelimitedIdentifiersHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildDelimitedIdentifiersHolder() {
 		return new PropertyAspectAdapter<OrmPersistenceUnitDefaults, Boolean>(getPersistenceUnitDefaultsHolder(), OrmPersistenceUnitDefaults2_0.DELIMITED_IDENTIFIERS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

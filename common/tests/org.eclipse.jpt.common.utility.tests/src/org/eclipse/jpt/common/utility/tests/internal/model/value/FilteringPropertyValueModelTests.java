@@ -18,15 +18,15 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class FilteringPropertyValueModelTests extends TestCase {
-	private WritablePropertyValueModel<String> objectHolder;
+	private ModifiablePropertyValueModel<String> objectHolder;
 	PropertyChangeEvent event;
 
-	private WritablePropertyValueModel<String> filteredObjectHolder;
+	private ModifiablePropertyValueModel<String> filteredObjectHolder;
 	PropertyChangeEvent filteredEvent;
 
 	public FilteringPropertyValueModelTests(String name) {

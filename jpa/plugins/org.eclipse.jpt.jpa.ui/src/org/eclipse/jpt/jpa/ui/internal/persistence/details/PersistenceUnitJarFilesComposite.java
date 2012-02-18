@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
@@ -59,7 +59,7 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 public abstract class PersistenceUnitJarFilesComposite 
 	extends Pane<PersistenceUnit>
 {
-	private WritablePropertyValueModel<JarFileRef> selectedItemHolder;	
+	private ModifiablePropertyValueModel<JarFileRef> selectedItemHolder;	
 
 	/**
 	 * Creates a new <code>PersistenceUnitJPAMappingDescriptorsComposite</code>.
@@ -157,7 +157,7 @@ public abstract class PersistenceUnitJarFilesComposite
 		};
 	}
 	
-	private WritablePropertyValueModel<JarFileRef> buildSelectedItemHolder() {
+	private ModifiablePropertyValueModel<JarFileRef> buildSelectedItemHolder() {
 		return new SimplePropertyValueModel<JarFileRef>();
 	}
 	

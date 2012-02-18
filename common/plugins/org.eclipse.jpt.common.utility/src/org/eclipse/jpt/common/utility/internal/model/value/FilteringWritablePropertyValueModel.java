@@ -10,11 +10,11 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * A <code>FilteringWritablePropertyValueModel</code> wraps another
- * {@link WritablePropertyValueModel} and uses a pair of {@link Filter}s
+ * {@link ModifiablePropertyValueModel} and uses a pair of {@link Filter}s
  * to determine when the wrapped value is to be returned by calls
  * to {@link #getValue()} and modified by calls to
  * {@link #setValue(Object) setValue(V)}.
@@ -37,7 +37,7 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  */
 public class FilteringWritablePropertyValueModel<V>
 	extends FilteringPropertyValueModel<V>
-	implements WritablePropertyValueModel<V>
+	implements ModifiablePropertyValueModel<V>
 {
 	/**
 	 * The model sets the wrapped value to any value accepted by this filter
@@ -53,7 +53,7 @@ public class FilteringWritablePropertyValueModel<V>
 	 * property value model, <em>get</em> filter, and <em>set</em> filter.
 	 * The default value will be <code>null</code>.
 	 */
-	public FilteringWritablePropertyValueModel(WritablePropertyValueModel<V> valueModel, Filter<V> getFilter, Filter<V> setFilter) {
+	public FilteringWritablePropertyValueModel(ModifiablePropertyValueModel<V> valueModel, Filter<V> getFilter, Filter<V> setFilter) {
 		this(valueModel, getFilter, setFilter, null);
 	}
 
@@ -62,7 +62,7 @@ public class FilteringWritablePropertyValueModel<V>
 	 * property value model, <em>get</em> filter, <em>set</em> filter,
 	 * and default value.
 	 */
-	public FilteringWritablePropertyValueModel(WritablePropertyValueModel<V> valueModel, Filter<V> getFilter, Filter<V> setFilter, V defaultValue) {
+	public FilteringWritablePropertyValueModel(ModifiablePropertyValueModel<V> valueModel, Filter<V> getFilter, Filter<V> setFilter, V defaultValue) {
 		super(valueModel, getFilter, defaultValue);
 		if (setFilter == null) {
 			throw new NullPointerException();
@@ -80,10 +80,10 @@ public class FilteringWritablePropertyValueModel<V>
 	}
 
 	/**
-	 * Our constructor accepts only a {@link WritablePropertyValueModel}{@code<T>}.
+	 * Our constructor accepts only a {@link ModifiablePropertyValueModel}{@code<T>}.
 	 */
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<V> getValueModel() {
-		return (WritablePropertyValueModel<V>) this.valueModel;
+	protected ModifiablePropertyValueModel<V> getValueModel() {
+		return (ModifiablePropertyValueModel<V>) this.valueModel;
 	}
 }

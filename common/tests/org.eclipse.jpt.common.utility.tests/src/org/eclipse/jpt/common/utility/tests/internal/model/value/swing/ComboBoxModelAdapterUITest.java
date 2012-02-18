@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,7 +41,7 @@ import org.eclipse.jpt.common.utility.internal.swing.ListChooser;
 import org.eclipse.jpt.common.utility.internal.swing.SimpleListCellRenderer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 
 /**
@@ -55,8 +55,8 @@ public class ComboBoxModelAdapterUITest {
 
 	protected JFrame window;
 	private TestModel testModel;
-	private WritablePropertyValueModel<TestModel> testModelHolder;
-	private WritablePropertyValueModel<Object> colorHolder;
+	private ModifiablePropertyValueModel<TestModel> testModelHolder;
+	private ModifiablePropertyValueModel<Object> colorHolder;
 	private SimpleListValueModel<String> colorListHolder;
 	protected ComboBoxModel colorComboBoxModel;
 	private int nextColorNumber = 0;
@@ -83,7 +83,7 @@ public class ComboBoxModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private WritablePropertyValueModel<Object> buildColorHolder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<Object> buildColorHolder(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, Object>(vm, TestModel.COLOR_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -116,7 +116,7 @@ public class ComboBoxModelAdapterUITest {
 		return this.colorListHolder;
 	}
 
-	private ComboBoxModel buildComboBoxModelAdapter(ListValueModel<String> listHolder, WritablePropertyValueModel<Object> selectionHolder) {
+	private ComboBoxModel buildComboBoxModelAdapter(ListValueModel<String> listHolder, ModifiablePropertyValueModel<Object> selectionHolder) {
 		return new ComboBoxModelAdapter(listHolder, selectionHolder);
 	}
 

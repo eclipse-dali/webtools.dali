@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -98,7 +98,7 @@ public class IdClassComposite
 		}
 
 		@Override
-		protected WritablePropertyValueModel<String> buildTextHolder() {
+		protected ModifiablePropertyValueModel<String> buildTextHolder() {
 			return new PropertyAspectAdapter<IdClassReference, String>(
 					getSubjectHolder(), 
 					IdClassReference.SPECIFIED_ID_CLASS_NAME_PROPERTY,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -95,7 +95,7 @@ public class EclipseLinkConvertComposite
 		new PaneEnabler(buildBooleanHolder(), this);
 	}
 	
-	protected final WritablePropertyValueModel<String> buildConvertNameHolder() {
+	protected final ModifiablePropertyValueModel<String> buildConvertNameHolder() {
 		return new PropertyAspectAdapter<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.SPECIFIED_CONVERTER_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -127,7 +127,7 @@ public class EclipseLinkConvertComposite
 		);
 	}
 
-	private WritablePropertyValueModel<String> buildDefaultNameHolder() {
+	private ModifiablePropertyValueModel<String> buildDefaultNameHolder() {
 		return new PropertyAspectAdapter<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.DEFAULT_CONVERTER_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {

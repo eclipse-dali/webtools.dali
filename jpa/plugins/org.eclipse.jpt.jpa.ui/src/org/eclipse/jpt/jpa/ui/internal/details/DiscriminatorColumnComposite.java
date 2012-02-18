@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -223,7 +223,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		};
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildDiscriminatorColumnEnabledHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildDiscriminatorColumnEnabledHolder() {
 		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_COLUMN_IS_ALLOWED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -277,7 +277,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 				}
 				
 				@Override
-				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 					return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
@@ -293,7 +293,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 			};
 		}
 		
-		private WritablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
+		private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
 
 			return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 				@Override

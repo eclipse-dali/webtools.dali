@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value.swing;
 
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * This javax.swing.ButtonModel can be used to keep a listener
@@ -28,7 +28,7 @@ public class CheckBoxModelAdapter
 	/**
 	 * Constructor - the boolean holder is required.
 	 */
-	public CheckBoxModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder, boolean defaultValue) {
+	public CheckBoxModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder, boolean defaultValue) {
 		super(booleanHolder, defaultValue);
 	}
 
@@ -36,7 +36,7 @@ public class CheckBoxModelAdapter
 	 * Constructor - the boolean holder is required.
 	 * The default value will be false.
 	 */
-	public CheckBoxModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder) {
+	public CheckBoxModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder) {
 		super(booleanHolder);
 	}
 

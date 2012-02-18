@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -98,7 +98,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		new PaneEnabler(buildBooleanHolder(), this);
 	}
 	
-	protected WritablePropertyValueModel<String> buildNameTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
 				getSubjectHolder(), JpaNamedContextNode.NAME_PROPERTY) {
 			@Override
@@ -121,7 +121,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		return new ClassChooserPane<EclipseLinkObjectTypeConverter>(this, container) {
 
 			@Override
-			protected WritablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextHolder() {
 				return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(getSubjectHolder(), EclipseLinkObjectTypeConverter.DATA_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -177,7 +177,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		return new ClassChooserPane<EclipseLinkObjectTypeConverter>(this, container) {
 
 			@Override
-			protected WritablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextHolder() {
 				return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(getSubjectHolder(), EclipseLinkObjectTypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -241,7 +241,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_conversionValuesGroupTitle
 		);
 
-		WritablePropertyValueModel<EclipseLinkConversionValue> conversionValueHolder =
+		ModifiablePropertyValueModel<EclipseLinkConversionValue> conversionValueHolder =
 			buildConversionValueHolder();
 		// Conversion Values add/remove list pane
 		new AddRemoveTablePane<EclipseLinkObjectTypeConverter>(
@@ -261,7 +261,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 
 	}
 
-	protected WritablePropertyValueModel<EclipseLinkConversionValue> buildConversionValueHolder() {
+	protected ModifiablePropertyValueModel<EclipseLinkConversionValue> buildConversionValueHolder() {
 		return new SimplePropertyValueModel<EclipseLinkConversionValue>();
 	}
 
@@ -360,7 +360,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		};
 	}
 	
-	protected WritablePropertyValueModel<String> buildDefaultObjectValueHolder() {
+	protected ModifiablePropertyValueModel<String> buildDefaultObjectValueHolder() {
 		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
 				getSubjectHolder(), EclipseLinkObjectTypeConverter.DEFAULT_OBJECT_VALUE_PROPERTY) {
 			@Override
@@ -434,7 +434,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		public static final int DATA_VALUE_COLUMN = 0;
 		public static final int OBJECT_VALUE_COLUMN = 1;
 
-		private WritablePropertyValueModel<String> buildDataValueHolder(EclipseLinkConversionValue subject) {
+		private ModifiablePropertyValueModel<String> buildDataValueHolder(EclipseLinkConversionValue subject) {
 			return new PropertyAspectAdapter<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.DATA_VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -448,7 +448,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildObjectValueHolder(EclipseLinkConversionValue subject) {
+		private ModifiablePropertyValueModel<String> buildObjectValueHolder(EclipseLinkConversionValue subject) {
 			return new PropertyAspectAdapter<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.OBJECT_VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -462,8 +462,8 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			};
 		}
 
-		public WritablePropertyValueModel<?>[] cellModels(EclipseLinkConversionValue subject) {
-			WritablePropertyValueModel<?>[] holders = new WritablePropertyValueModel<?>[COLUMN_COUNT];
+		public ModifiablePropertyValueModel<?>[] cellModels(EclipseLinkConversionValue subject) {
+			ModifiablePropertyValueModel<?>[] holders = new ModifiablePropertyValueModel<?>[COLUMN_COUNT];
 			//holders[SELECTION_COLUMN] = new SimplePropertyValueModel<Object>();
 			holders[DATA_VALUE_COLUMN]      = buildDataValueHolder(subject);
 			holders[OBJECT_VALUE_COLUMN]     = buildObjectValueHolder(subject);

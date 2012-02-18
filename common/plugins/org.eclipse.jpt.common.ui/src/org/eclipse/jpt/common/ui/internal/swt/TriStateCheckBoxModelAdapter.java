@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -31,7 +31,7 @@ import org.eclipse.swt.events.SelectionListener;
 public class TriStateCheckBoxModelAdapter {
 
 	/** A value model on the underlying model boolean. */
-	protected final WritablePropertyValueModel<Boolean> booleanHolder;
+	protected final ModifiablePropertyValueModel<Boolean> booleanHolder;
 
 	/**
 	 * A listener that allows us to synchronize the button's selection state with
@@ -62,7 +62,7 @@ public class TriStateCheckBoxModelAdapter {
 	 * If the boolean is null, the button's value will be "partially checked"
 	 * (i.e. the button will be checked but grayed out).
 	 */
-	public static TriStateCheckBoxModelAdapter adapt(WritablePropertyValueModel<Boolean> booleanHolder, TriStateCheckBox button) {
+	public static TriStateCheckBoxModelAdapter adapt(ModifiablePropertyValueModel<Boolean> booleanHolder, TriStateCheckBox button) {
 		return new TriStateCheckBoxModelAdapter(booleanHolder, button);
 	}
 
@@ -72,7 +72,7 @@ public class TriStateCheckBoxModelAdapter {
 	/**
 	 * Constructor - the boolean holder and button are required.
 	 */
-	protected TriStateCheckBoxModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder, TriStateCheckBox button) {
+	protected TriStateCheckBoxModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder, TriStateCheckBox button) {
 		super();
 
 		Assert.isNotNull(booleanHolder, "The boolean holder cannot be null");

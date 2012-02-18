@@ -45,7 +45,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -62,7 +62,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 {
 	private final Root root;
 
-	private WritablePropertyValueModel<TreeNode> selectedNode;
+	private ModifiablePropertyValueModel<TreeNode> selectedNode;
 
 	private TreeViewer controlTree;
 

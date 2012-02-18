@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
@@ -122,7 +122,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		this.tenantDiscriminatorColumnsComposite.installListPaneEnabler(new TenantDiscriminatorColumnPaneEnablerHolder());
 	}
 	
-	private WritablePropertyValueModel<Boolean> builMultitenantHolder() {
+	private ModifiablePropertyValueModel<Boolean> builMultitenantHolder() {
 		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_MULTITENANT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -182,7 +182,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		};
 	}
 
-	WritablePropertyValueModel<Boolean> buildIncludeCriteriaHolder() {
+	ModifiablePropertyValueModel<Boolean> buildIncludeCriteriaHolder() {
 		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_INCLUDE_CRITERIA_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -283,7 +283,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		this.tenantDiscriminatorColumnsComposite.setSelectedTenantDiscriminatorColumn(tenantDiscriminatorColumn);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnHolder() {
 		return new OverrideDefaultTenantDiscriminatorColumnHolder();
 	}
 
@@ -303,7 +303,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 
 	private class OverrideDefaultTenantDiscriminatorColumnHolder 
 		extends ListPropertyValueModelAdapter<Boolean>
-		implements WritablePropertyValueModel<Boolean> 
+		implements ModifiablePropertyValueModel<Boolean> 
 	{
 		public OverrideDefaultTenantDiscriminatorColumnHolder() {
 			super(buildSpecifiedTenantDiscriminatorColumnsListHolder());

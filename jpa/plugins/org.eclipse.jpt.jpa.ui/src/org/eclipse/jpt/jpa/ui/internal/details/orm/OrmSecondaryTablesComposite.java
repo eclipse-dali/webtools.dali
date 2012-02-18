@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -89,7 +89,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildDefineInXmlHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildDefineInXmlHolder() {
 		return new DefineInXmlHolder();
 	}
 
@@ -138,10 +138,10 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 
 		int groupBoxMargin = getGroupBoxMargin();
 
-		WritablePropertyValueModel<SecondaryTable> secondaryTableHolder =
+		ModifiablePropertyValueModel<SecondaryTable> secondaryTableHolder =
 			buildSecondaryTableHolder();
 
-		WritablePropertyValueModel<Boolean> defineInXmlHolder =
+		ModifiablePropertyValueModel<Boolean> defineInXmlHolder =
 			buildDefineInXmlHolder();
 
 		// Override Define In XML check box
@@ -173,7 +173,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		);
 	}
 	
-	private void installListPaneEnabler(WritablePropertyValueModel<Boolean> defineInXmlHolder,
+	private void installListPaneEnabler(ModifiablePropertyValueModel<Boolean> defineInXmlHolder,
 	                                    AddRemoveListPane<Entity> listPane) {
 
 		new PaneEnabler(defineInXmlHolder, listPane);
@@ -190,7 +190,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 	}
 
 	private class DefineInXmlHolder extends ListPropertyValueModelAdapter<Boolean>
-		implements WritablePropertyValueModel<Boolean> {
+		implements ModifiablePropertyValueModel<Boolean> {
 
 		public DefineInXmlHolder() {
 			super(buildVirtualSecondaryTablesListHolder());

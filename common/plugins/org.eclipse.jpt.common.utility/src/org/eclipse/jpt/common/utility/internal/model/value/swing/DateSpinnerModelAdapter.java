@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyCha
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * This javax.swing.SpinnerDateModel can be used to keep a ChangeListener
@@ -44,7 +44,7 @@ public class DateSpinnerModelAdapter
 	private final Date defaultValue;
 
 	/** A value model on the underlying date. */
-	private final WritablePropertyValueModel<Object> dateHolder;
+	private final ModifiablePropertyValueModel<Object> dateHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying date. */
 	private final PropertyChangeListener dateChangeListener;
@@ -56,14 +56,14 @@ public class DateSpinnerModelAdapter
 	 * Constructor - the date holder is required.
 	 * The default spinner value is the current date.
 	 */
-	public DateSpinnerModelAdapter(WritablePropertyValueModel<Object> dateHolder) {
+	public DateSpinnerModelAdapter(ModifiablePropertyValueModel<Object> dateHolder) {
 		this(dateHolder, new Date());
 	}
 
 	/**
 	 * Constructor - the date holder and default value are required.
 	 */
-	public DateSpinnerModelAdapter(WritablePropertyValueModel<Object> dateHolder, Date defaultValue) {
+	public DateSpinnerModelAdapter(ModifiablePropertyValueModel<Object> dateHolder, Date defaultValue) {
 		this(dateHolder, null, null, Calendar.DAY_OF_MONTH, defaultValue);
 	}
 
@@ -71,14 +71,14 @@ public class DateSpinnerModelAdapter
 	 * Constructor - the date holder is required.
 	 * The default spinner value is the current date.
 	 */
-	public DateSpinnerModelAdapter(WritablePropertyValueModel<Object> dateHolder, Comparable<?> start, Comparable<?> end, int calendarField) {
+	public DateSpinnerModelAdapter(ModifiablePropertyValueModel<Object> dateHolder, Comparable<?> start, Comparable<?> end, int calendarField) {
 		this(dateHolder, start, end, calendarField, new Date());
 	}
 
 	/**
 	 * Constructor - the date holder is required.
 	 */
-	public DateSpinnerModelAdapter(WritablePropertyValueModel<Object> dateHolder, Comparable<?> start, Comparable<?> end, int calendarField, Date defaultValue) {
+	public DateSpinnerModelAdapter(ModifiablePropertyValueModel<Object> dateHolder, Comparable<?> start, Comparable<?> end, int calendarField, Date defaultValue) {
 		super(dateHolder.getValue() == null ? defaultValue : (Date) dateHolder.getValue(), start, end, calendarField);
 		this.dateHolder = dateHolder;
 		this.dateChangeListener = this.buildDateChangeListener();

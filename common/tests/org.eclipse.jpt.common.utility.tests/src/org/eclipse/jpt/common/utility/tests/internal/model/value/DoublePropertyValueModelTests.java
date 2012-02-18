@@ -17,18 +17,18 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class DoublePropertyValueModelTests
 	extends TestCase
 {
-	protected WritablePropertyValueModel<String> stringModel;
+	protected ModifiablePropertyValueModel<String> stringModel;
 	protected ChangeListener stringModelListener;
 	protected PropertyChangeEvent stringModelEvent;
 
-	protected WritablePropertyValueModel<WritablePropertyValueModel<String>> stringModelModel;
+	protected ModifiablePropertyValueModel<ModifiablePropertyValueModel<String>> stringModelModel;
 	protected ChangeListener stringModelModelListener;
 	protected PropertyChangeEvent stringModelModelEvent;
 
@@ -46,7 +46,7 @@ public class DoublePropertyValueModelTests
 		this.stringModel = new SimplePropertyValueModel<String>("foo");
 		this.stringModelListener = new StringModelListener();
 
-		this.stringModelModel = new SimplePropertyValueModel<WritablePropertyValueModel<String>>(stringModel);
+		this.stringModelModel = new SimplePropertyValueModel<ModifiablePropertyValueModel<String>>(stringModel);
 		this.stringModelModelListener = new StringModelModelListener();
 
 		this.doubleModel = this.buildDoubleModel();
@@ -95,7 +95,7 @@ public class DoublePropertyValueModelTests
 		this.stringModelModel.setValue(null);
 		assertNull(this.doubleModel.getValue());
 
-		WritablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
+		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
 		this.stringModelModel.setValue(stringModel2);
 		assertEquals("TTT", this.doubleModel.getValue());
 
@@ -119,7 +119,7 @@ public class DoublePropertyValueModelTests
 		assertTrue(((AbstractModel) this.stringModel).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		this.doubleModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.doubleModelListener);
-		WritablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
+		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
 		assertTrue(((AbstractModel) this.stringModel).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(((AbstractModel) stringModel2).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.stringModelModel.setValue(stringModel2);
@@ -172,7 +172,7 @@ public class DoublePropertyValueModelTests
 		this.stringModelEvent = null;
 		this.stringModelModelEvent = null;
 		this.doubleModelEvent = null;
-		WritablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
+		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
 		this.stringModelModel.setValue(stringModel2);
 		assertNull(this.stringModelEvent);
 		this.verifyEvent(this.stringModelModelEvent, this.stringModelModel, this.stringModel, stringModel2);

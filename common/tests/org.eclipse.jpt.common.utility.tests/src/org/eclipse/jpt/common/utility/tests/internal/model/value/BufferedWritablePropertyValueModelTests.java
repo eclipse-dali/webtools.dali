@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,18 +22,18 @@ import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class BufferedWritablePropertyValueModelTests extends TestCase {
 	private Employee employee;
-	private WritablePropertyValueModel<Employee> employeeHolder;
+	private ModifiablePropertyValueModel<Employee> employeeHolder;
 	PropertyChangeEvent employeeEvent;
 
-	private WritablePropertyValueModel<Integer> idAdapter;
-	private WritablePropertyValueModel<String> nameAdapter;
-	private WritablePropertyValueModel<Date> hireDateAdapter;
+	private ModifiablePropertyValueModel<Integer> idAdapter;
+	private ModifiablePropertyValueModel<String> nameAdapter;
+	private ModifiablePropertyValueModel<Date> hireDateAdapter;
 	PropertyChangeEvent adapterEvent;
 
 	private BufferedWritablePropertyValueModel.Trigger trigger;
@@ -65,7 +65,7 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 		this.bufferedHireDateHolder = new BufferedWritablePropertyValueModel<Date>(this.hireDateAdapter, this.trigger);
 	}
 
-	private WritablePropertyValueModel<Integer> buildIDAdapter(PropertyValueModel<Employee> eHolder) {
+	private ModifiablePropertyValueModel<Integer> buildIDAdapter(PropertyValueModel<Employee> eHolder) {
 		return new PropertyAspectAdapter<Employee, Integer>(eHolder, Employee.ID_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
@@ -78,7 +78,7 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildNameAdapter(PropertyValueModel<Employee> eHolder) {
+	private ModifiablePropertyValueModel<String> buildNameAdapter(PropertyValueModel<Employee> eHolder) {
 		return new PropertyAspectAdapter<Employee, String>(eHolder, Employee.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -91,7 +91,7 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 		};
 	}
 
-	private WritablePropertyValueModel<Date> buildHireDateAdapter(PropertyValueModel<Employee> eHolder) {
+	private ModifiablePropertyValueModel<Date> buildHireDateAdapter(PropertyValueModel<Employee> eHolder) {
 		return new PropertyAspectAdapter<Employee, Date>(eHolder, Employee.HIRE_DATE_PROPERTY) {
 			@Override
 			protected Date buildValue_() {

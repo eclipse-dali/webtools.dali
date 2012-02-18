@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationWritabl
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -59,8 +59,8 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	private Pane<ReadOnlyAttributeOverride> attributeOverridePane;
 	private Pane<ReadOnlyAssociationOverride> associationOverridePane;
 	
-	private WritablePropertyValueModel<ReadOnlyOverride> selectedOverrideHolder;
-	private WritablePropertyValueModel<Boolean> overrideVirtualOverrideHolder;
+	private ModifiablePropertyValueModel<ReadOnlyOverride> selectedOverrideHolder;
+	private ModifiablePropertyValueModel<Boolean> overrideVirtualOverrideHolder;
 	
 	
 	protected AbstractOverridesComposite(
@@ -77,7 +77,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		this.selectedOverrideHolder = buildSelectedOverrideHolder();
 	}
 	
-	private WritablePropertyValueModel<ReadOnlyOverride> buildSelectedOverrideHolder() {
+	private ModifiablePropertyValueModel<ReadOnlyOverride> buildSelectedOverrideHolder() {
 		return new SimplePropertyValueModel<ReadOnlyOverride>();
 	}
 	
@@ -198,7 +198,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 				pageBook);
 	}
 	
-	private WritablePropertyValueModel<ReadOnlyAssociationOverride> buildAssociationOverrideHolder() {
+	private ModifiablePropertyValueModel<ReadOnlyAssociationOverride> buildAssociationOverrideHolder() {
 		return new TransformationWritablePropertyValueModel<ReadOnlyOverride, ReadOnlyAssociationOverride>(this.selectedOverrideHolder) {
 			@Override
 			protected ReadOnlyAssociationOverride transform_(ReadOnlyOverride v) {
@@ -207,7 +207,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		};
 	}
 	
-	private WritablePropertyValueModel<ReadOnlyAttributeOverride> buildAttributeOverrideHolder() {
+	private ModifiablePropertyValueModel<ReadOnlyAttributeOverride> buildAttributeOverrideHolder() {
 		return new TransformationWritablePropertyValueModel<ReadOnlyOverride, ReadOnlyAttributeOverride>(this.selectedOverrideHolder) {
 			@Override
 			protected ReadOnlyAttributeOverride transform_(ReadOnlyOverride v) {
@@ -244,14 +244,14 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		};
 	}
 	
-	protected WritablePropertyValueModel<Boolean> getOverrideVirtualOverrideHolder() {
+	protected ModifiablePropertyValueModel<Boolean> getOverrideVirtualOverrideHolder() {
 		if (this.overrideVirtualOverrideHolder == null) {
 			this.overrideVirtualOverrideHolder = buildOverrideVirtualOverrideHolder();
 		}
 		return this.overrideVirtualOverrideHolder;
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildOverrideVirtualOverrideHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildOverrideVirtualOverrideHolder() {
 		return new TransformationWritablePropertyValueModel<ReadOnlyOverride, Boolean>(this.selectedOverrideHolder) {
 			@Override
 			public void setValue(Boolean value) {

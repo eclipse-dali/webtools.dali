@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyCha
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * This javax.swing.SpinnerModel can be used to keep a ChangeListener
@@ -45,7 +45,7 @@ public class SpinnerModelAdapter
 	protected final ChangeListener delegateListener;
 
 	/** A value model on the underlying value. */
-	protected final WritablePropertyValueModel<Object> valueHolder;
+	protected final ModifiablePropertyValueModel<Object> valueHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying value. */
 	protected final PropertyChangeListener valueListener;
@@ -56,7 +56,7 @@ public class SpinnerModelAdapter
 	/**
 	 * Constructor - the value holder and delegate are required.
 	 */
-	public SpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, SpinnerModel delegate) {
+	public SpinnerModelAdapter(ModifiablePropertyValueModel<Object> valueHolder, SpinnerModel delegate) {
 		super();
 		if (valueHolder == null || delegate == null) {
 			throw new NullPointerException();
@@ -73,7 +73,7 @@ public class SpinnerModelAdapter
 	 * Constructor - the value holder is required.
 	 * This will wrap a simple number spinner model.
 	 */
-	public SpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder) {
+	public SpinnerModelAdapter(ModifiablePropertyValueModel<Object> valueHolder) {
 		this(valueHolder, new SpinnerNumberModel());
 	}
 

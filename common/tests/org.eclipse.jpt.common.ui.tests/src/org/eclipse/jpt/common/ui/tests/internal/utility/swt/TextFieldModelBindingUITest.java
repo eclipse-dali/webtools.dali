@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -40,9 +40,9 @@ public class TextFieldModelBindingUITest
 {
 	private final TestModel testModel;
 		private static final String DEFAULT_NAME = "Scooby Doo";
-	private final WritablePropertyValueModel<TestModel> testModelHolder;
-	private final WritablePropertyValueModel<String> nameHolder;
-	private final WritablePropertyValueModel<String> allCapsNameHolder;
+	private final ModifiablePropertyValueModel<TestModel> testModelHolder;
+	private final ModifiablePropertyValueModel<String> nameHolder;
+	private final ModifiablePropertyValueModel<String> allCapsNameHolder;
 
 
 	public static void main(String[] args) throws Exception {
@@ -61,7 +61,7 @@ public class TextFieldModelBindingUITest
 		this.allCapsNameHolder = this.buildAllCapsNameHolder(this.testModelHolder);
 	}
 
-	private WritablePropertyValueModel<String> buildNameHolder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<String> buildNameHolder(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -74,7 +74,7 @@ public class TextFieldModelBindingUITest
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildAllCapsNameHolder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<String> buildAllCapsNameHolder(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {

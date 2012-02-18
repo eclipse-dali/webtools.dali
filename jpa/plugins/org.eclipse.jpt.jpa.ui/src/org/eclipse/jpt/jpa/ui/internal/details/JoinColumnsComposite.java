@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
@@ -137,7 +137,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		);
 	}
 
-	private WritablePropertyValueModel<JoinColumn> buildSelectedJoinColumnHolder() {
+	private ModifiablePropertyValueModel<JoinColumn> buildSelectedJoinColumnHolder() {
 		return new SimplePropertyValueModel<JoinColumn>();
 	}
 

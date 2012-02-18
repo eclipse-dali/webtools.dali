@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.selection;
 
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.ui.IEditorPart;
@@ -35,7 +35,7 @@ public interface JpaEditorManager {
 	 * Return the manager's JPA selection model.
 	 * This can be monitored and changed by the corresponding view managers.
 	 */
-	WritablePropertyValueModel<JpaStructureNode> getJpaSelectionModel();
+	ModifiablePropertyValueModel<JpaStructureNode> getJpaSelectionModel();
 
 	/**
 	 * Dispose the manager. Remove any listeners from the manager's editor

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValue
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -46,13 +46,13 @@ import org.junit.Test;
 public class TableModelAdapterTest {
 
 	private Shell shell;
-	private WritablePropertyValueModel<Manager> subjectHolder;
+	private ModifiablePropertyValueModel<Manager> subjectHolder;
 
 	private ColumnAdapter<Employee> buildColumnAdapter() {
 		return new TableColumnAdapter();
 	}
 
-	private WritablePropertyValueModel<Employee> buildEmployeeHolder() {
+	private ModifiablePropertyValueModel<Employee> buildEmployeeHolder() {
 		return new SimplePropertyValueModel<Employee>();
 	}
 
@@ -87,7 +87,7 @@ public class TableModelAdapterTest {
 		};
 	}
 
-	private WritablePropertyValueModel<Manager> buildSubjectHolder() {
+	private ModifiablePropertyValueModel<Manager> buildSubjectHolder() {
 		return new SimplePropertyValueModel<Manager>();
 	}
 
@@ -115,7 +115,7 @@ public class TableModelAdapterTest {
 		Table table = new Table(shell, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 
 		ListValueModel<Employee> listHolder = buildEmployeeListHolder();
-		WritablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
+		ModifiablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
 
 		Manager manager = new Manager();
 		subjectHolder.setValue(manager);
@@ -172,7 +172,7 @@ public class TableModelAdapterTest {
 		Table table = new Table(shell, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 
 		ListValueModel<Employee> listHolder = buildEmployeeListHolder();
-		WritablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
+		ModifiablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
 
 		Manager manager = new Manager();
 		subjectHolder.setValue(manager);
@@ -222,7 +222,7 @@ public class TableModelAdapterTest {
 		Table table = new Table(shell, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 
 		ListValueModel<Employee> listHolder = buildEmployeeListHolder();
-		WritablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
+		ModifiablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
 
 		Manager manager = new Manager();
 		subjectHolder.setValue(manager);
@@ -257,7 +257,7 @@ public class TableModelAdapterTest {
 		Table table = new Table(shell, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 
 		ListValueModel<Employee> listHolder = buildEmployeeListHolder();
-		WritablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
+		ModifiablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
 
 		Manager manager = new Manager();
 		subjectHolder.setValue(manager);
@@ -333,7 +333,7 @@ public class TableModelAdapterTest {
 		Table table = new Table(shell, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 
 		ListValueModel<Employee> listHolder = buildEmployeeListHolder();
-		WritablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
+		ModifiablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
 
 		Manager manager = new Manager();
 		subjectHolder.setValue(manager);
@@ -377,7 +377,7 @@ public class TableModelAdapterTest {
 		Table table = new Table(shell, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 
 		ListValueModel<Employee> listHolder = buildEmployeeListHolder();
-		WritablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
+		ModifiablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
 
 		Manager manager = new Manager();
 		subjectHolder.setValue(manager);
@@ -430,7 +430,7 @@ public class TableModelAdapterTest {
 		Table table = new Table(shell, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 
 		ListValueModel<Employee> listHolder = buildEmployeeListHolder();
-		WritablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
+		ModifiablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
 
 		Manager manager = new Manager();
 		subjectHolder.setValue(manager);
@@ -488,7 +488,7 @@ public class TableModelAdapterTest {
 		Table table = new Table(shell, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 
 		ListValueModel<Employee> listHolder = buildEmployeeListHolder();
-		WritablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
+		ModifiablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
 
 		Manager manager = new Manager();
 		subjectHolder.setValue(manager);
@@ -605,7 +605,7 @@ public class TableModelAdapterTest {
 		Table table = new Table(shell, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 
 		ListValueModel<Employee> listHolder = buildEmployeeListHolder();
-		WritablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
+		ModifiablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
 
 		Manager manager = new Manager();
 		subjectHolder.setValue(manager);
@@ -666,7 +666,7 @@ public class TableModelAdapterTest {
 		Table table = new Table(shell, SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 
 		ListValueModel<Employee> listHolder = buildEmployeeListHolder();
-		WritablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
+		ModifiablePropertyValueModel<Employee> selectedItemHolder = buildEmployeeHolder();
 
 		Manager manager = new Manager();
 		subjectHolder.setValue(manager);
@@ -1073,7 +1073,7 @@ public class TableModelAdapterTest {
 		static final int NAME_COLUMN = 0;
 		static final int TITLE_COLUMN = 1;
 
-		private WritablePropertyValueModel<String> buildManagerHolder(Employee subject) {
+		private ModifiablePropertyValueModel<String> buildManagerHolder(Employee subject) {
 			return new PropertyAspectAdapter<Employee, String>(Employee.MANAGER_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -1087,7 +1087,7 @@ public class TableModelAdapterTest {
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildNameHolder(Employee subject) {
+		private ModifiablePropertyValueModel<String> buildNameHolder(Employee subject) {
 			return new PropertyAspectAdapter<Employee, String>(Employee.NAME_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -1101,7 +1101,7 @@ public class TableModelAdapterTest {
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildTitleHolder(Employee subject) {
+		private ModifiablePropertyValueModel<String> buildTitleHolder(Employee subject) {
 			return new PropertyAspectAdapter<Employee, String>(Employee.TITLE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -1115,8 +1115,8 @@ public class TableModelAdapterTest {
 			};
 		}
 
-		public WritablePropertyValueModel<?>[] cellModels(Employee subject) {
-			WritablePropertyValueModel<?>[] holders = new WritablePropertyValueModel<?>[3];
+		public ModifiablePropertyValueModel<?>[] cellModels(Employee subject) {
+			ModifiablePropertyValueModel<?>[] holders = new ModifiablePropertyValueModel<?>[3];
 			holders[NAME_COLUMN] = buildNameHolder(subject);
 			holders[TITLE_COLUMN] = buildTitleHolder(subject);
 			holders[MANAGER_COLUMN] = buildManagerHolder(subject);
@@ -1171,7 +1171,7 @@ public class TableModelAdapterTest {
 		}
 
 		TableModel(ListValueModel<Employee> listHolder,
-		           WritablePropertyValueModel<Employee> selectedItemHolder,
+		           ModifiablePropertyValueModel<Employee> selectedItemHolder,
 		           Table table,
 		           ColumnAdapter<Employee> columnAdapter,
 		           ITableLabelProvider labelProvider) {

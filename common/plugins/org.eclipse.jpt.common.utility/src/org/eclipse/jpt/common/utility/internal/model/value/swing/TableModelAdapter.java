@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * This TableModel can be used to keep a TableModelListener (e.g. a JTable)
@@ -78,7 +78,7 @@ public class TableModelAdapter<E>
 	 * each row is an array of cell models
 	 */
 	// declare as ArrayList so we can use #ensureCapacity(int)
-	private final ArrayList<WritablePropertyValueModel<Object>[]> rows;
+	private final ArrayList<ModifiablePropertyValueModel<Object>[]> rows;
 
 	/**
 	 * client-supplied adapter that provides with the various column
@@ -107,7 +107,7 @@ public class TableModelAdapter<E>
 		this.listHolder = listHolder;
 		this.columnAdapter = columnAdapter;
 		this.listChangeListener = this.buildListChangeListener();
-		this.rows = new ArrayList<WritablePropertyValueModel<Object>[]>();
+		this.rows = new ArrayList<ModifiablePropertyValueModel<Object>[]>();
 		this.cellListener = this.buildCellListener();
 	}
 
@@ -172,7 +172,7 @@ public class TableModelAdapter<E>
 		return new PropertyChangeListener() {
 			@SuppressWarnings("unchecked")
 			public void propertyChanged(PropertyChangeEvent event) {
-				TableModelAdapter.this.cellChanged((WritablePropertyValueModel<Object>) event.getSource());
+				TableModelAdapter.this.cellChanged((ModifiablePropertyValueModel<Object>) event.getSource());
 			}
 			@Override
 			public String toString() {
@@ -208,13 +208,13 @@ public class TableModelAdapter<E>
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		WritablePropertyValueModel<Object>[] row = this.rows.get(rowIndex);
+		ModifiablePropertyValueModel<Object>[] row = this.rows.get(rowIndex);
 		return row[columnIndex].getValue();
 	}
 
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		WritablePropertyValueModel<Object>[] row = this.rows.get(rowIndex);
+		ModifiablePropertyValueModel<Object>[] row = this.rows.get(rowIndex);
 		row[columnIndex].setValue(value);
 	}
 
@@ -310,7 +310,7 @@ public class TableModelAdapter<E>
 	private void engageAllCells() {
 		this.rows.ensureCapacity(this.listHolder.size());
 		for (Iterator<? extends E> stream = this.listHolder.iterator(); stream.hasNext(); ) {
-			WritablePropertyValueModel<Object>[] row = this.columnAdapter.cellModels(stream.next());
+			ModifiablePropertyValueModel<Object>[] row = this.columnAdapter.cellModels(stream.next());
 			this.engageRow(row);
 			this.rows.add(row);
 		}
@@ -319,7 +319,7 @@ public class TableModelAdapter<E>
 	/**
 	 * Listen to the cells in the specified row.
 	 */
-	private void engageRow(WritablePropertyValueModel<Object>[] row) {
+	private void engageRow(ModifiablePropertyValueModel<Object>[] row) {
 		for (int i = row.length; i-- > 0; ) {
 			row[i].addPropertyChangeListener(PropertyValueModel.VALUE, this.cellListener);
 		}
@@ -334,13 +334,13 @@ public class TableModelAdapter<E>
 	}
 
 	private void disengageAllCells() {
-		for (WritablePropertyValueModel<Object>[] row : this.rows) {
+		for (ModifiablePropertyValueModel<Object>[] row : this.rows) {
 			this.disengageRow(row);
 		}
 		this.rows.clear();
 	}
 
-	private void disengageRow(WritablePropertyValueModel<Object>[] row) {
+	private void disengageRow(ModifiablePropertyValueModel<Object>[] row) {
 		for (int i = row.length; i-- > 0; ) {
 			row[i].removePropertyChangeListener(PropertyValueModel.VALUE, this.cellListener);
 		}
@@ -349,9 +349,9 @@ public class TableModelAdapter<E>
 	/**
 	 * brute-force search for the cell(s) that changed...
 	 */
-	void cellChanged(WritablePropertyValueModel<Object> cellHolder) {
+	void cellChanged(ModifiablePropertyValueModel<Object> cellHolder) {
 		for (int i = this.rows.size(); i-- > 0; ) {
-			WritablePropertyValueModel<Object>[] row = this.rows.get(i);
+			ModifiablePropertyValueModel<Object>[] row = this.rows.get(i);
 			for (int j = row.length; j-- > 0; ) {
 				if (row[j] == cellHolder) {
 					this.fireTableCellUpdated(i, j);
@@ -364,9 +364,9 @@ public class TableModelAdapter<E>
 	 * convert the items to rows
 	 */
 	void addRows(int index, int size, Iterable<Object> items) {
-		List<WritablePropertyValueModel<Object>[]> newRows = new ArrayList<WritablePropertyValueModel<Object>[]>(size);
+		List<ModifiablePropertyValueModel<Object>[]> newRows = new ArrayList<ModifiablePropertyValueModel<Object>[]>(size);
 		for (Object item : items) {
-			WritablePropertyValueModel<Object>[] row = this.columnAdapter.cellModels(item);
+			ModifiablePropertyValueModel<Object>[] row = this.columnAdapter.cellModels(item);
 			this.engageRow(row);
 			newRows.add(row);
 		}
@@ -384,7 +384,7 @@ public class TableModelAdapter<E>
 	void replaceRows(int index, Iterable<Object> items) {
 		int i = index;
 		for (Object item : items) {
-			WritablePropertyValueModel<Object>[] row = this.rows.get(i);
+			ModifiablePropertyValueModel<Object>[] row = this.rows.get(i);
 			this.disengageRow(row);
 			row = this.columnAdapter.cellModels(item);
 			this.engageRow(row);
@@ -395,7 +395,7 @@ public class TableModelAdapter<E>
 	}
 
 	void moveRows(int targetIndex, int sourceIndex, int length) {
-		ArrayList<WritablePropertyValueModel<Object>[]> temp = new ArrayList<WritablePropertyValueModel<Object>[]>(length);
+		ArrayList<ModifiablePropertyValueModel<Object>[]> temp = new ArrayList<ModifiablePropertyValueModel<Object>[]>(length);
 		for (int i = 0; i < length; i++) {
 			temp.add(this.rows.remove(sourceIndex));
 		}

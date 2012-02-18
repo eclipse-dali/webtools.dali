@@ -12,13 +12,13 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
- * Abstract class that provides support for wrapping a {@link WritablePropertyValueModel}
+ * Abstract class that provides support for wrapping a {@link ModifiablePropertyValueModel}
  * and listening for changes to <em>aspects</em> of the <em>value</em> held
- * by the {@link WritablePropertyValueModel}. Changes to the
- * {@link WritablePropertyValueModel}'s value are also monitored.
+ * by the {@link ModifiablePropertyValueModel}. Changes to the
+ * {@link ModifiablePropertyValueModel}'s value are also monitored.
  * <p>
  * This is useful if you have a value that may change, but whose aspects can also
  * change in a fashion that might be of interest to the client.
@@ -39,7 +39,7 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  */
 public abstract class ValueAspectAdapter<V>
 	extends PropertyValueModelWrapper<V>
-	implements WritablePropertyValueModel<V>
+	implements ModifiablePropertyValueModel<V>
 {
 	/** Cache the value so we can disengage. */
 	protected volatile V value;
@@ -50,7 +50,7 @@ public abstract class ValueAspectAdapter<V>
 	/**
 	 * Constructor - the value model is required.
 	 */
-	protected ValueAspectAdapter(WritablePropertyValueModel<V> valueModel) {
+	protected ValueAspectAdapter(ModifiablePropertyValueModel<V> valueModel) {
 		super(valueModel);
 		this.value = null;
 	}
@@ -181,11 +181,11 @@ public abstract class ValueAspectAdapter<V>
 	}
 
 	/**
-	 * Our constructor accepts only a {@link WritablePropertyValueModel}{@code<V>}.
+	 * Our constructor accepts only a {@link ModifiablePropertyValueModel}{@code<V>}.
 	 */
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<V> getValueModel() {
-		return (WritablePropertyValueModel<V>) this.valueModel;
+	protected ModifiablePropertyValueModel<V> getValueModel() {
+		return (ModifiablePropertyValueModel<V>) this.valueModel;
 	}
 
 	@Override

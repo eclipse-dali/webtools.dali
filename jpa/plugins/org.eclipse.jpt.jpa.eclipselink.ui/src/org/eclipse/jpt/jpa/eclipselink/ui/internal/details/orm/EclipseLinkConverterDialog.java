@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
@@ -157,7 +157,7 @@ public class EclipseLinkConverterDialog
 			};
 		}
 		
-		private WritablePropertyValueModel<String> buildNameHolder() {
+		private ModifiablePropertyValueModel<String> buildNameHolder() {
 			return new PropertyAspectAdapter<EclipseLinkConverterStateObject, String>(getSubjectHolder(), EclipseLinkConverterStateObject.NAME_PROPERTY) {
 				@Override
 				protected String buildValue_() {
@@ -171,7 +171,7 @@ public class EclipseLinkConverterDialog
 			};
 		}
 
-		private WritablePropertyValueModel<Class<? extends EclipseLinkConverter>> buildConverterTypeHolder() {
+		private ModifiablePropertyValueModel<Class<? extends EclipseLinkConverter>> buildConverterTypeHolder() {
 			return new PropertyAspectAdapter<EclipseLinkConverterStateObject, Class<? extends EclipseLinkConverter>>(getSubjectHolder(), EclipseLinkConverterStateObject.CONVERTER_TYPE_PROPERTY) {
 				@Override
 				protected Class<? extends EclipseLinkConverter> buildValue_() {

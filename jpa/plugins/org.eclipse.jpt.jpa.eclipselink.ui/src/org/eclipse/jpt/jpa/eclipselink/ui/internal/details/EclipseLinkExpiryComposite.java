@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.swt.layout.GridData;
@@ -151,7 +151,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		);
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildNoExpiryHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildNoExpiryHolder() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 					getSubjectHolder(), 
 					EclipseLinkCaching.EXPIRY_PROPERTY, 
@@ -171,7 +171,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildExpiryHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildExpiryHolder() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 					getSubjectHolder(), 
 					EclipseLinkCaching.EXPIRY_PROPERTY) {
@@ -189,7 +189,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildTimeOfDayExpiryBooleanHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildTimeOfDayExpiryBooleanHolder() {
 		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 					getSubjectHolder(), 
 					EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
@@ -243,7 +243,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 			}
 			
 			@Override
-			protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
@@ -286,7 +286,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildTimeOfDayExpiryHourHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
+	private ModifiablePropertyValueModel<Integer> buildTimeOfDayExpiryHourHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
 		return new PropertyAspectAdapter<EclipseLinkTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
 					EclipseLinkTimeOfDay.HOUR_PROPERTY) {
@@ -302,7 +302,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildTimeOfDayExpiryMinuteHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
+	private ModifiablePropertyValueModel<Integer> buildTimeOfDayExpiryMinuteHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
 		return new PropertyAspectAdapter<EclipseLinkTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
 					EclipseLinkTimeOfDay.MINUTE_PROPERTY) {
@@ -318,7 +318,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildTimeOfDayExpirySecondHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
+	private ModifiablePropertyValueModel<Integer> buildTimeOfDayExpirySecondHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
 		return new PropertyAspectAdapter<EclipseLinkTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
 					EclipseLinkTimeOfDay.SECOND_PROPERTY) {

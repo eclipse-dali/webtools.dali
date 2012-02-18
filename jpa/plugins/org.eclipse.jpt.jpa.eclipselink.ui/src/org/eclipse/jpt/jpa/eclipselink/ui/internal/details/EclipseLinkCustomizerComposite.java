@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -92,7 +92,7 @@ public class EclipseLinkCustomizerComposite extends Pane<EclipseLinkCustomizer>
 		}
 
 		@Override
-		protected WritablePropertyValueModel<String> buildTextHolder() {
+		protected ModifiablePropertyValueModel<String> buildTextHolder() {
 			return new PropertyAspectAdapter<EclipseLinkCustomizer, String>(
 					getSubjectHolder(), 
 					EclipseLinkCustomizer.SPECIFIED_CUSTOMIZER_CLASS_PROPERTY,

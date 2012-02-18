@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 
@@ -31,7 +31,7 @@ import org.eclipse.swt.events.SelectionListener;
  * the selection.
  * 
  * @see ListValueModel
- * @see WritablePropertyValueModel
+ * @see ModifiablePropertyValueModel
  * @see DropDownListBox
  * @see SWTTools
  */
@@ -48,7 +48,7 @@ final class DropDownListBoxSelectionBinding<E>
 	/**
 	 * A writable value model on the underlying model selection.
 	 */
-	private final WritablePropertyValueModel<E> selectedItemModel;
+	private final ModifiablePropertyValueModel<E> selectedItemModel;
 
 	/**
 	 * A listener that allows us to synchronize the drop-down list box's
@@ -77,7 +77,7 @@ final class DropDownListBoxSelectionBinding<E>
 	 */
 	DropDownListBoxSelectionBinding(
 			ListValueModel<E> listModel,
-			WritablePropertyValueModel<E> selectedItemModel,
+			ModifiablePropertyValueModel<E> selectedItemModel,
 			DropDownListBox dropdownListBox
 	) {
 		super();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * This javax.swing.ComboBoxModel can be used to keep a ListDataListener
@@ -42,7 +42,7 @@ public class ComboBoxModelAdapter
 	extends ListModelAdapter
 	implements ComboBoxModel
 {
-	protected final WritablePropertyValueModel<Object> selectionHolder;
+	protected final ModifiablePropertyValueModel<Object> selectionHolder;
 	protected final PropertyChangeListener selectionListener;
 
 
@@ -51,7 +51,7 @@ public class ComboBoxModelAdapter
 	/**
 	 * Constructor - the list holder and selection holder are required;
 	 */
-	public ComboBoxModelAdapter(ListValueModel<?> listHolder, WritablePropertyValueModel<Object> selectionHolder) {
+	public ComboBoxModelAdapter(ListValueModel<?> listHolder, ModifiablePropertyValueModel<Object> selectionHolder) {
 		super(listHolder);
 		if (selectionHolder == null) {
 			throw new NullPointerException();
@@ -63,7 +63,7 @@ public class ComboBoxModelAdapter
 	/**
 	 * Constructor - the collection holder and selection holder are required;
 	 */
-	public ComboBoxModelAdapter(CollectionValueModel<?> collectionHolder, WritablePropertyValueModel<Object> selectionHolder) {
+	public ComboBoxModelAdapter(CollectionValueModel<?> collectionHolder, ModifiablePropertyValueModel<Object> selectionHolder) {
 		super(collectionHolder);
 		if (selectionHolder == null) {
 			throw new NullPointerException();

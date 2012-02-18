@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import java.util.Collection;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -132,7 +132,7 @@ public class NewNameDialog extends ValidatingDialog<NewNameStateObject>
 			super(NewNameDialog.this.getSubjectHolder(), parent);
 		}
 
-		private WritablePropertyValueModel<String> buildNameHolder() {
+		private ModifiablePropertyValueModel<String> buildNameHolder() {
 			return new PropertyAspectAdapter<NewNameStateObject, String>(getSubjectHolder(), NewNameStateObject.NAME_PROPERTY) {
 				@Override
 				protected String buildValue_() {

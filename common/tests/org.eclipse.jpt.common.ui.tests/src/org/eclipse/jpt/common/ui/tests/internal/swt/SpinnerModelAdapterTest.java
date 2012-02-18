@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.ui.internal.swt.SpinnerModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -30,13 +30,13 @@ public class SpinnerModelAdapterTest {
 
 	private Model model;
 	private Shell shell;
-	private WritablePropertyValueModel<Model> subjectHolder;
+	private ModifiablePropertyValueModel<Model> subjectHolder;
 
-	private WritablePropertyValueModel<Model> buildSubjectHolder() {
+	private ModifiablePropertyValueModel<Model> buildSubjectHolder() {
 		return new SimplePropertyValueModel<Model>();
 	}
 
-	private WritablePropertyValueModel<Integer> buildValueHolder() {
+	private ModifiablePropertyValueModel<Integer> buildValueHolder() {
 		return new PropertyAspectAdapter<Model, Integer>(subjectHolder, Model.VALUE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
@@ -78,7 +78,7 @@ public class SpinnerModelAdapterTest {
 		subjectHolder.setValue(model);
 
 		Spinner spinner = new Spinner(shell, SWT.NULL);
-		WritablePropertyValueModel<Integer> numberHolder = buildValueHolder();
+		ModifiablePropertyValueModel<Integer> numberHolder = buildValueHolder();
 		int defaultValue = 1;
 
 		SpinnerModelAdapter.adapt(
@@ -121,7 +121,7 @@ public class SpinnerModelAdapterTest {
 	public void testInitialization_1() {
 
 		Spinner spinner = new Spinner(shell, SWT.NULL);
-		WritablePropertyValueModel<Integer> numberHolder = new SimplePropertyValueModel<Integer>();
+		ModifiablePropertyValueModel<Integer> numberHolder = new SimplePropertyValueModel<Integer>();
 		int defaultValue = 1;
 
 		SpinnerModelAdapter.adapt(
@@ -146,7 +146,7 @@ public class SpinnerModelAdapterTest {
 	public void testInitialization_2() {
 
 		Spinner spinner = new Spinner(shell, SWT.NULL);
-		WritablePropertyValueModel<Integer> numberHolder = buildValueHolder();
+		ModifiablePropertyValueModel<Integer> numberHolder = buildValueHolder();
 		int defaultValue = 1;
 
 		SpinnerModelAdapter.adapt(
@@ -173,7 +173,7 @@ public class SpinnerModelAdapterTest {
 		subjectHolder.setValue(model);
 
 		Spinner spinner = new Spinner(shell, SWT.NULL);
-		WritablePropertyValueModel<Integer> numberHolder = buildValueHolder();
+		ModifiablePropertyValueModel<Integer> numberHolder = buildValueHolder();
 		int defaultValue = 1;
 
 		SpinnerModelAdapter.adapt(
@@ -208,7 +208,7 @@ public class SpinnerModelAdapterTest {
 		subjectHolder.setValue(model);
 
 		Spinner spinner = new Spinner(shell, SWT.NULL);
-		WritablePropertyValueModel<Integer> numberHolder = buildValueHolder();
+		ModifiablePropertyValueModel<Integer> numberHolder = buildValueHolder();
 		int defaultValue = 1;
 
 		SpinnerModelAdapter.adapt(
@@ -244,7 +244,7 @@ public class SpinnerModelAdapterTest {
 		subjectHolder.setValue(model);
 
 		Spinner spinner = new Spinner(shell, SWT.NULL);
-		WritablePropertyValueModel<Integer> numberHolder = buildValueHolder();
+		ModifiablePropertyValueModel<Integer> numberHolder = buildValueHolder();
 		int defaultValue = 1;
 
 		SpinnerModelAdapter.adapt(

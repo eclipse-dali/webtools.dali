@@ -65,7 +65,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
@@ -166,7 +166,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 	/**
 	 * The holder of the JPQL query.
 	 */
-	private WritablePropertyValueModel<String> textHolder;
+	private ModifiablePropertyValueModel<String> textHolder;
 
 	/**
 	 * Listens to the JPQL query and keep the {@link Document} in sync.
@@ -193,7 +193,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 	 */
 	public JpaJpqlContentProposalProvider(Composite parent,
 	                                      PropertyValueModel<? extends NamedQuery> queryHolder,
-	                                      WritablePropertyValueModel<String> textHolder) {
+	                                      ModifiablePropertyValueModel<String> textHolder) {
 
 		super();
 		initialize(parent, queryHolder, textHolder);
@@ -431,7 +431,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 
 	private void initialize(Composite parent,
 	                        PropertyValueModel<? extends NamedQuery> queryHolder,
-	                        WritablePropertyValueModel<String> textHolder) {
+	                        ModifiablePropertyValueModel<String> textHolder) {
 
 		this.queryHolder     = queryHolder;
 		this.annotationModel = new AnnotationModel();

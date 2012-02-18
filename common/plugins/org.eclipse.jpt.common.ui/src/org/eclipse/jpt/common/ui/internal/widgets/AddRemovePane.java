@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -52,7 +52,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	private ListValueModel<?> listHolder;
 	private Button optionalButton;
 	private Button removeButton;
-	private WritablePropertyValueModel<Object> selectedItemHolder;
+	private ModifiablePropertyValueModel<Object> selectedItemHolder;
 	private ObjectListSelectionModel selectionModel;
 
 	/**
@@ -72,7 +72,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
-	                        WritablePropertyValueModel<?> selectedItemHolder,
+	                        ModifiablePropertyValueModel<?> selectedItemHolder,
 	                        IBaseLabelProvider labelProvider) {
 
 		this(parentPane,
@@ -102,7 +102,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
-	                        WritablePropertyValueModel<?> selectedItemHolder,
+	                        ModifiablePropertyValueModel<?> selectedItemHolder,
 	                        IBaseLabelProvider labelProvider,
 	                        String helpId) {
 
@@ -135,7 +135,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
-	                        WritablePropertyValueModel<?> selectedItemHolder,
+	                        ModifiablePropertyValueModel<?> selectedItemHolder,
 	                        IBaseLabelProvider labelProvider,
 	                        String helpId, 
 	                        boolean parentManagePane) {
@@ -177,7 +177,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
-	                        WritablePropertyValueModel<?> selectedItemHolder,
+	                        ModifiablePropertyValueModel<?> selectedItemHolder,
 	                        IBaseLabelProvider labelProvider) {
 
 		this(parentPane,
@@ -210,7 +210,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
-	                        WritablePropertyValueModel<?> selectedItemHolder,
+	                        ModifiablePropertyValueModel<?> selectedItemHolder,
 	                        IBaseLabelProvider labelProvider,
 	                        String helpId) {
 
@@ -453,7 +453,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 */
 	public abstract Composite getMainControl();
 
-	protected final WritablePropertyValueModel<Object> getSelectedItemHolder() {
+	protected final ModifiablePropertyValueModel<Object> getSelectedItemHolder() {
 		return selectedItemHolder;
 	}
 
@@ -477,13 +477,13 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	@SuppressWarnings("unchecked")
 	protected void initialize(Adapter adapter,
 	                          ListValueModel<?> listHolder,
-	                          WritablePropertyValueModel<?> selectedItemHolder,
+	                          ModifiablePropertyValueModel<?> selectedItemHolder,
 	                          IBaseLabelProvider labelProvider)
 	{
 		this.listHolder         = listHolder;
 		this.labelProvider      = labelProvider;
 		this.adapter            = (adapter == null) ? buildAdapter() : adapter;
-		this.selectedItemHolder = (WritablePropertyValueModel<Object>) selectedItemHolder;
+		this.selectedItemHolder = (ModifiablePropertyValueModel<Object>) selectedItemHolder;
 		this.selectionModel     = new ObjectListSelectionModel(new ListModelAdapter(listHolder));
 
 		this.listHolder.addListChangeListener(
@@ -558,7 +558,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 */
 	protected void initializeLayout(Adapter adapter,
     	                             ListValueModel<?> listHolder,
-   	                             WritablePropertyValueModel<?> selectedItemHolder,
+   	                             ModifiablePropertyValueModel<?> selectedItemHolder,
    	                             IBaseLabelProvider labelProvider,
    	                             String helpId) {
 
@@ -601,7 +601,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	protected abstract void initializeMainComposite(Composite container,
 	                                                Adapter adapter,
 	                   	                           ListValueModel<?> listHolder,
-	                  	                           WritablePropertyValueModel<?> selectedItemHolder,
+	                  	                           ModifiablePropertyValueModel<?> selectedItemHolder,
 	                  	                           IBaseLabelProvider labelProvider,
 	                  	                           String helpId);
 

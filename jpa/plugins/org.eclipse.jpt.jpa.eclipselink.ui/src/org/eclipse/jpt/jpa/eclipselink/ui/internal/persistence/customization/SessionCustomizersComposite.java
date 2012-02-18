@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -115,7 +115,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildSelectedItemHolder() {
+	private ModifiablePropertyValueModel<String> buildSelectedItemHolder() {
 		return new SimplePropertyValueModel<String>();
 	}
 

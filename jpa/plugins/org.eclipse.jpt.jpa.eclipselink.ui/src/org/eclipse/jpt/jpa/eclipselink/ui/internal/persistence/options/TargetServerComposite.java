@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelA
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetServer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -123,7 +123,7 @@ public class TargetServerComposite extends Pane<Options>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildTargetServerHolder() {
+	private ModifiablePropertyValueModel<String> buildTargetServerHolder() {
 		return new PropertyAspectAdapter<Options, String>(this.getSubjectHolder(), Options.TARGET_SERVER_PROPERTY) {
 			@Override
 			protected String buildValue_() {

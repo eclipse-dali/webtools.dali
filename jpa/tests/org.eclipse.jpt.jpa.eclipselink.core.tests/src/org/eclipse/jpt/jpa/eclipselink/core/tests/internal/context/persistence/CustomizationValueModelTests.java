@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
@@ -28,7 +28,7 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 {
 	private Customization customization;
 
-	private WritablePropertyValueModel<Boolean> throwExceptionsHolder;
+	private ModifiablePropertyValueModel<Boolean> throwExceptionsHolder;
 	private PropertyChangeListener throwExceptionsListener;
 	private PropertyChangeEvent throwExceptionsEvent;
 
@@ -82,7 +82,7 @@ public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTest
 	}
 
 	// ****** ThrowExceptions *******
-	private WritablePropertyValueModel<Boolean> buildThrowExceptionsAA(PropertyValueModel<Customization> subjectHolder) {
+	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsAA(PropertyValueModel<Customization> subjectHolder) {
 		return new PropertyAspectAdapter<Customization, Boolean>(subjectHolder, Customization.THROW_EXCEPTIONS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

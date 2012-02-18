@@ -13,10 +13,10 @@ import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
- * Implementation of {@link WritablePropertyValueModel} that simply holds on to
+ * Implementation of {@link ModifiablePropertyValueModel} that simply holds on to
  * an object, uses it as the value, and fires the appropriate event when the
  * value changes.
  * 
@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  */
 public class SimplePropertyValueModel<V>
 	extends AbstractModel
-	implements WritablePropertyValueModel<V>
+	implements ModifiablePropertyValueModel<V>
 {
 	/** The value. */
 	protected V value;

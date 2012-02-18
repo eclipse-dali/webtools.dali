@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
@@ -59,8 +59,8 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 	//These are built to stand alone because we do not want the panels to collapse just
 	//because the generator is removed either in the source or using the check box in the UI.  
 	//We don't want these to be built on the model generator properties.
-	private WritablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
-	private WritablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
+	private ModifiablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
+	private ModifiablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
 
 	
 	public GenerationComposite(
@@ -139,7 +139,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder() {
 		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -211,7 +211,7 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder() {
 		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

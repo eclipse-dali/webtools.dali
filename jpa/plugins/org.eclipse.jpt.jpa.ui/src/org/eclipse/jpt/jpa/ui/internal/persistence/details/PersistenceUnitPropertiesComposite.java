@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -71,7 +71,7 @@ import org.eclipse.swt.widgets.TableItem;
 public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
                                                 implements JpaPageComposite
 {
-	private WritablePropertyValueModel<PersistenceUnit.Property> propertyHolder;
+	private ModifiablePropertyValueModel<PersistenceUnit.Property> propertyHolder;
 	private TablePane tablePane;
 
 	/**
@@ -165,7 +165,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 		public static final int SELECTION_COLUMN = 0;
 		public static final int VALUE_COLUMN = 2;
 
-		private WritablePropertyValueModel<String> buildNameHolder(PersistenceUnit.Property subject) {
+		private ModifiablePropertyValueModel<String> buildNameHolder(PersistenceUnit.Property subject) {
 			return new PropertyAspectAdapter<PersistenceUnit.Property, String>(PersistenceUnit.Property.NAME_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -179,7 +179,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildValueHolder(PersistenceUnit.Property subject) {
+		private ModifiablePropertyValueModel<String> buildValueHolder(PersistenceUnit.Property subject) {
 			return new PropertyAspectAdapter<PersistenceUnit.Property, String>(PersistenceUnit.Property.VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -193,8 +193,8 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 			};
 		}
 
-		public WritablePropertyValueModel<?>[] cellModels(PersistenceUnit.Property subject) {
-			WritablePropertyValueModel<?>[] holders = new WritablePropertyValueModel<?>[COLUMN_COUNT];
+		public ModifiablePropertyValueModel<?>[] cellModels(PersistenceUnit.Property subject) {
+			ModifiablePropertyValueModel<?>[] holders = new ModifiablePropertyValueModel<?>[COLUMN_COUNT];
 			holders[SELECTION_COLUMN] = new SimplePropertyValueModel<Object>();
 			holders[NAME_COLUMN]      = buildNameHolder(subject);
 			holders[VALUE_COLUMN]     = buildValueHolder(subject);
@@ -352,7 +352,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 		protected void initializeMainComposite(Composite container,
 		                                       Adapter adapter,
 		                                       ListValueModel<?> listHolder,
-		                                       WritablePropertyValueModel<?> selectedItemHolder,
+		                                       ModifiablePropertyValueModel<?> selectedItemHolder,
 		                                       IBaseLabelProvider labelProvider,
 		                                       String helpId) {
 

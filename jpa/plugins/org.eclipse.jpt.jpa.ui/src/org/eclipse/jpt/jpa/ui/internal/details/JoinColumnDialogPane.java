@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -58,7 +58,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		super(subjectHolder, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -100,7 +100,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.NULLABLE_PROPERTY)
@@ -147,7 +147,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildUniqueHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildUniqueHolder() {
 		return new PropertyAspectAdapter<T, Boolean>(
 			getSubjectHolder(),
 			JoinColumnStateObject.UNIQUE_PROPERTY)
@@ -192,7 +192,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.UPDATABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

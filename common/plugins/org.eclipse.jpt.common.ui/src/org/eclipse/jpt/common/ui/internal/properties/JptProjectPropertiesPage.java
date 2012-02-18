@@ -35,7 +35,7 @@ import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.AbstractChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
@@ -58,7 +58,7 @@ import org.eclipse.wst.common.project.facet.ui.internal.FacetsPropertyPage;
 public abstract class JptProjectPropertiesPage
 		extends LibraryFacetPropertyPage {
 
-	protected final WritablePropertyValueModel<IProject> projectModel;
+	protected final ModifiablePropertyValueModel<IProject> projectModel;
 	protected final BufferedWritablePropertyValueModel.Trigger trigger;
 
 	protected final ChangeListener validationListener;

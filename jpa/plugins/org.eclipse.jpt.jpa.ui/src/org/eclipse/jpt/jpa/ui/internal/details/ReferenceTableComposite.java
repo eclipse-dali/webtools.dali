@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
@@ -106,7 +106,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		return new JoinColumnsProvider();
 	}
 
-	protected WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
 		return new OverrideDefaultJoinColumnHolder();
 	}
 		
@@ -346,7 +346,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 	
 	
 	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
-	    implements WritablePropertyValueModel<Boolean> {
+	    implements ModifiablePropertyValueModel<Boolean> {
 	
 		public OverrideDefaultJoinColumnHolder() {
 			super(buildSpecifiedJoinColumnsListHolder());

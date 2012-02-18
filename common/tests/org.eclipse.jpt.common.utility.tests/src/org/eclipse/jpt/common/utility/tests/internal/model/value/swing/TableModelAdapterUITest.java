@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,7 +69,7 @@ import org.eclipse.jpt.common.utility.internal.swing.SpinnerTableCellRenderer;
 import org.eclipse.jpt.common.utility.internal.swing.TableCellEditorAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.TableModelAdapterTests.Crowd;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.TableModelAdapterTests.Person;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.TableModelAdapterTests.PersonColumnAdapter;
@@ -90,8 +90,8 @@ import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.TableMode
 @SuppressWarnings("nls")
 public class TableModelAdapterUITest {
 	private SimpleCollectionValueModel<Object> eyeColorsHolder;  // Object because it adapts to a combo-box
-	private WritablePropertyValueModel<Crowd> crowdHolder;
-	private WritablePropertyValueModel<Person> selectedPersonHolder;
+	private ModifiablePropertyValueModel<Crowd> crowdHolder;
+	private ModifiablePropertyValueModel<Person> selectedPersonHolder;
 	private ListValueModel<Person> sortedPeopleAdapter;
 	private TableModel tableModel;
 	private ObjectListSelectionModel rowSelectionModel;
@@ -121,7 +121,7 @@ public class TableModelAdapterUITest {
 		return new SimpleCollectionValueModel<Object>(new ArrayList<Object>(Person.getValidEyeColors()));
 	}
 
-	private WritablePropertyValueModel<Crowd> buildCrowdHolder() {
+	private ModifiablePropertyValueModel<Crowd> buildCrowdHolder() {
 		return new SimplePropertyValueModel<Crowd>(this.buildCrowd());
 	}
 
@@ -152,7 +152,7 @@ public class TableModelAdapterUITest {
 		return crowd;
 	}
 
-	private WritablePropertyValueModel<Person> buildSelectedPersonHolder() {
+	private ModifiablePropertyValueModel<Person> buildSelectedPersonHolder() {
 		return new SimplePropertyValueModel<Person>();
 	}
 
@@ -533,7 +533,7 @@ public class TableModelAdapterUITest {
 		return new DocumentAdapter(this.buildNameAdapter());
 	}
 
-	private WritablePropertyValueModel<String> buildNameAdapter() {
+	private ModifiablePropertyValueModel<String> buildNameAdapter() {
 		return new PropertyAspectAdapter<Person, String>(this.selectedPersonHolder, Person.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -557,7 +557,7 @@ public class TableModelAdapterUITest {
 		return new DateSpinnerModelAdapter(this.buildBirthDateAdapter());
 	}
 
-	private WritablePropertyValueModel<Object> buildBirthDateAdapter() {
+	private ModifiablePropertyValueModel<Object> buildBirthDateAdapter() {
 		return new PropertyAspectAdapter<Person, Object>(this.selectedPersonHolder, Person.BIRTH_DATE_PROPERTY) {
 			@Override
 			protected Date buildValue_() {
@@ -581,7 +581,7 @@ public class TableModelAdapterUITest {
 		return new DateSpinnerModelAdapter(this.buildGoneWestDateAdapter());
 	}
 
-	private WritablePropertyValueModel<Object> buildGoneWestDateAdapter() {
+	private ModifiablePropertyValueModel<Object> buildGoneWestDateAdapter() {
 		return new PropertyAspectAdapter<Person, Object>(this.selectedPersonHolder, Person.GONE_WEST_DATE_PROPERTY) {
 			@Override
 			protected Date buildValue_() {
@@ -605,7 +605,7 @@ public class TableModelAdapterUITest {
 		return new ComboBoxModelAdapter(this.eyeColorsHolder, this.buildEyeColorAdapter());
 	}
 
-	private WritablePropertyValueModel<Object> buildEyeColorAdapter() {
+	private ModifiablePropertyValueModel<Object> buildEyeColorAdapter() {
 		return new PropertyAspectAdapter<Person, Object>(this.selectedPersonHolder, Person.EYE_COLOR_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -632,7 +632,7 @@ public class TableModelAdapterUITest {
 		return new CheckBoxModelAdapter(this.buildEvilAdapter());
 	}
 
-	private WritablePropertyValueModel<Boolean> buildEvilAdapter() {
+	private ModifiablePropertyValueModel<Boolean> buildEvilAdapter() {
 		return new PropertyAspectAdapter<Person, Boolean>(this.selectedPersonHolder, Person.EVIL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -656,7 +656,7 @@ public class TableModelAdapterUITest {
 		return new NumberSpinnerModelAdapter(this.buildRankAdapter());
 	}
 
-	private WritablePropertyValueModel<Number> buildRankAdapter() {
+	private ModifiablePropertyValueModel<Number> buildRankAdapter() {
 		return new PropertyAspectAdapter<Person, Number>(this.selectedPersonHolder, Person.RANK_PROPERTY) {
 			@Override
 			protected Number buildValue_() {
@@ -680,7 +680,7 @@ public class TableModelAdapterUITest {
 		return new NumberSpinnerModelAdapter(this.buildAdventureCountAdapter());
 	}
 
-	private WritablePropertyValueModel<Number> buildAdventureCountAdapter() {
+	private ModifiablePropertyValueModel<Number> buildAdventureCountAdapter() {
 		return new PropertyAspectAdapter<Person, Number>(this.selectedPersonHolder, Person.ADVENTURE_COUNT_PROPERTY) {
 			@Override
 			protected Number buildValue_() {

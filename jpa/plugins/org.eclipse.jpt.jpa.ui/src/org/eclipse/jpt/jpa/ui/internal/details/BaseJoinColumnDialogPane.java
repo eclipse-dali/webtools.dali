@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueMode
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
@@ -79,7 +79,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		super(subjectHolder, parent);
 	}
 
-	private WritablePropertyValueModel<String> buildColumnDefinitionHolder() {
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
 		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -214,7 +214,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildNameHolder() {
+	private ModifiablePropertyValueModel<String> buildNameHolder() {
 		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -264,7 +264,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		});
 	}
 
-	private WritablePropertyValueModel<String> buildReferencedColumnNameHolder() {
+	private ModifiablePropertyValueModel<String> buildReferencedColumnNameHolder() {
 		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.REFERENCED_COLUMN_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -314,7 +314,7 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		});
 	}
 
-	private WritablePropertyValueModel<String> buildTableHolder() {
+	private ModifiablePropertyValueModel<String> buildTableHolder() {
 		return new PropertyAspectAdapter<BaseJoinColumnStateObject, String>(getSubjectHolder(), BaseJoinColumnStateObject.TABLE_PROPERTY) {
 			@Override
 			protected String buildValue_() {

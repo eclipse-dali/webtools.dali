@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,7 +36,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.swing.DateSpinnerMode
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ListSpinnerModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.NumberSpinnerModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * Play around with a set of spinners.
@@ -45,15 +45,15 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 public class SpinnerModelAdapterUITest {
 
 	private TestModel testModel;
-	private WritablePropertyValueModel<TestModel> testModelHolder;
+	private ModifiablePropertyValueModel<TestModel> testModelHolder;
 
-	private WritablePropertyValueModel<Object> birthDateHolder;
+	private ModifiablePropertyValueModel<Object> birthDateHolder;
 	private SpinnerModel birthDateSpinnerModel;
 
-	private WritablePropertyValueModel<Number> ageHolder;
+	private ModifiablePropertyValueModel<Number> ageHolder;
 	private SpinnerModel ageSpinnerModel;
 
-	private WritablePropertyValueModel<Object> eyeColorHolder;
+	private ModifiablePropertyValueModel<Object> eyeColorHolder;
 	private SpinnerModel eyeColorSpinnerModel;
 
 
@@ -81,7 +81,7 @@ public class SpinnerModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private WritablePropertyValueModel<Object> buildBirthDateHolder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<Object> buildBirthDateHolder(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, Object>(vm, TestModel.BIRTH_DATE_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -94,11 +94,11 @@ public class SpinnerModelAdapterUITest {
 		};
 	}
 
-	private SpinnerModel buildBirthDateSpinnerModel(WritablePropertyValueModel<Object> valueHolder) {
+	private SpinnerModel buildBirthDateSpinnerModel(ModifiablePropertyValueModel<Object> valueHolder) {
 		return new DateSpinnerModelAdapter(valueHolder);
 	}
 
-	private WritablePropertyValueModel<Number> buildAgeHolder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<Number> buildAgeHolder(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, Number>(vm, TestModel.AGE_PROPERTY) {
 			@Override
 			protected Number buildValue_() {
@@ -111,11 +111,11 @@ public class SpinnerModelAdapterUITest {
 		};
 	}
 
-	private SpinnerModel buildAgeSpinnerModel(WritablePropertyValueModel<Number> valueHolder) {
+	private SpinnerModel buildAgeSpinnerModel(ModifiablePropertyValueModel<Number> valueHolder) {
 		return new NumberSpinnerModelAdapter(valueHolder, valueHolder.getValue().intValue(), TestModel.MIN_AGE, TestModel.MAX_AGE, 1);
 	}
 
-	private WritablePropertyValueModel<Object> buildEyeColorHolder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<Object> buildEyeColorHolder(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, Object>(vm, TestModel.EYE_COLOR_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -128,7 +128,7 @@ public class SpinnerModelAdapterUITest {
 		};
 	}
 
-	private SpinnerModel buildEyeColorSpinnerModel(WritablePropertyValueModel<Object> valueHolder) {
+	private SpinnerModel buildEyeColorSpinnerModel(ModifiablePropertyValueModel<Object> valueHolder) {
 		return new ListSpinnerModelAdapter(valueHolder, TestModel.VALID_EYE_COLORS);
 	}
 

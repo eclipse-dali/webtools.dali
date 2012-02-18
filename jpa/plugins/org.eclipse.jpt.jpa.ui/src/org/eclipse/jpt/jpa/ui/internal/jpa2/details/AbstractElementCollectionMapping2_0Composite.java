@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Converter;
@@ -281,7 +281,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildNoConverterHolder() {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -297,7 +297,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildLobConverterHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildLobConverterHolder() {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -341,7 +341,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -358,7 +358,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildEnumeratedBooleanHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildEnumeratedBooleanHolder() {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * Extend {@link ValueAspectAdapter} to listen to the
@@ -30,7 +30,7 @@ public class ValueStateAdapter<V extends Model>
 	/**
 	 * Construct an adapter for the value state.
 	 */
-	public ValueStateAdapter(WritablePropertyValueModel<V> valueHolder) {
+	public ValueStateAdapter(ModifiablePropertyValueModel<V> valueHolder) {
 		super(valueHolder);
 		this.valueStateListener = this.buildValueStateListener();
 	}

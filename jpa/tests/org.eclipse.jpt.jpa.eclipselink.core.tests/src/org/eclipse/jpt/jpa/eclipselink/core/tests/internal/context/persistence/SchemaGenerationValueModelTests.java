@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
@@ -32,10 +32,10 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	private SchemaGeneration schemaGen;
 	private PropertyValueModel<SchemaGeneration> schemaGenHolder;
 
-	private WritablePropertyValueModel<DdlGenerationType> ddlGenerationTypeHolder;
+	private ModifiablePropertyValueModel<DdlGenerationType> ddlGenerationTypeHolder;
 	private PropertyChangeEvent ddlGenerationTypeEvent;
 
-	private WritablePropertyValueModel<OutputMode> outputModeHolder;
+	private ModifiablePropertyValueModel<OutputMode> outputModeHolder;
 	private PropertyChangeEvent outputModeEvent;
 
 	public static final DdlGenerationType DDL_GENERATION_TYPE_TEST_VALUE = DdlGenerationType.drop_and_create_tables;
@@ -83,7 +83,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	}
 
 	/** ****** DdlGenerationType ******* */
-	private WritablePropertyValueModel<DdlGenerationType> buildDdlGenerationTypeAA(PropertyValueModel<SchemaGeneration> subjectHolder) {
+	private ModifiablePropertyValueModel<DdlGenerationType> buildDdlGenerationTypeAA(PropertyValueModel<SchemaGeneration> subjectHolder) {
 		return new PropertyAspectAdapter<SchemaGeneration, DdlGenerationType>(subjectHolder, SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY) {
 			@Override
 			protected DdlGenerationType buildValue_() {
@@ -106,7 +106,7 @@ public class SchemaGenerationValueModelTests extends EclipseLinkPersistenceUnitT
 	}
 
 	/** ****** OutputMode ******* */
-	private WritablePropertyValueModel<OutputMode> buildOutputModeAA(PropertyValueModel<SchemaGeneration> subjectHolder) {
+	private ModifiablePropertyValueModel<OutputMode> buildOutputModeAA(PropertyValueModel<SchemaGeneration> subjectHolder) {
 		return new PropertyAspectAdapter<SchemaGeneration, OutputMode>(subjectHolder, SchemaGeneration.OUTPUT_MODE_PROPERTY) {
 			@Override
 			protected OutputMode buildValue_() {

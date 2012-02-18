@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaFileModel;
@@ -67,7 +67,7 @@ class JpaTextEditorManager
 	 */
 	private final ISelectionChangedListener textEditorSelectionListener = new TextEditorSelectionListener();
 
-	private final WritablePropertyValueModel<IFile> fileModel = new SimplePropertyValueModel<IFile>();
+	private final ModifiablePropertyValueModel<IFile> fileModel = new SimplePropertyValueModel<IFile>();
 
 	/**
 	 * We use the JPA file to calculate the JPA selection.
@@ -86,7 +86,7 @@ class JpaTextEditorManager
 	 * We update the JPA selection model whenever the text editor's selection
 	 * changes.
 	 */
-	private final WritablePropertyValueModel<JpaStructureNode> jpaSelectionModel = new SimplePropertyValueModel<JpaStructureNode>();
+	private final ModifiablePropertyValueModel<JpaStructureNode> jpaSelectionModel = new SimplePropertyValueModel<JpaStructureNode>();
 
 	/**
 	 * Listen for other views to change the JPA selection.
@@ -188,7 +188,7 @@ class JpaTextEditorManager
 
 	// ********** JPA selection **********
 
-	public WritablePropertyValueModel<JpaStructureNode> getJpaSelectionModel() {
+	public ModifiablePropertyValueModel<JpaStructureNode> getJpaSelectionModel() {
 		return this.jpaSelectionModel;
 	}
 

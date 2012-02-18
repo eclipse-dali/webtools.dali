@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jpt.common.ui.JptCommonUiPlugin;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
@@ -39,7 +39,7 @@ import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 @SuppressWarnings("nls")
 public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 {
-	private WritablePropertyValueModel<String> textHolder;
+	private ModifiablePropertyValueModel<String> textHolder;
 
 	/**
 	 * Creates a new <code>FileChooserPane</code>.
@@ -104,7 +104,7 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 	 *
 	 * @return The holder of the class name
 	 */
-	protected abstract WritablePropertyValueModel<String> buildTextHolder();
+	protected abstract ModifiablePropertyValueModel<String> buildTextHolder();
 
 	/**
 	 * Creates the validator that will show a status message based on what is
@@ -139,7 +139,7 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 	 */
 	protected abstract String getProjectPath();
 
-	protected  WritablePropertyValueModel<String> getTextHolder() {
+	protected  ModifiablePropertyValueModel<String> getTextHolder() {
 		return this.textHolder;
 	}
 

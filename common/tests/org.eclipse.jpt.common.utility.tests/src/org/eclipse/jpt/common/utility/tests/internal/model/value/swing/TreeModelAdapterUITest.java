@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,7 +40,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.swing.TreeModelAdapter;
 import org.eclipse.jpt.common.utility.internal.swing.Displayable;
 import org.eclipse.jpt.common.utility.model.value.TreeNodeValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.TreeModelAdapterTests.SortedTestNode;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.TreeModelAdapterTests.TestModel;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.TreeModelAdapterTests.TestNode;
@@ -54,7 +54,7 @@ public class TreeModelAdapterUITest {
 
 	// hold the tree so we can restore its expansion state
 	private JTree tree;
-	private WritablePropertyValueModel<TreeNodeValueModel<Object>> rootNodeHolder;
+	private ModifiablePropertyValueModel<TreeNodeValueModel<Object>> rootNodeHolder;
 	private boolean sorted;
 	private TreeModel treeModel;
 	private TreeSelectionModel treeSelectionModel;
@@ -77,7 +77,7 @@ public class TreeModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private WritablePropertyValueModel<TreeNodeValueModel<Object>> buildRootNodeHolder() {
+	private ModifiablePropertyValueModel<TreeNodeValueModel<Object>> buildRootNodeHolder() {
 		return new SimplePropertyValueModel<TreeNodeValueModel<Object>>(this.buildSortedRootNode());
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -77,7 +77,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 	private AddRemoveListPane<QueryContainer> listPane;
 	NamedNativeQueryPropertyComposite namedNativeQueryPane;
 	Pane<? extends NamedQuery> namedQueryPane;
-	private WritablePropertyValueModel<Query> queryHolder;
+	private ModifiablePropertyValueModel<Query> queryHolder;
 
 
 	public QueriesComposite(
@@ -257,7 +257,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 		};
 	}
 
-	private WritablePropertyValueModel<Query> buildQueryHolder() {
+	private ModifiablePropertyValueModel<Query> buildQueryHolder() {
 		return new SimplePropertyValueModel<Query>();
 	}
 
@@ -308,7 +308,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 		new ControlSwitcher(this.getQueryHolder(), this.buildPaneTransformer(), pageBook);
 	}
 	
-	protected WritablePropertyValueModel<Query> getQueryHolder() {
+	protected ModifiablePropertyValueModel<Query> getQueryHolder() {
 		return queryHolder;
 	}
 }

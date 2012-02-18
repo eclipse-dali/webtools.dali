@@ -36,7 +36,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
@@ -301,7 +301,7 @@ public class JpaStructurePage
 		this.getEditorJpaSelectionModel().setValue(selection);
 	}
 
-	private WritablePropertyValueModel<JpaStructureNode> getEditorJpaSelectionModel() {
+	private ModifiablePropertyValueModel<JpaStructureNode> getEditorJpaSelectionModel() {
 		return this.editorManager.getJpaSelectionModel();
 	}
 

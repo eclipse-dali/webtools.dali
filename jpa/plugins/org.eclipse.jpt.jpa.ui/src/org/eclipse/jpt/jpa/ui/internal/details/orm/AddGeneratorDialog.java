@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -159,7 +159,7 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 			};
 		}
 		
-		private WritablePropertyValueModel<String> buildNameHolder() {
+		private ModifiablePropertyValueModel<String> buildNameHolder() {
 			return new PropertyAspectAdapter<AddGeneratorStateObject, String>(getSubjectHolder(), AddGeneratorStateObject.NAME_PROPERTY) {
 				@Override
 				protected String buildValue_() {
@@ -173,7 +173,7 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildGeneratorTypeHolder() {
+		private ModifiablePropertyValueModel<String> buildGeneratorTypeHolder() {
 			return new PropertyAspectAdapter<AddGeneratorStateObject, String>(getSubjectHolder(), AddGeneratorStateObject.GENERATOR_TYPE_PROPERTY) {
 				@Override
 				protected String buildValue_() {

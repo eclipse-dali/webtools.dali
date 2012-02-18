@@ -22,16 +22,16 @@ import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 public class CompositePropertyValueModelTests extends TestCase {
 	private SimplePropertyValueModel<Integer> pvm1;
-	private WritablePropertyValueModel<Integer> pvm2;
-	private WritablePropertyValueModel<Integer> pvm3;
-	private WritablePropertyValueModel<Integer> pvm4;
-	private Collection<WritablePropertyValueModel<Integer>> collection;
-	private SimpleCollectionValueModel<WritablePropertyValueModel<Integer>> cvm;
+	private ModifiablePropertyValueModel<Integer> pvm2;
+	private ModifiablePropertyValueModel<Integer> pvm3;
+	private ModifiablePropertyValueModel<Integer> pvm4;
+	private Collection<ModifiablePropertyValueModel<Integer>> collection;
+	private SimpleCollectionValueModel<ModifiablePropertyValueModel<Integer>> cvm;
 	private PropertyValueModel<Integer> compositePVM;
 	PropertyChangeEvent event;
 
@@ -47,12 +47,12 @@ public class CompositePropertyValueModelTests extends TestCase {
 		this.pvm2 = new SimplePropertyValueModel<Integer>(Integer.valueOf(2));
 		this.pvm3 = new SimplePropertyValueModel<Integer>(Integer.valueOf(3));
 		this.pvm4 = new SimplePropertyValueModel<Integer>(Integer.valueOf(4));
-		this.collection = new ArrayList<WritablePropertyValueModel<Integer>>();
+		this.collection = new ArrayList<ModifiablePropertyValueModel<Integer>>();
 		this.collection.add(this.pvm1);
 		this.collection.add(this.pvm2);
 		this.collection.add(this.pvm3);
 		this.collection.add(this.pvm4);
-		this.cvm = new SimpleCollectionValueModel<WritablePropertyValueModel<Integer>>(this.collection);
+		this.cvm = new SimpleCollectionValueModel<ModifiablePropertyValueModel<Integer>>(this.collection);
 		
 		this.compositePVM = this.buildCompositePVM(cvm);
 	}
@@ -133,7 +133,7 @@ public class CompositePropertyValueModelTests extends TestCase {
 
 	private void verifyCollectionChange() {
 		this.event = null;
-		WritablePropertyValueModel<Integer> pvm = new SimplePropertyValueModel<Integer>(Integer.valueOf(77));
+		ModifiablePropertyValueModel<Integer> pvm = new SimplePropertyValueModel<Integer>(Integer.valueOf(77));
 		this.cvm.add(pvm);
 		this.verifyEvent(10, 87);
 
@@ -145,7 +145,7 @@ public class CompositePropertyValueModelTests extends TestCase {
 		this.cvm.clear();
 		this.verifyEvent(10, 0);
 
-		Collection<WritablePropertyValueModel<Integer>> c2 = new ArrayList<WritablePropertyValueModel<Integer>>();
+		Collection<ModifiablePropertyValueModel<Integer>> c2 = new ArrayList<ModifiablePropertyValueModel<Integer>>();
 		c2.add(this.pvm1);
 		c2.add(this.pvm2);
 		this.event = null;

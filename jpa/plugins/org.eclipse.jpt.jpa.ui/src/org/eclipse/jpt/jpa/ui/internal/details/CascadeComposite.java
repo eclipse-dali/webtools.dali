@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.swt.widgets.Composite;
@@ -139,7 +139,7 @@ public class CascadeComposite<T extends Cascade> extends Pane<T>
 				JptUiDetailsMessages.CascadeComposite_cascadeTitle);
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildCascadeTypeAllHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeAllHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.ALL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -153,7 +153,7 @@ public class CascadeComposite<T extends Cascade> extends Pane<T>
 		};
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildCascadeTypeMergeHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeMergeHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.MERGE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -167,7 +167,7 @@ public class CascadeComposite<T extends Cascade> extends Pane<T>
 		};
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildCascadeTypePersistHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypePersistHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -181,7 +181,7 @@ public class CascadeComposite<T extends Cascade> extends Pane<T>
 		};
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildCascadeTypeRefreshHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeRefreshHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.REFRESH_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -195,7 +195,7 @@ public class CascadeComposite<T extends Cascade> extends Pane<T>
 		};
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildCascadeTypeRemoveHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeRemoveHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.REMOVE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

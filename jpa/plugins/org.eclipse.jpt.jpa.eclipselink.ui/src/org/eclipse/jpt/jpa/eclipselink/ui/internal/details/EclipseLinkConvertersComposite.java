@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
@@ -73,7 +73,7 @@ public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterCon
 	private EclipseLinkObjectTypeConverterComposite objectTypeConverterComposite;
 	private EclipseLinkStructConverterComposite structConverterComposite;
 	private EclipseLinkTypeConverterComposite typeConverterComposite;
-	private WritablePropertyValueModel<EclipseLinkConverter> selectedConverterHolder;
+	private ModifiablePropertyValueModel<EclipseLinkConverter> selectedConverterHolder;
 
 	public EclipseLinkConvertersComposite(
 		Pane<?> parentPane, 
@@ -89,7 +89,7 @@ public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterCon
 		this.selectedConverterHolder = buildSelectedConverterHolder();
 	}
 
-	private WritablePropertyValueModel<EclipseLinkConverter> buildSelectedConverterHolder() {
+	private ModifiablePropertyValueModel<EclipseLinkConverter> buildSelectedConverterHolder() {
 		return new SimplePropertyValueModel<EclipseLinkConverter>();
 	}
 

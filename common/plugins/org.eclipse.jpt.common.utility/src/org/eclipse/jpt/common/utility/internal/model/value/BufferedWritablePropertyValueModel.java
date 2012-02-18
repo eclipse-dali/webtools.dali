@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * A <code>BufferedWritablePropertyValueModel</code> is used to hold a temporary
@@ -48,7 +48,7 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  */
 public class BufferedWritablePropertyValueModel<V>
 	extends PropertyValueModelWrapper<V>
-	implements WritablePropertyValueModel<V>
+	implements ModifiablePropertyValueModel<V>
 {
 	/**
 	 * We cache the value here until it is accepted and passed
@@ -90,7 +90,7 @@ public class BufferedWritablePropertyValueModel<V>
 	 * property value model and trigger model.
 	 */
 	// TODO wrap the value model in a CachingPVMWrapper and get rid of accepting flag
-	public BufferedWritablePropertyValueModel(WritablePropertyValueModel<V> valueModel, PropertyValueModel<Boolean> triggerModel) {
+	public BufferedWritablePropertyValueModel(ModifiablePropertyValueModel<V> valueModel, PropertyValueModel<Boolean> triggerModel) {
 		super(valueModel);
 		if (triggerModel == null) {
 			throw new NullPointerException();
@@ -287,11 +287,11 @@ public class BufferedWritablePropertyValueModel<V>
 	}
 
 	/**
-	 * Our constructor accepts only a {@link WritablePropertyValueModel}{@code<T>}.
+	 * Our constructor accepts only a {@link ModifiablePropertyValueModel}{@code<T>}.
 	 */
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<V> getValueModel() {
-		return (WritablePropertyValueModel<V>) this.valueModel;
+	protected ModifiablePropertyValueModel<V> getValueModel() {
+		return (ModifiablePropertyValueModel<V>) this.valueModel;
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
 import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.common.utility.model.listener.TreeChangeListener;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * Extend {@link ValueAspectAdapter} to listen to one or more
@@ -38,7 +38,7 @@ public class ValueTreeAdapter<V extends Model>
 	/**
 	 * Construct an adapter for the specified value trees.
 	 */
-	public ValueTreeAdapter(WritablePropertyValueModel<V> valueHolder, String... treeNames) {
+	public ValueTreeAdapter(ModifiablePropertyValueModel<V> valueHolder, String... treeNames) {
 		super(valueHolder);
 		this.treeNames = treeNames;
 		this.valueTreeListener = this.buildValueTreeListener();

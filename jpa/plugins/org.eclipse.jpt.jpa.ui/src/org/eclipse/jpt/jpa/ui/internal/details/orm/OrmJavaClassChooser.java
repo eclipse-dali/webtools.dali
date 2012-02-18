@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.swt.widgets.Composite;
 
@@ -69,7 +69,7 @@ public class OrmJavaClassChooser extends Pane<OrmTypeMapping> {
 		return new ClassChooserPane<OrmTypeMapping>(this, container) {
 
 			@Override
-			protected WritablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextHolder() {
 				return new PropertyAspectAdapter<OrmTypeMapping, String>(getSubjectHolder(), OrmTypeMapping.CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {

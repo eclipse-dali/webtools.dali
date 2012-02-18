@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritableListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableListValueModel;
 
 /**
  * Implementation of {@link ListValueModel} and {@link List} that simply holds a
@@ -29,7 +29,7 @@ import org.eclipse.jpt.common.utility.model.value.WritableListValueModel;
  */
 public class SimpleListValueModel<E>
 	extends AbstractModel
-	implements WritableListValueModel<E>, List<E>
+	implements ModifiableListValueModel<E>, List<E>
 {
 	/** The list. */
 	protected List<E> list;

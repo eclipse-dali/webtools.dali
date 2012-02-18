@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
 
@@ -27,7 +27,7 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Logging logging;
 
-	private WritablePropertyValueModel<Boolean> timestampHolder;
+	private ModifiablePropertyValueModel<Boolean> timestampHolder;
 	private PropertyChangeListener timestampListener;
 	private PropertyChangeEvent timestampEvent;
 
@@ -79,7 +79,7 @@ public class LoggingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	// ****** Timestamp *******
-	private WritablePropertyValueModel<Boolean> buildTimestampAA(PropertyValueModel<Logging> subjectHolder) {
+	private ModifiablePropertyValueModel<Boolean> buildTimestampAA(PropertyValueModel<Logging> subjectHolder) {
 		return new PropertyAspectAdapter<Logging, Boolean>(subjectHolder, Logging.TIMESTAMP_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

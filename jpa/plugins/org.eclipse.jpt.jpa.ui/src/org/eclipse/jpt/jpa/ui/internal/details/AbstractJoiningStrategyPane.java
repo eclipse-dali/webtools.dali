@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
@@ -70,7 +70,7 @@ public abstract class AbstractJoiningStrategyPane
 		super(parentPane, subjectHolder, parent);
 	}
 	
-	protected abstract WritablePropertyValueModel<Boolean> buildUsesStrategyHolder();
+	protected abstract ModifiablePropertyValueModel<Boolean> buildUsesStrategyHolder();
 	
 	
 	@Override

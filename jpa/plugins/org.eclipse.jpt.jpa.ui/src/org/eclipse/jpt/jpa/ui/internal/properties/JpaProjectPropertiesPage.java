@@ -64,7 +64,7 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -132,16 +132,16 @@ public class JpaProjectPropertiesPage
 
 	private BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultCatalogFlagModel;
 	private BufferedWritablePropertyValueModel<String> userOverrideDefaultCatalogModel;
-	private WritablePropertyValueModel<String> defaultCatalogModel;
+	private ModifiablePropertyValueModel<String> defaultCatalogModel;
 	private ListValueModel<String> catalogChoicesModel;
 
 	private BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultSchemaFlagModel;
 	private BufferedWritablePropertyValueModel<String> userOverrideDefaultSchemaModel;
-	private WritablePropertyValueModel<String> defaultSchemaModel;
+	private ModifiablePropertyValueModel<String> defaultSchemaModel;
 	private ListValueModel<String> schemaChoicesModel;
 
 	private BufferedWritablePropertyValueModel<Boolean> discoverAnnotatedClassesModel;
-	private WritablePropertyValueModel<Boolean> listAnnotatedClassesModel;
+	private ModifiablePropertyValueModel<Boolean> listAnnotatedClassesModel;
 
 	private PropertyValueModel<Boolean> jpa2_0ProjectFlagModel;
 
@@ -274,7 +274,7 @@ public class JpaProjectPropertiesPage
 		return new BufferedWritablePropertyValueModel<String>(new UserOverrideDefaultCatalogModel(this.jpaProjectModel), this.trigger);
 	}
 
-	private WritablePropertyValueModel<String> buildDefaultCatalogModel() {
+	private ModifiablePropertyValueModel<String> buildDefaultCatalogModel() {
 		return new DefaultModel(
 					this.userOverrideDefaultCatalogFlagModel,
 					this.userOverrideDefaultCatalogModel,
@@ -319,7 +319,7 @@ public class JpaProjectPropertiesPage
 		return new BufferedWritablePropertyValueModel<String>(new UserOverrideDefaultSchemaModel(this.jpaProjectModel), this.trigger);
 	}
 
-	private WritablePropertyValueModel<String> buildDefaultSchemaModel() {
+	private ModifiablePropertyValueModel<String> buildDefaultSchemaModel() {
 		return new DefaultModel(
 					this.userOverrideDefaultSchemaFlagModel,
 					this.userOverrideDefaultSchemaModel,
@@ -360,7 +360,7 @@ public class JpaProjectPropertiesPage
 	/**
 	 * The opposite of the "discover annotated classes" flag.
 	 */
-	private WritablePropertyValueModel<Boolean> buildListAnnotatedClassesModel() {
+	private ModifiablePropertyValueModel<Boolean> buildListAnnotatedClassesModel() {
 		return new TransformationWritablePropertyValueModel<Boolean, Boolean>(this.discoverAnnotatedClassesModel, NotBooleanTransformer.instance(), NotBooleanTransformer.instance());
 	}
 
@@ -1666,16 +1666,16 @@ public class JpaProjectPropertiesPage
 	 */
 	static class DefaultModel
 		extends CompositePropertyValueModel<String, Object>
-		implements WritablePropertyValueModel<String>
+		implements ModifiablePropertyValueModel<String>
 	{
 		private final PropertyValueModel<Boolean> userOverrideDefaultFlagModel;
-		private final WritablePropertyValueModel<String> userOverrideDefaultModel;
+		private final ModifiablePropertyValueModel<String> userOverrideDefaultModel;
 		private final PropertyValueModel<String> databaseDefaultModel;
 
 		@SuppressWarnings("unchecked")
 		DefaultModel(
 				PropertyValueModel<Boolean> userOverrideDefaultFlagModel,
-				WritablePropertyValueModel<String> userOverrideDefaultModel,
+				ModifiablePropertyValueModel<String> userOverrideDefaultModel,
 				PropertyValueModel<String> databaseDefaultModel
 		) {
 			super(userOverrideDefaultFlagModel, userOverrideDefaultModel, databaseDefaultModel);

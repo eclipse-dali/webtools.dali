@@ -39,7 +39,7 @@ import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -283,7 +283,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 *
 	 * @return The holder of the class name
 	 */
-	protected abstract WritablePropertyValueModel<String> buildTextHolder();
+	protected abstract ModifiablePropertyValueModel<String> buildTextHolder();
 
 	/**
 	 * Prompts the user the Open Type dialog.

@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
@@ -129,7 +129,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 		this.tenantDiscriminatorColumnsComposite.setSelectedTenantDiscriminatorColumn(tenantDiscriminatorColumn);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnHolder() {
 		return new OverrideDefaultTenantDiscriminatorColumnHolder();
 	}
 
@@ -150,7 +150,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 
 	private class OverrideDefaultTenantDiscriminatorColumnHolder 
 		extends ListPropertyValueModelAdapter<Boolean>
-		implements WritablePropertyValueModel<Boolean> 
+		implements ModifiablePropertyValueModel<Boolean> 
 	{
 		public OverrideDefaultTenantDiscriminatorColumnHolder() {
 			super(buildSpecifiedTenantDiscriminatorColumnsListHolder());

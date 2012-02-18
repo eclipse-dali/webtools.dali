@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
@@ -75,7 +75,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 		this.joiningStrategyComposite.setSelectedJoinColumn(joinColumn);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
 		return new OverrideDefaultJoinColumnHolder();
 	}
 	
@@ -96,7 +96,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 	
 	private class OverrideDefaultJoinColumnHolder 
 		extends ListPropertyValueModelAdapter<Boolean>
-		implements WritablePropertyValueModel<Boolean> 
+		implements ModifiablePropertyValueModel<Boolean> 
 	{
 		public OverrideDefaultJoinColumnHolder() {
 			super(buildSpecifiedJoinColumnsListHolder());

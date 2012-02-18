@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationWritabl
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
@@ -131,7 +131,7 @@ public abstract class IntegerCombo<T extends Model>
 		return this.defaultValueHolder.getValue();
 	}
 
-	protected WritablePropertyValueModel<String> buildSelectedItemStringHolder() {
+	protected ModifiablePropertyValueModel<String> buildSelectedItemStringHolder() {
 		return new TransformationWritablePropertyValueModel<Integer, String>(buildSelectedItemHolder()) {
 			@Override
 			protected String transform(Integer v) {
@@ -158,7 +158,7 @@ public abstract class IntegerCombo<T extends Model>
 
 	protected abstract PropertyValueModel<Integer> buildDefaultHolder();
 	
-	protected abstract WritablePropertyValueModel<Integer> buildSelectedItemHolder();
+	protected abstract ModifiablePropertyValueModel<Integer> buildSelectedItemHolder();
 
 	// ********** combo-box verify listener callback **********
 

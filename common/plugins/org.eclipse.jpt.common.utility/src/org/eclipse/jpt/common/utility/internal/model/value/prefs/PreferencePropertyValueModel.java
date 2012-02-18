@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * This adapter wraps a Preference and converts it into a PropertyValueModel.
@@ -45,7 +45,7 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  */
 public class PreferencePropertyValueModel<P>
 	extends AspectAdapter<Preferences, P>
-	implements WritablePropertyValueModel<P>
+	implements ModifiablePropertyValueModel<P>
 {
 	/** The key to the preference we use for the value. */
 	protected final String key;

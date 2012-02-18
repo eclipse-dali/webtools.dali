@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,15 +18,15 @@ import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritableCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 
 /**
- * Implementation of {@link WritableCollectionValueModel} and {@link Collection}
+ * Implementation of {@link ModifiableCollectionValueModel} and {@link Collection}
  * that simply holds a collection and notifies listeners of any changes.
  */
 public class SimpleCollectionValueModel<E>
 	extends AbstractModel
-	implements WritableCollectionValueModel<E>, Collection<E>
+	implements ModifiableCollectionValueModel<E>, Collection<E>
 {
 	/** The collection. */
 	protected final Collection<E> collection;

@@ -19,13 +19,13 @@ import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class PropertyAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
-	private WritablePropertyValueModel<TestSubject> subjectHolder1;
+	private ModifiablePropertyValueModel<TestSubject> subjectHolder1;
 	private PropertyAspectAdapter<TestSubject, String> aa1;
 	private PropertyChangeEvent event1;
 	private PropertyChangeListener listener1;
@@ -208,8 +208,8 @@ public class PropertyAspectAdapterTests extends TestCase {
 
 	public void testMultipleAspectAdapter() {
 		TestSubject testSubject = new TestSubject("fred", "husband");
-		WritablePropertyValueModel<TestSubject> testSubjectHolder = new SimplePropertyValueModel<TestSubject>(testSubject);
-		WritablePropertyValueModel<String> testAA = this.buildMultipleAspectAdapter(testSubjectHolder);
+		ModifiablePropertyValueModel<TestSubject> testSubjectHolder = new SimplePropertyValueModel<TestSubject>(testSubject);
+		ModifiablePropertyValueModel<String> testAA = this.buildMultipleAspectAdapter(testSubjectHolder);
 		PropertyChangeListener testListener = this.buildMultipleValueChangeListener();
 		testAA.addPropertyChangeListener(PropertyValueModel.VALUE, testListener);
 		assertEquals("fred:husband", testAA.getValue());
@@ -227,7 +227,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertEquals("wilma:wife", this.multipleValueEvent.getNewValue());
 	}
 
-	private WritablePropertyValueModel<String> buildMultipleAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
+	private ModifiablePropertyValueModel<String> buildMultipleAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
 		return new PropertyAspectAdapter<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY, TestSubject.DESCRIPTION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -256,8 +256,8 @@ public class PropertyAspectAdapterTests extends TestCase {
 	 */
 	public void testCustomBuildValueWithNullSubject() {
 		TestSubject customSubject = new TestSubject("fred", "laborer");
-		WritablePropertyValueModel<TestSubject> customSubjectHolder = new SimplePropertyValueModel<TestSubject>(customSubject);
-		WritablePropertyValueModel<String> customAA = this.buildCustomAspectAdapter(customSubjectHolder);
+		ModifiablePropertyValueModel<TestSubject> customSubjectHolder = new SimplePropertyValueModel<TestSubject>(customSubject);
+		ModifiablePropertyValueModel<String> customAA = this.buildCustomAspectAdapter(customSubjectHolder);
 		PropertyChangeListener customListener = this.buildCustomValueChangeListener();
 		customAA.addPropertyChangeListener(PropertyValueModel.VALUE, customListener);
 		assertEquals("fred", customAA.getValue());
@@ -289,7 +289,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 		this.aa1.addChangeListener(listener2);
 	}
 
-	private WritablePropertyValueModel<String> buildCustomAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
+	private ModifiablePropertyValueModel<String> buildCustomAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
 		return new PropertyAspectAdapter<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
 			@Override
 			protected String buildValue() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2011 Oracle. All rights reserved.
+* Copyright (c) 2007, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
@@ -47,7 +47,7 @@ import org.eclipse.ui.progress.IProgressService;
  */
 public class EntityListComposite extends Pane<Customization>
 {
-	private WritablePropertyValueModel<CustomizationEntity> entityHolder;
+	private ModifiablePropertyValueModel<CustomizationEntity> entityHolder;
 
 	public EntityListComposite(Pane<? extends Customization> parentComposite, Composite parent) {
 
@@ -174,7 +174,7 @@ public class EntityListComposite extends Pane<Customization>
 		};
 	}
 
-	private WritablePropertyValueModel<CustomizationEntity> buildEntityHolder() {
+	private ModifiablePropertyValueModel<CustomizationEntity> buildEntityHolder() {
 		return new SimplePropertyValueModel<CustomizationEntity>();
 	}
 
@@ -192,7 +192,7 @@ public class EntityListComposite extends Pane<Customization>
 		};
 	}
 
-	private void installPaneEnabler(WritablePropertyValueModel<CustomizationEntity> entityHolder,
+	private void installPaneEnabler(ModifiablePropertyValueModel<CustomizationEntity> entityHolder,
 	                                EntityCustomizationPropertyComposite pane) {
 
 		new PaneEnabler(
@@ -201,7 +201,7 @@ public class EntityListComposite extends Pane<Customization>
 		);
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<CustomizationEntity> entityHolder) {
+	private PropertyValueModel<Boolean> buildPaneEnablerHolder(ModifiablePropertyValueModel<CustomizationEntity> entityHolder) {
 		return new TransformationPropertyValueModel<CustomizationEntity, Boolean>(entityHolder) {
 			@Override
 			protected Boolean transform_(CustomizationEntity value) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratedValue;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
@@ -77,8 +77,8 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	//These are built to stand alone because we do not want the panels to collapse just
 	//because the generator is removed either in the source or using the check box in the UI.  
 	//We don't want these to be built on the model generator properties.
-	private WritablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
-	private WritablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
+	private ModifiablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
+	private ModifiablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
 
 
 	/**
@@ -146,7 +146,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		initializeSequenceGeneratorPane(addSubPane(container, 10), generatorHolder);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildPrimaryKeyGenerationHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildPrimaryKeyGenerationHolder() {
 		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -201,7 +201,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 			sequenceGeneratorCheckBox.getBorderWidth() + 16);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
+	private ModifiablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
 		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(generatorHolder, GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -317,7 +317,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		};
 	}
 
- 	private WritablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
+ 	private ModifiablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
 		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(generatorHolder, GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

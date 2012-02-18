@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.swt.widgets.Composite;
@@ -173,7 +173,7 @@ public class EclipseLinkConversionValueDialog extends ValidatingDialog<EclipseLi
 			);
 		}
 
-		private WritablePropertyValueModel<String> buildDataValueHolder() {
+		private ModifiablePropertyValueModel<String> buildDataValueHolder() {
 			return new PropertyAspectAdapter<EclipseLinkConversionValueStateObject, String>(getSubjectHolder(), EclipseLinkConversionValueStateObject.DATA_VALUE_PROPERTY) {
 				@Override
 				protected String buildValue_() {
@@ -187,7 +187,7 @@ public class EclipseLinkConversionValueDialog extends ValidatingDialog<EclipseLi
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildObjectValueHolder() {
+		private ModifiablePropertyValueModel<String> buildObjectValueHolder() {
 			return new PropertyAspectAdapter<EclipseLinkConversionValueStateObject, String>(getSubjectHolder(), EclipseLinkConversionValueStateObject.OBJECT_VALUE_PROPERTY) {
 				@Override
 				protected String buildValue_() {

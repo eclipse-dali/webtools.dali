@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
@@ -83,7 +83,7 @@ class JpaPageManager
 	 * JPA selection model. It can be modified by either the editor manager or
 	 * any view manager.
 	 */
-	private final WritablePropertyValueModel<JpaStructureNode> jpaSelectionModel;
+	private final ModifiablePropertyValueModel<JpaStructureNode> jpaSelectionModel;
 
 	/**
 	 * Listen to {@link #page} to maintain {@link #editorManagers}.
@@ -143,25 +143,25 @@ class JpaPageManager
 
 	// ********** JPA selection model **********
 
-	public WritablePropertyValueModel<JpaStructureNode> getJpaSelectionModel() {
+	public ModifiablePropertyValueModel<JpaStructureNode> getJpaSelectionModel() {
 		return this.jpaSelectionModel;
 	}
 
-	private WritablePropertyValueModel<JpaStructureNode> buildJpaSelectionModel() {
+	private ModifiablePropertyValueModel<JpaStructureNode> buildJpaSelectionModel() {
 		return new DoubleModifiablePropertyValueModel<JpaStructureNode>(this.buildEditorManagerJpaSelectionModel());
 	}
 
-	private PropertyValueModel<WritablePropertyValueModel<JpaStructureNode>> buildEditorManagerJpaSelectionModel() {
-		return new TransformationPropertyValueModel<JpaEditorManager, WritablePropertyValueModel<JpaStructureNode>>(this.editorManagerModel, JPA_SELECTION_MODEL_TRANSFORMER);
+	private PropertyValueModel<ModifiablePropertyValueModel<JpaStructureNode>> buildEditorManagerJpaSelectionModel() {
+		return new TransformationPropertyValueModel<JpaEditorManager, ModifiablePropertyValueModel<JpaStructureNode>>(this.editorManagerModel, JPA_SELECTION_MODEL_TRANSFORMER);
 	}
 
-	private static final Transformer<JpaEditorManager, WritablePropertyValueModel<JpaStructureNode>> JPA_SELECTION_MODEL_TRANSFORMER = new JpaSelectionModelTransformer();
+	private static final Transformer<JpaEditorManager, ModifiablePropertyValueModel<JpaStructureNode>> JPA_SELECTION_MODEL_TRANSFORMER = new JpaSelectionModelTransformer();
 
 	/* CU private */ static class JpaSelectionModelTransformer
-		extends AbstractTransformer<JpaEditorManager, WritablePropertyValueModel<JpaStructureNode>>
+		extends AbstractTransformer<JpaEditorManager, ModifiablePropertyValueModel<JpaStructureNode>>
 	{
 		@Override
-		public WritablePropertyValueModel<JpaStructureNode> transform_(JpaEditorManager editorManager) {
+		public ModifiablePropertyValueModel<JpaStructureNode> transform_(JpaEditorManager editorManager) {
 			return editorManager.getJpaSelectionModel();
 		}
 	}

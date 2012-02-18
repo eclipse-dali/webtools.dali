@@ -32,13 +32,13 @@ import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class ListAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
-	private WritablePropertyValueModel<TestSubject> subjectHolder1;
+	private ModifiablePropertyValueModel<TestSubject> subjectHolder1;
 	private LocalListAspectAdapter aa1;
 	private ListEvent event1;
 	private ListChangeListener listener1;

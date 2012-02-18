@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,13 +25,13 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValue
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class CompositeCollectionValueModelTests extends TestCase {
 	private Neighborhood neighborhood;
-	private WritablePropertyValueModel<Neighborhood> neighborhoodHolder;
+	private ModifiablePropertyValueModel<Neighborhood> neighborhoodHolder;
 
 	public CompositeCollectionValueModelTests(String name) {
 		super(name);

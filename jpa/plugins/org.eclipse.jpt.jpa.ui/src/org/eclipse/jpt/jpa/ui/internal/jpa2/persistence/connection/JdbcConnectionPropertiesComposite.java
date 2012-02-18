@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
@@ -51,7 +51,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<String> buildPasswordHolder() {
+	private ModifiablePropertyValueModel<String> buildPasswordHolder() {
 		return new PropertyAspectAdapter<JpaConnection2_0, String>(this.getSubjectHolder(), JpaConnection2_0.PASSWORD_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -76,7 +76,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildUrlHolder() {
+	private ModifiablePropertyValueModel<String> buildUrlHolder() {
 		return new PropertyAspectAdapter<JpaConnection2_0, String>(this.getSubjectHolder(), JpaConnection2_0.URL_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -93,7 +93,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildUserHolder() {
+	private ModifiablePropertyValueModel<String> buildUserHolder() {
 		return new PropertyAspectAdapter<JpaConnection2_0, String>(this.getSubjectHolder(), JpaConnection2_0.USER_PROPERTY) {
 			@Override
 			protected String buildValue_() {

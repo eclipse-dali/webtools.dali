@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -79,7 +79,7 @@ public class TargetEntityComposite
     }
 
     @Override
-	protected WritablePropertyValueModel<String> buildTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildTextHolder() {
 		return new PropertyAspectAdapter<RelationshipMapping, String>(
 			this.getSubjectHolder(),
 			RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY,

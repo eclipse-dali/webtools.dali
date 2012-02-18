@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
@@ -108,7 +108,7 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildColumnDefinitionHolder() {
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
 		return new PropertyAspectAdapter<OrderColumn2_0, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -125,7 +125,7 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
 		return new PropertyAspectAdapter<OrderColumn2_0, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -168,7 +168,7 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<OrderColumn2_0, Boolean>(
 			getSubjectHolder(),
 			BaseColumn.SPECIFIED_NULLABLE_PROPERTY)
@@ -215,7 +215,7 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 	}
 
 
-	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
 		return new PropertyAspectAdapter<OrderColumn2_0, Boolean>(
 			getSubjectHolder(),
 			BaseColumn.DEFAULT_UPDATABLE_PROPERTY,

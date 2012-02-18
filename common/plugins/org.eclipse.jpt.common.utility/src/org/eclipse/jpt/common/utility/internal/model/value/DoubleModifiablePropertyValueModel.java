@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * Add support for changing the double property value model.
@@ -20,18 +20,18 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  */
 public class DoubleModifiablePropertyValueModel<V>
 	extends DoublePropertyValueModel<V>
-	implements WritablePropertyValueModel<V>
+	implements ModifiablePropertyValueModel<V>
 {
 	/**
 	 * Construct a double modifiable property value model for the specified
 	 * wrapped property value model model.
 	 */
-	public DoubleModifiablePropertyValueModel(PropertyValueModel<? extends WritablePropertyValueModel<V>> valueModel) {
+	public DoubleModifiablePropertyValueModel(PropertyValueModel<? extends ModifiablePropertyValueModel<V>> valueModel) {
 		super(valueModel);
 	}
 
 	public void setValue(V value) {
-		WritablePropertyValueModel<V> vmv = this.getValueModelValueModel();
+		ModifiablePropertyValueModel<V> vmv = this.getValueModelValueModel();
 		if (vmv == null) {
 			this.setValue_(value);
 		} else {
@@ -40,8 +40,8 @@ public class DoubleModifiablePropertyValueModel<V>
 	}
 
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<V> getValueModelValueModel() {
-		return (WritablePropertyValueModel<V>) this.valueModelValueModel;
+	protected ModifiablePropertyValueModel<V> getValueModelValueModel() {
+		return (ModifiablePropertyValueModel<V>) this.valueModelValueModel;
 	}
 
 	/**

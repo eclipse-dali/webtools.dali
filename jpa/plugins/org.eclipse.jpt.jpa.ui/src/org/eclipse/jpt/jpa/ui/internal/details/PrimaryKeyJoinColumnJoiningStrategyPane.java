@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
@@ -45,7 +45,7 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 	}
 
 	@Override
-	protected WritablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
 		return buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(getSubjectHolder());
 	}
 
@@ -65,7 +65,7 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 		return null;
 	}
 
-	public static WritablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends PrimaryKeyJoinColumnRelationship> subjectHolder) {
+	public static ModifiablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends PrimaryKeyJoinColumnRelationship> subjectHolder) {
 		return new PropertyAspectAdapter<PrimaryKeyJoinColumnRelationship, Boolean>(
 				subjectHolder, ReadOnlyRelationship.STRATEGY_PROPERTY) {
 			@Override

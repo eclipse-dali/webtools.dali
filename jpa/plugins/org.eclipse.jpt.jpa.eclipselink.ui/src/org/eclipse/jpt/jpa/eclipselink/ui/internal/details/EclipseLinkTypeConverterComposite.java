@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
@@ -68,7 +68,7 @@ public class EclipseLinkTypeConverterComposite extends Pane<EclipseLinkTypeConve
 		new PaneEnabler(buildBooleanHolder(), this);
 	}
 	
-	protected WritablePropertyValueModel<String> buildNameTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(
 				getSubjectHolder(), JpaNamedContextNode.NAME_PROPERTY) {
 			@Override
@@ -92,7 +92,7 @@ public class EclipseLinkTypeConverterComposite extends Pane<EclipseLinkTypeConve
 		return new ClassChooserPane<EclipseLinkTypeConverter>(this, container) {
 
 			@Override
-			protected WritablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextHolder() {
 				return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.DATA_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -148,7 +148,7 @@ public class EclipseLinkTypeConverterComposite extends Pane<EclipseLinkTypeConve
 		return new ClassChooserPane<EclipseLinkTypeConverter>(this, container) {
 
 			@Override
-			protected WritablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextHolder() {
 				return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {

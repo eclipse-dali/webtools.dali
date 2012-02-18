@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,16 +22,16 @@ import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 public class CompositeBooleanPropertyValueModelTests extends TestCase {
 	private SimplePropertyValueModel<Boolean> pvm1;
-	private WritablePropertyValueModel<Boolean> pvm2;
-	private WritablePropertyValueModel<Boolean> pvm3;
-	private WritablePropertyValueModel<Boolean> pvm4;
-	private Collection<WritablePropertyValueModel<Boolean>> collection;
-	private SimpleCollectionValueModel<WritablePropertyValueModel<Boolean>> cvm;
+	private ModifiablePropertyValueModel<Boolean> pvm2;
+	private ModifiablePropertyValueModel<Boolean> pvm3;
+	private ModifiablePropertyValueModel<Boolean> pvm4;
+	private Collection<ModifiablePropertyValueModel<Boolean>> collection;
+	private SimpleCollectionValueModel<ModifiablePropertyValueModel<Boolean>> cvm;
 	private PropertyValueModel<Boolean> compositePVM;
 	PropertyChangeEvent event;
 
@@ -47,17 +47,17 @@ public class CompositeBooleanPropertyValueModelTests extends TestCase {
 		this.pvm2 = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
 		this.pvm3 = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
 		this.pvm4 = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
-		this.collection = new ArrayList<WritablePropertyValueModel<Boolean>>();
+		this.collection = new ArrayList<ModifiablePropertyValueModel<Boolean>>();
 		this.collection.add(this.pvm1);
 		this.collection.add(this.pvm2);
 		this.collection.add(this.pvm3);
 		this.collection.add(this.pvm4);
-		this.cvm = new SimpleCollectionValueModel<WritablePropertyValueModel<Boolean>>(this.collection);
+		this.cvm = new SimpleCollectionValueModel<ModifiablePropertyValueModel<Boolean>>(this.collection);
 		
 		this.compositePVM = this.buildCompositePVM(cvm);
 	}
 
-	private PropertyValueModel<Boolean> buildCompositePVM(CollectionValueModel<WritablePropertyValueModel<Boolean>> pvms) {
+	private PropertyValueModel<Boolean> buildCompositePVM(CollectionValueModel<ModifiablePropertyValueModel<Boolean>> pvms) {
 		return CompositeBooleanPropertyValueModel.and(pvms);
 	}
 
@@ -136,7 +136,7 @@ public class CompositeBooleanPropertyValueModelTests extends TestCase {
 
 	private void verifyCollectionChange() {
 		this.event = null;
-		WritablePropertyValueModel<Boolean> pvm = new SimplePropertyValueModel<Boolean>(Boolean.FALSE);
+		ModifiablePropertyValueModel<Boolean> pvm = new SimplePropertyValueModel<Boolean>(Boolean.FALSE);
 		this.cvm.add(pvm);
 		this.verifyEvent(true, false);
 
@@ -148,7 +148,7 @@ public class CompositeBooleanPropertyValueModelTests extends TestCase {
 		this.cvm.clear();
 		this.verifyEvent(Boolean.TRUE, null);
 
-		Collection<WritablePropertyValueModel<Boolean>> c2 = new ArrayList<WritablePropertyValueModel<Boolean>>();
+		Collection<ModifiablePropertyValueModel<Boolean>> c2 = new ArrayList<ModifiablePropertyValueModel<Boolean>>();
 		c2.add(this.pvm1);
 		c2.add(this.pvm2);
 		this.event = null;

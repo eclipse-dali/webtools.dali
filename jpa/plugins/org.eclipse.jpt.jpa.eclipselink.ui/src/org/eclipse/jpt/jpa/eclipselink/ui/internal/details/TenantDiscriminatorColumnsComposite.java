@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,7 +37,7 @@ import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
@@ -72,7 +72,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 
 	private AddRemoveListPane<T> listPane;
 	private Pane<ReadOnlyTenantDiscriminatorColumn2_3> tenantDiscriminatorColumnPane;
-	private WritablePropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> tenantDiscriminatorColumnHolder;
+	private ModifiablePropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> tenantDiscriminatorColumnHolder;
 
 	public TenantDiscriminatorColumnsComposite(Pane<? extends T> parentPane,
 	                            Composite parent,
@@ -110,7 +110,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 		this.tenantDiscriminatorColumnHolder = buildTenantDiscriminatorColumnHolder();
 	}
 
-	private WritablePropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnHolder() {
+	private ModifiablePropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnHolder() {
 		return new SimplePropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3>();
 	}
 

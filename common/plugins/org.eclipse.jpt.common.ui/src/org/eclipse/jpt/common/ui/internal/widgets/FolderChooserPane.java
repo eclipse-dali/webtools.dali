@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 20010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
  */
 public abstract class FolderChooserPane<T extends Model> extends ChooserPane<T>
 {
-	private WritablePropertyValueModel<String> textHolder;
+	private ModifiablePropertyValueModel<String> textHolder;
 
 	/**
 	 * Creates a new <code>FolderChooserPane</code>.
@@ -79,7 +79,7 @@ public abstract class FolderChooserPane<T extends Model> extends ChooserPane<T>
 	 *
 	 * @return The holder of the class name
 	 */
-	protected abstract WritablePropertyValueModel<String> buildTextHolder();
+	protected abstract ModifiablePropertyValueModel<String> buildTextHolder();
 
 	/**
 	 * Returns the message to be shown in the selection dialog.
@@ -111,7 +111,7 @@ public abstract class FolderChooserPane<T extends Model> extends ChooserPane<T>
 		return null;
 	}
 
-	protected  WritablePropertyValueModel<String> getTextHolder() {
+	protected  ModifiablePropertyValueModel<String> getTextHolder() {
 		return this.textHolder;
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
@@ -85,7 +85,7 @@ public class ManyToManyJoiningStrategyPane
 		addSubPane(composite, 5);
 	}
 
-	protected WritablePropertyValueModel<Boolean> buildUsesMappedByStrategyHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildUsesMappedByStrategyHolder() {
 		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
 				this.getSubjectHolder(), ReadOnlyRelationship.STRATEGY_PROPERTY) {
 			@Override
@@ -104,7 +104,7 @@ public class ManyToManyJoiningStrategyPane
 		};
 	}
 
-	protected WritablePropertyValueModel<Boolean> buildUsesJoinTableStrategyHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildUsesJoinTableStrategyHolder() {
 		return new PropertyAspectAdapter<JoinTableRelationship, Boolean>(
 				this.getSubjectHolder(), ReadOnlyRelationship.STRATEGY_PROPERTY) {
 			@Override

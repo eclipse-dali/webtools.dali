@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -79,7 +79,7 @@ public class PersistenceEditor
 	 * The root of the holders used to retrieve the persistence unit and be
 	 * notified when it changes.
 	 */
-	private WritablePropertyValueModel<IFileEditorInput> editorInputHolder;
+	private ModifiablePropertyValueModel<IFileEditorInput> editorInputHolder;
 
 	/**
 	 * The factory used to create the various widgets.
@@ -171,7 +171,7 @@ public class PersistenceEditor
 		}
 	}
 
-	private WritablePropertyValueModel<IFileEditorInput> buildEditorInputHolder() {
+	private ModifiablePropertyValueModel<IFileEditorInput> buildEditorInputHolder() {
 		return new SimplePropertyValueModel<IFileEditorInput>();
 	}
 

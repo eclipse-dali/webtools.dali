@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
@@ -30,19 +30,19 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	private Caching caching;
 	private PropertyValueModel<Caching> cachingHolder;
 	
-	private WritablePropertyValueModel<CacheType> cacheTypeHolder;
+	private ModifiablePropertyValueModel<CacheType> cacheTypeHolder;
 	private PropertyChangeListener cacheTypeListener;
 	private PropertyChangeEvent cacheTypeEvent;
 
-	private WritablePropertyValueModel<Boolean> sharedCacheHolder;
+	private ModifiablePropertyValueModel<Boolean> sharedCacheHolder;
 	private PropertyChangeListener sharedCacheListener;
 	private PropertyChangeEvent sharedCacheEvent;
 
-	private WritablePropertyValueModel<CacheType> cacheTypeDefaultHolder;
+	private ModifiablePropertyValueModel<CacheType> cacheTypeDefaultHolder;
 	private PropertyChangeListener cacheTypeDefaultListener;
 	private PropertyChangeEvent cacheTypeDefaultEvent;
 
-	private WritablePropertyValueModel<Boolean> sharedCacheDefaultHolder;
+	private ModifiablePropertyValueModel<Boolean> sharedCacheDefaultHolder;
 	private PropertyChangeListener sharedCacheDefaultListener;
 	private PropertyChangeEvent sharedCacheDefaultEvent;
 
@@ -148,7 +148,7 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	/** ****** CacheType ******* */
-	private WritablePropertyValueModel<CacheType> buildCacheTypeAA(PropertyValueModel<Caching> subjectHolder) {
+	private ModifiablePropertyValueModel<CacheType> buildCacheTypeAA(PropertyValueModel<Caching> subjectHolder) {
 		return new PropertyAspectAdapter<Caching, CacheType>(subjectHolder, Caching.CACHE_TYPE_PROPERTY) {
 			@Override
 			protected CacheType buildValue_() {
@@ -171,7 +171,7 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	/** ****** SharedCache ******* */
-	private WritablePropertyValueModel<Boolean> buildSharedCacheAA(PropertyValueModel<Caching> subjectHolder) {
+	private ModifiablePropertyValueModel<Boolean> buildSharedCacheAA(PropertyValueModel<Caching> subjectHolder) {
 		return new PropertyAspectAdapter<Caching, Boolean>(subjectHolder, Caching.SHARED_CACHE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -194,7 +194,7 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	/** ****** CacheTypeDefault ******* */
-	private WritablePropertyValueModel<CacheType> buildCacheTypeDefaultAA(PropertyValueModel<Caching> subjectHolder) {
+	private ModifiablePropertyValueModel<CacheType> buildCacheTypeDefaultAA(PropertyValueModel<Caching> subjectHolder) {
 		return new PropertyAspectAdapter<Caching, CacheType>(subjectHolder, Caching.CACHE_TYPE_DEFAULT_PROPERTY) {
 			@Override
 			protected CacheType buildValue_() {
@@ -217,7 +217,7 @@ public class CachingValueModelTests extends EclipseLinkPersistenceUnitTestCase
 	}
 
 	/** ****** SharedCacheDefault ******* */
-	private WritablePropertyValueModel<Boolean> buildSharedCacheDefaultAA(PropertyValueModel<Caching> subjectHolder) {
+	private ModifiablePropertyValueModel<Boolean> buildSharedCacheDefaultAA(PropertyValueModel<Caching> subjectHolder) {
 		return new PropertyAspectAdapter<Caching, Boolean>(subjectHolder, Caching.SHARED_CACHE_DEFAULT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

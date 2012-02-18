@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,12 +14,12 @@ import java.util.Arrays;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.WritablePropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritableCollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -42,7 +42,7 @@ public final class SWTTools {
 	 * If the boolean model is <code>null<code>, the button's 'selection' state will
 	 * be <code>false<code>.
 	 */
-	public static void bind(WritablePropertyValueModel<Boolean> booleanModel, Button button) {
+	public static void bind(ModifiablePropertyValueModel<Boolean> booleanModel, Button button) {
 		bind(booleanModel, button, false);
 	}
 
@@ -52,7 +52,7 @@ public final class SWTTools {
 	 * If the boolean model is <code>null<code>, the button's 'selection' state will
 	 * be the specified default value.
 	 */
-	public static void bind(WritablePropertyValueModel<Boolean> booleanModel, Button button, boolean defaultValue) {
+	public static void bind(ModifiablePropertyValueModel<Boolean> booleanModel, Button button, boolean defaultValue) {
 		// the new binding will add itself as a listener to the boolean model and the button
 		new BooleanButtonModelBinding(booleanModel, button, defaultValue);
 	}
@@ -63,7 +63,7 @@ public final class SWTTools {
 	/**
 	 * Bind the specified text model to the specified text field.
 	 */
-	public static <E> void bind(WritablePropertyValueModel<String> textModel, Text textField) {
+	public static <E> void bind(ModifiablePropertyValueModel<String> textModel, Text textField) {
 		// the new binding will add itself as a listener to the text model and the text field
 		new TextFieldModelBinding(textModel, textField);
 	}
@@ -98,7 +98,7 @@ public final class SWTTools {
 	 * to be displayed in the list box, which calls {@link Object#toString()}
 	 * on the items in the model list.
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, WritablePropertyValueModel<E> selectedItemModel, List listBox) {
+	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, List listBox) {
 		bind(listModel, selectedItemModel, listBox, StringConverter.Default.<E>instance());
 	}
 
@@ -107,9 +107,9 @@ public final class SWTTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the list box.
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, WritablePropertyValueModel<E> selectedItemModel, List listBox, StringConverter<E> stringConverter) {
+	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, List listBox, StringConverter<E> stringConverter) {
 		checkForSingleSelectionStyle(listBox);
-		bind(listModel, new WritablePropertyCollectionValueModelAdapter<E>(selectedItemModel), listBox, stringConverter);
+		bind(listModel, new ModifiablePropertyCollectionValueModelAdapter<E>(selectedItemModel), listBox, stringConverter);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public final class SWTTools {
 	 * to be displayed in the list box, which calls {@link Object#toString()}
 	 * on the items in the model list.
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, WritableCollectionValueModel<E> selectedItemsModel, List listBox) {
+	public static <E> void bind(ListValueModel<E> listModel, ModifiableCollectionValueModel<E> selectedItemsModel, List listBox) {
 		bind(listModel, selectedItemsModel, listBox, StringConverter.Default.<E>instance());
 	}
 
@@ -127,7 +127,7 @@ public final class SWTTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the list box.
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, WritableCollectionValueModel<E> selectedItemsModel, List listBox, StringConverter<E> stringConverter) {
+	public static <E> void bind(ListValueModel<E> listModel, ModifiableCollectionValueModel<E> selectedItemsModel, List listBox, StringConverter<E> stringConverter) {
 		bind(
 			listModel,
 			new SWTListAdapter(listBox),
@@ -151,7 +151,7 @@ public final class SWTTools {
 	 * to be displayed in the drop-down list box, which calls {@link Object#toString()}
 	 * on the items in the model list.
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, WritablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox) {
+	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox) {
 		bind(listModel, selectedItemModel, dropDownListBox, StringConverter.Default.<E>instance());
 	}
 
@@ -160,7 +160,7 @@ public final class SWTTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the drop-down list box.
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, WritablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox, StringConverter<E> stringConverter) {
+	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox, StringConverter<E> stringConverter) {
 		checkForReadOnlyStyle(dropDownListBox);
 		SWTComboAdapter comboAdapter = new SWTComboAdapter(dropDownListBox);
 		bind(

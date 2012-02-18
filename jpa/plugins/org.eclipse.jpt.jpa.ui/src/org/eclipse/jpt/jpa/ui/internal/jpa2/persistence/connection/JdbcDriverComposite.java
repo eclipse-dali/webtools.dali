@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +40,7 @@ public class JdbcDriverComposite extends Pane<JpaConnection2_0>
 		return new ClassChooserPane<JpaConnection2_0>(this, container) {
 
 			@Override
-			protected WritablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextHolder() {
 				return new PropertyAspectAdapter<JpaConnection2_0, String>(
 							this.getSubjectHolder(), JpaConnection2_0.DRIVER_PROPERTY) {
 					@Override

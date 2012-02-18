@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringWritablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationWritablePropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * This {@link javax.swing.ButtonModel} can be used to keep a listener
@@ -36,7 +36,7 @@ public class RadioButtonModelAdapter
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	public RadioButtonModelAdapter(WritablePropertyValueModel<Object> valueHolder, Object buttonValue, boolean defaultValue) {
+	public RadioButtonModelAdapter(ModifiablePropertyValueModel<Object> valueHolder, Object buttonValue, boolean defaultValue) {
 		super(buildBooleanHolder(valueHolder, buttonValue), defaultValue);
 	}
 
@@ -44,7 +44,7 @@ public class RadioButtonModelAdapter
 	 * Constructor - the value holder is required.
 	 * The default value will be false.
 	 */
-	public RadioButtonModelAdapter(WritablePropertyValueModel<Object> valueHolder, Object buttonValue) {
+	public RadioButtonModelAdapter(ModifiablePropertyValueModel<Object> valueHolder, Object buttonValue) {
 		super(buildBooleanHolder(valueHolder, buttonValue));
 	}
 
@@ -60,8 +60,8 @@ public class RadioButtonModelAdapter
 	 * value is set to true, the wrapper will set the value holder's
 	 * value to the button value.
 	 */
-	public static WritablePropertyValueModel<Boolean> buildBooleanHolder(WritablePropertyValueModel<Object> valueHolder, Object buttonValue) {
-		WritablePropertyValueModel<Object> filteringPVM = new FilteringWritablePropertyValueModel<Object>(valueHolder, Filter.Transparent.instance(), new SetRadioButtonFilter(buttonValue));
+	public static ModifiablePropertyValueModel<Boolean> buildBooleanHolder(ModifiablePropertyValueModel<Object> valueHolder, Object buttonValue) {
+		ModifiablePropertyValueModel<Object> filteringPVM = new FilteringWritablePropertyValueModel<Object>(valueHolder, Filter.Transparent.instance(), new SetRadioButtonFilter(buttonValue));
 		return new TransformationWritablePropertyValueModel<Object, Boolean>(filteringPVM, new RadioButtonTransformer(buttonValue), new ReverseRadioButtonTransformer(buttonValue));
 	}
 

@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.model.listener.StateChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -228,7 +228,7 @@ public class JoinTableComposite
 		return new InverseJoinColumnsProvider();
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultInverseJoinColumnHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultInverseJoinColumnHolder() {
 		return new OverrideDefaultInverseJoinColumnHolder();
 	}
 	
@@ -333,7 +333,7 @@ public class JoinTableComposite
 	}
 	
 	private class OverrideDefaultInverseJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
-	    implements WritablePropertyValueModel<Boolean> {
+	    implements ModifiablePropertyValueModel<Boolean> {
 	
 		public OverrideDefaultInverseJoinColumnHolder() {
 			super(buildSpecifiedInverseJoinColumnsListHolder());

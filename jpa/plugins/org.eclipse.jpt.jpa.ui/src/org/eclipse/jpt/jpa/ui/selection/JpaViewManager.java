@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.selection;
 
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.ui.IEditorPart;
@@ -94,6 +94,6 @@ public interface JpaViewManager {
 		 * @see #getJpaFileModel()
 		 * @see #getEditorManager(IEditorPart)
 		 */
-		WritablePropertyValueModel<JpaStructureNode> getJpaSelectionModel();
+		ModifiablePropertyValueModel<JpaStructureNode> getJpaSelectionModel();
 	}
 }

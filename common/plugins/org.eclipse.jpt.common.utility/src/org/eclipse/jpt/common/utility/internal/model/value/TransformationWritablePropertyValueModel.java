@@ -10,11 +10,11 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * A <code>TransformationWritablePropertyValueModel</code> wraps another
- * {@link WritablePropertyValueModel} and uses two {@link Transformer}s
+ * {@link ModifiablePropertyValueModel} and uses two {@link Transformer}s
  * to:<ul>
  * <li>transform the wrapped value before it is returned by {@link #getValue()}
  * <li>"reverse-transform" the new value that comes in via
@@ -44,7 +44,7 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  */
 public class TransformationWritablePropertyValueModel<V1, V2>
 	extends TransformationPropertyValueModel<V1, V2>
-	implements WritablePropertyValueModel<V2>
+	implements ModifiablePropertyValueModel<V2>
 {
 	protected final Transformer<V2, V1> reverseTransformer;
 
@@ -59,7 +59,7 @@ public class TransformationWritablePropertyValueModel<V1, V2>
 	 * (or {@link #transform(Object)} and {@link #reverseTransform(Object)})
 	 * methods instead of building {@link Transformer}s.
 	 */
-	public TransformationWritablePropertyValueModel(WritablePropertyValueModel<V1> valueModel) {
+	public TransformationWritablePropertyValueModel(ModifiablePropertyValueModel<V1> valueModel) {
 		super(valueModel);
 		this.reverseTransformer = this.buildReverseTransformer();
 	}
@@ -68,7 +68,7 @@ public class TransformationWritablePropertyValueModel<V1, V2>
 	 * Construct a writable property value model with the specified nested
 	 * writable property value model and transformers.
 	 */
-	public TransformationWritablePropertyValueModel(WritablePropertyValueModel<V1> valueModel, Transformer<V1, V2> transformer, Transformer<V2, V1> reverseTransformer) {
+	public TransformationWritablePropertyValueModel(ModifiablePropertyValueModel<V1> valueModel, Transformer<V1, V2> transformer, Transformer<V2, V1> reverseTransformer) {
 		super(valueModel, transformer);
 		if (reverseTransformer == null) {
 			throw new NullPointerException();
@@ -119,12 +119,12 @@ public class TransformationWritablePropertyValueModel<V1, V2>
 	// ********** queries **********
 
 	/**
-	 * Our constructors accept only a {@link WritablePropertyValueModel}{@code<V>},
+	 * Our constructors accept only a {@link ModifiablePropertyValueModel}{@code<V>},
 	 * so this cast should be safe.
 	 */
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<V1> getValueModel() {
-		return (WritablePropertyValueModel<V1>) this.valueModel;
+	protected ModifiablePropertyValueModel<V1> getValueModel() {
+		return (ModifiablePropertyValueModel<V1>) this.valueModel;
 	}
 
 

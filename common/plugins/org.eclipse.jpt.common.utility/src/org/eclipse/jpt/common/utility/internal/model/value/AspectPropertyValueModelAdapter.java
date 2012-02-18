@@ -13,7 +13,7 @@ import java.util.EventListener;
 
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * This {@link AspectAdapter} provides basic property change support.
@@ -49,7 +49,7 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  */
 public abstract class AspectPropertyValueModelAdapter<S, V>
 	extends AspectAdapter<S, V>
-	implements WritablePropertyValueModel<V>
+	implements ModifiablePropertyValueModel<V>
 {
 	/**
 	 * Cache the current value of the aspect so we

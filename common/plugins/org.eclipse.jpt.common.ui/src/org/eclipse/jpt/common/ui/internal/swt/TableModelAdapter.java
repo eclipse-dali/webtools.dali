@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,7 +39,7 @@ import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritableCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -159,7 +159,7 @@ public class TableModelAdapter<E> {
 	 */
 	public static <T> TableModelAdapter<T> adapt(
 			ListValueModel<T> listHolder,
-			WritableCollectionValueModel<T> selectionModel,
+			ModifiableCollectionValueModel<T> selectionModel,
 			Table table,
 			ColumnAdapter<T> columnAdapter,
 			ITableLabelProvider labelProvider) {
@@ -176,7 +176,7 @@ public class TableModelAdapter<E> {
 	}
 	
 	private static <T> SelectionChangeListener buildSyncListener(
-				final WritableCollectionValueModel<T> selectionModel) {
+				final ModifiableCollectionValueModel<T> selectionModel) {
 		
 		return new SelectionChangeListener() {
 			public void selectionChanged(SelectionChangeEvent event) {

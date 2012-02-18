@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
@@ -58,7 +58,7 @@ import org.eclipse.swt.widgets.TableItem;
 @SuppressWarnings("nls")
 public class QueryHintsComposite extends Pane<Query>
 {
-	private WritablePropertyValueModel<QueryHint> queryHintHolder;
+	private ModifiablePropertyValueModel<QueryHint> queryHintHolder;
 
 	/**
 	 * Creates a new <code>QueryHintsComposite</code>.
@@ -96,7 +96,7 @@ public class QueryHintsComposite extends Pane<Query>
 		};
 	}
 
-	private WritablePropertyValueModel<QueryHint> buildQueryHintHolder() {
+	private ModifiablePropertyValueModel<QueryHint> buildQueryHintHolder() {
 		return new SimplePropertyValueModel<QueryHint>();
 	};
 
@@ -147,7 +147,7 @@ public class QueryHintsComposite extends Pane<Query>
 		static final int NAME_COLUMN_INDEX = 0;
 		static final int VALUE_COLUMN_INDEX = 1;
 
-		private WritablePropertyValueModel<String> buildNameHolder(QueryHint subject) {
+		private ModifiablePropertyValueModel<String> buildNameHolder(QueryHint subject) {
 			return new PropertyAspectAdapter<QueryHint, String>(QueryHint.NAME_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -161,7 +161,7 @@ public class QueryHintsComposite extends Pane<Query>
 			};
 		}
 
-		private WritablePropertyValueModel<?> buildValueHolder(QueryHint subject) {
+		private ModifiablePropertyValueModel<?> buildValueHolder(QueryHint subject) {
 			return new PropertyAspectAdapter<QueryHint, String>(QueryHint.VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -175,8 +175,8 @@ public class QueryHintsComposite extends Pane<Query>
 			};
 		}
 
-		public WritablePropertyValueModel<?>[] cellModels(QueryHint subject) {
-			WritablePropertyValueModel<?>[] models = new WritablePropertyValueModel<?>[COLUMN_COUNT];
+		public ModifiablePropertyValueModel<?>[] cellModels(QueryHint subject) {
+			ModifiablePropertyValueModel<?>[] models = new ModifiablePropertyValueModel<?>[COLUMN_COUNT];
 			models[NAME_COLUMN_INDEX]  = buildNameHolder(subject);
 			models[VALUE_COLUMN_INDEX] = buildValueHolder(subject);
 			return models;
@@ -316,7 +316,7 @@ public class QueryHintsComposite extends Pane<Query>
 		protected void initializeMainComposite(Composite container,
 		                                       Adapter adapter,
 		                                       ListValueModel<?> listHolder,
-		                                       WritablePropertyValueModel<?> selectedItemHolder,
+		                                       ModifiablePropertyValueModel<?> selectedItemHolder,
 		                                       IBaseLabelProvider labelProvider,
 		                                       String helpId) {
 

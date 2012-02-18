@@ -11,17 +11,17 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
- * A simple implementation of {@link WritablePropertyValueModel} that actually
+ * A simple implementation of {@link ModifiablePropertyValueModel} that actually
  * ... <em>isn't</em> ... writable.  It can however be used in places that require a 
- * {@link WritablePropertyValueModel} and where the developer is sure that no 
+ * {@link ModifiablePropertyValueModel} and where the developer is sure that no 
  * attempt will be made to write to it.
  */
 public class ReadOnlyWritablePropertyValueModelWrapper<T>
 	extends PropertyValueModelWrapper<T>
-	implements WritablePropertyValueModel<T>
+	implements ModifiablePropertyValueModel<T>
 {
 	public ReadOnlyWritablePropertyValueModelWrapper(PropertyValueModel<? extends T> valueModel) {
 		super(valueModel);

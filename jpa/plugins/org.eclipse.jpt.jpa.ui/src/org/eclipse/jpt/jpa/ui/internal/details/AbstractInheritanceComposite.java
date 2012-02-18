@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -140,7 +140,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		addPrimaryKeyJoinColumnsComposite(addSubPane(container, 5));
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildDiscriminatorValueEnabledHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildDiscriminatorValueEnabledHolder() {
 		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_IS_ALLOWED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -155,7 +155,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		);
 	}
 
-	private WritablePropertyValueModel<String> buildDefaultDiscriminatorValueHolder() {
+	private ModifiablePropertyValueModel<String> buildDefaultDiscriminatorValueHolder() {
 		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, Entity.DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -218,7 +218,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildDiscriminatorValueHolder() {
+	private ModifiablePropertyValueModel<String> buildDiscriminatorValueHolder() {
 		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {

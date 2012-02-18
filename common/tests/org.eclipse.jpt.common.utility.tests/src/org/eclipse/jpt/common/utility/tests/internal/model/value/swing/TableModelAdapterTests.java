@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -293,10 +293,10 @@ public class TableModelAdapterTests extends TestCase {
 			return index != NAME_COLUMN;
 		}
 	
-		public WritablePropertyValueModel<Object>[] cellModels(Object subject) {
+		public ModifiablePropertyValueModel<Object>[] cellModels(Object subject) {
 			Person person = (Person) subject;
 			@SuppressWarnings("unchecked")
-			WritablePropertyValueModel<Object>[] result = new WritablePropertyValueModel[COLUMN_COUNT];
+			ModifiablePropertyValueModel<Object>[] result = new ModifiablePropertyValueModel[COLUMN_COUNT];
 	
 			result[NAME_COLUMN] = this.buildNameAdapter(person);
 			result[BIRTH_DATE_COLUMN] = this.buildBirthDateAdapter(person);
@@ -309,7 +309,7 @@ public class TableModelAdapterTests extends TestCase {
 			return result;
 		}
 	
-		private WritablePropertyValueModel<Object> buildNameAdapter(Person person) {
+		private ModifiablePropertyValueModel<Object> buildNameAdapter(Person person) {
 			return new PropertyAspectAdapter<Person, Object>(Person.NAME_PROPERTY, person) {
 				@Override
 				protected String buildValue_() {
@@ -322,7 +322,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private WritablePropertyValueModel<Object> buildBirthDateAdapter(Person person) {
+		private ModifiablePropertyValueModel<Object> buildBirthDateAdapter(Person person) {
 			return new PropertyAspectAdapter<Person, Object>(Person.BIRTH_DATE_PROPERTY, person) {
 				@Override
 				protected Date buildValue_() {
@@ -335,7 +335,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private WritablePropertyValueModel<Object> buildGoneWestDateAdapter(Person person) {
+		private ModifiablePropertyValueModel<Object> buildGoneWestDateAdapter(Person person) {
 			return new PropertyAspectAdapter<Person, Object>(Person.GONE_WEST_DATE_PROPERTY, person) {
 				@Override
 				protected Date buildValue_() {
@@ -348,7 +348,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private WritablePropertyValueModel<Object> buildEyeColorAdapter(Person person) {
+		private ModifiablePropertyValueModel<Object> buildEyeColorAdapter(Person person) {
 			return new PropertyAspectAdapter<Person, Object>(Person.EYE_COLOR_PROPERTY, person) {
 				@Override
 				protected String buildValue_() {
@@ -361,7 +361,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private WritablePropertyValueModel<Object> buildEvilAdapter(Person person) {
+		private ModifiablePropertyValueModel<Object> buildEvilAdapter(Person person) {
 			return new PropertyAspectAdapter<Person, Object>(Person.EVIL_PROPERTY, person) {
 				@Override
 				protected Boolean buildValue_() {
@@ -374,7 +374,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private WritablePropertyValueModel<Object> buildRankAdapter(Person person) {
+		private ModifiablePropertyValueModel<Object> buildRankAdapter(Person person) {
 			return new PropertyAspectAdapter<Person, Object>(Person.RANK_PROPERTY, person) {
 				@Override
 				protected Integer buildValue_() {
@@ -387,7 +387,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private WritablePropertyValueModel<Object> buildAdventureCountAdapter(Person person) {
+		private ModifiablePropertyValueModel<Object> buildAdventureCountAdapter(Person person) {
 			return new PropertyAspectAdapter<Person, Object>(Person.ADVENTURE_COUNT_PROPERTY, person) {
 				@Override
 				protected Integer buildValue_() {

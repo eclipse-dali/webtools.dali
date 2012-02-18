@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlContentProposalProvider;
@@ -60,7 +60,7 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
 		super(parentPane, subjectHolder, parent);
 	}
 
-	protected WritablePropertyValueModel<String> buildNameTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<NamedQuery, String>(
 				getSubjectHolder(), Query.NAME_PROPERTY) {
 			@Override
@@ -78,7 +78,7 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
 		};
 	}
 
-	protected WritablePropertyValueModel<String> buildQueryHolder() {
+	protected ModifiablePropertyValueModel<String> buildQueryHolder() {
 		return new PropertyAspectAdapter<NamedQuery, String>(getSubjectHolder(), Query.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {

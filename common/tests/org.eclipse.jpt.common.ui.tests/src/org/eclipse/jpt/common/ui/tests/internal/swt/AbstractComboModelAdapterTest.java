@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.swing.SimpleDisplayable;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
@@ -41,9 +41,9 @@ import org.junit.Test;
 public abstract class AbstractComboModelAdapterTest {
 
 	private Model model;
-	private WritablePropertyValueModel<SimpleDisplayable> selectedItemHolder;
+	private ModifiablePropertyValueModel<SimpleDisplayable> selectedItemHolder;
 	private Shell shell;
-	private WritablePropertyValueModel<Model> subjectHolder;
+	private ModifiablePropertyValueModel<Model> subjectHolder;
 
 	protected abstract AbstractComboModelAdapter<SimpleDisplayable> buildEditableComboModelAdapter();
 
@@ -77,7 +77,7 @@ public abstract class AbstractComboModelAdapterTest {
 		return new SimpleDisplayable("baz");
 	}
 
-	private WritablePropertyValueModel<SimpleDisplayable> buildSelectedItemHolder() {
+	private ModifiablePropertyValueModel<SimpleDisplayable> buildSelectedItemHolder() {
 		return new PropertyAspectAdapter<Model, SimpleDisplayable>(subjectHolder, Model.ITEM_PROPERTY) {
 			@Override
 			protected SimpleDisplayable buildValue_() {
@@ -99,7 +99,7 @@ public abstract class AbstractComboModelAdapterTest {
 		};
 	}
 
-	private WritablePropertyValueModel<Model> buildSubjectHolder() {
+	private ModifiablePropertyValueModel<Model> buildSubjectHolder() {
 		return new SimplePropertyValueModel<Model>();
 	}
 
@@ -120,7 +120,7 @@ public abstract class AbstractComboModelAdapterTest {
 		c.add(new SimpleDisplayable("jaz"));
 	}
 
-	protected final WritablePropertyValueModel<SimpleDisplayable> selectedItemHolder() {
+	protected final ModifiablePropertyValueModel<SimpleDisplayable> selectedItemHolder() {
 		return selectedItemHolder;
 	}
 
@@ -137,7 +137,7 @@ public abstract class AbstractComboModelAdapterTest {
 		return shell;
 	}
 
-	protected final WritablePropertyValueModel<Model> subjectHolder() {
+	protected final ModifiablePropertyValueModel<Model> subjectHolder() {
 		return subjectHolder;
 	}
 

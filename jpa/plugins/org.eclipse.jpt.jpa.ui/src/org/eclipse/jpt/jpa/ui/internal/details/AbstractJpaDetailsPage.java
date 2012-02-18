@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
@@ -46,7 +46,7 @@ public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
 
 	@SuppressWarnings("unchecked")
 	public final void setSubject(Object subject) {
-		WritablePropertyValueModel<T> subjectHolder = (WritablePropertyValueModel<T>) getSubjectHolder();
+		ModifiablePropertyValueModel<T> subjectHolder = (ModifiablePropertyValueModel<T>) getSubjectHolder();
 		subjectHolder.setValue((T) subject);
 	}
 }

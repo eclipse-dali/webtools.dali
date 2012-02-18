@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,29 +11,28 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.Iterator;
 
-import org.eclipse.jpt.common.utility.model.value.WritableListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
- * An adapter that allows us to make a {@link WritablePropertyValueModel} behave like
- * a single-element {@link WritableListValueModel}, sorta.
+ * An adapter that allows us to make a {@link ModifiablePropertyValueModel} behave like
+ * a single-element {@link ModifiableListValueModel}, sorta.
  * <p>
- * If the property's value is null, an empty iterator is returned
+ * If the property's value is <code>null</code>, an empty iterator is returned
  * (i.e. you can't have a list with a <code>null</code> element).
  * Also, only a single-element list can be written to the adapter.
  */
-public class WritablePropertyListValueModelAdapter<E>
+public class ModifiablePropertyListValueModelAdapter<E>
 	extends PropertyListValueModelAdapter<E>
-	implements WritableListValueModel<E>
+	implements ModifiableListValueModel<E>
 {
-
 	// ********** constructor **********
 
 	/**
 	 * Convert the specified writable property value model to a writable
 	 * collection value model.
 	 */
-	public WritablePropertyListValueModelAdapter(WritablePropertyValueModel<E> valueHolder) {
+	public ModifiablePropertyListValueModelAdapter(ModifiablePropertyValueModel<E> valueHolder) {
 		super(valueHolder);
 	}
 
@@ -55,8 +54,7 @@ public class WritablePropertyListValueModelAdapter<E>
 
 	// our constructor takes only writable property value models
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<E> getValueHolder() {
-		return (WritablePropertyValueModel<E>) this.valueHolder;
+	protected ModifiablePropertyValueModel<E> getValueHolder() {
+		return (ModifiablePropertyValueModel<E>) this.valueHolder;
 	}
-
 }

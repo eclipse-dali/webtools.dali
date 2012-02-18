@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 import org.eclipse.jpt.common.utility.internal.model.value.DoubleModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 @SuppressWarnings("nls")
 public class DoubleModifiablePropertyValueModelTests
@@ -27,8 +27,8 @@ public class DoubleModifiablePropertyValueModelTests
 		return new DoubleModifiablePropertyValueModel<String>(this.stringModelModel);
 	}
 
-	protected WritablePropertyValueModel<String> getDoubleModel() {
-		return (WritablePropertyValueModel<String>) this.doubleModel;
+	protected ModifiablePropertyValueModel<String> getDoubleModel() {
+		return (ModifiablePropertyValueModel<String>) this.doubleModel;
 	}
 
 	public void testSetValue() {
@@ -91,7 +91,7 @@ public class DoubleModifiablePropertyValueModelTests
 		this.stringModelEvent = null;
 		this.stringModelModelEvent = null;
 		this.doubleModelEvent = null;
-		WritablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
+		ModifiablePropertyValueModel<String> stringModel2 = new SimplePropertyValueModel<String>("TTT");
 		this.stringModelModel.setValue(stringModel2);
 		assertNull(this.stringModelEvent);
 		this.verifyEvent(this.stringModelModelEvent, this.stringModelModel, this.stringModel, stringModel2);

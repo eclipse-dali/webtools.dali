@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -67,7 +67,7 @@ import org.eclipse.swt.widgets.Group;
  */
 public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnlySecondaryTable>
 {
-	private WritablePropertyValueModel<ReadOnlyPrimaryKeyJoinColumn> joinColumnHolder;
+	private ModifiablePropertyValueModel<ReadOnlyPrimaryKeyJoinColumn> joinColumnHolder;
 
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnsInSecondaryTableComposite</code>.
@@ -196,7 +196,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
 		return new OverrideDefaultJoinColumnHolder();
 	}
 
@@ -227,7 +227,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 		};
 	}
 
-	private WritablePropertyValueModel<ReadOnlyPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnHolder() {
+	private ModifiablePropertyValueModel<ReadOnlyPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnHolder() {
 		return new SimplePropertyValueModel<ReadOnlyPrimaryKeyJoinColumn>();
 	}
 
@@ -378,7 +378,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 	}
 
 	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
-	                                              implements WritablePropertyValueModel<Boolean> {
+	                                              implements ModifiablePropertyValueModel<Boolean> {
 
 		public OverrideDefaultJoinColumnHolder() {
 			super(buildSpecifiedJoinColumnsListHolder());

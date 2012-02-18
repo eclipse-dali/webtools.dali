@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
@@ -119,7 +119,7 @@ public class JavaEclipseLinkExistenceCheckingComposite extends Pane<JavaEclipseL
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildExistenceCheckingHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildExistenceCheckingHolder() {
 		return new PropertyAspectAdapter<JavaEclipseLinkCaching, Boolean>(getSubjectHolder(), JavaEclipseLinkCaching.EXISTENCE_CHECKING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

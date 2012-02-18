@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.model.value;
 
 /**
  * Extend {@link ListValueModel} to allow the setting of the
- * lists's values.
+ * list's values.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,14 +21,12 @@ package org.eclipse.jpt.common.utility.model.value;
  * 
  * @param <E> the type of values held by the model
  */
-public interface WritableListValueModel<E>
+public interface ModifiableListValueModel<E>
 	extends ListValueModel<E>
 {
-
 	/**
 	 * Set the list values and fire a list change notification.
 	 * @see ListValueModel#LIST_VALUES
 	 */
 	void setListValues(Iterable<E> values);
-
 }

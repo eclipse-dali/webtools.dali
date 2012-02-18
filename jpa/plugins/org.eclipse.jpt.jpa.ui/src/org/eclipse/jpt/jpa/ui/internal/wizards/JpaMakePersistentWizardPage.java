@@ -47,7 +47,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -96,12 +96,12 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	private final JpaProject jpaProject;
 	private JptResourceType jptResourceType;
 	
-	private final WritablePropertyValueModel<Boolean> annotateInJavaModel;
+	private final ModifiablePropertyValueModel<Boolean> annotateInJavaModel;
 
 	private boolean isFirstCheck = true;
-	private final WritablePropertyValueModel<String> mappingFileModel;
+	private final ModifiablePropertyValueModel<String> mappingFileModel;
 	
-	private final WritablePropertyValueModel<Boolean> listInPersistenceXmlModel;
+	private final ModifiablePropertyValueModel<Boolean> listInPersistenceXmlModel;
 
 	protected JpaMakePersistentWizardPage(final JpaProject jpaProject, final List<IType> selectedTypes, final String helpContextId) {
 		super(MAKE_PERSISTENT_PAGE_NAME);

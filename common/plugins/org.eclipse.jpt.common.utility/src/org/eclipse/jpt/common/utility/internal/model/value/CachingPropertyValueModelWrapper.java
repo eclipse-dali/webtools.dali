@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * Wrap a writable property value model and cache its value so any changes
@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
  */
 public class CachingPropertyValueModelWrapper<V>
 	extends PropertyValueModelWrapper<V>
-	implements WritablePropertyValueModel<V>
+	implements ModifiablePropertyValueModel<V>
 {
 	/**
 	 * Cache the value so we ignore any property change events
@@ -36,7 +36,7 @@ public class CachingPropertyValueModelWrapper<V>
 	 * Construct a caching writable property value model with the specified
 	 * nested writable property value model.
 	 */
-	public CachingPropertyValueModelWrapper(WritablePropertyValueModel<V> valueModel) {
+	public CachingPropertyValueModelWrapper(ModifiablePropertyValueModel<V> valueModel) {
 		super(valueModel);
 	}
 
@@ -65,12 +65,12 @@ public class CachingPropertyValueModelWrapper<V>
 
 	/**
 	 * Our constructors accept only a
-	 * {@link WritablePropertyValueModel}{@code<V>},
+	 * {@link ModifiablePropertyValueModel}{@code<V>},
 	 * so this cast should be safe.
 	 */
 	@SuppressWarnings("unchecked")
-	protected WritablePropertyValueModel<V> getValueModel() {
-		return (WritablePropertyValueModel<V>) this.valueModel;
+	protected ModifiablePropertyValueModel<V> getValueModel() {
+		return (ModifiablePropertyValueModel<V>) this.valueModel;
 	}
 
 	@Override

@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelA
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -77,7 +77,7 @@ public class LoggerComposite extends ClassChooserComboPane<Logging>
     }
     
 	@Override
-	protected WritablePropertyValueModel<String> buildTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildTextHolder() {
 		return new PropertyAspectAdapter<Logging, String>(this.getSubjectHolder(), Logging.LOGGER_PROPERTY) {
 			@Override
 			protected String buildValue_() {

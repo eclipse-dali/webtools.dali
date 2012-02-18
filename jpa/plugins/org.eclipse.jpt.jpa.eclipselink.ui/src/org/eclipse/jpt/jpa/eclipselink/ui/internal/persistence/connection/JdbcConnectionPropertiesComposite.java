@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
@@ -56,7 +56,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<String> buildPasswordHolder() {
+	private ModifiablePropertyValueModel<String> buildPasswordHolder() {
 		return new PropertyAspectAdapter<Connection, String>(getSubjectHolder(), Connection.PASSWORD_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -81,7 +81,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildUrlHolder() {
+	private ModifiablePropertyValueModel<String> buildUrlHolder() {
 		return new PropertyAspectAdapter<Connection, String>(getSubjectHolder(), Connection.URL_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -98,7 +98,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildUserHolder() {
+	private ModifiablePropertyValueModel<String> buildUserHolder() {
 		return new PropertyAspectAdapter<Connection, String>(getSubjectHolder(), Connection.USER_PROPERTY) {
 			@Override
 			protected String buildValue_() {

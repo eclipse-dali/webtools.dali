@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -90,7 +90,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                         Composite parent,
 	                         Adapter adapter,
 	                         ListValueModel<?> listHolder,
-	                         WritablePropertyValueModel<?> selectedItemHolder,
+	                         ModifiablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider) {
 
 		super(parentPane,
@@ -117,7 +117,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                         Composite parent,
 	                         Adapter adapter,
 	                         ListValueModel<?> listHolder,
-	                         WritablePropertyValueModel<?> selectedItemHolder,
+	                         ModifiablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider,
 	                         String helpId) {
 
@@ -148,7 +148,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                         Composite parent,
 	                         Adapter adapter,
 	                         ListValueModel<?> listHolder,
-	                         WritablePropertyValueModel<?> selectedItemHolder,
+	                         ModifiablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider,
 	                         String helpId,
 	                         boolean parentManagePane) {
@@ -180,7 +180,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                         Composite parent,
 	                         Adapter adapter,
 	                         ListValueModel<?> listHolder,
-	                         WritablePropertyValueModel<?> selectedItemHolder,
+	                         ModifiablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider) {
 
 		super(parentPane,
@@ -210,7 +210,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                         Composite parent,
 	                         Adapter adapter,
 	                         ListValueModel<?> listHolder,
-	                         WritablePropertyValueModel<?> selectedItemHolder,
+	                         ModifiablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider,
 	                         String helpId) {
 
@@ -226,8 +226,8 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 
 	private ColumnAdapter<Object> buildColumnAdapter() {
 		return new ColumnAdapter<Object>() {
-			public WritablePropertyValueModel<?>[] cellModels(Object subject) {
-				WritablePropertyValueModel<?>[] valueHolders = new WritablePropertyValueModel<?>[1];
+			public ModifiablePropertyValueModel<?>[] cellModels(Object subject) {
+				ModifiablePropertyValueModel<?>[] valueHolders = new ModifiablePropertyValueModel<?>[1];
 				valueHolders[0] = new SimplePropertyValueModel<Object>(subject);
 				return valueHolders;
 			}
@@ -456,7 +456,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	protected void initializeMainComposite(Composite container,
 	                                       Adapter adapter,
 	                                       ListValueModel<?> listHolder,
-	                                       WritablePropertyValueModel<?> selectedItemHolder,
+	                                       ModifiablePropertyValueModel<?> selectedItemHolder,
 	                                       IBaseLabelProvider labelProvider,
 	                                       String helpId) {
 
@@ -502,7 +502,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * selection model and (3) the buttons.
 	 */
 	private void selectionChanged() {
-		WritablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
+		ModifiablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
 		ObjectListSelectionModel selectionModel = getSelectionModel();
 		int selectionCount = this.table.getSelectionCount();
 

@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -38,7 +38,7 @@ public class CacheStatementsPropertiesComposite<T extends Connection>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		WritablePropertyValueModel<Boolean> cacheStatementsHolder = buildCacheStatementsHolder();
+		ModifiablePropertyValueModel<Boolean> cacheStatementsHolder = buildCacheStatementsHolder();
 
 		container = this.addSubPane(container, 3, 5, 0, 0, 0);
 		
@@ -53,7 +53,7 @@ public class CacheStatementsPropertiesComposite<T extends Connection>
 		this.installControlEnabler(cacheStatementsHolder, combo);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildCacheStatementsHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildCacheStatementsHolder() {
 		return new PropertyAspectAdapter<Connection, Boolean>(getSubjectHolder(), Connection.CACHE_STATEMENTS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -112,7 +112,7 @@ public class CacheStatementsPropertiesComposite<T extends Connection>
 			}
 			
 			@Override
-			protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 				return new PropertyAspectAdapter<Connection, Integer>(getSubjectHolder(), Connection.CACHE_STATEMENTS_SIZE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
@@ -128,7 +128,7 @@ public class CacheStatementsPropertiesComposite<T extends Connection>
 		};
 	}
 
-	private void installControlEnabler(WritablePropertyValueModel<Boolean> cacheStatementsHolder, IntegerCombo<?> combo) {
+	private void installControlEnabler(ModifiablePropertyValueModel<Boolean> cacheStatementsHolder, IntegerCombo<?> combo) {
 
 		new PaneEnabler(cacheStatementsHolder, combo);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.common.ui.internal.jface.ArchiveFileViewerFilter;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
@@ -52,7 +52,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
 public class ArchiveFileSelectionDialog 
 	extends ElementTreeSelectionDialog
 {
-	private final WritablePropertyValueModel<String> jarPathModel;
+	private final ModifiablePropertyValueModel<String> jarPathModel;
 	
 	private DeploymentPathCalculator pathCalculator;
 	

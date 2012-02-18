@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationListVal
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratedValue;
 import org.eclipse.jpt.jpa.core.context.GenerationType;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -145,7 +145,7 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 		};
 	}
 	
-	protected final WritablePropertyValueModel<String> buildGeneratorNameHolder() {
+	protected final ModifiablePropertyValueModel<String> buildGeneratorNameHolder() {
 		return new PropertyAspectAdapter<GeneratedValue, String>(buildGeneratedValueHolder(), GeneratedValue.SPECIFIED_GENERATOR_PROPERTY) {
 			@Override
 			protected String buildValue_() {

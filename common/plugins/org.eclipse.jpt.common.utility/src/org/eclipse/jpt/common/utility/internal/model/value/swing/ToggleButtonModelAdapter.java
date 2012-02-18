@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyCha
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * This javax.swing.ButtonModel can be used to keep a listener
@@ -35,7 +35,7 @@ public class ToggleButtonModelAdapter
 	protected final boolean defaultValue;
 
 	/** A value model on the underlying model boolean. */
-	protected final WritablePropertyValueModel<Boolean> booleanHolder;
+	protected final ModifiablePropertyValueModel<Boolean> booleanHolder;
 
 	/**
 	 * A listener that allows us to synchronize with
@@ -49,7 +49,7 @@ public class ToggleButtonModelAdapter
 	/**
 	 * Constructor - the boolean holder is required.
 	 */
-	public ToggleButtonModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder, boolean defaultValue) {
+	public ToggleButtonModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder, boolean defaultValue) {
 		super();
 		if (booleanHolder == null) {
 			throw new NullPointerException();
@@ -65,7 +65,7 @@ public class ToggleButtonModelAdapter
 	 * Constructor - the boolean holder is required.
 	 * The default value will be false.
 	 */
-	public ToggleButtonModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder) {
+	public ToggleButtonModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder) {
 		this(booleanHolder, false);
 	}
 

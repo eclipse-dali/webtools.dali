@@ -31,13 +31,13 @@ import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class CollectionAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
-	private WritablePropertyValueModel<TestSubject> subjectHolder1;
+	private ModifiablePropertyValueModel<TestSubject> subjectHolder1;
 	private LocalCollectionAspectAdapter aa1;
 	private CollectionEvent event1;
 	private CollectionChangeListener listener1;

@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueMode
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
@@ -61,7 +61,7 @@ import org.eclipse.swt.widgets.Group;
  */
 public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> extends Pane<T>
 {
-	protected WritablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
+	protected ModifiablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
 
 	public AbstractPrimaryKeyJoinColumnsComposite(Pane<? extends T> subjectHolder,
 	                                      Composite parent) {
@@ -91,7 +91,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 
 	protected abstract ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder();
 
-	private WritablePropertyValueModel<PrimaryKeyJoinColumn> buildJoinColumnHolder() {
+	private ModifiablePropertyValueModel<PrimaryKeyJoinColumn> buildJoinColumnHolder() {
 		return new SimplePropertyValueModel<PrimaryKeyJoinColumn>();
 	}
 
@@ -177,7 +177,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
 		return new OverrideDefaultJoinColumnHolder();
 	}
 
@@ -313,7 +313,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 	protected abstract void switchDefaultToSpecified();
 	
 	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
-	                                              implements WritablePropertyValueModel<Boolean> {
+	                                              implements ModifiablePropertyValueModel<Boolean> {
 
 		public OverrideDefaultJoinColumnHolder() {
 			super(buildSpecifiedJoinColumnsListHolder());

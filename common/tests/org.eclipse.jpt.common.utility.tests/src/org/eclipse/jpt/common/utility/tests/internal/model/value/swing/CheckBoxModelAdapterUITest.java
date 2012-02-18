@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.CheckBoxModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * Play around with a set of check boxes.
@@ -40,10 +40,10 @@ import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 public class CheckBoxModelAdapterUITest {
 
 	private TestModel testModel;
-	private WritablePropertyValueModel<TestModel> testModelHolder;
-	private WritablePropertyValueModel<Boolean> flag1Holder;
-	private WritablePropertyValueModel<Boolean> flag2Holder;
-	private WritablePropertyValueModel<Boolean> notFlag2Holder;
+	private ModifiablePropertyValueModel<TestModel> testModelHolder;
+	private ModifiablePropertyValueModel<Boolean> flag1Holder;
+	private ModifiablePropertyValueModel<Boolean> flag2Holder;
+	private ModifiablePropertyValueModel<Boolean> notFlag2Holder;
 	private ButtonModel flag1ButtonModel;
 	private ButtonModel flag2ButtonModel;
 	private ButtonModel notFlag2ButtonModel;
@@ -68,7 +68,7 @@ public class CheckBoxModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private WritablePropertyValueModel<Boolean> buildFlag1Holder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<Boolean> buildFlag1Holder(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, Boolean>(vm, TestModel.FLAG1_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -81,7 +81,7 @@ public class CheckBoxModelAdapterUITest {
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildFlag2Holder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<Boolean> buildFlag2Holder(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, Boolean>(vm, TestModel.FLAG2_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -94,7 +94,7 @@ public class CheckBoxModelAdapterUITest {
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildNotFlag2Holder(PropertyValueModel<TestModel> vm) {
+	private ModifiablePropertyValueModel<Boolean> buildNotFlag2Holder(PropertyValueModel<TestModel> vm) {
 		return new PropertyAspectAdapter<TestModel, Boolean>(vm, TestModel.NOT_FLAG2_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -107,7 +107,7 @@ public class CheckBoxModelAdapterUITest {
 		};
 	}
 
-	private ButtonModel buildCheckBoxModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder) {
+	private ButtonModel buildCheckBoxModelAdapter(ModifiablePropertyValueModel<Boolean> booleanHolder) {
 		return new CheckBoxModelAdapter(booleanHolder);
 	}
 

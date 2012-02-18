@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.TemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.swt.widgets.Composite;
@@ -73,7 +73,7 @@ public class TemporalTypeComposite extends Pane<TemporalConverter> {
 		);
 	}
 
-	private WritablePropertyValueModel<TemporalType> buildTemporalTypeHolder() {
+	private ModifiablePropertyValueModel<TemporalType> buildTemporalTypeHolder() {
 		return new PropertyAspectAdapter<TemporalConverter, TemporalType>(getSubjectHolder(), TemporalConverter.TEMPORAL_TYPE_PROPERTY) {
 			@Override
 			protected TemporalType buildValue_() {

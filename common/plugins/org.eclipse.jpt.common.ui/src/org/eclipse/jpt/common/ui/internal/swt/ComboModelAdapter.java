@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyListener;
@@ -43,7 +43,7 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 	 */
 	public static <T> ComboModelAdapter<T> adapt(
 			ListValueModel<T> listHolder,
-			WritablePropertyValueModel<T> selectedItemHolder,
+			ModifiablePropertyValueModel<T> selectedItemHolder,
 			Combo combo)
 	{
 		return adapt(
@@ -61,7 +61,7 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 	 */
 	public static <T> ComboModelAdapter<T> adapt(
 			ListValueModel<T> listHolder,
-			WritablePropertyValueModel<T> selectedItemHolder,
+			ModifiablePropertyValueModel<T> selectedItemHolder,
 			Combo combo,
 			StringConverter<T> stringConverter)
 	{
@@ -82,7 +82,7 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 	 */
 	protected ComboModelAdapter(
 			ListValueModel<E> listHolder,
-			WritablePropertyValueModel<E> selectedItemHolder,
+			ModifiablePropertyValueModel<E> selectedItemHolder,
 			Combo combo,
 			StringConverter<E> stringConverter)
 	{

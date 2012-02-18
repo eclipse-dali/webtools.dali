@@ -39,7 +39,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -164,7 +164,7 @@ public abstract class Pane<T extends Model>
 	 * enabled.
 	 * @see #getCombinedEnabledModel()
 	 */
-	private final WritablePropertyValueModel<Boolean> baseEnabledModel
+	private final ModifiablePropertyValueModel<Boolean> baseEnabledModel
 			= new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
 
 	/**
@@ -695,7 +695,7 @@ public abstract class Pane<T extends Model>
 	protected final Button addCheckBox(
 			Composite parent,
 	        String buttonText,
-	        WritablePropertyValueModel<Boolean> booleanHolder,
+	        ModifiablePropertyValueModel<Boolean> booleanHolder,
 	        String helpId) {
 
 		return this.addToggleButton(
@@ -709,7 +709,7 @@ public abstract class Pane<T extends Model>
 	protected final Button addCheckBox(
 			Composite parent,
 			String buttonText,
-			WritablePropertyValueModel<Boolean> booleanHolder,
+			ModifiablePropertyValueModel<Boolean> booleanHolder,
 			String helpId,
 			PropertyValueModel<Boolean> enabledModel) {
 
@@ -941,7 +941,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final <V> Combo addCombo(Composite container,
 	                                     ListValueModel<V> listHolder,
-	                                     WritablePropertyValueModel<V> selectedItemHolder,
+	                                     ModifiablePropertyValueModel<V> selectedItemHolder,
 	                                     StringConverter<V> stringConverter) {
 
 		Combo combo = this.addCombo(container);
@@ -970,7 +970,7 @@ public abstract class Pane<T extends Model>
 	 */
 	private <V> Combo addUnmanagedCombo(Composite container,
 	                                     ListValueModel<V> listHolder,
-	                                     WritablePropertyValueModel<V> selectedItemHolder,
+	                                     ModifiablePropertyValueModel<V> selectedItemHolder,
 	                                     StringConverter<V> stringConverter) {
 
 		Combo combo = this.addUnmanagedCombo(container);
@@ -988,7 +988,7 @@ public abstract class Pane<T extends Model>
 	protected final <V> Combo addCombo(
 			Composite container,
 			ListValueModel<V> listHolder,
-			WritablePropertyValueModel<V> selectedItemHolder,
+			ModifiablePropertyValueModel<V> selectedItemHolder,
 			StringConverter<V> stringConverter,
 			PropertyValueModel<Boolean> enabledModel) {
 
@@ -1033,7 +1033,7 @@ public abstract class Pane<T extends Model>
 	protected final <V> Combo addEditableCombo(
 			Composite container,
 			ListValueModel<V> listHolder,
-			WritablePropertyValueModel<V> selectedItemHolder,
+			ModifiablePropertyValueModel<V> selectedItemHolder,
 			StringConverter<V> stringConverter,
 			PropertyValueModel<Boolean> enabledModel) {
 
@@ -1065,7 +1065,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final <V> Combo addEditableCombo(Composite container,
 	                                             ListValueModel<V> listHolder,
-	                                             WritablePropertyValueModel<V> selectedItemHolder,
+	                                             ModifiablePropertyValueModel<V> selectedItemHolder,
 	                                             StringConverter<V> stringConverter) {
 
 		Combo combo = this.addEditableCombo(container);
@@ -1209,7 +1209,7 @@ public abstract class Pane<T extends Model>
 	protected final <V> Combo addLabeledCombo(Composite container,
 	                                            String labelText,
 	                                            ListValueModel<V> listHolder,
-	                                            WritablePropertyValueModel<V> selectedItemHolder,
+	                                            ModifiablePropertyValueModel<V> selectedItemHolder,
 	                                            StringConverter<V> stringConverter,
 	                                            Control rightControl,
 	                                            String helpId) {
@@ -1249,7 +1249,7 @@ public abstract class Pane<T extends Model>
 	protected final <V> Combo addLabeledCombo(Composite container,
 	                                            String labelText,
 	                                            ListValueModel<V> listHolder,
-	                                            WritablePropertyValueModel<V> selectedItemHolder,
+	                                            ModifiablePropertyValueModel<V> selectedItemHolder,
 	                                            StringConverter<V> stringConverter,
 	                                            String helpId) {
 
@@ -1619,7 +1619,7 @@ public abstract class Pane<T extends Model>
 	protected final <V> Combo addLabeledEditableCombo(Composite container,
 	                                                      String labelText,
 	                                                      ListValueModel<V> listHolder,
-	                                                      WritablePropertyValueModel<V> selectedItemHolder,
+	                                                      ModifiablePropertyValueModel<V> selectedItemHolder,
 	                                                      String helpId) {
 
 		return this.addLabeledEditableCombo(
@@ -1653,7 +1653,7 @@ public abstract class Pane<T extends Model>
 	protected final <V> Combo addLabeledEditableCombo(Composite container,
 	                                                    String labelText,
 	                                                    ListValueModel<V> listHolder,
-	                                                    WritablePropertyValueModel<V> selectedItemHolder,
+	                                                    ModifiablePropertyValueModel<V> selectedItemHolder,
 	                                                    StringConverter<V> stringConverter,
 	                                                    Control rightControl,
 	                                                    String helpId) {
@@ -1695,7 +1695,7 @@ public abstract class Pane<T extends Model>
 	protected final <V> Combo addLabeledEditableCombo(Composite container,
 	                                                    String labelText,
 	                                                    ListValueModel<V> listHolder,
-	                                                    WritablePropertyValueModel<V> selectedItemHolder,
+	                                                    ModifiablePropertyValueModel<V> selectedItemHolder,
 	                                                    StringConverter<V> stringConverter,
 	                                                    String helpId) {
 
@@ -1725,7 +1725,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addLabeledMultiLineText(Composite container,
 	                                               String labelText,
-	                                               WritablePropertyValueModel<String> textHolder,
+	                                               ModifiablePropertyValueModel<String> textHolder,
 	                                               int lineCount,
 	                                               String helpId) {
 
@@ -1767,7 +1767,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addLabeledPasswordText(Composite container,
 	                                              String labelText,
-	                                              WritablePropertyValueModel<String> textHolder) {
+	                                              ModifiablePropertyValueModel<String> textHolder) {
 
 		return this.addLabeledPasswordText(
 			container,
@@ -1793,7 +1793,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addLabeledPasswordText(Composite container,
 	                                              String labelText,
-	                                              WritablePropertyValueModel<String> textHolder,
+	                                              ModifiablePropertyValueModel<String> textHolder,
 	                                              Control rightControl,
 	                                              String helpId) {
 
@@ -1823,7 +1823,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addLabeledPasswordText(Composite container,
 	                                              String labelText,
-	                                              WritablePropertyValueModel<String> textHolder,
+	                                              ModifiablePropertyValueModel<String> textHolder,
 	                                              String helpId) {
 
 		return this.addLabeledPasswordText(
@@ -1852,7 +1852,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Spinner addLabeledSpinner(Composite parent,
 	                                            String labelText,
-	                                            WritablePropertyValueModel<Integer> numberHolder,
+	                                            ModifiablePropertyValueModel<Integer> numberHolder,
 	                                            int defaultValue,
 	                                            int minimumValue,
 	                                            int maximumValue,
@@ -1897,7 +1897,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final Spinner addSpinner(Composite parent,
-	                                     WritablePropertyValueModel<Integer> numberHolder,
+	                                     ModifiablePropertyValueModel<Integer> numberHolder,
 	                                     int defaultValue,
 	                                     int minimumValue,
 	                                     int maximumValue,
@@ -1924,7 +1924,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	private Spinner addUnmanagedSpinner(Composite parent,
-	                                     WritablePropertyValueModel<Integer> numberHolder,
+	                                     ModifiablePropertyValueModel<Integer> numberHolder,
 	                                     int defaultValue,
 	                                     int minimumValue,
 	                                     int maximumValue,
@@ -1960,9 +1960,9 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final DateTime addDateTime(Composite parent,
-											WritablePropertyValueModel<Integer> hoursHolder,
-											WritablePropertyValueModel<Integer> minutesHolder,
-											WritablePropertyValueModel<Integer> secondsHolder,
+											ModifiablePropertyValueModel<Integer> hoursHolder,
+											ModifiablePropertyValueModel<Integer> minutesHolder,
+											ModifiablePropertyValueModel<Integer> secondsHolder,
 											String helpId) {
 
 		DateTime dateTime = this.addUnmanagedDateTime(parent, hoursHolder, minutesHolder, secondsHolder, helpId);
@@ -1973,9 +1973,9 @@ public abstract class Pane<T extends Model>
 
 	protected final DateTime addDateTime(
 			Composite parent,
-			WritablePropertyValueModel<Integer> hoursHolder,
-			WritablePropertyValueModel<Integer> minutesHolder,
-			WritablePropertyValueModel<Integer> secondsHolder,
+			ModifiablePropertyValueModel<Integer> hoursHolder,
+			ModifiablePropertyValueModel<Integer> minutesHolder,
+			ModifiablePropertyValueModel<Integer> secondsHolder,
 			String helpId,
 			PropertyValueModel<Boolean> enabledModel
 	) {
@@ -1999,9 +1999,9 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	private DateTime addUnmanagedDateTime(Composite parent,
-											WritablePropertyValueModel<Integer> hoursHolder,
-											WritablePropertyValueModel<Integer> minutesHolder,
-											WritablePropertyValueModel<Integer> secondsHolder,
+											ModifiablePropertyValueModel<Integer> hoursHolder,
+											ModifiablePropertyValueModel<Integer> minutesHolder,
+											ModifiablePropertyValueModel<Integer> secondsHolder,
 											String helpId) {
 
 		DateTime dateTime = this.widgetFactory.createDateTime(parent, SWT.TIME);
@@ -2028,7 +2028,7 @@ public abstract class Pane<T extends Model>
 	 */
 	private <V> Combo addUnmanagedEditableCombo(Composite container,
 	                                               ListValueModel<V> listHolder,
-	                                               WritablePropertyValueModel<V> selectedItemHolder,
+	                                               ModifiablePropertyValueModel<V> selectedItemHolder,
 	                                               StringConverter<V> stringConverter) {
 
 		Combo combo = addUnmanagedEditableCombo(container);
@@ -2071,7 +2071,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addLabeledText(Composite container,
 	                                      String labelText,
-	                                      WritablePropertyValueModel<String> textHolder) {
+	                                      ModifiablePropertyValueModel<String> textHolder) {
 
 		return this.addLabeledText(container, labelText, textHolder, null);
 	}
@@ -2092,7 +2092,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addLabeledText(Composite container,
 	                                      String labelText,
-	                                      WritablePropertyValueModel<String> textHolder,
+	                                      ModifiablePropertyValueModel<String> textHolder,
 	                                      Control rightComponent,
 	                                      String helpId) {
 
@@ -2125,7 +2125,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addLabeledText(Composite container,
 	                                      Label label,
-	                                      WritablePropertyValueModel<String> textHolder,
+	                                      ModifiablePropertyValueModel<String> textHolder,
 	                                      Control rightComponent,
 	                                      String helpId) {
 
@@ -2155,7 +2155,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addLabeledText(Composite container,
 	                                      String labelText,
-	                                      WritablePropertyValueModel<String> textHolder,
+	                                      ModifiablePropertyValueModel<String> textHolder,
 	                                      String helpId) {
 
 		return this.addLabeledText(
@@ -2180,7 +2180,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addLabeledText(Composite container,
 	                                      Label label,
-	                                      WritablePropertyValueModel<String> textHolder,
+	                                      ModifiablePropertyValueModel<String> textHolder,
 	                                      String helpId) {
 
 		return this.addLabeledText(
@@ -2225,7 +2225,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final List addList(Composite container,
-	                               WritablePropertyValueModel<String> selectionHolder,
+	                               ModifiablePropertyValueModel<String> selectionHolder,
 	                               String helpId) {
 
 		List list = this.addUnmanagedList(container, selectionHolder, helpId);
@@ -2249,7 +2249,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	private List addUnmanagedList(Composite container,
-	                               WritablePropertyValueModel<String> selectionHolder,
+	                               ModifiablePropertyValueModel<String> selectionHolder,
 	                               String helpId) {
 
 		List list = this.widgetFactory.createList(
@@ -2334,7 +2334,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final Text addMultiLineText(Composite container,
-	                                        WritablePropertyValueModel<String> textHolder,
+	                                        ModifiablePropertyValueModel<String> textHolder,
 	                                        int lineCount) {
 
 		return this.addMultiLineText(container, textHolder, lineCount, null);
@@ -2351,7 +2351,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final Text addMultiLineText(Composite container,
-	                                        WritablePropertyValueModel<String> textHolder,
+	                                        ModifiablePropertyValueModel<String> textHolder,
 	                                        int lineCount,
 	                                        String helpId) {
 
@@ -2442,7 +2442,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final Text addPasswordText(Composite container,
-	                                       WritablePropertyValueModel<String> textHolder) {
+	                                       ModifiablePropertyValueModel<String> textHolder) {
 
 		Text text = this.addPasswordText(container);
 		SWTTools.bind(textHolder, text);
@@ -2532,7 +2532,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Button addRadioButton(Composite parent,
 	                                        String buttonText,
-	                                        WritablePropertyValueModel<Boolean> booleanHolder,
+	                                        ModifiablePropertyValueModel<Boolean> booleanHolder,
 	                                        String helpId) {
 
 		return this.addToggleButton(
@@ -2643,7 +2643,7 @@ public abstract class Pane<T extends Model>
 		return subPane;
 	}
 
-	private SelectionListener buildSelectionListener(final WritablePropertyValueModel<String> selectionHolder) {
+	private SelectionListener buildSelectionListener(final ModifiablePropertyValueModel<String> selectionHolder) {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -2997,7 +2997,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final Text addText(Composite container,
-	                               WritablePropertyValueModel<String> textHolder) {
+	                               ModifiablePropertyValueModel<String> textHolder) {
 
 		return this.addText(container, textHolder, null);
 	}
@@ -3013,7 +3013,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final Text addText(Composite container,
-	                               WritablePropertyValueModel<String> textHolder,
+	                               ModifiablePropertyValueModel<String> textHolder,
 	                               String helpId) {
 
 		Text text = this.addText(container, helpId);
@@ -3024,7 +3024,7 @@ public abstract class Pane<T extends Model>
 
 	protected final Text addText(
 			Composite container,
-			WritablePropertyValueModel<String> textHolder,
+			ModifiablePropertyValueModel<String> textHolder,
 			String helpId,
 			PropertyValueModel<Boolean> enabledModel
 	) {
@@ -3046,7 +3046,7 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	private Text addUnmanagedText(Composite container,
-	                               WritablePropertyValueModel<String> textHolder,
+	                               ModifiablePropertyValueModel<String> textHolder,
 	                               String helpId) {
 
 		Text text = this.addUnmanagedText(container, helpId);
@@ -3138,7 +3138,7 @@ public abstract class Pane<T extends Model>
 	private Button addUnmanagedToggleButton(
 			Composite parent,
 	        String buttonText,
-	        WritablePropertyValueModel<Boolean> booleanHolder,
+	        ModifiablePropertyValueModel<Boolean> booleanHolder,
 	        String helpId,
 	        int toggleButtonType) {
 
@@ -3182,7 +3182,7 @@ public abstract class Pane<T extends Model>
 	private Button addToggleButton(
 			Composite parent,
 	        String buttonText,
-	        WritablePropertyValueModel<Boolean> booleanHolder,
+	        ModifiablePropertyValueModel<Boolean> booleanHolder,
 	        String helpId,
 	        int toggleButtonType) {
 
@@ -3211,7 +3211,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final TriStateCheckBox addTriStateCheckBox(Composite parent,
 	                                                       String text,
-	                                                       WritablePropertyValueModel<Boolean> booleanHolder,
+	                                                       ModifiablePropertyValueModel<Boolean> booleanHolder,
 	                                                       String helpId) {
 
 		TriStateCheckBox checkBox = new TriStateCheckBox(
@@ -3251,7 +3251,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final TriStateCheckBox addTriStateCheckBoxWithDefault(Composite parent,
 	                                                                  String text,
-	                                                                  WritablePropertyValueModel<Boolean> booleanHolder,
+	                                                                  ModifiablePropertyValueModel<Boolean> booleanHolder,
 	                                                                  PropertyValueModel<String> stringHolder,
 	                                                                  String helpId) {
 

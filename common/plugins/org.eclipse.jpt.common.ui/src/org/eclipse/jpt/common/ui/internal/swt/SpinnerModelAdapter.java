@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -30,7 +30,7 @@ public class SpinnerModelAdapter {
 	/**
 	 * A value model on the underlying model list.
 	 */
-	protected final WritablePropertyValueModel<Integer> numberHolder;
+	protected final ModifiablePropertyValueModel<Integer> numberHolder;
 
 	/**
 	 * A listener that allows us to synchronize the spinner's contents with
@@ -74,7 +74,7 @@ public class SpinnerModelAdapter {
 	 * to be displayed in the spinner.
 	 */
 	public static SpinnerModelAdapter adapt(
-			WritablePropertyValueModel<Integer> numberHolder,
+			ModifiablePropertyValueModel<Integer> numberHolder,
 			Spinner spinner,
 			int defaultValue)
 	{
@@ -88,7 +88,7 @@ public class SpinnerModelAdapter {
 	 * Constructor - the list holder, selections holder, list box, and
 	 * string converter are required.
 	 */
-	protected SpinnerModelAdapter(WritablePropertyValueModel<Integer> numberHolder,
+	protected SpinnerModelAdapter(ModifiablePropertyValueModel<Integer> numberHolder,
 	                              Spinner spinner,
 	                              int defaultValue) {
 		super();

@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelA
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -151,7 +151,7 @@ public class TargetDatabaseComposite extends Pane<Options>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildTargetDatabaseHolder() {
+	private ModifiablePropertyValueModel<String> buildTargetDatabaseHolder() {
 		return new PropertyAspectAdapter<Options, String>(this.getSubjectHolder(), Options.TARGET_DATABASE_PROPERTY) {
 			@Override
 			protected String buildValue_() {

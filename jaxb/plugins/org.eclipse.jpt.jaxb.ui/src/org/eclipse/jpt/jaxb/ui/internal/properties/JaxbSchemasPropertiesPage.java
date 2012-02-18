@@ -62,8 +62,8 @@ import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritableCollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
@@ -97,7 +97,7 @@ public class JaxbSchemasPropertiesPage
 	private static final int SIZING_SELECTION_PANE_WIDTH = 450;
 	
 	
-	protected final WritablePropertyValueModel<IProject> projectModel;
+	protected final ModifiablePropertyValueModel<IProject> projectModel;
 	
 	private final PropertyValueModel<JaxbProject> jaxbProjectModel;
 	
@@ -105,7 +105,7 @@ public class JaxbSchemasPropertiesPage
 	
 	private final SchemasModel schemasModel;
 	
-	private final WritableCollectionValueModel<Schema> schemasSelectionModel;
+	private final ModifiableCollectionValueModel<Schema> schemasSelectionModel;
 	
 	
 	public JaxbSchemasPropertiesPage() {
@@ -652,14 +652,14 @@ public class JaxbSchemasPropertiesPage
 			}
 		}
 		
-		public WritablePropertyValueModel<?>[] cellModels(Schema subject) {
-			WritablePropertyValueModel<?>[] cellModels = new WritablePropertyValueModel<?>[COLUMN_COUNT];
+		public ModifiablePropertyValueModel<?>[] cellModels(Schema subject) {
+			ModifiablePropertyValueModel<?>[] cellModels = new ModifiablePropertyValueModel<?>[COLUMN_COUNT];
 			cellModels[NAMESPACE_COLUMN] = buildNamespaceCellModel(subject);
 			cellModels[LOCATION_COLUMN] = buildLocationCellModel(subject);
 			return cellModels;
 		}
 		
-		private WritablePropertyValueModel<String> buildNamespaceCellModel(Schema subject) {
+		private ModifiablePropertyValueModel<String> buildNamespaceCellModel(Schema subject) {
 			return new PropertyAspectAdapter<Schema, String>(Schema.NAMESPACE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -668,7 +668,7 @@ public class JaxbSchemasPropertiesPage
 			};
 		}
 		
-		private WritablePropertyValueModel<String> buildLocationCellModel(Schema subject) {
+		private ModifiablePropertyValueModel<String> buildLocationCellModel(Schema subject) {
 			return new PropertyAspectAdapter<Schema, String>(Schema.LOCATION_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -707,9 +707,9 @@ public class JaxbSchemasPropertiesPage
 		
 		private String defaultMessage;
 		
-		private final WritablePropertyValueModel<String> location;
+		private final ModifiablePropertyValueModel<String> location;
 		
-		private final WritablePropertyValueModel<String> namespace;
+		private final ModifiablePropertyValueModel<String> namespace;
 		
 		private XSDSchema resolvedSchema;
 		

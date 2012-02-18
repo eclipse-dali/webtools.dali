@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
@@ -99,7 +99,7 @@ public class ColumnComposite
 		};
 	}
 	
-	WritablePropertyValueModel<String> buildColumnDefinitionHolder() {
+	ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, String>(getSubjectHolder(), ReadOnlyNamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -116,7 +116,7 @@ public class ColumnComposite
 		};
 	}
 	
-	WritablePropertyValueModel<Boolean> buildInsertableHolder() {
+	ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(getSubjectHolder(), ReadOnlyBaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -159,7 +159,7 @@ public class ColumnComposite
 		};
 	}
 	
-	WritablePropertyValueModel<Boolean> buildNullableHolder() {
+	ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
 				ReadOnlyBaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
@@ -252,7 +252,7 @@ public class ColumnComposite
 		};
 	}
 	
-	WritablePropertyValueModel<Boolean> buildUniqueHolder() {
+	ModifiablePropertyValueModel<Boolean> buildUniqueHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
 				ReadOnlyBaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
@@ -300,7 +300,7 @@ public class ColumnComposite
 		};
 	}
 	
-	WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
+	ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
 				ReadOnlyBaseColumn.DEFAULT_UPDATABLE_PROPERTY,
@@ -457,7 +457,7 @@ public class ColumnComposite
 				}
 				
 				@Override
-				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_LENGTH_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
@@ -496,7 +496,7 @@ public class ColumnComposite
 				}
 				
 				@Override
-				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_PRECISION_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
@@ -535,7 +535,7 @@ public class ColumnComposite
 				}
 				
 				@Override
-				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_SCALE_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {

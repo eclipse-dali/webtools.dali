@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,18 +18,18 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class ReadOnlyWritablePropertyValueModelWrapperTests 
 	extends TestCase
 {
-	private WritablePropertyValueModel<String> objectHolder;
+	private ModifiablePropertyValueModel<String> objectHolder;
 	
 	PropertyChangeEvent event;
 	
-	private WritablePropertyValueModel<String> wrapperObjectHolder;
+	private ModifiablePropertyValueModel<String> wrapperObjectHolder;
 	
 	PropertyChangeEvent wrapperEvent;
 	

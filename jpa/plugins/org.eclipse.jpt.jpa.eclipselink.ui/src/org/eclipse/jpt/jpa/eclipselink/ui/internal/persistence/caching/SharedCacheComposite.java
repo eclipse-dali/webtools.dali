@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueMode
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
@@ -102,7 +102,7 @@ public class SharedCacheComposite extends Pane<CachingEntity>
 		);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildSharedCacheHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildSharedCacheHolder() {
 		return new PropertyAspectAdapter<CachingEntity, Boolean>(
 					getSubjectHolder(), CachingEntity.SHARED_CACHE_PROPERTY) {
 			@Override

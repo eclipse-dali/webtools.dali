@@ -20,7 +20,7 @@ package org.eclipse.jpt.common.utility.model.value;
  * 
  * @param <V> the type of value held by the model
  */
-public interface WritablePropertyValueModel<V>
+public interface ModifiablePropertyValueModel<V>
 	extends PropertyValueModel<V>
 {
 	/**

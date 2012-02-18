@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
@@ -77,7 +77,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	                          Composite parent,
 	                          Adapter adapter,
 	                          ListValueModel<?> listHolder,
-	                          WritablePropertyValueModel<?> selectedItemHolder,
+	                          ModifiablePropertyValueModel<?> selectedItemHolder,
 	                          ITableLabelProvider labelProvider) {
 
 		super(parentPane,
@@ -105,7 +105,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	                          Composite parent,
 	                          Adapter adapter,
 	                          ListValueModel<?> listHolder,
-	                          WritablePropertyValueModel<?> selectedItemHolder,
+	                          ModifiablePropertyValueModel<?> selectedItemHolder,
 	                          ITableLabelProvider labelProvider,
 	                          String helpId) {
 
@@ -135,7 +135,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	                          Composite parent,
 	                          Adapter adapter,
 	                          ListValueModel<?> listHolder,
-	                          WritablePropertyValueModel<?> selectedItemHolder,
+	                          ModifiablePropertyValueModel<?> selectedItemHolder,
 	                          ITableLabelProvider labelProvider) {
 
 		super(parentPane,
@@ -165,7 +165,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	                          Composite parent,
 	                          Adapter adapter,
 	                          ListValueModel<?> listHolder,
-	                          WritablePropertyValueModel<?> selectedItemHolder,
+	                          ModifiablePropertyValueModel<?> selectedItemHolder,
 	                          ITableLabelProvider labelProvider,
 	                          String helpId) {
 
@@ -181,7 +181,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 
 	protected abstract ColumnAdapter<?> buildColumnAdapter();
 
-	private WritablePropertyValueModel<Object> buildSelectedItemHolder() {
+	private ModifiablePropertyValueModel<Object> buildSelectedItemHolder() {
 		return new SimplePropertyValueModel<Object>();
 	}
 
@@ -245,7 +245,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	protected void initializeMainComposite(Composite container,
 	                                       Adapter adapter,
 	                                       ListValueModel<?> listHolder,
-	                                       WritablePropertyValueModel<?> selectedItemHolder,
+	                                       ModifiablePropertyValueModel<?> selectedItemHolder,
 	                                       IBaseLabelProvider labelProvider,
 	                                       String helpId)
 	{
@@ -281,7 +281,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 		locked = true;
 
 		try {
-			WritablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
+			ModifiablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
 			ObjectListSelectionModel selectionModel = getSelectionModel();
 			int selectionCount = table.getSelectionCount();
 

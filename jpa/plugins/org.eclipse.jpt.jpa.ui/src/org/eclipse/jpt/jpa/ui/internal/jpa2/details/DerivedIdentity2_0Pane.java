@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.swt.layout.GridData;
@@ -56,7 +56,7 @@ public class DerivedIdentity2_0Pane
 		((GridData) button.getLayoutData()).horizontalSpan = 2;
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildUsesNullDerivedIdentityStrategyHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildUsesNullDerivedIdentityStrategyHolder() {
 		return new PropertyAspectAdapter<DerivedIdentity2_0, Boolean>(
 				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
 			
@@ -84,7 +84,7 @@ public class DerivedIdentity2_0Pane
 		((GridData) button.getLayoutData()).horizontalSpan = 2;
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildUsesIdDerivedIdentityStrategyHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildUsesIdDerivedIdentityStrategyHolder() {
 		return new PropertyAspectAdapter<DerivedIdentity2_0, Boolean>(
 				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
 			
@@ -104,7 +104,7 @@ public class DerivedIdentity2_0Pane
 	}
 	
 	protected void addMapsIdDerivedIdentityPane(Composite parent) {
-		WritablePropertyValueModel<Boolean> usesMapsIdModel = buildUsesMapsIdDerivedIdentityStrategyHolder();
+		ModifiablePropertyValueModel<Boolean> usesMapsIdModel = buildUsesMapsIdDerivedIdentityStrategyHolder();
 		addRadioButton(
 			parent,
 			JptUiDetailsMessages2_0.DerivedIdentity_mapsIdDerivedIdentity,
@@ -114,7 +114,7 @@ public class DerivedIdentity2_0Pane
 		buildMapsIdValueComboPane(parent, usesMapsIdModel);
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildUsesMapsIdDerivedIdentityStrategyHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildUsesMapsIdDerivedIdentityStrategyHolder() {
 		return new PropertyAspectAdapter<DerivedIdentity2_0, Boolean>(
 				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
 			

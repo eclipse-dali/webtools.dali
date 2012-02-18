@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * Extend {@link ValueAspectAdapter} to listen to one or more list
@@ -40,7 +40,7 @@ public class ValueListAdapter<V extends Model>
 	/**
 	 * Construct an adapter for the specified value lists.
 	 */
-	public ValueListAdapter(WritablePropertyValueModel<V> valueHolder, String... listNames) {
+	public ValueListAdapter(ModifiablePropertyValueModel<V> valueHolder, String... listNames) {
 		super(valueHolder);
 		this.listNames = listNames;
 		this.valueListListener = this.buildValueListListener();

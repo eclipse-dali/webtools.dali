@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,7 +49,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.TreeNodeValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 @SuppressWarnings("nls")
 public class TreeModelAdapterTests extends TestCase {
@@ -192,7 +192,7 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	public void testTreeStructureChanged() {
-		WritablePropertyValueModel<TreeNodeValueModel<Object>> nodeHolder = new SimplePropertyValueModel<TreeNodeValueModel<Object>>(this.buildSortedRootNode());
+		ModifiablePropertyValueModel<TreeNodeValueModel<Object>> nodeHolder = new SimplePropertyValueModel<TreeNodeValueModel<Object>>(this.buildSortedRootNode());
 		TreeModel treeModel = this.buildTreeModel(nodeHolder);
 		this.eventFired = false;
 		treeModel.addTreeModelListener(new TestTreeModelListener() {
@@ -690,7 +690,7 @@ public class TreeModelAdapterTests extends TestCase {
 
 
 	public static class NameTestNode extends AbstractTreeNodeValueModel<Object> {
-		private final WritablePropertyValueModel<String> nameAdapter;
+		private final ModifiablePropertyValueModel<String> nameAdapter;
 		private final SpecialTestNode specialNode;		// parent node
 		private final PropertyChangeListener nameListener;
 		private final ListValueModel<TreeNodeValueModel<Object>> childrenModel;
@@ -711,7 +711,7 @@ public class TreeModelAdapterTests extends TestCase {
 				}
 			};
 		}
-		protected WritablePropertyValueModel<String> buildNameAdapter() {
+		protected ModifiablePropertyValueModel<String> buildNameAdapter() {
 			return new PropertyAspectAdapter<TestModel, String>(TestModel.NAME_PROPERTY, this.getTestModel()) {
 				@Override
 				protected String buildValue_() {

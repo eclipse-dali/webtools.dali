@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
@@ -302,7 +302,7 @@ public class JpaDetailsView
 			return JpaDetailsView.this;
 		}
 
-		WritablePropertyValueModel<JpaStructureNode> getJpaSelectionModel() {
+		ModifiablePropertyValueModel<JpaStructureNode> getJpaSelectionModel() {
 			return this.pageManager.getJpaSelectionModel();
 		}
 

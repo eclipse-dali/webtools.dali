@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Text;
  * This binding can be used to keep a text field
  * synchronized with a model text/string.
  * 
- * @see WritablePropertyValueModel
+ * @see ModifiablePropertyValueModel
  * @see Text
  */
 @SuppressWarnings("nls")
@@ -34,7 +34,7 @@ class TextFieldModelBinding {
 	/**
 	 * The text model we keep synchronized with the text field.
 	 */
-	private final WritablePropertyValueModel<String> textModel;
+	private final ModifiablePropertyValueModel<String> textModel;
 
 	/**
 	 * A listener that allows us to synchronize the text field's contents with
@@ -70,7 +70,7 @@ class TextFieldModelBinding {
 	/**
 	 * Constructor - the text model and text field are required.
 	 */
-	TextFieldModelBinding(WritablePropertyValueModel<String> textModel, Text textField) {
+	TextFieldModelBinding(ModifiablePropertyValueModel<String> textModel, Text textField) {
 		super();
 		if ((textModel == null) || (textField == null)) {
 			throw new NullPointerException();

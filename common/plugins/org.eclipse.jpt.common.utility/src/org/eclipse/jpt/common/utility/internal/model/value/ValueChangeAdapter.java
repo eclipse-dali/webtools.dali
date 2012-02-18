@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.AbstractChangeListener;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
  * Extend {@link ValueAspectAdapter} to listen to all the aspects
@@ -31,7 +31,7 @@ public class ValueChangeAdapter<V extends Model>
 	/**
 	 * Construct a change adapter for the specified value.
 	 */
-	public ValueChangeAdapter(WritablePropertyValueModel<V> valueHolder) {
+	public ValueChangeAdapter(ModifiablePropertyValueModel<V> valueHolder) {
 		super(valueHolder);
 		this.valueAspectListener = this.buildValueAspectListener();
 	}

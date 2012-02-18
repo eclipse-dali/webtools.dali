@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
@@ -51,7 +51,7 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 public abstract class PersistenceUnitMappingFilesComposite
 		extends Pane<PersistenceUnit> {
 
-	private WritablePropertyValueModel<MappingFileRef> selectedItemHolder;	
+	private ModifiablePropertyValueModel<MappingFileRef> selectedItemHolder;	
 
 	public PersistenceUnitMappingFilesComposite(
 			Pane<? extends PersistenceUnit> parentPane, Composite parent) {
@@ -205,7 +205,7 @@ public abstract class PersistenceUnitMappingFilesComposite
 		};
 	}
 	
-	private WritablePropertyValueModel<MappingFileRef> buildSelectedItemHolder() {
+	private ModifiablePropertyValueModel<MappingFileRef> buildSelectedItemHolder() {
 		return new SimplePropertyValueModel<MappingFileRef>();
 	}
 	

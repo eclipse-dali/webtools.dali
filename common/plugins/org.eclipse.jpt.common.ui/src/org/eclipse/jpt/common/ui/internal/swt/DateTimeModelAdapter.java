@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -33,17 +33,17 @@ public class DateTimeModelAdapter {
 	/**
 	 * A value model on the underlying model hours integer.
 	 */
-	protected final WritablePropertyValueModel<Integer> hoursHolder;
+	protected final ModifiablePropertyValueModel<Integer> hoursHolder;
 	
 	/**
 	 * A value model on the underlying model minutes integer.
 	 */
-	protected final WritablePropertyValueModel<Integer> minutesHolder;
+	protected final ModifiablePropertyValueModel<Integer> minutesHolder;
 	
 	/**
 	 * A value model on the underlying model seconds integer.
 	 */
-	protected final WritablePropertyValueModel<Integer> secondsHolder;
+	protected final ModifiablePropertyValueModel<Integer> secondsHolder;
 
 	/**
 	 * A listener that allows us to synchronize the dateTime's selection state with
@@ -92,9 +92,9 @@ public class DateTimeModelAdapter {
 	 * Adapt the specified model integer holders to the specified dateTime.
 	 */
 	public static DateTimeModelAdapter adapt(
-			WritablePropertyValueModel<Integer> hoursHolder,
-			WritablePropertyValueModel<Integer> minutesHolder,
-			WritablePropertyValueModel<Integer> secondsHolder,
+			ModifiablePropertyValueModel<Integer> hoursHolder,
+			ModifiablePropertyValueModel<Integer> minutesHolder,
+			ModifiablePropertyValueModel<Integer> secondsHolder,
 			DateTime dateTime)
 	{
 		return new DateTimeModelAdapter(hoursHolder, minutesHolder, secondsHolder, dateTime);
@@ -106,9 +106,9 @@ public class DateTimeModelAdapter {
 	/**
 	 * Constructor - the hoursHolder, minutesHolder, secondsHolder, and dateTime are required
 	 */
-	protected DateTimeModelAdapter(WritablePropertyValueModel<Integer> hoursHolder,
-									WritablePropertyValueModel<Integer> minutesHolder,
-									WritablePropertyValueModel<Integer> secondsHolder,
+	protected DateTimeModelAdapter(ModifiablePropertyValueModel<Integer> hoursHolder,
+									ModifiablePropertyValueModel<Integer> minutesHolder,
+									ModifiablePropertyValueModel<Integer> secondsHolder,
 									DateTime dateTime) {
 		super();
 		if ((hoursHolder == null) 

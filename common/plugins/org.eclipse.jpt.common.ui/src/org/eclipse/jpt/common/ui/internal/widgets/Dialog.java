@@ -13,7 +13,7 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.node.Node;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -48,7 +48,7 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	/**
 	 * The holder of the "state object" used by this dialog.
 	 */
-	private WritablePropertyValueModel<T> subjectHolder;
+	private ModifiablePropertyValueModel<T> subjectHolder;
 
 	/**
 	 * Caches the title text until the dialog is created and the dialog's shell

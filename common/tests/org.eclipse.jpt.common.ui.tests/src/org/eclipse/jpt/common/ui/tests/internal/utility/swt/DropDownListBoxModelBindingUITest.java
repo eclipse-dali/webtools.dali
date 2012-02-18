@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -50,7 +50,7 @@ public class DropDownListBoxModelBindingUITest
 	extends ApplicationWindow
 {
 	final TaskList taskList;
-	private final WritablePropertyValueModel<TaskList> taskListHolder;
+	private final ModifiablePropertyValueModel<TaskList> taskListHolder;
 	private Text taskTextField;
 
 	public static void main(String[] args) throws Exception {
@@ -203,7 +203,7 @@ public class DropDownListBoxModelBindingUITest
 		return new SortedListValueModelWrapper<Task>(this.buildObjectTaskListAdapter(), this.buildCustomTaskComparator());
 	}
 
-	private <E> void buildComboBoxPanel(Composite parent, String label, ListValueModel<E> model, WritablePropertyValueModel<E> selectedItemModel) {
+	private <E> void buildComboBoxPanel(Composite parent, String label, ListValueModel<E> model, ModifiablePropertyValueModel<E> selectedItemModel) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayout(new FormLayout());
 
@@ -264,14 +264,14 @@ public class DropDownListBoxModelBindingUITest
 		};
 	}
 
-	private WritablePropertyValueModel<Task> buildPriorityTaskAdapter() {
+	private ModifiablePropertyValueModel<Task> buildPriorityTaskAdapter() {
 		return new PriorityTaskAdapter(this.taskListHolder);
 	}
 
 	static class PriorityTaskAdapter
 		extends PropertyAspectAdapter<TaskList, Task>
 	{
-		PriorityTaskAdapter(WritablePropertyValueModel<TaskList> taskListHolder) {
+		PriorityTaskAdapter(ModifiablePropertyValueModel<TaskList> taskListHolder) {
 			super(taskListHolder, TaskList.PRIORITY_TASK_PROPERTY);
 		}
 		@Override
@@ -284,14 +284,14 @@ public class DropDownListBoxModelBindingUITest
 		}
 	}
 
-	private WritablePropertyValueModel<String> buildPriorityTaskNameAdapter() {
+	private ModifiablePropertyValueModel<String> buildPriorityTaskNameAdapter() {
 		return new PriorityTaskNameAdapter(this.taskListHolder);
 	}
 
 	static class PriorityTaskNameAdapter
 		extends PropertyAspectAdapter<TaskList, String>
 	{
-		PriorityTaskNameAdapter(WritablePropertyValueModel<TaskList> taskListHolder) {
+		PriorityTaskNameAdapter(ModifiablePropertyValueModel<TaskList> taskListHolder) {
 			super(taskListHolder, TaskList.PRIORITY_TASK_NAME_PROPERTY);
 		}
 		@Override

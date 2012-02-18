@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritableCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.List;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.List;
  * box or the model, so changes must be coordinated.
  * 
  * @see ListValueModel
- * @see WritableCollectionValueModel
+ * @see ModifiableCollectionValueModel
  * @see List
  * @see SWTTools
  */
@@ -51,7 +51,7 @@ final class ListBoxSelectionBinding<E>
 	/**
 	 * A writable value model on the underlying model selections.
 	 */
-	private final WritableCollectionValueModel<E> selectedItemsModel;
+	private final ModifiableCollectionValueModel<E> selectedItemsModel;
 
 	/**
 	 * A listener that allows us to synchronize the list box's selection with
@@ -79,7 +79,7 @@ final class ListBoxSelectionBinding<E>
 	 */
 	ListBoxSelectionBinding(
 			ListValueModel<E> listModel,
-			WritableCollectionValueModel<E> selectedItemsModel,
+			ModifiableCollectionValueModel<E> selectedItemsModel,
 			List listBox
 	) {
 		super();

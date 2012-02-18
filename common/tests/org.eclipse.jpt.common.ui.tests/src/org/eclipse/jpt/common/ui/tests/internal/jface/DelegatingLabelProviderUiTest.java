@@ -38,7 +38,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -59,7 +59,7 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 {
 	private TreeViewer tree;
 	
-	private WritablePropertyValueModel<Vehicle> selectedVehicle;
+	private ModifiablePropertyValueModel<Vehicle> selectedVehicle;
 	
 	
 	public static void main(String[] args) {
