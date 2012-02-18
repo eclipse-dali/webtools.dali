@@ -351,8 +351,8 @@ public abstract class SpecifiedOrmPersistentAttribute
 	// ********** access **********
 
 	public AccessType getAccess() {
-		AccessType specifiedAccess = this.getSpecifiedAccess();
-		return (specifiedAccess != null) ? specifiedAccess : this.defaultAccess;
+		AccessType access = this.getSpecifiedAccess();
+		return (access != null) ? access : this.defaultAccess;
 	}
 
 	public AccessType getDefaultAccess() {
