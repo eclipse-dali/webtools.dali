@@ -729,9 +729,7 @@
 				class="org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorActionProvider"
 				id="org.eclipse.jpt.jpa.ui.jpaActionProvider">
 				<enablement>
-					<and>
-						<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
-					</and>
+					<instanceof value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
 				</enablement>
 			</actionProvider>
 			
@@ -777,13 +775,7 @@
 					</and>
 				</enablement>
 			</commonWizard>
-			
-			<!--
-			<commonSorter
-				id="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter"
-				class="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter" />
-			-->
-			
+
 			<commonWizard
 				menuGroupId="org.eclipse.jpt.jpa.ui"
 				type="new"
