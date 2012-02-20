@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.internal.prefs.JaxbPreferencesManager;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -46,7 +47,7 @@ public class JptJaxbCoreTestsPlugin extends Plugin {
 		super.start(context);
 		JaxbProjectManager jaxbProjectManager = JptJaxbCorePlugin.getProjectManager();
 		ReflectionTools.executeMethod(jaxbProjectManager, "handleEventsSynchronously");
-		ReflectionTools.executeStaticMethod(JptJaxbCorePlugin.class, "doNotFlushPreferences");
+		ReflectionTools.executeStaticMethod(JaxbPreferencesManager.class, "doNotFlushPreferences");
 	}
 
 	@Override

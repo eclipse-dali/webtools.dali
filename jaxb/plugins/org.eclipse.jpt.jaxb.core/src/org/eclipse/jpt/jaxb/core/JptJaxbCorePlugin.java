@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -10,31 +10,20 @@
 package org.eclipse.jpt.jaxb.core;
 
 import java.util.List;
-import java.util.Vector;
+
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformManagerImpl;
+import org.eclipse.jpt.jaxb.core.internal.prefs.JaxbPreferencesManager;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -52,8 +41,8 @@ import org.osgi.service.prefs.Preferences;
  */
 public class JptJaxbCorePlugin
 		extends Plugin {
-	
-	private static volatile boolean flushPreferences = true;
+
+	// ********** public constants **********
 	
 	/**
 	 * The plug-in identifier of Dali JAXB core
@@ -61,45 +50,7 @@ public class JptJaxbCorePlugin
 	 */
 	public static final String PLUGIN_ID = "org.eclipse.jpt.jaxb.core";  //$NON-NLS-1$
 	public static final String PLUGIN_ID_ = PLUGIN_ID + '.';
-	
-	/**
-	 * The node for storing a JAXB project's platform in the project's preferences.
-	 */
-	public static final String PLATFORM_PREF_NODE = "platform";  //$NON-NLS-1$
-	
-	/**
-	 * The key for storing the platform id
-	 */
-	public static final String PLATFORM_ID_PREF_KEY = "platform-id";  //$NON-NLS-1$
-	
-	/**
-	 * The node for storing a JAXB project's schemas in the project's preferences.
-	 */
-	public static final String SCHEMAS_PREF_NODE = "schemas";  //$NON-NLS-1$
-	
-	/**
-	 * The node prefix for storing a particular JAXB project schema in the project's preferences.
-	 * Specific schema nodes are followed by integers ("schema-1", "schema-2", etc.)
-	 */
-	public static final String SCHEMA_PREF_NODE_PREFIX = "schema-";  //$NON-NLS-1$
-	
-	/**
-	 * The key for storing a schema location (such as a uri or catalog key) in the project's preferences
-	 */
-	public static final String SCHEMA_LOCATION_PREF_KEY = "location";  //$NON-NLS-1$
-	
-	/**
-	 * The key for storing the default JAXB platform ID for JAXB 2.1 in the workspace preferences.
-	 */
-	public static final String DEFAULT_JAXB_PLATFORM_2_1_PREF_KEY = 
-			"defaultJaxbPlatform_" + JaxbFacet.VERSION_2_1.getVersionString(); //$NON-NLS-1$
 
-	/**
-	 * The key for storing the default JAXB platform ID for JAXB 2.2 in the workspace preferences.
-	 */
-	public static final String DEFAULT_JAXB_PLATFORM_2_2_PREF_KEY = 
-			"defaultJaxbPlatform_" + JaxbFacet.VERSION_2_2.getVersionString(); //$NON-NLS-1$
-	
 	/**
 	 * The identifier for the JAXB validation marker
 	 * (value <code>"org.eclipse.jpt.jaxb.core.jaxbProblemMarker"</code>).
@@ -179,112 +130,24 @@ public class JptJaxbCorePlugin
 	}
 	
 	/**
-	 * Return the default Dali preferences
-	 * @see JpaPreferenceInitializer
-	 */
-	public static IEclipsePreferences getDefaultPreferences() {
-		return getPreferences(DefaultScope.INSTANCE);
-	}
-
-	/**
-	 * Return the Dali preferences for the current workspace instance.
-	 */
-	public static IEclipsePreferences getWorkspacePreferences() {
-		return getPreferences(InstanceScope.INSTANCE);
-	}
-	
-	/**
-	 * Return the Dali preferences for the specified context.
-	 */
-	private static IEclipsePreferences getPreferences(IScopeContext context) {
-		return context.getNode(PLUGIN_ID);
-	}
-	
-	/**
-	 * Set the workspace preference.
-	 */
-	public static void setWorkspacePreference(String preferenceKey, String preferenceValue) {
-		IEclipsePreferences prefs = getWorkspacePreferences();
-		prefs.put(preferenceKey, preferenceValue);
-		flush(prefs);
-	}
-
-	/**
-	 * This method is called (via reflection) when the test plug-in is loaded.
-	 * The preferences end up getting flushed after the test case has deleted
-	 * its project, resulting in resource exceptions in the log, e.g.
-	 * <pre>
-	 *     Resource '/JpaProjectManagerTests' is not open.
-	 * </pre>
-	 * See <code>JptJaxbCoreTestsPlugin.start(BundleContext)</code>
-	 */
-	@SuppressWarnings("unused")
-	private static void doNotFlushPreferences() {
-		flushPreferences = false;
-	}
-
-	/**
-	 * Flush preferences in an asynchronous Job because the flush request will
-	 * trigger a lock on the project, which can cause us some deadlocks (e.g.
-	 * when deleting the metamodel source folder).
-	 * Note: the flush will also remove the prefs node if it is empty
-	 */
-	private static void flush(IEclipsePreferences prefs) {
-		if (flushPreferences) {
-			new PreferencesFlushJob(prefs).schedule();
-		}
-	}
-
-	private static class PreferencesFlushJob extends Job {
-		private final IEclipsePreferences prefs;
-		PreferencesFlushJob(IEclipsePreferences prefs) {
-			super(NLS.bind(JptJaxbCoreMessages.PREFERENCES_FLUSH_JOB_NAME, prefs.absolutePath()));
-			this.prefs = prefs;
-		}
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			try {
-				prefs.flush();
-			} catch(BackingStoreException ex) {
-				log(ex);
-			}
-			return Status.OK_STATUS;
-		}
-	}
-	
-	public static Preferences getProjectPreferences(IProject project) {
-		try {
-			IFacetedProject fproj = ProjectFacetsManager.create(project);
-			return fproj.getPreferences(JaxbFacet.FACET);
-		}
-		catch (BackingStoreException bse) {
-			log(bse);
-		}
-		catch (CoreException ce) {
-			log(ce);
-		}
-		return null;
-	}
-	
-	/**
 	 * Set the default {@link JaxbPlatformDescription} for new JAXB projects with the given
 	 * JAXB facet version.
 	 */
 	public static void setDefaultJaxbPlatform(IProjectFacetVersion jaxbFacetVersion, JaxbPlatformDescription platform) {
 		String preferenceKey = null;
 		if (JaxbFacet.VERSION_2_1.equals(jaxbFacetVersion)) {
-			preferenceKey = DEFAULT_JAXB_PLATFORM_2_1_PREF_KEY;
+			preferenceKey = JaxbPreferencesManager.DEFAULT_JAXB_PLATFORM_2_1_PREF_KEY;
 		}
 		else if (JaxbFacet.VERSION_2_2.equals(jaxbFacetVersion)) {
-			preferenceKey = DEFAULT_JAXB_PLATFORM_2_2_PREF_KEY;
+			preferenceKey = JaxbPreferencesManager.DEFAULT_JAXB_PLATFORM_2_2_PREF_KEY;
 		}
 		else {
 			throw new IllegalArgumentException("Illegal JAXB facet version: " + jaxbFacetVersion); //$NON-NLS-1$
 		}
-		setWorkspacePreference(preferenceKey, platform.getId());
+		JaxbPreferencesManager.setWorkspacePreference(preferenceKey, platform.getId());
 	}
 	
-	/**
+	/** 
 	 * Return the default {@link JaxbPlatformDescription} for new JAXB projects with the given 
 	 * JAXB facet version.
 	 */
@@ -293,15 +156,16 @@ public class JptJaxbCorePlugin
 		JaxbPlatformDescription defaultPlatform = 
 				getDefaultPlatform(
 					jaxbFacetVersion, 
-					getWorkspacePreferences(), 
-					getDefaultPreferences());
+					JaxbPreferencesManager.getWorkspacePreferences(), 
+					JaxbPreferencesManager.getDefaultPreferences());
 		if (defaultPlatform == null) {
 			// if the platform ID stored in the workspace prefs is invalid (i.e. null), look in the default prefs
-			defaultPlatform = getDefaultPlatform(jaxbFacetVersion, getDefaultPreferences());
+			defaultPlatform = getDefaultPlatform(jaxbFacetVersion, JaxbPreferencesManager.getDefaultPreferences());
 		}
 		return defaultPlatform;
 	}
 	
+	// 
 	private static JaxbPlatformDescription getDefaultPlatform(
 				IProjectFacetVersion jaxbFacetVersion, Preferences ... nodes) {
 		
@@ -309,11 +173,11 @@ public class JptJaxbCorePlugin
 		String preferenceKey;
 		if (jaxbFacetVersion.equals(JaxbFacet.VERSION_2_1)) {
 			defaultDefaultPlatform = GenericJaxbPlatform.VERSION_2_1;
-			preferenceKey = DEFAULT_JAXB_PLATFORM_2_1_PREF_KEY; 
+			preferenceKey = JaxbPreferencesManager.DEFAULT_JAXB_PLATFORM_2_1_PREF_KEY; 
 		}
 		else if (jaxbFacetVersion.equals(JaxbFacet.VERSION_2_2)) {
 			defaultDefaultPlatform = GenericJaxbPlatform.VERSION_2_2;
-			preferenceKey = DEFAULT_JAXB_PLATFORM_2_2_PREF_KEY; 
+			preferenceKey = JaxbPreferencesManager.DEFAULT_JAXB_PLATFORM_2_2_PREF_KEY; 
 		}
 		else {
 			throw new IllegalArgumentException("Illegal JAXB facet version: " + jaxbFacetVersion); //$NON-NLS-1$
@@ -341,9 +205,7 @@ public class JptJaxbCorePlugin
 	 * Return the JAXB platform ID associated with the specified Eclipse project.
 	 */
 	public static String getJaxbPlatformId(IProject project) {
-		Preferences prefs = getProjectPreferences(project);
-		Preferences platformPrefs = prefs.node(PLATFORM_PREF_NODE);
-		return platformPrefs.get(PLATFORM_ID_PREF_KEY, GenericJaxbPlatform.VERSION_2_1.getId());
+		return (new JaxbPreferencesManager(project)).getJaxbPlatformId();
 	}
 
 	/**
@@ -358,71 +220,15 @@ public class JptJaxbCorePlugin
 	 * Set the {@link JaxbPlatformDescription} associated with the specified Eclipse project.
 	 */
 	public static void setJaxbPlatform(IProject project, JaxbPlatformDescription platform) {
-		Preferences prefs = getProjectPreferences(project);
-		Preferences platformPrefs = prefs.node(PLATFORM_PREF_NODE);
-		platformPrefs.put(PLATFORM_ID_PREF_KEY, platform.getId());
-		try {
-			platformPrefs.flush();
-		}
-		catch (BackingStoreException bse) {
-			log(bse);
-		}
+		(new JaxbPreferencesManager(project)).setJaxbPlatform(platform);
 	}
 	
 	public static List<String> getSchemaLocations(IProject project) {
-		List<String> schemaLocations = new Vector<String>();
-		Preferences prefs = getProjectPreferences(project);
-		Preferences schemasPrefs = prefs.node(SCHEMAS_PREF_NODE);
-		try {
-			boolean checkAnotherNode = true;
-			for (int i = 1; checkAnotherNode; i++ ) {
-				String nodeName = SCHEMA_PREF_NODE_PREFIX + String.valueOf(i);
-				if (schemasPrefs.nodeExists(nodeName)) {
-					Preferences schemaPrefs = schemasPrefs.node(nodeName);
-					String location = schemaPrefs.get(SCHEMA_LOCATION_PREF_KEY, null);
-					if (location != null) {
-						schemaLocations.add(location);
-					}
-				}
-				else {
-					checkAnotherNode = false;
-				}
-			}
-		}
-		catch (BackingStoreException bse) {
-			// this means that the prefs are corrupted, in which case reading anything is unlikely
-			JptJaxbCorePlugin.log(bse);
-		}
-		return schemaLocations;
+		return (new JaxbPreferencesManager(project)).getSchemaLocations();
 	}
 	
 	public static void setSchemaLocations(IProject project, List<String> schemaLocations) {
-		Preferences prefs = getProjectPreferences(project);
-		Preferences schemasPrefs = prefs.node(SCHEMAS_PREF_NODE);
-		try {
-			int i = 1;
-			for (String location : schemaLocations) {
-				String nodeName = SCHEMA_PREF_NODE_PREFIX + String.valueOf(i);
-				Preferences schemaPref = schemasPrefs.node(nodeName);
-				schemaPref.put(SCHEMA_LOCATION_PREF_KEY, location);
-				i ++;
-			}
-			boolean checkAnotherNode = true;
-			for ( ; checkAnotherNode; i++ ) {
-				String nodeName = SCHEMA_PREF_NODE_PREFIX + String.valueOf(i);
-				if (schemasPrefs.nodeExists(nodeName)) {
-					schemasPrefs.node(nodeName).removeNode();
-				}
-				else {
-					checkAnotherNode = false;
-				}
-			}
-			schemasPrefs.flush();
-		}
-		catch (BackingStoreException bse) {
-			// this means that the prefs are corrupted, in which case reading anything is unlikely
-			JptJaxbCorePlugin.log(bse);
-		}
+		(new JaxbPreferencesManager(project)).setSchemaLocations(schemaLocations);
 	}
 	
 	/**
@@ -447,7 +253,7 @@ public class JptJaxbCorePlugin
 	}
 	
 	
-	// ********** plug-in implementation **********
+	// ********** plug-in implementation **************************************************
 
 	public JptJaxbCorePlugin() {
 		super();
