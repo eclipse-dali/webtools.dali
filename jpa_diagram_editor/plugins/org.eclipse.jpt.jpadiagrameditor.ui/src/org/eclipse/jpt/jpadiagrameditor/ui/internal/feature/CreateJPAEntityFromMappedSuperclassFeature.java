@@ -62,7 +62,7 @@ public class CreateJPAEntityFromMappedSuperclassFeature extends
 						JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject()),
 						getFeatureProvider());
 		
-		if (!JptJpaCorePlugin.discoverAnnotatedClasses(jpaProject.getProject())) {
+		if (!JptJpaCorePlugin.getDiscoverAnnotatedClasses(jpaProject.getProject())) {
 			JPAEditorUtil.createRegisterEntityInXMLJob(jpaProject, mappedSuperclassName);
 		}
 				

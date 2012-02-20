@@ -117,7 +117,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			return new Object[] {};
 		}
 		
-		if (!JptJpaCorePlugin.discoverAnnotatedClasses(targetProject)) {
+		if (!JptJpaCorePlugin.getDiscoverAnnotatedClasses(targetProject)) {
 			JPAEditorUtil.createRegisterEntityInXMLJob(jpaProject, entityName);
 		}
 		

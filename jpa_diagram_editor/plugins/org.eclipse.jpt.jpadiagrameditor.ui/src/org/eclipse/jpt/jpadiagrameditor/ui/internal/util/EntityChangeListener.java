@@ -127,7 +127,7 @@ public class EntityChangeListener extends Thread {
 							JpaArtifactFactory.instance().forceSaveEntityClass(jpt, featureProvider);
 							
 							if(jpt.getMapping() == null || (jpt.getMapping() instanceof JavaNullTypeMapping)) {
-								if (!JptJpaCorePlugin.discoverAnnotatedClasses(jpt.getJpaProject().getProject())) {
+								if (!JptJpaCorePlugin.getDiscoverAnnotatedClasses(jpt.getJpaProject().getProject())) {
 									JPAEditorUtil.createUnregisterEntityFromXMLJob(jpt.getJpaProject(), jpt.getName());
 								}
 							}
