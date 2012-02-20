@@ -62,7 +62,7 @@ public class EclipselinkPreferencePage extends PropertyPage {
 		}
 		return true;
 	}
-	
+
 	@Override
 	protected Control createContents(Composite parent) {
 		this.configurator = new StaticWeavingBuilderConfigurator(this.getProject());

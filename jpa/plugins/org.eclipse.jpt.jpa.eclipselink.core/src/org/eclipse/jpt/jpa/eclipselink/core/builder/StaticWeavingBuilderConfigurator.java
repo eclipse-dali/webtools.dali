@@ -17,19 +17,16 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferencesManager;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
-import org.osgi.service.prefs.BackingStoreException;
 
 /**
  *  Configures and coordinates StaticWeaving builder behavior for the project.
  *  Also handles the builder preferences.
  */
-public class StaticWeavingBuilderConfigurator
+public class StaticWeavingBuilderConfigurator extends JpaPreferencesManager
 {
     public static final String BUILDER_ID = EclipselinkStaticWeavingBuilder.BUILDER_ID;
 
@@ -39,24 +36,19 @@ public class StaticWeavingBuilderConfigurator
 	public static final String TARGET = "TARGET"; //$NON-NLS-1$
 	public static final String LOG_LEVEL = "LOG_LEVEL"; //$NON-NLS-1$
 	public static final String PERSISTENCE_INFO = "PERSISTENCE_INFO"; //$NON-NLS-1$
-	
-	private final IProject project;
 
 	// ********** constructors **********
 
 	public StaticWeavingBuilderConfigurator(IProject project) {
 		
-		this.project = project;
-		if(this.project == null) {
-			throw new RuntimeException("Project is null"); 	//$NON-NLS-1$
-		}
+		super(project);
 	}
 
 	// ********** builder **********
 
 	public void addBuilder() {
 		try {
-			IProjectDescription description = this.project.getDescription();
+			IProjectDescription description = this.getProject().getDescription();
 			ICommand[] commands = description.getBuildSpec();
 
 			ICommand newCommand = description.newCommand();
@@ -73,7 +65,7 @@ public class StaticWeavingBuilderConfigurator
 				newCommands[0] = newCommand;
 			}
 			description.setBuildSpec(newCommands);
-			this.project.setDescription(description, null);
+			this.getProject().setDescription(description, null);
 		} 
 		catch(CoreException ce) {
 			// if we can't read the information, the project isn't open
@@ -84,7 +76,7 @@ public class StaticWeavingBuilderConfigurator
 	public boolean projectHasStaticWeavingBuilder() {
 
 		try {
-			IProjectDescription description = this.project.getDescription();
+			IProjectDescription description = this.getProject().getDescription();
 			ICommand[] commands = description.getBuildSpec();
 			if(commands.length == 0)
 				return false;
@@ -103,7 +95,7 @@ public class StaticWeavingBuilderConfigurator
 
 	public void removeBuilder() {
 		try {
-			IProjectDescription description = this.project.getDescription();
+			IProjectDescription description = this.getProject().getDescription();
 			ICommand[] commands = description.getBuildSpec();
 			if(commands.length == 0)
 				return;
@@ -125,7 +117,7 @@ public class StaticWeavingBuilderConfigurator
 					newCommands[j++] = commands[i];
 			}
 			description.setBuildSpec(newCommands);
-			this.project.setDescription(description, IResource.NONE, null);
+			this.getProject().setDescription(description, IResource.NONE, null);
 		}
 		catch(CoreException ce) {
 			// if we can't read the information, the project isn't open
@@ -139,22 +131,22 @@ public class StaticWeavingBuilderConfigurator
 	
 	public String getSourceLocationPreference() {
 		
-		return this.getPreference(SOURCE, this.getDefaultSourceLocation());
+		return this.getProjectPreference(this.appendPrefix(SOURCE), this.getDefaultSourceLocation());
 	}
 	
 	public String getTargetLocationPreference() {
 		
-		return this.getPreference(TARGET, this.getDefaultTargetLocation());
+		return this.getProjectPreference(this.appendPrefix(TARGET), this.getDefaultTargetLocation());
 	}
 	
 	public String getPersistenceInfoPreference() {
 		
-		return this.getPreference(PERSISTENCE_INFO, this.getDefaultPersistenceInfo());
+		return this.getProjectPreference(this.appendPrefix(PERSISTENCE_INFO), this.getDefaultPersistenceInfo());
 	}
 	
 	public String getLogLevelPreference() {
 		
-		return this.getPreference(LOG_LEVEL, this.getDefaultLogLevel());
+		return this.getProjectPreference(this.appendPrefix(LOG_LEVEL), this.getDefaultLogLevel());
 	}
 
 	// default preferences value
@@ -183,76 +175,35 @@ public class StaticWeavingBuilderConfigurator
 	//  setting and removing preferences
 	
 	public void setSourceLocationPreference(String location) {
-		this.setPreference(SOURCE, location);
+		this.setProjectPreference(this.appendPrefix(SOURCE), location);
 	}
 	
 	public void removeSourceLocationPreference() {
-		this.setPreference(SOURCE, null);
+		this.setProjectPreference(this.appendPrefix(SOURCE), null);
 	}
 	
 	public void setTargetLocationPreference(String location) {
-		this.setPreference(TARGET, location);
+		this.setProjectPreference(this.appendPrefix(TARGET), location);
 	}
 	
 	public void removeTargetLocationPreference() {
-		this.setPreference(TARGET, null);
+		this.setProjectPreference(this.appendPrefix(TARGET), null);
 	}
 	
 	public void setLogLevelPreference(String logLevel) {
-		this.setPreference(LOG_LEVEL, logLevel);
+		this.setProjectPreference(this.appendPrefix(LOG_LEVEL), logLevel);
 	}
 	
 	public void removeLogLevelPreference() {
-		this.setPreference(LOG_LEVEL, null);
+		this.setProjectPreference(this.appendPrefix(LOG_LEVEL), null);
 	}
 	
 	public void setPersistenceInfoPreference(String persistenceInfo) {
-		this.setPreference(PERSISTENCE_INFO, persistenceInfo);
+		this.setProjectPreference(this.appendPrefix(PERSISTENCE_INFO), persistenceInfo);
 	}
 	
 	public void removePersistenceInfoPreference() {
-		this.setPreference(PERSISTENCE_INFO, null);
-	}
-	
-	// fush preferences
-	
-	public void flush(IEclipsePreferences prefs) {
-		try {
-			prefs.flush();
-		} 
-		catch(BackingStoreException ex) {
-			JptJpaCorePlugin.log(ex);
-		}
-	}
-
-	// ********** preferences private methods **********
-	
-	private String getPreference(String id, String defaultValue) {
-		return this.getPreference_(JptJpaCorePlugin.getProjectPreferences(this.project), id, defaultValue);
-	}
-
-	private String getPreference_(IEclipsePreferences prefs, String id, String defaultValue) {
-		return prefs.get(this.appendStaticWeavePrefix(id), defaultValue);
-	}
-	
-	private String appendStaticWeavePrefix(String id) {
-		return STATIC_WEAVE_PREFIX + id;
-	}
-	
-	private void setPreference(String id, String staticWeavePreference) {
-		IEclipsePreferences projectPrefs = JptJpaCorePlugin.getProjectPreferences(this.project);
-		
-		this.setPreference_(projectPrefs, id, staticWeavePreference);
-		this.flush(projectPrefs);
-	}
-
-	private void setPreference_(IEclipsePreferences preferences, String id, String staticWeavePreference) {
-		if(StringTools.stringIsEmpty(staticWeavePreference)) {
-			preferences.remove(this.appendStaticWeavePrefix(id));
-		}
-		else {
-			preferences.put(this.appendStaticWeavePrefix(id), staticWeavePreference);
-		}
+		this.setProjectPreference(this.appendPrefix(PERSISTENCE_INFO), null);
 	}
 
 	// ********** private methods **********
@@ -273,14 +224,18 @@ public class StaticWeavingBuilderConfigurator
 		IPath outputLocation = this.getJavaProject().getOutputLocation();
     	String projectName = outputLocation.segment(0);
 
-    	if(this.project.getName().equals(projectName)) {
+    	if(this.getProject().getName().equals(projectName)) {
     		outputLocation = outputLocation.removeFirstSegments(1);
     	}
     	return outputLocation;
 	}
 
 	private IJavaProject getJavaProject() {
-	  return  JavaCore.create(this.project);
+	  return  JavaCore.create(this.getProject());
+	}
+	
+	private String appendPrefix(String id) {
+		return STATIC_WEAVE_PREFIX + id;
 	}
 
 }

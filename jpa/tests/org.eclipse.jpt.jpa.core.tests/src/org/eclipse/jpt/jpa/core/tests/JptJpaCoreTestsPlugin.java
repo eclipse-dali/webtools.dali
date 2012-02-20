@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferencesManager;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -51,7 +52,7 @@ public class JptJpaCoreTestsPlugin
 		JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
 		ReflectionTools.executeMethod(jpaProjectManager, "executeCommandsSynchronously");
 		ReflectionTools.setFieldValue(jpaProjectManager, "test", Boolean.TRUE);
-		ReflectionTools.executeStaticMethod(JptJpaCorePlugin.class, "doNotFlushPreferences");
+		ReflectionTools.executeStaticMethod(JpaPreferencesManager.class, "doNotFlushPreferences");
 	}
 
 	private JpaProjectManager getJpaProjectManager() {

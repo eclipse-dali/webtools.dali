@@ -14,6 +14,7 @@
 package org.eclipse.jpt.jpa.core.jpql;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -21,9 +22,9 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.prefs.JpaValidationPreferencesManager;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationPreferences;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaQuery;
 import org.eclipse.persistence.jpa.jpql.AbstractJPQLQueryHelper;
@@ -180,7 +181,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	}
 
 	protected int getValidationPreference(NamedQuery namedQuery) {
-		return JpaValidationPreferences.getProblemSeverityPreference(
+		return JpaValidationPreferencesManager.getProblemSeverityPreference(
 			namedQuery.getResource(),
 			JpaValidationMessages.JPQL_QUERY_VALIDATION
 		);
@@ -212,7 +213,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	 * @return The global severity for validating JPQL queries
 	 */
 	protected int severity(IResource targetObject) {
-		return JpaValidationPreferences.getProblemSeverityPreference(
+		return JpaValidationPreferencesManager.getProblemSeverityPreference(
 			targetObject,
 			JpaValidationMessages.JPQL_QUERY_VALIDATION
 		);

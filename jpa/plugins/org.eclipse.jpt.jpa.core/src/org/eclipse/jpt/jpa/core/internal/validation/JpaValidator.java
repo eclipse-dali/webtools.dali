@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.prefs.JpaValidationPreferencesManager;
 import org.eclipse.wst.validation.AbstractValidator;
 import org.eclipse.wst.validation.ValidationResult;
 import org.eclipse.wst.validation.ValidationState;
@@ -90,7 +91,7 @@ public class JpaValidator
 		this.clearMarkers(project);
 		for (IMessage message : messages) {
 			// check preferences for IGNORE
-			if (JpaValidationPreferences.problemIsNotIgnored(project, message.getId())) {
+			if ((new JpaValidationPreferencesManager(project)).problemIsNotIgnored(message.getId())) {
 				reporter.addMessage(this, message);
 			}
 		}

@@ -262,7 +262,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
         }
                        
         if (tempModel.isArtifactsAnnotated()) {
-	        if ( ! JptJpaCorePlugin.discoverAnnotatedClasses(project)) {
+	        if ( ! JptJpaCorePlugin.getDiscoverAnnotatedClasses(project)) {
 	        	registerClassInPersistenceXml(tempModel, project).schedule();
 	        }
         } else {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,6 +31,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
+import org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferencesManager;
 import org.eclipse.jpt.jpa.core.platform.GenericPlatform;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -72,7 +73,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected void tearDown() throws Exception {
 		this.persistenceXmlResource = null;
 		this.ormXmlResource = null;
-		JptJpaCorePlugin.getWorkspacePreferences().clear();
+		JpaPreferencesManager.clearWorkspacePreferences();
 		this.waitForWorkspaceJobsToFinish();
 		super.tearDown();
 	}

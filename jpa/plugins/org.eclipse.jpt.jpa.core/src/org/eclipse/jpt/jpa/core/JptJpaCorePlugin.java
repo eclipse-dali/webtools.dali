@@ -10,13 +10,13 @@
 package org.eclipse.jpt.jpa.core;
 
 import java.util.Hashtable;
+
 import javax.xml.parsers.SAXParserFactory;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -24,30 +24,22 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.InternalJpaProjectManager;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.platform.JpaPlatformManagerImpl;
-import org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferenceInitializer;
+import org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferencesManager;
 import org.eclipse.jpt.jpa.core.platform.GenericPlatform;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -74,8 +66,6 @@ public class JptJpaCorePlugin
 	private volatile boolean active = false;
 	private final Hashtable<IWorkspace, InternalJpaProjectManager> jpaProjectManagers = new Hashtable<IWorkspace, InternalJpaProjectManager>();
 	private volatile ServiceTracker<?, SAXParserFactory> parserTracker;
-	private static volatile boolean flushPreferences = true;
-
 
 	// ********** public constants **********
 
@@ -92,50 +82,6 @@ public class JptJpaCorePlugin
 	 */
 	public static final String LEGACY_PLUGIN_ID = "org.eclipse.jpt.core";  //$NON-NLS-1$
 	public static final String LEGACY_PLUGIN_ID_ = LEGACY_PLUGIN_ID + '.';
-
-	/**
-	 * The key for storing a JPA project's platform ID in the Eclipse
-	 * project's preferences.
-	 */
-	private static final String JPA_PLATFORM_PREF_KEY = LEGACY_PLUGIN_ID_ + "platform";  //$NON-NLS-1$
-
-	/**
-	 * The old key for storing the default JPA platform ID in the workspace preferences.
-	 * @deprecated  As of version 2.3.  Instead use {@link #DEFAULT_JPA_PLATFORM_1_0_PREF_KEY} or 
-	 * 		{@link #DEFAULT_JPA_PLATFORM_2_0_PREF_KEY}
-	 */
-	@Deprecated
-	public static final String DEFAULT_JPA_PLATFORM_PREF_KEY = "defaultJpaPlatform"; //$NON-NLS-1$
-	
-	/**
-	 * The key for storing the default JPA platform ID for JPA 1.0 in the workspace preferences.
-	 */
-	public static final String DEFAULT_JPA_PLATFORM_1_0_PREF_KEY = 
-			DEFAULT_JPA_PLATFORM_PREF_KEY + "_" + JpaFacet.VERSION_1_0.getVersionString(); //$NON-NLS-1$
-	
-	/**
-	 * The key for storing the default JPA platform ID for JPA 2.0 in the workspace preferences.
-	 */
-	public static final String DEFAULT_JPA_PLATFORM_2_0_PREF_KEY = 
-			DEFAULT_JPA_PLATFORM_PREF_KEY + "_" + JpaFacet.VERSION_2_0.getVersionString(); //$NON-NLS-1$
-	
-	/**
-	 * The key for storing a JPA project's "discover" flag in the Eclipse
-	 * project's preferences.
-	 */
-	public static final String DISCOVER_ANNOTATED_CLASSES = PLUGIN_ID_ + "discoverAnnotatedClasses";  //$NON-NLS-1$
-
-	//bug 354780 - made the mistake of changing the project metadata in the 3.0 release
-	private static final String LEGACY_DISCOVER_ANNOTATED_CLASSES = LEGACY_PLUGIN_ID_ + "discoverAnnotatedClasses";  //$NON-NLS-1$
-
-	/**
-	 * The key for storing the name of a JPA project's metamodel source folder
-	 * in the Eclipse project's preferences.
-	 */
-	public static final String METAMODEL_SOURCE_FOLDER_NAME = PLUGIN_ID_ + "metamodelSourceFolderName";  //$NON-NLS-1$
-
-	//bug 354780 - made the mistake of changing the project metadata in the 3.0 release
-	private static final String LEGACY_METAMODEL_SOURCE_FOLDER_NAME = LEGACY_PLUGIN_ID_ + "metamodelSourceFolderName";  //$NON-NLS-1$
 
 	/**
 	 * The key for storing a JPA project's data source connection profile name
@@ -232,11 +178,9 @@ public class JptJpaCorePlugin
 		return Platform.getContentTypeManager().getContentType(contentType);
 	}
 	
-	
 	// ********** singleton **********
 
 	static JptJpaCorePlugin INSTANCE;
-
 
 	// ********** public static methods **********
 
@@ -289,138 +233,41 @@ public class JptJpaCorePlugin
 				: new Path("/");  //$NON-NLS-1$
 	}
 	
-	public static void initializeDefaultPreferences() {
-		IEclipsePreferences node = getDefaultPreferences();
-
-		// default JPA platforms
-		JpaPlatformDescription defaultPlatform_1_0 = 
-				JpaPlatformManagerImpl.instance().getDefaultJpaPlatform(JpaFacet.VERSION_1_0);
-		if (defaultPlatform_1_0 == null) {
-			defaultPlatform_1_0 = GenericPlatform.VERSION_1_0;
-		}
-		node.put(DEFAULT_JPA_PLATFORM_1_0_PREF_KEY, defaultPlatform_1_0.getId());
-		
-		JpaPlatformDescription defaultPlatform_2_0 = 
-				JpaPlatformManagerImpl.instance().getDefaultJpaPlatform(JpaFacet.VERSION_2_0);
-		if (defaultPlatform_2_0 == null) {
-			defaultPlatform_2_0 = GenericPlatform.VERSION_2_0;
-		}
-		node.put(DEFAULT_JPA_PLATFORM_2_0_PREF_KEY, defaultPlatform_2_0.getId());
-	}
-	
-	/**
-	 * Return the default Dali preferences
-	 * @see JpaPreferenceInitializer
-	 */
-	public static IEclipsePreferences getDefaultPreferences() {
-		return getPreferences(DefaultScope.INSTANCE);
-	}
-
-	/**
-	 * Return the Dali preferences for the current workspace instance.
-	 */
-	public static IEclipsePreferences getWorkspacePreferences() {
-		return getPreferences(InstanceScope.INSTANCE);
-	}
-	
-	/**
-	 * Set the workspace preference.
-	 */
-	public static void setWorkspacePreference(String preferenceKey, String preferenceValue) {
-		IEclipsePreferences prefs = getWorkspacePreferences();
-		prefs.put(preferenceKey, preferenceValue);
-		flush(prefs);
-	}
-
-	/**
-	 * Return the Dali preferences for the specified Eclipse project.
-	 */
-	public static IEclipsePreferences getProjectPreferences(IProject project) {
-		return getPreferences(new ProjectScope(project));
-	}
-	
-	/**
-	 * Set the project preference
-	 */
-	public static void setProjectPreference(IProject project, String preferenceKey, String preferenceValue) {
-		IEclipsePreferences prefs = getProjectPreferences(project);
-		if (preferenceValue == null) {
-			prefs.remove(preferenceKey);
-		}
-		else {
-			prefs.put(preferenceKey, preferenceValue);
-		}
-		flush(prefs);
-	}
-	
-	/**
-	 * Set the project preference
-	 */
-	public static void setProjectPreference(IProject project, String preferenceKey, boolean preferenceValue) {
-		IEclipsePreferences prefs = getProjectPreferences(project);
-		prefs.putBoolean(preferenceKey, preferenceValue);
-		flush(prefs);
-	}
-	
-	/**
-	 * Clears the project of JPA-specific preferences
-	 */
-	public static void clearProjectPreferences(IProject project) {
-		clearProjectPreferences(
-				project, 
-				JPA_PLATFORM_PREF_KEY,
-				DISCOVER_ANNOTATED_CLASSES,
-				METAMODEL_SOURCE_FOLDER_NAME,
-				LEGACY_DISCOVER_ANNOTATED_CLASSES,
-				LEGACY_METAMODEL_SOURCE_FOLDER_NAME);
-	}
-	
-	/**
-	 * Clears the specified preferences
-	 */
-	public static void clearProjectPreferences(IProject project, String ... preferenceKeys) {
-		IEclipsePreferences prefs = getProjectPreferences(project);
-		for (String preferenceKey : preferenceKeys) {
-			prefs.remove(preferenceKey);
-		}
-		flush(prefs);
-	}
-	
-	/**
-	 * Return the Dali preferences for the specified context.
-	 */
-	private static IEclipsePreferences getPreferences(IScopeContext context) {
-		return context.getNode(LEGACY_PLUGIN_ID);
-	}
-	
 	/**
 	 * Return the default {@link JpaPlatformDescription} for new JPA projects with the given JPA facet version.
 	 */
 	public static JpaPlatformDescription getDefaultJpaPlatform(IProjectFacetVersion jpaFacetVersion) {
-		JpaPlatformDescription defaultPlatform = 
-				getDefaultJpaPlatform(jpaFacetVersion, getWorkspacePreferences(), getDefaultPreferences());
+		JpaPlatformDescription defaultPlatform = 	getDefaultJpaPlatform(
+							jpaFacetVersion, 
+							JpaPreferencesManager.getWorkspacePreferences(), 
+							JpaPreferencesManager.getDefaultPreferences());
 		if (defaultPlatform == null) {
 			// if the platform ID stored in the workspace prefs is invalid (i.e. null), look in the default prefs
-			defaultPlatform = getDefaultJpaPlatform(jpaFacetVersion, getDefaultPreferences());
+			defaultPlatform = getDefaultJpaPlatform(
+						jpaFacetVersion, 
+						JpaPreferencesManager.getDefaultPreferences());
 		}
 		return defaultPlatform;
 	}
 	
 	private static JpaPlatformDescription getDefaultJpaPlatform(IProjectFacetVersion jpaFacetVersion, Preferences ... nodes) {
-		JpaPlatformDescription defaultDefaultPlatform = 
-				getDefaultJpaPlatform(jpaFacetVersion, DEFAULT_JPA_PLATFORM_PREF_KEY, null, nodes);
+		JpaPlatformDescription defaultDefaultPlatform = getDefaultJpaPlatform(
+							jpaFacetVersion, 
+							JpaPreferencesManager.DEFAULT_JPA_PLATFORM_PREF_KEY, 
+							null, 
+							nodes);
 		String preferenceKey = null;
 		if (jpaFacetVersion.equals(JpaFacet.VERSION_1_0)) {
 			if (defaultDefaultPlatform == null) {
 				defaultDefaultPlatform = GenericPlatform.VERSION_1_0;
 			}
-			preferenceKey = DEFAULT_JPA_PLATFORM_1_0_PREF_KEY; 
+			preferenceKey = JpaPreferencesManager.DEFAULT_JPA_PLATFORM_1_0_PREF_KEY; 
 		}
 		else if (jpaFacetVersion.equals(JpaFacet.VERSION_2_0)) {
 			if (defaultDefaultPlatform == null) {
 				defaultDefaultPlatform = GenericPlatform.VERSION_2_0;
 			}
-			preferenceKey = DEFAULT_JPA_PLATFORM_2_0_PREF_KEY;
+			preferenceKey = JpaPreferencesManager.DEFAULT_JPA_PLATFORM_2_0_PREF_KEY;
 		}
 		else {
 			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion); //$NON-NLS-1$
@@ -453,22 +300,22 @@ public class JptJpaCorePlugin
 	public static void setDefaultJpaPlatformId(String jpaFacetVersion, String platformId) {
 		String preferenceKey = null;
 		if (JpaFacet.VERSION_1_0.getVersionString().equals(jpaFacetVersion)) {
-			preferenceKey = DEFAULT_JPA_PLATFORM_1_0_PREF_KEY;
+			preferenceKey = JpaPreferencesManager.DEFAULT_JPA_PLATFORM_1_0_PREF_KEY;
 		}
 		else if (JpaFacet.VERSION_2_0.getVersionString().equals(jpaFacetVersion)) {
-			preferenceKey = DEFAULT_JPA_PLATFORM_2_0_PREF_KEY;
+			preferenceKey = JpaPreferencesManager.DEFAULT_JPA_PLATFORM_2_0_PREF_KEY;
 		}
 		else {
 			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion); //$NON-NLS-1$
 		}
-		setWorkspacePreference(preferenceKey, platformId);
+		JpaPreferencesManager.setWorkspacePreference(preferenceKey, platformId);
 	}
 	
 	/**
 	 * Return the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public static String getJpaPlatformId(IProject project) {
-		return getProjectPreferences(project).get(JPA_PLATFORM_PREF_KEY, GenericPlatform.VERSION_1_0.getId());
+		return (new JpaPreferencesManager(project)).getJpaPlatformId();
 	}
 	
 	/**
@@ -483,27 +330,15 @@ public class JptJpaCorePlugin
 	 * Set the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public static void setJpaPlatformId(IProject project, String jpaPlatformId) {
-		setProjectPreference(project, JPA_PLATFORM_PREF_KEY, jpaPlatformId);
-	}
-
-	/**
-	 * Return the preferences key used to look up an Eclipse project's
-	 * JPA platform ID.
-	 */
-	public static String getJpaPlatformIdPrefKey() {
-		return JPA_PLATFORM_PREF_KEY;
+		(new JpaPreferencesManager(project)).setJpaPlatformId(jpaPlatformId);
 	}
 
 	/**
 	 * Return the JPA "discover" flag associated with the specified
 	 * Eclipse project.
 	 */
-	public static boolean discoverAnnotatedClasses(IProject project) {
-		if (getProjectPreferences(project).get(DISCOVER_ANNOTATED_CLASSES, null) != null) {
-			return getProjectPreferences(project).getBoolean(DISCOVER_ANNOTATED_CLASSES, false);
-		}
-		//bug 354780 - made the mistake of changing the project metadata in the 3.0 release
-		return getProjectPreferences(project).getBoolean(LEGACY_DISCOVER_ANNOTATED_CLASSES, false);
+	public static boolean getDiscoverAnnotatedClasses(IProject project) {
+		return (new JpaPreferencesManager(project)).getDiscoverAnnotatedClasses();
 	}
 
 	/**
@@ -511,7 +346,7 @@ public class JptJpaCorePlugin
 	 * Eclipse project.
 	 */
 	public static void setDiscoverAnnotatedClasses(IProject project, boolean discoverAnnotatedClasses) {
-		setProjectPreference(project, DISCOVER_ANNOTATED_CLASSES, discoverAnnotatedClasses);
+		(new JpaPreferencesManager(project)).setDiscoverAnnotatedClasses(discoverAnnotatedClasses);
 	}
 
 	/**
@@ -519,12 +354,7 @@ public class JptJpaCorePlugin
 	 * specified Eclipse project.
 	 */
 	public static String getMetamodelSourceFolderName(IProject project) {
-		String metamodelSourceFolderName = getProjectPreferences(project).get(METAMODEL_SOURCE_FOLDER_NAME, null);
-		if (metamodelSourceFolderName != null) {
-			return metamodelSourceFolderName;
-		}
-		//bug 354780 - made the mistake of changing the project metadata in the 3.0 release
-		return getProjectPreferences(project).get(LEGACY_METAMODEL_SOURCE_FOLDER_NAME, null);
+		return (new JpaPreferencesManager(project)).getMetamodelSourceFolderName();
 	}
 
 	/**
@@ -532,59 +362,9 @@ public class JptJpaCorePlugin
 	 * specified Eclipse project.
 	 */
 	public static void setMetamodelSourceFolderName(IProject project, String metamodelSourceFolderName) {
-		setProjectPreference(project, METAMODEL_SOURCE_FOLDER_NAME, metamodelSourceFolderName);
-		//bug 354780 - made the mistake of changing the project metadata in the 3.0 release.
-		//make sure legacy setting is removed when turning off metamodel gen, if we don't then
-		//there will be no way to turn off meatamodel gen without sacrificing backwards compatibility
-		if(metamodelSourceFolderName == null) {
-			setProjectPreference(project, LEGACY_METAMODEL_SOURCE_FOLDER_NAME, null);
-		}
-		
+		(new JpaPreferencesManager(project)).setMetamodelSourceFolderName(metamodelSourceFolderName);
 	}
-
-	/**
-	 * This method is called (via reflection) when the test plug-in is loaded.
-	 * The preferences end up getting flushed after the test case has deleted
-	 * its project, resulting in resource exceptions in the log, e.g.
-	 * <pre>
-	 *     Resource '/JpaProjectManagerTests' is not open.
-	 * </pre>
-	 * See <code>JptJpaCoreTestsPlugin.start(BundleContext)</code>
-	 */
-	@SuppressWarnings("unused")
-	private static void doNotFlushPreferences() {
-		flushPreferences = false;
-	}
-
-	/**
-	 * Flush preferences in an asynchronous Job because the flush request will
-	 * trigger a lock on the project, which can cause us some deadlocks (e.g.
-	 * when deleting the metamodel source folder).
-	 * Note: the flush will also remove the prefs node if it is empty
-	 */
-	private static void flush(IEclipsePreferences prefs) {
-		if (flushPreferences) {
-			new PreferencesFlushJob(prefs).schedule();
-		}
-	}
-
-	private static class PreferencesFlushJob extends Job {
-		private final IEclipsePreferences prefs;
-		PreferencesFlushJob(IEclipsePreferences prefs) {
-			super(NLS.bind(JptCoreMessages.PREFERENCES_FLUSH_JOB_NAME, prefs.absolutePath()));
-			this.prefs = prefs;
-		}
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			try {
-				this.prefs.flush();
-			} catch(BackingStoreException ex) {
-				log(ex);
-			}
-			return Status.OK_STATUS;
-		}
-	}
-
+	
 	/**
 	 * Return the name of the connection profile associated with the specified
 	 * Eclipse project.
@@ -717,8 +497,7 @@ public class JptJpaCorePlugin
         INSTANCE.getLog().log(status);
     }
 
-
-	// ********** plug-in implementation **********
+	// ********** plug-in implementation **************************************************
 
 	public JptJpaCorePlugin() {
 		super();

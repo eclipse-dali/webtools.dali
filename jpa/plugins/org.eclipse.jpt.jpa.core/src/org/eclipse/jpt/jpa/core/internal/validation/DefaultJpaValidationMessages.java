@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.prefs.JpaValidationPreferencesManager;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -96,8 +97,8 @@ public class DefaultJpaValidationMessages {
 	{
 		public IMessage buildMessage(int severity, String messageId, String[] parms, IResource targetObject) {
 			// check for preference override
-			int prefSeverity = JpaValidationPreferences.getProblemSeverityPreference(targetObject, messageId);
-			if (prefSeverity != JpaValidationPreferences.NO_SEVERITY_PREFERENCE){
+			int prefSeverity = JpaValidationPreferencesManager.getProblemSeverityPreference(targetObject, messageId);
+			if (prefSeverity != JpaValidationPreferencesManager.NO_SEVERITY_PREFERENCE){
 				severity = prefSeverity;
 			}
 			IMessage message = new Message(JpaValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);

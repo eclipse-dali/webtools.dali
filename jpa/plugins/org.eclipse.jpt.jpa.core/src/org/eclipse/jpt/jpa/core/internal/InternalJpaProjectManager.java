@@ -630,7 +630,7 @@ public class InternalJpaProjectManager
 		config.setConnectionProfileName(JptJpaCorePlugin.getConnectionProfileName(project));
 		config.setUserOverrideDefaultCatalog(JptJpaCorePlugin.getUserOverrideDefaultCatalog(project));
 		config.setUserOverrideDefaultSchema(JptJpaCorePlugin.getUserOverrideDefaultSchema(project));
-		config.setDiscoverAnnotatedClasses(JptJpaCorePlugin.discoverAnnotatedClasses(project));
+		config.setDiscoverAnnotatedClasses(JptJpaCorePlugin.getDiscoverAnnotatedClasses(project));
 		config.setMetamodelSourceFolderName(JptJpaCorePlugin.getMetamodelSourceFolderName(project));
 		return config;
 	}
