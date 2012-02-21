@@ -27,7 +27,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
-import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
@@ -598,11 +597,6 @@ public abstract class AbstractJavaPersistentAttribute
 		// when a selection event occurs before the context model has a
 		// chance to sync with the resource model via the update thread
 		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
-	}
-
-	public Embeddable getEmbeddable() {
-		String typeName = this.getTypeName();
-		return (typeName == null) ? null : this.getPersistenceUnit().getEmbeddable(typeName);
 	}
 
 	@Override

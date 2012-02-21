@@ -22,7 +22,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
-import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -81,11 +80,6 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 
 	public boolean contains(int offset, CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
-	}
-
-	public Embeddable getEmbeddable() {
-		String typeName = this.getTypeName();
-		return (typeName == null) ? null : this.getPersistenceUnit().getEmbeddable(typeName);
 	}
 
 	public boolean typeIsBasic() {

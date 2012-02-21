@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
-import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 
@@ -70,11 +69,6 @@ public interface JavaPersistentAttribute
 	 */
 	boolean contains(int offset, CompilationUnit astRoot);
 
-	/**
-	 * Return the embeddable (type mapping) corresponding to the persistent
-	 * attribute's type. Return <code>null</code> if it is not found.
-	 */
-	Embeddable getEmbeddable();
 
 	// ********** type **********
 
