@@ -1214,15 +1214,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	@Override
 	public String getMetamodelTypeName() {
-		if (this.valueType == Type.BASIC_TYPE) {
-			return this.getTargetClass();
-		}
-		PersistentType targetType = this.getResolvedTargetType();
-		if (targetType == null) {
-			return MetamodelField.DEFAULT_TYPE_NAME;
-		}
-		String targetTypeName = targetType.getName();
-		return (targetTypeName != null) ? targetTypeName : MetamodelField.DEFAULT_TYPE_NAME;
+		return (this.fullyQualifiedTargetClass != null) ? this.fullyQualifiedTargetClass : MetamodelField.DEFAULT_TYPE_NAME;
 	}
 
 	@Override
@@ -1490,7 +1482,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		if (JDTTools.typeIsBasic(this.getJavaProject(), this.getFullyQualifiedTargetClass())) {
 			return;
 		}
-		IType jdtType = JDTTools.findType(getJavaProject(), this.getFullyQualifiedTargetClass());
+		IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetClass());
 		//If a persistent type exists, but no underlying java class, then 
 		//you will get validation on that persistent type instead of here
 		if (jdtType == null && this.getResolvedTargetType() == null) {
