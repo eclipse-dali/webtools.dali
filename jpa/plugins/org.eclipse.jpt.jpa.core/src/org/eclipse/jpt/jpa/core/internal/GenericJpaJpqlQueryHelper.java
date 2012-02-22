@@ -16,6 +16,8 @@ package org.eclipse.jpt.jpa.core.internal;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.jpql.spi.GenericMappingBuilder;
+import org.eclipse.jpt.jpa.core.jpql.spi.IManagedTypeBuilder;
+import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeBuilder;
 import org.eclipse.persistence.jpa.jpql.AbstractContentAssistVisitor;
 import org.eclipse.persistence.jpa.jpql.AbstractGrammarValidator;
 import org.eclipse.persistence.jpa.jpql.AbstractSemanticValidator;
@@ -68,6 +70,14 @@ public class GenericJpaJpqlQueryHelper extends JpaJpqlQueryHelper {
 	@Override
 	protected JPQLQueryContext buildJPQLQueryContext(JPQLGrammar jpqlGrammar) {
 		return new DefaultJPQLQueryContext(jpqlGrammar);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected IManagedTypeBuilder buildManagedTypeBuilder() {
+		return new JpaManagedTypeBuilder();
 	}
 
 	/**

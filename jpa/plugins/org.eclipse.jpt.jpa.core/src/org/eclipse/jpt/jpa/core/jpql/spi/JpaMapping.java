@@ -95,9 +95,11 @@ public abstract class JpaMapping implements IMapping {
 	}
 
 	protected Iterable<ITypeDeclaration> buildGenericTypeDeclarations(JavaResourceAttribute resource) {
+
 		if (resource == null) {
 			return EmptyIterable.instance();
 		}
+
 		return new TransformationIterable<String, ITypeDeclaration>(resource.getTypeTypeArgumentNames()) {
 			@Override
 			protected ITypeDeclaration transform(String next) {
@@ -267,6 +269,11 @@ public abstract class JpaMapping implements IMapping {
 		return typeDeclaration;
 	}
 
+	/**
+	 * Returns the type repository for the application.
+	 *
+	 * @return The repository of {@link IType ITypes}
+	 */
 	protected ITypeRepository getTypeRepository() {
 		return parent.getProvider().getTypeRepository();
 	}

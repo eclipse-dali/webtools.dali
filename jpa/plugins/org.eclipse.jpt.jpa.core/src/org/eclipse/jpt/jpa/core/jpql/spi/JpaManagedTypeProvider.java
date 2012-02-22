@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -36,15 +36,15 @@ import org.eclipse.persistence.jpa.jpql.util.iterator.CloneIterator;
 import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
 
 /**
- * The abstract implementation of {@link IManagedTypeProvider} that is wrapping the design-time
- * representation of a provider of managed types.
+ * An implementation of {@link IManagedTypeProvider} that is wrapping the design-time representation
+ * of a provider of managed types.
  *
  * Provisional API: This interface is part of an interim API that is still under development and
  * expected to change significantly before reaching stability. It is available at this early stage
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -64,6 +64,11 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 	 * The project that gives access to the application's metadata.
 	 */
 	private final JpaProject jpaProject;
+
+	/**
+	 *
+	 */
+	private IManagedTypeBuilder managedTypeBuilder;
 
 	/**
 	 * The cached {@link IManagedType managed types}.
@@ -96,6 +101,27 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 	 *
 	 * @param jpaProject The project that gives access to the application's metadata
 	 * @param persistentTypeContainer The design-time provider of managed types
+	 * @param managedTypeBuilder
+	 * @param mappingBuilder The builder that is responsible to create the {@link IMapping} wrapping
+	 * a persistent attribute or property
+	 */
+	public JpaManagedTypeProvider(JpaProject jpaProject,
+	                              PersistentTypeContainer persistentTypeContainer,
+	                              IManagedTypeBuilder managedTypeBuilder,
+	                              IMappingBuilder<AttributeMapping> mappingBuilder) {
+
+		super();
+		this.jpaProject = jpaProject;
+		this.mappingBuilder = mappingBuilder;
+		this.managedTypeBuilder = managedTypeBuilder;
+		this.persistentTypeContainer = persistentTypeContainer;
+	}
+
+	/**
+	 * Creates a new <code>JpaManagedTypeProvider</code>.
+	 *
+	 * @param jpaProject The project that gives access to the application's metadata
+	 * @param persistentTypeContainer The design-time provider of managed types
 	 * @param mappingBuilder The builder that is responsible to create the {@link IMapping} wrapping
 	 * a persistent attribute or property
 	 */
@@ -103,10 +129,15 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 	                              PersistentTypeContainer persistentTypeContainer,
 	                              IMappingBuilder<AttributeMapping> mappingBuilder) {
 
-		super();
-		this.jpaProject = jpaProject;
-		this.mappingBuilder = mappingBuilder;
-		this.persistentTypeContainer = persistentTypeContainer;
+		this(jpaProject, persistentTypeContainer, new JpaManagedTypeBuilder(), mappingBuilder);
+	}
+
+	protected IEmbeddable buildEmbeddable(Embeddable mappedClass) {
+		return managedTypeBuilder.buildEmbeddable(this, mappedClass, mappingBuilder);
+	}
+
+	protected IEntity buildEntity(Entity mappedClass) {
+		return managedTypeBuilder.buildEntity(this, mappedClass, mappingBuilder);
 	}
 
 	protected IManagedType buildManagedType(PersistentType persistentType) {
@@ -114,19 +145,19 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 		TypeMapping mappedClass = persistentType.getMapping();
 
 		if (mappedClass instanceof Entity) {
-			JpaEntity entity = new JpaEntity(this, (Entity) mappedClass, mappingBuilder);
+			IEntity entity = buildEntity((Entity) mappedClass);
 			entities.add(entity);
 			return entity;
 		}
 
 		if (mappedClass instanceof MappedSuperclass) {
-			JpaMappedSuperclass mappedSuperclass = new JpaMappedSuperclass(this, (MappedSuperclass) mappedClass, mappingBuilder);
+			IMappedSuperclass mappedSuperclass = buildMappedSuperclass((MappedSuperclass) mappedClass);
 			mappedSuperclasses.add(mappedSuperclass);
 			return mappedSuperclass;
 		}
 
 		if (mappedClass instanceof Embeddable) {
-			JpaEmbeddable embeddable = new JpaEmbeddable(this, (Embeddable) mappedClass, mappingBuilder);
+			IEmbeddable embeddable = buildEmbeddable((Embeddable) mappedClass);
 			embeddables.add(embeddable);
 			return embeddable;
 		}
@@ -154,6 +185,10 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 		}
 
 		return managedTypes;
+	}
+
+	protected IMappedSuperclass buildMappedSuperclass(MappedSuperclass mappedClass) {
+		return managedTypeBuilder.buildMappedSuperclass(this, mappedClass, mappingBuilder);
 	}
 
 	/**

@@ -33,7 +33,7 @@ import org.eclipse.persistence.jpa.jpql.spi.IQuery;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -75,7 +75,7 @@ public class JpaEntity extends JpaManagedType
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Entity getManagedType() {
+	public Entity getManagedType() {
 		return (Entity) super.getManagedType();
 	}
 
@@ -94,6 +94,9 @@ public class JpaEntity extends JpaManagedType
 		return queries.get(queryName);
 	}
 
+	/**
+	 * Initializes the map JPQL queries if it has not been been initialized yet.
+	 */
 	protected void initializeQueries() {
 		if (queries == null) {
 			queries = new HashMap<String, IQuery>();

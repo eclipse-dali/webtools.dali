@@ -28,7 +28,7 @@ import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -61,7 +61,7 @@ public class JpaEmbeddable extends JpaManagedType
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Embeddable getManagedType() {
+	public Embeddable getManagedType() {
 		return (Embeddable) super.getManagedType();
 	}
 

@@ -15,6 +15,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+import org.eclipse.jpt.jpa.core.jpql.spi.IManagedTypeBuilder;
+import org.eclipse.jpt.jpa.eclipselink.core.jpql.spi.EclipseLinkManagedTypeBuilder;
 import org.eclipse.jpt.jpa.eclipselink.core.jpql.spi.EclipseLinkMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.AbstractContentAssistVisitor;
 import org.eclipse.persistence.jpa.jpql.AbstractGrammarValidator;
@@ -67,6 +69,14 @@ public class EclipseLinkJpaJpqlQueryHelper extends JpaJpqlQueryHelper {
 	@Override
 	protected JPQLQueryContext buildJPQLQueryContext(JPQLGrammar jpqlGrammar) {
 		return new EclipseLinkJPQLQueryContext(jpqlGrammar);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected IManagedTypeBuilder buildManagedTypeBuilder() {
+		return new EclipseLinkManagedTypeBuilder();
 	}
 
 	/**

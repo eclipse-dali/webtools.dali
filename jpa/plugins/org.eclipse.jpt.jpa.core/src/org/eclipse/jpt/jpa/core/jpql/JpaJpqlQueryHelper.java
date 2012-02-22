@@ -14,7 +14,6 @@
 package org.eclipse.jpt.jpa.core.jpql;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -25,6 +24,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.prefs.JpaValidationPreferencesManager;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpql.spi.IManagedTypeBuilder;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaQuery;
 import org.eclipse.persistence.jpa.jpql.AbstractJPQLQueryHelper;
@@ -55,7 +55,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -77,6 +77,20 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 		super(jpqlGrammar);
 	}
 
+	/**
+	 * Create the builder that will create the right implementation of {@link org.eclipse.persistence.
+	 * jpa.jpql.spi.IManagedType IManagedType}.
+	 *
+	 * @return A new {@link IMappingBuilder}
+	 */
+	protected abstract IManagedTypeBuilder buildManagedTypeBuilder();
+
+	/**
+	 * Create the builder that will create the right implementation of {@link org.eclipse.persistence.
+	 * jpa.jpql.spi.IMapping IMapping}.
+	 *
+	 * @return A new {@link IMappingBuilder}
+	 */
 	protected abstract IMappingBuilder<AttributeMapping> buildMappingBuilder();
 
 	/**
@@ -177,7 +191,12 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	 * @return A new {@link JpaManagedTypeProvider}
 	 */
 	protected JpaManagedTypeProvider buildProvider(JpaProject jpaProject, PersistenceUnit persistenceUnit) {
-		return new JpaManagedTypeProvider(jpaProject, persistenceUnit, buildMappingBuilder());
+		return new JpaManagedTypeProvider(
+			jpaProject,
+			persistenceUnit,
+			buildManagedTypeBuilder(),
+			buildMappingBuilder()
+		);
 	}
 
 	protected int getValidationPreference(NamedQuery namedQuery) {

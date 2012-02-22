@@ -121,7 +121,7 @@ public abstract class JpaManagedType implements IManagedType {
 	 *
 	 * @return The managed type wrapped by this external form
 	 */
-	protected TypeMapping getManagedType() {
+	public TypeMapping getManagedType() {
 		return managedType;
 	}
 
