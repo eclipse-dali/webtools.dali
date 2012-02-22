@@ -66,7 +66,7 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 	private final JpaProject jpaProject;
 
 	/**
-	 *
+	 * The builder that is responsible to create the {@link IManagedType} wrapping a type mapping.
 	 */
 	private IManagedTypeBuilder managedTypeBuilder;
 
@@ -101,7 +101,8 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 	 *
 	 * @param jpaProject The project that gives access to the application's metadata
 	 * @param persistentTypeContainer The design-time provider of managed types
-	 * @param managedTypeBuilder
+	 * @param managedTypeBuilder The builder that is responsible to create the {@link IManagedType}
+	 * wrapping a type mapping
 	 * @param mappingBuilder The builder that is responsible to create the {@link IMapping} wrapping
 	 * a persistent attribute or property
 	 */

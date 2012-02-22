@@ -14,6 +14,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.jpql.spi;
 
 import java.lang.annotation.Annotation;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -121,8 +122,12 @@ public class EclipseLinkDynamicMapping implements IMapping {
 	protected ITypeDeclaration buildTypeDeclaration() {
 
 		String typeName = getTypeName();
-		int index = typeName.indexOf("[]");
-		int dimensionality = (typeName.length() - index) / 2;
+		int dimensionality = 0;
+
+		if (StringTools.stringIsNotEmpty(typeName)) {
+			int index = typeName.indexOf("[]");
+			dimensionality = (typeName.length() - index) / 2;
+		}
 
 		return new JpaTypeDeclaration(getType(), buildGenericTypeDeclarations(), dimensionality);
 	}

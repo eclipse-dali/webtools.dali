@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.persistence.jpa.jpql.TypeHelper;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
@@ -33,7 +34,7 @@ import org.eclipse.persistence.jpa.jpql.spi.ITypeRepository;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.1
+ * @version 3.2
  * @since 3.0
  * @author Pascal Filion
  */
@@ -192,6 +193,11 @@ public class JpaTypeRepository implements ITypeRepository {
 	 */
 	public IJpaType getEnumType(String enumTypeName) {
 
+		// Make sure the enum type name is not empty before doing operations over it
+		if (StringTools.stringIsEmpty(enumTypeName)) {
+			return null;
+		}
+
 		// Get the position of the last dot so the enum constant can be removed
 		int lastDotIndex = enumTypeName.lastIndexOf(".");
 
@@ -256,7 +262,9 @@ public class JpaTypeRepository implements ITypeRepository {
 	 */
 	public IJpaType getType(String typeName) {
 
-		if (IJpaType.UNRESOLVABLE_TYPE == typeName) {
+		if (StringTools.stringIsEmpty(typeName) ||
+		    IJpaType.UNRESOLVABLE_TYPE == typeName) {
+
 			return unresolvableType();
 		}
 

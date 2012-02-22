@@ -23,6 +23,9 @@ import org.eclipse.persistence.jpa.jpql.spi.IMappedSuperclass;
 import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 
 /**
+ * This builder is responsible to create the concrete instance of a {@link org.eclipse.persistence.
+ * jpa.jpql.spi.IManagedType IManagedType}
+ *
  * @version 3.2
  * @since 3.2
  * @author Pascal Filion
@@ -30,36 +33,39 @@ import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 public interface IManagedTypeBuilder {
 
 	/**
-	 * Creates
+	 * Creates a new concrete instance of an {@link IEmbeddable}.
 	 *
-	 * @param provider
-	 * @param mappedClass
-	 * @param mappingBuilder
-	 * @return
+	 * @param provider The provider of JPA managed types
+	 * @param mappedClass The design-time representation of an embeddable
+	 * @param mappingBuilder The builder that is responsible to create the {@link IMapping} wrapping
+	 * a persistent attribute or property
+	 * @return A new instance of {@link IEmbeddable}
 	 */
 	IEmbeddable buildEmbeddable(JpaManagedTypeProvider provider,
 	                            Embeddable mappedClass,
 	                            IMappingBuilder<AttributeMapping> mappingBuilder);
 
 	/**
-	 * Creates
+	 * Creates a new concrete instance of an {@link IEntity}.
 	 *
-	 * @param provider
-	 * @param mappedClass
-	 * @param mappingBuilder
-	 * @return
+	 * @param provider The provider of JPA managed types
+	 * @param mappedClass The design-time representation of an entity
+	 * @param mappingBuilder The builder that is responsible to create the {@link IMapping} wrapping
+	 * a persistent attribute or property
+	 * @return A new instance of {@link IEntity}
 	 */
 	IEntity buildEntity(JpaManagedTypeProvider provider,
 	                    Entity mappedClass,
 	                    IMappingBuilder<AttributeMapping> mappingBuilder);
 
 	/**
-	 * Creates
+	 * Creates a new concrete instance of a {@link IMappedSuperclass}.
 	 *
-	 * @param provider
-	 * @param mappedClass
-	 * @param mappingBuilder
-	 * @return
+	 * @param provider The provider of JPA managed types
+	 * @param mappedClass The design-time representation of a mapped superclass
+	 * @param mappingBuilder The builder that is responsible to create the {@link IMapping} wrapping
+	 * a persistent attribute or property
+	 * @return A new instance of {@link IMappedSuperclass}
 	 */
 	IMappedSuperclass buildMappedSuperclass(JpaManagedTypeProvider provider,
 	                                        MappedSuperclass mappedClass,
