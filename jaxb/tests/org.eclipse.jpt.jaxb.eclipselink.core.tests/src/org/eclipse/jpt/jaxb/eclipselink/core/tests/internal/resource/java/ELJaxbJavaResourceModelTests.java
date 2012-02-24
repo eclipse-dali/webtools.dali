@@ -19,6 +19,7 @@ public class ELJaxbJavaResourceModelTests
 	
 	public static Test suite() {
 		TestSuite suite = new TestSuite(ELJaxbJavaResourceModelTests.class.getName());
+		suite.addTestSuite(XmlCDATAAnnotationTests.class);
 		suite.addTestSuite(XmlInverseReferenceAnnotationTests.class);
 		suite.addTestSuite(XmlPathAnnotationTests.class);
 		suite.addTestSuite(XmlTransformationAnnotationTests.class);

@@ -11,10 +11,13 @@ package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2.ELJaxb_2_2_PlatformDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlTransformationAnnotation;
 
@@ -24,6 +27,17 @@ public class XmlTransformationAnnotationTests
 	
 	public XmlTransformationAnnotationTests(String name) {
 		super(name);
+	}
+	
+	
+	@Override
+	protected AnnotationDefinition[] annotationDefinitions() {
+		return ELJaxb_2_2_PlatformDefinition.instance().getAnnotationDefinitions();
+	}
+	
+	@Override
+	protected NestableAnnotationDefinition[] nestableAnnotationDefinitions() {
+		return ELJaxb_2_2_PlatformDefinition.instance().getNestableAnnotationDefinitions();
 	}
 	
 	

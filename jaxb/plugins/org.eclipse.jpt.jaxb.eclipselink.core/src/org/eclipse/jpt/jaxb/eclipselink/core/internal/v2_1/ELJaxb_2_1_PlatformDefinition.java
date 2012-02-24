@@ -31,10 +31,10 @@ import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAttr
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElementMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElementsMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlInverseReferenceMappingDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlValueMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlInverseReferenceAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlPathAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlPathsAnnotationDefinition;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlTransformationAnnotationDefinition;
 
 
 public class ELJaxb_2_1_PlatformDefinition
@@ -86,8 +86,7 @@ public class ELJaxb_2_1_PlatformDefinition
 		return ArrayTools.addAll(
 				getGenericJaxbPlatformDefinition().getAnnotationDefinitions(),
 				XmlInverseReferenceAnnotationDefinition.instance(),
-				XmlPathsAnnotationDefinition.instance(),
-				XmlTransformationAnnotationDefinition.instance());
+				XmlPathsAnnotationDefinition.instance());
 	}
 	
 	@Override
@@ -100,20 +99,21 @@ public class ELJaxb_2_1_PlatformDefinition
 	@Override
 	protected void addDefaultJavaAttributeMappingDefinitionsTo(
 			ArrayList<DefaultJavaAttributeMappingDefinition> definitions) {
-		CollectionTools.addAll(definitions, ELJavaXmlAttributeMappingDefinition.instance());
-		CollectionTools.addAll(definitions, ELJavaXmlElementMappingDefinition.instance());
+		definitions.add(ELJavaXmlAttributeMappingDefinition.instance());
+		definitions.add(ELJavaXmlElementMappingDefinition.instance());
 		CollectionTools.addAll(definitions, getGenericJaxbPlatformDefinition().getDefaultJavaAttributeMappingDefinitions());
 	}
 	
 	@Override
 	protected void addSpecifiedJavaAttributeMappingDefinitionsTo(
 			ArrayList<JavaAttributeMappingDefinition> definitions) {
-		CollectionTools.addAll(definitions, ELJavaXmlAnyAttributeMappingDefinition.instance());
-		CollectionTools.addAll(definitions, ELJavaXmlAnyElementMappingDefinition.instance());
-		CollectionTools.addAll(definitions, ELJavaXmlAttributeMappingDefinition.instance());
-		CollectionTools.addAll(definitions, ELJavaXmlElementMappingDefinition.instance());
-		CollectionTools.addAll(definitions, ELJavaXmlElementsMappingDefinition.instance());
-		CollectionTools.addAll(definitions, ELJavaXmlInverseReferenceMappingDefinition.instance());
+		definitions.add(ELJavaXmlAnyAttributeMappingDefinition.instance());
+		definitions.add(ELJavaXmlAnyElementMappingDefinition.instance());
+		definitions.add(ELJavaXmlAttributeMappingDefinition.instance());
+		definitions.add(ELJavaXmlElementMappingDefinition.instance());
+		definitions.add(ELJavaXmlElementsMappingDefinition.instance());
+		definitions.add(ELJavaXmlInverseReferenceMappingDefinition.instance());
+		definitions.add(ELJavaXmlValueMappingDefinition.instance());
 		CollectionTools.addAll(definitions, getGenericJaxbPlatformDefinition().getSpecifiedJavaAttributeMappingDefinitions());
 	}
 }

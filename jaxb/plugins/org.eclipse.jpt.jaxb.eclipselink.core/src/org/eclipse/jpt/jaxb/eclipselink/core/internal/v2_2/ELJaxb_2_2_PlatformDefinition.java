@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2;
 
 import java.util.ArrayList;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.jaxb22.GenericJaxb_2_2_PlatformDefinition;
@@ -17,6 +19,9 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlTransformationMappingDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlCDATAAnnotationDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlPathsAnnotationDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlTransformationAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1.ELJaxb_2_1_PlatformDefinition;
 
 
@@ -48,6 +53,14 @@ public class ELJaxb_2_2_PlatformDefinition
 	@Override
 	protected JaxbPlatformDefinition getGenericJaxbPlatformDefinition() {
 		return GenericJaxb_2_2_PlatformDefinition.instance();
+	}
+	
+	@Override
+	protected AnnotationDefinition[] buildAnnotationDefinitions() {
+		return ArrayTools.addAll(
+				super.buildAnnotationDefinitions(),
+				XmlCDATAAnnotationDefinition.instance(),
+				XmlTransformationAnnotationDefinition.instance());
 	}
 	
 	@Override

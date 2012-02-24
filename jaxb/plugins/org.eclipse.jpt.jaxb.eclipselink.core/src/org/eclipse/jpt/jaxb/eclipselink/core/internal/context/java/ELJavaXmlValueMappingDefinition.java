@@ -11,27 +11,26 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
-import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlElementMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlValueMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 
 
-public class ELJavaXmlElementMappingDefinition
-		extends JavaXmlElementMappingDefinition {
+public class ELJavaXmlValueMappingDefinition
+		extends JavaXmlValueMappingDefinition {
 	
 	// singleton
-	private static final ELJavaXmlElementMappingDefinition INSTANCE = 
-			new ELJavaXmlElementMappingDefinition();
+	private static final ELJavaXmlValueMappingDefinition INSTANCE = 
+			new ELJavaXmlValueMappingDefinition();
 	
 	private static final String[] SUPPORTING_ANNOTATION_NAMES = 
 			{
-				ELJaxb.XML_CDATA,
-				ELJaxb.XML_PATH };
+				ELJaxb.XML_CDATA };
 	
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaAttributeMappingDefinition instance() {
+	public static JavaAttributeMappingDefinition instance() {
 		return INSTANCE;
 	}
 	
@@ -39,7 +38,7 @@ public class ELJavaXmlElementMappingDefinition
 	/**
 	 * Enforce singleton usage
 	 */
-	protected ELJavaXmlElementMappingDefinition() {
+	protected ELJavaXmlValueMappingDefinition() {
 		super();
 	}
 	
