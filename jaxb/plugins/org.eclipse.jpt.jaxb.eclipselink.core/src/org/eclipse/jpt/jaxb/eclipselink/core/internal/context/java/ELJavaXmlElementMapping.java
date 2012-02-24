@@ -11,11 +11,17 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
+import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlElementMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
@@ -34,6 +40,12 @@ public class ELJavaXmlElementMapping
 	public ELJavaXmlElementMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		initXmlPath();
+	}
+	
+	
+	@Override
+	protected XmlID buildXmlID(XmlIDAnnotation xmlIDAnnotation) {
+		return new ELJavaXmlID(this, xmlIDAnnotation);
 	}
 	
 	
@@ -120,6 +132,26 @@ public class ELJavaXmlElementMapping
 	}
 	
 	
+	// ***** content assist *****
+	
+	@Override
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		if (this.xmlPath != null) {
+			result = this.xmlPath.getJavaCompletionProposals(pos, filter, astRoot);
+			if (! CollectionTools.isEmpty(result)) {
+				return result;
+			}
+		}
+		
+		return EmptyIterable.instance();
+	}
+	
+	
 	// ***** validation *****
 	
 	@Override
@@ -141,6 +173,10 @@ public class ELJavaXmlElementMapping
 		
 		public XmlPathAnnotation getAnnotation() {
 			return ELJavaXmlElementMapping.this.getXmlPathAnnotation();
+		}
+		
+		public JaxbAttributeMapping getAttributeMapping() {
+			return ELJavaXmlElementMapping.this;
 		}
 	}
 	

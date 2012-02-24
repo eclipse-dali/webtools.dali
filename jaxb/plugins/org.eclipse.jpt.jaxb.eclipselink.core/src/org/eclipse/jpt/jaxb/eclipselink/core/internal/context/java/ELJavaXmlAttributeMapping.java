@@ -11,8 +11,14 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAttributeMapping;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
@@ -33,6 +39,11 @@ public class ELJavaXmlAttributeMapping
 		initXmlPath();
 	}
 	
+	
+	@Override
+	protected XmlID buildXmlID(XmlIDAnnotation xmlIDAnnotation) {
+		return new ELJavaXmlID(this, xmlIDAnnotation);
+	}
 	
 	// ***** sync/update *****
 	
@@ -104,6 +115,26 @@ public class ELJavaXmlAttributeMapping
 	}
 	
 	
+	// ***** content assist *****
+	
+	@Override
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		if (this.xmlPath != null) {
+			result = this.xmlPath.getJavaCompletionProposals(pos, filter, astRoot);
+			if (! CollectionTools.isEmpty(result)) {
+				return result;
+			}
+		}
+		
+		return EmptyIterable.instance();
+	}
+	
+	
 	// ***** validation *****
 	
 	@Override
@@ -126,6 +157,10 @@ public class ELJavaXmlAttributeMapping
 		
 		public XmlPathAnnotation getAnnotation() {
 			return ELJavaXmlAttributeMapping.this.getXmlPathAnnotation();
+		}
+		
+		public JaxbAttributeMapping getAttributeMapping() {
+			return ELJavaXmlAttributeMapping.this;
 		}
 	}
 }

@@ -11,8 +11,6 @@ package org.eclipse.jpt.jaxb.core.xsd;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.xsd.XSDAttributeUse;
@@ -44,16 +42,13 @@ public class XsdComplexTypeDefinition
 	}
 	
 	@Override
-	public Iterable<String> getAttributeNameProposals(String namespace, Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(
-					new TransformationIterable<XsdAttributeUse, String>(getAttributeUses(namespace)) {
-						@Override
-						protected String transform(XsdAttributeUse attrUse) {
-							return attrUse.getXSDComponent().getAttributeDeclaration().getName();
-						}
-					},
-					filter));
+	public Iterable<String> getAttributeNames(String namespace) {
+		return new TransformationIterable<XsdAttributeUse, String>(getAttributeUses(namespace)) {
+				@Override
+				protected String transform(XsdAttributeUse attrUse) {
+					return attrUse.getXSDComponent().getAttributeDeclaration().getName();
+				}
+			};
 	}
 	
 	protected Iterable<XsdAttributeUse> getAttributeUses(final String namespace) {
@@ -82,16 +77,13 @@ public class XsdComplexTypeDefinition
 	}
 	
 	@Override
-	public Iterable getElementNameProposals(String namespace, Filter<String> filter, boolean recurseChildren) {
-		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(
-					new TransformationIterable<XsdElementDeclaration, String>(getElementDeclarations(namespace, recurseChildren)) {
-						@Override
-						protected String transform(XsdElementDeclaration element) {
-							return element.getXSDComponent().getName();
-						}
-					},
-					filter));
+	public Iterable<String> getElementNames(String namespace, boolean recurseChildren) {
+		return new TransformationIterable<XsdElementDeclaration, String>(getElementDeclarations(namespace, recurseChildren)) {
+				@Override
+				protected String transform(XsdElementDeclaration element) {
+					return element.getXSDComponent().getName();
+				}
+			};
 	}
 	
 	protected Iterable<XsdElementDeclaration> getElementDeclarations(final String namespace, boolean recurseChildren) {

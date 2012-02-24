@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 /**
@@ -65,7 +66,12 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	
 	public abstract XsdAttributeUse getAttribute(String namespace, String name);
 	
-	public abstract Iterable<String> getAttributeNameProposals(String namespace, Filter<String> filter);
+	public Iterable<String> getAttributeNameProposals(String namespace, Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(
+				new FilteringIterable<String>(getAttributeNames(namespace), filter));
+	}
+	
+	public abstract Iterable<String> getAttributeNames(String namespace);
 	
 	public XsdElementDeclaration getElement(String namespace, String name) {
 		return getElement(namespace, name, false);
@@ -77,8 +83,12 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 		return getElementNameProposals(namespace, filter, false);
 	}
 	
-	public abstract Iterable getElementNameProposals(String namespace, Filter<String> filter, boolean recurseChildren);
+	public Iterable getElementNameProposals(String namespace, Filter<String> filter, boolean recurseChildren) {
+		return StringTools.convertToJavaStringLiterals(
+				new FilteringIterable<String>(getElementNames(namespace, recurseChildren), filter));
+	}
 	
+	public abstract Iterable<String> getElementNames(String namespace, boolean recurseChildren);
 	
 	public enum Kind {
 		

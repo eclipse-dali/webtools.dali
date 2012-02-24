@@ -74,7 +74,7 @@ public class XsdSimpleTypeDefinition
 	}
 	
 	@Override
-	public Iterable<String> getAttributeNameProposals(String namespace, Filter<String> filter) {
+	public Iterable<String> getAttributeNames(String namespace) {
 		// simple types have no attributes
 		return EmptyIterable.instance();
 	}
@@ -86,7 +86,7 @@ public class XsdSimpleTypeDefinition
 	}
 	
 	@Override
-	public Iterable<String> getElementNameProposals(String namespace, Filter<String> filter, boolean recurseChildren) {
+	public Iterable<String> getElementNames(String namespace, boolean recurseChildren) {
 		// simple types have no elements
 		return EmptyIterable.instance();
 	}

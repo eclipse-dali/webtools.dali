@@ -83,6 +83,11 @@ public interface JaxbPackageInfo
 	XmlJavaTypeAdapter getXmlJavaTypeAdapter(String boundTypeName);
 	
 	
+	// ***** misc *****
+	
+	String getNamespaceForPrefix(String prefix);
+	
+	
 	// ***** validation *****
 	
 	/**
