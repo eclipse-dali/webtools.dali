@@ -500,7 +500,7 @@ public class GenericJavaXmlAnyElementMapping
 		
 		protected XmlElementRefAnnotation annotation;
 		
-		protected XmlElementRefContext(XmlElementRefAnnotation annotation) {
+		public XmlElementRefContext(XmlElementRefAnnotation annotation) {
 			this.annotation = annotation;
 		}
 		

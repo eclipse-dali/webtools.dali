@@ -270,7 +270,7 @@ public class GenericJavaXmlElementRefMapping
 	}
 	
 	
-	protected class XmlElementRefContext
+	public class XmlElementRefContext
 			implements GenericJavaXmlElementRef.Context {
 		
 		public XmlElementRefAnnotation getAnnotation() {

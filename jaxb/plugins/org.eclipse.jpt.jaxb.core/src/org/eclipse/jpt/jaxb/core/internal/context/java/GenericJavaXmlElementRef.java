@@ -195,14 +195,16 @@ public class GenericJavaXmlElementRef
 	
 	public Iterable<String> getReferencedXmlTypeNames() {
 		// only return the specified type - the default type should already be included
-		if (this.specifiedType != null) {
-			String fqType = getFullyQualifiedType();
-			if (! JAXB.JAXB_ELEMENT.equals(fqType)) {
-				return new SingleElementIterable(fqType);
-			}
+		if (this.specifiedType != null
+				&& ! isTypeJAXBElement()) {
+			return new SingleElementIterable(getFullyQualifiedType());
 		}
 		
 		return EmptyIterable.instance();
+	}
+	
+	protected boolean isTypeJAXBElement() {
+		return (StringTools.stringsAreEqual(JAXB.JAXB_ELEMENT, getFullyQualifiedType()));
 	}
 	
 	
@@ -256,13 +258,13 @@ public class GenericJavaXmlElementRef
 		else if (! StringTools.stringIsEmpty(this.specifiedType)
 				// verify that type actually exists before validating
 				&& JDTTools.findType(getJaxbProject().getJavaProject(), fqType) != null) {
-			String attributeBaseType = getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
-			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeBaseType)) {
+			String attributeValueType = getContext().getAttributeMapping().getValueTypeName();
+			if (! JDTTools.typeIsSubType(getJaxbProject().getJavaProject(), fqType, attributeValueType)) {
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JaxbValidationMessages.XML_ELEMENT_REF__ILLEGAL_TYPE,
-								new String[] { attributeBaseType },
+								new String[] { attributeValueType },
 								this,
 								getTypeTextRange(astRoot)));
 								
@@ -275,7 +277,7 @@ public class GenericJavaXmlElementRef
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JaxbValidationMessages.XML_ELEMENT_REF__NO_ROOT_ELEMENT,
-								new String[] { attributeBaseType },
+								new String[] { attributeValueType },
 								this,
 								getTypeTextRange(astRoot)));
 			}
@@ -297,7 +299,7 @@ public class GenericJavaXmlElementRef
 		}
 		
 		protected boolean isTypeJAXBElement() {
-			return JAXB.JAXB_ELEMENT.equals(GenericJavaXmlElementRef.this.getFullyQualifiedType());
+			return GenericJavaXmlElementRef.this.isTypeJAXBElement();
 		}
 		
 		protected JaxbTypeMapping getReferencedTypeMapping() {
