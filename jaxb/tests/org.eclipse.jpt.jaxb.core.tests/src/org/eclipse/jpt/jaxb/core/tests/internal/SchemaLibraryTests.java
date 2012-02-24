@@ -27,7 +27,7 @@ public class SchemaLibraryTests
 	
 	// tests schema for namespace that is set in catalog, but not in project properties
 	public void testUnsetNamespace() {
-		String namespace = "http://www.eclipse.org/eclipselink/xsds/persistence/orm";
+		String namespace = "http://www.w3.org/2001/XInclude";
 		
 		// test initial load
 		XsdSchema schema = getJaxbProject().getSchemaLibrary().getSchema(namespace);
