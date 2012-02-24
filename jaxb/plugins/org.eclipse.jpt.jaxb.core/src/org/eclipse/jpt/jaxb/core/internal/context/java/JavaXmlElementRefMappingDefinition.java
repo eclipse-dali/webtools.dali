@@ -52,7 +52,8 @@ public class JavaXmlElementRefMappingDefinition
 	public Iterable<String> getSupportingAnnotationNames() {
 		return new ArrayListIterable<String>( new String[] {
 				JAXB.XML_ELEMENT_WRAPPER,
-				JAXB.XML_JAVA_TYPE_ADAPTER });
+				JAXB.XML_JAVA_TYPE_ADAPTER,
+				JAXB.XML_MIXED });
 	}
 	
 	public JaxbAttributeMapping buildMapping(JaxbPersistentAttribute parent, JaxbFactory factory) {
