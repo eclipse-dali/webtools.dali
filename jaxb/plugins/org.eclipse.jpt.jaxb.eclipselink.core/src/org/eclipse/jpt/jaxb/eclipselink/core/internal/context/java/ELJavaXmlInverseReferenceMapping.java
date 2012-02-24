@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
@@ -194,11 +195,17 @@ public class ELJavaXmlInverseReferenceMapping
 							this,
 							getMappedByTextRange(astRoot)));
 		}
-		else if (referencedAttribute.getMappingKey() != MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY) {
+		else if (
+				! Tools.valueIsEqualToOneOf(
+						referencedAttribute.getMappingKey(), 
+						MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY,
+						MappingKeys.XML_ELEMENTS_ATTRIBUTE_MAPPING_KEY,
+						MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY,
+						MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_XML_ELEMENT,
+							ELJaxbValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE,
 							new String[] { mappedBy, referencedClassMapping.getJaxbType().getFullyQualifiedName() },
 							this,
 							getMappedByTextRange(astRoot)));
