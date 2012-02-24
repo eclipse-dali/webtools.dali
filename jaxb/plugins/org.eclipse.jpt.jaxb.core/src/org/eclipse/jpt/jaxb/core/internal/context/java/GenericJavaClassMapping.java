@@ -36,7 +36,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
-import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -45,6 +44,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -616,6 +616,13 @@ public class GenericJavaClassMapping
 				getOtherInheritedAttributes());
 	}
 	
+	public Iterable<JaxbPersistentAttribute> getAllAttributes() {
+		return new CompositeIterable<JaxbPersistentAttribute>(
+				getAttributes(),
+				getIncludedAttributes(),
+				getOtherInheritedAttributes());
+	}
+	
 	/**
 	 * return those inherited attributes that are not included
 	 */
@@ -691,31 +698,28 @@ public class GenericJavaClassMapping
 	}
 	
 	public JaxbAttributeMapping getXmlIdMapping() {
-		Iterator<XmlNamedNodeMapping> idMappings = getBasicMappingsWithXmlID().iterator();
-		return (idMappings.hasNext()) ? idMappings.next() : null;
-	}
-	
-	protected Iterable<XmlNamedNodeMapping> getBasicMappingsWithXmlID(){
-		return new FilteringIterable<XmlNamedNodeMapping>(getBasicMappings()){
-			@Override
-			protected boolean accept(XmlNamedNodeMapping basicMapping) {
-				return basicMapping.getXmlID() != null;
-			}
-		};
-	}
-	
-	protected Iterable<XmlNamedNodeMapping> getBasicMappings() {
-		return new SubIterableWrapper<JaxbAttributeMapping, XmlNamedNodeMapping>(getBasicMappings_());
-	}
-	
-	protected Iterable<JaxbAttributeMapping> getBasicMappings_(){
-		return new FilteringIterable<JaxbAttributeMapping>(getAttributeMappings()){
-			@Override
-			protected boolean accept(JaxbAttributeMapping attributeMapping) {
-				return (attributeMapping.getKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY
-						|| attributeMapping.getKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
-			}
-		};
+		Iterator<XmlNamedNodeMapping> allXmlIdMappings = 
+				new FilteringIterable<XmlNamedNodeMapping>(
+						new SubIterableWrapper<JaxbAttributeMapping, XmlNamedNodeMapping>(
+								new FilteringIterable<JaxbAttributeMapping>(
+										new TransformationIterable<JaxbPersistentAttribute, JaxbAttributeMapping>(getAllAttributes()) {
+											@Override
+											protected JaxbAttributeMapping transform(JaxbPersistentAttribute o) {
+												return o.getMapping();
+											}
+										}) {
+									@Override
+									protected boolean accept(JaxbAttributeMapping o) {
+										return (o.getKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY
+												|| o.getKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
+									}
+								})) {
+					@Override
+					protected boolean accept(XmlNamedNodeMapping o) {
+						return o.getXmlID() != null;
+					}
+				}.iterator();
+		return (allXmlIdMappings.hasNext()) ? allXmlIdMappings.next() : null;
 	}
 	
 	protected Iterable<? extends JaxbAttributeMapping> getAttributeMappings() {
