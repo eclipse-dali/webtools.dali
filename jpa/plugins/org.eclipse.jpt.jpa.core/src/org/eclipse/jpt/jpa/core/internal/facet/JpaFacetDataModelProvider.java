@@ -70,6 +70,8 @@ public abstract class JpaFacetDataModelProvider
 	
 	private LibraryInstallDelegate defaultLibraryProvider;
 	
+	private IPropertyChangeListener libraryProviderListener;
+	
 	/** cache the connection profile - change it whenever the user selects a different name */
 	private ConnectionProfile connectionProfile;
 	
@@ -220,6 +222,7 @@ public abstract class JpaFacetDataModelProvider
 			this.defaultLibraryProvider = buildDefaultLibraryProvider();
 		}
 		else if (! this.defaultLibraryProvider.getProjectFacetVersion().equals(getProjectFacetVersion())) {
+			this.defaultLibraryProvider.removeListener(this.libraryProviderListener);
 			this.defaultLibraryProvider.dispose();
 			this.defaultLibraryProvider = buildDefaultLibraryProvider();
 		}
@@ -245,10 +248,11 @@ public abstract class JpaFacetDataModelProvider
 					JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, jpaPlatform);
 		
 		LibraryInstallDelegate lp = new LibraryInstallDelegate(fpjwc, pfv, customEnablementVariables);
-		lp.addListener(buildLibraryProviderListener());
+		this.libraryProviderListener = buildLibraryProviderListener();
+		lp.addListener(this.libraryProviderListener);
 		return lp;
 	}
-	
+
 	protected IPropertyChangeListener buildLibraryProviderListener() {
 		return new IPropertyChangeListener() {
 				public void propertyChanged(String property, Object oldValue, Object newValue ) {
@@ -732,4 +736,12 @@ public abstract class JpaFacetDataModelProvider
 	protected static IStatus buildStatus(int severity, String message) {
 		return new Status(severity, JptJpaCorePlugin.PLUGIN_ID, message);
 	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		this.defaultLibraryProvider.removeListener(this.libraryProviderListener);
+		this.defaultLibraryProvider.dispose();
+	}
+	
 }
