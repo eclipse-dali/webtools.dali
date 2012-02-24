@@ -21,6 +21,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -70,8 +71,11 @@ public abstract class AbstractJavaQName
 	// ***** namespace *****
 	
 	public String getNamespace() {
-		return StringTools.stringIsEmpty(getSpecifiedNamespace()) ? // namespace="" is actually interpreted as unspecified by JAXB tools
-				getDefaultNamespace() : getSpecifiedNamespace();
+		if (StringTools.stringIsEmpty(getSpecifiedNamespace())  // namespace="" is actually interpreted as unspecified by JAXB tools
+				|| StringTools.stringsAreEqual(getSpecifiedNamespace(), JAXB.DEFAULT_STRING)) {
+			return getDefaultNamespace();
+		}
+		return getSpecifiedNamespace();
 	}
 	
 	public abstract String getDefaultNamespace();
@@ -103,7 +107,11 @@ public abstract class AbstractJavaQName
 	// ***** name *****
 	
 	public String getName() {
-		return this.getSpecifiedName() == null ? getDefaultName() : getSpecifiedName();
+		if (getSpecifiedName() == null
+				|| StringTools.stringsAreEqual(getSpecifiedName(), JAXB.DEFAULT_STRING)) {
+			return getDefaultName();
+		}
+		return getSpecifiedName();
 	}
 	
 	public abstract String getDefaultName();

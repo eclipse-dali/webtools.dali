@@ -38,6 +38,8 @@ public interface JAXB {
 	
 	// JAXB annotations
 	
+	String DEFAULT_STRING = "##default";
+	
 	String XML_ATTACHMENT_REF = JAXB_ANNOTATION_PACKAGE_ + "XmlAttachmentRef";
 	
 	String XML_ACCESSOR_ORDER = JAXB_ANNOTATION_PACKAGE_ + "XmlAccessorOrder";
