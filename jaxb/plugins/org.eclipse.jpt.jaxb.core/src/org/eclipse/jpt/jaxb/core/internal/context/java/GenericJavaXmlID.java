@@ -12,9 +12,9 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
+import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
@@ -52,14 +52,7 @@ public class GenericJavaXmlID
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		if (! getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(String.class.getName())) {
-			messages.add(
-				DefaultValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JaxbValidationMessages.XML_ID__ATTRIBUTE_TYPE_NOT_STRING,
-					this,
-					getValidationTextRange(astRoot)));
-		}
+		validateAttributeType(messages, astRoot);
 		
 		XsdFeature xsdFeature = getMapping().getXsdFeature();
 		if (xsdFeature == null) {
@@ -75,6 +68,17 @@ public class GenericJavaXmlID
 						new String [] { xsdFeature.getName() },
 						this,
 						getValidationTextRange(astRoot)));
+		}
+	}
+	
+	protected void validateAttributeType(List<IMessage> messages, CompilationUnit astRoot) {
+		if (! getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(String.class.getName())) {
+			messages.add(
+				DefaultValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JaxbValidationMessages.XML_ID__ATTRIBUTE_TYPE_NOT_STRING,
+					this,
+					getValidationTextRange(astRoot)));
 		}
 	}
 
