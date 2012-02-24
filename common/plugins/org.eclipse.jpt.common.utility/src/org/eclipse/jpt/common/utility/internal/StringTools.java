@@ -4056,6 +4056,20 @@ public final class StringTools {
 		sb.append(']');
 		return sb.toString();
 	}
+	
+	/**
+	 * Return a concatenation of the given strings
+	 * 
+	 * @param strings - the strings to concatenate
+	 * @return the resultant concatenated string
+	 */
+	public static String concatenate(String ... strings) {
+		StringBuilder sb = new StringBuilder();
+		for (String string : strings) {
+			sb.append(string);
+		}
+		return sb.toString();
+	}
 
 
 	// ********** queries **********
