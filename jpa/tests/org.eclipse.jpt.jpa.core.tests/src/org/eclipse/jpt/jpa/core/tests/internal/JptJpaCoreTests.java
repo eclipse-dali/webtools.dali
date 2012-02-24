@@ -29,6 +29,7 @@ public class JptJpaCoreTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptJpaCoreTests.class.getPackage().getName());
+		//****If you add a new suite, you must update test.xml where they are individually listed.
 		suite.addTest(JptJpaCoreModelTests.suite());
 		suite.addTest(JptJpaCoreResourceModelTests.suite());
 		suite.addTest(JptJpaCoreContextModelTests.suite());
