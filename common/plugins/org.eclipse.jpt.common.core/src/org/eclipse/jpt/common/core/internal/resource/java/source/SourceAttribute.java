@@ -299,7 +299,7 @@ abstract class SourceAttribute<A extends Attribute>
 		ArrayList<String> names = new ArrayList<String>();
 		typeBinding = typeBinding.getSuperclass();
 		while (typeBinding != null) {
-			names.add(typeBinding.getQualifiedName());
+			names.add(typeBinding.getErasure().getQualifiedName());
 			typeBinding = typeBinding.getSuperclass();
 		}
 		return names;
@@ -332,7 +332,7 @@ abstract class SourceAttribute<A extends Attribute>
 
 	private void addInterfaceNamesTo(ITypeBinding typeBinding, HashSet<String> names) {
 		for (ITypeBinding interfaceBinding : typeBinding.getInterfaces()) {
-			names.add(interfaceBinding.getTypeDeclaration().getQualifiedName());
+			names.add(interfaceBinding.getTypeDeclaration().getErasure().getQualifiedName());
 			this.addInterfaceNamesTo(interfaceBinding, names);  // recurse
 		}
 	}
@@ -363,7 +363,7 @@ abstract class SourceAttribute<A extends Attribute>
 		if (typeBinding == null) {
 			return Collections.emptyList();
 		}
-
+		
 		ITypeBinding[] typeArguments = typeBinding.getTypeArguments();
 		if (typeArguments.length == 0) {
 			return Collections.emptyList();
