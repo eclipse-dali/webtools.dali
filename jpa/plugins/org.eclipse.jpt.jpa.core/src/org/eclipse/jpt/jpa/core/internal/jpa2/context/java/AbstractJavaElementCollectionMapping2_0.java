@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Association;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -34,11 +35,13 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterab
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.BaseEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -56,6 +59,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
+import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
@@ -96,7 +100,9 @@ import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
@@ -1474,6 +1480,131 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.collectionTable.validate(messages, reporter, astRoot);
 		this.validateValue(messages, reporter, astRoot);
 		this.validateMapKey(messages, reporter, astRoot);
+		this.validateNoEmbeddableInMappingContainsProhibitedMapping(messages, astRoot);
+	}
+
+	protected void validateNoEmbeddableInMappingContainsProhibitedMapping(List<IMessage> messages, CompilationUnit astRoot) {
+		Embeddable embeddableClass = getResolvedTargetEmbeddable();
+		if (embeddableClass != null) {
+			embeddableContainsElementCollection(messages, astRoot, embeddableClass);
+			embeddableContainsProhibitedRelationshipMapping(messages, astRoot, embeddableClass);
+			embeddableHierarchyContainsProhibitedMapping(messages, astRoot, embeddableClass, new ArrayList<Embeddable>());
+		}
+		embeddableClass = getResolvedMapKeyEmbeddable();
+		if (embeddableClass != null) {
+			embeddableContainsElementCollection(messages, astRoot, embeddableClass);
+			embeddableContainsProhibitedRelationshipMapping(messages, astRoot, embeddableClass);
+			embeddableHierarchyContainsProhibitedMapping(messages, astRoot, embeddableClass, new ArrayList<Embeddable>());
+		}
+	}
+
+	private void embeddableHierarchyContainsProhibitedMapping(List<IMessage> messages, CompilationUnit astRoot, Embeddable parentEmbeddable, List<Embeddable> visited) {
+		Iterable<AttributeMapping> embeddedIterable = parentEmbeddable.getAllAttributeMappings(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		for(AttributeMapping mapping : embeddedIterable) {
+			Embeddable embeddable = ((BaseEmbeddedMapping)mapping).getTargetEmbeddable();
+			if (embeddable != null && embeddable != parentEmbeddable) {
+				embeddableContainsElementCollection(messages, astRoot, embeddable);
+				embeddableContainsProhibitedRelationshipMapping(messages, astRoot, embeddable);
+				if (!CollectionTools.contains(visited, embeddable)) {
+					visited.add(embeddable);
+					embeddableHierarchyContainsProhibitedMapping(messages, astRoot, embeddable, visited);
+				}
+			}
+		}
+		Iterable<AttributeMapping> embeddedIdIterable = parentEmbeddable.getAllAttributeMappings(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		for(AttributeMapping mapping : embeddedIdIterable) {
+			Embeddable embeddable = ((BaseEmbeddedMapping)mapping).getTargetEmbeddable();
+			if (embeddable != null && embeddable != parentEmbeddable) {
+				embeddableContainsElementCollection(messages, astRoot, embeddable);
+				embeddableContainsProhibitedRelationshipMapping(messages, astRoot, embeddable);
+				if (!CollectionTools.contains(visited, embeddable)) {
+					visited.add(embeddable);
+					embeddableHierarchyContainsProhibitedMapping(messages, astRoot, embeddable, visited);
+				}
+			}
+		}
+	}
+
+	private void embeddableContainsProhibitedRelationshipMapping(List<IMessage> messages, CompilationUnit astRoot, Embeddable embeddable) {
+		boolean prohibitedMappingFound = false;
+		RelationshipMapping relationshipMapping = null; 
+		Iterable<AttributeMapping> manyToManyMappings = embeddable.getAllAttributeMappings(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		Iterable<AttributeMapping> oneToManyMappings = embeddable.getAllAttributeMappings(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		if (oneToManyMappings.iterator().hasNext()) {
+			relationshipMapping = (RelationshipMapping)oneToManyMappings.iterator().next();
+			prohibitedMappingFound = true;
+		}
+		if (manyToManyMappings.iterator().hasNext()) {
+			relationshipMapping = (RelationshipMapping)manyToManyMappings.iterator().next();
+			prohibitedMappingFound = true;
+		}
+		Iterable<AttributeMapping> manyToOneMappings = embeddable.getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		if (manyToOneMappings.iterator().hasNext()) {
+			relationshipMapping = (RelationshipMapping)manyToOneMappings.iterator().next();
+			if (((RelationshipMapping)manyToOneMappings.iterator().next()).getRelationshipOwner() != null
+					|| ((ManyToOneRelationship2_0)relationshipMapping.getRelationship()).getJoinTableStrategy().getJoinTable() != null) {
+				prohibitedMappingFound = true;
+			}
+		}
+		Iterable<AttributeMapping> oneToOneMappings = embeddable.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		if (oneToOneMappings.iterator().hasNext()) {
+			relationshipMapping = (RelationshipMapping)oneToOneMappings.iterator().next();
+			if (relationshipMapping.getRelationshipOwner() != null
+					|| ((OneToOneRelationship2_0)relationshipMapping.getRelationship()).getJoinTableStrategy().getJoinTable() != null) {
+				prohibitedMappingFound = true;
+			}
+		}
+		if (prohibitedMappingFound) {
+			if (getPersistentAttribute().isVirtual()) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
+								new String[] {this.getName(), 
+										embeddable.getName(), relationshipMapping.getName()},
+								this,
+								this.getValidationTextRange(astRoot)
+						)
+				);				
+			} else {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
+							new String[] {embeddable.getName(), relationshipMapping.getName()},
+							this,
+							this.getValidationTextRange(astRoot)
+					)
+			);
+			}
+		}
+	}
+
+	private void embeddableContainsElementCollection(List<IMessage> messages, CompilationUnit astRoot, Embeddable embeddable) {
+		Iterable<AttributeMapping> elementCollectionMappings = embeddable.getAllAttributeMappings(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
+		if (elementCollectionMappings.iterator().hasNext()) {
+			if (getPersistentAttribute().isVirtual()) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
+								new String[] {this.getName(), embeddable.getName(), elementCollectionMappings.iterator().next().getName()},
+								this,
+								this.getValidationTextRange(astRoot)
+						)
+				);				
+			} else {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
+								new String[] {embeddable.getName(), elementCollectionMappings.iterator().next().getName()},
+								this,
+								this.getValidationTextRange(astRoot)
+						)
+				);
+			}
+		}
 	}
 
 	protected void validateTargetClass(List<IMessage> messages, CompilationUnit astRoot) {
