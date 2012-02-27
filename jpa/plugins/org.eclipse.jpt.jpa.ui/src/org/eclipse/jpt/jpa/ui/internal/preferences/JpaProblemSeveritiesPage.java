@@ -160,7 +160,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	 */
 	public JpaProblemSeveritiesPage() {
 		super();
-		initialize();
+		this.initialize();
 	}
 
 	@Override
@@ -168,23 +168,21 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		this.setPreferenceStore(JptJpaUiPlugin.instance().getPreferenceStore());
 		this.setDescription(JptUiMessages.JpaProblemSeveritiesPage_Description);
 	}
-	
+
 	@Override
 	protected Control createContents(Composite parent) {
-		Control control = super.createContents(parent);
-		
 		if(this.isProjectPreferencePage()) {
 			this.preferencesManager = new JpaValidationPreferencesManager(this.getProject());
 		}
-		return control;
+		return super.createContents(parent);
 	}
 	
 	protected void initialize() {
 		this.combos = new ArrayList<Combo>();
 		this.expandablePanes = new ArrayList<ExpandableComposite>();
-		this.severityDisplayStrings = buildSeverityDisplayStrings();
+		this.severityDisplayStrings = this.buildSeverityDisplayStrings();
 		this.severityLevels = new HashMap<String, String>();
-		this.defaultSeverities = buildDefaultSeverities();
+		this.defaultSeverities = this.buildDefaultSeverities();
 	}
 
 	//since most of our problems have a default severity of ERROR, we are just defining the WARNING, INFO, IGNORE cases
