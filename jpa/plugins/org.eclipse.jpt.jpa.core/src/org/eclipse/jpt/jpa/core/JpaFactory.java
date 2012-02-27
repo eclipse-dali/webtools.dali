@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -165,7 +165,7 @@ public interface JpaFactory
 	 * Build a (/an updated) root context node to be associated with the given 
 	 * JPA project.
 	 * The root context node will be built once, but updated many times.
-	 * @see JpaProject#update(org.eclipse.core.runtime.IProgressMonitor)
+	 * @see org.eclipse.jpt.jpa.core.internal.AbstractJpaProject#update(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	JpaRootContextNode buildRootContextNode(JpaProject jpaProject);
 
@@ -217,7 +217,7 @@ public interface JpaFactory
 	
 	JavaAttributeMapping buildJavaNullAttributeMapping(JavaPersistentAttribute parent);
 	
-	JavaGeneratorContainer buildJavaGeneratorContainer(JavaJpaContextNode parent, JavaGeneratorContainer.Owner owner);
+	JavaGeneratorContainer buildJavaGeneratorContainer(JavaGeneratorContainer.ParentAdapter parentAdapter);
 
 	JavaTable buildJavaTable(JavaEntity parent, Table.Owner owner);
 	

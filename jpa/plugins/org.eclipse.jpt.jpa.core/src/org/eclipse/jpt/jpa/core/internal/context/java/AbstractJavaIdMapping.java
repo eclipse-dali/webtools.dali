@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,6 +31,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
@@ -126,12 +127,27 @@ public abstract class AbstractJavaIdMapping
 	}
 
 	protected JavaGeneratorContainer buildGeneratorContainer() {
-		return this.getJpaFactory().buildJavaGeneratorContainer(this, this);
+		return this.getJpaFactory().buildJavaGeneratorContainer(this);
 	}
 
 	@Override
 	public Iterable<Generator> getGenerators() {
 		return this.generatorContainer.getGenerators();
+	}
+
+
+	// ********** generator container parent adapter **********
+
+	public JavaJpaContextNode getGeneratorContainerParent() {
+		return this;  // no adapter
+	}
+
+	public JavaResourceMember getResourceAnnotatedElement() {
+		return this.getResourceAttribute();
+	}
+
+	public boolean parentSupportsGenerators() {
+		return ! this.getPersistentAttribute().isVirtual();
 	}
 
 
@@ -355,13 +371,6 @@ public abstract class AbstractJavaIdMapping
 	}
 
 
-	// ********** JavaGeneratorContainer implementation **********
-
-	public JavaResourceMember getResourceAnnotatedElement() {
-		return this.getResourceAttribute();
-	}
-
-
 	// ********** JavaColumn.Owner implementation **********
 
 	public ColumnAnnotation getColumnAnnotation() {
@@ -372,7 +381,7 @@ public abstract class AbstractJavaIdMapping
 		this.getResourceAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
 		return (this.derived && ! this.columnIsSpecified()) ? null : this.getName();
 	}
 

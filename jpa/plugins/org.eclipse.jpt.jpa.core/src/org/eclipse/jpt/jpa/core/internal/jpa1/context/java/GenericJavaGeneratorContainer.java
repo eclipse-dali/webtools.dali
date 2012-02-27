@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
@@ -32,16 +31,16 @@ public class GenericJavaGeneratorContainer
 	extends AbstractJavaJpaContextNode
 	implements JavaGeneratorContainer
 {
-	protected final Owner owner;
+	protected final ParentAdapter parentAdapter;
 
 	protected JavaSequenceGenerator sequenceGenerator;
 
 	protected JavaTableGenerator tableGenerator;
 
 
-	public GenericJavaGeneratorContainer(JavaJpaContextNode parent, Owner owner) {
-		super(parent);
-		this.owner = owner;
+	public GenericJavaGeneratorContainer(ParentAdapter parentAdapter) {
+		super(parentAdapter.getGeneratorContainerParent());
+		this.parentAdapter = parentAdapter;
 		this.sequenceGenerator = this.buildSequenceGenerator();
 		this.tableGenerator = this.buildTableGenerator();
 	}
@@ -85,14 +84,14 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected SequenceGeneratorAnnotation buildSequenceGeneratorAnnotation() {
-		return (SequenceGeneratorAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		return (SequenceGeneratorAnnotation) this.parentAdapter.getResourceAnnotatedElement().addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeSequenceGenerator() {
 		if (this.sequenceGenerator == null) {
 			throw new IllegalStateException("sequence generator does not exist"); //$NON-NLS-1$
 		}
-		this.owner.getResourceAnnotatedElement().removeAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		this.parentAdapter.getResourceAnnotatedElement().removeAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 		this.setSequenceGenerator(null);
 	}
 
@@ -102,11 +101,13 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected SequenceGeneratorAnnotation getSequenceGeneratorAnnotation() {
-		return (SequenceGeneratorAnnotation) this.owner.getResourceAnnotatedElement().getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		return (SequenceGeneratorAnnotation) this.parentAdapter.getResourceAnnotatedElement().getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	protected JavaSequenceGenerator buildSequenceGenerator(SequenceGeneratorAnnotation sequenceGeneratorAnnotation) {
-		return this.isVirtual() ? null : this.getJpaFactory().buildJavaSequenceGenerator(this, sequenceGeneratorAnnotation);
+		return this.parentAdapter.parentSupportsGenerators() ?
+				this.getJpaFactory().buildJavaSequenceGenerator(this, sequenceGeneratorAnnotation) :
+				null;
 	}
 
 	protected void syncSequenceGenerator() {
@@ -148,14 +149,14 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected TableGeneratorAnnotation buildTableGeneratorAnnotation() {
-		return (TableGeneratorAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		return (TableGeneratorAnnotation) this.parentAdapter.getResourceAnnotatedElement().addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeTableGenerator() {
 		if (this.tableGenerator == null) {
 			throw new IllegalStateException("table generator does not exist"); //$NON-NLS-1$
 		}
-		this.owner.getResourceAnnotatedElement().removeAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		this.parentAdapter.getResourceAnnotatedElement().removeAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 		this.setTableGenerator(null);
 	}
 
@@ -165,11 +166,13 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected TableGeneratorAnnotation getTableGeneratorAnnotation() {
-		return (TableGeneratorAnnotation) this.owner.getResourceAnnotatedElement().getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		return (TableGeneratorAnnotation) this.parentAdapter.getResourceAnnotatedElement().getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	protected JavaTableGenerator buildTableGenerator(TableGeneratorAnnotation tableGeneratorAnnotation) {
-		return this.isVirtual() ? null : this.getJpaFactory().buildJavaTableGenerator(this, tableGeneratorAnnotation);
+		return this.parentAdapter.parentSupportsGenerators() ?
+				this.getJpaFactory().buildJavaTableGenerator(this, tableGeneratorAnnotation) :
+				null;
 	}
 
 	protected void syncTableGenerator() {
@@ -236,7 +239,7 @@ public class GenericJavaGeneratorContainer
 	}
 
 	protected TextRange getResourceTextRange(CompilationUnit astRoot) {
-		return this.owner.getResourceAnnotatedElement().getTextRange(astRoot);
+		return this.parentAdapter.getResourceAnnotatedElement().getTextRange(astRoot);
 	}
 
 
@@ -253,20 +256,5 @@ public class GenericJavaGeneratorContainer
 
 	protected Iterable<Generator> getGenerators_() {
 		return new ArrayIterable<Generator>(this.sequenceGenerator, this.tableGenerator);
-	}
-
-	/**
-	 * Return whether the container is <em>virtual</em> and, as a result, does
-	 * not have either a sequence or table generator. As of JPA 2.0, this is
-	 * only true when the container's parent is a virtual ID mapping.
-	 */
-	// TODO bjv need to add API to JavaGeneratorContainer.Owner
-	protected boolean isVirtual() {
-		JavaJpaContextNode p = this.getParent();
-		if (p instanceof JavaIdMapping) {
-			JavaIdMapping idMapping = (JavaIdMapping) p;
-			return idMapping.getPersistentAttribute().isVirtual();
-		}
-		return false;
 	}
 }

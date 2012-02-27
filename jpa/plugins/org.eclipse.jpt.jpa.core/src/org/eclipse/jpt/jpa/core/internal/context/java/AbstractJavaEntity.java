@@ -70,6 +70,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
@@ -122,7 +123,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaEntity
 	extends AbstractJavaTypeMapping<EntityAnnotation>
-	implements JavaEntity, JavaCacheableHolder2_0, JavaGeneratorContainer.Owner, JavaQueryContainer.Owner
+	implements JavaEntity, JavaCacheableHolder2_0, JavaGeneratorContainer.ParentAdapter, JavaQueryContainer.Owner
 {
 	protected String specifiedName;
 	protected String defaultName;
@@ -926,11 +927,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected JavaGeneratorContainer buildGeneratorContainer() {
-		return this.getJpaFactory().buildJavaGeneratorContainer(this, this);
-	}
-
-	public JavaResourceType getResourceAnnotatedElement() {
-		return this.getJavaResourceType();
+		return this.getJpaFactory().buildJavaGeneratorContainer(this);
 	}
 
 	@Override
@@ -940,6 +937,21 @@ public abstract class AbstractJavaEntity
 					super.getGenerators(),
 					this.generatorContainer.getGenerators()
 				);
+	}
+
+
+	// ********** generator container parent adapter **********
+
+	public JavaJpaContextNode getGeneratorContainerParent() {
+		return this;  // no adapter
+	}
+
+	public JavaResourceType getResourceAnnotatedElement() {
+		return this.getJavaResourceType();
+	}
+
+	public boolean parentSupportsGenerators() {
+		return true;
 	}
 
 
