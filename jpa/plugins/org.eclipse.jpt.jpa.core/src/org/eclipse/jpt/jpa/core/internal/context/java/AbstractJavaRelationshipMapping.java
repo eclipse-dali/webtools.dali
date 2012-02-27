@@ -265,6 +265,20 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 		return (entity != null) ? entity.getAllAttributeMappings() : EmptyIterable.<AttributeMapping> instance();
 	}
 
+	// Get the names of non-transient attribute mappings
+	public Iterable<String> getTargetEntityNonTransientAttributeNames() {
+		return new CompositeIterable<String>(this.getTargetEntityNonTransientAttributeNamesLists());
+	}
+
+	protected Iterable<Iterable<String>> getTargetEntityNonTransientAttributeNamesLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getTargetEntityNonTransientAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+	}
+
+	protected Iterable<AttributeMapping> getTargetEntityNonTransientAttributeMappings() {
+		Entity entity = this.getResolvedTargetEntity();
+		return (entity != null) ? entity.getNonTransientAttributeMappings() : EmptyIterable.<AttributeMapping> instance();
+	}
+	
 	protected String getTargetEntityIdAttributeName() {
 		PersistentAttribute attribute = this.getTargetEntityIdAttribute();
 		return (attribute == null) ? null : attribute.getName();

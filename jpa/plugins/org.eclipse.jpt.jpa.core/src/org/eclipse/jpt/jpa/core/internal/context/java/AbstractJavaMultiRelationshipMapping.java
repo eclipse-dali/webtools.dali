@@ -937,7 +937,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	public Iterable<String> getCandidateMapKeyNames() {
-		return this.getAllTargetEntityAttributeNames();
+		return this.getTargetEntityNonTransientAttributeNames();
 	}
 
 

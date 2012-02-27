@@ -1244,21 +1244,21 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** embedded mappings **********
 
 	public Iterable<String> getCandidateMapKeyNames() {
-		return new CompositeIterable<String>(this.getAllTargetEmbeddableAttributeNamesLists());
+		return new CompositeIterable<String>(this.getTargetEmbeddableNonTransientAttributeNamesLists());
 	}
 
 	/**
 	 * Return a list of lists; each nested list holds the names for one of the
 	 * embedded mapping's target embeddable type mapping's attribute mappings
-	 * (attribute or association mappings, depending on the specified transformer).
+	 * (non-transient attribute or association mappings, depending on the specified transformer).
 	 */
-	protected Iterable<Iterable<String>> getAllTargetEmbeddableAttributeNamesLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getAllTargetEmbeddableAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+	protected Iterable<Iterable<String>> getTargetEmbeddableNonTransientAttributeNamesLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<String>>(this.getTargetEmbeddableNonTransientAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
 	}
 
-	protected Iterable<AttributeMapping> getAllTargetEmbeddableAttributeMappings() {
+	protected Iterable<AttributeMapping> getTargetEmbeddableNonTransientAttributeMappings() {
 		Embeddable targetEmbeddable = this.getResolvedTargetEmbeddable();
-		return (targetEmbeddable != null) ? targetEmbeddable.getAllAttributeMappings() : EmptyIterable.<AttributeMapping> instance();
+		return (targetEmbeddable != null) ? targetEmbeddable.getNonTransientAttributeMappings() : EmptyIterable.<AttributeMapping> instance();
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -212,6 +213,14 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return true;
 	}
 
+	public Iterable<AttributeMapping> getNonTransientAttributeMappings() {
+		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
+			@Override
+			protected boolean accept(AttributeMapping attributeMapping) {
+				return (attributeMapping.getKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+			}
+		};
+	}
 
 	// ********** attribute overrides **********
 

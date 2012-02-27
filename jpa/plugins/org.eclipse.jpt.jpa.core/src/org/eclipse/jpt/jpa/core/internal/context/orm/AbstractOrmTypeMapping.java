@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -296,6 +297,15 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 			@Override
 			protected boolean accept(AttributeMapping o) {
 				return Tools.valuesAreEqual(o.getKey(), mappingKey);
+			}
+		};
+	}
+
+	public Iterable<AttributeMapping> getNonTransientAttributeMappings() {
+		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
+			@Override
+			protected boolean accept(AttributeMapping attributeMapping) {
+				return (attributeMapping.getKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 			}
 		};
 	}

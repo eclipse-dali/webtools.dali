@@ -55,6 +55,12 @@ public interface RelationshipMapping
 	 * resolves
 	 */
 	Iterable<String> getAllTargetEntityAttributeNames();
+
+	/**
+	 * Return the names of non-transient attribute mappings on the target entity, 
+	 * provided target entity resolves
+	 */
+	Iterable<String> getTargetEntityNonTransientAttributeNames();
 	
 	/**
 	 * Return the char to be used for browsing or creating the target entity IType.

@@ -166,6 +166,12 @@ public interface TypeMapping
 	 * inheritance hierarchy.
 	 */
 	Iterable<AttributeMapping> getAllAttributeMappings();
+	
+	/**
+	 * Return all the non-transient attribute mappings in the type mapping's
+	 * inheritance hierarchy
+	 */
+	Iterable<AttributeMapping> getNonTransientAttributeMappings();
 
 	/**
 	 * Return attribute mappings of a particular mapping type that are declared anywhere on this 

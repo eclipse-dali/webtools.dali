@@ -183,7 +183,7 @@ public class GenericJavaMappedByRelationshipStrategy
 	}
 
 	public Iterable<String> getCandidateMappedByAttributeNames() {
-		return this.getRelationshipMapping().getAllTargetEntityAttributeNames();
+		return this.getRelationshipMapping().getTargetEntityNonTransientAttributeNames();
 	}
 
 	protected Iterable<String> getCandidateMappedByAttributeNames(Filter<String> filter) {

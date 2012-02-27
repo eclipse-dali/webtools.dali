@@ -864,7 +864,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	public Iterable<String> getCandidateMapKeyNames() {
-		return this.getAllTargetEntityAttributeNames();
+		return this.getTargetEntityNonTransientAttributeNames();
 	}
 
 
