@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -13,9 +13,9 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
@@ -168,7 +168,6 @@ public class ELJavaXmlInverseReferenceMapping
 	}
 	
 	protected void validateMappedBy(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		String mappedBy = getMappedBy();
 		if (StringTools.stringIsEmpty(mappedBy)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
@@ -196,12 +195,9 @@ public class ELJavaXmlInverseReferenceMapping
 							getMappedByTextRange(astRoot)));
 		}
 		else if (
-				! Tools.valueIsEqualToOneOf(
-						referencedAttribute.getMappingKey(), 
-						MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY,
-						MappingKeys.XML_ELEMENTS_ATTRIBUTE_MAPPING_KEY,
-						MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY,
-						MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY)) {
+				! ArrayTools.contains(
+						getValidReferencedAttributeMappingKeys(),
+						referencedAttribute.getMappingKey())) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -211,6 +207,17 @@ public class ELJavaXmlInverseReferenceMapping
 							getMappedByTextRange(astRoot)));
 		}
 	}
+
+	protected String[] getValidReferencedAttributeMappingKeys() {
+		return VALID_REFERENCED_ATTRIBUTE_MAPPING_KEYS;
+	}
+
+	protected static final String[] VALID_REFERENCED_ATTRIBUTE_MAPPING_KEYS = new String[] {
+		MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY,
+		MappingKeys.XML_ELEMENTS_ATTRIBUTE_MAPPING_KEY,
+		MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY,
+		MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY
+	};
 	
 	protected TextRange getMappedByTextRange(CompilationUnit astRoot) {
 		TextRange textRange = getXmlInverseReferenceAnnotation().getMappedByTextRange(astRoot);

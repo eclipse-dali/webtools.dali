@@ -37,15 +37,6 @@ public final class Tools {
 				((value2 == null) || ! value1.equals(value2));
 	}
 	
-	public static boolean valueIsEqualToOneOf(Object theValue, Object ... testValues) {
-		for (Object testValue : testValues) {
-			if (valuesAreEqual(theValue, testValue)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 
 	// ********** System properties **********
 
