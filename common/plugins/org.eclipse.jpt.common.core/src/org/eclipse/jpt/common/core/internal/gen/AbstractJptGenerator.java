@@ -134,17 +134,21 @@ public abstract class AbstractJptGenerator
 	}
 	
 	protected abstract void preGenerate(IProgressMonitor monitor);
-	
+
 	protected void postGenerate() {
 		try {
 			if( ! this.isDebug) {
 				this.removeLaunchConfiguration();
 			}
-			this.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+			this.refreshProject();
 		}
 		catch(CoreException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	protected void refreshProject() throws CoreException {
+			this.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 	}
 
 	private ILaunchesListener2 buildLaunchListener() {

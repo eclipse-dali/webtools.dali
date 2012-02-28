@@ -98,6 +98,12 @@ public class StaticWeave extends AbstractJptGenerator
 		// do nothing
 	}
 
+	@Override
+	protected void refreshProject() throws CoreException {
+		// do nothing
+		// 370895 - Static weaving results in infinite builder loop when enabled
+	}
+
 	// ********** behavior **********
 
 	@Override
