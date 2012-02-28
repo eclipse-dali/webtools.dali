@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
+import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -45,7 +46,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 
 /**
- * This pane shows the list of named queries and named native queries.
+ * This pane shows the list of custom converters, object type converters,
+ * struct converters, and type converters.
  * <p>
  * Here the layout of this pane:
  * <pre>
@@ -98,6 +100,7 @@ public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterCon
 
 		// List pane
 		this.listPane = addListPane(container);
+		this.installPaneEnabler();
 
 		// Property pane
 		PageBook pageBook = new PageBook(container, SWT.NULL);
@@ -143,7 +146,7 @@ public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterCon
 			buildDisplayableConvertersListHolder(),
 			this.selectedConverterHolder,
 			buildConvertersListLabelProvider(),
-			null//JpaHelpContextIds.MAPPING_NAMED_QUERIES
+			null
 		);
 	}
 
@@ -365,9 +368,19 @@ public class EclipseLinkConvertersComposite extends Pane<EclipseLinkConverterCon
 		};
 	}
 
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		this.listPane.enableWidgets(enabled);
+	private void installPaneEnabler() {
+		new PaneEnabler(
+			this.buildPaneEnablerHolder(),
+			this.listPane
+		);
+	}
+
+	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
+		return new TransformationPropertyValueModel<EclipseLinkConverterContainer, Boolean>(getSubjectHolder()) {
+			@Override
+			protected Boolean transform(EclipseLinkConverterContainer value) {
+				return (value != null);
+			}
+		};
 	}
 }
