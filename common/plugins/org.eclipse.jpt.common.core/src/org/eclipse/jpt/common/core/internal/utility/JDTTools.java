@@ -19,14 +19,9 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -128,54 +123,6 @@ public final class JDTTools {
 		
 		return false;
 	}
-
-	
-	/**
-	 * Return true if the given type named contains a method name as given with the given parameter types
-	 */
-	public static boolean typeNamedImplementsMethod(IJavaProject javaProject, String typeName, String methodName, String[] parameterTypeNames) {
-		try {
-			return typeImplementsMethod(javaProject.findType(typeName), methodName, parameterTypeNames);
-		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
-			return false;
-		}
-	}
-
-	private static boolean typeImplementsMethod(IType type, String methodName, String[] parameterTypeNames) {
-		if ((type == null) || methodName == null) {
-			return false;
-		}
-
-		try {
-			IMethod[] methods = type.getMethods();
-			for (IMethod method : methods) {
-				if (StringTools.stringsAreEqual(method.getElementName(), methodName)) {
-					if (parameterTypeNames.length == 0 && method.getNumberOfParameters() == 0) {
-						return true;
-					} else if (parameterTypeNames.length == method.getNumberOfParameters()) {
-						int index = 0;
-						String[] parameters = method.getParameterTypes();
-						String resolvedParameterTypeName = parameters[0];
-						if (!type.isResolved()) {
-							resolvedParameterTypeName = resolveType(type, Signature.getSignatureSimpleName(parameters[index]));
-						}
-						for (String parameterTypeName : parameterTypeNames) {
-							if (!StringTools.stringsAreEqual(resolvedParameterTypeName, parameterTypeName)) {
-								return false;
-							}
-							index++;
-						}
-						return true;
-					}
-				}
-			}
-		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
-			return false;			
-		}
-		return false;
-	}
 	
 	/**
 	 * Return the names of the specified type's supertypes (class and interfaces).
@@ -258,98 +205,23 @@ public final class JDTTools {
 		return new ArrayIterable<IPackageFragmentRoot>(javaProject.getPackageFragmentRoots());
 	}
 
-	/**
-	 * Return whether the specified type is "basic".
-	 * @param fullyQualifiedName may include array brackets but not generic type arguments
-	 */
-	public static boolean typeIsBasic(IJavaProject javaProject, String fullyQualifiedName) {
+	public static boolean typeIsEnum(IType type) {
 		try {
-			return typeIsBasic(javaProject, javaProject.findType(fullyQualifiedName));
-		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
-			return false;
+			if (type.isEnum()) {
+				return true;
+			}
 		}
+		catch (JavaModelException e) {
+			JptCommonCorePlugin.log(e);
+		}
+		return false;
 	}
 
-	private static boolean typeIsBasic(IJavaProject javaProject, IType type) throws JavaModelException {
-		if (type == null) {
-			return false;
-		}
-		String fullyQualifiedName = type.getFullyQualifiedName();
-
-		if (fullyQualifiedName == null) {
-			return false;
-		}
-
-		int arrayDepth = ReflectionTools.getArrayDepthForTypeDeclaration(fullyQualifiedName);
-		if (arrayDepth > 1) {
-			return false;  // multi-dimensional arrays are not supported
-		}
-
-		if (arrayDepth == 1) {
-			String elementTypeName = ReflectionTools.getElementTypeNameForTypeDeclaration(fullyQualifiedName, 1);
-			return elementTypeIsValidForBasicArray(elementTypeName);
-		}
-
-		// arrayDepth == 0
-		if (ClassName.isVariablePrimitive(fullyQualifiedName)) {
-			return true;  // any primitive but 'void'
-		}
-		if (ClassName.isVariablePrimitiveWrapper(fullyQualifiedName)) {
-			return true;  // any primitive wrapper but 'java.lang.Void'
-		}
-		if (typeIsOtherValidBasicType(fullyQualifiedName)) {
-			return true;
-		}
-		if (typeIsSubType_(javaProject, type, SERIALIZABLE_CLASS_NAME)) {
-			return true;
-		}
-		if (type.isEnum()) {
-			return true;
-		}
-		return false;	
+	public static boolean typeIsSerializable(IJavaProject javaProject, IType type) {
+		return typeIsSubType(javaProject, type, SERIALIZABLE_CLASS_NAME);
 	}
 
 	public static final String SERIALIZABLE_CLASS_NAME = java.io.Serializable.class.getName();
-
-	/**
-	 * Return whether the specified type is a valid element type for
-	 * a one-dimensional array that can default to a basic mapping:<ul>
-	 * <li><code>byte</code>
-	 * <li><code>java.lang.Byte</code>
-	 * <li><code>char</code>
-	 * <li><code>java.lang.Character</code>
-	 * </ul>
-	 */
-	public static boolean elementTypeIsValidForBasicArray(String elementTypeName) {
-		return ArrayTools.contains(VALID_BASIC_ARRAY_ELEMENT_TYPE_NAMES, elementTypeName);
-	}
-
-	private static final String[] VALID_BASIC_ARRAY_ELEMENT_TYPE_NAMES = {
-		byte.class.getName(),
-		char.class.getName(),
-		java.lang.Byte.class.getName(),
-		java.lang.Character.class.getName()
-	};
-
-	/**
-	 * Return whether the specified type is among the various "other" types
-	 * that can default to a basic mapping.
-	 */
-	public static boolean typeIsOtherValidBasicType(String typeName) {
-		return ArrayTools.contains(OTHER_VALID_BASIC_TYPE_NAMES, typeName);
-	}
-
-	private static final String[] OTHER_VALID_BASIC_TYPE_NAMES = {
-		java.lang.String.class.getName(),
-		java.math.BigInteger.class.getName(),
-		java.math.BigDecimal.class.getName(),
-		java.util.Date.class.getName(),
-		java.util.Calendar.class.getName(),
-		java.sql.Date.class.getName(),
-		java.sql.Time.class.getName(),
-		java.sql.Timestamp.class.getName(),
-	};
 	
 	public static boolean classHasPublicZeroArgConstructor(IJavaProject javaProject, String className) {
 		if (javaProject != null && className != null) {

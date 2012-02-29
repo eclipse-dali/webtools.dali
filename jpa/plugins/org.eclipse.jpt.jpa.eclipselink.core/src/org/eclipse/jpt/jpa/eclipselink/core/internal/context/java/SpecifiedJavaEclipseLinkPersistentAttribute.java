@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -77,7 +78,7 @@ public class SpecifiedJavaEclipseLinkPersistentAttribute
 
 	public boolean typeIsSerializable() {
 		return this.getResourceAttribute().typeIsVariablePrimitive()
-				|| this.getResourceAttribute().typeIsSubTypeOf(SERIALIZABLE_TYPE_NAME);
+				|| this.getResourceAttribute().typeIsSubTypeOf(JDTTools.SERIALIZABLE_CLASS_NAME);
 	}
 
 	public boolean typeIsValidForVariableOneToOne() {

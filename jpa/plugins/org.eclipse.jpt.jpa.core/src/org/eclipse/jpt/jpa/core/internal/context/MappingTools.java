@@ -9,6 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ClassName;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
@@ -35,6 +41,87 @@ import org.eclipse.jpt.jpa.db.Table;
  * Gather some of the behavior common to the Java and XML models. :-(
  */
 public final class MappingTools {
+
+	/**
+	 * Return whether the specified type is "basic".
+	 * @param fullyQualifiedName may include array brackets but not generic type arguments
+	 */
+	public static boolean typeIsBasic(IJavaProject javaProject, String fullyQualifiedName) {
+		if (fullyQualifiedName == null) {
+			return false;
+		}
+
+		int arrayDepth = ReflectionTools.getArrayDepthForTypeDeclaration(fullyQualifiedName);
+		if (arrayDepth > 1) {
+			return false;  // multi-dimensional arrays are not supported
+		}
+
+		if (arrayDepth == 1) {
+			String elementTypeName = ReflectionTools.getElementTypeNameForTypeDeclaration(fullyQualifiedName, 1);
+			return elementTypeIsValidForBasicArray(elementTypeName);
+		}
+
+		// arrayDepth == 0
+		if (ClassName.isVariablePrimitive(fullyQualifiedName)) {
+			return true;  // any primitive but 'void'
+		}
+		if (ClassName.isVariablePrimitiveWrapper(fullyQualifiedName)) {
+			return true;  // any primitive wrapper but 'java.lang.Void'
+		}
+		if (typeIsOtherValidBasicType(fullyQualifiedName)) {
+			return true;
+		}
+		IType type = JDTTools.findType(javaProject, fullyQualifiedName);
+		if (type == null) {
+			return false;
+		}
+		if (JDTTools.typeIsSerializable(javaProject, type)) {
+			return true;
+		}
+		if (JDTTools.typeIsEnum(type)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Return whether the specified type is a valid element type for
+	 * a one-dimensional array that can default to a basic mapping:<ul>
+	 * <li><code>byte</code>
+	 * <li><code>java.lang.Byte</code>
+	 * <li><code>char</code>
+	 * <li><code>java.lang.Character</code>
+	 * </ul>
+	 */
+	public static boolean elementTypeIsValidForBasicArray(String elementTypeName) {
+		return ArrayTools.contains(VALID_BASIC_ARRAY_ELEMENT_TYPE_NAMES, elementTypeName);
+	}
+
+	private static final String[] VALID_BASIC_ARRAY_ELEMENT_TYPE_NAMES = {
+		byte.class.getName(),
+		char.class.getName(),
+		java.lang.Byte.class.getName(),
+		java.lang.Character.class.getName()
+	};
+
+	/**
+	 * Return whether the specified type is among the various "other" types
+	 * that can default to a basic mapping.
+	 */
+	public static boolean typeIsOtherValidBasicType(String typeName) {
+		return ArrayTools.contains(OTHER_VALID_BASIC_TYPE_NAMES, typeName);
+	}
+
+	private static final String[] OTHER_VALID_BASIC_TYPE_NAMES = {
+		java.lang.String.class.getName(),
+		java.math.BigInteger.class.getName(),
+		java.math.BigDecimal.class.getName(),
+		java.util.Date.class.getName(),
+		java.util.Calendar.class.getName(),
+		java.sql.Date.class.getName(),
+		java.sql.Time.class.getName(),
+		java.sql.Timestamp.class.getName(),
+	};
 
 	/**
 	 * Default join table name from the JPA spec:<br>

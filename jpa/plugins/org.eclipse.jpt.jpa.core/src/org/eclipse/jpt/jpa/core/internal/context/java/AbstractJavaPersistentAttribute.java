@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -35,6 +34,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
@@ -489,42 +489,8 @@ public abstract class AbstractJavaPersistentAttribute
 	 * </ul>
 	 */
 	public boolean typeIsBasic() {
-		// 'typeName' may include array brackets but not generic type arguments
-		String typeName = this.getTypeName();
-		if (typeName == null) {
-			return false;
-		}
-
-		int arrayDepth = ReflectionTools.getArrayDepthForTypeDeclaration(typeName);
-		if (arrayDepth > 1) {
-			return false;  // multi-dimensional arrays are not supported
-		}
-
-		if (arrayDepth == 1) {
-			String elementTypeName = ReflectionTools.getElementTypeNameForTypeDeclaration(typeName, 1);
-			return JDTTools.elementTypeIsValidForBasicArray(elementTypeName);
-		}
-
-		// arrayDepth == 0
-		if (ClassName.isVariablePrimitive(typeName)) {
-			return true;  // any primitive but 'void'
-		}
-		if (ClassName.isVariablePrimitiveWrapper(typeName)) {
-			return true;  // any primitive wrapper but 'java.lang.Void'
-		}
-		if (JDTTools.typeIsOtherValidBasicType(typeName)) {
-			return true;
-		}
-		if (this.getResourceAttribute().typeIsEnum()) {
-			return true;
-		}
-		if (this.getResourceAttribute().typeIsSubTypeOf(SERIALIZABLE_TYPE_NAME)) {
-			return true;
-		}
-		return false;
+		return MappingTools.typeIsBasic(this.getJavaProject(), this.getTypeName());
 	}
-
-	protected static final String SERIALIZABLE_TYPE_NAME = java.io.Serializable.class.getName();
 
 	public String getSingleReferenceTargetTypeName() {
 		// 'typeName' may include array brackets ("[]")
