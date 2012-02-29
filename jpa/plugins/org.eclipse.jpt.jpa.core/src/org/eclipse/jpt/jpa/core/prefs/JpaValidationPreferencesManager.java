@@ -7,11 +7,12 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.jpa.core.internal.prefs;
+package org.eclipse.jpt.jpa.core.prefs;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferencesManager;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
