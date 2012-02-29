@@ -141,6 +141,8 @@ public class JptUiMessages {
 	public static String JptPreferencesPage_DoNotShowText;
 	public static String JptPreferencesPage_ClearButtonText;
 	public static String JpaPreferencesPage_description;
+	public static String JpaPreferencesPage_entityGen;
+	public static String JpaPreferencesPage_entityGen_defaultPackageLabel;
 	public static String JpaPreferencesPage_jpqlEditor;
 	public static String JpaPreferencesPage_jpqlEditor_description;
 	public static String JpaPreferencesPage_jpqlEditor_lowerCaseRadioButton;
@@ -151,6 +153,10 @@ public class JptUiMessages {
 	public static String JpaProblemSeveritiesPage_Ignore;
 	public static String JpaProblemSeveritiesPage_Info;
 	public static String JpaProblemSeveritiesPage_Warning;
+	public static String JpaEntityGenPreferencePage_Description;
+	public static String JpaEntityGenPreferencePage_generalGroup_title;
+	public static String JpaEntityGenPreferencePage_defaultPackageLabel;
+
 	public static String SelectJpaOrmMappingFileDialog_newButton;
 	public static String SelectJpaOrmMappingFileDialog_toolTip;
 	public static String SynchronizingClasses_TaskName;

@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
@@ -135,11 +136,12 @@ public class JpaPreferencesManager
 
 	// ********** workspace preference **********
 
-	public static String getWorkspacePreference(String key, String defaultValue) {
-		return getWorkspacePreferences().get(key, defaultValue);
+	protected static String getWorkspacePreference(String key, String defaultValue) {
+		String value = getWorkspacePreferences().get(key, defaultValue);
+		return (StringTools.stringIsEmpty(value)) ? defaultValue : value;
 	}
 
-	public static String getWorkspacePreference(String key) {
+	protected static String getWorkspacePreference(String key) {
 		return getWorkspacePreferences().get(key, null);
 	}
 
@@ -211,14 +213,22 @@ public class JpaPreferencesManager
 
 	// ********** query **********
 
-	public String getPreference(String key) {
-		String preference = this.getProjectPreference(key);
+	protected String getPreference(String key) {
+		String preferenceValue = this.getProjectPreference(key);
 		
 		// check workspace preferences if not a project preference
-		if(preference == null) {
-			preference = getWorkspacePreference(key);
+		if(preferenceValue == null) {
+			preferenceValue = getWorkspacePreference(key);
 		}
-		return preference;
+		return preferenceValue;
+	}
+	
+	protected String getPreference(String key, String defaultValue) {
+		String preferenceValue = this.getPreference(key);
+		if(StringTools.stringIsEmpty(preferenceValue)) {
+			return defaultValue;
+		}
+		return preferenceValue;
 	}
 
 	// ********** preferences **********
@@ -255,15 +265,16 @@ public class JpaPreferencesManager
 
 	// ********** project preference **********
 
-	public String getProjectPreference(String key, String defaultValue) {
-		return this.getProjectPreferences().get(key, defaultValue);
+	protected String getProjectPreference(String key, String defaultValue) {
+		String value = this.getProjectPreferences().get(key, defaultValue);
+		return (StringTools.stringIsEmpty(value)) ? defaultValue : value;
 	}
 	
-	public String getProjectPreference(String key) {
+	protected String getProjectPreference(String key) {
 		return this.getProjectPreferences().get(key, null);
 	}
 	
-	public void setProjectPreference(String key, String value) {
+	protected void setProjectPreference(String key, String value) {
 		IEclipsePreferences projectPrefs = this.getProjectPreferences();
 		if(value == null) {
 			projectPrefs.remove(key);
@@ -274,11 +285,11 @@ public class JpaPreferencesManager
 		flush(projectPrefs);
 	}
 
-	public boolean getProjectPreference(String key, boolean defaultBooleanValue) {
+	protected boolean getProjectPreference(String key, boolean defaultBooleanValue) {
 		return this.getProjectPreferences().getBoolean(key, defaultBooleanValue);
 	}
 
-	public void setProjectPreference(String key, boolean booleanValue) {
+	protected void setProjectPreference(String key, boolean booleanValue) {
 		IEclipsePreferences projectPrefs = this.getProjectPreferences();
 		if( ! booleanValue) {
 			projectPrefs.remove(key);

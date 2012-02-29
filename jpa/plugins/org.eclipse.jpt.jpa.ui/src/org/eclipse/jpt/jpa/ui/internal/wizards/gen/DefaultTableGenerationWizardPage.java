@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,9 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.prefs.JpaEntityGenPreferencesManager;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
@@ -66,6 +68,8 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	
 	private TableGenPanel defaultTableGenPanel ;
 
+	private JpaEntityGenPreferencesManager prefrencesManager;
+
 	protected DefaultTableGenerationWizardPage(JpaProject jpaProject) {
 		super(true, "DefaultTableGenerationWizardPage"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
@@ -97,22 +101,23 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	}
 	
 	public void createControl(Composite parent) {
-		initializeDialogUnits(parent);
+		this.initializeDialogUnits(parent);
+		this.prefrencesManager = new JpaEntityGenPreferencesManager(this.jpaProject.getProject());
+		
 		Composite composite = new Composite(parent, SWT.NULL);
-		int nColumns= 4		;
+		int nColumns= 4	;
 		GridLayout layout = new GridLayout();
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
 		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_CUSTOMIZE_DEFAULT_ENTITY_GENERATION);
 
 		//Create entity access, collection type, etc 
-		defaultTableGenPanel = new TableGenPanel(composite, 4, true, this);
+		this.defaultTableGenPanel = new TableGenPanel(composite, 4, true, this);
 		
-		createDomainJavaClassesPropertiesGroup(composite, 4);
-		setControl(composite);
+		this.createDomainJavaClassesPropertiesGroup(composite, 4);
+		this.setControl(composite);
 
-		
-		this.setPageComplete( true );
+		this.setPageComplete(true);
 	}
 
 	@Override
@@ -123,18 +128,21 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 			//If user changed the connection or schema
 			if ( this.customizer != customizer ) {
 				this.customizer = customizer; 
-				defaultsTable=customizer.createGenTable(null);
-				defaultTableGenPanel.setORMGenTable(defaultsTable);
+				this.defaultsTable = customizer.createGenTable(null);
+				this.defaultTableGenPanel.setORMGenTable(this.defaultsTable);
 				//set the super class and implemented interfaces value
-				String baseClass = defaultsTable.getExtends() == null ?"" : defaultsTable.getExtends();
-				setSuperClass(baseClass, true);
-				setSuperInterfaces(defaultsTable.getImplements(), true);
-				IPackageFragmentRoot root = getSourceFolder( defaultsTable.getSourceFolder());
+				String baseClass = this.defaultsTable.getExtends() == null ?"" : this.defaultsTable.getExtends();
+				this.setSuperClass(baseClass, true);
+				this.setSuperInterfaces(this.defaultsTable.getImplements(), true);
+				IPackageFragmentRoot root = getSourceFolder(this.defaultsTable.getSourceFolder());
 				String initPackageName = this.getPackageText();
-				if( initPackageName.length()==0 ){
-					setPackageName( root, defaultsTable.getPackage() );
+				if(initPackageName.length() == 0 ) {
+					if(StringTools.stringIsEmpty(this.defaultsTable.getPackage())) {
+						this.defaultsTable.setPackage(this.prefrencesManager.getDefaultPackagePreference());
+					}
+					this.setPackageName(root, this.defaultsTable.getPackage());
 				}
-				setPackageFragmentRoot(root, true/*canBeModified*/);
+				this.setPackageFragmentRoot(root, true/*canBeModified*/);
 			}
 		}
 	}
