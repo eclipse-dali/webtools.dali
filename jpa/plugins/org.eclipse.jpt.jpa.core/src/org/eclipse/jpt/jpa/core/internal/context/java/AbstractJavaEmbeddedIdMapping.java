@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -173,31 +174,31 @@ public abstract class AbstractJavaEmbeddedIdMapping
 
 	protected void validateTargetEmbeddableImplementsEqualsAndHashcode(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if (this.getTargetEmbeddable() != null) {
-			String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
-			IJavaProject javaProject = getJpaProject().getJavaProject();
-			if (!JDTTools.typeNamedImplementsMethod(javaProject, targetEmbeddableClassName, "equals", new String[] {Object.class.getName()})
-					|| !JDTTools.typeNamedImplementsMethod(javaProject, targetEmbeddableClassName, "hashCode", EMPTY_STRING_ARRAY)) {
-				if (this.getPersistentAttribute().isVirtual()) {
-					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
-									new String[] {this.getName()},
-									this,
-									this.getValidationTextRange(astRoot)
-							)
-					);						
-				} else {
-					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
-									EMPTY_STRING_ARRAY,
-									this,
-									this.getValidationTextRange(astRoot)
-							)
-					);
-				}
+			JavaResourceType resourceType = getTargetEmbeddable().getJavaResourceType();
+			if (resourceType != null
+				&& (!resourceType.hasHashCodeMethod() || !resourceType.hasEqualsMethod())) {
+
+					if (this.getPersistentAttribute().isVirtual()) {
+						messages.add(
+								DefaultJpaValidationMessages.buildMessage(
+										IMessage.HIGH_SEVERITY,
+										JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
+										new String[] {this.getName()},
+										this,
+										this.getValidationTextRange(astRoot)
+								)
+						);
+					} else {
+						messages.add(
+								DefaultJpaValidationMessages.buildMessage(
+										IMessage.HIGH_SEVERITY,
+										JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
+										EMPTY_STRING_ARRAY,
+										this,
+										this.getValidationTextRange(astRoot)
+								)
+						);
+					}
 			}
 		}
 	}
