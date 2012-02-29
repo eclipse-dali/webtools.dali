@@ -34,8 +34,21 @@ public interface ELJaxb {
 	
 	String XML_CDATA = PACKAGE_ + "XmlCDATA";
 	
+	String XML_DISCRIMINATOR_NODE = PACKAGE_ + "XmlDiscriminatorNode";
+		String XML_DISCRIMINATOR_NODE__VALUE = "value";
+	
+	String XML_DISCRIMINATOR_VALUE = PACKAGE_ + "XmlDiscriminatorValue";
+		String XML_DISCRIMINATOR_VALUE__VALUE = "value";
+	
 	String XML_INVERSE_REFERENCE = PACKAGE_ + "XmlInverseReference";
 		String XML_INVERSE_REFERENCE__MAPPED_BY = "mappedBy";
+	
+	String XML_JOIN_NODE = PACKAGE_ + "XmlJoinNode";
+		String XML_JOIN_NODE__XML_PATH = "xmlPath";
+		String XML_JOIN_NODE__REFERENCED_XML_PATH = "referencedXmlPath";
+	
+	String XML_JOIN_NODES = PACKAGE_ + "XmlJoinNodes";
+		String XML_JOIN_NODES__VALUE = "value";
 	
 	String XML_PATH = PACKAGE_ + "XmlPath";
 		String XML_PATH__VALUE = "value";

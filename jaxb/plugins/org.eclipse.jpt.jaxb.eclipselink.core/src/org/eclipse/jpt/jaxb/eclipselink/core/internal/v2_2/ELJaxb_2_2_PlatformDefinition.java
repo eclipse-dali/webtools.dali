@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
@@ -20,7 +21,10 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlTransformationMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlCDATAAnnotationDefinition;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlPathsAnnotationDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlDiscriminatorNodeAnnotationDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlDiscriminatorValueAnnotationDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlJoinNodeAnnotationDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlJoinNodesAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlTransformationAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1.ELJaxb_2_1_PlatformDefinition;
 
@@ -60,7 +64,17 @@ public class ELJaxb_2_2_PlatformDefinition
 		return ArrayTools.addAll(
 				super.buildAnnotationDefinitions(),
 				XmlCDATAAnnotationDefinition.instance(),
+				XmlDiscriminatorNodeAnnotationDefinition.instance(),
+				XmlDiscriminatorValueAnnotationDefinition.instance(),
+				XmlJoinNodesAnnotationDefinition.instance(),
 				XmlTransformationAnnotationDefinition.instance());
+	}
+	
+	@Override
+	protected NestableAnnotationDefinition[] buildNestableAnnotationDefinitions() {
+		return ArrayTools.addAll(
+				super.buildNestableAnnotationDefinitions(),
+				XmlJoinNodeAnnotationDefinition.instance());
 	}
 	
 	@Override
