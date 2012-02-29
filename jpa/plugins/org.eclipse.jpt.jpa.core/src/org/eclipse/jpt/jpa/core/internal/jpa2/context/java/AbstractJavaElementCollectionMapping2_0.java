@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
@@ -1474,6 +1473,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		this.validateAttributeType(messages, reporter, astRoot);
 		this.validateTargetClass(messages, astRoot);
 		this.validateMapKeyClass(messages, astRoot);
 		this.orderable.validate(messages, reporter, astRoot);
@@ -1607,6 +1607,34 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		}
 	}
 
+	protected void validateAttributeType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+						new String[] {this.getName()},
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+						EMPTY_STRING_ARRAY,
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			}
+		}
+	}
+
 	protected void validateTargetClass(List<IMessage> messages, CompilationUnit astRoot) {
 		String targetClass = this.getFullyQualifiedTargetClass();
 		if (targetClass == null) {
@@ -1634,7 +1662,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return;
 		}
 
-		if (JDTTools.typeIsBasic(this.getJavaProject(), targetClass)) {
+		if (MappingTools.typeIsBasic(this.getJavaProject(), targetClass)) {
 			return;
 		}
 		if (this.getResolvedTargetEmbeddable() == null) {
@@ -1697,6 +1725,34 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getValidationTextRange(astRoot)
+					)
+				);
+			}
+		}
+
+		if (MappingTools.typeIsBasic(this.getJavaProject(), this.getFullyQualifiedMapKeyClass())) {
+			return;
+		}
+
+		if (this.getResolvedMapKeyEmbeddable() == null && this.getResolvedMapKeyEntity() == null) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
+						new String[] {this.getName(), this.getFullyQualifiedMapKeyClass()},
+						this,
+						this.getTargetClassTextRange(astRoot)
+					)
+				);
+			} else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
+						new String[] {this.getFullyQualifiedMapKeyClass()},
+						this,
+						this.getTargetClassTextRange(astRoot)
 					)
 				);
 			}

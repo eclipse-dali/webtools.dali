@@ -35,7 +35,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlCollectionMappi
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlOneToMany_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlOneToMany_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
@@ -156,26 +155,6 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 	 * @ordered
 	 */
 	protected XmlBatchFetch batchFetch;
-
-	/**
-	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getPartitioning() <em>Partitioning</em>}' containment reference.
@@ -358,6 +337,26 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 	protected EList<XmlProperty> properties;
 
 	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #isPrivateOwned() <em>Private Owned</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -485,10 +484,6 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		joinFetch = newJoinFetch == null ? JOIN_FETCH_EDEFAULT : newJoinFetch;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FETCH, oldJoinFetch, joinFetch));
-	}
-
-	public String getTypeName() {
-		return this.getAttributeType();
 	}
 
 	/**
@@ -711,7 +706,7 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Type</em>' attribute.
 	 * @see #setAttributeType(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToMany_2_1_AttributeType()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -1509,8 +1504,6 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return getMapKeyConvert();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__BATCH_FETCH:
 				return getBatchFetch();
-			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE:
-				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PARTITIONING:
 				return getPartitioning();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__REPLICATION_PARTITIONING:
@@ -1539,6 +1532,8 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED:
 				return isPrivateOwned();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FETCH:
@@ -1584,9 +1579,6 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__BATCH_FETCH:
 				setBatchFetch((XmlBatchFetch)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE:
-				setAttributeType((String)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PARTITIONING:
 				setPartitioning((XmlPartitioning_2_2)newValue);
 				return;
@@ -1630,6 +1622,9 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED:
 				setPrivateOwned((Boolean)newValue);
 				return;
@@ -1670,9 +1665,6 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__BATCH_FETCH:
 				setBatchFetch((XmlBatchFetch)null);
-				return;
-			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE:
-				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PARTITIONING:
 				setPartitioning((XmlPartitioning_2_2)null);
@@ -1716,6 +1708,9 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PROPERTIES:
 				getProperties().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED:
 				setPrivateOwned(PRIVATE_OWNED_EDEFAULT);
 				return;
@@ -1750,8 +1745,6 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return MAP_KEY_CONVERT_EDEFAULT == null ? mapKeyConvert != null : !MAP_KEY_CONVERT_EDEFAULT.equals(mapKeyConvert);
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__BATCH_FETCH:
 				return batchFetch != null;
-			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE:
-				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PARTITIONING:
 				return partitioning != null;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__REPLICATION_PARTITIONING:
@@ -1780,6 +1773,8 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PRIVATE_OWNED:
 				return privateOwned != PRIVATE_OWNED_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FETCH:
@@ -1842,7 +1837,6 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_ONE_TO_MANY_21__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1899,6 +1893,7 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1975,7 +1970,6 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmV2_1Package.XML_ONE_TO_MANY_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -2032,6 +2026,7 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ONE_TO_MANY__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -2067,8 +2062,6 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (mapKeyConvert: ");
 		result.append(mapKeyConvert);
-		result.append(", attributeType: ");
-		result.append(attributeType);
 		result.append(", partitioned: ");
 		result.append(partitioned);
 		result.append(", cascadeOnDelete: ");
@@ -2077,6 +2070,8 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		result.append(noncacheable);
 		result.append(", deleteAll: ");
 		result.append(deleteAll);
+		result.append(", attributeType: ");
+		result.append(attributeType);
 		result.append(", privateOwned: ");
 		result.append(privateOwned);
 		result.append(", joinFetch: ");
@@ -2091,6 +2086,10 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 	
 	public TextRange getJoinFetchTextRange() {
 		return getElementTextRange(EclipseLink.JOIN_FETCH);
+	}
+
+	public TextRange getAttributeTypeTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
 	}
 	
 	
@@ -2192,7 +2191,7 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 	}
 
 	protected static Translator buildAttributeTypeTranslator() {
-		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlOneToMany_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE,  EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildBatchFetchTranslator() {

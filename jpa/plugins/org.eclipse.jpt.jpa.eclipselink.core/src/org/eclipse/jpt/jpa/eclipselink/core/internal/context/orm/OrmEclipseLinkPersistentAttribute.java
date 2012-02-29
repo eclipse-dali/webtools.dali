@@ -9,21 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
-import java.util.List;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessMethodsHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkPersistentAttributeValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * EclipseLink
@@ -139,32 +134,6 @@ public class OrmEclipseLinkPersistentAttribute
 	@Override
 	protected XmlAttributeMapping getXmlAttributeMapping() {
 		return (XmlAttributeMapping) super.getXmlAttributeMapping();
-	}
-
-
-	// ********** validation **********
-
-	
-	//TODO validate that the attribute-type exists on the classpath
-	@Override
-	protected void validateAttribute(List<IMessage> messages, IReporter reporter) {
-		super.validateAttribute(messages, reporter);
-		//TODO many-to-one needs to specify target-entity instead of attribute-type, move this validation to the mappings?
-		if (getAccess() == EclipseLinkAccessType.VIRTUAL) {
-			if (getTypeName() == null) {
-				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						EclipseLinkJpaValidationMessages.VIRTUAL_ATTRIBUTE_NO_ATTRIBUTE_TYPE_SPECIFIED,
-						new String[] {
-							this.getName()
-						},
-						this.mapping,
-						this.mapping.getSelectionTextRange()
-					)
-				);				
-			}
-		}
 	}
 
 	@Override

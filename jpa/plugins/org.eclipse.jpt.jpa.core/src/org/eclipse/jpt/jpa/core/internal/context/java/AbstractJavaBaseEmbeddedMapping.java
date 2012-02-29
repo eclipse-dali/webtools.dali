@@ -220,8 +220,18 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 			return true;
 		}
 		String targetEmbeddableTypeName = this.getPersistentAttribute().getTypeName();
-		// if the type isn't resolvable, there will already be a java compile error
-		if (targetEmbeddableTypeName != null) {
+		if (this.getPersistentAttribute().isVirtual()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_NOT_AN_EMBEDDABLE,
+					new String[] {this.getName(), targetEmbeddableTypeName},
+					this,
+					this.getValidationTextRange(astRoot)
+				)
+			);
+		}
+		else {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

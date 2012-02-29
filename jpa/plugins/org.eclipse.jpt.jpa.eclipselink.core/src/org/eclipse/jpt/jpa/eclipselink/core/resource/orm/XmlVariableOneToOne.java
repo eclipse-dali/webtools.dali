@@ -21,8 +21,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlHashPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlPartitioningGroup_2_2;
@@ -83,6 +85,26 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getPartitioning() <em>Partitioning</em>}' containment reference.
@@ -326,6 +348,41 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 			properties = new EObjectContainmentEList<XmlProperty>(XmlProperty.class, this, EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__PROPERTIES);
 		}
 		return properties;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Type</em>' attribute.
+	 * @see #setAttributeType(String)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getAttributeType()
+	{
+		return attributeType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVariableOneToOne#getAttributeType <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Attribute Type</em>' attribute.
+	 * @see #getAttributeType()
+	 * @generated
+	 */
+	public void setAttributeType(String newAttributeType)
+	{
+		String oldAttributeType = attributeType;
+		attributeType = newAttributeType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__ATTRIBUTE_TYPE, oldAttributeType, attributeType));
 	}
 
 	/**
@@ -913,10 +970,6 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE, oldTargetInterface, targetInterface));
 	}
 
-	public String getTypeName() {
-		return this.getTargetInterface();
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -965,6 +1018,8 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__PARTITIONING:
 				return getPartitioning();
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__REPLICATION_PARTITIONING:
@@ -1008,6 +1063,9 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__PROPERTIES:
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__PARTITIONING:
 				setPartitioning((XmlPartitioning_2_2)newValue);
@@ -1062,6 +1120,9 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__PROPERTIES:
 				getProperties().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__PARTITIONING:
 				setPartitioning((XmlPartitioning_2_2)null);
 				return;
@@ -1113,6 +1174,8 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__PARTITIONING:
 				return partitioning != null;
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__REPLICATION_PARTITIONING:
@@ -1167,6 +1230,7 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1225,6 +1289,7 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1266,7 +1331,9 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (partitioned: ");
+		result.append(" (attributeType: ");
+		result.append(attributeType);
+		result.append(", partitioned: ");
 		result.append(partitioned);
 		result.append(", nonCacheable: ");
 		result.append(nonCacheable);
@@ -1278,6 +1345,10 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 
 	public String getMappingKey() {
 		return EclipseLinkMappingKeys.VARIABLE_ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
+	}
+
+	public TextRange getAttributeTypeTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
 	}
 	
 	

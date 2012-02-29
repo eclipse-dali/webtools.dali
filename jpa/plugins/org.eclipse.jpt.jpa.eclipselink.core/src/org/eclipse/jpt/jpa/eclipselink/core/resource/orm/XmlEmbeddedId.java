@@ -22,8 +22,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddedId_2_1;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -45,28 +45,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddedId implements XmlEmbeddedId_2_1, XmlAttributeMapping
+public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddedId implements XmlAttributeMapping
 {
-	/**
-	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -86,6 +66,26 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -118,7 +118,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Type</em>' attribute.
 	 * @see #setAttributeType(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddedId_2_1_AttributeType()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -226,10 +226,6 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		return properties;
 	}
 
-	public String getTypeName() {
-		return this.getAttributeType();
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -258,12 +254,12 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE:
-				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE:
+				return getAttributeType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -279,15 +275,15 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE:
-				setAttributeType((String)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__PROPERTIES:
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -303,14 +299,14 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE:
-				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__PROPERTIES:
 				getProperties().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -326,12 +322,12 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE:
-				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -344,14 +340,6 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlEmbeddedId_2_1.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_EMBEDDED_ID_21__ATTRIBUTE_TYPE;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -372,6 +360,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -386,14 +375,6 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlEmbeddedId_2_1.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmV2_1Package.XML_EMBEDDED_ID_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (baseFeatureID)
@@ -414,6 +395,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -435,6 +417,11 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		result.append(attributeType);
 		result.append(')');
 		return result.toString();
+	}
+
+
+	public TextRange getAttributeTypeTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
 	}
 
 	// ********** translators **********
@@ -467,7 +454,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	}
 
 	protected static Translator buildAttributeTypeTranslator() {
-		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlEmbeddedId_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE,  EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
 
 }

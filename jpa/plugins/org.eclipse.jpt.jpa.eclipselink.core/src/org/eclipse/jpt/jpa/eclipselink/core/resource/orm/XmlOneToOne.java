@@ -236,6 +236,26 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 	protected EList<XmlProperty> properties;
 
 	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #isPrivateOwned() <em>Private Owned</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1010,10 +1030,6 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ONE_TO_ONE__JOIN_FETCH, oldJoinFetch, joinFetch));
 	}
 
-	public String getTypeName() {
-		return this.getTargetEntity();
-	}
-
 	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1098,6 +1114,41 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Type</em>' attribute.
+	 * @see #setAttributeType(String)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getAttributeType()
+	{
+		return attributeType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlOneToOne#getAttributeType <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Attribute Type</em>' attribute.
+	 * @see #getAttributeType()
+	 * @generated
+	 */
+	public void setAttributeType(String newAttributeType)
+	{
+		String oldAttributeType = attributeType;
+		attributeType = newAttributeType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ONE_TO_ONE__ATTRIBUTE_TYPE, oldAttributeType, attributeType));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1171,6 +1222,8 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__PRIVATE_OWNED:
 				return isPrivateOwned();
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__JOIN_FETCH:
@@ -1232,6 +1285,9 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__PROPERTIES:
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__PRIVATE_OWNED:
 				setPrivateOwned((Boolean)newValue);
@@ -1295,6 +1351,9 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__PROPERTIES:
 				getProperties().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__PRIVATE_OWNED:
 				setPrivateOwned(PRIVATE_OWNED_EDEFAULT);
 				return;
@@ -1343,6 +1402,8 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__PRIVATE_OWNED:
 				return privateOwned != PRIVATE_OWNED_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__JOIN_FETCH:
@@ -1419,6 +1480,7 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ONE_TO_ONE__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1509,6 +1571,7 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ONE_TO_ONE__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1548,6 +1611,8 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 		result.append(cascadeOnDelete);
 		result.append(", nonCacheable: ");
 		result.append(nonCacheable);
+		result.append(", attributeType: ");
+		result.append(attributeType);
 		result.append(", privateOwned: ");
 		result.append(privateOwned);
 		result.append(", joinFetch: ");
@@ -1562,6 +1627,11 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 	
 	public TextRange getJoinFetchTextRange() {
 		return getElementTextRange(EclipseLink.JOIN_FETCH);
+	}
+
+	public TextRange getAttributeTypeTextRange() {
+		//no attribute-type for one-to-one
+		return getValidationTextRange();
 	}
 	
 	

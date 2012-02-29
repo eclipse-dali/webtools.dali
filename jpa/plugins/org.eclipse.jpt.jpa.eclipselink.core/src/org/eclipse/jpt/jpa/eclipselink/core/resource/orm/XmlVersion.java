@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlVersion_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlIndex_2_2;
@@ -52,28 +51,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion implements XmlVersion_2_1, XmlVersion_2_2, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping, XmlConverterContainer
+public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion implements XmlVersion_2_2, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping, XmlConverterContainer
 {
-	/**
-	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getIndex() <em>Index</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -103,6 +82,26 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMutable() <em>Mutable</em>}' attribute.
@@ -215,7 +214,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Type</em>' attribute.
 	 * @see #setAttributeType(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVersion_2_1_AttributeType()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -462,10 +461,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 		return structConverters;
 	}
 
-	public String getTypeName() {
-		return this.getAttributeType();
-	}
-
 	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -587,14 +582,14 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE:
-				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_VERSION__INDEX:
 				return getIndex();
 			case EclipseLinkOrmPackage.XML_VERSION__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_VERSION__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_VERSION__MUTABLE:
 				return getMutable();
 			case EclipseLinkOrmPackage.XML_VERSION__CONVERT:
@@ -622,9 +617,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE:
-				setAttributeType((String)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_VERSION__INDEX:
 				setIndex((XmlIndex_2_2)newValue);
 				return;
@@ -634,6 +626,9 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 			case EclipseLinkOrmPackage.XML_VERSION__PROPERTIES:
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_VERSION__MUTABLE:
 				setMutable((Boolean)newValue);
@@ -671,9 +666,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE:
-				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_VERSION__INDEX:
 				setIndex((XmlIndex_2_2)null);
 				return;
@@ -682,6 +674,9 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 				return;
 			case EclipseLinkOrmPackage.XML_VERSION__PROPERTIES:
 				getProperties().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_VERSION__MUTABLE:
 				setMutable(MUTABLE_EDEFAULT);
@@ -715,14 +710,14 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE:
-				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_VERSION__INDEX:
 				return index != null;
 			case EclipseLinkOrmPackage.XML_VERSION__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_VERSION__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_VERSION__MUTABLE:
 				return MUTABLE_EDEFAULT == null ? mutable != null : !MUTABLE_EDEFAULT.equals(mutable);
 			case EclipseLinkOrmPackage.XML_VERSION__CONVERT:
@@ -747,14 +742,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlVersion_2_1.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_VERSION_21__ATTRIBUTE_TYPE;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlVersion_2_2.class)
 		{
 			switch (derivedFeatureID)
@@ -783,6 +770,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -824,14 +812,6 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlVersion_2_1.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmV2_1Package.XML_VERSION_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlVersion_2_2.class)
 		{
 			switch (baseFeatureID)
@@ -860,6 +840,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_VERSION__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -921,7 +902,11 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	public TextRange getConvertTextRange() {
 		return getElementTextRange(EclipseLink.CONVERT);
 	}
-	
+
+	public TextRange getAttributeTypeTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
+	}
+
 	
 	// ********** translators **********
 	
@@ -989,7 +974,7 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	}
 
 	protected static Translator buildAttributeTypeTranslator() {
-		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlVersion_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
 
 }

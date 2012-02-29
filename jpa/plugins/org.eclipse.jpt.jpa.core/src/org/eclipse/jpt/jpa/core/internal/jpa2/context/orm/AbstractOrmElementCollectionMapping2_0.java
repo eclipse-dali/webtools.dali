@@ -1464,6 +1464,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		this.validateAttributeType(messages, reporter);
 		this.validateTargetClass(messages);
 		this.validateMapKeyClass(messages);
 		this.orderable.validate(messages, reporter);
@@ -1471,6 +1472,25 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		this.validateValue(messages, reporter);
 		this.validateMapKey(messages, reporter);
 		this.validateNoEmbeddableInMappingContainsProhibitedMapping(messages);
+	}
+
+	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
+		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+					new String[] {this.getFullyQualifiedAttributeType()},
+					this,
+					this.getAttributeTypeTextRange()
+				)
+			);
+		}
+	}
+
+	protected TextRange getAttributeTypeTextRange() {
+		return this.getValidationTextRange();
 	}
 
 	protected void validateNoEmbeddableInMappingContainsProhibitedMapping(List<IMessage> messages) {
@@ -1585,22 +1605,24 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			);
 			return;
 		}
-		if (JDTTools.typeIsBasic(this.getJavaProject(), this.getFullyQualifiedTargetClass())) {
+		if (MappingTools.typeIsBasic(this.getJavaProject(), this.getFullyQualifiedTargetClass())) {
 			return;
 		}
-		IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetClass());
 		//If a persistent type exists, but no underlying java class, then 
 		//you will get validation on that persistent type instead of here
-		if (jdtType == null && this.getResolvedTargetType() == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
-					new String[] {this.getFullyQualifiedTargetClass()},
-					this,
-					this.getTargetClassTextRange()
-				)
-			);
+		if (this.getResolvedTargetType() == null) {
+			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetClass());
+			if (jdtType == null) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
+						new String[] {this.getFullyQualifiedTargetClass()},
+						this,
+						this.getTargetClassTextRange()
+					)
+				);
+			}
 			return;
 		}
 		if (this.getResolvedTargetEmbeddable() == null) {
@@ -1634,24 +1656,41 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 					JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
-					this.getValidationTextRange()
+					this.getMapKeyClassTextRange()
 				)
 			);
 			return;
 		}
 
-		IType mapKeyJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
-		if (mapKeyJdtType == null) {
+		if (MappingTools.typeIsBasic(this.getJavaProject(), this.getFullyQualifiedMapKeyClass())) {
+			return;
+		}
+
+		if (this.getResolvedMapKeyType() == null) {
+			IType mapKeyJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
+			if (mapKeyJdtType == null) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
+						new String[] {this.getFullyQualifiedMapKeyClass()},
+						this,
+						this.getMapKeyClassTextRange()
+					)
+				);
+			}
+			return;
+		}
+		if (this.getResolvedMapKeyEmbeddable() == null && this.getResolvedMapKeyEntity() == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
+					JpaValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 					new String[] {this.getFullyQualifiedMapKeyClass()},
 					this,
 					this.getMapKeyClassTextRange()
 				)
 			);
-			return;
 		}
 	}
 

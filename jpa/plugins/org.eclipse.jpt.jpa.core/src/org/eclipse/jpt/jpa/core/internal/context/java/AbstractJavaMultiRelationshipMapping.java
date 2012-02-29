@@ -971,9 +971,47 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		this.validateAttributeType(messages, reporter, astRoot);
 		this.validateMapKeyClass(messages, astRoot);
 		this.orderable.validate(messages, reporter, astRoot);
 		this.validateMapKey(messages, reporter, astRoot);
+	}
+
+	protected void validateAttributeType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+						new String[] {getName()},
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+						EMPTY_STRING_ARRAY,
+						this,
+						this.getValidationTextRange(astRoot)
+					)
+				);
+			}
+		}
+	}
+
+	protected TextRange getMapKeyClassTextRange(CompilationUnit astRoot) {
+		return this.getValidationTextRange(this.getMapKeyClassAnnotationTextRange(astRoot), astRoot);
+	}
+
+	protected TextRange getMapKeyClassAnnotationTextRange(CompilationUnit astRoot) {
+		MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
+		return (annotation == null) ? null : annotation.getTextRange(astRoot);
 	}
 
 	protected void validateMapKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -1022,6 +1060,36 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 						EMPTY_STRING_ARRAY,
 						this,
 						this.getValidationTextRange(astRoot)
+					)
+				);
+			}
+			return;
+		}
+
+		if (MappingTools.typeIsBasic(this.getJavaProject(), this.getFullyQualifiedMapKeyClass())) {
+			return;
+		}
+
+		if (this.getResolvedMapKeyEmbeddable() == null && this.getResolvedMapKeyEntity() == null) {
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
+						new String[] {this.getName(), this.getFullyQualifiedMapKeyClass()},
+						this,
+						this.getMapKeyClassTextRange(astRoot)
+					)
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
+						new String[] {this.getFullyQualifiedMapKeyClass()},
+						this,
+						this.getMapKeyClassTextRange(astRoot)
 					)
 				);
 			}

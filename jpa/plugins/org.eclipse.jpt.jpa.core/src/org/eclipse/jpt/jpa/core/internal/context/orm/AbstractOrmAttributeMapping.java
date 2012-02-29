@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -68,11 +68,16 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 
 	protected String name;
 
+	protected String specifiedAttributeType;
+	protected String defaultAttributeType;
+	protected String fullyQualifiedAttributeType;
+
 
 	protected AbstractOrmAttributeMapping(OrmPersistentAttribute parent, X xmlAttributeMapping) {
 		super(parent);
 		this.xmlAttributeMapping = xmlAttributeMapping;
 		this.name = xmlAttributeMapping.getName();
+		this.specifiedAttributeType = this.buildSpecifiedAttributeType();
 	}
 
 
@@ -82,6 +87,14 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setName_(this.xmlAttributeMapping.getName());
+		this.setSpecifiedAttributeType_(this.buildSpecifiedAttributeType());
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultAttributeType(this.buildDefaultAttributeType());
+		this.setFullyQualifiedAttributeType(this.buildFullyQualifiedAttributeType());
 	}
 
 
@@ -106,10 +119,87 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 
+	// ********** fully-qualified attribute type **********
+
+	public String getFullyQualifiedAttributeType() {
+		return this.fullyQualifiedAttributeType;
+	}
+
+	protected void setFullyQualifiedAttributeType(String entity) {
+		String old = this.fullyQualifiedAttributeType;
+		this.fullyQualifiedAttributeType = entity;
+		this.firePropertyChanged(FULLY_QUALIFIED_ATTRIBUTE_TYPE_PROPERTY, old, entity);
+	}
+
+	protected String buildFullyQualifiedAttributeType() {
+		return (this.specifiedAttributeType == null) ?
+				this.defaultAttributeType :
+				this.getEntityMappings().getFullyQualifiedName(this.specifiedAttributeType);
+	}
+
+	// ********** attribute type **********
+
+	public String getAttributeType() {
+		return (this.specifiedAttributeType != null) ? this.specifiedAttributeType : this.defaultAttributeType;
+	}
+
+	public String getSpecifiedAttributeType() {
+		return this.specifiedAttributeType;
+	}
+
+	public void setSpecifiedAttributeType(String attributeType) {
+		this.setSpecifiedAttributeType_(attributeType);
+		this.setSpecifiedAttributeTypeInXml(attributeType);
+	}
+
+	protected void setSpecifiedAttributeType_(String attributeType) {
+		String old = this.specifiedAttributeType;
+		this.specifiedAttributeType = attributeType;
+		this.firePropertyChanged(SPECIFIED_ATTRIBUTE_TYPE_PROPERTY, old, attributeType);
+	}
+
+	/**
+	 * subclasses must override if they support specifying an attribute type
+	 */
+	protected void setSpecifiedAttributeTypeInXml(String attributeType) {
+		//no-op
+	}
+
+	/**
+	 * subclasses must override if they support specifying an attribute type
+	 */
+	protected String buildSpecifiedAttributeType() {
+		return null;
+	}
+
+	public String getDefaultAttributeType() {
+		return this.defaultAttributeType;
+	}
+
+	protected void setDefaultAttributeType(String attributeType) {
+		String old = this.defaultAttributeType;
+		this.defaultAttributeType = attributeType;
+		this.firePropertyChanged(DEFAULT_ATTRIBUTE_TYPE_PROPERTY, old, attributeType);
+	}
+
+	protected String buildDefaultAttributeType() {
+		return (this.getJavaPersistentAttribute() == null) ? null : 
+			this.getJavaPersistentAttribute().getTypeName();
+	}
+
+	protected PersistentType getResolvedAttributeType() {
+		if (this.fullyQualifiedAttributeType == null) {
+			return null;
+		}
+		return getPersistenceUnit().getPersistentType(this.fullyQualifiedAttributeType);
+	}
+
+
 	// ********** morphing mappings **********
 
 	public void initializeFromOrmAttributeMapping(OrmAttributeMapping oldMapping) {
 		this.setName(oldMapping.getName());
+		this.setSpecifiedAttributeType(oldMapping.getSpecifiedAttributeType());
 	}
 
 	protected void initializeFromOrmColumnMapping(OrmColumnMapping oldMapping) {

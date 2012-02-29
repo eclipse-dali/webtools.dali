@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,6 +43,18 @@ public interface OrmAttributeMapping
 
 	void setName(String name);
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
+
+	String getAttributeType();
+
+	String getFullyQualifiedAttributeType();
+		String FULLY_QUALIFIED_ATTRIBUTE_TYPE_PROPERTY = "fullyQualifiedAttributeType"; //$NON-NLS-1$
+
+	String getSpecifiedAttributeType();
+	void setSpecifiedAttributeType(String attributeType);
+		String SPECIFIED_ATTRIBUTE_TYPE_PROPERTY = "specifiedAttributeType"; //$NON-NLS-1$
+
+	String getDefaultAttributeType();
+		String DEFAULT_ATTRIBUTE_TYPE_PROPERTY = "defaultAttributeType"; //$NON-NLS-1$
 
 	/**
 	 * Attributes are a sequence in the <code>orm.xml</code> schema. We must keep

@@ -30,6 +30,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.TemporalType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3;
@@ -66,6 +67,26 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getConverters() <em>Converters</em>}' containment reference list.
@@ -132,7 +153,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * we don't want a default for enums, just null if the tag does not exist
 	 */
 	protected static final TemporalType TEMPORAL_EDEFAULT = null;
-	
+
 	/**
 	 * The cached value of the '{@link #getTemporal() <em>Temporal</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -142,7 +163,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * @ordered
 	 */
 	protected TemporalType temporal = TEMPORAL_EDEFAULT;
-
 
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -209,26 +229,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * @ordered
 	 */
 	protected String targetClass = TARGET_CLASS_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getConvert() <em>Convert</em>}' attribute.
@@ -697,7 +697,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Type</em>' attribute.
 	 * @see #setAttributeType(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlArray_2_3_AttributeType()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -757,10 +757,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ARRAY__CONVERT, oldConvert, convert));
 	}
 
-	public String getTypeName() {
-		return this.getAttributeType();
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -803,6 +799,8 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ARRAY__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS:
 				return getConverters();
 			case EclipseLinkOrmPackage.XML_ARRAY__TYPE_CONVERTERS:
@@ -823,8 +821,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return getDatabaseType();
 			case EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS:
 				return getTargetClass();
-			case EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE:
-				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
 				return getConvert();
 		}
@@ -848,6 +844,9 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 			case EclipseLinkOrmPackage.XML_ARRAY__PROPERTIES:
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS:
 				getConverters().clear();
@@ -883,9 +882,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 			case EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS:
 				setTargetClass((String)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE:
-				setAttributeType((String)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
 				setConvert((String)newValue);
 				return;
@@ -908,6 +904,9 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__PROPERTIES:
 				getProperties().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS:
 				getConverters().clear();
@@ -939,9 +938,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 			case EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS:
 				setTargetClass(TARGET_CLASS_EDEFAULT);
 				return;
-			case EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE:
-				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
 				setConvert(CONVERT_EDEFAULT);
 				return;
@@ -963,6 +959,8 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ARRAY__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERTERS:
 				return converters != null && !converters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ARRAY__TYPE_CONVERTERS:
@@ -983,8 +981,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 				return DATABASE_TYPE_EDEFAULT == null ? databaseType != null : !DATABASE_TYPE_EDEFAULT.equals(databaseType);
 			case EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS:
 				return TARGET_CLASS_EDEFAULT == null ? targetClass != null : !TARGET_CLASS_EDEFAULT.equals(targetClass);
-			case EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE:
-				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_ARRAY__CONVERT:
 				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
 		}
@@ -1019,6 +1015,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1057,7 +1054,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 			{
 				case EclipseLinkOrmPackage.XML_ARRAY__DATABASE_TYPE: return EclipseLinkOrmV2_3Package.XML_ARRAY_23__DATABASE_TYPE;
 				case EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS: return EclipseLinkOrmV2_3Package.XML_ARRAY_23__TARGET_CLASS;
-				case EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_3Package.XML_ARRAY_23__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1100,6 +1096,7 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1138,7 +1135,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 			{
 				case EclipseLinkOrmV2_3Package.XML_ARRAY_23__DATABASE_TYPE: return EclipseLinkOrmPackage.XML_ARRAY__DATABASE_TYPE;
 				case EclipseLinkOrmV2_3Package.XML_ARRAY_23__TARGET_CLASS: return EclipseLinkOrmPackage.XML_ARRAY__TARGET_CLASS;
-				case EclipseLinkOrmV2_3Package.XML_ARRAY_23__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ARRAY__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1164,7 +1160,9 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (lob: ");
+		result.append(" (attributeType: ");
+		result.append(attributeType);
+		result.append(", lob: ");
 		result.append(lob);
 		result.append(", temporal: ");
 		result.append(temporal);
@@ -1174,8 +1172,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 		result.append(databaseType);
 		result.append(", targetClass: ");
 		result.append(targetClass);
-		result.append(", attributeType: ");
-		result.append(attributeType);
 		result.append(", convert: ");
 		result.append(convert);
 		result.append(')');
@@ -1200,6 +1196,10 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 
 	public TextRange getConvertTextRange() {
 		return getElementTextRange(EclipseLink.CONVERT);
+	}
+
+	public TextRange getAttributeTypeTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
 	}
 
 	// ********** translators **********
@@ -1287,6 +1287,6 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	}
 
 	protected static Translator buildAttributeTypeTranslator() {
-		return new Translator(EclipseLink2_3.ARRAY__ATTRIBUTE_TYPE, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlArray_2_3_AttributeType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_3.ARRAY__ATTRIBUTE_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
 } // XmlArray

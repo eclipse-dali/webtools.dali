@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
@@ -31,6 +33,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbedded;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlId;
@@ -88,6 +92,16 @@ public class EclipseLinkOrmXmlContextNodeFactory
 	@Override
 	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent, org.eclipse.jpt.jpa.core.resource.orm.XmlId resourceMapping) {
 		return new OrmEclipseLinkIdMapping(parent, (XmlId) resourceMapping);
+	}
+
+	@Override
+	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmPersistentAttribute parent,  org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedded resourceMapping) {
+		return new OrmEclipseLinkEmbeddedMapping(parent, (XmlEmbedded) resourceMapping);
+	}
+
+	@Override
+	public OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping(OrmPersistentAttribute parent,  org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddedId resourceMapping) {
+		return new OrmEclipseLinkEmbeddedIdMapping(parent, (XmlEmbeddedId) resourceMapping);
 	}
 	
 	@Override

@@ -82,12 +82,17 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		throw new UnsupportedOperationException();
 	}
 
+	public String getTypeName() {
+		String typeName = this.xmlAttributeMapping.getAttributeType();
+		return typeName == null ? null : this.getEntityMappings().getFullyQualifiedName(typeName);
+	}
+
 	public boolean typeIsBasic() {
 		return false;//not valid for a default basic mapping, specified in orm.xml
 	}
 
 	public String getSingleReferenceTargetTypeName() {
-		return null; //used for building default target entity, must be specified in a virtual mapping
+		return null; //used for building default target entity/embeddable, must be specified in a virtual mapping
 	}
 
 	public String getMultiReferenceTargetTypeName() {
@@ -245,15 +250,19 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		return this.getJpaContainerDefinition(this.getTypeName());
 	}
 
+	//I don't think we should be doing this here, I think OrmAttributeMappings should be responsible for their own JpaContainerDefinition
+	//Generic can just get it from the JavaPersistentAttribute
 	/**
 	 * Return the JPA container definition corresponding to the specified type;
 	 * return a "null" definition if the specified type is not "assignable to" one of the
 	 * container types allowed by the JPA spec.
 	 */
 	protected JpaContainerDefinition getJpaContainerDefinition(String typeName) {
-		for (JpaContainerDefinition definition : getJpaContainerDefinitions()) {
-			if (definition.isAssignableFrom(typeName)) {
-				return definition;
+		if (typeName != null) {
+			for (JpaContainerDefinition definition : getJpaContainerDefinitions()) {
+				if (definition.isAssignableFrom(typeName)) {
+					return definition;
+				}
 			}
 		}
 		return JpaContainerDefinition.Null.instance();
@@ -373,11 +382,6 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 
 	protected EntityMappings getEntityMappings() {
 		return (EntityMappings) getParent().getMappingFileRoot();
-	}
-
-	public String getTypeName() {
-		String typeName = this.xmlAttributeMapping.getTypeName();
-		return this.getEntityMappings().getFullyQualifiedName(typeName);
 	}
 
 	public String getPrimaryKeyColumnName() {

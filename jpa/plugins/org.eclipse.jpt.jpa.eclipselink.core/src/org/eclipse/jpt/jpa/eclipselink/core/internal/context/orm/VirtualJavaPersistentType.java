@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
@@ -170,7 +171,7 @@ public class VirtualJavaPersistentType
 	 * hierarchy are handled in {@link #buildSuperPersistentType()}.
 	 */
 	protected PersistentType resolveSuperPersistentType(String typeName, Collection<JavaResourceType> visited) {
-		if (typeName == null) {
+		if (StringTools.stringIsEmpty(typeName)) {
 			return null;
 		}
 		PersistentType spt = this.resolvePersistentType(typeName);

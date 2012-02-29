@@ -37,7 +37,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlCollectionMappi
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlElementCollection_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlElementCollection_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
@@ -99,6 +98,26 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getConvert() <em>Convert</em>}' attribute.
@@ -215,26 +234,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @ordered
 	 */
 	protected XmlBatchFetch batchFetch;
-
-	/**
-	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getPartitioning() <em>Partitioning</em>}' containment reference.
@@ -721,7 +720,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Type</em>' attribute.
 	 * @see #setAttributeType(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlElementCollection_2_1_AttributeType()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -1401,10 +1400,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__DELETE_ALL, oldDeleteAll, deleteAll));
 	}
 
-	public String getTypeName() {
-		return this.getAttributeType();
-	}
-
 	/**
 	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter}.
@@ -1557,6 +1552,8 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
 				return getConvert();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES:
@@ -1575,8 +1572,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return getJoinFetch();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
 				return getBatchFetch();
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
-				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PARTITIONING:
 				return getPartitioning();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__REPLICATION_PARTITIONING:
@@ -1625,6 +1620,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
 				setConvert((String)newValue);
 				return;
@@ -1656,9 +1654,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
 				setBatchFetch((XmlBatchFetch)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
-				setAttributeType((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PARTITIONING:
 				setPartitioning((XmlPartitioning_2_2)newValue);
@@ -1719,6 +1714,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PROPERTIES:
 				getProperties().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
 				setConvert(CONVERT_EDEFAULT);
 				return;
@@ -1745,9 +1743,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
 				setBatchFetch((XmlBatchFetch)null);
-				return;
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
-				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PARTITIONING:
 				setPartitioning((XmlPartitioning_2_2)null);
@@ -1806,6 +1801,8 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CONVERT:
 				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES:
@@ -1824,8 +1821,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return joinFetch != JOIN_FETCH_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
 				return batchFetch != null;
-			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
-				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__PARTITIONING:
 				return partitioning != null;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__REPLICATION_PARTITIONING:
@@ -1884,6 +1879,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1949,7 +1945,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		{
 			switch (derivedFeatureID)
 			{
-				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_ELEMENT_COLLECTION_21__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -2025,6 +2020,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -2090,7 +2086,6 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		{
 			switch (baseFeatureID)
 			{
-				case EclipseLinkOrmV2_1Package.XML_ELEMENT_COLLECTION_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -2149,14 +2144,14 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (convert: ");
+		result.append(" (attributeType: ");
+		result.append(attributeType);
+		result.append(", convert: ");
 		result.append(convert);
 		result.append(", mapKeyConvert: ");
 		result.append(mapKeyConvert);
 		result.append(", joinFetch: ");
 		result.append(joinFetch);
-		result.append(", attributeType: ");
-		result.append(attributeType);
 		result.append(", partitioned: ");
 		result.append(partitioned);
 		result.append(", cascadeOnDelete: ");
@@ -2195,6 +2190,10 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	
 	public TextRange getJoinFetchTextRange() {
 		return getElementTextRange(EclipseLink.JOIN_FETCH);
+	}
+
+	public TextRange getAttributeTypeTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
 	}
 	
 	
@@ -2278,7 +2277,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	}
 
 	protected static Translator buildAttributeTypeTranslator() {
-		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlElementCollection_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildJoinFetchTranslator() {

@@ -966,9 +966,29 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		this.validateAttributeType(messages, reporter);
 		this.orderable.validate(messages, reporter);
 		this.validateMapKeyClass(messages);
 		this.validateMapKey(messages, reporter);
+	}
+
+	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
+		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
+					new String[] {this.getFullyQualifiedAttributeType()},
+					this,
+					this.getAttributeTypeTextRange()
+				)
+			);
+		}
+	}
+
+	protected TextRange getAttributeTypeTextRange() {
+		return this.getValidationTextRange();
 	}
 
 	public void validateMapKey(List<IMessage> messages, IReporter reporter) {
@@ -993,7 +1013,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	protected void validateMapKeyClass(List<IMessage> messages) {
 		if (this.isJpa2_0Compatible()) {
-		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
+			JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 			if ((javaAttribute != null) && javaAttribute.getJpaContainerDefinition().isMap()) {
 				this.validateMapKeyClass_(messages);
 			}
@@ -1014,18 +1034,35 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return;
 		}
 
-		IType mapKeyJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
-		if (mapKeyJdtType == null) {
+		if (MappingTools.typeIsBasic(this.getJavaProject(), this.getFullyQualifiedMapKeyClass())) {
+			return;
+		}
+
+		if (this.getResolvedMapKeyType() == null) {
+			IType mapKeyJdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedMapKeyClass());
+			if (mapKeyJdtType == null) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
+						new String[] {this.getFullyQualifiedMapKeyClass()},
+						this,
+						this.getMapKeyClassTextRange()
+					)
+				);
+			}
+			return;
+		}
+		if (this.getResolvedMapKeyEmbeddable() == null && this.getResolvedMapKeyEntity() == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAP_KEY_CLASS_NOT_EXIST,
+					JpaValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 					new String[] {this.getFullyQualifiedMapKeyClass()},
 					this,
 					this.getMapKeyClassTextRange()
 				)
 			);
-			return;
 		}
 	}
 

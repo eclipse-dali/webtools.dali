@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,23 @@ public class OrmEclipseLinkTransformationMapping
 	public OrmEclipseLinkTransformationMapping(OrmPersistentAttribute parent, XmlTransformation xmlMapping) {
 		super(parent, xmlMapping);
 	}
-	
+
+
+	// ********** attribute type **********
+
+	@Override
+	protected String buildSpecifiedAttributeType() {
+		return this.xmlAttributeMapping.getAttributeType();
+	}
+
+	@Override
+	protected void setSpecifiedAttributeTypeInXml(String attributeType) {
+		this.xmlAttributeMapping.setAttributeType(attributeType);
+	}
+
+
+	// ********** misc **********
+
 	public String getKey() {
 		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
 	}

@@ -22,11 +22,11 @@ import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
@@ -108,11 +108,14 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 	}
 
 	protected Embeddable buildTargetEmbeddable() {
-		JavaPersistentAttribute javaPersistentAttribute = getJavaPersistentAttribute();
-		String typeName = (javaPersistentAttribute == null) ? null : javaPersistentAttribute.getSingleReferenceTargetTypeName();
-		return (typeName == null) ? null : this.getPersistenceUnit().getEmbeddable(typeName);
+		TypeMapping typeMapping = this.getResolvedTargetTypeMapping();
+		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
 	}
 
+	protected TypeMapping getResolvedTargetTypeMapping() {
+		PersistentType resolvedTargetType = this.getResolvedAttributeType();
+		return (resolvedTargetType == null) ? null : resolvedTargetType.getMapping();
+	}
 
 	// ********** embedded mappings **********
 
@@ -204,23 +207,23 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 	}
 
 	protected boolean validateTargetEmbeddable(List<IMessage> messages) {
-		if (this.targetEmbeddable == null) {
-			String targetEmbeddableTypeName = this.getPersistentAttribute().getTypeName();
-			// if the type isn't resolvable, there'll already be a java error
-			if (targetEmbeddableTypeName != null) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
-						new String[] {targetEmbeddableTypeName},
-						this,
-						this.getValidationTextRange()
-					)
-				);
-			}
-			return false;
+		if (this.targetEmbeddable != null) {
+			return true;
 		}
-		return true;
+		messages.add(
+			DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
+				new String[] {this.getFullyQualifiedAttributeType()},
+				this,
+				this.getAttributeTypeTextRange()
+			)
+		);
+		return false;
+	}
+
+	protected TextRange getAttributeTypeTextRange() {
+		return this.getValidationTextRange();
 	}
 
 	protected void validateOverrides(List<IMessage> messages, IReporter reporter) {

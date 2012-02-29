@@ -24,7 +24,6 @@ import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlId_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlId_2_2;
@@ -58,28 +57,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implements XmlId_2_1, XmlId_2_2, XmlId_2_4, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping, XmlConverterContainer
+public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implements XmlId_2_2, XmlId_2_4, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping, XmlConverterContainer
 {
-	/**
-	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getIndex() <em>Index</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -119,6 +98,26 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMutable() <em>Mutable</em>}' attribute.
@@ -231,7 +230,7 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Type</em>' attribute.
 	 * @see #setAttributeType(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId_2_1_AttributeType()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -538,10 +537,6 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 		return structConverters;
 	}
 
-	public String getTypeName() {
-		return this.getAttributeType();
-	}
-
 	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -665,8 +660,6 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
-				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_ID__INDEX:
 				return getIndex();
 			case EclipseLinkOrmPackage.XML_ID__CACHE_INDEX:
@@ -675,6 +668,8 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				return getMutable();
 			case EclipseLinkOrmPackage.XML_ID__CONVERT:
@@ -702,9 +697,6 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
-				setAttributeType((String)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_ID__INDEX:
 				setIndex((XmlIndex_2_2)newValue);
 				return;
@@ -717,6 +709,9 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				setMutable((Boolean)newValue);
@@ -754,9 +749,6 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
-				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_ID__INDEX:
 				setIndex((XmlIndex_2_2)null);
 				return;
@@ -768,6 +760,9 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				return;
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
 				getProperties().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				setMutable(MUTABLE_EDEFAULT);
@@ -801,8 +796,6 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
-				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_ID__INDEX:
 				return index != null;
 			case EclipseLinkOrmPackage.XML_ID__CACHE_INDEX:
@@ -811,6 +804,8 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				return MUTABLE_EDEFAULT == null ? mutable != null : !MUTABLE_EDEFAULT.equals(mutable);
 			case EclipseLinkOrmPackage.XML_ID__CONVERT:
@@ -835,14 +830,6 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlId_2_1.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_ID_21__ATTRIBUTE_TYPE;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlId_2_2.class)
 		{
 			switch (derivedFeatureID)
@@ -879,6 +866,7 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -920,14 +908,6 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlId_2_1.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmV2_1Package.XML_ID_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlId_2_2.class)
 		{
 			switch (baseFeatureID)
@@ -964,6 +944,7 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1025,7 +1006,11 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	public TextRange getConvertTextRange() {
 		return getElementTextRange(EclipseLink.CONVERT);
 	}
-	
+
+	public TextRange getAttributeTypeTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
+	}
+
 	
 	// ********** translators **********
 	
@@ -1102,7 +1087,7 @@ public class XmlId extends org.eclipse.jpt.jpa.core.resource.orm.XmlId implement
 	}
 
 	protected static Translator buildAttributeTypeTranslator() {
-		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlId_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE,  EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildEnumeratedTranslator() {

@@ -10,6 +10,8 @@
 
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -22,6 +24,12 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping#getAttributeType <em>Attribute Type</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping()
  * @model kind="class" interface="true" abstract="true"
@@ -33,10 +41,31 @@ public interface XmlAttributeMapping
 {
 
 	/**
+	 * Returns the value of the '<em><b>Attribute Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @return the value of the '<em>Attribute Type</em>' attribute.
+	 * @see #setAttributeType(String)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	String getTypeName();
+	String getAttributeType();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping#getAttributeType <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Attribute Type</em>' attribute.
+	 * @see #getAttributeType()
+	 * @generated
+	 */
+	void setAttributeType(String value);
+
+	TextRange getAttributeTypeTextRange();
+
 } // XmlAttributeMapping

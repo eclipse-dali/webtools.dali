@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -55,6 +56,26 @@ public class XmlTransient extends org.eclipse.jpt.jpa.core.resource.orm.XmlTrans
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -160,8 +181,39 @@ public class XmlTransient extends org.eclipse.jpt.jpa.core.resource.orm.XmlTrans
 		return properties;
 	}
 
-	public String getTypeName() {
-		return null;
+	/**
+	 * Returns the value of the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Type</em>' attribute.
+	 * @see #setAttributeType(String)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getAttributeType()
+	{
+		return attributeType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTransient#getAttributeType <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Attribute Type</em>' attribute.
+	 * @see #getAttributeType()
+	 * @generated
+	 */
+	public void setAttributeType(String newAttributeType)
+	{
+		String oldAttributeType = attributeType;
+		attributeType = newAttributeType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_TRANSIENT__ATTRIBUTE_TYPE, oldAttributeType, attributeType));
 	}
 
 	/**
@@ -196,6 +248,8 @@ public class XmlTransient extends org.eclipse.jpt.jpa.core.resource.orm.XmlTrans
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_TRANSIENT__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_TRANSIENT__ATTRIBUTE_TYPE:
+				return getAttributeType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -218,6 +272,9 @@ public class XmlTransient extends org.eclipse.jpt.jpa.core.resource.orm.XmlTrans
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_TRANSIENT__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -238,6 +295,9 @@ public class XmlTransient extends org.eclipse.jpt.jpa.core.resource.orm.XmlTrans
 			case EclipseLinkOrmPackage.XML_TRANSIENT__PROPERTIES:
 				getProperties().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_TRANSIENT__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -256,6 +316,8 @@ public class XmlTransient extends org.eclipse.jpt.jpa.core.resource.orm.XmlTrans
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_TRANSIENT__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_TRANSIENT__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -288,6 +350,7 @@ public class XmlTransient extends org.eclipse.jpt.jpa.core.resource.orm.XmlTrans
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_TRANSIENT__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -322,6 +385,7 @@ public class XmlTransient extends org.eclipse.jpt.jpa.core.resource.orm.XmlTrans
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_TRANSIENT__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -329,6 +393,29 @@ public class XmlTransient extends org.eclipse.jpt.jpa.core.resource.orm.XmlTrans
 	}
 	
 	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (attributeType: ");
+		result.append(attributeType);
+		result.append(')');
+		return result.toString();
+	}
+
+	public TextRange getAttributeTypeTextRange() {
+		//no attribute-type for one-to-one
+		return getValidationTextRange();
+	}
+
+
 	// ********** translators **********
 	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {

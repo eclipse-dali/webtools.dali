@@ -123,24 +123,6 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	protected Boolean returnUpdate = RETURN_UPDATE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributeType()
-	 * @generated
-	 * @ordered
-	 */
-	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
-	/**
 	 * The cached value of the '{@link #getIndex() <em>Index</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -176,6 +158,24 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 	/**
 	 * The default value of the '{@link #getMutable() <em>Mutable</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -431,10 +431,6 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			structConverters = new EObjectContainmentEList<XmlStructConverter>(XmlStructConverter.class, this, EclipseLinkOrmPackage.XML_BASIC__STRUCT_CONVERTERS);
 		}
 		return structConverters;
-	}
-
-	public String getTypeName() {
-		return this.getAttributeType();
 	}
 
 	/**
@@ -722,7 +718,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Type</em>' attribute.
 	 * @see #setAttributeType(String)
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_2_1_AttributeType()
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -1008,8 +1004,6 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return getReturnInsert();
 			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
 				return getReturnUpdate();
-			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
-				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
 				return getIndex();
 			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
@@ -1018,6 +1012,8 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_BASIC__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_BASIC__MUTABLE:
 				return getMutable();
 			case EclipseLinkOrmPackage.XML_BASIC__CONVERT:
@@ -1060,9 +1056,6 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
 				setReturnUpdate((Boolean)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
-				setAttributeType((String)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
 				setIndex((XmlIndex_2_2)newValue);
 				return;
@@ -1075,6 +1068,9 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			case EclipseLinkOrmPackage.XML_BASIC__PROPERTIES:
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__MUTABLE:
 				setMutable((Boolean)newValue);
@@ -1127,9 +1123,6 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
 				setReturnUpdate(RETURN_UPDATE_EDEFAULT);
 				return;
-			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
-				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
 				setIndex((XmlIndex_2_2)null);
 				return;
@@ -1141,6 +1134,9 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__PROPERTIES:
 				getProperties().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__MUTABLE:
 				setMutable(MUTABLE_EDEFAULT);
@@ -1184,8 +1180,6 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return returnInsert != null;
 			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
 				return RETURN_UPDATE_EDEFAULT == null ? returnUpdate != null : !RETURN_UPDATE_EDEFAULT.equals(returnUpdate);
-			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
-				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
 				return index != null;
 			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
@@ -1194,6 +1188,8 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_BASIC__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_BASIC__MUTABLE:
 				return MUTABLE_EDEFAULT == null ? mutable != null : !MUTABLE_EDEFAULT.equals(mutable);
 			case EclipseLinkOrmPackage.XML_BASIC__CONVERT:
@@ -1241,7 +1237,6 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			{
 				case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT: return EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_INSERT;
 				case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE: return EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_UPDATE;
-				case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_BASIC_21__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1281,6 +1276,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1345,7 +1341,6 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			{
 				case EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_INSERT: return EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT;
 				case EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_UPDATE: return EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE;
-				case EclipseLinkOrmV2_1Package.XML_BASIC_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1385,6 +1380,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1448,7 +1444,11 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	public TextRange getConvertTextRange() {
 		return getElementTextRange(EclipseLink.CONVERT);
 	}
-	
+
+	public TextRange getAttributeTypeTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
+	}
+
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
@@ -1548,7 +1548,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	}
 
 	protected static Translator buildAttributeTypeTranslator() {
-		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlBasic_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
 
 }

@@ -197,13 +197,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ARRAY__PROPERTIES = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ARRAY__ATTRIBUTE_TYPE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	/**
 	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY__CONVERTERS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	public static final int XML_ARRAY__CONVERTERS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 	/**
 	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -211,7 +219,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY__TYPE_CONVERTERS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+	public static final int XML_ARRAY__TYPE_CONVERTERS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 	/**
 	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -219,7 +227,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY__OBJECT_TYPE_CONVERTERS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+	public static final int XML_ARRAY__OBJECT_TYPE_CONVERTERS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 	/**
 	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -227,7 +235,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY__STRUCT_CONVERTERS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
+	public static final int XML_ARRAY__STRUCT_CONVERTERS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
 	/**
 	 * The feature id for the '<em><b>Lob</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -235,7 +243,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY__LOB = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
+	public static final int XML_ARRAY__LOB = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
 	/**
 	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -243,7 +251,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY__TEMPORAL = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
+	public static final int XML_ARRAY__TEMPORAL = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
 	/**
 	 * The feature id for the '<em><b>Enumerated</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -251,7 +259,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY__ENUMERATED = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
+	public static final int XML_ARRAY__ENUMERATED = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -259,7 +267,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY__COLUMN = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
+	public static final int XML_ARRAY__COLUMN = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
 	/**
 	 * The feature id for the '<em><b>Database Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -267,7 +275,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY__DATABASE_TYPE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
+	public static final int XML_ARRAY__DATABASE_TYPE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
 	/**
 	 * The feature id for the '<em><b>Target Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -275,15 +283,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ARRAY__TARGET_CLASS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
-	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ARRAY__ATTRIBUTE_TYPE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
+	public static final int XML_ARRAY__TARGET_CLASS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
 	/**
 	 * The feature id for the '<em><b>Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -342,13 +342,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ATTRIBUTE_MAPPING__PROPERTIES = OrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE = OrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	/**
 	 * The number of structural features of the '<em>Xml Attribute Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ATTRIBUTE_MAPPING_FEATURE_COUNT = OrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	public static final int XML_ATTRIBUTE_MAPPING_FEATURE_COUNT = OrmPackage.XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.Attributes <em>Attributes</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -624,21 +632,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_BASIC__RETURN_UPDATE = OrmPackage.XML_BASIC_FEATURE_COUNT + 4;
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC__ATTRIBUTE_TYPE = OrmPackage.XML_BASIC_FEATURE_COUNT + 5;
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC__INDEX = OrmPackage.XML_BASIC_FEATURE_COUNT + 6;
+	public static final int XML_BASIC__INDEX = OrmPackage.XML_BASIC_FEATURE_COUNT + 5;
 	/**
 	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -646,7 +646,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC__CACHE_INDEX = OrmPackage.XML_BASIC_FEATURE_COUNT + 7;
+	public static final int XML_BASIC__CACHE_INDEX = OrmPackage.XML_BASIC_FEATURE_COUNT + 6;
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -654,7 +654,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC__ACCESS_METHODS = OrmPackage.XML_BASIC_FEATURE_COUNT + 8;
+	public static final int XML_BASIC__ACCESS_METHODS = OrmPackage.XML_BASIC_FEATURE_COUNT + 7;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -662,7 +662,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC__PROPERTIES = OrmPackage.XML_BASIC_FEATURE_COUNT + 9;
+	public static final int XML_BASIC__PROPERTIES = OrmPackage.XML_BASIC_FEATURE_COUNT + 8;
+	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC__ATTRIBUTE_TYPE = OrmPackage.XML_BASIC_FEATURE_COUNT + 9;
 	/**
 	 * The feature id for the '<em><b>Mutable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -761,13 +769,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_BASIC_COLLECTION__PROPERTIES = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_COLLECTION__ATTRIBUTE_TYPE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	/**
 	 * The feature id for the '<em><b>Cascade On Delete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_COLLECTION__CASCADE_ON_DELETE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	public static final int XML_BASIC_COLLECTION__CASCADE_ON_DELETE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 	/**
 	 * The number of structural features of the '<em>Xml Basic Collection</em>' class.
 	 * <!-- begin-user-doc -->
@@ -775,7 +791,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_COLLECTION_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+	public static final int XML_BASIC_COLLECTION_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap <em>Xml Basic Map</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -818,13 +834,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_BASIC_MAP__PROPERTIES = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_MAP__ATTRIBUTE_TYPE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	/**
 	 * The feature id for the '<em><b>Cascade On Delete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_MAP__CASCADE_ON_DELETE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	public static final int XML_BASIC_MAP__CASCADE_ON_DELETE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 	/**
 	 * The number of structural features of the '<em>Xml Basic Map</em>' class.
 	 * <!-- begin-user-doc -->
@@ -832,7 +856,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_MAP_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+	public static final int XML_BASIC_MAP_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBatchFetch <em>Xml Batch Fetch</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -1652,13 +1676,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ELEMENT_COLLECTION__PROPERTIES = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 1;
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 2;
+	/**
 	 * The feature id for the '<em><b>Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__CONVERT = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 2;
+	public static final int XML_ELEMENT_COLLECTION__CONVERT = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 3;
 	/**
 	 * The feature id for the '<em><b>Map Key Association Overrides</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1666,7 +1698,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 3;
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 4;
 	/**
 	 * The feature id for the '<em><b>Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1674,7 +1706,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 4;
+	public static final int XML_ELEMENT_COLLECTION__CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 5;
 	/**
 	 * The feature id for the '<em><b>Type Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1682,7 +1714,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__TYPE_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 5;
+	public static final int XML_ELEMENT_COLLECTION__TYPE_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 6;
 	/**
 	 * The feature id for the '<em><b>Object Type Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1690,7 +1722,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__OBJECT_TYPE_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 6;
+	public static final int XML_ELEMENT_COLLECTION__OBJECT_TYPE_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 7;
 	/**
 	 * The feature id for the '<em><b>Struct Converters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1698,7 +1730,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__STRUCT_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 7;
+	public static final int XML_ELEMENT_COLLECTION__STRUCT_CONVERTERS = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 8;
 	/**
 	 * The feature id for the '<em><b>Map Key Convert</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1706,7 +1738,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 8;
+	public static final int XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 9;
 	/**
 	 * The feature id for the '<em><b>Join Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1714,7 +1746,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__JOIN_FETCH = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 9;
+	public static final int XML_ELEMENT_COLLECTION__JOIN_FETCH = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 10;
 	/**
 	 * The feature id for the '<em><b>Batch Fetch</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -1722,15 +1754,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION__BATCH_FETCH = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 10;
-	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 11;
+	public static final int XML_ELEMENT_COLLECTION__BATCH_FETCH = OrmPackage.XML_ELEMENT_COLLECTION_FEATURE_COUNT + 11;
 	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -2086,21 +2110,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_EMBEDDED__ASSOCIATION_OVERRIDES = OrmPackage.XML_EMBEDDED__ASSOCIATION_OVERRIDES;
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDED__ATTRIBUTE_TYPE = OrmPackage.XML_EMBEDDED_FEATURE_COUNT + 0;
-	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDED__ACCESS_METHODS = OrmPackage.XML_EMBEDDED_FEATURE_COUNT + 1;
+	public static final int XML_EMBEDDED__ACCESS_METHODS = OrmPackage.XML_EMBEDDED_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -2108,7 +2124,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDED__PROPERTIES = OrmPackage.XML_EMBEDDED_FEATURE_COUNT + 2;
+	public static final int XML_EMBEDDED__PROPERTIES = OrmPackage.XML_EMBEDDED_FEATURE_COUNT + 1;
+	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDED__ATTRIBUTE_TYPE = OrmPackage.XML_EMBEDDED_FEATURE_COUNT + 2;
 	/**
 	 * The number of structural features of the '<em>Xml Embedded</em>' class.
 	 * <!-- begin-user-doc -->
@@ -2151,21 +2175,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES = OrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES;
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDED_ID__ATTRIBUTE_TYPE = OrmPackage.XML_EMBEDDED_ID_FEATURE_COUNT + 0;
-	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDED_ID__ACCESS_METHODS = OrmPackage.XML_EMBEDDED_ID_FEATURE_COUNT + 1;
+	public static final int XML_EMBEDDED_ID__ACCESS_METHODS = OrmPackage.XML_EMBEDDED_ID_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -2173,7 +2189,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDED_ID__PROPERTIES = OrmPackage.XML_EMBEDDED_ID_FEATURE_COUNT + 2;
+	public static final int XML_EMBEDDED_ID__PROPERTIES = OrmPackage.XML_EMBEDDED_ID_FEATURE_COUNT + 1;
+	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDED_ID__ATTRIBUTE_TYPE = OrmPackage.XML_EMBEDDED_ID_FEATURE_COUNT + 2;
 	/**
 	 * The number of structural features of the '<em>Xml Embedded Id</em>' class.
 	 * <!-- begin-user-doc -->
@@ -3584,21 +3608,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ID__GENERATED_VALUE = OrmPackage.XML_ID__GENERATED_VALUE;
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ID__ATTRIBUTE_TYPE = OrmPackage.XML_ID_FEATURE_COUNT + 0;
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID__INDEX = OrmPackage.XML_ID_FEATURE_COUNT + 1;
+	public static final int XML_ID__INDEX = OrmPackage.XML_ID_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -3606,7 +3622,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID__CACHE_INDEX = OrmPackage.XML_ID_FEATURE_COUNT + 2;
+	public static final int XML_ID__CACHE_INDEX = OrmPackage.XML_ID_FEATURE_COUNT + 1;
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -3614,7 +3630,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID__ACCESS_METHODS = OrmPackage.XML_ID_FEATURE_COUNT + 3;
+	public static final int XML_ID__ACCESS_METHODS = OrmPackage.XML_ID_FEATURE_COUNT + 2;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -3622,7 +3638,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID__PROPERTIES = OrmPackage.XML_ID_FEATURE_COUNT + 4;
+	public static final int XML_ID__PROPERTIES = OrmPackage.XML_ID_FEATURE_COUNT + 3;
+	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ID__ATTRIBUTE_TYPE = OrmPackage.XML_ID_FEATURE_COUNT + 4;
 	/**
 	 * The feature id for the '<em><b>Mutable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4008,21 +4032,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MANY_TO_MANY__BATCH_FETCH = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 6;
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__ATTRIBUTE_TYPE = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 7;
-	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 8;
+	public static final int XML_MANY_TO_MANY__PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 7;
 	/**
 	 * The feature id for the '<em><b>Replication Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -4030,7 +4046,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__REPLICATION_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 9;
+	public static final int XML_MANY_TO_MANY__REPLICATION_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 8;
 	/**
 	 * The feature id for the '<em><b>Round Robin Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -4038,7 +4054,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__ROUND_ROBIN_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 10;
+	public static final int XML_MANY_TO_MANY__ROUND_ROBIN_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 9;
 	/**
 	 * The feature id for the '<em><b>Pinned Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -4046,7 +4062,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__PINNED_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 11;
+	public static final int XML_MANY_TO_MANY__PINNED_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 10;
 	/**
 	 * The feature id for the '<em><b>Range Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -4054,7 +4070,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__RANGE_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 12;
+	public static final int XML_MANY_TO_MANY__RANGE_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 11;
 	/**
 	 * The feature id for the '<em><b>Value Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -4062,7 +4078,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__VALUE_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 13;
+	public static final int XML_MANY_TO_MANY__VALUE_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 12;
 	/**
 	 * The feature id for the '<em><b>Hash Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -4070,7 +4086,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__HASH_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 14;
+	public static final int XML_MANY_TO_MANY__HASH_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 13;
 	/**
 	 * The feature id for the '<em><b>Union Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -4078,7 +4094,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__UNION_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 15;
+	public static final int XML_MANY_TO_MANY__UNION_PARTITIONING = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 14;
 	/**
 	 * The feature id for the '<em><b>Partitioned</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4086,7 +4102,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__PARTITIONED = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 16;
+	public static final int XML_MANY_TO_MANY__PARTITIONED = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 15;
 	/**
 	 * The feature id for the '<em><b>Cascade On Delete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4094,7 +4110,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__CASCADE_ON_DELETE = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 17;
+	public static final int XML_MANY_TO_MANY__CASCADE_ON_DELETE = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 16;
 	/**
 	 * The feature id for the '<em><b>Non Cacheable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4102,7 +4118,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__NON_CACHEABLE = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 18;
+	public static final int XML_MANY_TO_MANY__NON_CACHEABLE = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 17;
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -4110,7 +4126,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__ACCESS_METHODS = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 19;
+	public static final int XML_MANY_TO_MANY__ACCESS_METHODS = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 18;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -4118,7 +4134,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY__PROPERTIES = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 20;
+	public static final int XML_MANY_TO_MANY__PROPERTIES = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 19;
+	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__ATTRIBUTE_TYPE = OrmPackage.XML_MANY_TO_MANY_FEATURE_COUNT + 20;
 	/**
 	 * The feature id for the '<em><b>Join Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4320,13 +4344,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_MANY_TO_ONE__PROPERTIES = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 12;
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_ONE__ATTRIBUTE_TYPE = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 13;
+	/**
 	 * The feature id for the '<em><b>Join Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE__JOIN_FETCH = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 13;
+	public static final int XML_MANY_TO_ONE__JOIN_FETCH = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 14;
 	/**
 	 * The number of structural features of the '<em>Xml Many To One</em>' class.
 	 * <!-- begin-user-doc -->
@@ -4334,7 +4366,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE_FEATURE_COUNT = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 14;
+	public static final int XML_MANY_TO_ONE_FEATURE_COUNT = OrmPackage.XML_MANY_TO_ONE_FEATURE_COUNT + 15;
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5261,21 +5293,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ONE_TO_MANY__BATCH_FETCH = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 6;
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__ATTRIBUTE_TYPE = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 7;
-	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 8;
+	public static final int XML_ONE_TO_MANY__PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 7;
 	/**
 	 * The feature id for the '<em><b>Replication Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -5283,7 +5307,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__REPLICATION_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 9;
+	public static final int XML_ONE_TO_MANY__REPLICATION_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 8;
 	/**
 	 * The feature id for the '<em><b>Round Robin Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -5291,7 +5315,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__ROUND_ROBIN_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 10;
+	public static final int XML_ONE_TO_MANY__ROUND_ROBIN_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 9;
 	/**
 	 * The feature id for the '<em><b>Pinned Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -5299,7 +5323,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__PINNED_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 11;
+	public static final int XML_ONE_TO_MANY__PINNED_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 10;
 	/**
 	 * The feature id for the '<em><b>Range Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -5307,7 +5331,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__RANGE_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 12;
+	public static final int XML_ONE_TO_MANY__RANGE_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 11;
 	/**
 	 * The feature id for the '<em><b>Value Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -5315,7 +5339,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__VALUE_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 13;
+	public static final int XML_ONE_TO_MANY__VALUE_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 12;
 	/**
 	 * The feature id for the '<em><b>Hash Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -5323,7 +5347,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__HASH_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 14;
+	public static final int XML_ONE_TO_MANY__HASH_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 13;
 	/**
 	 * The feature id for the '<em><b>Union Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -5331,7 +5355,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__UNION_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 15;
+	public static final int XML_ONE_TO_MANY__UNION_PARTITIONING = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 14;
 	/**
 	 * The feature id for the '<em><b>Partitioned</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5339,7 +5363,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__PARTITIONED = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 16;
+	public static final int XML_ONE_TO_MANY__PARTITIONED = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 15;
 	/**
 	 * The feature id for the '<em><b>Cascade On Delete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5347,7 +5371,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__CASCADE_ON_DELETE = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 17;
+	public static final int XML_ONE_TO_MANY__CASCADE_ON_DELETE = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 16;
 	/**
 	 * The feature id for the '<em><b>Noncacheable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5355,7 +5379,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__NONCACHEABLE = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 18;
+	public static final int XML_ONE_TO_MANY__NONCACHEABLE = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 17;
 	/**
 	 * The feature id for the '<em><b>Delete All</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5363,7 +5387,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__DELETE_ALL = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 19;
+	public static final int XML_ONE_TO_MANY__DELETE_ALL = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 18;
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -5371,7 +5395,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__ACCESS_METHODS = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 20;
+	public static final int XML_ONE_TO_MANY__ACCESS_METHODS = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 19;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -5379,7 +5403,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY__PROPERTIES = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 21;
+	public static final int XML_ONE_TO_MANY__PROPERTIES = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 20;
+	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__ATTRIBUTE_TYPE = OrmPackage.XML_ONE_TO_MANY_FEATURE_COUNT + 21;
 	/**
 	 * The feature id for the '<em><b>Private Owned</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5621,13 +5653,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ONE_TO_ONE__PROPERTIES = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 13;
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE__ATTRIBUTE_TYPE = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 14;
+	/**
 	 * The feature id for the '<em><b>Private Owned</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE__PRIVATE_OWNED = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 14;
+	public static final int XML_ONE_TO_ONE__PRIVATE_OWNED = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 15;
 	/**
 	 * The feature id for the '<em><b>Join Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -5635,7 +5675,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE__JOIN_FETCH = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 15;
+	public static final int XML_ONE_TO_ONE__JOIN_FETCH = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 16;
 	/**
 	 * The number of structural features of the '<em>Xml One To One</em>' class.
 	 * <!-- begin-user-doc -->
@@ -5643,7 +5683,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE_FEATURE_COUNT = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 16;
+	public static final int XML_ONE_TO_ONE_FEATURE_COUNT = OrmPackage.XML_ONE_TO_ONE_FEATURE_COUNT + 17;
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6735,21 +6775,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_TRANSFORMATION__NAME = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING__NAME;
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_TRANSFORMATION__ATTRIBUTE_TYPE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
-	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TRANSFORMATION__ACCESS_METHODS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+	public static final int XML_TRANSFORMATION__ACCESS_METHODS = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -6757,7 +6789,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TRANSFORMATION__PROPERTIES = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	public static final int XML_TRANSFORMATION__PROPERTIES = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSFORMATION__ATTRIBUTE_TYPE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 	/**
 	 * The number of structural features of the '<em>Xml Transformation</em>' class.
 	 * <!-- begin-user-doc -->
@@ -6799,13 +6839,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_TRANSIENT__PROPERTIES = OrmPackage.XML_TRANSIENT_FEATURE_COUNT + 1;
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSIENT__ATTRIBUTE_TYPE = OrmPackage.XML_TRANSIENT_FEATURE_COUNT + 2;
+	/**
 	 * The number of structural features of the '<em>Xml Transient</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TRANSIENT_FEATURE_COUNT = OrmPackage.XML_TRANSIENT_FEATURE_COUNT + 2;
+	public static final int XML_TRANSIENT_FEATURE_COUNT = OrmPackage.XML_TRANSIENT_FEATURE_COUNT + 3;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -6994,13 +7042,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_VARIABLE_ONE_TO_ONE__PROPERTIES = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_VARIABLE_ONE_TO_ONE__ATTRIBUTE_TYPE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	/**
 	 * The feature id for the '<em><b>Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+	public static final int XML_VARIABLE_ONE_TO_ONE__PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 	/**
 	 * The feature id for the '<em><b>Replication Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -7008,7 +7064,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__REPLICATION_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+	public static final int XML_VARIABLE_ONE_TO_ONE__REPLICATION_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 	/**
 	 * The feature id for the '<em><b>Round Robin Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -7016,7 +7072,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__ROUND_ROBIN_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+	public static final int XML_VARIABLE_ONE_TO_ONE__ROUND_ROBIN_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 	/**
 	 * The feature id for the '<em><b>Pinned Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -7024,7 +7080,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__PINNED_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
+	public static final int XML_VARIABLE_ONE_TO_ONE__PINNED_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
 	/**
 	 * The feature id for the '<em><b>Range Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -7032,7 +7088,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__RANGE_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
+	public static final int XML_VARIABLE_ONE_TO_ONE__RANGE_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
 	/**
 	 * The feature id for the '<em><b>Value Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -7040,7 +7096,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__VALUE_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
+	public static final int XML_VARIABLE_ONE_TO_ONE__VALUE_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
 	/**
 	 * The feature id for the '<em><b>Hash Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -7048,7 +7104,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__HASH_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
+	public static final int XML_VARIABLE_ONE_TO_ONE__HASH_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
 	/**
 	 * The feature id for the '<em><b>Union Partitioning</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -7056,7 +7112,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__UNION_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
+	public static final int XML_VARIABLE_ONE_TO_ONE__UNION_PARTITIONING = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
 	/**
 	 * The feature id for the '<em><b>Partitioned</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -7064,7 +7120,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__PARTITIONED = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
+	public static final int XML_VARIABLE_ONE_TO_ONE__PARTITIONED = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
 	/**
 	 * The feature id for the '<em><b>Non Cacheable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -7072,7 +7128,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__NON_CACHEABLE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
+	public static final int XML_VARIABLE_ONE_TO_ONE__NON_CACHEABLE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
 	/**
 	 * The feature id for the '<em><b>Target Interface</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -7080,7 +7136,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 12;
+	public static final int XML_VARIABLE_ONE_TO_ONE__TARGET_INTERFACE = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 13;
 	/**
 	 * The number of structural features of the '<em>Xml Variable One To One</em>' class.
 	 * <!-- begin-user-doc -->
@@ -7088,7 +7144,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 13;
+	public static final int XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT = OrmPackage.ABSTRACT_XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 14;
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -7138,21 +7194,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_VERSION__ENUMERATED = OrmPackage.XML_VERSION__ENUMERATED;
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_VERSION__ATTRIBUTE_TYPE = OrmPackage.XML_VERSION_FEATURE_COUNT + 0;
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VERSION__INDEX = OrmPackage.XML_VERSION_FEATURE_COUNT + 1;
+	public static final int XML_VERSION__INDEX = OrmPackage.XML_VERSION_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -7160,7 +7208,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VERSION__ACCESS_METHODS = OrmPackage.XML_VERSION_FEATURE_COUNT + 2;
+	public static final int XML_VERSION__ACCESS_METHODS = OrmPackage.XML_VERSION_FEATURE_COUNT + 1;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -7168,7 +7216,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_VERSION__PROPERTIES = OrmPackage.XML_VERSION_FEATURE_COUNT + 3;
+	public static final int XML_VERSION__PROPERTIES = OrmPackage.XML_VERSION_FEATURE_COUNT + 2;
+	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_VERSION__ATTRIBUTE_TYPE = OrmPackage.XML_VERSION_FEATURE_COUNT + 3;
 	/**
 	 * The feature id for the '<em><b>Mutable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -8058,6 +8114,20 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public EClass getXmlAttributeMapping()
 	{
 		return xmlAttributeMappingEClass;
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping#getAttributeType <em>Attribute Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping#getAttributeType()
+	 * @see #getXmlAttributeMapping()
+	 * @generated
+	 */
+	public EAttribute getXmlAttributeMapping_AttributeType()
+	{
+		return (EAttribute)xmlAttributeMappingEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -10477,6 +10547,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlArrayEClass = createEClass(XML_ARRAY);
 
 		xmlAttributeMappingEClass = createEClass(XML_ATTRIBUTE_MAPPING);
+		createEAttribute(xmlAttributeMappingEClass, XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE);
 
 		attributesEClass = createEClass(ATTRIBUTES);
 		createEReference(attributesEClass, ATTRIBUTES__BASIC_COLLECTIONS);
@@ -10836,10 +10907,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlConverterContainer());
 		xmlEmbeddableEClass.getESuperTypes().add(this.getXmlPropertyContainer());
 		xmlEmbeddedEClass.getESuperTypes().add(theOrmPackage.getXmlEmbedded());
-		xmlEmbeddedEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlEmbedded_2_1());
 		xmlEmbeddedEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlEmbeddedIdEClass.getESuperTypes().add(theOrmPackage.getXmlEmbeddedId());
-		xmlEmbeddedIdEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlEmbeddedId_2_1());
 		xmlEmbeddedIdEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlEntityEClass.getESuperTypes().add(theOrmPackage.getXmlEntity());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlTypeMapping());
@@ -10866,7 +10935,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlFetchGroupEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlFetchGroup_2_1());
 		xmlHashPartitioningEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlHashPartitioning_2_2());
 		xmlIdEClass.getESuperTypes().add(theOrmPackage.getXmlId());
-		xmlIdEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlId_2_1());
 		xmlIdEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlId_2_2());
 		xmlIdEClass.getESuperTypes().add(theEclipseLinkOrmV2_4Package.getXmlId_2_4());
 		xmlIdEClass.getESuperTypes().add(this.getXmlAttributeMapping());
@@ -10952,7 +11020,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlTenantDiscriminatorColumnEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlBaseDiscriminatorColumn());
 		xmlTenantDiscriminatorColumnEClass.getESuperTypes().add(theEclipseLinkOrmV2_3Package.getXmlTenantDiscriminatorColumn_2_3());
 		xmlTransformationEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlAttributeMapping());
-		xmlTransformationEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlTransformation_2_1());
 		xmlTransformationEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlTransientEClass.getESuperTypes().add(theOrmPackage.getXmlTransient());
 		xmlTransientEClass.getESuperTypes().add(this.getXmlAttributeMapping());
@@ -10965,7 +11032,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlVariableOneToOneEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlVariableOneToOneEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlVariableOneToOne_2_2());
 		xmlVersionEClass.getESuperTypes().add(theOrmPackage.getXmlVersion());
-		xmlVersionEClass.getESuperTypes().add(theEclipseLinkOrmV2_1Package.getXmlVersion_2_1());
 		xmlVersionEClass.getESuperTypes().add(theEclipseLinkOrmV2_2Package.getXmlVersion_2_2());
 		xmlVersionEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlVersionEClass.getESuperTypes().add(this.getXmlMutable());
@@ -10985,8 +11051,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEClass(xmlArrayEClass, XmlArray.class, "XmlArray", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlAttributeMappingEClass, XmlAttributeMapping.class, "XmlAttributeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		addEOperation(xmlAttributeMappingEClass, theXMLTypePackage.getString(), "getTypeName", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEAttribute(getXmlAttributeMapping_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlAttributeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(attributesEClass, Attributes.class, "Attributes", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAttributes_BasicCollections(), this.getXmlBasicCollection(), null, "basicCollections", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -11376,6 +11441,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_ATTRIBUTE_MAPPING = eINSTANCE.getXmlAttributeMapping();
+
+		/**
+		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE = eINSTANCE.getXmlAttributeMapping_AttributeType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.Attributes <em>Attributes</em>}' class.

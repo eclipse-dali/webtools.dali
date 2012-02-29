@@ -21,8 +21,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlBasicMap_2_2;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -65,6 +67,26 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getCascadeOnDelete() <em>Cascade On Delete</em>}' attribute.
@@ -191,6 +213,41 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Type</em>' attribute.
+	 * @see #setAttributeType(String)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAttributeMapping_AttributeType()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getAttributeType()
+	{
+		return attributeType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasicMap#getAttributeType <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Attribute Type</em>' attribute.
+	 * @see #getAttributeType()
+	 * @generated
+	 */
+	public void setAttributeType(String newAttributeType)
+	{
+		String oldAttributeType = attributeType;
+		attributeType = newAttributeType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC_MAP__ATTRIBUTE_TYPE, oldAttributeType, attributeType));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Cascade On Delete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -225,10 +282,6 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE, oldCascadeOnDelete, cascadeOnDelete));
 	}
 
-	public String getTypeName() {
-		return null; //basic-map is deprecated, no attribute-type
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -261,6 +314,8 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_BASIC_MAP__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_BASIC_MAP__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE:
 				return getCascadeOnDelete();
 		}
@@ -285,6 +340,9 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_BASIC_MAP__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE:
 				setCascadeOnDelete((Boolean)newValue);
 				return;
@@ -308,6 +366,9 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 			case EclipseLinkOrmPackage.XML_BASIC_MAP__PROPERTIES:
 				getProperties().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_BASIC_MAP__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE:
 				setCascadeOnDelete(CASCADE_ON_DELETE_EDEFAULT);
 				return;
@@ -329,6 +390,8 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_BASIC_MAP__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_BASIC_MAP__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE:
 				return CASCADE_ON_DELETE_EDEFAULT == null ? cascadeOnDelete != null : !CASCADE_ON_DELETE_EDEFAULT.equals(cascadeOnDelete);
 		}
@@ -363,6 +426,7 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_BASIC_MAP__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -405,6 +469,7 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_BASIC_MAP__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -430,7 +495,9 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (cascadeOnDelete: ");
+		result.append(" (attributeType: ");
+		result.append(attributeType);
+		result.append(", cascadeOnDelete: ");
 		result.append(cascadeOnDelete);
 		result.append(')');
 		return result.toString();
@@ -438,6 +505,10 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 
 	public String getMappingKey() {
 		return EclipseLinkMappingKeys.BASIC_MAP_ATTRIBUTE_MAPPING_KEY;
+	}
+
+	public TextRange getAttributeTypeTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
 	}
 	
 	// ********** translators **********

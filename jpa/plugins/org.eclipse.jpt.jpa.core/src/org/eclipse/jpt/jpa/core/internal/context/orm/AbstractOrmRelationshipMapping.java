@@ -402,19 +402,19 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 			);
 			return;
 		}
-		IType jdtType = JDTTools.findType(getJavaProject(), this.getFullyQualifiedTargetEntity());
-		//If a persistent type exists, but no underlying java class, then 
-		//you will get validation on that persistent type instead of here
-		if (jdtType == null && this.getResolvedTargetType() == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TARGET_ENTITY_NOT_EXIST,
-					new String[] {this.getFullyQualifiedTargetEntity()},
-					this,
-					this.getTargetEntityTextRange()
-				)
-			);
+		if (this.getResolvedTargetType() == null) {
+			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedTargetEntity());
+			if (jdtType == null) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.TARGET_ENTITY_NOT_EXIST,
+						new String[] {this.getFullyQualifiedTargetEntity()},
+						this,
+						this.getTargetEntityTextRange()
+					)
+				);
+			}
 			return;
 		}
 		if (this.getResolvedTargetEntity() == null) {

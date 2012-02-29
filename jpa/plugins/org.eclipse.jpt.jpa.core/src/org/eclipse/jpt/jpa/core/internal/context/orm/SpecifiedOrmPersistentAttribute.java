@@ -558,7 +558,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 	public String getTypeName() {
-		return (this.javaPersistentAttribute == null) ? null : this.javaPersistentAttribute.getTypeName();
+		return this.mapping.getAttributeType();
 	}
 
 	@Override
