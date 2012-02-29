@@ -1,4 +1,4 @@
-package org.eclipse.jpt.jpa.ui.internal.preferences;
+package org.eclipse.jpt.jpa.ui.internal.prefs;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.PreferencePage;
