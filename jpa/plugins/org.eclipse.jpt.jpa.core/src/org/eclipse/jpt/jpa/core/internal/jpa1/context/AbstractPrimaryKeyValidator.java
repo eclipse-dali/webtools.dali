@@ -122,6 +122,19 @@ public abstract class AbstractPrimaryKeyValidator
 		}
 	}
 	
+	//only embedded or id, both may not be used
+	protected void validateOneOfEmbeddedOrIdIsUsed(List<IMessage> messages, IReporter reporter) {
+		if (definesEmbeddedIdMapping(typeMapping) && definesIdMapping(typeMapping)) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.TYPE_MAPPING_ID_AND_EMBEDDED_ID_BOTH_USED,
+						EMPTY_STRING_ARRAY,
+						typeMapping(),
+						textRangeResolver().getTypeMappingTextRange()));
+		}
+	}
+	
 	// only one embedded id may be used
 	protected void validateOneEmbeddedId(List<IMessage> messages, IReporter reporter) {
 		if (CollectionTools.size(getEmbeddedIdMappings(typeMapping())) > 1) {
@@ -594,6 +607,14 @@ public abstract class AbstractPrimaryKeyValidator
 	 */
 	protected boolean definesEmbeddedIdMapping(TypeMapping typeMapping) {
 		return ! CollectionTools.isEmpty(getEmbeddedIdMappings(typeMapping));
+	}
+	
+	/**
+	 * Return whether an id is defined for this class, whether that be locally
+	 * or on an ancestor
+	 */
+	protected boolean definesIdMapping(TypeMapping typeMapping) {
+		return ! CollectionTools.isEmpty(getIdMappings(typeMapping));
 	}
 	
 	protected EmbeddedIdMapping getEmbeddedIdMapping(TypeMapping typeMapping) {

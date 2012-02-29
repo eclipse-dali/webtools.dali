@@ -19,12 +19,14 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -127,6 +129,54 @@ public final class JDTTools {
 		return false;
 	}
 
+	
+	/**
+	 * Return true if the given type named contains a method name as given with the given parameter types
+	 */
+	public static boolean typeNamedImplementsMethod(IJavaProject javaProject, String typeName, String methodName, String[] parameterTypeNames) {
+		try {
+			return typeImplementsMethod(javaProject.findType(typeName), methodName, parameterTypeNames);
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.log(ex);
+			return false;
+		}
+	}
+
+	private static boolean typeImplementsMethod(IType type, String methodName, String[] parameterTypeNames) {
+		if ((type == null) || methodName == null) {
+			return false;
+		}
+
+		try {
+			IMethod[] methods = type.getMethods();
+			for (IMethod method : methods) {
+				if (StringTools.stringsAreEqual(method.getElementName(), methodName)) {
+					if (parameterTypeNames.length == 0 && method.getNumberOfParameters() == 0) {
+						return true;
+					} else if (parameterTypeNames.length == method.getNumberOfParameters()) {
+						int index = 0;
+						String[] parameters = method.getParameterTypes();
+						String resolvedParameterTypeName = parameters[0];
+						if (!type.isResolved()) {
+							resolvedParameterTypeName = resolveType(type, Signature.getSignatureSimpleName(parameters[index]));
+						}
+						for (String parameterTypeName : parameterTypeNames) {
+							if (!StringTools.stringsAreEqual(resolvedParameterTypeName, parameterTypeName)) {
+								return false;
+							}
+							index++;
+						}
+						return true;
+					}
+				}
+			}
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.log(ex);
+			return false;			
+		}
+		return false;
+	}
+	
 	/**
 	 * Return the names of the specified type's supertypes (class and interfaces).
 	 * This is necessary because, for whatever reason, { @link IType#getSuperInterfaceNames()}

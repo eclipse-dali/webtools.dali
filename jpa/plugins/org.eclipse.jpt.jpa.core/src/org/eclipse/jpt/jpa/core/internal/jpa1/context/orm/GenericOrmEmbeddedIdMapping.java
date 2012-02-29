@@ -9,7 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import java.io.Serializable;
 import java.util.List;
+
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -113,7 +117,106 @@ public class GenericOrmEmbeddedIdMapping
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		validateMappedByRelationshipAndAttributeOverridesSpecified(messages, reporter);
+		validateTargetEmbeddableImplementsEqualsAndHashcode(messages, reporter);
+		validateTargetEmbeddableIsPublic(messages, reporter);
+		validateTargetEmbeddableImplementsSerializable(messages, reporter);
+		validateNoRelationshipMappingsOnTargetEmbeddable(messages, reporter);
+		validateTargetEmbeddableImplementsNoArgConstructor(messages, reporter);
+	}
+	
+	protected void validateNoRelationshipMappingsOnTargetEmbeddable(List<IMessage> messages, IReporter reporter) {
+		if (this.getTargetEmbeddable() != null) {
+			TypeMapping targetEmbeddableTypeMapping = this.getTargetEmbeddable().getPersistentType().getMapping();
+			if (targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()
+					|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()
+					|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()
+					|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
+								EMPTY_STRING_ARRAY,
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			}
+		}
+	}
+	
+	protected void validateTargetEmbeddableImplementsSerializable(List<IMessage> messages, IReporter reporter) {
+		if (this.getTargetEmbeddable() != null) {
+			String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
+			IJavaProject javaProject = getJpaProject().getJavaProject();
+			if (!JDTTools.typeIsSubType(javaProject, targetEmbeddableClassName, Serializable.class.getName())) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
+								EMPTY_STRING_ARRAY,
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			}
+		}
+	}
+	
+	protected void validateTargetEmbeddableIsPublic(List<IMessage> messages, IReporter reporter) {
+		if (this.getTargetEmbeddable() != null) {
+			if (!getTargetEmbeddable().getJavaResourceType().isPublic()) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
+								EMPTY_STRING_ARRAY,
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			}
+		}
+	}
 
+	protected void validateTargetEmbeddableImplementsEqualsAndHashcode(List<IMessage> messages, IReporter reporter) {
+		if (this.getTargetEmbeddable() != null) {
+			String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
+			IJavaProject javaProject = getJpaProject().getJavaProject();
+			if (!JDTTools.typeNamedImplementsMethod(javaProject, targetEmbeddableClassName, "equals", new String[] {Object.class.getName()})
+					|| !JDTTools.typeNamedImplementsMethod(javaProject, targetEmbeddableClassName, "hashCode", EMPTY_STRING_ARRAY)) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
+								EMPTY_STRING_ARRAY,
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			}
+		}
+	}
+	
+	protected void validateTargetEmbeddableImplementsNoArgConstructor(List<IMessage> messages, IReporter reporter) {
+		if (this.getTargetEmbeddable() != null) {
+			String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
+			IJavaProject javaProject = getJpaProject().getJavaProject();
+			if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, targetEmbeddableClassName)) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
+								EMPTY_STRING_ARRAY,
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			}
+		}
+	}
+	
+	protected void validateMappedByRelationshipAndAttributeOverridesSpecified(List<IMessage> messages, IReporter reporter) {
 		// [JPA 2.0] if the embedded id is mapped by a relationship, then any specified
 		// attribute overrides are in error
 		// (in JPA 1.0, this will obviously never be reached)
@@ -130,8 +233,6 @@ public class GenericOrmEmbeddedIdMapping
 			);
 		}
 	}
-
-
 	// ********** attribute override container owner *********
 
 	protected class AttributeOverrideContainerOwner

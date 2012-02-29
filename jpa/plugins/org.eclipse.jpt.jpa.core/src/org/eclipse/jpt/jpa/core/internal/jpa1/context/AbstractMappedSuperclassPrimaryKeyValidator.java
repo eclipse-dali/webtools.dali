@@ -43,6 +43,8 @@ public abstract class AbstractMappedSuperclassPrimaryKeyValidator
 		validateOneOfIdClassOrEmbeddedIdIsUsed(messages, reporter);
 		// ... and only one embedded id
 		validateOneEmbeddedId(messages, reporter);
+		// ... and not both id and embedded id
+		validateOneOfEmbeddedOrIdIsUsed(messages, reporter);
 		
 		if (specifiesIdClass()) {
 			validateIdClass(idClassReference().getIdClass(), messages, reporter);
