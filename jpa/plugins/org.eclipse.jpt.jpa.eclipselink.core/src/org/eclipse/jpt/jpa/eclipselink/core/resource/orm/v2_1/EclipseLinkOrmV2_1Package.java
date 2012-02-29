@@ -105,22 +105,13 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_BASIC_21__RETURN_UPDATE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC_21__ATTRIBUTE_TYPE = 2;
-
-	/**
 	 * The number of structural features of the '<em>Xml Basic 21</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_21_FEATURE_COUNT = 3;
+	public static final int XML_BASIC_21_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlBatchFetch_2_1 <em>Xml Batch Fetch 21</em>}' class.
@@ -188,78 +179,13 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION_21__BATCH_FETCH = EclipseLinkOrmPackage.XML_JOIN_FETCH_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ELEMENT_COLLECTION_21__ATTRIBUTE_TYPE = EclipseLinkOrmPackage.XML_JOIN_FETCH_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Xml Element Collection 21</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_21_FEATURE_COUNT = EclipseLinkOrmPackage.XML_JOIN_FETCH_FEATURE_COUNT + 2;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbedded_2_1 <em>Xml Embedded 21</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbedded_2_1
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlEmbedded_2_1()
-	 * @generated
-	 */
-	public static final int XML_EMBEDDED_21 = 3;
-
-	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDED_21__ATTRIBUTE_TYPE = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Embedded 21</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDED_21_FEATURE_COUNT = 1;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddedId_2_1 <em>Xml Embedded Id 21</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddedId_2_1
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlEmbeddedId_2_1()
-	 * @generated
-	 */
-	public static final int XML_EMBEDDED_ID_21 = 4;
-
-	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDED_ID_21__ATTRIBUTE_TYPE = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Embedded Id 21</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_EMBEDDED_ID_21_FEATURE_COUNT = 1;
+	public static final int XML_ELEMENT_COLLECTION_21_FEATURE_COUNT = EclipseLinkOrmPackage.XML_JOIN_FETCH_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTypeMapping_2_1 <em>Xml Type Mapping 21</em>}' class.
@@ -269,7 +195,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlTypeMapping_2_1()
 	 * @generated
 	 */
-	public static final int XML_TYPE_MAPPING_21 = 20;
+	public static final int XML_TYPE_MAPPING_21 = 16;
 
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
@@ -306,7 +232,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlFetchGroupContainer_2_1()
 	 * @generated
 	 */
-	public static final int XML_FETCH_GROUP_CONTAINER_21 = 9;
+	public static final int XML_FETCH_GROUP_CONTAINER_21 = 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEntity_2_1 <em>Xml Entity 21</em>}' class.
@@ -316,7 +242,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlEntity_2_1()
 	 * @generated
 	 */
-	public static final int XML_ENTITY_21 = 5;
+	public static final int XML_ENTITY_21 = 3;
 
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
@@ -371,7 +297,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlEntityMappings_2_1()
 	 * @generated
 	 */
-	public static final int XML_ENTITY_MAPPINGS_21 = 6;
+	public static final int XML_ENTITY_MAPPINGS_21 = 4;
 
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
@@ -399,7 +325,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlFetchAttribute_2_1()
 	 * @generated
 	 */
-	public static final int XML_FETCH_ATTRIBUTE_21 = 7;
+	public static final int XML_FETCH_ATTRIBUTE_21 = 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -427,7 +353,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlFetchGroup_2_1()
 	 * @generated
 	 */
-	public static final int XML_FETCH_GROUP_21 = 8;
+	public static final int XML_FETCH_GROUP_21 = 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -484,34 +410,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_FETCH_GROUP_CONTAINER_21_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlId_2_1 <em>Xml Id 21</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlId_2_1
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlId_2_1()
-	 * @generated
-	 */
-	public static final int XML_ID_21 = 10;
-
-	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ID_21__ATTRIBUTE_TYPE = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Id 21</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ID_21_FEATURE_COUNT = 1;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlManyToMany_2_1 <em>Xml Many To Many 21</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -519,7 +417,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlManyToMany_2_1()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY_21 = 11;
+	public static final int XML_MANY_TO_MANY_21 = 8;
 
 	/**
 	 * The feature id for the '<em><b>Batch Fetch</b></em>' containment reference.
@@ -531,22 +429,13 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_MANY_TO_MANY_21__BATCH_FETCH = EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER__BATCH_FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY_21__ATTRIBUTE_TYPE = EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml Many To Many 21</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_MANY_21_FEATURE_COUNT = EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER_FEATURE_COUNT + 1;
+	public static final int XML_MANY_TO_MANY_21_FEATURE_COUNT = EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlManyToOne_2_1 <em>Xml Many To One 21</em>}' class.
@@ -556,7 +445,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlManyToOne_2_1()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE_21 = 12;
+	public static final int XML_MANY_TO_ONE_21 = 9;
 
 	/**
 	 * The feature id for the '<em><b>Batch Fetch</b></em>' containment reference.
@@ -584,7 +473,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlMappedSuperclass_2_1()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_21 = 13;
+	public static final int XML_MAPPED_SUPERCLASS_21 = 10;
 
 	/**
 	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
@@ -711,7 +600,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlOneToMany_2_1()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_21 = 14;
+	public static final int XML_ONE_TO_MANY_21 = 11;
 
 	/**
 	 * The feature id for the '<em><b>Batch Fetch</b></em>' containment reference.
@@ -723,22 +612,13 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_ONE_TO_MANY_21__BATCH_FETCH = EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER__BATCH_FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY_21__ATTRIBUTE_TYPE = EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Xml One To Many 21</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_21_FEATURE_COUNT = EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER_FEATURE_COUNT + 1;
+	public static final int XML_ONE_TO_MANY_21_FEATURE_COUNT = EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlOneToOne_2_1 <em>Xml One To One 21</em>}' class.
@@ -748,7 +628,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlOneToOne_2_1()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE_21 = 15;
+	public static final int XML_ONE_TO_ONE_21 = 12;
 
 	/**
 	 * The feature id for the '<em><b>Batch Fetch</b></em>' containment reference.
@@ -776,7 +656,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlPersistenceUnitDefaults_2_1()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_21 = 16;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_21 = 13;
 
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
@@ -804,27 +684,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlReturnInsert_2_1()
 	 * @generated
 	 */
-	public static final int XML_RETURN_INSERT_21 = 18;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTransformation_2_1 <em>Xml Transformation 21</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTransformation_2_1
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlTransformation_2_1()
-	 * @generated
-	 */
-	public static final int XML_TRANSFORMATION_21 = 19;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlVersion_2_1 <em>Xml Version 21</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlVersion_2_1
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlVersion_2_1()
-	 * @generated
-	 */
-	public static final int XML_VERSION_21 = 21;
+	public static final int XML_RETURN_INSERT_21 = 15;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlPrimaryKey_2_1 <em>Xml Primary Key 21</em>}' class.
@@ -834,7 +694,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlPrimaryKey_2_1()
 	 * @generated
 	 */
-	public static final int XML_PRIMARY_KEY_21 = 17;
+	public static final int XML_PRIMARY_KEY_21 = 14;
 
 	/**
 	 * The feature id for the '<em><b>Cache Key Type</b></em>' attribute.
@@ -873,42 +733,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_RETURN_INSERT_21_FEATURE_COUNT = 1;
 
 	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_TRANSFORMATION_21__ATTRIBUTE_TYPE = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Transformation 21</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_TRANSFORMATION_21_FEATURE_COUNT = 1;
-
-	/**
-	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_VERSION_21__ATTRIBUTE_TYPE = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Version 21</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_VERSION_21_FEATURE_COUNT = 1;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.CacheKeyType_2_1 <em>Cache Key Type 21</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -916,7 +740,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getCacheKeyType_2_1()
 	 * @generated
 	 */
-	public static final int CACHE_KEY_TYPE_21 = 22;
+	public static final int CACHE_KEY_TYPE_21 = 17;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.BatchFetchType_2_1 <em>Batch Fetch Type 21</em>}' enum.
@@ -926,7 +750,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getBatchFetchType_2_1()
 	 * @generated
 	 */
-	public static final int BATCH_FETCH_TYPE_21 = 23;
+	public static final int BATCH_FETCH_TYPE_21 = 18;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -948,20 +772,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlElementCollection_2_1EClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass xmlEmbedded_2_1EClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass xmlEmbeddedId_2_1EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -997,13 +807,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlFetchGroupContainer_2_1EClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass xmlId_2_1EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1059,21 +862,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlTransformation_2_1EClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass xmlTypeMapping_2_1EClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass xmlVersion_2_1EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1227,21 +1016,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlBasic_2_1#getAttributeType <em>Attribute Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlBasic_2_1#getAttributeType()
-	 * @see #getXmlBasic_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlBasic_2_1_AttributeType()
-	{
-		return (EAttribute)xmlBasic_2_1EClass.getEStructuralFeatures().get(2);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlBatchFetch_2_1 <em>Xml Batch Fetch 21</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1296,79 +1070,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public EClass getXmlElementCollection_2_1()
 	{
 		return xmlElementCollection_2_1EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlElementCollection_2_1#getAttributeType <em>Attribute Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlElementCollection_2_1#getAttributeType()
-	 * @see #getXmlElementCollection_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlElementCollection_2_1_AttributeType()
-	{
-		return (EAttribute)xmlElementCollection_2_1EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbedded_2_1 <em>Xml Embedded 21</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Embedded 21</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbedded_2_1
-	 * @generated
-	 */
-	public EClass getXmlEmbedded_2_1()
-	{
-		return xmlEmbedded_2_1EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbedded_2_1#getAttributeType <em>Attribute Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbedded_2_1#getAttributeType()
-	 * @see #getXmlEmbedded_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlEmbedded_2_1_AttributeType()
-	{
-		return (EAttribute)xmlEmbedded_2_1EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddedId_2_1 <em>Xml Embedded Id 21</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Embedded Id 21</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddedId_2_1
-	 * @generated
-	 */
-	public EClass getXmlEmbeddedId_2_1()
-	{
-		return xmlEmbeddedId_2_1EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddedId_2_1#getAttributeType <em>Attribute Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddedId_2_1#getAttributeType()
-	 * @see #getXmlEmbeddedId_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlEmbeddedId_2_1_AttributeType()
-	{
-		return (EAttribute)xmlEmbeddedId_2_1EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -1524,35 +1225,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlId_2_1 <em>Xml Id 21</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Id 21</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlId_2_1
-	 * @generated
-	 */
-	public EClass getXmlId_2_1()
-	{
-		return xmlId_2_1EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlId_2_1#getAttributeType <em>Attribute Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlId_2_1#getAttributeType()
-	 * @see #getXmlId_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlId_2_1_AttributeType()
-	{
-		return (EAttribute)xmlId_2_1EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlManyToMany_2_1 <em>Xml Many To Many 21</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1563,21 +1235,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public EClass getXmlManyToMany_2_1()
 	{
 		return xmlManyToMany_2_1EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlManyToMany_2_1#getAttributeType <em>Attribute Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlManyToMany_2_1#getAttributeType()
-	 * @see #getXmlManyToMany_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlManyToMany_2_1_AttributeType()
-	{
-		return (EAttribute)xmlManyToMany_2_1EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -1651,21 +1308,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlOneToMany_2_1#getAttributeType <em>Attribute Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlOneToMany_2_1#getAttributeType()
-	 * @see #getXmlOneToMany_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlOneToMany_2_1_AttributeType()
-	{
-		return (EAttribute)xmlOneToMany_2_1EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlOneToOne_2_1 <em>Xml One To One 21</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1721,35 +1363,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTransformation_2_1 <em>Xml Transformation 21</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Transformation 21</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTransformation_2_1
-	 * @generated
-	 */
-	public EClass getXmlTransformation_2_1()
-	{
-		return xmlTransformation_2_1EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTransformation_2_1#getAttributeType <em>Attribute Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTransformation_2_1#getAttributeType()
-	 * @see #getXmlTransformation_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlTransformation_2_1_AttributeType()
-	{
-		return (EAttribute)xmlTransformation_2_1EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTypeMapping_2_1 <em>Xml Type Mapping 21</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1775,35 +1388,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public EAttribute getXmlTypeMapping_2_1_ParentClass()
 	{
 		return (EAttribute)xmlTypeMapping_2_1EClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlVersion_2_1 <em>Xml Version 21</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Version 21</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlVersion_2_1
-	 * @generated
-	 */
-	public EClass getXmlVersion_2_1()
-	{
-		return xmlVersion_2_1EClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlVersion_2_1#getAttributeType <em>Attribute Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Attribute Type</em>'.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlVersion_2_1#getAttributeType()
-	 * @see #getXmlVersion_2_1()
-	 * @generated
-	 */
-	public EAttribute getXmlVersion_2_1_AttributeType()
-	{
-		return (EAttribute)xmlVersion_2_1EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -1896,20 +1480,12 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		xmlBasic_2_1EClass = createEClass(XML_BASIC_21);
 		createEReference(xmlBasic_2_1EClass, XML_BASIC_21__RETURN_INSERT);
 		createEAttribute(xmlBasic_2_1EClass, XML_BASIC_21__RETURN_UPDATE);
-		createEAttribute(xmlBasic_2_1EClass, XML_BASIC_21__ATTRIBUTE_TYPE);
 
 		xmlBatchFetch_2_1EClass = createEClass(XML_BATCH_FETCH_21);
 		createEAttribute(xmlBatchFetch_2_1EClass, XML_BATCH_FETCH_21__SIZE);
 		createEAttribute(xmlBatchFetch_2_1EClass, XML_BATCH_FETCH_21__BATCH_FETCH_TYPE);
 
 		xmlElementCollection_2_1EClass = createEClass(XML_ELEMENT_COLLECTION_21);
-		createEAttribute(xmlElementCollection_2_1EClass, XML_ELEMENT_COLLECTION_21__ATTRIBUTE_TYPE);
-
-		xmlEmbedded_2_1EClass = createEClass(XML_EMBEDDED_21);
-		createEAttribute(xmlEmbedded_2_1EClass, XML_EMBEDDED_21__ATTRIBUTE_TYPE);
-
-		xmlEmbeddedId_2_1EClass = createEClass(XML_EMBEDDED_ID_21);
-		createEAttribute(xmlEmbeddedId_2_1EClass, XML_EMBEDDED_ID_21__ATTRIBUTE_TYPE);
 
 		xmlEntity_2_1EClass = createEClass(XML_ENTITY_21);
 		createEReference(xmlEntity_2_1EClass, XML_ENTITY_21__CLASS_EXTRACTOR);
@@ -1927,11 +1503,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		xmlFetchGroupContainer_2_1EClass = createEClass(XML_FETCH_GROUP_CONTAINER_21);
 		createEReference(xmlFetchGroupContainer_2_1EClass, XML_FETCH_GROUP_CONTAINER_21__FETCH_GROUPS);
 
-		xmlId_2_1EClass = createEClass(XML_ID_21);
-		createEAttribute(xmlId_2_1EClass, XML_ID_21__ATTRIBUTE_TYPE);
-
 		xmlManyToMany_2_1EClass = createEClass(XML_MANY_TO_MANY_21);
-		createEAttribute(xmlManyToMany_2_1EClass, XML_MANY_TO_MANY_21__ATTRIBUTE_TYPE);
 
 		xmlManyToOne_2_1EClass = createEClass(XML_MANY_TO_ONE_21);
 
@@ -1940,7 +1512,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		createEReference(xmlMappedSuperclass_2_1EClass, XML_MAPPED_SUPERCLASS_21__QUERY_REDIRECTORS);
 
 		xmlOneToMany_2_1EClass = createEClass(XML_ONE_TO_MANY_21);
-		createEAttribute(xmlOneToMany_2_1EClass, XML_ONE_TO_MANY_21__ATTRIBUTE_TYPE);
 
 		xmlOneToOne_2_1EClass = createEClass(XML_ONE_TO_ONE_21);
 
@@ -1952,14 +1523,8 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		xmlReturnInsert_2_1EClass = createEClass(XML_RETURN_INSERT_21);
 		createEAttribute(xmlReturnInsert_2_1EClass, XML_RETURN_INSERT_21__RETURN_ONLY);
 
-		xmlTransformation_2_1EClass = createEClass(XML_TRANSFORMATION_21);
-		createEAttribute(xmlTransformation_2_1EClass, XML_TRANSFORMATION_21__ATTRIBUTE_TYPE);
-
 		xmlTypeMapping_2_1EClass = createEClass(XML_TYPE_MAPPING_21);
 		createEAttribute(xmlTypeMapping_2_1EClass, XML_TYPE_MAPPING_21__PARENT_CLASS);
-
-		xmlVersion_2_1EClass = createEClass(XML_VERSION_21);
-		createEAttribute(xmlVersion_2_1EClass, XML_VERSION_21__ATTRIBUTE_TYPE);
 
 		// Create enums
 		cacheKeyType_2_1EEnum = createEEnum(CACHE_KEY_TYPE_21);
@@ -2023,20 +1588,12 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		initEClass(xmlBasic_2_1EClass, XmlBasic_2_1.class, "XmlBasic_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlBasic_2_1_ReturnInsert(), theEclipseLinkOrmPackage.getXmlReturnInsert(), null, "returnInsert", null, 0, 1, XmlBasic_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlBasic_2_1_ReturnUpdate(), theXMLTypePackage.getBooleanObject(), "returnUpdate", null, 0, 1, XmlBasic_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlBasic_2_1_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlBasic_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlBatchFetch_2_1EClass, XmlBatchFetch_2_1.class, "XmlBatchFetch_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlBatchFetch_2_1_Size(), theXMLTypePackage.getIntObject(), "size", null, 0, 1, XmlBatchFetch_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlBatchFetch_2_1_BatchFetchType(), this.getBatchFetchType_2_1(), "batchFetchType", null, 0, 1, XmlBatchFetch_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlElementCollection_2_1EClass, XmlElementCollection_2_1.class, "XmlElementCollection_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlElementCollection_2_1_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlElementCollection_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(xmlEmbedded_2_1EClass, XmlEmbedded_2_1.class, "XmlEmbedded_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlEmbedded_2_1_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlEmbedded_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(xmlEmbeddedId_2_1EClass, XmlEmbeddedId_2_1.class, "XmlEmbeddedId_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlEmbeddedId_2_1_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlEmbeddedId_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntity_2_1EClass, XmlEntity_2_1.class, "XmlEntity_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlEntity_2_1_ClassExtractor(), theOrmPackage.getXmlClassReference(), null, "classExtractor", null, 0, 1, XmlEntity_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2054,11 +1611,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		initEClass(xmlFetchGroupContainer_2_1EClass, XmlFetchGroupContainer_2_1.class, "XmlFetchGroupContainer_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlFetchGroupContainer_2_1_FetchGroups(), theEclipseLinkOrmPackage.getXmlFetchGroup(), null, "fetchGroups", null, 0, -1, XmlFetchGroupContainer_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(xmlId_2_1EClass, XmlId_2_1.class, "XmlId_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlId_2_1_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlId_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(xmlManyToMany_2_1EClass, XmlManyToMany_2_1.class, "XmlManyToMany_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlManyToMany_2_1_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlManyToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlManyToOne_2_1EClass, XmlManyToOne_2_1.class, "XmlManyToOne_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2067,7 +1620,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		initEReference(getXmlMappedSuperclass_2_1_QueryRedirectors(), theEclipseLinkOrmPackage.getXmlQueryRedirectors(), null, "queryRedirectors", null, 0, 1, XmlMappedSuperclass_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_1EClass, XmlOneToMany_2_1.class, "XmlOneToMany_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlOneToMany_2_1_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlOneToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToOne_2_1EClass, XmlOneToOne_2_1.class, "XmlOneToOne_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2079,14 +1631,8 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		initEClass(xmlReturnInsert_2_1EClass, XmlReturnInsert_2_1.class, "XmlReturnInsert_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlReturnInsert_2_1_ReturnOnly(), theXMLTypePackage.getBooleanObject(), "returnOnly", null, 0, 1, XmlReturnInsert_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(xmlTransformation_2_1EClass, XmlTransformation_2_1.class, "XmlTransformation_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlTransformation_2_1_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlTransformation_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(xmlTypeMapping_2_1EClass, XmlTypeMapping_2_1.class, "XmlTypeMapping_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlTypeMapping_2_1_ParentClass(), theXMLTypePackage.getString(), "parentClass", null, 0, 1, XmlTypeMapping_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(xmlVersion_2_1EClass, XmlVersion_2_1.class, "XmlVersion_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlVersion_2_1_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlVersion_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(cacheKeyType_2_1EEnum, CacheKeyType_2_1.class, "CacheKeyType_2_1");
@@ -2141,14 +1687,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		public static final EAttribute XML_BASIC_21__RETURN_UPDATE = eINSTANCE.getXmlBasic_2_1_ReturnUpdate();
 
 		/**
-		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_BASIC_21__ATTRIBUTE_TYPE = eINSTANCE.getXmlBasic_2_1_AttributeType();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlBatchFetch_2_1 <em>Xml Batch Fetch 21</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2183,50 +1721,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_ELEMENT_COLLECTION_21 = eINSTANCE.getXmlElementCollection_2_1();
-
-		/**
-		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ELEMENT_COLLECTION_21__ATTRIBUTE_TYPE = eINSTANCE.getXmlElementCollection_2_1_AttributeType();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbedded_2_1 <em>Xml Embedded 21</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbedded_2_1
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlEmbedded_2_1()
-		 * @generated
-		 */
-		public static final EClass XML_EMBEDDED_21 = eINSTANCE.getXmlEmbedded_2_1();
-
-		/**
-		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_EMBEDDED_21__ATTRIBUTE_TYPE = eINSTANCE.getXmlEmbedded_2_1_AttributeType();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddedId_2_1 <em>Xml Embedded Id 21</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEmbeddedId_2_1
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlEmbeddedId_2_1()
-		 * @generated
-		 */
-		public static final EClass XML_EMBEDDED_ID_21 = eINSTANCE.getXmlEmbeddedId_2_1();
-
-		/**
-		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_EMBEDDED_ID_21__ATTRIBUTE_TYPE = eINSTANCE.getXmlEmbeddedId_2_1_AttributeType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlEntity_2_1 <em>Xml Entity 21</em>}' class.
@@ -2327,24 +1821,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		public static final EReference XML_FETCH_GROUP_CONTAINER_21__FETCH_GROUPS = eINSTANCE.getXmlFetchGroupContainer_2_1_FetchGroups();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlId_2_1 <em>Xml Id 21</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlId_2_1
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlId_2_1()
-		 * @generated
-		 */
-		public static final EClass XML_ID_21 = eINSTANCE.getXmlId_2_1();
-
-		/**
-		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ID_21__ATTRIBUTE_TYPE = eINSTANCE.getXmlId_2_1_AttributeType();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlManyToMany_2_1 <em>Xml Many To Many 21</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2353,14 +1829,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MANY_TO_MANY_21 = eINSTANCE.getXmlManyToMany_2_1();
-
-		/**
-		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_MANY_TO_MANY_21__ATTRIBUTE_TYPE = eINSTANCE.getXmlManyToMany_2_1_AttributeType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlManyToOne_2_1 <em>Xml Many To One 21</em>}' class.
@@ -2409,14 +1877,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		public static final EClass XML_ONE_TO_MANY_21 = eINSTANCE.getXmlOneToMany_2_1();
 
 		/**
-		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_ONE_TO_MANY_21__ATTRIBUTE_TYPE = eINSTANCE.getXmlOneToMany_2_1_AttributeType();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlOneToOne_2_1 <em>Xml One To One 21</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2455,24 +1915,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		public static final EAttribute XML_RETURN_INSERT_21__RETURN_ONLY = eINSTANCE.getXmlReturnInsert_2_1_ReturnOnly();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTransformation_2_1 <em>Xml Transformation 21</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTransformation_2_1
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlTransformation_2_1()
-		 * @generated
-		 */
-		public static final EClass XML_TRANSFORMATION_21 = eINSTANCE.getXmlTransformation_2_1();
-
-		/**
-		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_TRANSFORMATION_21__ATTRIBUTE_TYPE = eINSTANCE.getXmlTransformation_2_1_AttributeType();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTypeMapping_2_1 <em>Xml Type Mapping 21</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2489,24 +1931,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_TYPE_MAPPING_21__PARENT_CLASS = eINSTANCE.getXmlTypeMapping_2_1_ParentClass();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlVersion_2_1 <em>Xml Version 21</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlVersion_2_1
-		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlVersion_2_1()
-		 * @generated
-		 */
-		public static final EClass XML_VERSION_21 = eINSTANCE.getXmlVersion_2_1();
-
-		/**
-		 * The meta object literal for the '<em><b>Attribute Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_VERSION_21__ATTRIBUTE_TYPE = eINSTANCE.getXmlVersion_2_1_AttributeType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlPrimaryKey_2_1 <em>Xml Primary Key 21</em>}' class.

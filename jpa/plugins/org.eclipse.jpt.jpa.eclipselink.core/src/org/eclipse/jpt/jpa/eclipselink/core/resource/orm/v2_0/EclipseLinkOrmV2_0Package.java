@@ -225,6 +225,15 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_ELEMENT_COLLECTION_20__PROPERTIES = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__PROPERTIES;
 
 	/**
+	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION_20__ATTRIBUTE_TYPE = EclipseLinkOrmPackage.XML_ATTRIBUTE_MAPPING__ATTRIBUTE_TYPE;
+
+	/**
 	 * The feature id for the '<em><b>Lob</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
