@@ -12,6 +12,8 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -25,6 +27,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbFactory;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.ELJaxbContextRoot;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaElementFactoryMethod;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAnyElementMapping;
@@ -66,8 +69,12 @@ public class ELJaxb_2_1_Factory
 	@Override
 	public JaxbElementFactoryMethod buildJavaElementFactoryMethod(
 			XmlRegistry parent, JavaResourceMethod resourceMethod) {
-		
 		return new ELJavaElementFactoryMethod(parent, resourceMethod);
+	}
+	
+	@Override
+	public JaxbClassMapping buildJaxbClassMapping(JaxbClass parent) {
+		return new ELJavaClassMapping(parent);
 	}
 	
 	@Override
