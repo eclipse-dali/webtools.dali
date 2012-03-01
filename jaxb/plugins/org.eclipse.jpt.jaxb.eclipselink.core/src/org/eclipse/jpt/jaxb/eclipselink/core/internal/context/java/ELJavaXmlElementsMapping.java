@@ -227,8 +227,6 @@ public class ELJavaXmlElementsMapping
 			// in the context of this mapping, there will never be an ELXmlPath without an annotation
 			return contextElement.getAnnotation();
 		}
-		
-//		public int indexOf(Xml)
 	}
 	
 	
