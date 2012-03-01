@@ -209,7 +209,7 @@ abstract class BinaryMember
 				String typeParameterName = Signature.toString(erasureSignature);
 				for (ITypeParameter typeParameter : typeParameters) {
 					if (typeParameterName.equals(typeParameter.getElementName())) {
-						String[] bounds = (typeParameter == null) ? new String[0] : typeParameter.getBoundsSignatures();
+						String[] bounds = typeParameter.getBoundsSignatures();
 						if (bounds.length > 0) {
 							return convertTypeSignatureToTypeName_(bounds[0], typeParameters);
 						}
@@ -228,12 +228,10 @@ abstract class BinaryMember
 		else if (Signature.getTypeSignatureKind(erasureSignature) == Signature.WILDCARD_TYPE_SIGNATURE) {
 			// if signature is ? (wildcard) or ? super X (bottom bounded), return top bound, which is Object
 			if (String.valueOf(Signature.C_STAR).equals(erasureSignature) || erasureSignature.startsWith(String.valueOf(Signature.C_SUPER))) {
-				return "java.lang.Object";
+				return Object.class.getName();
 			}
-			// else return top bound
-			else {
-				return Signature.toString(erasureSignature.substring(1));
-			}
+			// return top bound
+			return Signature.toString(erasureSignature.substring(1));
 		}
 		return Signature.toString(erasureSignature);
 	}

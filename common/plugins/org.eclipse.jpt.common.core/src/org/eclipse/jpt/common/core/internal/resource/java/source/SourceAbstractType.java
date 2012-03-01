@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -162,10 +162,10 @@ abstract class SourceAbstractType<A extends AbstractType>
 		return this.memberType;
 	}
 
-	private void syncMemberType(boolean memberType) {
+	private void syncMemberType(boolean astMemberType) {
 		boolean old = this.memberType;
-		this.memberType = memberType;
-		this.firePropertyChanged(MEMBER_TYPE_PROPERTY, old, memberType);
+		this.memberType = astMemberType;
+		this.firePropertyChanged(MEMBER_TYPE_PROPERTY, old, astMemberType);
 	}
 
 	private boolean buildMemberType(ITypeBinding binding) {

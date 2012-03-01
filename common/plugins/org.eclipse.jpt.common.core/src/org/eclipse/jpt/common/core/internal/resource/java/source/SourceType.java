@@ -218,10 +218,10 @@ final class SourceType
 		return this.hasNoArgConstructor;
 	}
 
-	private void syncHasNoArgConstructor(boolean hasNoArgConstructor) {
+	private void syncHasNoArgConstructor(boolean astHasNoArgConstructor) {
 		boolean old = this.hasNoArgConstructor;
-		this.hasNoArgConstructor = hasNoArgConstructor;
-		this.firePropertyChanged(NO_ARG_CONSTRUCTOR_PROPERTY, old, hasNoArgConstructor);
+		this.hasNoArgConstructor = astHasNoArgConstructor;
+		this.firePropertyChanged(NO_ARG_CONSTRUCTOR_PROPERTY, old, astHasNoArgConstructor);
 	}
 
 	private boolean buildHasNoArgConstructor(ITypeBinding binding) {
